@@ -3,7 +3,7 @@ import { PageTitle } from '@/components/PageTitle'
 const Page = () => {
   return (
     <div>
-      <PageTitle title="HomePage" />
+      <PageTitle title="Transactions" />
     </div>
   )
 }

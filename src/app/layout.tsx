@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import { cn } from '@/lib/utils'
+import { SideNavbar } from '@/components/SideNavBar'
+import { Header } from '@/components/Header'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,7 +19,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body
+        className={cn(
+          'flex min-h-screen w-full bg-white text-black',
+          inter.className,
+          {
+            'debug-screens': process.env.NODE_ENV === 'development'
+          }
+        )}
+      >
+        <SideNavbar />
+        <div className="flex w-full flex-col">
+          <Header />
+          <div className="w-full p-8">{children}</div>
+        </div>
+      </body>
     </html>
   )
 }
