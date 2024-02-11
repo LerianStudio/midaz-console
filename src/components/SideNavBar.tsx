@@ -61,7 +61,7 @@ export const SideNavbar: FC = () => {
   }
 
   return (
-    <div className="relative border-r bg-[#F5F5F5] px-5 pb-10 pt-20">
+    <div className="relative border-r bg-gray-100 px-5 pb-10 pt-20">
       {!mobileWidth && (
         <div className="absolute right-[-15px] top-4">
           <Button
