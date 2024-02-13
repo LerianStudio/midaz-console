@@ -10,24 +10,23 @@ import {
   UsersRound
 } from 'lucide-react'
 import { Button } from './ui/button'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Category } from '@/types/SidebarType'
-import { useWindowWidth } from '@react-hook/window-size'
 
-const categories: Category[] = [
+export const categories: Category[] = [
   {
     name: 'Dashboard',
     links: [
       {
         title: 'Overview',
-        href: '/',
+        href: '/overview',
         icon: LayoutDashboard,
         variant: 'default'
       }
     ]
   },
   {
-    name: 'Payments',
+    name: 'Ledgers',
     links: [
       {
         title: 'Ledgers',
@@ -53,8 +52,18 @@ const categories: Category[] = [
 
 export const SideNavbar: FC = () => {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false)
-  const onlyWidth = useWindowWidth()
-  const mobileWidth = onlyWidth < 768
+  const [isMobileWidth, setIsMobileWidth] = useState(false)
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileWidth(window.innerWidth < 768)
+    }
+
+    handleResize()
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed)
@@ -62,19 +71,17 @@ export const SideNavbar: FC = () => {
 
   return (
     <div className="relative border-r bg-gray-100 px-5 pb-10 pt-20">
-      {!mobileWidth && (
-        <div className="absolute right-[-15px] top-4">
-          <Button
-            variant="secondary"
-            className="h-[32px] w-[32px] rounded-full border p-2"
-            onClick={toggleSidebar}
-          >
-            {isCollapsed ? <ChevronRight /> : <ChevronLeft />}
-          </Button>
-        </div>
-      )}
+      <div className="absolute right-[-15px] top-4">
+        <Button
+          variant="secondary"
+          className="h-[32px] w-[32px] rounded-full border p-2"
+          onClick={toggleSidebar}
+        >
+          {isCollapsed ? <ChevronRight /> : <ChevronLeft />}
+        </Button>
+      </div>
       <Nav
-        isCollapsed={mobileWidth ? true : isCollapsed}
+        isCollapsed={isMobileWidth ? true : isCollapsed}
         categories={categories}
       />
     </div>

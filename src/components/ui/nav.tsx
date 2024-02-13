@@ -18,6 +18,7 @@ interface NavProps {
 
 export const Nav: FC<NavProps> = ({ categories, isCollapsed }) => {
   const pathName = usePathname()
+  const isActive = (href: string) => pathName.startsWith(href)
 
   return (
     <TooltipProvider>
@@ -39,8 +40,7 @@ export const Nav: FC<NavProps> = ({ categories, isCollapsed }) => {
                         href={link.href}
                         className={cn(
                           buttonVariants({
-                            variant:
-                              link.href === pathName ? 'default' : 'ghost',
+                            variant: isActive(link.href) ? 'default' : 'ghost',
                             size: 'icon'
                           }),
                           'h-9 w-9',
@@ -70,7 +70,7 @@ export const Nav: FC<NavProps> = ({ categories, isCollapsed }) => {
                     href={link.href}
                     className={cn(
                       buttonVariants({
-                        variant: link.href === pathName ? 'default' : 'ghost',
+                        variant: isActive(link.href) ? 'default' : 'ghost',
                         size: 'sm'
                       }),
                       link.variant === 'default' &&

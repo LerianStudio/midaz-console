@@ -5,10 +5,10 @@ import Link from 'next/link'
 const Page = () => {
   return (
     <div>
-      <PageTitle title="Transactions" />
-      <Link href="/transactions/wallet">
+      <PageTitle title="Transactions - Wallet" />
+      <Link href="/transactions">
         <Button variant="outline" className="mt-3">
-          another route
+          back
         </Button>
       </Link>
     </div>
