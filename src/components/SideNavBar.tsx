@@ -6,8 +6,9 @@ import {
   ChevronLeft,
   ChevronRight,
   LayoutDashboard,
-  ShoppingCart,
-  UsersRound
+  ArrowRightLeft,
+  Network,
+  Landmark
 } from 'lucide-react'
 import { Button } from './ui/button'
 import { FC, useEffect, useState } from 'react'
@@ -31,19 +32,19 @@ export const categories: Category[] = [
       {
         title: 'Ledgers',
         href: '/ledgers',
-        icon: LayoutDashboard,
+        icon: Landmark,
         variant: 'default'
       },
       {
         title: 'Transactions',
         href: '/transactions',
-        icon: ShoppingCart,
+        icon: ArrowRightLeft,
         variant: 'default'
       },
       {
         title: 'Accounts',
         href: '/accounts',
-        icon: UsersRound,
+        icon: Network,
         variant: 'default'
       }
     ]

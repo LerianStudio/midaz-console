@@ -40,7 +40,6 @@ export default function RootLayout({
               activeClasses="font-bold"
               containerClasses="flex py-5"
               listClasses="hover:underline mx-1"
-              capitalizeLinks
             />
 
             {children}

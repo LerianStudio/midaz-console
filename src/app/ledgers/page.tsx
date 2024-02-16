@@ -1,35 +1,63 @@
+'use client'
+
+import { fetchLedgers } from '@/client/ledgersClient'
 import { DataTable } from '@/components/DataTable'
 import { PageTitle } from '@/components/PageTitle'
+import { Button } from '@/components/ui/button'
 import { ColumnDef } from '@tanstack/react-table'
+import { ArrowRight } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
-type Payment = {
-  id: string
+type Ledgers = {
   name: string
 }
 
-const columns: ColumnDef<Payment>[] = [
-  {
-    accessorKey: 'name',
-    header: 'Name'
-  }
-]
-
-const data: Payment[] = [
-  {
-    id: '728ed52f',
-    name: 'wallet1'
-  },
-  {
-    id: '489e1d42',
-    name: 'wallet2'
-  }
-]
-
 const Page = () => {
+  const [ledgers, setLedgers] = useState<Ledgers[]>([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetchLedgers()
+        setLedgers(response.data)
+      } catch (error) {
+        console.error('Failed to fetch ledgers:', error)
+      }
+    }
+
+    fetchData()
+  }, [])
+
+  const router = useRouter()
+
+  const columns: ColumnDef<Ledgers>[] = [
+    {
+      accessorKey: 'name',
+      header: 'Name'
+    },
+    {
+      id: 'actions',
+      cell: ({ row }) => {
+        return (
+          <div className="flex justify-end">
+            <Button
+              size="icon"
+              onClick={() => router.push(`/ledgers/${row.original.name}`)}
+              variant="secondary"
+            >
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </div>
+        )
+      }
+    }
+  ]
+
   return (
     <div className="flex w-full flex-col gap-5">
       <PageTitle title="Ledgers" />
-      <DataTable columns={columns} data={data} />
+      <DataTable columns={columns} data={ledgers} />
     </div>
   )
 }

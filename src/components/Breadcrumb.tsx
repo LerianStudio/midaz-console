@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 import React, { ReactNode } from 'react'
 
 type TBreadCrumbProps = {
-  homeElement: ReactNode
+  homeElement?: ReactNode
   separator: ReactNode
   containerClasses?: string
   listClasses?: string
@@ -28,7 +28,11 @@ const Breadcrumb = ({
   return (
     <div>
       <ul className={containerClasses}>
-        <li className={cn(listClasses, 'hover:no-underline')}>{homeElement}</li>
+        {homeElement && (
+          <li className={cn(listClasses, 'hover:no-underline')}>
+            {homeElement}
+          </li>
+        )}
         {pathNames.length > 0 && separator}
         {pathNames.map((link, index) => {
           let href = `/${pathNames.slice(0, index + 1).join('/')}`
