@@ -10,7 +10,7 @@ import { Button } from './ui/button'
 export const Header = () => {
   return (
     <div className="flex h-16 w-full items-center justify-end gap-5 border-b bg-gray-100 p-5">
-      <Combobox />
+      {/* <Combobox /> */}
       <Popover>
         <PopoverTrigger>
           <Avatar>
@@ -19,7 +19,7 @@ export const Header = () => {
           </Avatar>
         </PopoverTrigger>
         <PopoverContent className="flex w-full flex-col items-start p-1">
-          <Button variant="ghost">Manage environment</Button>
+          <Button variant="ghost">My organization</Button>
           <Button variant="ghost" className="flex w-full justify-start">
             Sign out
           </Button>

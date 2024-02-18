@@ -10,7 +10,9 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 type Ledgers = {
+  id: string
   name: string
+  description: string
 }
 
 const Page = () => {
@@ -39,11 +41,15 @@ const Page = () => {
     {
       id: 'actions',
       cell: ({ row }) => {
+        const modifiedText = row.original.name
+          .toLowerCase()
+          .replace(/\s+/g, '-')
+
         return (
           <div className="flex justify-end">
             <Button
               size="icon"
-              onClick={() => router.push(`/ledgers/${row.original.name}`)}
+              onClick={() => router.push(`/ledgers/${modifiedText}`)}
               variant="secondary"
             >
               <ArrowRight className="h-4 w-4" />
