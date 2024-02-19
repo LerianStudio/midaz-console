@@ -33,5 +33,5 @@ jobs:
           role-session-name: 'AWS-GH-OIDC'
           role-to-assume: '${{ secrets.AWS_GH_OICD_TERRAFORM_ROLE }}'
           role-to-assume-to-deploy: '${{ secrets.DEV_FRONT_END_ROLE_TO_ASSUME_TO_DEPLOY }}'
-          s3-bucket-name: 'midaz-landing-page-development'
+          s3-bucket-name: 'midaz-portal-development'
           slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
