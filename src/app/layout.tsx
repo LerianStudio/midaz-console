@@ -4,7 +4,6 @@ import './globals.css'
 import { cn } from '@/lib/utils'
 import { SideNavbar } from '@/components/SideNavBar'
 import { Header } from '@/components/Header'
-import Breadcrumb from '@/components/Breadcrumb'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -32,18 +31,7 @@ export default function RootLayout({
         <SideNavbar />
         <div className="flex w-full flex-col">
           <Header />
-
-          <div className="w-full p-8">
-            <Breadcrumb
-              homeElement={'..'}
-              separator={<span> / </span>}
-              activeClasses="font-bold"
-              containerClasses="flex py-5"
-              listClasses="hover:underline mx-1"
-            />
-
-            {children}
-          </div>
+          <div className="w-full p-8">{children}</div>
         </div>
       </body>
     </html>

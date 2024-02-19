@@ -8,6 +8,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { ArrowRight } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import Breadcrumb, { BreadcrumbPath } from '@/components/Breadcrumb'
 
 type Ledgers = {
   id: string
@@ -18,11 +19,16 @@ type Ledgers = {
 const Page = () => {
   const [ledgers, setLedgers] = useState<Ledgers[]>([])
 
+  const [breadcrumbPaths] = useState<BreadcrumbPath[]>([
+    { name: 'All ledgers', href: '', active: false },
+    { name: 'Ledgers', href: '/ledgers', active: true }
+  ])
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetchLedgers()
-        setLedgers(response.data)
+        setLedgers(response)
       } catch (error) {
         console.error('Failed to fetch ledgers:', error)
       }
@@ -41,15 +47,11 @@ const Page = () => {
     {
       id: 'actions',
       cell: ({ row }) => {
-        const modifiedText = row.original.name
-          .toLowerCase()
-          .replace(/\s+/g, '-')
-
         return (
           <div className="flex justify-end">
             <Button
               size="icon"
-              onClick={() => router.push(`/ledgers/${modifiedText}`)}
+              onClick={() => router.push(`/ledgers/${row.original.id}`)}
               variant="secondary"
             >
               <ArrowRight className="h-4 w-4" />
@@ -61,9 +63,12 @@ const Page = () => {
   ]
 
   return (
-    <div className="flex w-full flex-col gap-5">
+    <div className="flex w-full flex-col">
+      <Breadcrumb paths={breadcrumbPaths} />
       <PageTitle title="Ledgers" />
-      <DataTable columns={columns} data={ledgers} />
+      <div className="mt-5">
+        <DataTable columns={columns} data={ledgers} />
+      </div>
     </div>
   )
 }
