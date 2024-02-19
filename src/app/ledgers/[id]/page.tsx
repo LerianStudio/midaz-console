@@ -3,29 +3,12 @@
 import { ledgerDetail } from '@/client/ledgersClient'
 import { useEffect, useState } from 'react'
 import Breadcrumb, { BreadcrumbPath } from '@/components/Breadcrumb'
+import { Ledger } from '@/types/LedgersType'
 
 type Props = {
   params: {
     id: string
   }
-}
-
-type Ledger = {
-  id: string
-  organizationId: string
-  name: string
-  divisionId: string
-  defaultTimezone: string
-  defaultCurrency: string
-  defaultHolidayList: string
-  assets: []
-  metadata: {
-    value: string
-  }
-  status: string
-  createdAt: string
-  updatedAt: string
-  deletedAt: string
 }
 
 const Page = ({ params }: Props) => {

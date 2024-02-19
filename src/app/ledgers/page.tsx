@@ -9,15 +9,10 @@ import { ArrowRight } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Breadcrumb, { BreadcrumbPath } from '@/components/Breadcrumb'
-
-type Ledgers = {
-  id: string
-  name: string
-  description: string
-}
+import { Ledger } from '@/types/LedgersType'
 
 const Page = () => {
-  const [ledgers, setLedgers] = useState<Ledgers[]>([])
+  const [ledgers, setLedgers] = useState<Ledger[]>([])
 
   const [breadcrumbPaths] = useState<BreadcrumbPath[]>([
     { name: 'All ledgers', href: '', active: false },
@@ -39,7 +34,7 @@ const Page = () => {
 
   const router = useRouter()
 
-  const columns: ColumnDef<Ledgers>[] = [
+  const columns: ColumnDef<Ledger>[] = [
     {
       accessorKey: 'name',
       header: 'Name'
