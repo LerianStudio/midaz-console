@@ -18,7 +18,17 @@ interface NavProps {
 
 export const Nav: FC<NavProps> = ({ categories, isCollapsed }) => {
   const pathName = usePathname()
-  const isActive = (href: string) => pathName.startsWith(href)
+  const isActive = (href: string) => {
+    if (href === '/' && pathName === '/') {
+      return true
+    }
+
+    if (href !== '/' && pathName.startsWith(href)) {
+      return true
+    }
+
+    return false
+  }
 
   return (
     <TooltipProvider>

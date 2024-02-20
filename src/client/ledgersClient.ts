@@ -9,9 +9,9 @@ export const fetchLedgers = async () => {
   }
 }
 
-export const ledgerDetail = async (name: string) => {
+export const ledgerDetail = async (id: string) => {
   try {
-    const response = await axiosInstance.get(`/ledgers/${name}`)
+    const response = await axiosInstance.get(`/ledgers/${id}`)
     return response.data
   } catch (error) {
     throw error
