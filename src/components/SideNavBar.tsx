@@ -20,7 +20,7 @@ export const categories: Category[] = [
     links: [
       {
         title: 'Overview',
-        href: '/overview',
+        href: '/',
         icon: LayoutDashboard,
         variant: 'default'
       }
