@@ -1,59 +1,22 @@
-'use client'
-
-import { fetchLedgers } from '@/client/ledgersClient'
 import { DataTable } from '@/components/DataTable'
 import { PageTitle } from '@/components/PageTitle'
-import { Button } from '@/components/ui/button'
 import { ColumnDef } from '@tanstack/react-table'
-import { ArrowRight } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
 import Breadcrumb, { BreadcrumbPath } from '@/components/Breadcrumb'
 import { Ledger } from '@/types/LedgersType'
 
-const Page = () => {
-  const [ledgers, setLedgers] = useState<Ledger[]>([])
+const Page = async () => {
+  const ledgersReq = await fetch('https://jsonplaceholder.typicode.com/posts')
+  const ledgers = await ledgersReq.json()
 
-  const [breadcrumbPaths] = useState<BreadcrumbPath[]>([
-    { name: 'All ledgers', href: '', active: false },
+  const breadcrumbPaths: BreadcrumbPath[] = [
+    { name: 'All ledgers', href: '/', active: false },
     { name: 'Ledgers', href: '/ledgers', active: true }
-  ])
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetchLedgers()
-        setLedgers(response)
-      } catch (error) {
-        console.error('Failed to fetch ledgers:', error)
-      }
-    }
-
-    fetchData()
-  }, [])
-
-  const router = useRouter()
+  ]
 
   const columns: ColumnDef<Ledger>[] = [
     {
-      accessorKey: 'name',
+      accessorKey: 'id',
       header: 'Name'
-    },
-    {
-      id: 'actions',
-      cell: ({ row }) => {
-        return (
-          <div className="flex justify-end">
-            <Button
-              size="icon"
-              onClick={() => router.push(`/ledgers/${row.original.id}`)}
-              variant="secondary"
-            >
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </div>
-        )
-      }
     }
   ]
 
