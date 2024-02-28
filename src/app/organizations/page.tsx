@@ -7,22 +7,24 @@ import { Button } from '@/components/ui/button'
 import { ArrowRight } from 'lucide-react'
 import { ColumnDef } from '@tanstack/react-table'
 import { useEffect, useState } from 'react'
-import { fetchOrganization } from '@/client/organizationsClient'
 import { Organizations } from '@/types/OrganizationsType'
+import { useTranslation } from 'next-export-i18n'
 
 const Page = () => {
   const [organizations, setOrganizations] = useState<Organizations[]>([])
+  const { t } = useTranslation()
 
   const breadcrumbPaths = [
-    { name: 'My organizations', href: '/organizations', active: false },
+    { name: 'My organizations', active: false },
     { name: 'Organizations', href: '/organizations', active: true }
   ]
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetchOrganization()
-        setOrganizations(response)
+        const orgReq = await fetch('http://localhost:3000/api/organizations')
+        const organization: Organizations[] = await orgReq.json()
+        setOrganizations(organization)
       } catch (error) {
         console.error('Failed to fetch ledgers:', error)
       }
@@ -34,14 +36,18 @@ const Page = () => {
   const columns: ColumnDef<Organizations>[] = [
     {
       accessorKey: 'name',
-      header: 'Name'
+      header: t('table.headerName')
     },
     {
       id: 'actions',
       cell: ({ row }) => {
         return (
           <div className="flex justify-end">
-            <Button size="icon" onClick={() => 'clicked'} variant="secondary">
+            <Button
+              size="icon"
+              onClick={() => alert('clicked')}
+              variant="secondary"
+            >
               <ArrowRight className="h-4 w-4" />
             </Button>
           </div>

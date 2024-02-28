@@ -1,24 +1,30 @@
+'use client'
+
 import { DataTable } from '@/components/DataTable'
 import { PageTitle } from '@/components/PageTitle'
-import { ColumnDef } from '@tanstack/react-table'
 import Breadcrumb, { BreadcrumbPath } from '@/components/Breadcrumb'
+import { useLedgerColumns } from './columns'
 import { Ledger } from '@/types/LedgersType'
+import { fetchAllLedgers } from '@/client/ledgerClient'
+import { useEffect, useState } from 'react'
 
-const Page = async () => {
-  const ledgersReq = await fetch('https://jsonplaceholder.typicode.com/posts')
-  const ledgers = await ledgersReq.json()
+const Page = () => {
+  const [ledgers, setLedgers] = useState<Ledger[]>([])
+  const columns = useLedgerColumns()
 
   const breadcrumbPaths: BreadcrumbPath[] = [
-    { name: 'All ledgers', href: '/', active: false },
+    { name: 'All ledgers', active: false },
     { name: 'Ledgers', href: '/ledgers', active: true }
   ]
 
-  const columns: ColumnDef<Ledger>[] = [
-    {
-      accessorKey: 'id',
-      header: 'Name'
+  useEffect(() => {
+    const fetchLedgers = async () => {
+      const fetchedLedgers = await fetchAllLedgers()
+      setLedgers(fetchedLedgers)
     }
-  ]
+
+    fetchLedgers()
+  }, [])
 
   return (
     <div className="flex w-full flex-col">

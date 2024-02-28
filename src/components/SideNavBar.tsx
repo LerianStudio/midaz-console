@@ -1,7 +1,6 @@
 'use client'
 
 import { Nav } from './ui/nav'
-
 import {
   ChevronLeft,
   ChevronRight,
@@ -13,45 +12,48 @@ import {
 import { Button } from './ui/button'
 import { FC, useEffect, useState } from 'react'
 import { Category } from '@/types/SidebarType'
-
-export const categories: Category[] = [
-  {
-    name: 'Dashboard',
-    links: [
-      {
-        title: 'Overview',
-        href: '/',
-        icon: LayoutDashboard,
-        variant: 'default'
-      }
-    ]
-  },
-  {
-    name: 'Ledgers',
-    links: [
-      {
-        title: 'Ledgers',
-        href: '/ledgers',
-        icon: Landmark,
-        variant: 'default'
-      },
-      {
-        title: 'Transactions',
-        href: '/transactions',
-        icon: ArrowRightLeft,
-        variant: 'default'
-      },
-      {
-        title: 'Accounts',
-        href: '/accounts',
-        icon: Network,
-        variant: 'default'
-      }
-    ]
-  }
-]
+import { useTranslation } from 'next-export-i18n'
 
 export const SideNavbar: FC = () => {
+  const { t } = useTranslation()
+
+  const categories: Category[] = [
+    {
+      name: 'Dashboard',
+      links: [
+        {
+          title: t('sideNavBar.overview'),
+          href: '/',
+          icon: LayoutDashboard,
+          variant: 'default'
+        }
+      ]
+    },
+    {
+      name: 'Ledgers',
+      links: [
+        {
+          title: t('sideNavBar.ledgers'),
+          href: '/ledgers',
+          icon: Landmark,
+          variant: 'default'
+        },
+        {
+          title: t('sideNavBar.transactions'),
+          href: '/transactions',
+          icon: ArrowRightLeft,
+          variant: 'default'
+        },
+        {
+          title: t('sideNavBar.accounts'),
+          href: '/accounts',
+          icon: Network,
+          variant: 'default'
+        }
+      ]
+    }
+  ]
+
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false)
   const [isMobileWidth, setIsMobileWidth] = useState(false)
 

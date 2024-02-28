@@ -1,0 +1,12 @@
+{
+  "headline": "City: Paris",
+  "sideNavBar": {
+    "overview": "Overview",
+    "ledgers": "Ledgers",
+    "transactions": "Transactions",
+    "accounts": "Accounts"
+  },
+  "table": {
+    "headerName": "Name"
+  }
+}

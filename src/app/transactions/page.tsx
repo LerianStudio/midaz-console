@@ -3,7 +3,7 @@ import { PageTitle } from '@/components/PageTitle'
 
 const Page = () => {
   const breadcrumbPaths: BreadcrumbPath[] = [
-    { name: 'All transactions', href: '/transactions', active: false },
+    { name: 'All transactions', active: false },
     { name: 'Transactions', href: '/transactions', active: true }
   ]
 

@@ -10,6 +10,7 @@ import { buttonVariants } from './button'
 import { cn } from '@/lib/utils'
 import { FC } from 'react'
 import { Category } from '@/types/SidebarType'
+import { LinkWithLocale } from 'next-export-i18n'
 
 interface NavProps {
   isCollapsed: boolean
@@ -18,6 +19,7 @@ interface NavProps {
 
 export const Nav: FC<NavProps> = ({ categories, isCollapsed }) => {
   const pathName = usePathname()
+
   const isActive = (href: string) => {
     if (href === '/' && pathName === '/') {
       return true
@@ -34,7 +36,7 @@ export const Nav: FC<NavProps> = ({ categories, isCollapsed }) => {
     <TooltipProvider>
       <div
         data-collapsed={isCollapsed}
-        className="group flex flex-col gap-4 py-2 data-[collapsed=true]:py-2"
+        className="group flex min-w-[150px] flex-col gap-4 py-2 data-[collapsed=true]:py-2"
       >
         {categories.map((category, categoryIndex) => (
           <div key={categoryIndex}>
@@ -46,7 +48,7 @@ export const Nav: FC<NavProps> = ({ categories, isCollapsed }) => {
                 isCollapsed ? (
                   <Tooltip key={linkIndex} delayDuration={0}>
                     <TooltipTrigger asChild>
-                      <Link
+                      <LinkWithLocale
                         href={link.href}
                         className={cn(
                           buttonVariants({
@@ -60,7 +62,7 @@ export const Nav: FC<NavProps> = ({ categories, isCollapsed }) => {
                       >
                         <link.icon className="h-4 w-4" />
                         <span className="sr-only">{link.title}</span>
-                      </Link>
+                      </LinkWithLocale>
                     </TooltipTrigger>
                     <TooltipContent
                       side="right"
@@ -75,7 +77,7 @@ export const Nav: FC<NavProps> = ({ categories, isCollapsed }) => {
                     </TooltipContent>
                   </Tooltip>
                 ) : (
-                  <Link
+                  <LinkWithLocale
                     key={linkIndex}
                     href={link.href}
                     className={cn(
@@ -89,7 +91,7 @@ export const Nav: FC<NavProps> = ({ categories, isCollapsed }) => {
                     )}
                   >
                     <link.icon className="mr-2 h-4 w-4" />
-                    {link.title}
+                    <span>{link.title}</span>
                     {link.label && (
                       <span
                         className={cn(
@@ -101,7 +103,7 @@ export const Nav: FC<NavProps> = ({ categories, isCollapsed }) => {
                         {link.label}
                       </span>
                     )}
-                  </Link>
+                  </LinkWithLocale>
                 )
               )}
             </nav>

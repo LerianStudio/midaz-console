@@ -1,9 +1,11 @@
+'use client'
+
 import Breadcrumb, { BreadcrumbPath } from '@/components/Breadcrumb'
 import { PageTitle } from '@/components/PageTitle'
 
 const Page = () => {
   const breadcrumbPaths: BreadcrumbPath[] = [
-    { name: 'All accounts', href: '/accounts', active: false },
+    { name: 'All accounts', active: false },
     { name: 'Accounts', href: '/accounts', active: true }
   ]
 
