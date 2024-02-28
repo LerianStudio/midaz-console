@@ -1,10 +1,32 @@
 {
-  "headline": "City: Paris",
+  "popoverHeader": {
+    "myOrganization": "My organization",
+    "signOut": "Sign out"
+  },
   "sideNavBar": {
     "overview": "Overview",
     "ledgers": "Ledgers",
     "transactions": "Transactions",
     "accounts": "Accounts"
+  },
+  "pageTitle": {
+    "overview": "HomePage",
+    "ledgers": "Ledgers",
+    "transactions": "Transactions",
+    "accounts": "Accounts",
+    "organizations": "Organizations"
+  },
+  "breadcrumb": {
+    "dashboard": "Dashboard",
+    "overview": "Overview",
+    "allLedgers": "All ledgers",
+    "ledgers": "Ledgers",
+    "allTransactions": "All transactions",
+    "transactions": "Transactions",
+    "allAccounts": "All accounts",
+    "accounts": "Accounts",
+    "myOrganizations": "My organization",
+    "organizations": "Organization"
   },
   "table": {
     "headerName": "Name"

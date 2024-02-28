@@ -1,20 +1,13 @@
 import { fetchAllLedgers, fetchLedgerById } from '@/client/ledgerClient'
-import Breadcrumb, { BreadcrumbPath } from '@/components/Breadcrumb'
 import { Ledger } from '@/types/LedgersType'
+import Wrapper from './wrapper'
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const ledger: Ledger = await fetchLedgerById(params.id)
 
-  const breadcrumbPaths: BreadcrumbPath[] = [
-    { name: 'All ledgers', active: false },
-    { name: 'Ledgers', href: '/ledgers', active: false },
-    { name: ledger.name, href: `/ledgers/${params.id}`, active: true }
-  ]
-
   return (
     <div className="flex w-full flex-col">
-      <Breadcrumb paths={breadcrumbPaths} />
-      <span>{ledger.name}</span>
+      <Wrapper ledger={ledger} />
     </div>
   )
 }
@@ -22,7 +15,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
 export default Page
 
 export const generateStaticParams = async () => {
-  const ledgersReq = await fetchAllLedgers()
+  const ledgersReq: Ledger[] = await fetchAllLedgers()
 
   return ledgersReq.map((ledger: any) => ({
     id: ledger.id.toString()

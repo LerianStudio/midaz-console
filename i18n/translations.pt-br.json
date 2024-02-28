@@ -1,10 +1,32 @@
 {
-  "headline": "City: Paris",
+  "popoverHeader": {
+    "myOrganization": "Minha organização",
+    "signOut": "Sair"
+  },
   "sideNavBar": {
     "overview": "Visão Geral",
     "ledgers": "Ledgers",
     "transactions": "Transações",
     "accounts": "Contas"
+  },
+  "pageTitle": {
+    "overview": "Página Inicial",
+    "ledgers": "Ledgers",
+    "transactions": "Transações",
+    "accounts": "Contas",
+    "organizations": "Organizações"
+  },
+  "breadcrumb": {
+    "dashboard": "Painel",
+    "overview": "Visão geral",
+    "allLedgers": "Todas ledgers",
+    "ledgers": "Ledgers",
+    "allTransactions": "Todas transações",
+    "transactions": "Transações",
+    "allAccounts": "Todas contas",
+    "accounts": "Contas",
+    "myOrganizations": "Minha orgarnização",
+    "organizations": "Organização"
   },
   "table": {
     "headerName": "Nome"

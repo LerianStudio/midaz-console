@@ -36,12 +36,14 @@ export const Nav: FC<NavProps> = ({ categories, isCollapsed }) => {
     <TooltipProvider>
       <div
         data-collapsed={isCollapsed}
-        className="group flex min-w-[150px] flex-col gap-4 py-2 data-[collapsed=true]:py-2"
+        className="group flex flex-col gap-4 py-2 data-[collapsed=false]:min-w-[150px] data-[collapsed=true]:py-2"
       >
         {categories.map((category, categoryIndex) => (
           <div key={categoryIndex}>
             {!isCollapsed && category.name && (
-              <div className="my-2 px-2 font-bold">{category.name}</div>
+              <div className="my-2 px-2 font-bold text-foreground">
+                {category.name}
+              </div>
             )}
             <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
               {category.links.map((link, linkIndex) =>
@@ -55,9 +57,7 @@ export const Nav: FC<NavProps> = ({ categories, isCollapsed }) => {
                             variant: isActive(link.href) ? 'default' : 'ghost',
                             size: 'icon'
                           }),
-                          'h-9 w-9',
-                          link.variant === 'default' &&
-                            'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white'
+                          'h-9 w-9'
                         )}
                       >
                         <link.icon className="h-4 w-4" />
@@ -85,8 +85,6 @@ export const Nav: FC<NavProps> = ({ categories, isCollapsed }) => {
                         variant: isActive(link.href) ? 'default' : 'ghost',
                         size: 'sm'
                       }),
-                      link.variant === 'default' &&
-                        'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
                       'justify-start'
                     )}
                   >

@@ -1,9 +1,9 @@
-import Link from 'next/link'
 import React from 'react'
+import { LinkWithLocale } from 'next-export-i18n'
 
 export interface BreadcrumbPath {
   name: string
-  href?: string // Make href optional
+  href?: string
   active: boolean
 }
 
@@ -13,17 +13,17 @@ interface BreadcrumbProps {
 
 const Breadcrumb: React.FC<BreadcrumbProps> = ({ paths }) => {
   return (
-    <div className="flex gap-1 py-5">
+    <div className="flex gap-1 pb-5">
       {paths.map((path, index) => (
         <React.Fragment key={index}>
           {index > 0 && <span> ❯ </span>}
           {path.href ? (
-            <Link
+            <LinkWithLocale
               href={path.href}
               className={`${path.active ? 'font-bold' : 'hover:underline'}`}
             >
               {path.name}
-            </Link>
+            </LinkWithLocale>
           ) : (
             <span className={`${path.active ? 'font-bold' : ''}`}>
               {path.name}

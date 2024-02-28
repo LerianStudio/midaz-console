@@ -2,17 +2,20 @@
 
 import Breadcrumb, { BreadcrumbPath } from '@/components/Breadcrumb'
 import { PageTitle } from '@/components/PageTitle'
+import { useTranslation } from 'next-export-i18n'
 
 const Page = () => {
+  const { t } = useTranslation()
+
   const breadcrumbPaths: BreadcrumbPath[] = [
-    { name: 'All accounts', active: false },
-    { name: 'Accounts', href: '/accounts', active: true }
+    { name: t('breadcrumb.allAccounts'), active: false },
+    { name: t('breadcrumb.accounts'), href: '/accounts', active: true }
   ]
 
   return (
     <div>
       <Breadcrumb paths={breadcrumbPaths} />
-      <PageTitle title="Accounts" />
+      <PageTitle title={t('pageTitle.accounts')} />
     </div>
   )
 }

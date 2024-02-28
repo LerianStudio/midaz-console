@@ -73,11 +73,11 @@ export const SideNavbar: FC = () => {
   }
 
   return (
-    <div className="relative border-r bg-gray-100 px-5 pb-10 pt-20">
+    <div className="relative border-r bg-background px-5 pb-10 pt-20">
       <div className="absolute right-[-15px] top-4">
         <Button
           variant="secondary"
-          className="h-[32px] w-[32px] rounded-full border p-2"
+          className="h-[32px] w-[32px] rounded-full border bg-background p-2"
           onClick={toggleSidebar}
         >
           {isCollapsed ? <ChevronRight /> : <ChevronLeft />}

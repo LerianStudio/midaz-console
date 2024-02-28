@@ -15,8 +15,12 @@ const Page = () => {
   const { t } = useTranslation()
 
   const breadcrumbPaths = [
-    { name: 'My organizations', active: false },
-    { name: 'Organizations', href: '/organizations', active: true }
+    { name: t('breadcrumb.myOrganizations'), active: false },
+    {
+      name: t('breadcrumb.organizations'),
+      href: '/organizations',
+      active: true
+    }
   ]
 
   useEffect(() => {
@@ -59,8 +63,7 @@ const Page = () => {
   return (
     <div>
       <Breadcrumb paths={breadcrumbPaths} />
-      <PageTitle title="Organizations" />
-      <div className="mt-5">
+      <div>
         <DataTable columns={columns} data={organizations} />
       </div>
     </div>
