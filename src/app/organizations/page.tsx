@@ -1,18 +1,22 @@
 'use client'
 
-import { PageTitle } from '@/components/PageTitle'
 import Breadcrumb from '@/components/Breadcrumb'
 import { DataTable } from '@/components/DataTable'
 import { Button } from '@/components/ui/button'
 import { ArrowRight } from 'lucide-react'
 import { ColumnDef } from '@tanstack/react-table'
-import { useEffect, useState } from 'react'
 import { Organizations } from '@/types/OrganizationsType'
 import { useTranslation } from 'next-export-i18n'
+import useSWR from 'swr'
+import { fetcher } from '../libs/fetcher'
+import { Skeleton } from '@/components/ui/skeleton'
 
 const Page = () => {
-  const [organizations, setOrganizations] = useState<Organizations[]>([])
   const { t } = useTranslation()
+  const { data, isLoading } = useSWR<Organizations[]>(
+    '/api/organizations',
+    fetcher
+  )
 
   const breadcrumbPaths = [
     { name: t('breadcrumb.myOrganizations'), active: false },
@@ -22,20 +26,6 @@ const Page = () => {
       active: true
     }
   ]
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const orgReq = await fetch('http://localhost:3000/api/organizations')
-        const organization: Organizations[] = await orgReq.json()
-        setOrganizations(organization)
-      } catch (error) {
-        console.error('Failed to fetch ledgers:', error)
-      }
-    }
-
-    fetchData()
-  }, [])
 
   const columns: ColumnDef<Organizations>[] = [
     {
@@ -63,9 +53,11 @@ const Page = () => {
   return (
     <div>
       <Breadcrumb paths={breadcrumbPaths} />
-      <div>
-        <DataTable columns={columns} data={organizations} />
-      </div>
+      {!isLoading ? (
+        <DataTable columns={columns} data={data || []} />
+      ) : (
+        <Skeleton className="h-[100px] w-full rounded-md" />
+      )}
     </div>
   )
 }

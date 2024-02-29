@@ -2,7 +2,13 @@ import { fetchAllLedgers, fetchLedgerById } from '@/client/ledgerClient'
 import { Ledger } from '@/types/LedgersType'
 import Wrapper from './wrapper'
 
-const Page = async ({ params }: { params: { id: string } }) => {
+type Props = {
+  params: {
+    id: string
+  }
+}
+
+const Page = async ({ params }: Props) => {
   const ledger: Ledger = await fetchLedgerById(params.id)
 
   return (

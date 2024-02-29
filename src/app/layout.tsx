@@ -31,7 +31,7 @@ export default function RootLayout({
   }, [pathName, router])
 
   return (
-    <html lang="pt_BR" className="dark">
+    <html lang="pt_BR">
       <body
         className={cn(
           'flex min-h-screen w-full bg-background text-foreground',
