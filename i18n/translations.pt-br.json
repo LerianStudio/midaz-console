@@ -1,4 +1,7 @@
 {
+  "auth": {
+    "titleLogin": "Bem vindo(a) de volta!"
+  },
   "popoverHeader": {
     "myOrganization": "Minha organização",
     "signOut": "Sair"

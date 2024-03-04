@@ -7,7 +7,7 @@ const i18n = {
     en
   },
   defaultLang: 'pt_BR',
-  useBrowserDefault: true,
+  useBrowserDefault: false,
   languageDataStore: 'query' || 'localStorage'
 }
 

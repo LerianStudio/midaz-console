@@ -1,4 +1,7 @@
 {
+  "auth": {
+    "titleLogin": "Welcome again!"
+  },
   "popoverHeader": {
     "myOrganization": "My organization",
     "signOut": "Sign out"

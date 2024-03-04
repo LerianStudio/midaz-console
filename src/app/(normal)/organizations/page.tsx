@@ -8,7 +8,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Organizations } from '@/types/OrganizationsType'
 import { useTranslation } from 'next-export-i18n'
 import useSWR from 'swr'
-import { fetcher } from '../libs/fetcher'
+import { fetcher } from '../../libs/fetcher'
 import { Skeleton } from '@/components/ui/skeleton'
 
 const Page = () => {

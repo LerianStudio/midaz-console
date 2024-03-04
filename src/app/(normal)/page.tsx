@@ -1,8 +1,9 @@
 'use client'
 
 import { PageTitle } from '@/components/PageTitle'
-import { useTranslation } from 'next-export-i18n'
+import { LinkWithLocale, useTranslation } from 'next-export-i18n'
 import Breadcrumb, { BreadcrumbPath } from '@/components/Breadcrumb'
+import { Button } from '@/components/ui/button'
 
 const Page = () => {
   const { t } = useTranslation()
@@ -16,6 +17,11 @@ const Page = () => {
     <div>
       <Breadcrumb paths={breadcrumbPaths} />
       <PageTitle title={t('pageTitle.overview')} />
+      <div className="mt-2">
+        <LinkWithLocale href="/signin">
+          <Button variant="default">Login Page</Button>
+        </LinkWithLocale>
+      </div>
     </div>
   )
 }
