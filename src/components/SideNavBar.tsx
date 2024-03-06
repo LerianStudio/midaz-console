@@ -12,17 +12,14 @@ import {
 import { Button } from './ui/button'
 import { FC, useEffect, useState } from 'react'
 import { Category } from '@/types/SidebarType'
-import { useTranslation } from 'next-export-i18n'
 
 export const SideNavbar: FC = () => {
-  const { t } = useTranslation()
-
   const categories: Category[] = [
     {
       name: 'Dashboard',
       links: [
         {
-          title: t('sideNavBar.overview'),
+          title: 'Visão Geral',
           href: '/',
           icon: LayoutDashboard,
           variant: 'default'
@@ -33,19 +30,19 @@ export const SideNavbar: FC = () => {
       name: 'Ledgers',
       links: [
         {
-          title: t('sideNavBar.ledgers'),
+          title: 'Ledgers',
           href: '/ledgers',
           icon: Landmark,
           variant: 'default'
         },
         {
-          title: t('sideNavBar.transactions'),
+          title: 'Transações',
           href: '/transactions',
           icon: ArrowRightLeft,
           variant: 'default'
         },
         {
-          title: t('sideNavBar.accounts'),
+          title: 'Contas',
           href: '/accounts',
           icon: Network,
           variant: 'default'

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useRouter } from 'next/router'
 import {
   Tooltip,
   TooltipContent,
@@ -7,10 +7,9 @@ import {
   TooltipTrigger
 } from './tooltip'
 import { buttonVariants } from './button'
-import { cn } from '@/lib/utils'
+import { cn } from '../../lib/utils'
 import { FC } from 'react'
 import { Category } from '@/types/SidebarType'
-import { LinkWithLocale } from 'next-export-i18n'
 
 interface NavProps {
   isCollapsed: boolean
@@ -18,14 +17,15 @@ interface NavProps {
 }
 
 export const Nav: FC<NavProps> = ({ categories, isCollapsed }) => {
-  const pathName = usePathname()
+  const router = useRouter()
+  const { pathname } = router
 
   const isActive = (href: string) => {
-    if (href === '/' && pathName === '/') {
+    if (href === '/' && pathname === '/') {
       return true
     }
 
-    if (href !== '/' && pathName.startsWith(href)) {
+    if (href !== '/' && pathname.startsWith(href)) {
       return true
     }
 
@@ -50,19 +50,22 @@ export const Nav: FC<NavProps> = ({ categories, isCollapsed }) => {
                 isCollapsed ? (
                   <Tooltip key={linkIndex} delayDuration={0}>
                     <TooltipTrigger asChild>
-                      <LinkWithLocale
-                        href={link.href}
-                        className={cn(
-                          buttonVariants({
-                            variant: isActive(link.href) ? 'default' : 'ghost',
-                            size: 'icon'
-                          }),
-                          'h-9 w-9'
-                        )}
-                      >
-                        <link.icon className="h-4 w-4" />
-                        <span className="sr-only">{link.title}</span>
-                      </LinkWithLocale>
+                      <Link href={link.href}>
+                        <a
+                          className={cn(
+                            buttonVariants({
+                              variant: isActive(link.href)
+                                ? 'default'
+                                : 'ghost',
+                              size: 'icon'
+                            }),
+                            'flex h-9 w-9 items-center justify-center'
+                          )}
+                        >
+                          <link.icon className="h-4 w-4" />
+                          <span className="sr-only">{link.title}</span>
+                        </a>
+                      </Link>
                     </TooltipTrigger>
                     <TooltipContent
                       side="right"
@@ -77,31 +80,31 @@ export const Nav: FC<NavProps> = ({ categories, isCollapsed }) => {
                     </TooltipContent>
                   </Tooltip>
                 ) : (
-                  <LinkWithLocale
-                    key={linkIndex}
-                    href={link.href}
-                    className={cn(
-                      buttonVariants({
-                        variant: isActive(link.href) ? 'default' : 'ghost',
-                        size: 'sm'
-                      }),
-                      'justify-start'
-                    )}
-                  >
-                    <link.icon className="mr-2 h-4 w-4" />
-                    <span>{link.title}</span>
-                    {link.label && (
-                      <span
-                        className={cn(
-                          'ml-auto',
-                          link.variant === 'default' &&
-                            'text-background dark:text-white'
-                        )}
-                      >
-                        {link.label}
-                      </span>
-                    )}
-                  </LinkWithLocale>
+                  <Link key={linkIndex} href={link.href}>
+                    <a
+                      className={cn(
+                        buttonVariants({
+                          variant: isActive(link.href) ? 'default' : 'ghost',
+                          size: 'sm'
+                        }),
+                        'flex items-center justify-start'
+                      )}
+                    >
+                      <link.icon className="mr-2 h-4 w-4" />
+                      <span>{link.title}</span>
+                      {link.label && (
+                        <span
+                          className={cn(
+                            'ml-auto',
+                            link.variant === 'default' &&
+                              'text-background dark:text-white'
+                          )}
+                        >
+                          {link.label}
+                        </span>
+                      )}
+                    </a>
+                  </Link>
                 )
               )}
             </nav>

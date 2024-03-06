@@ -1,5 +1,5 @@
+import Link from 'next/link'
 import React from 'react'
-import { LinkWithLocale } from 'next-export-i18n'
 
 export interface BreadcrumbPath {
   name: string
@@ -18,12 +18,12 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ paths }) => {
         <React.Fragment key={index}>
           {index > 0 && <span> ❯ </span>}
           {path.href ? (
-            <LinkWithLocale
+            <Link
               href={path.href}
               className={`${path.active ? 'font-bold' : 'hover:underline'}`}
             >
               {path.name}
-            </LinkWithLocale>
+            </Link>
           ) : (
             <span className={`${path.active ? 'font-bold' : ''}`}>
               {path.name}

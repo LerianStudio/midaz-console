@@ -1,26 +1,21 @@
-'use client'
-
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger
-} from '@/components/ui/popover'
+} from '../components/ui/popover'
 import { Button } from './ui/button'
-import {
-  useTranslation,
-  LanguageSwitcher,
-  LinkWithLocale
-} from 'next-export-i18n'
 import Image from 'next/image'
 import BrazilFlag from '../../public/images/brazil-flag.png'
 import USAFlag from '../../public/images/usa-flag.png'
 import { ToggleMode } from './ui/toggleMode'
 import { useState } from 'react'
+import Link from 'next/link'
+import { LogoutLink } from '../pkg'
 
 export const Header = () => {
   const [open, setOpen] = useState(false)
-  const { t } = useTranslation()
+  const onLogout = LogoutLink()
 
   const handleOpenChange = (open: boolean) => {
     setOpen(open)
@@ -29,12 +24,8 @@ export const Header = () => {
   return (
     <div className="flex h-16 w-full items-center justify-end gap-5 border-b bg-background p-5">
       <nav className="flex w-full items-center justify-end gap-3">
-        <LanguageSwitcher lang="pt_BR">
-          <Image width={32} height={32} alt="Brazil flag" src={BrazilFlag} />
-        </LanguageSwitcher>
-        <LanguageSwitcher lang="en">
-          <Image width={32} height={32} alt="USA flag" src={USAFlag} />
-        </LanguageSwitcher>
+        <Image width={32} height={32} alt="Brazil flag" src={BrazilFlag} />
+        <Image width={32} height={32} alt="USA flag" src={USAFlag} />
         <ToggleMode />
       </nav>
       <Popover open={open} onOpenChange={handleOpenChange}>
@@ -45,17 +36,18 @@ export const Header = () => {
           </Avatar>
         </PopoverTrigger>
         <PopoverContent className="flex w-full flex-col items-start p-1">
-          <LinkWithLocale href="/organizations">
+          <Link href="/organizations">
             <Button variant="ghost" onClick={() => setOpen(false)}>
-              {t('popoverHeader.myOrganization')}
+              {/* {t('popoverHeader.myOrganization')} */}
+              Minha organização
             </Button>
-          </LinkWithLocale>
+          </Link>
           <Button
             variant="ghost"
             className="flex w-full justify-start"
-            onClick={() => setOpen(false)}
+            onClick={onLogout}
           >
-            {t('popoverHeader.signOut')}
+            Sair
           </Button>
         </PopoverContent>
       </Popover>
