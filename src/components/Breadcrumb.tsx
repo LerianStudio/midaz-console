@@ -18,11 +18,12 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ paths }) => {
         <React.Fragment key={index}>
           {index > 0 && <span> ❯ </span>}
           {path.href ? (
-            <Link
-              href={path.href}
-              className={`${path.active ? 'font-bold' : 'hover:underline'}`}
-            >
-              {path.name}
+            <Link href={path.href}>
+              <span
+                className={`${path.active ? 'cursor-pointer font-bold' : 'cursor-pointer hover:underline'}`}
+              >
+                {path.name}
+              </span>
             </Link>
           ) : (
             <span className={`${path.active ? 'font-bold' : ''}`}>

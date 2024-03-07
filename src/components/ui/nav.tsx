@@ -50,21 +50,18 @@ export const Nav: FC<NavProps> = ({ categories, isCollapsed }) => {
                 isCollapsed ? (
                   <Tooltip key={linkIndex} delayDuration={0}>
                     <TooltipTrigger asChild>
-                      <Link href={link.href}>
-                        <a
-                          className={cn(
-                            buttonVariants({
-                              variant: isActive(link.href)
-                                ? 'default'
-                                : 'ghost',
-                              size: 'icon'
-                            }),
-                            'flex h-9 w-9 items-center justify-center'
-                          )}
-                        >
-                          <link.icon className="h-4 w-4" />
-                          <span className="sr-only">{link.title}</span>
-                        </a>
+                      <Link
+                        href={link.href}
+                        className={cn(
+                          buttonVariants({
+                            variant: isActive(link.href) ? 'default' : 'ghost',
+                            size: 'icon'
+                          }),
+                          'flex h-9 w-9 items-center justify-center'
+                        )}
+                      >
+                        <link.icon className="h-4 w-4" />
+                        <span className="sr-only">{link.title}</span>
                       </Link>
                     </TooltipTrigger>
                     <TooltipContent
@@ -80,30 +77,30 @@ export const Nav: FC<NavProps> = ({ categories, isCollapsed }) => {
                     </TooltipContent>
                   </Tooltip>
                 ) : (
-                  <Link key={linkIndex} href={link.href}>
-                    <a
-                      className={cn(
-                        buttonVariants({
-                          variant: isActive(link.href) ? 'default' : 'ghost',
-                          size: 'sm'
-                        }),
-                        'flex items-center justify-start'
-                      )}
-                    >
-                      <link.icon className="mr-2 h-4 w-4" />
-                      <span>{link.title}</span>
-                      {link.label && (
-                        <span
-                          className={cn(
-                            'ml-auto',
-                            link.variant === 'default' &&
-                              'text-background dark:text-white'
-                          )}
-                        >
-                          {link.label}
-                        </span>
-                      )}
-                    </a>
+                  <Link
+                    key={linkIndex}
+                    href={link.href}
+                    className={cn(
+                      buttonVariants({
+                        variant: isActive(link.href) ? 'default' : 'ghost',
+                        size: 'sm'
+                      }),
+                      'flex items-center justify-start'
+                    )}
+                  >
+                    <link.icon className="mr-2 h-4 w-4" />
+                    <span>{link.title}</span>
+                    {link.label && (
+                      <span
+                        className={cn(
+                          'ml-auto',
+                          link.variant === 'default' &&
+                            'text-background dark:text-white'
+                        )}
+                      >
+                        {link.label}
+                      </span>
+                    )}
                   </Link>
                 )
               )}

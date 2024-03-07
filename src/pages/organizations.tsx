@@ -8,6 +8,7 @@ import useSWR from 'swr'
 import { fetcher } from '../lib/fetcher'
 import { Skeleton } from '../components/ui/skeleton'
 import MainLayout from '../components/MainLayout'
+import { AuthProvider } from '@/contexts/authContext'
 
 const Page = () => {
   const { data, isLoading } = useSWR<Organizations[]>(
@@ -48,14 +49,16 @@ const Page = () => {
   ]
 
   return (
-    <MainLayout>
-      <Breadcrumb paths={breadcrumbPaths} />
-      {!isLoading ? (
-        <DataTable columns={columns} data={data || []} />
-      ) : (
-        <Skeleton className="h-[100px] w-full rounded-md" />
-      )}
-    </MainLayout>
+    <AuthProvider>
+      <MainLayout>
+        <Breadcrumb paths={breadcrumbPaths} />
+        {!isLoading ? (
+          <DataTable columns={columns} data={data || []} />
+        ) : (
+          <Skeleton className="h-[100px] w-full rounded-md" />
+        )}
+      </MainLayout>
+    </AuthProvider>
   )
 }
 
