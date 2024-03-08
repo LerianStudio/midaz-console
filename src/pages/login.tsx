@@ -5,20 +5,20 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-import { LogoutLink, Flow } from '../pkg'
-import { handleGetFlowError, handleFlowError } from '../pkg/errors'
-import ory from '../pkg/sdk'
+import { LogoutLink, Flow } from '@/pkg'
+import { handleGetFlowError, handleFlowError } from '@/pkg/errors'
+import ory from '@/pkg/sdk'
 import Image from 'next/image'
 import {
   Card,
   CardTitle,
   CardDescription,
   CardHeader
-} from '../components/ui/card'
+} from '@/components/ui/card'
 import GeometricShape from '../../public/images/geometric-shape.svg'
 import LeriandLogo from '../../public/images/leriand-logo.png'
 import Link from 'next/link'
-import { Button } from '../components/ui/button'
+import { Button } from '@/components/ui/button'
 
 const Login: NextPage = () => {
   const [flow, setFlow] = useState<LoginFlow>()

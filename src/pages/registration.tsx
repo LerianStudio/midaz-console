@@ -13,6 +13,12 @@ import { useEffect, useState } from 'react'
 import { handleFlowError } from '../pkg/errors'
 // Import the SDK
 import ory from '../pkg/sdk'
+import { Flow } from '@/pkg'
+import Image from 'next/image'
+import { Card, CardContent } from '@/components/ui/card'
+import GeometricShape from '../../public/images/geometric-shape.svg'
+import LeriandLogo from '../../public/images/leriand-logo.png'
+import { Progress } from '@/components/ui/progress'
 
 // Renders the registration page
 const Registration: NextPage = () => {
@@ -104,17 +110,41 @@ const Registration: NextPage = () => {
     <>
       <Head>
         <title>Create account - Ory NextJS Integration Example</title>
-        <meta name="description" content="NextJS + React + Vercel + Ory" />
+        <meta name="description" content="" />
       </Head>
-      {/* <MarginCard>
-        <CardTitle>Create account</CardTitle>
-        <Flow onSubmit={onSubmit} flow={flow} />
-      </MarginCard>
-      <ActionCard>
-        <CenterLink data-testid="cta-link" href="/login">
-          Sign in
-        </CenterLink>
-      </ActionCard> */}
+      <div className="flex h-screen flex-col bg-[#faf9f9]">
+        <div className="mt-6 flex w-full flex-col items-center">
+          <Image src={LeriandLogo} alt="Leriand Logo" />
+          <div className="mt-6 flex w-full max-w-[429px] flex-col gap-2">
+            <h1 className="text-center text-3xl font-semibold text-black">
+              Crie sua conta
+            </h1>
+            <p className="text-center text-sm font-normal text-black">
+              Confirme seus{' '}
+              <span className="font-bold text-[#DFC844]">dados pessoais</span>.
+            </p>
+            <Progress
+              value={50}
+              className="mt-5 w-full"
+              indicatorColor="bg-[#F9DF4B]"
+            />
+          </div>
+        </div>
+
+        <div className="mt-3 flex w-full">
+          <div className="z-10 h-screen w-fit">
+            <Image src={GeometricShape} alt="Rectangle" />
+          </div>
+
+          <div className="absolute flex w-full justify-center">
+            <Card className="min-h-[407px] min-w-[429px] border-none py-8 shadow-none">
+              <CardContent className="flex flex-col gap-6 pt-2">
+                <Flow onSubmit={onSubmit} flow={flow} />
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
     </>
   )
 }

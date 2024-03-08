@@ -7,7 +7,7 @@ import ory from '../pkg/sdk'
 import MainLayout from '@/components/MainLayout'
 import Breadcrumb, { BreadcrumbPath } from '@/components/Breadcrumb'
 import { PageTitle } from '@/components/PageTitle'
-import { AuthProvider } from '@/contexts/authContext'
+import { useAuth } from '@/contexts/authContext'
 
 const Home = () => {
   const [hasSession, setHasSession] = useState<boolean>(false)
@@ -47,21 +47,19 @@ const Home = () => {
   // }, [router])
 
   return (
-    <AuthProvider>
-      <div>
-        <Head>
-          <title>Midaz</title>
-          <meta name="description" content="NextJS + React + Vercel + Ory" />
-        </Head>
+    <div>
+      <Head>
+        <title>Midaz</title>
+        <meta name="description" content="" />
+      </Head>
 
-        <MainLayout>
-          <div>
-            <Breadcrumb paths={breadcrumbPaths} />
-            <PageTitle title="x" />
-          </div>
-        </MainLayout>
-      </div>
-    </AuthProvider>
+      <MainLayout>
+        <div>
+          <Breadcrumb paths={breadcrumbPaths} />
+          <PageTitle title="x" />
+        </div>
+      </MainLayout>
+    </div>
   )
 }
 

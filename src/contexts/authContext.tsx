@@ -10,6 +10,7 @@ import ory from '../pkg/sdk'
 
 interface AuthContextType {
   isAuthenticated: boolean
+  loading: boolean
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -20,6 +21,7 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
   const router = useRouter()
 
   useEffect(() => {
@@ -27,14 +29,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       .toSession()
       .then(() => {
         setIsAuthenticated(true)
+        setLoading(false)
       })
       .catch(() => {
-        router.push('/login')
+        if (!router.pathname.startsWith('/login')) {
+          router.push('/login')
+        }
+        setLoading(false)
       })
   }, [router])
-
   return (
-    <AuthContext.Provider value={{ isAuthenticated }}>
+    <AuthContext.Provider value={{ isAuthenticated, loading }}>
       {children}
     </AuthContext.Provider>
   )
