@@ -3,14 +3,36 @@
     "titleLogin": "Welcome again!"
   },
   "popoverHeader": {
-    "myOrganization": "My organization",
-    "signOut": "Sign out"
+    "settings": "Settings",
+    "support": "Support",
+    "logout": "Logout"
   },
   "sideNavBar": {
-    "overview": "Overview",
-    "ledgers": "Ledgers",
-    "transactions": "Transactions",
-    "accounts": "Accounts"
+    "home": "Home",
+    "organization": {
+      "title": "Organization",
+      "divisions": "Divisions",
+      "ledgers": "Ledgers",
+      "team": "Team",
+      "billing": "Billing"
+    },
+    "portfolio": {
+      "title": "Portfolio",
+      "accountTypes": "Account types",
+      "assets": "Assets",
+      "portfolios": "Portfolios",
+      "accounts": "Accounts"
+    },
+    "transactions": {
+      "title": "Transactions",
+      "transactions": "Transactions",
+      "limits": "Limits",
+      "governance": "Governance"
+    },
+    "reports": {
+      "title": "Reports",
+      "runReport": "Run report"
+    }
   },
   "pageTitle": {
     "overview": "HomePage",

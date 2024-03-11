@@ -23,13 +23,16 @@ import HamburguerLeft from '../../public/images/hamburguer-left.svg'
 import HamburguerRight from '../../public/images/hamburguer-right.svg'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
+import { useTranslation } from 'next-export-i18n'
 
 export const SideNavbar: FC = () => {
+  const { t } = useTranslation()
+
   const categories: Category[] = [
     {
       links: [
         {
-          title: 'Home',
+          title: t('sideNavBar.home'),
           href: '/',
           icon: Home,
           variant: 'default'
@@ -37,28 +40,28 @@ export const SideNavbar: FC = () => {
       ]
     },
     {
-      name: 'Organização',
+      name: t('sideNavBar.organization.title'),
       links: [
         {
-          title: 'Divisões',
+          title: t('sideNavBar.organization.divisions'),
           href: '/divisions',
           icon: Building2,
           variant: 'default'
         },
         {
-          title: 'Ledgers',
+          title: t('sideNavBar.organization.ledgers'),
           href: '/ledgers',
           icon: DatabaseZap,
           variant: 'default'
         },
         {
-          title: 'Time',
+          title: t('sideNavBar.organization.team'),
           href: '/team',
           icon: CircleUserRound,
           variant: 'default'
         },
         {
-          title: 'Faturamento',
+          title: t('sideNavBar.organization.billing'),
           href: '/billing',
           icon: Receipt,
           variant: 'default'
@@ -66,28 +69,28 @@ export const SideNavbar: FC = () => {
       ]
     },
     {
-      name: 'Portfólio',
+      name: t('sideNavBar.portfolio.title'),
       links: [
         {
-          title: 'Tipos de conta',
+          title: t('sideNavBar.portfolio.accountTypes'),
           href: '/accounts-type',
           icon: UserRound,
           variant: 'default'
         },
         {
-          title: 'Instrumentos',
-          href: '/instruments',
+          title: t('sideNavBar.portfolio.assets'),
+          href: '/assets',
           icon: Coins,
           variant: 'default'
         },
         {
-          title: 'Portfólios',
+          title: t('sideNavBar.portfolio.portfolios'),
           href: '/portfolios',
           icon: WalletCards,
           variant: 'default'
         },
         {
-          title: 'Contas',
+          title: t('sideNavBar.portfolio.accounts'),
           href: '/accounts',
           icon: UsersRound,
           variant: 'default'
@@ -95,22 +98,22 @@ export const SideNavbar: FC = () => {
       ]
     },
     {
-      name: 'Transactions',
+      name: t('sideNavBar.transactions.title'),
       links: [
         {
-          title: 'Transações',
+          title: t('sideNavBar.transactions.transactions'),
           href: '/transactions',
           icon: ArrowRightLeftIcon,
           variant: 'default'
         },
         {
-          title: 'Limites',
+          title: t('sideNavBar.transactions.limits'),
           href: '/limits',
           icon: Gauge,
           variant: 'default'
         },
         {
-          title: 'Governança',
+          title: t('sideNavBar.transactions.governance'),
           href: '/governance',
           icon: BadgeCheck,
           variant: 'default'
@@ -118,10 +121,10 @@ export const SideNavbar: FC = () => {
       ]
     },
     {
-      name: 'Relatórios',
+      name: t('sideNavBar.reports.title'),
       links: [
         {
-          title: 'Extrair',
+          title: t('sideNavBar.reports.runReport'),
           href: '/reports',
           icon: BarChartHorizontalBig,
           variant: 'default'

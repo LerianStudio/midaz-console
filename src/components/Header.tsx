@@ -11,8 +11,15 @@ import { LogoutLink } from '../pkg'
 import { ExternalLink, LogOut, Settings } from 'lucide-react'
 import GitHubIcon from '../../public/images/github-icon.svg'
 import FloaterIcon from '../../public/images/floater-icon.svg'
+import BrazilFlag from '../../public/images/brazil-flag.png'
+import USAFlag from '../../public/images/usa-flag.png'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
+import {
+  useTranslation,
+  LanguageSwitcher,
+  LinkWithLocale
+} from 'next-export-i18n'
 
 interface MenuItem {
   type: 'item'
@@ -42,6 +49,7 @@ interface MenuAction {
 type MenuEntry = MenuItem | MenuGroup | MenuAction
 
 export const Header = () => {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const onLogout = LogoutLink()
 
@@ -52,7 +60,7 @@ export const Header = () => {
   const menuItems: MenuEntry[] = [
     {
       type: 'item',
-      label: 'Nome',
+      label: '...',
       href: '/',
       isBold: true,
       fontSizeBase: true
@@ -62,7 +70,7 @@ export const Header = () => {
       items: [
         {
           type: 'item',
-          label: 'Configurações',
+          label: t('popoverHeader.settings'),
           href: '/',
           icon: <Settings size={15} />
         },
@@ -74,7 +82,7 @@ export const Header = () => {
         },
         {
           type: 'item',
-          label: 'Suporte',
+          label: t('popoverHeader.support'),
           href: '/',
           icon: <Image src={FloaterIcon} height={15} width={15} alt="" />
         },
@@ -96,7 +104,7 @@ export const Header = () => {
     },
     {
       type: 'action',
-      label: 'Sair',
+      label: t('popoverHeader.logout'),
       action: onLogout,
       icon: <LogOut size={15} />
     }
@@ -160,6 +168,15 @@ export const Header = () => {
 
   return (
     <div className="flex h-14 w-full items-center justify-end gap-5 border-b bg-[#F9DF4B] p-5">
+      <nav className="flex w-full items-center justify-end gap-3">
+        <LanguageSwitcher lang="pt">
+          <Image width={32} height={32} alt="Brazil flag" src={BrazilFlag} />
+        </LanguageSwitcher>
+        <LanguageSwitcher lang="en">
+          <Image width={32} height={32} alt="USA flag" src={USAFlag} />
+        </LanguageSwitcher>
+        {/* <ToggleMode /> */}
+      </nav>
       <Popover open={open} onOpenChange={handleOpenChange}>
         <PopoverTrigger>
           <Avatar>

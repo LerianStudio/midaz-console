@@ -69,68 +69,6 @@ const Page = () => {
   }
 
   return (
-    // <div className="flex h-screen w-screen flex-col bg-[#faf9f9]">
-    //   <div className="mt-6 flex w-full flex-col items-center">
-    //     <Image src={LeriandLogo} alt="Leriand Logo" />
-    //     <div className="mt-6 flex w-full max-w-[429px] flex-col gap-2">
-    //       <h1 className="text-center text-3xl font-semibold text-black">
-    //         Crie sua conta
-    //       </h1>
-    //       <p className="text-center text-sm font-normal text-black">
-    //         Confirme seus{' '}
-    //         <span className="font-bold text-[#DFC844]">dados pessoais</span>.
-    //       </p>
-    //       <Progress
-    //         value={50}
-    //         className="mt-5 w-full"
-    //         indicatorColor="bg-[#F9DF4B]"
-    //       />
-    //     </div>
-    //   </div>
-
-    //   <div className="mt-3 flex w-full">
-    //     <div className="z-10 h-screen w-fit">
-    //       <Image src={GeometricShape} alt="Rectangle" />
-    //     </div>
-
-    //     <div className="absolute flex w-full justify-center">
-    //       <Card className="min-h-[407px] min-w-[429px] border-none py-6 shadow-none">
-    //         <CardContent>
-    //           <div className="flex flex-col gap-5">
-    //             <div>
-    //               <Label htmlFor="email">Email</Label>
-    //               <Input type="email" id="email" placeholder="Email" />
-    //             </div>
-
-    //             <div>
-    //               <Label htmlFor="email">Email</Label>
-    //               <Input type="email" id="email" placeholder="Email" />
-    //             </div>
-
-    //             <div>
-    //               <Label htmlFor="email">Email</Label>
-    //               <Input type="email" id="email" placeholder="Email" />
-    //             </div>
-
-    //             <div>
-    //               <Label htmlFor="email">Email</Label>
-    //               <Input type="email" id="email" placeholder="Email" />
-    //             </div>
-
-    //             <Button
-    //               type="submit"
-    //               variant="default"
-    //               className="h-auto w-full bg-[#F9DF4B] px-4 py-3 text-black hover:bg-[#F9DF4B]/50"
-    //             >
-    //               Próximo
-    //             </Button>
-    //           </div>
-    //         </CardContent>
-    //       </Card>
-    //     </div>
-    //   </div>
-    // </div>
-
     <div className="flex h-screen w-screen flex-col bg-[#faf9f9]">
       <div className="mt-6 flex w-full flex-col items-center">
         <Image src={LeriandLogo} alt="Leriand Logo" />

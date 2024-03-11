@@ -3,14 +3,36 @@
     "titleLogin": "Bem vindo(a) de volta!"
   },
   "popoverHeader": {
-    "myOrganization": "Minha organização",
-    "signOut": "Sair"
+    "settings": "Configurações",
+    "support": "Suporte",
+    "logout": "Sair"
   },
   "sideNavBar": {
-    "overview": "Visão Geral",
-    "ledgers": "Ledgers",
-    "transactions": "Transações",
-    "accounts": "Contas"
+    "home": "Início",
+    "organization": {
+      "title": "Organização",
+      "divisions": "Divisões",
+      "ledgers": "Ledgers",
+      "team": "Time",
+      "billing": "Faturamento"
+    },
+    "portfolio": {
+      "title": "Portfólio",
+      "accountTypes": "Tipos de conta",
+      "assets": "Ativos",
+      "portfolios": "Portfólios",
+      "accounts": "Contas"
+    },
+    "transactions": {
+      "title": "Transações",
+      "transactions": "Transações",
+      "limits": "Limites",
+      "governance": "Governança"
+    },
+    "reports": {
+      "title": "Relatórios",
+      "runReport": "Extrair"
+    }
   },
   "pageTitle": {
     "overview": "Página Inicial",

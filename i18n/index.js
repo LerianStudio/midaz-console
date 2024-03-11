@@ -1,12 +1,12 @@
 var en = require('./translations.en.json')
-var pt_BR = require('./translations.pt-br.json')
+var pt = require('./translations.pt.json')
 
 const i18n = {
   translations: {
-    pt_BR,
+    pt,
     en
   },
-  defaultLang: 'pt_BR',
+  defaultLang: 'pt',
   useBrowserDefault: false,
   languageDataStore: 'query' || 'localStorage'
 }

@@ -53,12 +53,7 @@ const Home = () => {
         <meta name="description" content="" />
       </Head>
 
-      <MainLayout>
-        <div>
-          <Breadcrumb paths={breadcrumbPaths} />
-          <PageTitle title="x" />
-        </div>
-      </MainLayout>
+      <MainLayout>...</MainLayout>
     </div>
   )
 }
