@@ -1,0 +1,59 @@
+{
+  "auth": {
+    "titleLogin": "Welcome again!"
+  },
+  "popoverHeader": {
+    "settings": "Settings",
+    "support": "Support",
+    "logout": "Logout"
+  },
+  "sideNavBar": {
+    "home": "Home",
+    "organization": {
+      "title": "Organization",
+      "divisions": "Divisions",
+      "ledgers": "Ledgers",
+      "team": "Team",
+      "billing": "Billing"
+    },
+    "portfolio": {
+      "title": "Portfolio",
+      "accountTypes": "Account types",
+      "assets": "Assets",
+      "portfolios": "Portfolios",
+      "accounts": "Accounts"
+    },
+    "transactions": {
+      "title": "Transactions",
+      "transactions": "Transactions",
+      "limits": "Limits",
+      "governance": "Governance"
+    },
+    "reports": {
+      "title": "Reports",
+      "runReport": "Run report"
+    }
+  },
+  "pageTitle": {
+    "overview": "HomePage",
+    "ledgers": "Ledgers",
+    "transactions": "Transactions",
+    "accounts": "Accounts",
+    "organizations": "Organizations"
+  },
+  "breadcrumb": {
+    "dashboard": "Dashboard",
+    "overview": "Overview",
+    "allLedgers": "All ledgers",
+    "ledgers": "Ledgers",
+    "allTransactions": "All transactions",
+    "transactions": "Transactions",
+    "allAccounts": "All accounts",
+    "accounts": "Accounts",
+    "myOrganizations": "My organization",
+    "organizations": "Organization"
+  },
+  "table": {
+    "headerName": "Name"
+  }
+}

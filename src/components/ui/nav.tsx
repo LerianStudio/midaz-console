@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useRouter } from 'next/router'
 import {
   Tooltip,
   TooltipContent,
@@ -7,9 +7,11 @@ import {
   TooltipTrigger
 } from './tooltip'
 import { buttonVariants } from './button'
-import { cn } from '@/lib/utils'
+import { cn } from '../../lib/utils'
 import { FC } from 'react'
 import { Category } from '@/types/SidebarType'
+import LeriandLogo from '../../../public/images/leriand-logo.png'
+import Image from 'next/image'
 
 interface NavProps {
   isCollapsed: boolean
@@ -17,13 +19,15 @@ interface NavProps {
 }
 
 export const Nav: FC<NavProps> = ({ categories, isCollapsed }) => {
-  const pathName = usePathname()
+  const router = useRouter()
+  const { pathname } = router
+
   const isActive = (href: string) => {
-    if (href === '/' && pathName === '/') {
+    if (href === '/' && pathname === '/') {
       return true
     }
 
-    if (href !== '/' && pathName.startsWith(href)) {
+    if (href !== '/' && pathname.startsWith(href)) {
       return true
     }
 
@@ -34,12 +38,27 @@ export const Nav: FC<NavProps> = ({ categories, isCollapsed }) => {
     <TooltipProvider>
       <div
         data-collapsed={isCollapsed}
-        className="group flex flex-col gap-4 py-2 data-[collapsed=true]:py-2"
+        className="group flex flex-col gap-4 pt-4 data-[collapsed=false]:min-w-[212px] data-[collapsed=true]:py-2 data-[collapsed=true]:pt-4"
       >
+        {isCollapsed && (
+          <div className="flex justify-center">
+            <Image
+              src={LeriandLogo}
+              alt="Leriand Logo"
+              height={37}
+              width={37}
+            />
+          </div>
+        )}
+
         {categories.map((category, categoryIndex) => (
           <div key={categoryIndex}>
             {!isCollapsed && category.name && (
-              <div className="my-2 px-2 font-bold">{category.name}</div>
+              <div className="my-2 px-2">
+                <p className="text-xs font-medium uppercase text-[#585B5F] text-foreground">
+                  {category.name}
+                </p>
+              </div>
             )}
             <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
               {category.links.map((link, linkIndex) =>
@@ -50,15 +69,13 @@ export const Nav: FC<NavProps> = ({ categories, isCollapsed }) => {
                         href={link.href}
                         className={cn(
                           buttonVariants({
-                            variant: isActive(link.href) ? 'default' : 'ghost',
+                            variant: isActive(link.href) ? 'white' : 'ghost',
                             size: 'icon'
                           }),
-                          'h-9 w-9',
-                          link.variant === 'default' &&
-                            'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white'
+                          'flex h-9 w-9 items-center justify-center'
                         )}
                       >
-                        <link.icon className="h-4 w-4" />
+                        <link.icon className="h-5 w-5" />
                         <span className="sr-only">{link.title}</span>
                       </Link>
                     </TooltipTrigger>
@@ -80,16 +97,14 @@ export const Nav: FC<NavProps> = ({ categories, isCollapsed }) => {
                     href={link.href}
                     className={cn(
                       buttonVariants({
-                        variant: isActive(link.href) ? 'default' : 'ghost',
+                        variant: isActive(link.href) ? 'white' : 'ghost',
                         size: 'sm'
                       }),
-                      link.variant === 'default' &&
-                        'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
-                      'justify-start'
+                      'flex items-center justify-start'
                     )}
                   >
-                    <link.icon className="mr-2 h-4 w-4" />
-                    {link.title}
+                    <link.icon className="mr-2 h-5 w-5" />
+                    <span>{link.title}</span>
                     {link.label && (
                       <span
                         className={cn(
