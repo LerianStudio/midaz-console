@@ -15,11 +15,7 @@ import BrazilFlag from '../../public/images/brazil-flag.png'
 import USAFlag from '../../public/images/usa-flag.png'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
-import {
-  useTranslation,
-  LanguageSwitcher,
-  LinkWithLocale
-} from 'next-export-i18n'
+import { useTranslation, LanguageSwitcher } from 'next-export-i18n'
 
 interface MenuItem {
   type: 'item'
@@ -29,6 +25,7 @@ interface MenuItem {
   isBold?: boolean
   isDisabled?: boolean
   fontSizeBase?: boolean
+  action?: () => void
 }
 
 interface MenuGroup {
@@ -57,6 +54,10 @@ export const Header = () => {
     setOpen(open)
   }
 
+  const handleClick = () => {
+    alert('works')
+  }
+
   const menuItems: MenuEntry[] = [
     {
       type: 'item',
@@ -71,8 +72,9 @@ export const Header = () => {
         {
           type: 'item',
           label: t('popoverHeader.settings'),
-          href: '/',
-          icon: <Settings size={15} />
+          href: '#',
+          icon: <Settings size={15} />,
+          action: handleClick
         },
         {
           type: 'item',
@@ -114,7 +116,14 @@ export const Header = () => {
     <Link key={index} href={item.href} className="flex w-full items-center">
       <Button
         variant="ghost"
-        onClick={() => setOpen(false)}
+        onClick={(e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          if (item.action) {
+            item.action()
+          }
+          setOpen(false)
+        }}
         className="flex w-full items-center justify-start"
         disabled={item.isDisabled}
       >

@@ -10,9 +10,9 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
 // Import render helpers
-import { handleFlowError } from '../pkg/errors'
+import { handleFlowError } from '@/pkg/errors'
 // Import the SDK
-import ory from '../pkg/sdk'
+import ory from '@/pkg/sdk'
 import { Flow } from '@/pkg'
 import Image from 'next/image'
 import { Card, CardContent } from '@/components/ui/card'

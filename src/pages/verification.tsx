@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import ory from '../pkg/sdk'
+import { Flow } from '@/pkg'
 
 const Verification: NextPage = () => {
   const [flow, setFlow] = useState<VerificationFlow>()
@@ -111,15 +112,15 @@ const Verification: NextPage = () => {
         <title>Verify your account - Ory NextJS Integration Example</title>
         <meta name="description" content="NextJS + React + Vercel + Ory" />
       </Head>
-      {/* <MarginCard>
-        <CardTitle>Verify your account</CardTitle>
+      <div>
+        <h1>Verify your account</h1>
         <Flow onSubmit={onSubmit} flow={flow} />
-      </MarginCard>
-      <ActionCard>
+      </div>
+      <div>
         <Link href="/" passHref>
-          <CenterLink>Go back</CenterLink>
+          Go back
         </Link>
-      </ActionCard> */}
+      </div>
     </>
   )
 }
