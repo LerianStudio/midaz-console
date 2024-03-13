@@ -8,10 +8,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-
-// Import render helpers
 import { handleFlowError } from '@/pkg/errors'
-// Import the SDK
 import ory from '@/pkg/sdk'
 import { Flow } from '@/pkg'
 import Image from 'next/image'
@@ -20,7 +17,6 @@ import GeometricShape from '../../public/images/geometric-shape.svg'
 import LeriandLogo from '../../public/images/leriand-logo.png'
 import { Progress } from '@/components/ui/progress'
 
-// Renders the registration page
 const Registration: NextPage = () => {
   const router = useRouter()
 

@@ -1,0 +1,112 @@
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle
+} from '@/components/ui/sheet'
+
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { Form, FormControl, FormField, FormItem, FormLabel } from './ui/form'
+
+type FormFieldConfig = {
+  name: string
+  label: string
+  placeholder?: string
+  validation?: z.ZodType<any, any>
+}
+
+type SheetDemoProps = {
+  open: boolean
+  setOpen: (open: boolean) => void
+  fields: FormFieldConfig[]
+  formSchema: z.ZodSchema<any>
+  title: string
+  description: string
+  onSubmit: (values: any) => void
+  mode: string
+}
+
+export function SheetDemo({
+  open,
+  setOpen,
+  fields,
+  formSchema,
+  title,
+  description,
+  onSubmit,
+  mode
+}: SheetDemoProps) {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: fields.reduce(
+      (acc, field) => ({ ...acc, [field.name]: '' }),
+      {}
+    )
+  })
+
+  const isViewMode = mode === 'view'
+
+  return (
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetContent className="w-full min-w-[406px] px-6 py-5">
+        <SheetHeader>
+          <SheetTitle className="text-lg font-bold">{title}</SheetTitle>
+          <SheetDescription className="text-xs font-medium text-[#71717A]">
+            {description}
+          </SheetDescription>
+        </SheetHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="mt-5 grid gap-4 py-4">
+              {fields.map((field) => (
+                <FormField
+                  key={field.name}
+                  control={form.control}
+                  name={field.name}
+                  render={({ field: renderField }) => (
+                    <FormItem>
+                      <div className="grid grid-cols-6 items-center gap-4">
+                        <FormLabel className="col-span-2 text-right text-sm font-semibold">
+                          {field.label}
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder={field.placeholder}
+                            readOnly={isViewMode || field.name == 'id'}
+                            {...renderField}
+                            className="col-span-4 focus-visible:ring-0 focus-visible:ring-offset-0"
+                          />
+                        </FormControl>
+                      </div>
+                    </FormItem>
+                  )}
+                />
+              ))}
+            </div>
+            <SheetFooter>
+              <SheetClose asChild>
+                <Button
+                  type={isViewMode ? 'button' : 'submit'}
+                  className="mt-5 bg-[#F9DF4B] text-black hover:bg-[#F9DF4B]/70"
+                >
+                  {mode === 'create'
+                    ? 'Criar'
+                    : mode === 'edit'
+                      ? 'Salvar'
+                      : 'Fechar'}
+                </Button>
+              </SheetClose>
+            </SheetFooter>
+          </form>
+        </Form>
+      </SheetContent>
+    </Sheet>
+  )
+}

@@ -1,7 +1,6 @@
 import MainLayout from '@/components/MainLayout'
 
 import { DataTable } from '@/components/DataTable'
-import Breadcrumb, { BreadcrumbPath } from '@/components/Breadcrumb'
 import { Ledger } from '@/types/LedgersType'
 import useSWR from 'swr'
 import { fetcher } from '@/lib/fetcher'
@@ -13,6 +12,7 @@ import { useRouter } from 'next/router'
 import { Row } from '@tanstack/react-table'
 import { ArrowRight } from 'lucide-react'
 import { AuthProvider } from '@/contexts/authContext'
+import { PageTitle } from '@/components/PageTitle'
 
 type DynamicButtonProps = {
   row: Row<Ledger>
@@ -29,7 +29,7 @@ const Page = () => {
   const columns = [
     {
       accessorKey: 'name',
-      header: 'x'
+      header: 'Name'
     },
     {
       id: 'actions',
@@ -47,11 +47,6 @@ const Page = () => {
     }
   ]
 
-  const breadcrumbPaths: BreadcrumbPath[] = [
-    { name: 'All Ledgers', active: false },
-    { name: 'Ledgers', href: '/ledgers', active: true }
-  ]
-
   return (
     <AuthProvider>
       <Head>
@@ -60,12 +55,17 @@ const Page = () => {
       </Head>
       <MainLayout>
         <div className="flex w-full flex-col">
-          <Breadcrumb paths={breadcrumbPaths} />
-          {!loadingFetch ? (
-            <DataTable columns={columns} data={data || []} />
-          ) : (
-            <Skeleton className="h-[100px] w-full rounded-md" />
-          )}
+          <PageTitle
+            title="Ledgers"
+            subtitle="Visualize e edite os ledgers da sua Organização."
+          />
+          <div className="mt-6">
+            {!loadingFetch ? (
+              <DataTable columns={columns} data={data || []} />
+            ) : (
+              <Skeleton className="h-[100px] w-full rounded-md" />
+            )}
+          </div>
         </div>
       </MainLayout>
     </AuthProvider>

@@ -15,8 +15,8 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '../components/ui/table'
-import { Button } from './ui/button'
+} from '@/components/ui/table'
+import { Button } from '@/components/ui/button'
 import React from 'react'
 
 interface DataTableProps<TData, TValue> {
@@ -87,14 +87,14 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex items-center justify-center space-x-2 py-4">
         <Button
           variant="outline"
           size="sm"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
-          Previous
+          Página anterior
         </Button>
         <Button
           variant="outline"
@@ -102,7 +102,7 @@ export function DataTable<TData, TValue>({
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
-          Next
+          Próxima página
         </Button>
       </div>
     </div>
