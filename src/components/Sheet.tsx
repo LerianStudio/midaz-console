@@ -13,7 +13,14 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { Form, FormControl, FormField, FormItem, FormLabel } from './ui/form'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel
+} from '@/components/ui/form'
+import { useEffect } from 'react'
 
 type FormFieldConfig = {
   name: string
@@ -31,6 +38,7 @@ type SheetDemoProps = {
   description: string
   onSubmit: (values: any) => void
   mode: string
+  divisionData: any
 }
 
 export function SheetDemo({
@@ -41,17 +49,30 @@ export function SheetDemo({
   title,
   description,
   onSubmit,
-  mode
+  mode,
+  divisionData
 }: SheetDemoProps) {
+  const isCreateMode = mode === 'create'
+  const isEditMode = mode === 'edit'
+  const isViewMode = mode === 'view'
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: fields.reduce(
-      (acc, field) => ({ ...acc, [field.name]: '' }),
-      {}
-    )
+    defaultValues:
+      (isEditMode || isViewMode) && divisionData
+        ? divisionData
+        : fields.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {})
   })
 
-  const isViewMode = mode === 'view'
+  useEffect(() => {
+    if ((isEditMode || isViewMode) && divisionData) {
+      form.reset(divisionData)
+    } else if (isCreateMode) {
+      form.reset(
+        fields.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {})
+      )
+    }
+  }, [isEditMode, isViewMode, isCreateMode, divisionData, form, fields])
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -81,7 +102,7 @@ export function SheetDemo({
                             placeholder={field.placeholder}
                             readOnly={isViewMode || field.name == 'id'}
                             {...renderField}
-                            className="col-span-4 focus-visible:ring-0 focus-visible:ring-offset-0"
+                            className="col-span-4"
                           />
                         </FormControl>
                       </div>
@@ -96,11 +117,7 @@ export function SheetDemo({
                   type={isViewMode ? 'button' : 'submit'}
                   className="mt-5 bg-[#F9DF4B] text-black hover:bg-[#F9DF4B]/70"
                 >
-                  {mode === 'create'
-                    ? 'Criar'
-                    : mode === 'edit'
-                      ? 'Salvar'
-                      : 'Fechar'}
+                  {isCreateMode ? 'Criar' : isEditMode ? 'Salvar' : 'Fechar'}
                 </Button>
               </SheetClose>
             </SheetFooter>

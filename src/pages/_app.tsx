@@ -1,3 +1,4 @@
+import { Toaster } from '@/components/ui/toaster'
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { Inter } from 'next/font/google'
@@ -16,6 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         }
       `}</style>
       <Component {...pageProps} />
+      <Toaster />
     </>
   )
 }
