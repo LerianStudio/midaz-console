@@ -1,21 +1,22 @@
+'use client'
+
 import { ReactElement, useState } from 'react'
 import Link from 'next/link'
-import { Button } from './ui/button'
+import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger
 } from '@/components/ui/popover'
-import { LogoutLink } from '../pkg'
+// import { LogoutLink } from '@/pkg'
 import { ExternalLink, LogOut, Settings } from 'lucide-react'
 import GitHubIcon from '../../public/images/github-icon.svg'
 import FloaterIcon from '../../public/images/floater-icon.svg'
-import BrazilFlag from '../../public/images/brazil-flag.png'
-import USAFlag from '../../public/images/usa-flag.png'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
-import { useTranslation, LanguageSwitcher } from 'next-export-i18n'
+import LocaleSwitcher from './LocaleSwitcher'
+import { useTranslations } from 'next-intl'
 
 interface MenuItem {
   type: 'item'
@@ -46,9 +47,9 @@ interface MenuAction {
 type MenuEntry = MenuItem | MenuGroup | MenuAction
 
 export const Header = () => {
-  const { t } = useTranslation()
+  const t = useTranslations('popoverHeader')
   const [open, setOpen] = useState(false)
-  const onLogout = LogoutLink()
+  // const onLogout = LogoutLink()
 
   const handleOpenChange = (open: boolean) => {
     setOpen(open)
@@ -71,7 +72,7 @@ export const Header = () => {
       items: [
         {
           type: 'item',
-          label: t('popoverHeader.settings'),
+          label: t('settings'),
           href: '#',
           icon: <Settings size={15} />,
           action: handleClick
@@ -84,7 +85,7 @@ export const Header = () => {
         },
         {
           type: 'item',
-          label: t('popoverHeader.support'),
+          label: t('support'),
           href: '/',
           icon: <Image src={FloaterIcon} height={15} width={15} alt="" />
         },
@@ -106,8 +107,8 @@ export const Header = () => {
     },
     {
       type: 'action',
-      label: t('popoverHeader.logout'),
-      action: onLogout,
+      label: t('logout'),
+      action: handleClick,
       icon: <LogOut size={15} />
     }
   ]
@@ -178,13 +179,7 @@ export const Header = () => {
   return (
     <div className="flex h-14 w-full items-center justify-end gap-5 border-b bg-[#F9DF4B] p-5">
       <nav className="flex w-full items-center justify-end gap-3">
-        <LanguageSwitcher lang="pt">
-          <Image width={32} height={32} alt="Brazil flag" src={BrazilFlag} />
-        </LanguageSwitcher>
-        <LanguageSwitcher lang="en">
-          <Image width={32} height={32} alt="USA flag" src={USAFlag} />
-        </LanguageSwitcher>
-        {/* <ToggleMode /> */}
+        <LocaleSwitcher />
       </nav>
       <Popover open={open} onOpenChange={handleOpenChange}>
         <PopoverTrigger>

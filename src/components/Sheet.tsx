@@ -101,8 +101,9 @@ export function SheetDemo({
                           <Input
                             placeholder={field.placeholder}
                             readOnly={isViewMode || field.name == 'id'}
-                            {...renderField}
                             className="col-span-4"
+                            autoFocus={false}
+                            {...renderField}
                           />
                         </FormControl>
                       </div>

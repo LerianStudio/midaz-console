@@ -1,5 +1,4 @@
-import { cn } from '../lib/utils'
-import { FC } from 'react'
+import { cn } from '@/lib/utils'
 
 type Props = {
   title: string
@@ -7,7 +6,7 @@ type Props = {
   className?: string
 }
 
-export const PageTitle: FC<Props> = ({ title, subtitle, className }) => {
+export const PageTitle = ({ title, subtitle, className }: Props) => {
   return (
     <div className="flex flex-col gap-1">
       <h1 className={cn('text-4xl font-bold', className)}>{title}</h1>

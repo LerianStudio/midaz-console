@@ -11,7 +11,7 @@ interface BreadcrumbProps {
   paths: BreadcrumbPath[]
 }
 
-const Breadcrumb: React.FC<BreadcrumbProps> = ({ paths }) => {
+const Breadcrumb = ({ paths }: BreadcrumbProps) => {
   return (
     <div className="flex gap-1 pb-5">
       {paths.map((path, index) => (
