@@ -55,5 +55,31 @@
   },
   "table": {
     "headerName": "Name"
+  },
+  "dataTable": {
+    "previousBtn": "Previous page",
+    "nextBtn": "Next page"
+  },
+  "divisions": {
+    "title": "Divisions",
+    "subtitle": "Visualize and edit the sub-groups of your Organization.",
+    "columnsTable": {
+      "name": "Name",
+      "legalDocument": "Legal document",
+      "status": "Status",
+      "edit": "Edit",
+      "delete": "Delete"
+    }
+  },
+  "ledgers": {
+    "title": "Ledgers",
+    "subtitle": "Visualize and edit the Ledgers of your Organization.",
+    "columnsTable": {
+      "name": "Name",
+      "divisionName": "Division Name",
+      "status": "Status",
+      "edit": "Edit",
+      "delete": "Delete"
+    }
   }
 }

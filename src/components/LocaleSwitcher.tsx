@@ -3,29 +3,31 @@
 import { usePathname, useRouter } from '@/navigation'
 import { AppConfig } from '@/utils/AppConfig'
 import { useLocale } from 'next-intl'
-import type { ChangeEventHandler } from 'react'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
 
 export default function LocaleSwitcher() {
   const router = useRouter()
   const pathname = usePathname()
   const locale = useLocale()
 
-  const handleChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
-    router.push(pathname, { locale: event.target.value })
-    router.refresh()
-  }
-
   return (
-    <select
-      defaultValue={locale}
-      onChange={handleChange}
-      className="bg-transparent font-medium focus:outline-none focus-visible:ring-0"
-    >
-      {AppConfig.locales.map((elt) => (
-        <option key={elt} value={elt}>
-          {elt.toUpperCase()}
-        </option>
-      ))}
-    </select>
+    <Select onValueChange={(value) => router.push(pathname, { locale: value })}>
+      <SelectTrigger className="w-[70px]">
+        <SelectValue placeholder={locale.toUpperCase()} />
+      </SelectTrigger>
+      <SelectContent>
+        {AppConfig.locales.map((elt) => (
+          <SelectItem key={elt} value={elt}>
+            {elt.toUpperCase()}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   )
 }

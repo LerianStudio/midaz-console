@@ -13,6 +13,7 @@ import { getLedgerColumns } from './columns'
 import { DialogDemo } from '@/components/Dialog'
 import { Ledger } from '@/types/LedgersType'
 import { DivisionData } from '../divisions/page'
+import { useTranslations } from 'next-intl'
 
 type SheetModeState = {
   isOpen: boolean
@@ -36,6 +37,7 @@ const profileFormSchema = z.object({
 })
 
 const Page = () => {
+  const t = useTranslations('ledgers')
   const { data: ledgerResponse, isLoading: loadingLedgers } = useSWR<Ledger[]>(
     '/api/ledgers',
     fetcher
@@ -179,10 +181,7 @@ const Page = () => {
 
   return (
     <>
-      <PageTitle
-        title="Ledgers"
-        subtitle="Visualize e edite os Ledgers da sua Organização."
-      />
+      <PageTitle title={t('title')} subtitle={t('subtitle')} />
 
       <div className="mt-10">
         {!hasResources ? (

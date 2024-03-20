@@ -11,6 +11,7 @@ import { z } from 'zod'
 import { useToast } from '@/components/ui/use-toast'
 import { getDivisionColumns } from './columns'
 import { DialogDemo } from '@/components/Dialog'
+import { useTranslations } from 'next-intl'
 
 export type DivisionData = {
   id: string
@@ -102,6 +103,7 @@ const profileFormSchema = z.object({
 })
 
 const Page = () => {
+  const t = useTranslations('divisions')
   const { data, isLoading: loadingFetch } = useSWR<any[]>(
     '/api/divisions',
     fetcher
@@ -191,10 +193,7 @@ const Page = () => {
 
   return (
     <>
-      <PageTitle
-        title="Divisões"
-        subtitle="Visualize e edite os sub-grupos da sua Organização."
-      />
+      <PageTitle title={t('title')} subtitle={t('subtitle')} />
 
       <div className="mt-10">
         {!hasResources ? (

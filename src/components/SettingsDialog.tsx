@@ -19,7 +19,10 @@ type Props = {
 const SettingsDialog = ({ open, setOpen }: Props) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="w-full max-w-[384px]">
+      <DialogContent
+        className="w-full max-w-[384px]"
+        onOpenAutoFocus={(e) => e.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle>
             <h1 className="text-lg font-bold">Configurações</h1>
@@ -33,24 +36,24 @@ const SettingsDialog = ({ open, setOpen }: Props) => {
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <AvatarInputFile />
-          <div className="mt-4 grid grid-cols-4 items-center gap-4">
+          <div className="mt-4 grid grid-cols-5 items-center gap-4">
             <Label htmlFor="name" className="text-right font-semibold">
               Nome
             </Label>
             <Input
               id="name"
               defaultValue="Gabriel Sanchez"
-              className="col-span-3"
+              className="col-span-4"
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="grid grid-cols-5 items-center gap-4">
             <Label htmlFor="username" className="text-right font-semibold">
               E-mail
             </Label>
             <Input
               id="username"
               defaultValue="gabriel.sanchez@leriand.com"
-              className="col-span-3"
+              className="col-span-4"
             />
           </div>
         </div>

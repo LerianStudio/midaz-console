@@ -11,7 +11,7 @@
     "home": "Início",
     "organization": {
       "title": "Organização",
-      "divisions": "Divisões",
+      "divisions": "Divisions",
       "ledgers": "Ledgers",
       "team": "Time",
       "billing": "Faturamento"
@@ -55,5 +55,31 @@
   },
   "table": {
     "headerName": "Nome"
+  },
+  "dataTable": {
+    "previousBtn": "Página anterior",
+    "nextBtn": "Próxima página"
+  },
+  "divisions": {
+    "title": "Divisions",
+    "subtitle": "Visualize e edite os sub-grupos da sua Organização.",
+    "columnsTable": {
+      "name": "Nome",
+      "legalDocument": "Documento legal",
+      "status": "Status",
+      "edit": "Editar",
+      "delete": "Deletar"
+    }
+  },
+  "ledgers": {
+    "title": "Ledgers",
+    "subtitle": "Visualize e edite os Ledgers da sua Organização.",
+    "columnsTable": {
+      "name": "Nome",
+      "divisionName": "Nome da Divisão",
+      "status": "Status",
+      "edit": "Editar",
+      "delete": "Deletar"
+    }
   }
 }
