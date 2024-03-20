@@ -11,7 +11,9 @@ import {
 type Props = {
   title: string
   subtitle: string
-  doingBusinessAs: string | undefined
+  deleteButtonText: string
+  doingBusinessAs?: string | undefined
+  ledgerName?: string | undefined
   open: boolean
   setOpen: (open: boolean) => void
   onDelete: () => void
@@ -23,7 +25,9 @@ export const DialogDemo = ({
   doingBusinessAs,
   open,
   setOpen,
-  onDelete
+  onDelete,
+  deleteButtonText,
+  ledgerName
 }: Props) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -31,7 +35,8 @@ export const DialogDemo = ({
         <DialogHeader>
           <DialogTitle className="text-lg font-bold">{title}</DialogTitle>
           <DialogDescription className="text-xs font-medium">
-            {subtitle} <span className="font-bold">{doingBusinessAs}</span>
+            {subtitle}{' '}
+            <span className="font-bold">{doingBusinessAs || ledgerName}</span>
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
@@ -49,7 +54,7 @@ export const DialogDemo = ({
             }}
             className="bg-[#F9DF4B] text-black hover:bg-[#F9DF4B]/70"
           >
-            Apagar division
+            {deleteButtonText}
           </Button>
         </DialogFooter>
       </DialogContent>

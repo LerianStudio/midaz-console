@@ -14,4 +14,5 @@ export type Ledger = {
   createdAt: string
   updatedAt: string
   deletedAt: string
+  divisionName?: string
 }

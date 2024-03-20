@@ -9,7 +9,6 @@ import {
   PopoverContent,
   PopoverTrigger
 } from '@/components/ui/popover'
-// import { LogoutLink } from '@/pkg'
 import { ExternalLink, LogOut, Settings } from 'lucide-react'
 import GitHubIcon from '../../public/images/github-icon.svg'
 import FloaterIcon from '../../public/images/floater-icon.svg'
@@ -17,6 +16,7 @@ import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import LocaleSwitcher from './LocaleSwitcher'
 import { useTranslations } from 'next-intl'
+import SettingsDialog from '@/components/SettingsDialog'
 
 interface MenuItem {
   type: 'item'
@@ -49,10 +49,14 @@ type MenuEntry = MenuItem | MenuGroup | MenuAction
 export const Header = () => {
   const t = useTranslations('popoverHeader')
   const [open, setOpen] = useState(false)
-  // const onLogout = LogoutLink()
+  const [openSettings, setOpenSettings] = useState(false)
 
   const handleOpenChange = (open: boolean) => {
     setOpen(open)
+  }
+
+  const handleOpenSettings = () => {
+    setOpenSettings(true)
   }
 
   const handleClick = () => {
@@ -75,7 +79,7 @@ export const Header = () => {
           label: t('settings'),
           href: '#',
           icon: <Settings size={15} />,
-          action: handleClick
+          action: handleOpenSettings
         },
         {
           type: 'item',
@@ -204,6 +208,7 @@ export const Header = () => {
           })}
         </PopoverContent>
       </Popover>
+      <SettingsDialog open={openSettings} setOpen={setOpenSettings} />
     </div>
   )
 }

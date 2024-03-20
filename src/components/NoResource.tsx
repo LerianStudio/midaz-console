@@ -14,18 +14,18 @@ type PronounText = {
 }
 
 const pronounTexts: Record<string, PronounText> = {
-  ele: {
+  he: {
     possessive: 'seu primeiro',
     object: 'nenhum'
   },
-  ela: {
+  she: {
     possessive: 'sua primeira',
     object: 'nenhuma'
   }
 }
 
 export const NoResource = ({ resourceName, onClick, pronoun }: Props) => {
-  const { possessive, object } = pronounTexts[pronoun] || pronounTexts['ele']
+  const { possessive, object } = pronounTexts[pronoun] || pronounTexts['he']
 
   return (
     <div className="flex h-[calc(100vh-229px)] items-center justify-center">
@@ -35,7 +35,7 @@ export const NoResource = ({ resourceName, onClick, pronoun }: Props) => {
           Crie {possessive} {resourceName}
         </h1>
         <div className="flex w-full justify-center">
-          <div className="w-full max-w-[260px]">
+          <div className="w-full max-w-[256px]">
             <h1 className="text-center text-xl">
               Parece que você ainda não possui {object}{' '}
               {resourceName.toLowerCase()}. Crie {possessive}{' '}

@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { z } from 'zod'
 import { useToast } from '@/components/ui/use-toast'
-import { truncateString } from '@/helpers'
 import { getDivisionColumns } from './columns'
 import { DialogDemo } from '@/components/Dialog'
 
@@ -142,11 +141,15 @@ const Page = () => {
 
   const handleConfirmDeleteDivision = async () => {
     try {
-      console.log('Division deleted')
       setIsDialogOpen(false)
     } catch (error) {
       console.error('Failed to delete division', error)
     }
+
+    return toast({
+      description: 'Division deleted',
+      variant: 'success'
+    })
   }
 
   const handleClickId = (id: string) => {
@@ -200,7 +203,7 @@ const Page = () => {
             <NoResource
               resourceName="Division"
               onClick={handleOpenCreateSheet}
-              pronoun="ela"
+              pronoun="she"
             />
           </>
         ) : (
@@ -212,6 +215,7 @@ const Page = () => {
               title="Você tem certeza?"
               subtitle="Essa ação é irreversível. Isso vai inativar para sempre a sua
               Division"
+              deleteButtonText="Apagar Division"
               doingBusinessAs={
                 currentDivisionForDeletion?.doingBusinessAs ||
                 currentDivisionForDeletion?.legalName
@@ -231,8 +235,8 @@ const Page = () => {
             isCreateMode
               ? 'Criar Division'
               : isEditMode
-                ? `Editar Division ${truncateString(sheetMode.divisionData?.doingBusinessAs || sheetMode.divisionData?.legalName, 16)}`
-                : `Division ${truncateString(sheetMode.divisionData?.doingBusinessAs || sheetMode.divisionData?.legalName, 16)}`
+                ? `Editar Division ${sheetMode.divisionData?.doingBusinessAs || sheetMode.divisionData?.legalName}`
+                : `Division ${sheetMode.divisionData?.doingBusinessAs || sheetMode.divisionData?.legalName}`
           }
           description={
             isCreateMode
@@ -241,7 +245,7 @@ const Page = () => {
                 ? 'Edite o que desejar e depois clique em “Salvar”. '
                 : 'Abaixo estão listados os dados da sua Division.'
           }
-          divisionData={sheetMode.divisionData}
+          data={sheetMode.divisionData}
           onSubmit={handleSubmit}
         />
       </div>

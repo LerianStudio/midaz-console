@@ -148,7 +148,6 @@ export const Sidebar = () => {
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed)
-    console.log(isCollapsed)
   }
 
   return (
