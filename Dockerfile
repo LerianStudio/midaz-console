@@ -1,0 +1,9 @@
+FROM node:18
+WORKDIR /midaz-console
+ARG PORT_BUILD=3000
+ENV PORT=$PORT_BUILD
+EXPOSE $PORT_BUILD
+COPY . .
+RUN npm install
+RUN npm run build
+ENTRYPOINT npm start

@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  midaz-console:
+    image: "midaz-console-web"
+    container_name: "midaz-console"
+    build: .
+    ports:
+      - "3000:3000"
+
+networks:
+  compose-bridge:
+    driver: host
+
+
