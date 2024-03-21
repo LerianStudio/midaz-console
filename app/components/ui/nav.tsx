@@ -10,7 +10,7 @@ import { Category } from '@/types/SidebarType'
 import LeriandLogo from '../../../public/images/leriand-logo.png'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { Link } from '@/navigation'
+import { Link } from '../../../navigation'
 import { useLocale } from 'next-intl'
 
 interface NavProps {

@@ -1,6 +1,6 @@
 'use client'
 
-import { usePathname, useRouter } from '@/navigation'
+import { usePathname, useRouter } from '../../navigation'
 import { AppConfig } from '@/utils/AppConfig'
 import { useLocale } from 'next-intl'
 import {
