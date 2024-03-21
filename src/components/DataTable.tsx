@@ -15,9 +15,10 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '../components/ui/table'
-import { Button } from './ui/button'
+} from '@/components/ui/table'
+import { Button } from '@/components/ui/button'
 import React from 'react'
+import { useTranslations } from 'next-intl'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -28,6 +29,7 @@ export function DataTable<TData, TValue>({
   columns,
   data
 }: DataTableProps<TData, TValue>) {
+  const t = useTranslations('dataTable')
   const table = useReactTable({
     data,
     columns,
@@ -87,14 +89,14 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex items-center justify-center space-x-2 py-4">
         <Button
           variant="outline"
           size="sm"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
-          Previous
+          {t('previousBtn')}
         </Button>
         <Button
           variant="outline"
@@ -102,7 +104,7 @@ export function DataTable<TData, TValue>({
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
-          Next
+          {t('nextBtn')}
         </Button>
       </div>
     </div>
