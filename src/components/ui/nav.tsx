@@ -11,6 +11,7 @@ import LeriandLogo from '../../../public/images/leriand-logo.png'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { Link } from '@/navigation'
+import { useLocale } from 'next-intl'
 
 interface NavProps {
   isCollapsed: boolean
@@ -19,17 +20,13 @@ interface NavProps {
 
 export const Nav = ({ categories, isCollapsed }: NavProps) => {
   const pathName = usePathname()
+  const locale = useLocale()
 
   const isActive = (href: string) => {
-    if (href === '/' && pathName === '/') {
-      return true
-    }
+    const localePrefix = `/${locale}`
+    const adjustedHref = href === '/' ? localePrefix : `${localePrefix}${href}`
 
-    if (href !== '/' && pathName.startsWith(href)) {
-      return true
-    }
-
-    return false
+    return pathName === adjustedHref
   }
 
   return (
