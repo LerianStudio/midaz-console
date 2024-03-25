@@ -4,16 +4,15 @@ import { DataTable } from '@/components/DataTable'
 import { NoResource } from '@/components/NoResource'
 import { PageTitle } from '@/components/PageTitle'
 import { SheetDemo } from '@/components/Sheet'
-import { fetcher } from '@/lib/fetcher'
-import { useEffect, useState } from 'react'
-import useSWR from 'swr'
+import { useMemo, useState } from 'react'
 import { z } from 'zod'
 import { useToast } from '@/components/ui/use-toast'
 import { getLedgerColumns } from './columns'
 import { DialogDemo } from '@/components/Dialog'
 import { Ledger } from '@/types/LedgersType'
-import { DivisionData } from '../divisions/page'
 import { useTranslations } from 'next-intl'
+import { useDivisions, useLedgers } from '@/utils/queries'
+import { Skeleton } from '@/components/ui/skeleton'
 
 type SheetModeState = {
   isOpen: boolean
@@ -38,67 +37,36 @@ const profileFormSchema = z.object({
 
 const Page = () => {
   const t = useTranslations('ledgers')
-  const { data: ledgerResponse, isLoading: loadingLedgers } = useSWR<Ledger[]>(
-    '/api/ledgers',
-    fetcher
-  )
-
-  const { data: divisionsData, isLoading: loadingDivisions } = useSWR<
-    DivisionData[]
-  >('/api/divisions', fetcher)
-
-  const [enhancedLedgerData, setEnhancedLedgerData] = useState<Ledger[]>([])
-  const [hasResources, setHasResources] = useState(false)
+  const ledgers = useLedgers()
+  const divisions = useDivisions()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [fieldsWithDivisionDropdown, setFieldsWithDivisionDropdown] =
-    useState(profileFormFields)
   const [currentLedgerForDeletion, setCurrentLedgerForDeletion] =
     useState<Ledger | null>(null)
 
-  useEffect(() => {
-    if (divisionsData) {
-      const divisionOptions = divisionsData.map((division) => ({
+  const fieldsWithDivisionDropdown = useMemo(() => {
+    const divisionOptions =
+      divisions?.data?.map((division) => ({
         label: division.legalName,
         value: division.id.toString()
-      }))
+      })) || []
+    return profileFormFields.map((field) => {
+      if (field.name === 'divisionName') {
+        return { ...field, options: divisionOptions }
+      }
+      return field
+    })
+  }, [divisions])
 
-      const updatedFields = profileFormFields.map((field) => {
-        if (field.name === 'divisionName') {
-          return { ...field, options: divisionOptions }
-        }
-        return field
-      })
-
-      setFieldsWithDivisionDropdown(updatedFields)
-    }
-  }, [divisionsData])
-
-  useEffect(() => {
-    if (
-      !loadingLedgers &&
-      !loadingDivisions &&
-      ledgerResponse &&
-      divisionsData
-    ) {
-      const divisionMap = divisionsData.reduce(
-        (acc: { [key: string]: DivisionData }, division: DivisionData) => {
-          acc[division.id] = division
-          return acc
-        },
-        {}
-      )
-
-      const enhancedData = ledgerResponse.map((ledger) => {
-        const division = divisionMap[ledger.divisionId]
-        return {
-          ...ledger,
-          divisionName: division ? division.legalName : '-'
-        }
-      })
-
-      setEnhancedLedgerData(enhancedData)
-    }
-  }, [ledgerResponse, divisionsData, loadingLedgers, loadingDivisions])
+  const enhancedLedgerData = useMemo(() => {
+    if (!ledgers || !divisions) return []
+    const divisionMap = new Map(
+      divisions?.data?.map((division) => [division.id, division])
+    )
+    return ledgers?.data?.map((ledger: Ledger) => ({
+      ...ledger,
+      divisionName: divisionMap.get(ledger.divisionId)?.legalName || '-'
+    }))
+  }, [ledgers, divisions])
 
   const [sheetMode, setSheetMode] = useState<SheetModeState>({
     isOpen: false,
@@ -167,47 +135,43 @@ const Page = () => {
     handleDeleteLedger
   })
 
-  useEffect(() => {
-    if (ledgerResponse && ledgerResponse.length > 0) {
-      setHasResources(true)
-    } else {
-      setHasResources(false)
-    }
-  }, [ledgerResponse])
-
   const handleSubmit = (values: any) => {
     console.log(values)
   }
 
   return (
-    <>
+    <div>
       <PageTitle title={t('title')} subtitle={t('subtitle')} />
 
       <div className="mt-10">
-        {!hasResources ? (
-          <>
-            <div className="h-[1px] w-full bg-black"></div>
-            <NoResource
-              resourceName="Ledger"
-              onClick={handleOpenCreateSheet}
-              pronoun="he"
-            />
-          </>
-        ) : (
-          <>
-            <DataTable columns={columns} data={enhancedLedgerData || []} />
-            <DialogDemo
-              open={isDialogOpen}
-              setOpen={() => setIsDialogOpen(false)}
-              title="Você tem certeza?"
-              subtitle="Essa ação é irreversível. Isso vai inativar para sempre a sua
-              Ledger"
-              deleteButtonText="Apagar Ledger"
-              ledgerName={currentLedgerForDeletion?.name}
-              onDelete={handleConfirmDeleteLedger}
-            />
-          </>
+        {ledgers.isLoading && <Skeleton className="h-[80px] w-full" />}
+
+        {ledgers.data && ledgers.data.length > 0 && (
+          <DataTable columns={columns} data={enhancedLedgerData} />
         )}
+
+        {!ledgers.data ||
+          (ledgers.data.length === 0 && (
+            <>
+              <div className="h-[1px] w-full bg-black"></div>
+              <NoResource
+                resourceName="Ledger"
+                onClick={handleOpenCreateSheet}
+                pronoun="he"
+              />
+            </>
+          ))}
+
+        <DialogDemo
+          open={isDialogOpen}
+          setOpen={() => setIsDialogOpen(false)}
+          title="Você tem certeza?"
+          subtitle="Essa ação é irreversível. Isso vai inativar para sempre a sua
+              Ledger"
+          deleteButtonText="Apagar Ledger"
+          ledgerName={currentLedgerForDeletion?.name}
+          onDelete={handleConfirmDeleteLedger}
+        />
 
         <SheetDemo
           open={sheetMode.isOpen}
@@ -233,7 +197,7 @@ const Page = () => {
           onSubmit={handleSubmit}
         />
       </div>
-    </>
+    </div>
   )
 }
 
