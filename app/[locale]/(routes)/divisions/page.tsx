@@ -4,26 +4,20 @@ import { DataTable } from '@/components/DataTable'
 import { NoResource } from '@/components/NoResource'
 import { PageTitle } from '@/components/PageTitle'
 import { SheetDemo } from '@/components/Sheet'
-import { fetcher } from '@/lib/fetcher'
-import { useEffect, useState } from 'react'
-import useSWR from 'swr'
+import { useState } from 'react'
 import { z } from 'zod'
 import { useToast } from '@/components/ui/use-toast'
 import { getDivisionColumns } from './columns'
 import { DialogDemo } from '@/components/Dialog'
 import { useTranslations } from 'next-intl'
-
-export type DivisionData = {
-  id: string
-  doingBusinessAs: string
-  legalName: string
-  legalDocument: string
-}
+import { DivisionType } from '@/types/DivisionsType'
+import { useDivisions } from '@/utils/queries'
+import { Skeleton } from '@/components/ui/skeleton'
 
 type SheetModeState = {
   isOpen: boolean
   mode: 'create' | 'edit' | 'view'
-  divisionData: DivisionData | null
+  divisionData: DivisionType | null
 }
 
 const profileFormFields = [
@@ -103,15 +97,12 @@ const profileFormSchema = z.object({
 })
 
 const Page = () => {
+  const divisions = useDivisions()
+
   const t = useTranslations('divisions')
-  const { data, isLoading: loadingFetch } = useSWR<any[]>(
-    '/api/divisions',
-    fetcher
-  )
-  const [hasResources, setHasResources] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [currentDivisionForDeletion, setCurrentDivisionForDeletion] =
-    useState<DivisionData | null>(null)
+    useState<DivisionType | null>(null)
 
   const [sheetMode, setSheetMode] = useState<SheetModeState>({
     isOpen: false,
@@ -128,15 +119,15 @@ const Page = () => {
     setSheetMode({ isOpen: true, mode: 'create', divisionData: null })
   }
 
-  const handleOpenEditSheet = (divisionData: DivisionData) => {
+  const handleOpenEditSheet = (divisionData: DivisionType) => {
     setSheetMode({ isOpen: true, mode: 'edit', divisionData: divisionData })
   }
 
-  const handleOpenViewSheet = (divisionData: DivisionData) => {
+  const handleOpenViewSheet = (divisionData: DivisionType) => {
     setSheetMode({ isOpen: true, mode: 'view', divisionData: divisionData })
   }
 
-  const handleDeleteDivision = (divisionData: DivisionData) => {
+  const handleDeleteDivision = (divisionData: DivisionType) => {
     setCurrentDivisionForDeletion(divisionData)
     setIsDialogOpen(true)
   }
@@ -179,50 +170,46 @@ const Page = () => {
     handleDeleteDivision
   })
 
-  useEffect(() => {
-    if (data && data.length > 0) {
-      setHasResources(true)
-    } else {
-      setHasResources(false)
-    }
-  }, [data])
-
   const handleSubmit = (values: any) => {
     console.log(values)
   }
 
   return (
-    <>
+    <div>
       <PageTitle title={t('title')} subtitle={t('subtitle')} />
 
       <div className="mt-10">
-        {!hasResources ? (
-          <>
-            <div className="h-[1px] w-full bg-black"></div>
-            <NoResource
-              resourceName="Division"
-              onClick={handleOpenCreateSheet}
-              pronoun="she"
-            />
-          </>
-        ) : (
-          <>
-            <DataTable columns={columns} data={data || []} />
-            <DialogDemo
-              open={isDialogOpen}
-              setOpen={() => setIsDialogOpen(false)}
-              title="Você tem certeza?"
-              subtitle="Essa ação é irreversível. Isso vai inativar para sempre a sua
-              Division"
-              deleteButtonText="Apagar Division"
-              doingBusinessAs={
-                currentDivisionForDeletion?.doingBusinessAs ||
-                currentDivisionForDeletion?.legalName
-              }
-              onDelete={handleConfirmDeleteDivision}
-            />
-          </>
+        {divisions.isLoading && <Skeleton className="h-[80px] w-full" />}
+
+        {divisions.data && divisions.data.length > 0 && (
+          <DataTable columns={columns} data={divisions.data} />
         )}
+
+        {!divisions.data ||
+          (divisions.data.length === 0 && (
+            <>
+              <div className="h-[1px] w-full bg-black"></div>
+              <NoResource
+                resourceName="Division"
+                onClick={handleOpenCreateSheet}
+                pronoun="she"
+              />
+            </>
+          ))}
+
+        <DialogDemo
+          open={isDialogOpen}
+          setOpen={() => setIsDialogOpen(false)}
+          title="Você tem certeza?"
+          subtitle="Essa ação é irreversível. Isso vai inativar para sempre a sua
+          Division"
+          deleteButtonText="Apagar Division"
+          doingBusinessAs={
+            currentDivisionForDeletion?.doingBusinessAs ||
+            currentDivisionForDeletion?.legalName
+          }
+          onDelete={handleConfirmDeleteDivision}
+        />
 
         <SheetDemo
           open={sheetMode.isOpen}
@@ -248,7 +235,7 @@ const Page = () => {
           onSubmit={handleSubmit}
         />
       </div>
-    </>
+    </div>
   )
 }
 
