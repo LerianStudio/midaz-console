@@ -6,22 +6,27 @@ import { Metadata } from 'next'
 import { Toaster } from '@/components/ui/toaster'
 import { NextIntlClientProvider, useMessages } from 'next-intl'
 import { Sidebar } from '@/components/Sidebar'
-
-export const metadata: Metadata = {
-  title: 'Midaz',
-  description: ''
-}
+import React from 'react'
+import { getMetadata } from '../../../services/configs/applicationConfig'
 
 const inter = Inter({ subsets: ['latin'] })
-export default function RootLayout({
-  children,
-  params: { locale }
-}: Readonly<{
+
+interface RootLayoutProps {
   children: React.ReactNode
   params: { locale: string }
-}>) {
-  const messages = useMessages()
+  prefixTitle?: string
+  title: string
+}
 
+export default RootLayout
+
+function RootLayout({
+                      children,
+                      params: { locale }
+                    }: Readonly<RootLayoutProps>) {
+  const messages = useMessages()
+  
+  
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
@@ -42,3 +47,15 @@ export default function RootLayout({
     </html>
   )
 }
+
+export async function generateMetadata(props: {}): Promise<Metadata> {
+  const { title, icons, description } = await getMetadata()
+
+  return {
+    title: title,
+    icons: icons,
+    description: description,
+    ...props
+  }
+}
+

@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button/button'
 import NoResourceLogo from '../../public/images/no-resource.png'
 import Image from 'next/image'
 
