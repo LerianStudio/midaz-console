@@ -1,5 +1,5 @@
-import {Meta, StoryObj} from "@storybook/react";
-import {Progress} from "./progress";
+import { Meta, StoryObj } from '@storybook/react'
+import { Progress } from './progress'
 
 const meta: Meta = {
   title: 'Molecules/Progress',
@@ -20,6 +20,6 @@ export default meta
 
 export const Default: StoryObj = {
   args: {
-    percent: 50,
+    percent: 50
   }
 }

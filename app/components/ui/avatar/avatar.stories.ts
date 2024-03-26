@@ -8,14 +8,13 @@ const meta: Meta = {
   argTypes: {
     children: {
       type: 'string',
-      description: 'The button\'s content'
+      description: "The button's content"
     },
     src: {
       type: 'string',
-      description: 'The button\'s content'
+      description: "The button's content"
     }
   }
-  
 }
 
 export default meta
@@ -30,14 +29,13 @@ export const AvatarDefault: StoryObj = {
 export const AvatarImageDefault: StoryObj = {
   args: {
     children: 'AvatarImage',
-    
+
     src: 'https://github.com/shadcn.png'
   }
 }
 
 export const AvatarFallbackDefault: StoryObj = {
   args: {
-    children: 'CN',
-  },
-  
+    children: 'CN'
+  }
 }

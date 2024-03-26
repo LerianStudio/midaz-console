@@ -6,10 +6,9 @@ import { Toaster } from '@/components/ui/toaster'
 import { Sidebar } from '@/components/Sidebar'
 import { getMetadata } from '../../../services/configs/applicationConfig'
 
-
 export default function RootLayout({
-                                     children
-                                   }: Readonly<{
+  children
+}: Readonly<{
   children: React.ReactNode
 }>) {
   return (
@@ -34,4 +33,3 @@ export async function generateMetadata(props: {}): Promise<Metadata> {
     ...props
   }
 }
-

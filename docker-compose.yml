@@ -2,11 +2,23 @@ version: "3.9"
 
 services:
   midaz-console:
-    image: "midaz-console-web"
+    build:
+        context: .
+        dockerfile: Dockerfile-console
     container_name: "midaz-console"
-    build: .
+    restart: always
     ports:
       - "3000:3000"
+
+  storybook:
+    build:
+      context: .
+      dockerfile: Dockerfile-storybook
+    container_name: "storybook"
+    restart: always
+
+    ports:
+      - "8080:8080"
 
 networks:
   compose-bridge:

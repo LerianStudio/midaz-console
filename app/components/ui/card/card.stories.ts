@@ -1,9 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
-import {
-  Card,
-  CardTitle,
-  CardProps, CardHeader
-} from './card'
+import { Card, CardTitle, CardProps, CardHeader } from './card'
 
 const meta: Meta<CardProps> = {
   title: 'Molecules/Card',
@@ -17,7 +13,7 @@ const meta: Meta<CardProps> = {
       type: 'string',
       description: 'The card class'
     }
-  },
+  }
 }
 
 export default meta
@@ -27,5 +23,3 @@ export const Primary: StoryObj<CardProps> = {
     children: 'Card'
   }
 }
-
-

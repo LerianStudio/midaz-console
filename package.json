@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "next lint --fix",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -49,6 +49,7 @@
     "@storybook/addon-interactions": "^8.0.4",
     "@storybook/addon-links": "^8.0.4",
     "@storybook/addon-onboarding": "^8.0.4",
+    "@storybook/addon-styling-webpack": "^1.0.0",
     "@storybook/blocks": "^8.0.4",
     "@storybook/nextjs": "^8.0.4",
     "@storybook/react": "^8.0.4",

@@ -7,11 +7,11 @@ const meta: Meta = {
   argTypes: {
     className: {
       type: 'string',
-      description: 'The label\'s class'
+      description: "The label's class"
     },
     children: {
       type: 'string',
-      description: 'The label\'s text'
+      description: "The label's text"
     }
   }
 }
