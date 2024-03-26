@@ -105,7 +105,7 @@ export function SheetDemo({
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <h1>{truncateString(title, 30)}</h1>
+                  <div>{truncateString(title, 30)}</div>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>{title}</p>
@@ -142,7 +142,7 @@ export function SheetDemo({
                                 >
                                   <SelectTrigger className="w-[233px]">
                                     <SelectValue
-                                      placeholder={data?.divisionName}
+                                      placeholder={data?.divisionName || ''}
                                     />
                                   </SelectTrigger>
                                   <SelectContent>
@@ -158,11 +158,13 @@ export function SheetDemo({
                                 </Select>
                               ) : (
                                 <Input
-                                  placeholder={field.placeholder}
+                                  placeholder={field.placeholder || ''}
                                   readOnly={isViewMode || field.name === 'id'}
                                   className="col-span-4"
                                   autoFocus={false}
-                                  {...renderField}
+                                  value={renderField.value ?? ''}
+                                  onChange={renderField.onChange}
+                                  onBlur={renderField.onBlur}
                                 />
                               )}
                             </FormControl>

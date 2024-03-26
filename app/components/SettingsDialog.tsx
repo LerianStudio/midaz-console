@@ -24,14 +24,9 @@ const SettingsDialog = ({ open, setOpen }: Props) => {
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
         <DialogHeader>
-          <DialogTitle>
-            <h1 className="text-lg font-bold">Configurações</h1>
-          </DialogTitle>
-          <DialogDescription>
-            <p className="text-xs font-medium">
-              Faça as alterações desejadas e clique em “Salvar” quando
-              finalizar.
-            </p>
+          <DialogTitle className="text-lg font-bold">Configurações</DialogTitle>
+          <DialogDescription className="text-xs font-medium">
+            Faça as alterações desejadas e clique em “Salvar” quando finalizar.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
