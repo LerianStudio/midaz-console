@@ -3,7 +3,11 @@ import { useTranslations } from 'next-intl'
 const Page = () => {
   const t = useTranslations('auth')
 
-  return <h1>{t('titleLogin')}</h1>
+  return (
+    <div>
+      <h1>{t('titleLogin')}</h1>
+    </div>
+  )
 }
 
 export default Page

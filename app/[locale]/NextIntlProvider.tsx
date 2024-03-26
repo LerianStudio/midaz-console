@@ -3,6 +3,7 @@
 import { NextIntlClientProvider } from 'next-intl'
 
 export default function MyCustomNextIntlClientProvider({
+  children,
   locale,
   timeZone,
   now,
@@ -17,6 +18,8 @@ export default function MyCustomNextIntlClientProvider({
       timeZone={timeZone}
       now={now}
       {...rest}
-    />
+    >
+      {children}
+    </NextIntlClientProvider>
   )
 }

@@ -10,19 +10,19 @@ import {
 import { Pencil, Trash2, MoreHorizontal } from 'lucide-react'
 import { truncateString } from '@/helpers'
 import { Row } from '@tanstack/react-table'
-import { DivisionData } from './page'
+import { DivisionType } from '@/types/DivisionsType'
 import { useTranslations } from 'next-intl'
 
 type ColumnRow = {
-  row: Row<DivisionData>
+  row: Row<DivisionType>
 }
 
 type GetDivisionColumnsParams = {
-  handleOpenEditSheet: (divisionData: DivisionData) => void
-  handleOpenViewSheet: (divisionData: DivisionData) => void
+  handleOpenEditSheet: (divisionData: DivisionType) => void
+  handleOpenViewSheet: (divisionData: DivisionType) => void
   handleClickId: (id: string) => void
   handleClickLegalDocument: (document: string) => void
-  handleDeleteDivision: (divisionData: DivisionData) => void
+  handleDeleteDivision: (divisionData: DivisionType) => void
 }
 
 export const getDivisionColumns = ({

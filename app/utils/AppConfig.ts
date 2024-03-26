@@ -7,3 +7,11 @@ export const AppConfig = {
   defaultLocale: 'pt',
   localePrefix
 }
+
+export async function getStaticProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      locale
+    }
+  }
+}

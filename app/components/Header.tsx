@@ -2,8 +2,12 @@
 
 import { ReactElement, useState } from 'react'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button/button'
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage
+} from '@/components/ui/avatar/avatar'
 import {
   Popover,
   PopoverContent,

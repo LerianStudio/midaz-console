@@ -16,7 +16,7 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button/button'
 import React from 'react'
 import { useTranslations } from 'next-intl'
 

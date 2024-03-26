@@ -38,3 +38,7 @@ next-env.d.ts
 
 # IDE's
 .idea
+*storybook.log
+
+# Storybook
+/storybook-static/

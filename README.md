@@ -52,3 +52,11 @@ Execute docker compose command to deploy the app on docker
 docker-compose up -d
 ```
 
+## Run Storybook
+
+Execute the following command to run storybook
+
+```bash
+storybook dev -p 6006
+```
+
