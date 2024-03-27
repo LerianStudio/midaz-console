@@ -21,7 +21,6 @@ type GetLedgersColumnsParams = {
   handleOpenEditSheet: (ledgerData: Ledger) => void
   handleOpenViewSheet: (ledgerData: Ledger) => void
   handleClickId: (id: string) => void
-  handleClickLegalDocument: (document: string) => void
   handleDeleteLedger: (ledgerData: Ledger) => void
 }
 

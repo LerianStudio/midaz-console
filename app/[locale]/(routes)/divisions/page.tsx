@@ -20,68 +20,6 @@ type SheetModeState = {
   divisionData: DivisionType | null
 }
 
-const profileFormFields = [
-  {
-    name: 'id',
-    label: 'ID'
-  },
-  {
-    name: 'legalName',
-    label: 'Razão Social',
-    placeholder: 'Razão Social'
-  },
-  {
-    name: 'doingBusinessAs',
-    label: 'Nome fantasia',
-    placeholder: 'Nome fantasia (opcional)'
-  },
-  {
-    name: 'legalDocument',
-    label: 'Documento',
-    placeholder: 'Documento'
-  },
-  {
-    name: 'address.line1',
-    label: 'Endereço',
-    placeholder: 'Endereço'
-  },
-  {
-    name: 'address.line2',
-    label: 'Complemento',
-    placeholder: 'Endereço 2'
-  },
-  {
-    name: 'address.country',
-    label: 'País',
-    placeholder: 'País'
-  },
-  {
-    name: 'address.state',
-    label: 'Estado',
-    placeholder: 'Estado'
-  },
-  {
-    name: 'address.city',
-    label: 'Cidade',
-    placeholder: 'Cidade'
-  },
-  {
-    name: 'address.zipCode',
-    label: 'CEP',
-    placeholder: 'CEP'
-  },
-  {
-    name: 'defaultTimezone',
-    label: 'Fuso horário',
-    placeholder: 'Fuso horário (opcional)'
-  },
-  {
-    name: 'defaultCurrency',
-    label: 'Moeda padrão',
-    placeholder: 'Moeda padrão (opcional)'
-  }
-]
-
 const profileFormSchema = z.object({
   legalName: z.string(),
   tradeName: z.string(),
@@ -103,6 +41,68 @@ const Page = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [currentDivisionForDeletion, setCurrentDivisionForDeletion] =
     useState<DivisionType | null>(null)
+
+  const profileFormFields = [
+    {
+      name: 'id',
+      label: 'ID'
+    },
+    {
+      name: 'legalName',
+      label: t('formFields.legalName.name'),
+      placeholder: t('formFields.legalName.placeholder')
+    },
+    {
+      name: 'doingBusinessAs',
+      label: t('formFields.doingBusinessAs.name'),
+      placeholder: t('formFields.doingBusinessAs.placeholder')
+    },
+    {
+      name: 'legalDocument',
+      label: t('formFields.legalDocument.name'),
+      placeholder: t('formFields.legalDocument.placeholder')
+    },
+    {
+      name: 'address.line1',
+      label: t('formFields.address.name'),
+      placeholder: t('formFields.address.placeholder')
+    },
+    {
+      name: 'address.line2',
+      label: t('formFields.address2.name'),
+      placeholder: t('formFields.address2.placeholder')
+    },
+    {
+      name: 'address.country',
+      label: t('formFields.country.name'),
+      placeholder: t('formFields.country.placeholder')
+    },
+    {
+      name: 'address.state',
+      label: t('formFields.state.name'),
+      placeholder: t('formFields.state.placeholder')
+    },
+    {
+      name: 'address.city',
+      label: t('formFields.city.name'),
+      placeholder: t('formFields.city.placeholder')
+    },
+    {
+      name: 'address.zipCode',
+      label: t('formFields.zipCode.name'),
+      placeholder: t('formFields.zipCode.placeholder')
+    },
+    {
+      name: 'defaultTimezone',
+      label: t('formFields.defaultTimezone.name'),
+      placeholder: t('formFields.defaultTimezone.placeholder')
+    },
+    {
+      name: 'defaultCurrency',
+      label: t('formFields.defaultCurrency.name'),
+      placeholder: t('formFields.defaultCurrency.placeholder')
+    }
+  ]
 
   const [sheetMode, setSheetMode] = useState<SheetModeState>({
     isOpen: false,
@@ -140,7 +140,7 @@ const Page = () => {
     }
 
     return toast({
-      description: 'Division deleted',
+      description: t('toast.divisionDeleted'),
       variant: 'success'
     })
   }
@@ -149,7 +149,7 @@ const Page = () => {
     navigator.clipboard.writeText(id)
 
     return toast({
-      description: 'O id foi copiado para sua área de transferência.'
+      description: t('toast.copyId')
     })
   }
 
@@ -157,8 +157,7 @@ const Page = () => {
     navigator.clipboard.writeText(legalDocument)
 
     return toast({
-      description:
-        'O número do documento foi copiado para sua área de transferência.'
+      description: t('toast.copyLegalDocument')
     })
   }
 
@@ -200,10 +199,9 @@ const Page = () => {
         <DialogDemo
           open={isDialogOpen}
           setOpen={() => setIsDialogOpen(false)}
-          title="Você tem certeza?"
-          subtitle="Essa ação é irreversível. Isso vai inativar para sempre a sua
-          Division"
-          deleteButtonText="Apagar Division"
+          title={t('dialog.title')}
+          subtitle={t('dialog.subtitle')}
+          deleteButtonText={t('dialog.deleteBtnText')}
           doingBusinessAs={
             currentDivisionForDeletion?.doingBusinessAs ||
             currentDivisionForDeletion?.legalName
@@ -219,17 +217,24 @@ const Page = () => {
           formSchema={profileFormSchema}
           title={
             isCreateMode
-              ? 'Criar Division'
+              ? t('sheetCreate.title')
               : isEditMode
-                ? `Editar Division ${sheetMode.divisionData?.doingBusinessAs || sheetMode.divisionData?.legalName}`
-                : `Division ${sheetMode.divisionData?.doingBusinessAs || sheetMode.divisionData?.legalName}`
+                ? `${t('sheetEdit.title')} ${sheetMode.divisionData?.doingBusinessAs || sheetMode.divisionData?.legalName}`
+                : `${t('sheetView.title')} ${sheetMode.divisionData?.doingBusinessAs || sheetMode.divisionData?.legalName}`
           }
           description={
             isCreateMode
-              ? 'Preencha os dados da Division que você deseja criar.'
+              ? t('sheetCreate.description')
               : isEditMode
-                ? 'Edite o que desejar e depois clique em “Salvar”. '
-                : 'Abaixo estão listados os dados da sua Division.'
+                ? t('sheetEdit.description')
+                : t('sheetView.description')
+          }
+          buttonText={
+            isCreateMode
+              ? t('sheetCreate.button')
+              : isEditMode
+                ? t('sheetEdit.button')
+                : t('sheetView.button')
           }
           data={sheetMode.divisionData}
           onSubmit={handleSubmit}
