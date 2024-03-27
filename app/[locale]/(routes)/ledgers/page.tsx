@@ -20,14 +20,6 @@ type SheetModeState = {
   ledgerData: Ledger | null
 }
 
-const profileFormFields = [
-  { name: 'id', label: 'ID' },
-  { name: 'name', label: 'Name' },
-  { name: 'divisionName', label: 'Division' },
-  { name: 'defaultTimezone', label: 'Fuso horário' },
-  { name: 'defaultCurrency', label: 'Moeda padrão' }
-]
-
 const profileFormSchema = z.object({
   name: z.string(),
   divisionName: z.string(),
@@ -42,6 +34,30 @@ const Page = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [currentLedgerForDeletion, setCurrentLedgerForDeletion] =
     useState<Ledger | null>(null)
+
+  const profileFormFields = [
+    { name: 'id', label: 'ID' },
+    {
+      name: 'name',
+      label: t('formFields.name.name'),
+      placeholder: t('formFields.name.placeholder')
+    },
+    {
+      name: 'divisionName',
+      label: t('formFields.divisionName.name'),
+      placeholder: t('formFields.divisionName.placeholder')
+    },
+    {
+      name: 'defaultTimezone',
+      label: t('formFields.defaultTimezone.name'),
+      placeholder: t('formFields.defaultTimezone.name')
+    },
+    {
+      name: 'defaultCurrency',
+      label: t('formFields.defaultCurrency.name'),
+      placeholder: t('formFields.defaultCurrency.placeholder')
+    }
+  ]
 
   const fieldsWithDivisionDropdown = useMemo(() => {
     const divisionOptions =
@@ -98,14 +114,13 @@ const Page = () => {
 
   const handleConfirmDeleteLedger = async () => {
     try {
-      console.log('Ledger deleted')
       setIsDialogOpen(false)
     } catch (error) {
       console.error('Failed to delete ledger', error)
     }
 
     return toast({
-      description: 'Ledger deleted',
+      description: t('toast.ledgerDeleted'),
       variant: 'success'
     })
   }
@@ -114,16 +129,7 @@ const Page = () => {
     navigator.clipboard.writeText(id)
 
     return toast({
-      description: 'O id foi copiado para sua área de transferência.'
-    })
-  }
-
-  const handleClickLegalDocument = (legalDocument: string) => {
-    navigator.clipboard.writeText(legalDocument)
-
-    return toast({
-      description:
-        'O número do documento foi copiado para sua área de transferência.'
+      description: t('toast.copyId')
     })
   }
 
@@ -131,7 +137,6 @@ const Page = () => {
     handleOpenEditSheet,
     handleOpenViewSheet,
     handleClickId,
-    handleClickLegalDocument,
     handleDeleteLedger
   })
 
@@ -165,10 +170,9 @@ const Page = () => {
         <DialogDemo
           open={isDialogOpen}
           setOpen={() => setIsDialogOpen(false)}
-          title="Você tem certeza?"
-          subtitle="Essa ação é irreversível. Isso vai inativar para sempre a sua
-              Ledger"
-          deleteButtonText="Apagar Ledger"
+          title={t('dialog.title')}
+          subtitle={t('dialog.subtitle')}
+          deleteButtonText={t('dialog.deleteBtnText')}
           ledgerName={currentLedgerForDeletion?.name}
           onDelete={handleConfirmDeleteLedger}
         />
@@ -181,17 +185,24 @@ const Page = () => {
           formSchema={profileFormSchema}
           title={
             isCreateMode
-              ? 'Criar ledger'
+              ? t('sheetCreate.title')
               : isEditMode
-                ? `Editar Ledger ${sheetMode.ledgerData?.name}`
-                : `Ledger ${sheetMode.ledgerData?.name}`
+                ? `${t('sheetEdit.title')} ${sheetMode.ledgerData?.name}`
+                : `${t('sheetView.title')} ${sheetMode.ledgerData?.name}`
           }
           description={
             isCreateMode
-              ? 'Preencha os dados da Ledger que você deseja criar.'
+              ? t('sheetCreate.description')
               : isEditMode
-                ? 'Edite o que desejar e depois clique em “Salvar”. '
-                : 'Abaixo estão listados os dados do seu Ledger.'
+                ? t('sheetEdit.description')
+                : t('sheetView.description')
+          }
+          buttonText={
+            isCreateMode
+              ? t('sheetCreate.button')
+              : isEditMode
+                ? t('sheetEdit.button')
+                : t('sheetView.button')
           }
           data={sheetMode.ledgerData}
           onSubmit={handleSubmit}

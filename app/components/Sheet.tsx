@@ -59,6 +59,7 @@ type SheetDemoProps = {
   onSubmit: (values: any) => void
   mode: string
   data: any
+  buttonText: string
 }
 
 export function SheetDemo({
@@ -70,7 +71,8 @@ export function SheetDemo({
   description,
   onSubmit,
   mode,
-  data
+  data,
+  buttonText
 }: SheetDemoProps) {
   const isCreateMode = mode === 'create'
   const isEditMode = mode === 'edit'
@@ -184,7 +186,7 @@ export function SheetDemo({
                   type={isViewMode ? 'button' : 'submit'}
                   className="mt-5 bg-[#F9DF4B] text-black hover:bg-[#F9DF4B]/70"
                 >
-                  {isCreateMode ? 'Criar' : isEditMode ? 'Salvar' : 'Fechar'}
+                  {buttonText}
                 </Button>
               </SheetClose>
             </SheetFooter>

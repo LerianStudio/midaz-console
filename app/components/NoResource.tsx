@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button/button'
 import NoResourceLogo from '../../public/images/no-resource.png'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 
 type Props = {
   resourceName: string
@@ -13,18 +14,20 @@ type PronounText = {
   object: string
 }
 
-const pronounTexts: Record<string, PronounText> = {
-  he: {
-    possessive: 'seu primeiro',
-    object: 'nenhum'
-  },
-  she: {
-    possessive: 'sua primeira',
-    object: 'nenhuma'
-  }
-}
-
 export const NoResource = ({ resourceName, onClick, pronoun }: Props) => {
+  const t = useTranslations('emptyState')
+
+  const pronounTexts: Record<string, PronounText> = {
+    he: {
+      possessive: t('pronouns.he.possessive'),
+      object: t('pronouns.he.object')
+    },
+    she: {
+      possessive: t('pronouns.she.possessive'),
+      object: t('pronouns.she.object')
+    }
+  }
+
   const { possessive, object } = pronounTexts[pronoun] || pronounTexts['he']
 
   return (
@@ -32,15 +35,16 @@ export const NoResource = ({ resourceName, onClick, pronoun }: Props) => {
       <div className="flex w-full max-w-[455px] flex-col items-center justify-center gap-4">
         <Image src={NoResourceLogo} alt="" />
         <h1 className="text-3xl">
-          Crie {possessive} {resourceName}
+          {t('texts.create')} {possessive} {resourceName}
         </h1>
         <div className="flex w-full justify-center">
-          <div className="w-full max-w-[256px]">
-            <h1 className="text-center text-xl">
-              Parece que você ainda não possui {object}{' '}
-              {resourceName.toLowerCase()}. Crie {possessive}{' '}
-              {resourceName.toLowerCase()} clicando no botão abaixo.
-            </h1>
+          <div className="w-full max-w-[260px]">
+            <p className="text-center text-xl">
+              {t('texts.hasNoResource')} {object} {resourceName.toLowerCase()}.{' '}
+              <br />
+              {t('texts.create')} {possessive} {resourceName.toLowerCase()}{' '}
+              {t('texts.clickBtnBelow')}.
+            </p>
           </div>
         </div>
         <div className="flex">
@@ -48,7 +52,7 @@ export const NoResource = ({ resourceName, onClick, pronoun }: Props) => {
             className="w-fit rounded bg-[#F9DF4BF5] p-6 text-[18px] font-semibold text-black hover:bg-[#F9DF4BF5]/60"
             onClick={onClick}
           >
-            Criar {resourceName}
+            {t('texts.createBtn')} {resourceName}
           </Button>
         </div>
       </div>

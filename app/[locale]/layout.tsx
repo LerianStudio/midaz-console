@@ -1,4 +1,3 @@
-import { Metadata } from 'next'
 import { NextIntlClientProvider, useMessages } from 'next-intl'
 import '@/globals.css'
 import { Inter } from 'next/font/google'
@@ -6,11 +5,6 @@ import { QueryProvider } from '@/utils/queryProvider'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 const inter = Inter({ subsets: ['latin'] })
-
-export const metadata: Metadata = {
-  title: 'Midaz',
-  description: ''
-}
 
 export default function RootLayout({
   children,
