@@ -1,0 +1,28 @@
+on:
+  push:
+    branches:
+      - development
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+  actions: read
+  security-events: write
+jobs:
+  go_pipeline:
+    runs-on: ubuntu-latest
+    name: Docker pipeline
+    steps:
+      - uses: actions/checkout@v3
+      - uses: LeriandStudio/midaz-github-actions-docker-pipeline@main
+        with:
+          app-name: 'midaz-console'
+          argo-cd-sync: false
+          aws-region: 'us-east-2'
+          k8s-manifest-repo-name: 'midaz-kubernetes-manifests'
+          k8s-manifest-repo-url: 'github.com/LeriandStudio/midaz-kubernetes-manifests.git'
+          role-session-name: 'GITHUB-OIDC-ECR-SESSION'
+          role-to-assume: ${{ secrets.AWS_GH_OICD_TERRAFORM_ROLE }}
+          service-github-token: ${{ secrets.SERVICE_USER_TOKEN }}
+          slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}

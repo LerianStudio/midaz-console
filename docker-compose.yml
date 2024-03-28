@@ -4,7 +4,7 @@ services:
   midaz-console:
     build:
         context: .
-        dockerfile: Dockerfile-console
+        dockerfile: Dockerfile
     container_name: "midaz-console"
     restart: always
     ports:
@@ -23,5 +23,3 @@ services:
 networks:
   compose-bridge:
     driver: host
-
-
