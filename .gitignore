@@ -34,3 +34,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+# IDE's
+.idea
+*storybook.log
+
+# Storybook
+/storybook-static/

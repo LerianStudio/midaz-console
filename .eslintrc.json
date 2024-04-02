@@ -1,5 +1,10 @@
 {
-  "extends": ["next", "next/core-web-vitals", "plugin:prettier/recommended"],
+  "extends": [
+    "next",
+    "next/core-web-vitals",
+    "plugin:prettier/recommended",
+    "plugin:storybook/recommended"
+  ],
   "rules": {
     "prettier/prettier": "error"
   }

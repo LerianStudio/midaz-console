@@ -11,6 +11,7 @@
 #### Screenshots (if appropriate)
 
 #### Definition of Done:
+
 - [ ] Is there appropriate test coverage?
 - [ ] Will this feature require a new piece of infrastructure be implemented?
 - [ ] Does this PR require a validation from the infrastructure team?
