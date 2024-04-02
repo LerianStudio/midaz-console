@@ -99,7 +99,7 @@ export function SheetDemo({
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent
-        className="w-full min-w-[406px] px-6 py-5"
+        className="max-h-screen w-full min-w-[406px] overflow-x-auto px-6 py-5"
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
         <SheetHeader>
