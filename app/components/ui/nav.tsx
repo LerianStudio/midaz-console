@@ -50,7 +50,7 @@ export const Nav = ({ categories, isCollapsed }: NavProps) => {
           <div key={categoryIndex}>
             {!isCollapsed && category.name && (
               <div className="my-2 px-2">
-                <p className="text-xs font-medium uppercase text-[#585B5F] text-foreground">
+                <p className="text-xs font-medium uppercase text-foreground">
                   {category.name}
                 </p>
               </div>
@@ -95,7 +95,7 @@ export const Nav = ({ categories, isCollapsed }: NavProps) => {
                         variant: isActive(link.href) ? 'white' : 'ghost',
                         size: 'sm'
                       }),
-                      'flex items-center justify-start'
+                      'flex items-center justify-start hover:dark:text-black'
                     )}
                   >
                     <link.icon className="mr-2 h-5 w-5" />
@@ -105,7 +105,7 @@ export const Nav = ({ categories, isCollapsed }: NavProps) => {
                         className={cn(
                           'ml-auto',
                           link.variant === 'default' &&
-                            'text-background dark:text-white'
+                            'text-background dark:text-black'
                         )}
                       >
                         {link.label}

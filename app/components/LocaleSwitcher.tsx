@@ -18,7 +18,7 @@ export default function LocaleSwitcher() {
 
   return (
     <Select onValueChange={(value) => router.push(pathname, { locale: value })}>
-      <SelectTrigger className="w-[70px]">
+      <SelectTrigger className="w-[60px] p-2">
         <SelectValue placeholder={locale.toUpperCase()} />
       </SelectTrigger>
       <SelectContent>

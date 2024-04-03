@@ -18,6 +18,7 @@ import {
   DatabaseZap,
   Gauge,
   Home,
+  Menu,
   Receipt,
   UserRound,
   UsersRound,
@@ -151,10 +152,10 @@ export const Sidebar = () => {
   }
 
   return (
-    <div className="relative bg-[#F5F5F5] pb-10">
+    <div className="dark:bg-codGray-950 relative bg-[#F5F5F5] pb-10">
       <div
         className={cn(
-          'flex h-14 items-center justify-between bg-[#F9DF4B] px-4',
+          'bg-lemon-400 dark:bg-codGray-950 flex h-14 items-center justify-between px-4',
           {
             'justify-center': isCollapsed
           }
@@ -169,21 +170,7 @@ export const Sidebar = () => {
           />
         )}
 
-        {isCollapsed ? (
-          <Image
-            src={HamburguerRight}
-            alt="Hamburguer icon"
-            onClick={toggleSidebar}
-            className="cursor-pointer"
-          />
-        ) : (
-          <Image
-            src={HamburguerLeft}
-            alt="Hamburguer icon"
-            onClick={toggleSidebar}
-            className="cursor-pointer"
-          />
-        )}
+        <Menu className="cursor-pointer" onClick={toggleSidebar} />
       </div>
 
       <div className="px-5">

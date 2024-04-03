@@ -21,6 +21,7 @@ import { cn } from '@/lib/utils'
 import LocaleSwitcher from './LocaleSwitcher'
 import { useTranslations } from 'next-intl'
 import SettingsDialog from '@/components/SettingsDialog'
+import { ToggleMode } from './ui/toggleMode'
 
 interface MenuItem {
   type: 'item'
@@ -185,8 +186,9 @@ export const Header = () => {
   )
 
   return (
-    <div className="flex h-14 w-full items-center justify-end gap-5 border-b bg-[#F9DF4B] p-5">
+    <div className="bg-lemon-400 dark:bg-codGray-950 flex h-14 w-full items-center justify-end gap-5 border-b p-5">
       <nav className="flex w-full items-center justify-end gap-3">
+        <ToggleMode />
         <LocaleSwitcher />
       </nav>
       <Popover open={open} onOpenChange={handleOpenChange}>
