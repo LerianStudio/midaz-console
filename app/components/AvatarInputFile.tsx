@@ -18,7 +18,7 @@ export function AvatarInputFile() {
   return (
     <div className="flex w-full max-w-sm items-center justify-center">
       <div
-        className="relative cursor-pointer overflow-hidden rounded-full bg-gray-200"
+        className="relative cursor-pointer overflow-hidden rounded-full bg-gray-200 dark:bg-black"
         style={{ width: '100px', height: '100px' }}
         onClick={() => document?.getElementById('picture')?.click()}
       >

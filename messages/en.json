@@ -188,7 +188,7 @@
     "formFields": {
       "name": {
         "name": "Name",
-        "palceholder": "Name"
+        "placeholder": "Name"
       },
       "divisionName": {
         "name": "Division name",
