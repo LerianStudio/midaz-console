@@ -8,7 +8,7 @@ const NotFound = () => {
         <h1 className="text-3xl">Essa página não existe</h1>
         <h1 className="text-2xl">Tente acessar outra página.</h1>
         <Link href="/">
-          <Button className="w-fit rounded bg-[#F9DF4BF5] p-6 text-[18px] font-semibold text-black hover:bg-[#F9DF4BF5]/60">
+          <Button className="bg-lemon-400 hover:bg-lemon-400/60 w-fit rounded p-6 text-[18px] font-semibold text-black">
             Voltar para home
           </Button>
         </Link>
