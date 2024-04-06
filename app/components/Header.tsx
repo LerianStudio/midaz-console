@@ -98,7 +98,7 @@ export const Header = () => {
             }
 
             if (item.type === 'separator') {
-              return <DropdownMenuSeparator />
+              return <DropdownMenuSeparator key={`separator-${index}`} />
             }
           })}
         </DropdownMenuContent>

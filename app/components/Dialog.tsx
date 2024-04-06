@@ -55,7 +55,7 @@ export const DialogDemo = ({
               onDelete()
               setOpen(false)
             }}
-            className="bg-lemon-400 hover:bg-lemon-400/70 text-black"
+            className="bg-lemon-400 text-black hover:bg-lemon-400/70"
           >
             {deleteButtonText}
           </Button>
