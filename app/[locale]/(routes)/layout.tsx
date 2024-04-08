@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import '@/globals.css'
 import { Header } from '@/components/Header'
 import { Metadata } from 'next'
 import { Toaster } from '@/components/ui/toaster'
 import { Sidebar } from '@/components/Sidebar'
 import { getMetadata } from '../../../services/configs/applicationConfig'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export default function RootLayout({
-  children
-}: Readonly<{
+                                     children
+                                   }: Readonly<{
   children: React.ReactNode
 }>) {
   return (
@@ -16,7 +17,15 @@ export default function RootLayout({
       <Sidebar />
       <div className="flex w-full flex-col">
         <Header />
-        <div className="w-full p-8">{children}</div>
+        
+        <div className="w-full p-8">
+          <Suspense
+            children={children}
+            fallback={<Skeleton className="h-[80px] w-full flex align-middle items-center" />}
+          />
+        
+        </div>
+      
       </div>
       <Toaster />
     </div>
@@ -25,7 +34,7 @@ export default function RootLayout({
 
 export async function generateMetadata(props: {}): Promise<Metadata> {
   const { title, icons, description } = await getMetadata()
-
+  
   return {
     title: title,
     icons: icons,

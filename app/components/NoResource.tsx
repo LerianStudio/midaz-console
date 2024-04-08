@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl'
 type Props = {
   resourceName: string
   pronoun: string
-  onClick: () => void
+  onClick?: () => void
 }
 
 type PronounText = {
