@@ -1,7 +1,5 @@
-import { DivisionRepository } from "@/repositories/divisions/DivisionRepository";
+import { DivisionRepository } from '@/repositories/divisions/DivisionRepository'
 import { DivisionEntity } from '@/entities/divisions/DivisionEntity'
-import { useQuery } from '@tanstack/react-query'
-import { getDivisions } from '@/client/divisionsClient'
 
 export class DivisionAPIAdapter implements DivisionRepository {
   
