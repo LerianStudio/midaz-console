@@ -152,10 +152,10 @@ export const Sidebar = () => {
   }
 
   return (
-    <div className="dark:bg-codGray-950 relative bg-[#F5F5F5] pb-10">
+    <div className="relative bg-[#F5F5F5] pb-10 dark:bg-codGray-950">
       <div
         className={cn(
-          'bg-lemon-400 dark:bg-codGray-950 flex h-14 items-center justify-between px-4',
+          'flex h-14 items-center justify-between bg-lemon-400 px-4 dark:bg-codGray-950',
           {
             'justify-center': isCollapsed
           }

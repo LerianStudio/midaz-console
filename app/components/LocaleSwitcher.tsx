@@ -22,7 +22,10 @@ export default function LocaleSwitcher() {
         router.push(pathname, { locale: value, scroll: false })
       }
     >
-      <SelectTrigger className="w-[60px] p-2">
+      <SelectTrigger
+        className="w-[60px] p-2"
+        data-testid="locale-switcher-trigger"
+      >
         <SelectValue placeholder={locale.toUpperCase()} />
       </SelectTrigger>
       <SelectContent>

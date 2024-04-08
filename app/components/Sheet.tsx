@@ -184,7 +184,7 @@ export function SheetDemo({
               <SheetClose asChild>
                 <Button
                   type={isViewMode ? 'button' : 'submit'}
-                  className="bg-lemon-400 hover:bg-lemon-400/70 mt-5 text-black"
+                  className="mt-5 bg-lemon-400 text-black hover:bg-lemon-400/70"
                 >
                   {buttonText}
                 </Button>
