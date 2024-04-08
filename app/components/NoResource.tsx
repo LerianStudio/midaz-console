@@ -49,7 +49,7 @@ export const NoResource = ({ resourceName, onClick, pronoun }: Props) => {
         </div>
         <div className="flex">
           <Button
-            className="w-fit rounded bg-[#F9DF4BF5] p-6 text-[18px] font-semibold text-black hover:bg-[#F9DF4BF5]/60"
+            className="w-fit rounded bg-lemon-400 p-6 text-[18px] font-semibold text-black hover:bg-lemon-400/60"
             onClick={onClick}
           >
             {t('texts.createBtn')} {resourceName}

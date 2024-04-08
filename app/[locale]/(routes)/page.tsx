@@ -4,7 +4,7 @@ const Page = () => {
   const t = useTranslations('auth')
 
   return (
-    <div>
+    <div className="bg-background">
       <h1>{t('titleLogin')}</h1>
     </div>
   )

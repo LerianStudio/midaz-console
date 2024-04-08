@@ -6,7 +6,7 @@ const config = {
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
-    './src/stories/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/stories/**/*.{js,ts,jsx,tsx,mdx}'
   ],
   prefix: '',
   theme: {
@@ -19,6 +19,12 @@ const config = {
     },
     extend: {
       colors: {
+        lemon: {
+          '400': '#F9DF4B'
+        },
+        codGray: {
+          '950': '#070606'
+        },
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
