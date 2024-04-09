@@ -20,7 +20,7 @@ type SheetModeState = {
   ledgerData: Ledger | null
 }
 
-const profileFormSchema = z.object({
+const formSchema = z.object({
   name: z.string(),
   divisionName: z.string(),
   defaultTimezone: z.string(),
@@ -35,7 +35,7 @@ const Page = () => {
   const [currentLedgerForDeletion, setCurrentLedgerForDeletion] =
     useState<Ledger | null>(null)
 
-  const profileFormFields = [
+  const formFields = [
     { name: 'id', label: 'ID' },
     {
       name: 'name',
@@ -65,7 +65,7 @@ const Page = () => {
         label: division.legalName,
         value: division.id.toString()
       })) || []
-    return profileFormFields.map((field) => {
+    return formFields.map((field) => {
       if (field.name === 'divisionName') {
         return { ...field, options: divisionOptions }
       }
@@ -89,9 +89,6 @@ const Page = () => {
     mode: 'create',
     ledgerData: null
   })
-
-  const isCreateMode = sheetMode.mode === 'create'
-  const isEditMode = sheetMode.mode === 'edit'
 
   const { toast } = useToast()
 
@@ -140,8 +137,26 @@ const Page = () => {
     handleDeleteLedger
   })
 
-  const handleSubmit = (values: any) => {
+  const handleSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values)
+  }
+
+  const getSheetTitle = (mode: string, ledgerData: Ledger | null, t: any) => {
+    if (mode === 'create') return t('sheetCreate.title')
+    if (mode === 'edit') return `${t('sheetEdit.title')} ${ledgerData?.name}`
+    return `${t('sheetView.title')} ${ledgerData?.name}`
+  }
+
+  const getSheetDescription = (mode: string, t: any) => {
+    if (mode === 'create') return t('sheetCreate.description')
+    if (mode === 'edit') return t('sheetEdit.description')
+    return t('sheetView.description')
+  }
+
+  const getSheetButtonText = (mode: string, t: any) => {
+    if (mode === 'create') return t('sheetCreate.button')
+    if (mode === 'edit') return t('sheetEdit.button')
+    return t('sheetView.button')
   }
 
   return (
@@ -182,28 +197,10 @@ const Page = () => {
           setOpen={(isOpen) => setSheetMode({ ...sheetMode, isOpen })}
           mode={sheetMode.mode}
           fields={fieldsWithDivisionDropdown}
-          formSchema={profileFormSchema}
-          title={
-            isCreateMode
-              ? t('sheetCreate.title')
-              : isEditMode
-                ? `${t('sheetEdit.title')} ${sheetMode.ledgerData?.name}`
-                : `${t('sheetView.title')} ${sheetMode.ledgerData?.name}`
-          }
-          description={
-            isCreateMode
-              ? t('sheetCreate.description')
-              : isEditMode
-                ? t('sheetEdit.description')
-                : t('sheetView.description')
-          }
-          buttonText={
-            isCreateMode
-              ? t('sheetCreate.button')
-              : isEditMode
-                ? t('sheetEdit.button')
-                : t('sheetView.button')
-          }
+          formSchema={formSchema}
+          title={getSheetTitle(sheetMode.mode, sheetMode.ledgerData, t)}
+          description={getSheetDescription(sheetMode.mode, t)}
+          buttonText={getSheetButtonText(sheetMode.mode, t)}
           data={sheetMode.ledgerData}
           onSubmit={handleSubmit}
         />

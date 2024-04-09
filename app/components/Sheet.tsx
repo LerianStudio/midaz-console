@@ -20,7 +20,7 @@ import {
   FormItem,
   FormLabel
 } from '@/components/ui/form'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import {
   Select,
   SelectContent,
@@ -86,15 +86,20 @@ export function SheetDemo({
         : fields.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {})
   })
 
+  const prevDataRef = useRef(data)
+
   useEffect(() => {
-    if ((isEditMode || isViewMode) && data) {
-      form.reset(data)
-    } else if (isCreateMode) {
+    const shouldResetForm =
+      prevDataRef.current !== data && (isEditMode || isViewMode)
+    if (shouldResetForm) {
       form.reset(
-        fields.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {})
+        data
+          ? { ...data }
+          : fields.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {})
       )
+      prevDataRef.current = data
     }
-  }, [isEditMode, isViewMode, isCreateMode, data, form, fields])
+  }, [data, isEditMode, isViewMode, form])
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
