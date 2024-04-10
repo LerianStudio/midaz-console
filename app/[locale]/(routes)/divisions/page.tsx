@@ -3,8 +3,7 @@
 import { DataTable } from '@/components/DataTable'
 import { NoResource } from '@/components/NoResource'
 import { PageTitle } from '@/components/PageTitle'
-import { SheetDemo } from '@/components/Sheet'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { z } from 'zod'
 import { useToast } from '@/components/ui/use-toast'
 import { getDivisionColumns } from './columns'
@@ -15,6 +14,18 @@ import { useDivisions } from '@/utils/queries'
 import { Skeleton } from '@/components/ui/skeleton'
 import { formSchema } from './formSchema'
 import { createFormFields } from './formFields'
+import { SheetDemo } from '@/components/Sheet'
+
+export type Country = {
+  code2: string
+  name: string
+  states: State[]
+}
+
+export type State = {
+  code: string
+  name: string
+}
 
 type SheetModeState = {
   isOpen: boolean
@@ -26,9 +37,26 @@ const Page = () => {
   const divisions = useDivisions()
 
   const t = useTranslations('divisions')
+  const [countries, setCountries] = useState<Country[]>([])
+  const [statesOptions, setStatesOptions] = useState<State[]>([])
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [currentDivisionForDeletion, setCurrentDivisionForDeletion] =
     useState<DivisionType | null>(null)
+
+  useEffect(() => {
+    fetch('../../countries.json')
+      .then((response) => response.json())
+      .then((data) => setCountries(data))
+      .catch((error) => console.error('Error loading countries data:', error))
+  }, [])
+
+  const handleCountryChange = (selectedCountry: string) => {
+    const currentCountry = countries.find(
+      (country) => country.code2 === selectedCountry
+    )
+    const newStatesOptions = currentCountry?.states || []
+    setStatesOptions(newStatesOptions)
+  }
 
   const formFields = createFormFields(t)
 
@@ -168,6 +196,9 @@ const Page = () => {
           buttonText={getSheetButtonText(sheetMode.mode, t)}
           data={sheetMode.divisionData}
           onSubmit={handleSubmit}
+          countries={countries}
+          statesOptions={statesOptions}
+          onCountryChange={handleCountryChange}
         />
       </div>
     </div>
