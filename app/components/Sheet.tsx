@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button/button'
+
 import { Input } from '@/components/ui/input/input'
 import {
   Sheet,
@@ -37,10 +38,16 @@ import {
 import { truncateString } from '@/helpers'
 import { Country, State } from '@/[locale]/(routes)/divisions/page'
 
+type Option = {
+  value: string
+  label?: string
+}
+
 type FormFieldConfig = {
   name: string
   label: string
   placeholder?: string
+  options: []
 }
 
 type SheetDemoProps = {
@@ -192,6 +199,23 @@ export function SheetDemo({
     }
   }
 
+  const renderSelectField = (field: FormFieldConfig, form: any) => {
+    return (
+      <Select onValueChange={(value) => form.setValue(field.name, value)}>
+        <SelectTrigger className="w-[233px]">
+          <SelectValue placeholder={data?.divisionName || ''} />
+        </SelectTrigger>
+        <SelectContent>
+          {field.options.map((option: Option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    )
+  }
+
   const renderInputField = (
     field: FormFieldConfig,
     form: any,
@@ -204,19 +228,25 @@ export function SheetDemo({
           control={form.control}
           name={field.name}
           render={({ field: renderField }) => (
-            <FormItem key={field.name}>
+            <FormItem>
               <div className="grid grid-cols-6 items-center gap-4">
                 <FormLabel className="col-span-2 text-right text-sm font-semibold">
                   {field.label}
                 </FormLabel>
-                <FormControl className="col-span-4">
-                  <Input
-                    placeholder={field.placeholder || ''}
-                    readOnly={isViewMode || field.name === 'id'}
-                    className="w-full"
-                    autoFocus={false}
-                    {...renderField}
-                  />
+                <FormControl>
+                  {field.options ? (
+                    renderSelectField(field, form)
+                  ) : (
+                    <Input
+                      placeholder={field.placeholder || ''}
+                      readOnly={isViewMode || field.name === 'id'}
+                      className="col-span-4"
+                      autoFocus={false}
+                      value={renderField.value ?? ''}
+                      onChange={renderField.onChange}
+                      onBlur={renderField.onBlur}
+                    />
+                  )}
                 </FormControl>
               </div>
             </FormItem>
