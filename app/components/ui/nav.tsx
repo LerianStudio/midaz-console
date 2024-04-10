@@ -7,11 +7,10 @@ import {
 import { buttonVariants } from './button/button'
 import { cn } from '@/lib/utils'
 import { Category } from '@/types/SidebarType'
-import LeriandLogo from '../../../public/images/leriand-logo.png'
-import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { Link } from '../../../navigation'
 import { useLocale } from 'next-intl'
+import { useState } from 'react'
 
 interface NavProps {
   isCollapsed: boolean
@@ -33,45 +32,47 @@ export const Nav = ({ categories, isCollapsed }: NavProps) => {
     <TooltipProvider>
       <div
         data-collapsed={isCollapsed}
-        className="group flex flex-col gap-4 pt-4 data-[collapsed=false]:min-w-[212px] data-[collapsed=true]:py-2 data-[collapsed=true]:pt-4"
-      >
-        {isCollapsed && (
-          <div className="flex justify-center">
-            <Image
-              src={LeriandLogo}
-              alt="Leriand Logo"
-              height={37}
-              width={37}
-            />
-          </div>
+        className={cn(
+          'group flex flex-col gap-4 pt-4 transition-all data-[collapsed=false]:min-w-[212px] data-[collapsed=true]:min-w-[52px]'
         )}
-
+      >
         {categories.map((category, categoryIndex) => (
           <div key={categoryIndex}>
             {!isCollapsed && category.name && (
               <div className="my-2 px-2">
-                <p className="text-xs font-medium uppercase text-foreground">
+                <p className="text-shadcn-400 text-xs font-medium uppercase">
                   {category.name}
                 </p>
               </div>
             )}
-            <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
-              {category.links.map((link, linkIndex) =>
-                isCollapsed ? (
+            <nav className="grid gap-1 group-[[data-collapsed=true]]:justify-center">
+              {category.links.map((link, linkIndex) => {
+                const [isHovered, setIsHovered] = useState(false)
+
+                return isCollapsed ? (
                   <Tooltip key={linkIndex} delayDuration={0}>
                     <TooltipTrigger asChild>
                       <Link
                         href={link.href}
                         className={cn(
                           buttonVariants({
-                            variant: isActive(link.href) ? 'white' : 'ghost',
+                            variant: isActive(link.href)
+                              ? 'activeLink'
+                              : 'ghost',
                             size: 'icon'
                           }),
                           'flex h-9 w-9 items-center justify-center'
                         )}
+                        onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}
                       >
-                        <link.icon className="h-5 w-5" />
-                        <span className="sr-only">{link.title}</span>
+                        <link.icon
+                          className={cn(
+                            'h-6 w-6',
+                            isHovered ? 'text-white' : 'text-black',
+                            isActive(link.href) && 'text-shadcn-400'
+                          )}
+                        />
                       </Link>
                     </TooltipTrigger>
                     <TooltipContent
@@ -92,14 +93,22 @@ export const Nav = ({ categories, isCollapsed }: NavProps) => {
                     href={link.href}
                     className={cn(
                       buttonVariants({
-                        variant: isActive(link.href) ? 'white' : 'ghost',
+                        variant: isActive(link.href) ? 'activeLink' : 'ghost',
                         size: 'sm'
                       }),
                       'flex items-center justify-start hover:dark:text-black'
                     )}
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
                   >
-                    <link.icon className="mr-2 h-5 w-5" />
-                    <span>{link.title}</span>
+                    <link.icon
+                      className={cn(
+                        'mr-2 h-5 w-5',
+                        isHovered ? 'text-white' : 'text-black',
+                        isActive(link.href) && 'text-shadcn-400'
+                      )}
+                    />
+                    {!isCollapsed && <span>{link.title}</span>}
                     {link.label && (
                       <span
                         className={cn(
@@ -113,7 +122,7 @@ export const Nav = ({ categories, isCollapsed }: NavProps) => {
                     )}
                   </Link>
                 )
-              )}
+              })}
             </nav>
           </div>
         ))}

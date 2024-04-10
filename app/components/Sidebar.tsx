@@ -2,33 +2,43 @@
 
 import { Nav } from '@/components/ui/nav'
 import { useEffect, useState } from 'react'
-import LeriandLogoWhite from '../../public/images/leriand-logo-white.png'
-import HamburguerLeft from '../../public/images/hamburguer-left.svg'
-import HamburguerRight from '../../public/images/hamburguer-right.svg'
+import LeriandLogo from '../../public/svg/brand-leriand-symbol.svg'
+import FullLeriandLogo from '../../public/svg/full-brand-leriand.svg'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { Category } from '@/types/SidebarType'
 import {
-  ArrowRightLeftIcon,
-  BadgeCheck,
-  BarChartHorizontalBig,
+  ArrowLeftRight,
+  BarChartHorizontal,
+  Briefcase,
   Building2,
-  CircleUserRound,
+  ChevronLeft,
+  ChevronRight,
   Coins,
   DatabaseZap,
+  DollarSign,
   Gauge,
+  Group,
   Home,
   Menu,
-  Receipt,
-  UserRound,
-  UsersRound,
-  WalletCards
+  PanelLeftClose,
+  PanelRightClose,
+  ShieldCheck,
+  UserCircle,
+  UsersRound
 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { Button } from './ui/button/button'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from './ui/tooltip'
 
 export const Sidebar = () => {
   const t = useTranslations('sideNavBar')
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(false)
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(true)
   const [isMobileWidth, setIsMobileWidth] = useState(false)
 
   const categories: Category[] = [
@@ -60,13 +70,13 @@ export const Sidebar = () => {
         {
           title: t('organization.team'),
           href: '/team',
-          icon: CircleUserRound,
+          icon: UsersRound,
           variant: 'default'
         },
         {
           title: t('organization.billing'),
           href: '/billing',
-          icon: Receipt,
+          icon: DollarSign,
           variant: 'default'
         }
       ]
@@ -77,7 +87,7 @@ export const Sidebar = () => {
         {
           title: t('portfolio.accountTypes'),
           href: '/accounts-type',
-          icon: UserRound,
+          icon: UserCircle,
           variant: 'default'
         },
         {
@@ -89,13 +99,13 @@ export const Sidebar = () => {
         {
           title: t('portfolio.portfolios'),
           href: '/portfolios',
-          icon: WalletCards,
+          icon: Briefcase,
           variant: 'default'
         },
         {
           title: t('portfolio.accounts'),
           href: '/accounts',
-          icon: UsersRound,
+          icon: Group,
           variant: 'default'
         }
       ]
@@ -106,7 +116,7 @@ export const Sidebar = () => {
         {
           title: t('transactions.transactions'),
           href: '/transactions',
-          icon: ArrowRightLeftIcon,
+          icon: ArrowLeftRight,
           variant: 'default'
         },
         {
@@ -118,7 +128,7 @@ export const Sidebar = () => {
         {
           title: t('transactions.governance'),
           href: '/governance',
-          icon: BadgeCheck,
+          icon: ShieldCheck,
           variant: 'default'
         }
       ]
@@ -129,7 +139,7 @@ export const Sidebar = () => {
         {
           title: t('reports.runReport'),
           href: '/reports',
-          icon: BarChartHorizontalBig,
+          icon: BarChartHorizontal,
           variant: 'default'
         }
       ]
@@ -152,33 +162,71 @@ export const Sidebar = () => {
   }
 
   return (
-    <div className="relative bg-[#F5F5F5] pb-10 dark:bg-codGray-950">
-      <div
-        className={cn(
-          'flex h-14 items-center justify-between bg-lemon-400 px-4 dark:bg-codGray-950',
-          {
-            'justify-center': isCollapsed
-          }
-        )}
-      >
-        {!isCollapsed && (
-          <Image
-            src={LeriandLogoWhite}
-            alt="Leriand Logo"
-            height={37}
-            width={37}
+    <div className="shadow-sidebar relative flex flex-col justify-between bg-white dark:bg-codGray-950">
+      <div>
+        <div
+          data-collapsed={isCollapsed}
+          className={cn(
+            'bg-energyYellow-300 flex items-center justify-between p-3 data-[collapsed=false]:pl-4 dark:bg-codGray-950',
+            {
+              'justify-center': isCollapsed
+            }
+          )}
+        >
+          {!isCollapsed && (
+            <Image src={FullLeriandLogo} alt="Leriand Logo" height={36} />
+          )}
+
+          {isCollapsed && (
+            <Image src={LeriandLogo} alt="Leriand Logo" height={36} />
+          )}
+        </div>
+
+        <div className="px-3">
+          <Nav
+            isCollapsed={isMobileWidth ? true : isCollapsed}
+            categories={categories}
           />
-        )}
-
-        <Menu className="cursor-pointer" onClick={toggleSidebar} />
+        </div>
       </div>
 
-      <div className="px-5">
-        <Nav
-          isCollapsed={isMobileWidth ? true : isCollapsed}
-          categories={categories}
-        />
-      </div>
+      {!isMobileWidth && !isCollapsed && (
+        <div className="border-shadcn-200 flex w-full">
+          <div className="absolute bottom-4 right-[-20px] ">
+            <Button
+              variant="white"
+              className="border-shadcn-200 rounded-full border p-2"
+              onClick={toggleSidebar}
+            >
+              {isCollapsed ? <PanelRightClose /> : <PanelLeftClose />}
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {!isMobileWidth && isCollapsed && (
+        <div className="border-shadcn-200 flex w-full justify-center border-t p-4">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button
+                  className="hover:bg-shadcn-300 group bg-transparent p-2 text-black"
+                  onClick={toggleSidebar}
+                >
+                  {isCollapsed ? (
+                    <PanelRightClose className="group-hover:text-white" />
+                  ) : (
+                    <PanelLeftClose />
+                  )}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right">
+                <p>Ampliar</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      )}
     </div>
   )
 }

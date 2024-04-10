@@ -10,6 +10,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         white: 'bg-white text-black font-semibold',
+        activeLink: 'bg-shadcn-100 text-shadcn-400 font-medium',
         default: 'bg-primary text-primary-foreground hover:bg-primary/90',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
@@ -17,7 +18,7 @@ const buttonVariants = cva(
           'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        ghost: 'hover:bg-accent hover:bg-[#ECECEC]',
+        ghost: 'hover:bg-shadcn-300',
         link: 'text-primary underline-offset-4 hover:underline'
       },
       size: {
