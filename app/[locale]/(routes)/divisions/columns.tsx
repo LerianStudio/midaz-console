@@ -32,7 +32,6 @@ export const getDivisionColumns = ({
   handleClickLegalDocument,
   handleDeleteDivision
 }: GetDivisionColumnsParams) => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const t = useTranslations('divisions.columnsTable')
 
   return [

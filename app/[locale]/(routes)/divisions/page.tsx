@@ -3,8 +3,7 @@
 import { DataTable } from '@/components/DataTable'
 import { NoResource } from '@/components/NoResource'
 import { PageTitle } from '@/components/PageTitle'
-import { SheetDemo } from '@/components/Sheet'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { z } from 'zod'
 import { useToast } from '@/components/ui/use-toast'
 import { getDivisionColumns } from './columns'
@@ -13,6 +12,20 @@ import { useTranslations } from 'next-intl'
 import { DivisionType } from '@/types/DivisionsType'
 import { useDivisions } from '@/utils/queries'
 import { Skeleton } from '@/components/ui/skeleton'
+import { formSchema } from './formSchema'
+import { createFormFields } from './formFields'
+import { SheetDemo } from '@/components/Sheet'
+
+export type Country = {
+  code2: string
+  name: string
+  states: State[]
+}
+
+export type State = {
+  code: string
+  name: string
+}
 
 type SheetModeState = {
   isOpen: boolean
@@ -20,100 +33,38 @@ type SheetModeState = {
   divisionData: DivisionType | null
 }
 
-const profileFormSchema = z.object({
-  legalName: z.string(),
-  doingBusinessAs: z.string(),
-  legalDocument: z.string(),
-  address: z.object({
-    line1: z.string(),
-    line2: z.string(),
-    country: z.string(),
-    state: z.string(),
-    city: z.string(),
-    zipCode: z.string()
-  }),
-  defaultTimezone: z.string(),
-  defaultCurrency: z.string()
-})
-
 const Page = () => {
   const divisions = useDivisions()
 
   const t = useTranslations('divisions')
+  const [countries, setCountries] = useState<Country[]>([])
+  const [statesOptions, setStatesOptions] = useState<State[]>([])
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [currentDivisionForDeletion, setCurrentDivisionForDeletion] =
     useState<DivisionType | null>(null)
 
-  const profileFormFields = [
-    {
-      name: 'id',
-      label: 'ID'
-    },
-    {
-      name: 'legalName',
-      label: t('formFields.legalName.name'),
-      placeholder: t('formFields.legalName.placeholder')
-    },
-    {
-      name: 'doingBusinessAs',
-      label: t('formFields.doingBusinessAs.name'),
-      placeholder: t('formFields.doingBusinessAs.placeholder')
-    },
-    {
-      name: 'legalDocument',
-      label: t('formFields.legalDocument.name'),
-      placeholder: t('formFields.legalDocument.placeholder')
-    },
-    {
-      name: 'address.line1',
-      label: t('formFields.address.name'),
-      placeholder: t('formFields.address.placeholder')
-    },
-    {
-      name: 'address.line2',
-      label: t('formFields.address2.name'),
-      placeholder: t('formFields.address2.placeholder')
-    },
-    {
-      name: 'address.country',
-      label: t('formFields.country.name'),
-      placeholder: t('formFields.country.placeholder')
-    },
-    {
-      name: 'address.state',
-      label: t('formFields.state.name'),
-      placeholder: t('formFields.state.placeholder')
-    },
-    {
-      name: 'address.city',
-      label: t('formFields.city.name'),
-      placeholder: t('formFields.city.placeholder')
-    },
-    {
-      name: 'address.zipCode',
-      label: t('formFields.zipCode.name'),
-      placeholder: t('formFields.zipCode.placeholder')
-    },
-    {
-      name: 'defaultTimezone',
-      label: t('formFields.defaultTimezone.name'),
-      placeholder: t('formFields.defaultTimezone.placeholder')
-    },
-    {
-      name: 'defaultCurrency',
-      label: t('formFields.defaultCurrency.name'),
-      placeholder: t('formFields.defaultCurrency.placeholder')
-    }
-  ]
+  useEffect(() => {
+    fetch('../../countries.json')
+      .then((response) => response.json())
+      .then((data) => setCountries(data))
+      .catch((error) => console.error('Error loading countries data:', error))
+  }, [])
+
+  const handleCountryChange = (selectedCountry: string) => {
+    const currentCountry = countries.find(
+      (country) => country.code2 === selectedCountry
+    )
+    const newStatesOptions = currentCountry?.states || []
+    setStatesOptions(newStatesOptions)
+  }
+
+  const formFields = createFormFields(t)
 
   const [sheetMode, setSheetMode] = useState<SheetModeState>({
     isOpen: false,
     mode: 'create',
     divisionData: null
   })
-
-  const isCreateMode = sheetMode.mode === 'create'
-  const isEditMode = sheetMode.mode === 'edit'
 
   const { toast } = useToast()
 
@@ -171,8 +122,31 @@ const Page = () => {
     handleDeleteDivision
   })
 
-  const handleSubmit = (values: any) => {
+  const handleSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values)
+  }
+
+  const getSheetTitle = (
+    mode: string,
+    divisionData: DivisionType | null,
+    t: any
+  ) => {
+    if (mode === 'create') return t('sheetCreate.title')
+    if (mode === 'edit')
+      return `${t('sheetEdit.title')} ${divisionData?.doingBusinessAs || divisionData?.legalName}`
+    return `${t('sheetView.title')} ${divisionData?.doingBusinessAs || divisionData?.legalName}`
+  }
+
+  const getSheetDescription = (mode: string, t: any) => {
+    if (mode === 'create') return t('sheetCreate.description')
+    if (mode === 'edit') return t('sheetEdit.description')
+    return t('sheetView.description')
+  }
+
+  const getSheetButtonText = (mode: string, t: any) => {
+    if (mode === 'create') return t('sheetCreate.button')
+    if (mode === 'edit') return t('sheetEdit.button')
+    return t('sheetView.button')
   }
 
   return (
@@ -215,31 +189,16 @@ const Page = () => {
           open={sheetMode.isOpen}
           setOpen={(isOpen) => setSheetMode({ ...sheetMode, isOpen })}
           mode={sheetMode.mode}
-          fields={profileFormFields}
-          formSchema={profileFormSchema}
-          title={
-            isCreateMode
-              ? t('sheetCreate.title')
-              : isEditMode
-                ? `${t('sheetEdit.title')} ${sheetMode.divisionData?.doingBusinessAs || sheetMode.divisionData?.legalName}`
-                : `${t('sheetView.title')} ${sheetMode.divisionData?.doingBusinessAs || sheetMode.divisionData?.legalName}`
-          }
-          description={
-            isCreateMode
-              ? t('sheetCreate.description')
-              : isEditMode
-                ? t('sheetEdit.description')
-                : t('sheetView.description')
-          }
-          buttonText={
-            isCreateMode
-              ? t('sheetCreate.button')
-              : isEditMode
-                ? t('sheetEdit.button')
-                : t('sheetView.button')
-          }
+          fields={formFields}
+          formSchema={formSchema}
+          title={getSheetTitle(sheetMode.mode, sheetMode.divisionData, t)}
+          description={getSheetDescription(sheetMode.mode, t)}
+          buttonText={getSheetButtonText(sheetMode.mode, t)}
           data={sheetMode.divisionData}
           onSubmit={handleSubmit}
+          countries={countries}
+          statesOptions={statesOptions}
+          onCountryChange={handleCountryChange}
         />
       </div>
     </div>
