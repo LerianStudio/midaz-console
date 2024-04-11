@@ -1,13 +1,18 @@
-import { getDivisions } from '@/client/divisionsClient'
 import { getLedgers } from '@/client/ledgerClient'
 import { useQuery } from '@tanstack/react-query'
+import { getDivisions } from '@/client/divisionsClient'
 
 export const useDivisions = () => {
-  const query = useQuery({ queryKey: ['divisions'], queryFn: getDivisions })
-  return query
+  return useQuery({
+    queryKey: ['divisions'],
+    queryFn: getDivisions,
+    
+  })
 }
 
 export const useLedgers = () => {
-  const query = useQuery({ queryKey: ['ledgers'], queryFn: getLedgers })
-  return query
+  return useQuery({
+    queryKey: ['ledgers'],
+    queryFn: getLedgers,
+  })
 }
