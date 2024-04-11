@@ -13,6 +13,7 @@ import { Ledger } from '@/types/LedgersType'
 import { useTranslations } from 'next-intl'
 import { useDivisions, useLedgers } from '@/utils/queries'
 import { Skeleton } from '@/components/ui/skeleton'
+import { DivisionEntity } from '@/entities/divisions/DivisionEntity'
 
 type SheetModeState = {
   isOpen: boolean
@@ -61,7 +62,7 @@ const Page = () => {
 
   const fieldsWithDivisionDropdown = useMemo(() => {
     const divisionOptions =
-      divisions?.data?.map((division) => ({
+      divisions?.data?.map((division: DivisionEntity) => ({
         label: division.legalName,
         value: division.id.toString()
       })) || []
@@ -75,8 +76,8 @@ const Page = () => {
 
   const enhancedLedgerData = useMemo(() => {
     if (!ledgers || !divisions) return []
-    const divisionMap = new Map(
-      divisions?.data?.map((division) => [division.id, division])
+    const divisionMap: Map<string, DivisionEntity> = new Map(
+      divisions?.data?.map((division: DivisionEntity) => [division.id, division])
     )
     return ledgers?.data?.map((ledger: Ledger) => ({
       ...ledger,

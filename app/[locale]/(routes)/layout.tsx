@@ -26,10 +26,11 @@ export default function RootLayout({
           <Header />
           
           <div className="w-full p-8">
-            <Suspense
-              children={children}
-              fallback={<Skeleton className="h-[80px] w-full flex align-middle items-center" />}
-            />
+            {children}
+            {/*<Suspense*/}
+            {/*  children={children}*/}
+            {/*  fallback={<Skeleton className="h-[80px] w-full flex align-middle items-center" />}*/}
+            {/*/>*/}
           </div>
         </div>
         <Toaster />
