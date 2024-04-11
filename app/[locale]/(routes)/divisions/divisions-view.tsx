@@ -1,6 +1,6 @@
 'use client'
 
-import { DivisionEntity } from '@/entities/divisions/DivisionEntity'
+import { DivisionEntity } from '@/entities/DivisionEntity'
 import { DataTable } from '@/components/DataTable'
 import { getDivisionsColumns } from '@/[locale]/(routes)/divisions/divisions-columns'
 import { NoResource } from '@/components/NoResource'
@@ -16,7 +16,6 @@ import { getDivisionsFormFields } from '@/[locale]/(routes)/divisions/divisions-
 import { z } from 'zod'
 import countriesJson from '@/contries.json'
 import { toast } from '@/components/ui/use-toast'
-import { Button } from '@/components/ui/button/button'
 
 
 export type DivisionsViewProps = {
@@ -44,7 +43,7 @@ export default function DivisionsView({ divisionsData }: DivisionsViewProps) {
     const t = useTranslations('divisions')
     const [countries, setCountries] = useState<Country[]>(countriesJson)
     const [statesOptions, setStatesOptions] = useState<State[]>([])
-    const formFields: any = getDivisionsFormFields(useTranslations('divisions'))
+    const formFields: any = getDivisionsFormFields(t)
     const divisions = useDivisions()
     
     
@@ -122,12 +121,10 @@ export default function DivisionsView({ divisionsData }: DivisionsViewProps) {
         handleOpenEditSheet,
         handleOpenViewSheet,
         handleOpenDeleteSheet
-    })
+    }, t)
     
     
     const [isDialogOpen, setIsDialogOpen] = useState(false)
-    
-    
     const [currentDivisionForDeletion, setCurrentDivisionForDeletion] = useState<DivisionEntity | undefined>(undefined)
     
     

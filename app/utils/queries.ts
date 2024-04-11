@@ -13,6 +13,6 @@ export const useDivisions = () => {
 export const useLedgers = () => {
   return useQuery({
     queryKey: ['ledgers'],
-    queryFn: getLedgers
+    queryFn: getLedgers,
   })
 }

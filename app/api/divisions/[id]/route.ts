@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { DivisionRepository } from '@/repositories/divisions/DivisionRepository'
-import { DivisionAPIAdapter } from '@/adapters/divisions/DivisionAPIAdapter'
-import DivisionsUseCases from '@/useCases/divisions/DivisionsUseCases'
+import { DivisionAPIAdapter } from '@/adapters/DivisionAPIAdapter'
+import DivisionsUseCases from '@/useCases/DivisionsUseCases'
 
-const divisionsAdapter: DivisionRepository = new DivisionAPIAdapter()
-const divisionsUseCases = new DivisionsUseCases(divisionsAdapter)
-
+const divisionsUseCases = new DivisionsUseCases(new DivisionAPIAdapter())
 
 export async function GET({ params }: { params: { id: string } }) {
     const divisions = await divisionsUseCases.getDivisionByIdUseCases(params.id)
@@ -14,14 +11,14 @@ export async function GET({ params }: { params: { id: string } }) {
 
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
     const body = await request.json()
-    const division = await divisionsAdapter.updateDivision(params.id, body)
+    const division = await divisionsUseCases.updateDivisionUseCases(params.id, body)
     
-    return NextResponse.json({ division })
+    return NextResponse.json({ message: 'Division updated!' })
 }
 
 export async function DELETE(request: Request, { params }: { params: { id: string } }) {
     const data = await divisionsUseCases.deleteDivisionUseCases(params.id)
     
-    return NextResponse.json(data)
+    return NextResponse.json({ message: 'Division deleted!' })
 }
 

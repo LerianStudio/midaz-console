@@ -33,13 +33,13 @@ export function getDivisionsFormFields(t: any) {
             name: 'address.country',
             label: t('formFields.country.name'),
             placeholder: t('formFields.country.placeholder'),
-            options: []
+     
         },
         {
             name: 'address.state',
             label: t('formFields.state.name'),
             placeholder: t('formFields.state.placeholder'),
-            options: []
+       
         },
         {
             name: 'address.city',

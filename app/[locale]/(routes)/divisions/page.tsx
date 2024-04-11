@@ -3,7 +3,7 @@ import { getTranslations } from 'next-intl/server'
 import DivisionsView from '@/[locale]/(routes)/divisions/divisions-view'
 
 
-export default async function Divisions(){
+export default async function Page(){
   const t = await getTranslations('divisions')
   
   return (

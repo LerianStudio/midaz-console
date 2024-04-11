@@ -5,24 +5,23 @@ import React from 'react'
 import { truncateString } from '@/helpers'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
-import { DivisionType } from '@/types/DivisionsType'
-import { useTranslations } from 'next-intl'
 import { useToast } from '@/components/ui/use-toast'
+import { LedgerEntity } from '@/entities/LedgerEntity'
 
 
-export type DivisionColumnsEvents = {
+export type LedgersColumnsEvents = {
     handleClickId?: (id: string) => void
     handleClickLegalDocument?: (document: string) => void
-    handleOpenEditSheet: (divisionData: DivisionType) => void
-    handleOpenViewSheet: (divisionData: DivisionType) => void
-    handleOpenDeleteSheet: (divisionData: DivisionType) => void
+    handleOpenEditSheet: (ledgersData: LedgerEntity) => void
+    handleOpenViewSheet: (ledgersData: LedgerEntity) => void
+    handleOpenDeleteSheet: (ledgersData: LedgerEntity) => void
 }
 
 type ColumnRow = {
-    row: Row<DivisionType>
+    row: Row<LedgerEntity>
 }
 
-export const getDivisionsColumns = (divisionsEvents: DivisionColumnsEvents, t: any) => {
+export const getLedgersColumns = (ledgersEvents: LedgersColumnsEvents, t: any) => {
     const { toast } = useToast()
     
     const translateHeader = (itemNamespace: string) => {
@@ -52,10 +51,9 @@ export const getDivisionsColumns = (divisionsEvents: DivisionColumnsEvents, t: a
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <p
-                                    onClick={
-                                        () => handleCopyToClipboard(id, 'copyId')
-                                    }
+                                <p onClick={
+                                    () => handleCopyToClipboard(id, 'copyId')
+                                }
                                 >
                                     {displayId}
                                 </p>
@@ -71,28 +69,22 @@ export const getDivisionsColumns = (divisionsEvents: DivisionColumnsEvents, t: a
         },
         
         {
-            accessorKey: 'doingBusinessAs',
+            accessorKey: 'name',
             header: translateHeader('name'),
             cell: ({ row }: ColumnRow) => {
                 const nameToDisplay =
-                    row.original.doingBusinessAs || row.original.legalName
+                    row.original.name || row.original.name
                 return <p>{nameToDisplay}</p>
             }
         },
         
         {
-            accessorKey: 'legalDocument',
-            header: translateHeader('legalDocument'),
+            accessorKey: 'divisionName',
+            header: translateHeader('divisionName'),
             cell: ({ row }: ColumnRow) => {
-                const legalDocument = row.original.legalDocument
+                const legalDocument = row.original.divisionName || 'No Division'
                 return (
-                    <p
-                        onClick={
-                            () => handleCopyToClipboard(legalDocument, 'copyLegalDocument')
-                        }
-                    >
-                        {legalDocument}
-                    </p>
+                    <p>{legalDocument}</p>
                 )
             }
         },
@@ -109,7 +101,7 @@ export const getDivisionsColumns = (divisionsEvents: DivisionColumnsEvents, t: a
                 <div className="flex pl-3">
                     <Pencil
                         className="h-4 w-4 cursor-pointer"
-                        onClick={() => divisionsEvents.handleOpenEditSheet(row.original)}
+                        onClick={() => ledgersEvents.handleOpenEditSheet(row.original)}
                     />
                 </div>
             )
@@ -122,7 +114,7 @@ export const getDivisionsColumns = (divisionsEvents: DivisionColumnsEvents, t: a
                 <div className="flex pl-4">
                     <Trash2
                         className="h-4 w-4 cursor-pointer"
-                        onClick={() => divisionsEvents.handleOpenDeleteSheet(row.original)}
+                        onClick={() => ledgersEvents.handleOpenDeleteSheet(row.original)}
                     />
                 </div>
             )
@@ -134,7 +126,7 @@ export const getDivisionsColumns = (divisionsEvents: DivisionColumnsEvents, t: a
                 <div className="flex pl-4">
                     <MoreHorizontal
                         className="h-4 w-4 cursor-pointer"
-                        onClick={() => divisionsEvents.handleOpenViewSheet(row.original)}
+                        onClick={() => ledgersEvents.handleOpenViewSheet(row.original)}
                     />
                 </div>
             )

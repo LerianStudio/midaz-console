@@ -1,19 +1,18 @@
-import { NextResponse } from 'next/server'
-import { DivisionRepository } from '@/repositories/divisions/DivisionRepository'
-import { DivisionAPIAdapter } from '@/adapters/divisions/DivisionAPIAdapter'
-import DivisionsUseCases from '@/useCases/divisions/DivisionsUseCases'
+import { NextRequest, NextResponse } from 'next/server'
+import { DivisionAPIAdapter } from '@/adapters/DivisionAPIAdapter'
+import DivisionsUseCases from '@/useCases/DivisionsUseCases'
 
-const divisionsAdapter: DivisionRepository = new DivisionAPIAdapter()
-const divisionsUseCases = new DivisionsUseCases(divisionsAdapter)
-
+const divisionsUseCases = new DivisionsUseCases(new DivisionAPIAdapter())
 
 export async function GET() {
-  const divisions = await divisionsUseCases.listDivisionsUseCases()
-  
-  return NextResponse.json(divisions)
+    const divisions = await divisionsUseCases.listDivisionsUseCases()
+    
+    return NextResponse.json(divisions)
 }
 
-export async function POST({ body }: any) {
-  await divisionsAdapter.createDivision(body)
-  return NextResponse.json({ message: 'Division created' })
+export async function POST(request: NextRequest) {
+    const body = await request.json()
+    await divisionsUseCases.createDivisionUseCases(body)
+    
+    return NextResponse.json({ message: 'Division created' })
 }
