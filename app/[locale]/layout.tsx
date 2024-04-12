@@ -17,7 +17,7 @@ export default function RootLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body className={inter.className} >
+      <body className={inter.className}>
         <QueryProvider>
           <NextIntlClientProvider locale={locale} messages={messages}>
             {children}

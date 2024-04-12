@@ -59,7 +59,7 @@ const SettingsDialog = ({ open, setOpen }: Props) => {
         <DialogFooter>
           <Button
             type="submit"
-            className="bg-sunglow-300 hover:bg-sunglow-300/70 text-black"
+            className="bg-sunglow-300 text-black hover:bg-sunglow-300/70"
           >
             {t('btnText')}
           </Button>

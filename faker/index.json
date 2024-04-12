@@ -2,8 +2,8 @@
   "divisions": [
     {
       "id": "30182626-577b-4557-a979-95c143744cae",
-      "legalName": "Black Rock LLC",
-      "doingBusinessAs": "Black Rock",
+      "legalName": "Elon Moskão",
+      "doingBusinessAs": "Elon Musk",
       "legalDocument": "1234556623",
       "address": {
         "line1": "447, Broadway",
@@ -72,9 +72,7 @@
       "defaultTimezone": "America/New_York",
       "defaultCurrency": "USD",
       "defaultHolidayList": null,
-      "instruments": [
-        "7079bef9-efc0-4fc8-ab0a-776e4b3f70ff"
-      ],
+      "instruments": ["7079bef9-efc0-4fc8-ab0a-776e4b3f70ff"],
       "metadata": {
         "officeAddress": "123 Broadway",
         "generalManager": "Larry Fink"
