@@ -9,8 +9,8 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { Skeleton } from '@/components/ui/skeleton'
 
 export default function RootLayout({
-                                     children
-                                   }: Readonly<{
+  children
+}: Readonly<{
   children: React.ReactNode
 }>) {
   return (
@@ -24,7 +24,7 @@ export default function RootLayout({
         <Sidebar />
         <div className="flex w-full flex-col">
           <Header />
-          
+
           <div className="w-full p-8">
             {children}
             {/*<Suspense*/}
@@ -41,7 +41,7 @@ export default function RootLayout({
 
 export async function generateMetadata(props: {}): Promise<Metadata> {
   const { title, icons, description } = await getMetadata()
-  
+
   return {
     title: title,
     icons: icons,

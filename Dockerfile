@@ -16,6 +16,9 @@ COPY . .
 # Build app
 RUN npm run build
 
+# Execute local json-server
+RUN npm run json-server
+
 # Expose the port the app runs on
 EXPOSE 3000
 

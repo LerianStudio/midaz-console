@@ -1,22 +1,35 @@
 'use client'
 
-import { ColumnDef, flexRender, getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table'
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  useReactTable
+} from '@tanstack/react-table'
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table'
 import { Button } from '@/components/ui/button/button'
 
 import React from 'react'
 import { useTranslations } from 'next-intl'
 
 interface DataTableProps<TData, TValue> {
-  columns: (ColumnDef<TData, TValue>[])
+  columns: ColumnDef<TData, TValue>[]
   data: TData[]
 }
 
 export function DataTable<TData, TValue>({
-                                           columns,
-                                           data
-                                         }: DataTableProps<TData, TValue>) {
+  columns,
+  data
+}: DataTableProps<TData, TValue>) {
   const t = useTranslations('dataTable')
   const table = useReactTable({
     data,
@@ -24,7 +37,7 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel()
   })
-  
+
   return (
     <div>
       <div className="rounded-md border">
@@ -38,9 +51,9 @@ export function DataTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   )
                 })}

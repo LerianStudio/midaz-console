@@ -1,5 +1,3 @@
-
-
 export type DivisionEntity = {
   id: string
   doingBusinessAs: string
