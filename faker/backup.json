@@ -89,9 +89,7 @@
         "defaultTimezone": "America/New_York",
         "defaultCurrency": "USD",
         "defaultHolidayList": null,
-        "instruments": [
-          "7079bef9-efc0-4fc8-ab0a-776e4b3f70ff"
-        ],
+        "instruments": ["7079bef9-efc0-4fc8-ab0a-776e4b3f70ff"],
         "metadata": {
           "officeAddress": "123 Broadway",
           "generalManager": "Larry Fink"

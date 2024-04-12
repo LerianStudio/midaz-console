@@ -5,14 +5,13 @@ import { getDivisions } from '@/client/divisionsClient'
 export const useDivisions = () => {
   return useQuery({
     queryKey: ['divisions'],
-    queryFn: getDivisions,
-    
+    queryFn: getDivisions
   })
 }
 
 export const useLedgers = () => {
   return useQuery({
     queryKey: ['ledgers'],
-    queryFn: getLedgers,
+    queryFn: getLedgers
   })
 }

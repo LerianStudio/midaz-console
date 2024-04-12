@@ -43,11 +43,7 @@ const sidebarVariants = {
     }
   },
   closed: {
-    width: '72px',
-    transition: {
-      duration: 0.5,
-      ease: 'easeInOut'
-    }
+    width: '72px'
   }
 }
 
@@ -227,7 +223,7 @@ export const Sidebar = () => {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger
-                  className="hover:bg-sunglow-400 group rounded-sm bg-transparent p-2 text-shadcn-400"
+                  className="group rounded-sm bg-transparent p-2 text-shadcn-400 hover:bg-sunglow-400"
                   onClick={toggleSidebar}
                 >
                   <PanelRightClose className="group-hover:text-white dark:text-white" />
