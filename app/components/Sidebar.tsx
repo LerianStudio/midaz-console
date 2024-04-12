@@ -2,33 +2,58 @@
 
 import { Nav } from '@/components/ui/nav'
 import { useEffect, useState } from 'react'
-import LeriandLogoWhite from '../../public/images/leriand-logo-white.png'
-import HamburguerLeft from '../../public/images/hamburguer-left.svg'
-import HamburguerRight from '../../public/images/hamburguer-right.svg'
+import LeriandLogo from '../../public/svg/brand-leriand-symbol.svg'
+import FullLeriandLogo from '../../public/svg/full-brand-leriand.svg'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { Category } from '@/types/SidebarType'
 import {
-  ArrowRightLeftIcon,
-  BadgeCheck,
-  BarChartHorizontalBig,
+  ArrowLeftRight,
+  BarChartHorizontal,
+  Briefcase,
   Building2,
-  CircleUserRound,
   Coins,
   DatabaseZap,
+  DollarSign,
   Gauge,
+  Group,
   Home,
-  Menu,
-  Receipt,
-  UserRound,
-  UsersRound,
-  WalletCards
+  PanelLeftClose,
+  PanelRightClose,
+  ShieldCheck,
+  UserCircle,
+  UsersRound
 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { Button } from './ui/button/button'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from './ui/tooltip'
+import { AnimatePresence, motion } from 'framer-motion'
+
+const sidebarVariants = {
+  opened: {
+    width: 'auto',
+    transition: {
+      duration: 0.1,
+      ease: 'easeInOut'
+    }
+  },
+  closed: {
+    width: '72px',
+    transition: {
+      duration: 0.5,
+      ease: 'easeInOut'
+    }
+  }
+}
 
 export const Sidebar = () => {
   const t = useTranslations('sideNavBar')
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(false)
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(true)
   const [isMobileWidth, setIsMobileWidth] = useState(false)
 
   const categories: Category[] = [
@@ -60,13 +85,13 @@ export const Sidebar = () => {
         {
           title: t('organization.team'),
           href: '/team',
-          icon: CircleUserRound,
+          icon: UsersRound,
           variant: 'default'
         },
         {
           title: t('organization.billing'),
           href: '/billing',
-          icon: Receipt,
+          icon: DollarSign,
           variant: 'default'
         }
       ]
@@ -77,7 +102,7 @@ export const Sidebar = () => {
         {
           title: t('portfolio.accountTypes'),
           href: '/accounts-type',
-          icon: UserRound,
+          icon: UserCircle,
           variant: 'default'
         },
         {
@@ -89,13 +114,13 @@ export const Sidebar = () => {
         {
           title: t('portfolio.portfolios'),
           href: '/portfolios',
-          icon: WalletCards,
+          icon: Briefcase,
           variant: 'default'
         },
         {
           title: t('portfolio.accounts'),
           href: '/accounts',
-          icon: UsersRound,
+          icon: Group,
           variant: 'default'
         }
       ]
@@ -106,7 +131,7 @@ export const Sidebar = () => {
         {
           title: t('transactions.transactions'),
           href: '/transactions',
-          icon: ArrowRightLeftIcon,
+          icon: ArrowLeftRight,
           variant: 'default'
         },
         {
@@ -118,7 +143,7 @@ export const Sidebar = () => {
         {
           title: t('transactions.governance'),
           href: '/governance',
-          icon: BadgeCheck,
+          icon: ShieldCheck,
           variant: 'default'
         }
       ]
@@ -129,7 +154,7 @@ export const Sidebar = () => {
         {
           title: t('reports.runReport'),
           href: '/reports',
-          icon: BarChartHorizontalBig,
+          icon: BarChartHorizontal,
           variant: 'default'
         }
       ]
@@ -152,33 +177,69 @@ export const Sidebar = () => {
   }
 
   return (
-    <div className="relative bg-[#F5F5F5] pb-10 dark:bg-codGray-950">
-      <div
-        className={cn(
-          'flex h-14 items-center justify-between bg-lemon-400 px-4 dark:bg-codGray-950',
-          {
-            'justify-center': isCollapsed
-          }
-        )}
+    <AnimatePresence>
+      <motion.div
+        className="relative flex flex-col justify-between shadow-sidebar dark:bg-codGray-950"
+        variants={sidebarVariants}
+        initial="closed"
+        animate={isCollapsed ? 'closed' : 'opened'}
       >
-        {!isCollapsed && (
-          <Image
-            src={LeriandLogoWhite}
-            alt="Leriand Logo"
-            height={37}
-            width={37}
-          />
+        <div>
+          <div
+            data-collapsed={isCollapsed}
+            className={cn(
+              'flex h-[60px] items-center justify-center border-b bg-white p-3 dark:bg-codGray-950'
+            )}
+          >
+            {!isCollapsed && (
+              <Image src={FullLeriandLogo} alt="Leriand Logo" height={36} />
+            )}
+
+            {isCollapsed && (
+              <Image src={LeriandLogo} alt="Leriand Logo" height={36} />
+            )}
+          </div>
+
+          <div className="px-3">
+            <Nav
+              isCollapsed={isMobileWidth ? true : isCollapsed}
+              categories={categories}
+            />
+          </div>
+        </div>
+
+        {!isMobileWidth && !isCollapsed && (
+          <div className="flex w-full border-shadcn-200">
+            <div className="absolute bottom-4 right-[-20px]">
+              <Button
+                variant="white"
+                className="rounded-full border border-shadcn-200 p-2"
+                onClick={toggleSidebar}
+              >
+                <PanelLeftClose className="text-shadcn-400" />
+              </Button>
+            </div>
+          </div>
         )}
 
-        <Menu className="cursor-pointer" onClick={toggleSidebar} />
-      </div>
-
-      <div className="px-5">
-        <Nav
-          isCollapsed={isMobileWidth ? true : isCollapsed}
-          categories={categories}
-        />
-      </div>
-    </div>
+        {!isMobileWidth && isCollapsed && (
+          <div className="flex w-full justify-center border-t border-shadcn-200 p-4">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger
+                  className="hover:bg-sunglow-400 group rounded-sm bg-transparent p-2 text-shadcn-400"
+                  onClick={toggleSidebar}
+                >
+                  <PanelRightClose className="group-hover:text-white dark:text-white" />
+                </TooltipTrigger>
+                <TooltipContent side="right">
+                  <p>{t('expand')}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        )}
+      </motion.div>
+    </AnimatePresence>
   )
 }
