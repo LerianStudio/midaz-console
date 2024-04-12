@@ -3,4 +3,8 @@ export type DivisionEntity = {
   doingBusinessAs: string
   legalName: string
   legalDocument: string
+  address: {
+    country: string
+    state: string
+  }
 }

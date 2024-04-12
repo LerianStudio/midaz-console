@@ -4,7 +4,7 @@ import { DivisionEntity } from '@/entities/DivisionEntity'
 import { DataTable } from '@/components/DataTable'
 import { getDivisionsColumns } from '@/[locale]/(routes)/divisions/divisions-columns'
 import { NoResource } from '@/components/NoResource'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DialogDemo } from '@/components/Dialog'
 import { useTranslations } from 'next-intl'
 import { useDivisions } from '@/utils/queries'
@@ -18,7 +18,7 @@ import { SheetDemo } from '@/components/Sheet'
 import { formSchema } from '@/[locale]/(routes)/divisions/divisions-form-schema'
 import { getDivisionsFormFields } from '@/[locale]/(routes)/divisions/divisions-form-fields'
 import { z } from 'zod'
-import countriesJson from '@/contries.json'
+import countriesJson from '@/countries.json'
 import { toast } from '@/components/ui/use-toast'
 
 export type DivisionsViewProps = {
@@ -67,12 +67,21 @@ const DivisionsView = () => {
     setSheetMode({ isOpen: true, mode: 'create', divisionData: null })
   }
 
+  useEffect(() => {
+    if (sheetMode.isOpen && sheetMode.divisionData?.address?.country) {
+      handleCountryChange(sheetMode.divisionData.address.country)
+    }
+  }, [sheetMode.isOpen, sheetMode.divisionData?.address?.country])
+
   const handleOpenEditSheet = (divisionData: DivisionEntity) => {
-    setSheetMode({ isOpen: true, mode: 'edit', divisionData: divisionData })
+    setSheetMode({ isOpen: true, mode: 'edit', divisionData })
+    if (divisionData.address && divisionData.address.country) {
+      handleCountryChange(divisionData.address.country)
+    }
   }
 
   const handleOpenViewSheet = (divisionData: DivisionEntity) => {
-    setSheetMode({ isOpen: true, mode: 'view', divisionData: divisionData })
+    setSheetMode({ isOpen: true, mode: 'view', divisionData })
   }
 
   const getSheetTitle = (
@@ -234,7 +243,7 @@ const DivisionsView = () => {
           countries={countries}
           statesOptions={statesOptions}
           onCountryChange={handleCountryChange}
-        ></SheetDemo>
+        />
       </div>
     )
   }
