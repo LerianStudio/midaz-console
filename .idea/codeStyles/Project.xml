@@ -1,5 +1,6 @@
 <component name="ProjectCodeStyleConfiguration">
   <code_scheme name="Project" version="173">
+    <option name="AUTODETECT_INDENTS" value="false" />
     <DBN-PSQL>
       <case-options enabled="true">
         <option name="KEYWORD_CASE" value="lower" />
@@ -55,6 +56,13 @@
       <option name="INTERPOLATION_NEW_LINE_AFTER_START_DELIMITER" value="false" />
       <option name="INTERPOLATION_NEW_LINE_BEFORE_END_DELIMITER" value="false" />
     </VueCodeStyleSettings>
+    <codeStyleSettings language="CSS">
+      <indentOptions>
+        <option name="INDENT_SIZE" value="2" />
+        <option name="CONTINUATION_INDENT_SIZE" value="4" />
+        <option name="TAB_SIZE" value="2" />
+      </indentOptions>
+    </codeStyleSettings>
     <codeStyleSettings language="HTML">
       <option name="SOFT_MARGINS" value="80" />
       <indentOptions>
@@ -81,9 +89,6 @@
     <codeStyleSettings language="TypeScript">
       <option name="SOFT_MARGINS" value="80" />
       <indentOptions>
-        <option name="INDENT_SIZE" value="2" />
-        <option name="CONTINUATION_INDENT_SIZE" value="2" />
-        <option name="TAB_SIZE" value="2" />
         <option name="KEEP_INDENTS_ON_EMPTY_LINES" value="true" />
       </indentOptions>
     </codeStyleSettings>
