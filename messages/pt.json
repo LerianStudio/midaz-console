@@ -9,6 +9,7 @@
   },
   "sideNavBar": {
     "home": "Início",
+    "expand": "Ampliar",
     "organization": {
       "title": "Organização",
       "divisions": "Divisions",

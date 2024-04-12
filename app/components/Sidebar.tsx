@@ -12,15 +12,12 @@ import {
   BarChartHorizontal,
   Briefcase,
   Building2,
-  ChevronLeft,
-  ChevronRight,
   Coins,
   DatabaseZap,
   DollarSign,
   Gauge,
   Group,
   Home,
-  Menu,
   PanelLeftClose,
   PanelRightClose,
   ShieldCheck,
@@ -35,6 +32,24 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from './ui/tooltip'
+import { AnimatePresence, motion } from 'framer-motion'
+
+const sidebarVariants = {
+  opened: {
+    width: 'auto',
+    transition: {
+      duration: 0.1,
+      ease: 'easeInOut'
+    }
+  },
+  closed: {
+    width: '72px',
+    transition: {
+      duration: 0.5,
+      ease: 'easeInOut'
+    }
+  }
+}
 
 export const Sidebar = () => {
   const t = useTranslations('sideNavBar')
@@ -162,71 +177,69 @@ export const Sidebar = () => {
   }
 
   return (
-    <div className="shadow-sidebar relative flex flex-col justify-between bg-white dark:bg-codGray-950">
-      <div>
-        <div
-          data-collapsed={isCollapsed}
-          className={cn(
-            'bg-energyYellow-300 flex items-center justify-between p-3 data-[collapsed=false]:pl-4 dark:bg-codGray-950',
-            {
-              'justify-center': isCollapsed
-            }
-          )}
-        >
-          {!isCollapsed && (
-            <Image src={FullLeriandLogo} alt="Leriand Logo" height={36} />
-          )}
+    <AnimatePresence>
+      <motion.div
+        className="relative flex flex-col justify-between shadow-sidebar dark:bg-codGray-950"
+        variants={sidebarVariants}
+        initial="closed"
+        animate={isCollapsed ? 'closed' : 'opened'}
+      >
+        <div>
+          <div
+            data-collapsed={isCollapsed}
+            className={cn(
+              'flex h-[60px] items-center justify-center border-b bg-white p-3 dark:bg-codGray-950'
+            )}
+          >
+            {!isCollapsed && (
+              <Image src={FullLeriandLogo} alt="Leriand Logo" height={36} />
+            )}
 
-          {isCollapsed && (
-            <Image src={LeriandLogo} alt="Leriand Logo" height={36} />
-          )}
-        </div>
+            {isCollapsed && (
+              <Image src={LeriandLogo} alt="Leriand Logo" height={36} />
+            )}
+          </div>
 
-        <div className="px-3">
-          <Nav
-            isCollapsed={isMobileWidth ? true : isCollapsed}
-            categories={categories}
-          />
-        </div>
-      </div>
-
-      {!isMobileWidth && !isCollapsed && (
-        <div className="border-shadcn-200 flex w-full">
-          <div className="absolute bottom-4 right-[-20px] ">
-            <Button
-              variant="white"
-              className="border-shadcn-200 rounded-full border p-2"
-              onClick={toggleSidebar}
-            >
-              {isCollapsed ? <PanelRightClose /> : <PanelLeftClose />}
-            </Button>
+          <div className="px-3">
+            <Nav
+              isCollapsed={isMobileWidth ? true : isCollapsed}
+              categories={categories}
+            />
           </div>
         </div>
-      )}
 
-      {!isMobileWidth && isCollapsed && (
-        <div className="border-shadcn-200 flex w-full justify-center border-t p-4">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <Button
-                  className="hover:bg-shadcn-300 group bg-transparent p-2 text-black"
+        {!isMobileWidth && !isCollapsed && (
+          <div className="flex w-full border-shadcn-200">
+            <div className="absolute bottom-4 right-[-20px]">
+              <Button
+                variant="white"
+                className="rounded-full border border-shadcn-200 p-2"
+                onClick={toggleSidebar}
+              >
+                <PanelLeftClose className="text-shadcn-400" />
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {!isMobileWidth && isCollapsed && (
+          <div className="flex w-full justify-center border-t border-shadcn-200 p-4">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger
+                  className="hover:bg-sunglow-400 group rounded-sm bg-transparent p-2 text-shadcn-400"
                   onClick={toggleSidebar}
                 >
-                  {isCollapsed ? (
-                    <PanelRightClose className="group-hover:text-white" />
-                  ) : (
-                    <PanelLeftClose />
-                  )}
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                <p>Ampliar</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
-      )}
-    </div>
+                  <PanelRightClose className="group-hover:text-white dark:text-white" />
+                </TooltipTrigger>
+                <TooltipContent side="right">
+                  <p>{t('expand')}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        )}
+      </motion.div>
+    </AnimatePresence>
   )
 }

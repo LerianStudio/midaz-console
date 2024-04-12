@@ -10,7 +10,8 @@ const buttonVariants = cva(
     variants: {
       variant: {
         white: 'bg-white text-black font-semibold',
-        activeLink: 'bg-shadcn-100 text-shadcn-400 font-medium',
+        activeLink: 'bg-shadcn-100 text-black font-medium',
+        hoverLink: 'hover:bg-sunglow-400 text-black',
         default: 'bg-primary text-primary-foreground hover:bg-primary/90',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
