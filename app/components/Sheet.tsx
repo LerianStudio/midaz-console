@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button/button'
-
 import { Input } from '@/components/ui/input/input'
 import {
   Sheet,
@@ -36,14 +35,14 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { truncateString } from '@/helpers'
-import { Country, State } from '@/[locale]/(routes)/divisions/page'
+import { Country, State } from '@/[locale]/(routes)/divisions/divisions-view'
 
 type Option = {
   value: string
   label?: string
 }
 
-type FormFieldConfig = {
+export type FormFieldConfig = {
   name: string
   label: string
   placeholder?: string
@@ -320,7 +319,7 @@ export function SheetDemo({
               <SheetClose asChild>
                 <Button
                   type={isViewMode ? 'button' : 'submit'}
-                  className="bg-sunglow-300 hover:bg-sunglow-300/70 mt-5 text-black"
+                  className="bg-lemon-400 hover:bg-lemon-400/70 mt-5 text-black"
                 >
                   {buttonText}
                 </Button>
