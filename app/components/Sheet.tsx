@@ -130,30 +130,41 @@ export function SheetDemo({
           <FormLabel className="col-span-2 text-right text-sm font-semibold">
             {field.label}
           </FormLabel>
-          <FormControl className="col-span-4">
-            <Select
-              onValueChange={(value) => {
-                onCountryChange(value)
-                form.setValue('address.country', value, {
-                  shouldValidate: true
-                })
-              }}
-              value={form.watch('address.country')}
-            >
-              <SelectTrigger className="w-[233px]">
-                <SelectValue>
-                  {form.getValues('address.country') || 'Choose a country'}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                {countries.map((country) => (
-                  <SelectItem key={country.name} value={country.code2}>
-                    {country.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </FormControl>
+          {isViewMode ? (
+            <Input
+              readOnly={isViewMode}
+              className="col-span-4"
+              autoFocus={false}
+              value={form.getValues('address.country') || 'Choose a country'}
+            />
+          ) : (
+            <FormControl className="col-span-4">
+              <Select
+                onValueChange={(value) => {
+                  if (!isViewMode) {
+                    onCountryChange(value)
+                    form.setValue('address.country', value, {
+                      shouldValidate: true
+                    })
+                  }
+                }}
+                value={form.watch('address.country')}
+              >
+                <SelectTrigger className="w-[233px]">
+                  <SelectValue>
+                    {form.getValues('address.country') || 'Choose a country'}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {countries.map((country) => (
+                    <SelectItem key={country.name} value={country.code2}>
+                      {country.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FormControl>
+          )}
         </div>
       )
     }
@@ -170,29 +181,38 @@ export function SheetDemo({
           <FormLabel className="col-span-2 text-right text-sm font-semibold">
             {field.label}
           </FormLabel>
-          <FormControl className="col-span-4">
-            <Select
-              onValueChange={(value) => {
-                form.setValue('address.state', value, {
-                  shouldValidate: true
-                })
-              }}
-              value={form.watch('address.state')}
-            >
-              <SelectTrigger className="w-[233px]">
-                <SelectValue>
-                  {form.getValues('address.state') || 'Choose a state'}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                {statesOptions.map((state) => (
-                  <SelectItem key={state.name} value={state.code}>
-                    {state.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </FormControl>
+          {isViewMode ? (
+            <Input
+              readOnly={isViewMode}
+              className="col-span-4"
+              autoFocus={false}
+              value={form.getValues('address.state') || 'Choose a state'}
+            />
+          ) : (
+            <FormControl className="col-span-4">
+              <Select
+                onValueChange={(value) => {
+                  form.setValue('address.state', value, {
+                    shouldValidate: true
+                  })
+                }}
+                value={form.watch('address.state')}
+              >
+                <SelectTrigger className="w-[233px]">
+                  <SelectValue>
+                    {form.getValues('address.state') || 'Choose a state'}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {statesOptions.map((state) => (
+                    <SelectItem key={state.name} value={state.code}>
+                      {state.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FormControl>
+          )}
         </div>
       )
     }
@@ -319,7 +339,7 @@ export function SheetDemo({
               <SheetClose asChild>
                 <Button
                   type={isViewMode ? 'button' : 'submit'}
-                  className="mt-5 bg-lemon-400 text-black hover:bg-lemon-400/70"
+                  className="mt-5 bg-sunglow-400 text-black hover:bg-sunglow-400/70"
                 >
                   {buttonText}
                 </Button>

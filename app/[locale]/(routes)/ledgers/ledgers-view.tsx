@@ -7,7 +7,7 @@ import { useMemo, useState } from 'react'
 import countriesJson from '@/contries.json'
 import { useDivisions, useLedgers } from '@/utils/queries'
 import { getLedgersFormFields } from '@/[locale]/(routes)/ledgers/ledgers-form-fields'
-import { LedgersColumns } from '@/[locale]/(routes)/ledgers/ledgers-columns'
+import { getLedgersColumns } from '@/[locale]/(routes)/ledgers/ledgers-columns'
 import { Skeleton } from '@/components/ui/skeleton'
 import { z } from 'zod'
 import { formSchema } from '@/[locale]/(routes)/ledgers/ledgers-form-schema'
@@ -17,10 +17,6 @@ import { DataTable } from '@/components/DataTable'
 import { NoResource } from '@/components/NoResource'
 import { DialogDemo } from '@/components/Dialog'
 import { SheetDemo } from '@/components/Sheet'
-
-export type LedgersViewProps = {
-  ledgersData?: LedgerEntity[]
-}
 
 type SheetModeState = {
   isOpen: boolean
@@ -39,7 +35,7 @@ export type State = {
   name: string
 }
 
-export default function LedgersView() {
+const LedgersView = () => {
   const t = useTranslations('ledgers')
   const [countries, setCountries] = useState<Country[]>(countriesJson)
   const [statesOptions, setStatesOptions] = useState<State[]>([])
@@ -141,7 +137,13 @@ export default function LedgersView() {
     return t('sheetView.button')
   }
 
-  const ledgersColumns = LedgersColumns(
+  const handleOpenDeleteSheet = (ledgerData: LedgerEntity) => {
+    console.log('handleOpenDeleteSheet', ledgerData)
+    setCurrentLedgerForDeletion(ledgerData)
+    setIsDialogOpen(true)
+  }
+
+  const ledgersColumns = getLedgersColumns(
     {
       handleOpenEditSheet,
       handleOpenViewSheet,
@@ -155,13 +157,7 @@ export default function LedgersView() {
     LedgerEntity | undefined
   >(undefined)
 
-  function handleOpenDeleteSheet(ledgerData: LedgerEntity) {
-    console.log('handleOpenDeleteSheet', ledgerData)
-    setCurrentLedgerForDeletion(ledgerData)
-    setIsDialogOpen(true)
-  }
-
-  async function handleConfirmDeleteLedger() {
+  const handleConfirmDeleteLedger = async () => {
     try {
       if (!currentLedgerForDeletion) {
         showToastError('No ledger selected for deletion')
@@ -212,7 +208,7 @@ export default function LedgersView() {
     })
   }
 
-  function getLoadingSkeleton() {
+  const getLoadingSkeleton = () => {
     return <Skeleton className="h-[80px] w-full" />
   }
 
@@ -227,7 +223,7 @@ export default function LedgersView() {
     }
   }
 
-  function getLedgersComponents() {
+  const getLedgersComponents = () => {
     return (
       <div>
         {ledgers.data && ledgers.data.length > 0 && (
@@ -281,3 +277,5 @@ export default function LedgersView() {
     </div>
   )
 }
+
+export default LedgersView

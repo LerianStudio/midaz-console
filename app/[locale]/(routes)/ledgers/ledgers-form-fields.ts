@@ -1,4 +1,4 @@
-export function getLedgersFormFields(t: any) {
+export const getLedgersFormFields = (t: any) => {
   return [
     {
       name: 'id',

@@ -10,23 +10,22 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
-import { DivisionType } from '@/types/DivisionsType'
-import { useTranslations } from 'next-intl'
 import { useToast } from '@/components/ui/use-toast'
+import { DivisionEntity } from '@/entities/DivisionEntity'
 
 export type DivisionColumnsEvents = {
   handleClickId?: (id: string) => void
   handleClickLegalDocument?: (document: string) => void
-  handleOpenEditSheet: (divisionData: DivisionType) => void
-  handleOpenViewSheet: (divisionData: DivisionType) => void
-  handleOpenDeleteSheet: (divisionData: DivisionType) => void
+  handleOpenEditSheet: (divisionData: DivisionEntity) => void
+  handleOpenViewSheet: (divisionData: DivisionEntity) => void
+  handleOpenDeleteSheet: (divisionData: DivisionEntity) => void
 }
 
 type ColumnRow = {
-  row: Row<DivisionType>
+  row: Row<DivisionEntity>
 }
 
-export const DivisionsColumns = (
+export const getDivisionsColumns = (
   divisionsEvents: DivisionColumnsEvents,
   t: any
 ) => {
@@ -143,3 +142,6 @@ export const DivisionsColumns = (
     }
   ]
 }
+
+
+

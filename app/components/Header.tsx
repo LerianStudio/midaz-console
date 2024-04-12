@@ -73,9 +73,9 @@ export const Header = () => {
   ]
 
   return (
-    <div className="flex h-14 w-full items-center justify-end gap-5 border-b bg-lemon-400 p-5 dark:bg-codGray-950">
+    <div className="flex h-[60px] w-full items-center justify-end gap-5 border-b bg-white p-5 dark:bg-codGray-950">
       <nav className="flex w-full items-center justify-end gap-3">
-        <ToggleMode />
+        {/* <ToggleMode /> */}
         <LocaleSwitcher />
       </nav>
       <DropdownMenu>

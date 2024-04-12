@@ -4,10 +4,7 @@ import DivisionsUseCases from '@/useCases/DivisionsUseCases'
 
 const divisionsUseCases = new DivisionsUseCases(new DivisionAPIAdapter())
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest,{ params }: { params: { id: string } }) {
   const divisions = await divisionsUseCases.getDivisionByIdUseCases(params.id)
   return NextResponse.json(divisions)
 }
@@ -33,3 +30,4 @@ export async function DELETE(
 
   return NextResponse.json({ message: 'Division deleted!' })
 }
+

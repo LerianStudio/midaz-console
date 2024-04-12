@@ -1,4 +1,4 @@
-export function getDivisionsFormFields(t: any) {
+export const getDivisionsFormFields = (t: any) => {
   return [
     {
       name: 'id',

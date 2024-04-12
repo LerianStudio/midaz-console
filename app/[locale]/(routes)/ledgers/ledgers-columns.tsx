@@ -25,7 +25,10 @@ type ColumnRow = {
   row: Row<LedgerEntity>
 }
 
-export const LedgersColumns = (ledgersEvents: LedgersColumnsEvents, t: any) => {
+export const getLedgersColumns = (
+  ledgersEvents: LedgersColumnsEvents,
+  t: any
+) => {
   const { toast } = useToast()
 
   const translateHeader = (itemNamespace: string) => {
@@ -130,3 +133,6 @@ export const LedgersColumns = (ledgersEvents: LedgersColumnsEvents, t: any) => {
     }
   ]
 }
+
+
+

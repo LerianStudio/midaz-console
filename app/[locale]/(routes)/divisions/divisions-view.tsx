@@ -2,9 +2,9 @@
 
 import { DivisionEntity } from '@/entities/DivisionEntity'
 import { DataTable } from '@/components/DataTable'
-import { DivisionsColumns } from '@/[locale]/(routes)/divisions/divisions-columns'
+import { getDivisionsColumns } from '@/[locale]/(routes)/divisions/divisions-columns'
 import { NoResource } from '@/components/NoResource'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DialogDemo } from '@/components/Dialog'
 import { useTranslations } from 'next-intl'
 import { useDivisions } from '@/utils/queries'
@@ -18,12 +18,9 @@ import { SheetDemo } from '@/components/Sheet'
 import { formSchema } from '@/[locale]/(routes)/divisions/divisions-form-schema'
 import { getDivisionsFormFields } from '@/[locale]/(routes)/divisions/divisions-form-fields'
 import { z } from 'zod'
-import countriesJson from '@/contries.json'
+import countriesJson from '@/countries.json'
 import { toast } from '@/components/ui/use-toast'
 
-export type DivisionsViewProps = {
-  divisionsData?: DivisionEntity[]
-}
 
 type SheetModeState = {
   isOpen: boolean
@@ -42,7 +39,7 @@ export type State = {
   name: string
 }
 
-export default function DivisionsView({ divisionsData }: DivisionsViewProps) {
+const DivisionsView = () => {
   const t = useTranslations('divisions')
   const [countries, setCountries] = useState<Country[]>(countriesJson)
   const [statesOptions, setStatesOptions] = useState<State[]>([])
@@ -67,12 +64,21 @@ export default function DivisionsView({ divisionsData }: DivisionsViewProps) {
     setSheetMode({ isOpen: true, mode: 'create', divisionData: null })
   }
 
+  useEffect(() => {
+    if (sheetMode.isOpen && sheetMode.divisionData?.address?.country) {
+      handleCountryChange(sheetMode.divisionData.address.country)
+    }
+  }, [sheetMode.isOpen, sheetMode.divisionData?.address?.country])
+
   const handleOpenEditSheet = (divisionData: DivisionEntity) => {
-    setSheetMode({ isOpen: true, mode: 'edit', divisionData: divisionData })
+    setSheetMode({ isOpen: true, mode: 'edit', divisionData })
+    if (divisionData.address && divisionData.address.country) {
+      handleCountryChange(divisionData.address.country)
+    }
   }
 
   const handleOpenViewSheet = (divisionData: DivisionEntity) => {
-    setSheetMode({ isOpen: true, mode: 'view', divisionData: divisionData })
+    setSheetMode({ isOpen: true, mode: 'view', divisionData })
   }
 
   const getSheetTitle = (
@@ -115,7 +121,12 @@ export default function DivisionsView({ divisionsData }: DivisionsViewProps) {
     return t('sheetView.button')
   }
 
-  const divisionsColumns = DivisionsColumns(
+  const handleOpenDeleteSheet = (divisionData: DivisionEntity) => {
+    setCurrentDivisionForDeletion(divisionData)
+    setIsDialogOpen(true)
+  }
+
+  const divisionsColumns = getDivisionsColumns(
     {
       handleOpenEditSheet,
       handleOpenViewSheet,
@@ -129,12 +140,7 @@ export default function DivisionsView({ divisionsData }: DivisionsViewProps) {
     DivisionEntity | undefined
   >(undefined)
 
-  function handleOpenDeleteSheet(divisionData: DivisionEntity) {
-    setCurrentDivisionForDeletion(divisionData)
-    setIsDialogOpen(true)
-  }
-
-  async function handleConfirmDeleteDivision() {
+  const handleConfirmDeleteDivision = async () => {
     if (currentDivisionForDeletion) {
       setIsDialogOpen(false)
       await deleteDivision(currentDivisionForDeletion.id)
@@ -142,7 +148,7 @@ export default function DivisionsView({ divisionsData }: DivisionsViewProps) {
     }
   }
 
-  function getLoadingSkeleton() {
+  const getLoadingSkeleton = () => {
     return <Skeleton className="h-[80px] w-full" />
   }
 
@@ -156,10 +162,7 @@ export default function DivisionsView({ divisionsData }: DivisionsViewProps) {
     }
   }
 
-  const updateDivisionData = async (
-    id: string,
-    values: z.infer<typeof formSchema>
-  ) => {
+  const updateDivisionData = async (values: z.infer<typeof formSchema>) => {
     if (!sheetMode.divisionData || !sheetMode.divisionData.id) {
       showToastError('Division ID not found')
       return
@@ -187,11 +190,11 @@ export default function DivisionsView({ divisionsData }: DivisionsViewProps) {
     }
 
     if (sheetMode.mode === 'edit') {
-      await updateDivisionData(sheetMode.divisionData?.id as string, values)
+      await updateDivisionData(values)
     }
   }
 
-  function getDivisionsComponents() {
+  const getDivisionsComponents = () => {
     return (
       <div>
         {divisions.data && divisions.data.length > 0 && (
@@ -237,7 +240,7 @@ export default function DivisionsView({ divisionsData }: DivisionsViewProps) {
           countries={countries}
           statesOptions={statesOptions}
           onCountryChange={handleCountryChange}
-        ></SheetDemo>
+        />
       </div>
     )
   }
@@ -248,3 +251,5 @@ export default function DivisionsView({ divisionsData }: DivisionsViewProps) {
     </div>
   )
 }
+
+export default DivisionsView

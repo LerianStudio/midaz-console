@@ -1,10 +1,7 @@
 import type { StorybookConfig } from '@storybook/nextjs'
 
 const config: StorybookConfig = {
-  stories: [
-    '../app/**/*.mdx',
-    '../app/**/*.stories.@(js|jsx|mjs|ts|tsx)'
-  ],
+  stories: ['../app/**/*.mdx', '../app/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   addons: [
     '@storybook/addon-onboarding',
     '@storybook/addon-links',
@@ -12,7 +9,7 @@ const config: StorybookConfig = {
     '@chromatic-com/storybook',
     '@storybook/addon-interactions',
     '@storybook/addon-styling-webpack',
-    
+
     {
       name: '@storybook/addon-styling-webpack',
       options: {
@@ -25,24 +22,22 @@ const config: StorybookConfig = {
               {
                 loader: require.resolve('css-loader'),
                 options: {
-                  importLoaders: 1,
-                },
+                  importLoaders: 1
+                }
               },
               {
                 loader: require.resolve('postcss-loader'),
                 options: {
-                  implementation: require.resolve('postcss'),
-                },
-              },
-            ],
-          },
-        ],
-      },
-    },
-
+                  implementation: require.resolve('postcss')
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
   ],
-  
-  
+
   framework: {
     name: '@storybook/nextjs',
     options: {}
@@ -51,8 +46,6 @@ const config: StorybookConfig = {
     autodocs: 'tag'
   },
   staticDirs: ['..\\public'],
-  build: {
-  
-  }
+  build: {}
 }
 export default config

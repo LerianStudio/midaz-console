@@ -9,6 +9,7 @@
   },
   "sideNavBar": {
     "home": "Início",
+    "expand": "Ampliar",
     "organization": {
       "title": "Organização",
       "divisions": "Divisions",
@@ -19,7 +20,7 @@
     "portfolio": {
       "title": "Portfólio",
       "accountTypes": "Tipos de conta",
-      "assets": "Ativos",
+      "assets": "Instrumentos",
       "portfolios": "Portfólios",
       "accounts": "Contas"
     },

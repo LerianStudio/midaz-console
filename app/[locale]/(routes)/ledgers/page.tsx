@@ -2,7 +2,7 @@ import { PageTitle } from '@/components/PageTitle'
 import { getTranslations } from 'next-intl/server'
 import LedgersView from '@/[locale]/(routes)/ledgers/ledgers-view'
 
-export default async function Page() {
+const Page = async () => {
   const t = await getTranslations('ledgers')
 
   return (
@@ -15,3 +15,5 @@ export default async function Page() {
     </div>
   )
 }
+
+export default Page

@@ -8,7 +8,7 @@ const nextConfig = {
     fetches: {
       fullUrl: true
     }
-  },
+  }
 }
 
 export default withNextIntl(nextConfig)
