@@ -21,9 +21,6 @@ import { z } from 'zod'
 import countriesJson from '@/countries.json'
 import { toast } from '@/components/ui/use-toast'
 
-export type DivisionsViewProps = {
-  divisionsData?: DivisionEntity[]
-}
 
 type SheetModeState = {
   isOpen: boolean

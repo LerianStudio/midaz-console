@@ -1,0 +1,15 @@
+FROM node:18
+
+WORKDIR /usr/src/app
+
+ARG PORT_BUILD=3001
+
+ENV PORT=$PORT_BUILD
+
+EXPOSE $PORT_BUILD
+
+COPY ./faker/index.json .
+
+RUN npm install json-server
+
+ENTRYPOINT npx json-server --watch index.json --port $PORT

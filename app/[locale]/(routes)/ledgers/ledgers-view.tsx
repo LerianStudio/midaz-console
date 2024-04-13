@@ -18,10 +18,6 @@ import { NoResource } from '@/components/NoResource'
 import { DialogDemo } from '@/components/Dialog'
 import { SheetDemo } from '@/components/Sheet'
 
-export type LedgersViewProps = {
-  ledgersData?: LedgerEntity[]
-}
-
 type SheetModeState = {
   isOpen: boolean
   mode: 'create' | 'edit' | 'view'
