@@ -12,7 +12,7 @@ const nextConfig = {
   env: {
     MIDAZ_BASE_PATH: process.env.MIDAZ_BASE_PATH,
     MIDAZ_CONSOLE_BASE_PATH: process.env.MIDAZ_CONSOLE_BASE_PATH
-  }
+  },
 }
 
 export default withNextIntl(nextConfig)
