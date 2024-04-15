@@ -12,7 +12,7 @@ permissions:
 jobs:
   console_pipeline:
     runs-on: ubuntu-latest
-    name: Docker pipeline
+    name: Docker pipeline - Console
     steps:
       - uses: actions/checkout@v3
       - uses: LerianStudio/midaz-github-actions-docker-pipeline@main
@@ -28,7 +28,7 @@ jobs:
           slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
   json_server_pipeline:
     runs-on: ubuntu-latest
-    name: Docker pipeline
+    name: Docker pipeline - Json server
     steps:
       - uses: actions/checkout@v3
       - uses: LerianStudio/midaz-github-actions-docker-pipeline@main
