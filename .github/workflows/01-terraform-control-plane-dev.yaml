@@ -15,13 +15,13 @@ jobs:
     name: Docker pipeline
     steps:
       - uses: actions/checkout@v3
-      - uses: LeriandStudio/midaz-github-actions-docker-pipeline@main
+      - uses: LerianStudio/midaz-github-actions-docker-pipeline@main
         with:
           app-name: 'midaz-console'
           argo-cd-sync: false
           aws-region: 'us-east-2'
           k8s-manifest-repo-name: 'midaz-kubernetes-manifests'
-          k8s-manifest-repo-url: 'github.com/LeriandStudio/midaz-kubernetes-manifests.git'
+          k8s-manifest-repo-url: 'github.com/LerianStudio/midaz-kubernetes-manifests.git'
           role-session-name: 'GITHUB-OIDC-ECR-SESSION'
           role-to-assume: ${{ secrets.AWS_GH_OICD_TERRAFORM_ROLE }}
           service-github-token: ${{ secrets.SERVICE_USER_TOKEN }}
@@ -31,13 +31,13 @@ jobs:
     name: Docker pipeline
     steps:
       - uses: actions/checkout@v3
-      - uses: LeriandStudio/midaz-github-actions-docker-pipeline@main
+      - uses: LerianStudio/midaz-github-actions-docker-pipeline@main
         with:
           app-name: 'midaz-json-server'
           argo-cd-sync: false
           aws-region: 'us-east-2'
           k8s-manifest-repo-name: 'midaz-kubernetes-manifests'
-          k8s-manifest-repo-url: 'github.com/LeriandStudio/midaz-kubernetes-manifests.git'
+          k8s-manifest-repo-url: 'github.com/LerianStudio/midaz-kubernetes-manifests.git'
           role-session-name: 'GITHUB-OIDC-ECR-SESSION'
           role-to-assume: ${{ secrets.AWS_GH_OICD_TERRAFORM_ROLE }}
           service-github-token: ${{ secrets.SERVICE_USER_TOKEN }}
