@@ -14,12 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     name: Docker pipeline - Console
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: LerianStudio/midaz-github-actions-docker-pipeline@main
         with:
           app-name: 'midaz-console'
           argo-cd-sync: false
           aws-region: 'us-east-2'
+          dockerfile-name: 'Dockerfile'
           k8s-manifest-repo-name: 'midaz-kubernetes-manifests'
           k8s-manifest-repo-url: 'github.com/LerianStudio/midaz-kubernetes-manifests.git'
           role-session-name: 'GITHUB-OIDC-ECR-SESSION'
@@ -30,12 +31,13 @@ jobs:
     runs-on: ubuntu-latest
     name: Docker pipeline - Json server
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: LerianStudio/midaz-github-actions-docker-pipeline@main
         with:
           app-name: 'midaz-json-server'
           argo-cd-sync: false
           aws-region: 'us-east-2'
+          dockerfile-name: 'Dockerfile-json-server'
           k8s-manifest-repo-name: 'midaz-kubernetes-manifests'
           k8s-manifest-repo-url: 'github.com/LerianStudio/midaz-kubernetes-manifests.git'
           role-session-name: 'GITHUB-OIDC-ECR-SESSION'
