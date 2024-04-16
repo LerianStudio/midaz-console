@@ -10,8 +10,8 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
-import { useToast } from '@/components/ui/use-toast'
 import { LedgerEntity } from '@/entities/LedgerEntity'
+import useCustomToast from '@/hooks/useCustomToast'
 
 export type LedgersColumnsEvents = {
   handleClickId?: (id: string) => void
@@ -29,7 +29,7 @@ export const getLedgersColumns = (
   ledgersEvents: LedgersColumnsEvents,
   t: any
 ) => {
-  const { toast } = useToast()
+  const { showInfo } = useCustomToast()
 
   const translateHeader = (itemNamespace: string) => {
     return t(`columnsTable.${itemNamespace}`)
@@ -41,10 +41,7 @@ export const getLedgersColumns = (
 
   const handleCopyToClipboard = (value: string, itemNamespace: string) => {
     navigator.clipboard.writeText(value)
-
-    toast({
-      description: translateToast(itemNamespace)
-    })
+    showInfo(translateToast(itemNamespace))
   }
 
   return [
@@ -133,6 +130,3 @@ export const getLedgersColumns = (
     }
   ]
 }
-
-
-

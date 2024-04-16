@@ -12,11 +12,11 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { z } from 'zod'
 import { formSchema } from '@/[locale]/(routes)/ledgers/ledgers-form-schema'
 import { createLedger, deleteLedger, updateLedger } from '@/client/ledgerClient'
-import { toast } from '@/components/ui/use-toast'
 import { DataTable } from '@/components/DataTable'
 import { NoResource } from '@/components/NoResource'
 import { DialogDemo } from '@/components/Dialog'
 import { SheetDemo } from '@/components/Sheet'
+import useCustomToast from '@/hooks/useCustomToast'
 
 type SheetModeState = {
   isOpen: boolean
@@ -37,6 +37,7 @@ export type State = {
 
 const LedgersView = () => {
   const t = useTranslations('ledgers')
+  const { showSuccess, showError } = useCustomToast()
   const [countries, setCountries] = useState<Country[]>(countriesJson)
   const [statesOptions, setStatesOptions] = useState<State[]>([])
   const formFields: any = getLedgersFormFields(t)
@@ -157,38 +158,45 @@ const LedgersView = () => {
     LedgerEntity | undefined
   >(undefined)
 
+  const deleteLedgerAndRefetch = async (ledgerId: string) => {
+    await deleteLedger(ledgerId)
+    await ledgers.refetch()
+  }
+
+  const createLedgerAndRefetch = async (values: LedgerEntity) => {
+    await createLedger(values)
+    await ledgers.refetch()
+  }
+
   const handleConfirmDeleteLedger = async () => {
-    try {
-      if (!currentLedgerForDeletion) {
-        showToastError('No ledger selected for deletion')
-        return
-      }
+    if (!currentLedgerForDeletion) {
+      showError(t('toast.ledgerNotFound'))
+      return
+    }
 
+    try {
       setIsDialogOpen(false)
-      await deleteLedger(currentLedgerForDeletion.id)
-      await ledgers.refetch()
-    } catch (error: any) {
-      console.error(error)
-      showToastError(error.message)
+      await deleteLedgerAndRefetch(currentLedgerForDeletion.id)
+      showSuccess(t('toast.ledgerDeleted'))
+    } catch (error) {
+      const err = error as Error
+      showError(t('toast.ledgerDeleteFailed', { message: err.message }))
     }
   }
 
-  const createLedgerData = async (values: z.infer<typeof formSchema>) => {
+  const createLedgerData = async (values: LedgerEntity) => {
     try {
-      await createLedger(values as any)
-      await ledgers.refetch()
-    } catch (error: any) {
-      console.error(error)
-      showToastError(error.message)
+      await createLedgerAndRefetch(values)
+    } catch (error) {
+      const err = error as Error
+      console.error(err)
+      showError(err.message)
     }
   }
 
-  const updateLedgerData = async (
-    id: string,
-    values: z.infer<typeof formSchema>
-  ) => {
+  const updateLedgerData = async (id: string, values: LedgerEntity) => {
     if (!sheetMode.ledgersData || !sheetMode.ledgersData.id) {
-      showToastError('Division ID not found')
+      showError('Division ID not found')
       return
     }
     try {
@@ -196,23 +204,15 @@ const LedgersView = () => {
       await ledgers.refetch()
     } catch (error: any) {
       console.error(error)
-      showToastError(error.message)
+      showError(error.message)
     }
-  }
-
-  const showToastError = (errorMessage: any) => {
-    toast({
-      description: errorMessage,
-      itemType: 'error',
-      title: 'Error'
-    })
   }
 
   const getLoadingSkeleton = () => {
     return <Skeleton className="h-[80px] w-full" />
   }
 
-  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+  const handleSubmit = async (values: LedgerEntity) => {
     console.log('handleSubmit', values)
     if (sheetMode.mode === 'create') {
       await createLedgerData(values)
