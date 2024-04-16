@@ -19,8 +19,7 @@ import { formSchema } from '@/[locale]/(routes)/divisions/divisions-form-schema'
 import { getDivisionsFormFields } from '@/[locale]/(routes)/divisions/divisions-form-fields'
 import { z } from 'zod'
 import countriesJson from '@/countries.json'
-import { toast } from '@/components/ui/use-toast'
-
+import useCustomToast from '@/hooks/useCustomToast'
 
 type SheetModeState = {
   isOpen: boolean
@@ -41,6 +40,7 @@ export type State = {
 
 const DivisionsView = () => {
   const t = useTranslations('divisions')
+  const { showSuccess, showError } = useCustomToast()
   const [countries, setCountries] = useState<Country[]>(countriesJson)
   const [statesOptions, setStatesOptions] = useState<State[]>([])
   const formFields: any = getDivisionsFormFields(t)
@@ -140,11 +140,31 @@ const DivisionsView = () => {
     DivisionEntity | undefined
   >(undefined)
 
+  const deleteDivisionAndRefetch = async (divisionId: string) => {
+    await deleteDivision(divisionId)
+    await divisions.refetch()
+  }
+
+  const createDivisionAndRefetch = async (
+    values: z.infer<typeof formSchema>
+  ) => {
+    await createDivision(values)
+    await divisions.refetch()
+  }
+
   const handleConfirmDeleteDivision = async () => {
-    if (currentDivisionForDeletion) {
+    if (!currentDivisionForDeletion) {
+      showError('Division not found')
+      return
+    }
+
+    try {
       setIsDialogOpen(false)
-      await deleteDivision(currentDivisionForDeletion.id)
-      await divisions.refetch()
+      await deleteDivisionAndRefetch(currentDivisionForDeletion.id)
+      showSuccess('Division deleted successfully')
+    } catch (error) {
+      const err = error as Error
+      showError(`Failed to delete division: ${err.message}`)
     }
   }
 
@@ -154,17 +174,17 @@ const DivisionsView = () => {
 
   const createDivisionData = async (values: z.infer<typeof formSchema>) => {
     try {
-      await createDivision(values)
-      await divisions.refetch()
-    } catch (error: any) {
-      console.error(error)
-      showToastError(error.message)
+      await createDivisionAndRefetch(values)
+      showSuccess('Division created successfully')
+    } catch (error) {
+      const err = error as Error
+      showError(`Failed to create division: ${err.message}`)
     }
   }
 
   const updateDivisionData = async (values: z.infer<typeof formSchema>) => {
     if (!sheetMode.divisionData || !sheetMode.divisionData.id) {
-      showToastError('Division ID not found')
+      showError('Division ID not found')
       return
     }
     try {
@@ -172,16 +192,8 @@ const DivisionsView = () => {
       await divisions.refetch()
     } catch (error: any) {
       console.error(error)
-      showToastError(error.message)
+      showError(error.message)
     }
-  }
-
-  const showToastError = (errorMessage: any) => {
-    toast({
-      description: errorMessage,
-      itemType: 'error',
-      title: 'Error'
-    })
   }
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
