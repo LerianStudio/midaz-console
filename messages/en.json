@@ -2,10 +2,19 @@
   "auth": {
     "titleLogin": "Welcome again!"
   },
-  "popoverHeader": {
-    "settings": "Settings",
-    "support": "Support",
-    "logout": "Logout"
+  "header": {
+    "userDropdown": {
+      "profile": "Profile",
+      "support": "Support",
+      "logout": "Logout"
+    },
+    "settingsDropdown": {
+      "settings": "Settings",
+      "organizations": "Organizations",
+      "system": "System",
+      "security": "Security",
+      "language": "Language"
+    }
   },
   "sideNavBar": {
     "home": "Home",
@@ -172,7 +181,7 @@
       "delete": "Delete"
     },
     "sheetCreate": {
-      "title": "Create Ledger",
+      "title": "New Ledger",
       "description": "Fill in the data of the Ledger you wish to create.",
       "button": "Create"
     },
@@ -188,20 +197,9 @@
     },
     "formFields": {
       "name": {
-        "name": "Name",
-        "placeholder": "Name"
-      },
-      "divisionName": {
-        "name": "Division name",
-        "placeholder": "Division name"
-      },
-      "defaultTimezone": {
-        "name": "Time Zone",
-        "placeholder": "Time Zone (optional)"
-      },
-      "defaultCurrency": {
-        "name": "Default Currency",
-        "placeholder": "Default Currency (optional)"
+        "name": "Ledger Name",
+        "placeholder": "Type...",
+        "description": "The public name of your Ledger"
       }
     },
     "dialog": {
