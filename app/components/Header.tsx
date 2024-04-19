@@ -1,13 +1,8 @@
 'use client'
 
-import { ReactElement } from 'react'
-import { Separator } from './ui/separator'
 import { SettingsDropdown } from './SettingsDropdown'
 import { UserDropdown } from './UserDropdown'
-
-export type MenuEntry =
-  | { type: 'action'; label: string; action: () => void; icon?: ReactElement }
-  | { type: 'separator' }
+import { Separator } from './ui/separator'
 
 export const Header = () => {
   return (
