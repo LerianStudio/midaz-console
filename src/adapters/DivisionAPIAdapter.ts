@@ -1,8 +1,9 @@
 import { DivisionRepository } from '@/repositories/DivisionRepository'
-import { DivisionEntity } from '@/entities/DivisionEntity'
+import { DivisionEntity } from '@/domain/entities/DivisionEntity'
+import process from 'node:process'
 
 export class DivisionAPIAdapter implements DivisionRepository {
-  baseUrl = 'http://localhost:3001/divisions'
+  readonly baseUrl: string = process.env.MIDAZ_BASE_PATH + '/divisions'
 
   async create(division: DivisionEntity): Promise<void> {
     const response = await fetch(this.baseUrl, {

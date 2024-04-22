@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/tooltip'
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 import { useToast } from '@/components/ui/use-toast'
-import { LedgerEntity } from '@/entities/LedgerEntity'
+import { LedgerEntity } from '@/domain/entities/LedgerEntity'
 
 export type LedgersColumnsEvents = {
   handleClickId?: (id: string) => void
@@ -133,6 +133,3 @@ export const getLedgersColumns = (
     }
   ]
 }
-
-
-

@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/tooltip'
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 import { useToast } from '@/components/ui/use-toast'
-import { DivisionEntity } from '@/entities/DivisionEntity'
+import { DivisionEntity } from '@/domain/entities/DivisionEntity'
 
 export type DivisionColumnsEvents = {
   handleClickId?: (id: string) => void
@@ -142,6 +142,3 @@ export const getDivisionsColumns = (
     }
   ]
 }
-
-
-

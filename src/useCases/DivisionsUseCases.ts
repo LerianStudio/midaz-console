@@ -1,4 +1,4 @@
-import { DivisionEntity } from '@/entities/DivisionEntity'
+import { DivisionEntity } from '@/domain/entities/DivisionEntity'
 import { DivisionRepository } from '@/repositories/DivisionRepository'
 
 type IDivisionsUseCases = {
@@ -8,7 +8,7 @@ type IDivisionsUseCases = {
   createDivisionUseCases: (division: DivisionEntity) => Promise<void>
 }
 
-export class DivisionsUseCases implements IDivisionsUseCases {
+class DivisionsUseCases implements IDivisionsUseCases {
   constructor(private readonly divisionsAdapter: DivisionRepository) {}
 
   async listDivisionsUseCases(): Promise<DivisionEntity[]> {

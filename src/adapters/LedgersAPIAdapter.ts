@@ -1,8 +1,9 @@
-import { LedgerEntity } from '@/entities/LedgerEntity'
+import { LedgerEntity } from '@/domain/entities/LedgerEntity'
 import { LedgerRepository } from '@/repositories/LedgerRepository'
+import * as process from 'node:process'
 
 export class LedgersAPIAdapter implements LedgerRepository {
-  readonly baseUrl = 'http://localhost:3001/ledgers'
+  readonly baseUrl: string = process.env.MIDAZ_BASE_PATH + '/ledgers'
 
   async create(ledger: LedgerEntity): Promise<void> {
     const response = await fetch(this.baseUrl, {

@@ -1,7 +1,7 @@
 'use client'
 
-import { DivisionEntity } from '@/entities/DivisionEntity'
-import { LedgerEntity } from '@/entities/LedgerEntity'
+import { DivisionEntity } from '@/domain/entities/DivisionEntity'
+import { LedgerEntity } from '@/domain/entities/LedgerEntity'
 import { useTranslations } from 'next-intl'
 import { useMemo, useState } from 'react'
 import countriesJson from '@/contries.json'
