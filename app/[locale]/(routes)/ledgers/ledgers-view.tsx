@@ -1,15 +1,12 @@
 'use client'
 
-import { DivisionEntity } from '@/entities/DivisionEntity'
 import { LedgerEntity } from '@/entities/LedgerEntity'
 import { useTranslations } from 'next-intl'
-import { useMemo, useState } from 'react'
-import countriesJson from '@/contries.json'
-import { useDivisions, useLedgers } from '@/utils/queries'
+import { useState } from 'react'
+import { useLedgers } from '@/utils/queries'
 import { getLedgersFormFields } from '@/[locale]/(routes)/ledgers/ledgers-form-fields'
 import { getLedgersColumns } from '@/[locale]/(routes)/ledgers/ledgers-columns'
 import { Skeleton } from '@/components/ui/skeleton'
-import { z } from 'zod'
 import { formSchema } from '@/[locale]/(routes)/ledgers/ledgers-form-schema'
 import { createLedger, deleteLedger, updateLedger } from '@/client/ledgerClient'
 import { DataTable } from '@/components/DataTable'
@@ -24,61 +21,11 @@ type SheetModeState = {
   ledgersData: LedgerEntity | null
 }
 
-export type Country = {
-  code2: string
-  name: string
-  states: State[]
-}
-
-export type State = {
-  code: string
-  name: string
-}
-
 const LedgersView = () => {
   const t = useTranslations('ledgers')
   const { showSuccess, showError } = useCustomToast()
-  const [countries, setCountries] = useState<Country[]>(countriesJson)
-  const [statesOptions, setStatesOptions] = useState<State[]>([])
   const formFields: any = getLedgersFormFields(t)
-  const divisions = useDivisions()
   const ledgers = useLedgers()
-
-  const handleCountryChange = (selectedCountry: string) => {
-    const currentCountry = countries.find(
-      (country) => country.code2 === selectedCountry
-    )
-    const newStatesOptions = currentCountry?.states || []
-    setStatesOptions(newStatesOptions)
-  }
-
-  const fieldsWithDivisionDropdown = useMemo(() => {
-    const divisionOptions =
-      divisions?.data?.map((division: DivisionEntity) => ({
-        label: division.legalName,
-        value: division.id.toString()
-      })) || []
-    return formFields.map((field: any) => {
-      if (field.name === 'divisionName') {
-        return { ...field, options: divisionOptions }
-      }
-      return field
-    })
-  }, [divisions])
-
-  const enhancedLedgerData = useMemo(() => {
-    if (!ledgers || !divisions) return []
-    const divisionMap: Map<string, DivisionEntity> = new Map(
-      divisions?.data?.map((division: DivisionEntity) => [
-        division.id,
-        division
-      ])
-    )
-    return ledgers?.data?.map((ledger: LedgerEntity) => ({
-      ...ledger,
-      divisionName: divisionMap.get(ledger.divisionId)?.legalName || '-'
-    }))
-  }, [ledgers, divisions])
 
   const [sheetMode, setSheetMode] = useState<SheetModeState>({
     isOpen: false,
@@ -139,7 +86,6 @@ const LedgersView = () => {
   }
 
   const handleOpenDeleteSheet = (ledgerData: LedgerEntity) => {
-    console.log('handleOpenDeleteSheet', ledgerData)
     setCurrentLedgerForDeletion(ledgerData)
     setIsDialogOpen(true)
   }
@@ -168,6 +114,14 @@ const LedgersView = () => {
     await ledgers.refetch()
   }
 
+  const updateLedgerDataAndRefetch = async (
+    sheetId: string,
+    values: LedgerEntity
+  ) => {
+    await updateLedger(sheetId, values)
+    await ledgers.refetch()
+  }
+
   const handleConfirmDeleteLedger = async () => {
     if (!currentLedgerForDeletion) {
       showError(t('toast.ledgerNotFound'))
@@ -177,7 +131,9 @@ const LedgersView = () => {
     try {
       setIsDialogOpen(false)
       await deleteLedgerAndRefetch(currentLedgerForDeletion.id)
-      showSuccess(t('toast.ledgerDeleted'))
+      showSuccess(
+        t('toast.ledgerDeleted', { ledgerName: currentLedgerForDeletion.name })
+      )
     } catch (error) {
       const err = error as Error
       showError(t('toast.ledgerDeleteFailed', { message: err.message }))
@@ -187,6 +143,7 @@ const LedgersView = () => {
   const createLedgerData = async (values: LedgerEntity) => {
     try {
       await createLedgerAndRefetch(values)
+      showSuccess(t('toast.ledgerCreated', { ledgerName: values.name }))
     } catch (error) {
       const err = error as Error
       console.error(err)
@@ -199,12 +156,13 @@ const LedgersView = () => {
       showError('Division ID not found')
       return
     }
+
     try {
-      await updateLedger(sheetMode.ledgersData.id, values as any)
-      await ledgers.refetch()
-    } catch (error: any) {
-      console.error(error)
-      showError(error.message)
+      await updateLedgerDataAndRefetch(sheetMode.ledgersData.id, values as any)
+      showSuccess(t('toast.ledgerUpdated', { ledgerName: values.name }))
+    } catch (error) {
+      const err = error as Error
+      showError(err.message)
     }
   }
 
@@ -213,7 +171,6 @@ const LedgersView = () => {
   }
 
   const handleSubmit = async (values: LedgerEntity) => {
-    console.log('handleSubmit', values)
     if (sheetMode.mode === 'create') {
       await createLedgerData(values)
     }
@@ -227,7 +184,7 @@ const LedgersView = () => {
     return (
       <div>
         {ledgers.data && ledgers.data.length > 0 && (
-          <DataTable columns={ledgersColumns} data={enhancedLedgerData} />
+          <DataTable columns={ledgersColumns} data={ledgers.data} />
         )}
 
         {!ledgers.data ||
@@ -256,24 +213,21 @@ const LedgersView = () => {
           open={sheetMode.isOpen}
           setOpen={(isOpen) => setSheetMode({ ...sheetMode, isOpen })}
           mode={sheetMode.mode}
-          fields={fieldsWithDivisionDropdown}
+          fields={formFields}
           formSchema={formSchema}
           title={getSheetTitle(sheetMode.mode, sheetMode.ledgersData, t)}
           description={getSheetDescription(sheetMode.mode, t)}
           buttonText={getSheetButtonText(sheetMode.mode, t)}
           data={sheetMode.ledgersData}
           onSubmit={handleSubmit}
-          countries={countries}
-          statesOptions={statesOptions}
-          onCountryChange={handleCountryChange}
-        ></SheetDemo>
+        />
       </div>
     )
   }
 
   return (
     <div className="mt-10">
-      {divisions.isLoading ? getLoadingSkeleton() : getLedgersComponents()}
+      {ledgers.isLoading ? getLoadingSkeleton() : getLedgersComponents()}
     </div>
   )
 }

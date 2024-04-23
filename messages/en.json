@@ -208,9 +208,11 @@
       "deleteBtnText": "Delete Ledger"
     },
     "toast": {
+      "ledgerCreated": "Ledger {ledgerName} created successfully",
+      "ledgerUpdated": "Ledger {ledgerName} updated successfully",
       "ledgerDeletedFailed": "Failed to delete ledger",
       "ledgerNotFound": "No ledger selected for deletion",
-      "ledgerDeleted": "Ledger deleted",
+      "ledgerDeleted": "Ledger {ledgerName} deleted",
       "copyId": "The id has been copied to your clipboard."
     }
   },
