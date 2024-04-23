@@ -2,11 +2,11 @@ import React, { Suspense } from 'react'
 import '@/globals.css'
 import { Header } from '@/components/Header'
 import { Metadata } from 'next'
-import { Toaster } from '@/components/ui/toaster'
 import { Sidebar } from '@/components/Sidebar'
 import { getMetadata } from '../../../services/configs/applicationConfig'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Toaster } from 'react-hot-toast'
 
 export default function RootLayout({
   children
@@ -33,7 +33,7 @@ export default function RootLayout({
           {/*/>*/}
         </div>
       </div>
-      <Toaster />
+      <Toaster position="top-right" containerStyle={{ top: 60 }} />
     </div>
     // </ThemeProvider>
   )

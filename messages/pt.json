@@ -208,9 +208,11 @@
       "deleteBtnText": "Apagar Ledger"
     },
     "toast": {
+      "ledgerCreated": "Ledger {ledgerName} criado com sucesso",
+      "ledgerUpdated": "Ledger {ledgerName} atualizado com sucesso",
       "ledgerDeleteFailed": "Falha ao deletar ledger",
       "ledgerNotFound": "Nenhum ledger selecionado para exclusão",
-      "ledgerDeleted": "Ledger deletado",
+      "ledgerDeleted": "Ledger {ledgerName} deletado",
       "copyId": "O id foi copiado para sua área de transferência."
     }
   },

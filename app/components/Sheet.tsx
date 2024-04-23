@@ -11,16 +11,17 @@ import {
 } from '@/components/ui/sheet'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel
 } from '@/components/ui/form'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   Select,
   SelectContent,
@@ -36,6 +37,10 @@ import {
 } from '@/components/ui/tooltip'
 import { truncateString } from '@/helpers'
 import { Country, State } from '@/[locale]/(routes)/divisions/divisions-view'
+import { Switch } from './ui/switch'
+import { Label } from './ui/label/label'
+import { Plus, Trash } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 type Option = {
   value: string
@@ -46,6 +51,7 @@ export type FormFieldConfig = {
   name: string
   label: string
   placeholder?: string
+  description?: string
   options: []
 }
 
@@ -60,9 +66,19 @@ type SheetDemoProps = {
   mode: string
   data: any
   buttonText: string
-  countries: Country[]
-  statesOptions: State[]
-  onCountryChange: (countryCode: string) => void
+  countries?: Country[]
+  statesOptions?: State[]
+  onCountryChange?: (countryCode: string) => void
+}
+
+type MetadataItem = {
+  id: string
+  key: string
+  value: string
+}
+
+type MetadataValues = {
+  metadata: MetadataItem[]
 }
 
 export function SheetDemo({
@@ -80,6 +96,9 @@ export function SheetDemo({
   statesOptions,
   onCountryChange
 }: SheetDemoProps) {
+  const [isSwitchOn, setSwitchOn] = useState(false)
+  const [currentMetadata, setCurrentMetadata] = useState({ key: '', value: '' })
+
   const isCreateMode = mode === 'create'
   const isEditMode = mode === 'edit'
   const isViewMode = mode === 'view'
@@ -95,10 +114,122 @@ export function SheetDemo({
       : fields.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {})
   }
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: getDefaultValues(isEditMode, isViewMode, data, fields)
   })
+
+  const { control } = form
+
+  const {
+    fields: metaFields,
+    append,
+    remove
+  } = useFieldArray<MetadataValues>({
+    control,
+    name: 'metadata'
+  })
+
+  const handleAddMetadata = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+
+    if (currentMetadata.key && currentMetadata.value) {
+      const newMetadataItem = {
+        ...currentMetadata,
+        id: Date.now().toString()
+      }
+
+      append(newMetadataItem)
+      setCurrentMetadata({ key: '', value: '' })
+    }
+  }
+
+  const handleMetadataChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: 'key' | 'value'
+  ) => {
+    setCurrentMetadata({
+      ...currentMetadata,
+      [field]: (e.target as HTMLInputElement).value
+    })
+  }
+
+  const renderMetadataFields = () => {
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="flex gap-5">
+          <div className="flex gap-2">
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="key">Chave</Label>
+              <Input
+                id="key"
+                value={currentMetadata.key}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleMetadataChange(e, 'key')
+                }
+                placeholder="Key"
+                className="h-9"
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="value">Valor</Label>
+              <Input
+                id="value"
+                value={currentMetadata.value}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleMetadataChange(e, 'value')
+                }
+                placeholder="Value"
+                className="h-9"
+              />
+            </div>
+          </div>
+
+          <Button
+            onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
+              handleAddMetadata(e)
+            }
+            className="h-9 w-9 self-end rounded-full bg-shadcn-600 disabled:bg-shadcn-200"
+            disabled={!currentMetadata.key || !currentMetadata.value}
+          >
+            <Plus
+              size={16}
+              className={cn(
+                'shrink-0',
+                !currentMetadata.key || !currentMetadata.value
+                  ? 'text-shadcn-400'
+                  : 'text-white'
+              )}
+            />
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
+  const renderPreviewMetadataFields = () => {
+    return metaFields.map((item, index) => (
+      <div key={item.id} className="mt-2 flex items-center justify-between">
+        <div className="flex w-full gap-5">
+          <div className="flex flex-1 gap-2">
+            <div className="flex h-9 flex-1 items-center rounded-md bg-shadcn-100 px-2">
+              {item.key}
+            </div>
+            <div className="flex h-9 flex-1 items-center rounded-md bg-shadcn-100 px-2">
+              {item.value}
+            </div>
+          </div>
+          <Button
+            onClick={() => remove(index)}
+            className="h-9 w-9 rounded-full border border-shadcn-200 bg-white"
+          >
+            <Trash size={16} className="shrink-0 text-black" />
+          </Button>
+        </div>
+      </div>
+    ))
+  }
 
   const shouldResetForm = (
     prevData: any,
@@ -126,19 +257,18 @@ export function SheetDemo({
   ) => {
     if (field.name === 'address.country') {
       return (
-        <div className="grid grid-cols-6 items-center gap-4" key={field.name}>
-          <FormLabel className="col-span-2 text-right text-sm font-semibold">
+        <div className="flex flex-col gap-2" key={field.name}>
+          <FormLabel className="text-sm font-semibold text-[#52525b]">
             {field.label}
           </FormLabel>
           {isViewMode ? (
             <Input
               readOnly={isViewMode}
-              className="col-span-4"
               autoFocus={false}
               value={form.getValues('address.country') || 'Choose a country'}
             />
           ) : (
-            <FormControl className="col-span-4">
+            <FormControl>
               <Select
                 onValueChange={(value) => {
                   if (!isViewMode) {
@@ -150,7 +280,7 @@ export function SheetDemo({
                 }}
                 value={form.watch('address.country')}
               >
-                <SelectTrigger className="w-[233px]">
+                <SelectTrigger>
                   <SelectValue>
                     {form.getValues('address.country') || 'Choose a country'}
                   </SelectValue>
@@ -177,19 +307,18 @@ export function SheetDemo({
   ) => {
     if (field.name === 'address.state') {
       return (
-        <div className="grid grid-cols-6 items-center gap-4" key={field.name}>
-          <FormLabel className="col-span-2 text-right text-sm font-semibold">
+        <div className="flex flex-col gap-2" key={field.name}>
+          <FormLabel className="text-sm font-semibold text-[#52525b]">
             {field.label}
           </FormLabel>
           {isViewMode ? (
             <Input
               readOnly={isViewMode}
-              className="col-span-4"
               autoFocus={false}
               value={form.getValues('address.state') || 'Choose a state'}
             />
           ) : (
-            <FormControl className="col-span-4">
+            <FormControl>
               <Select
                 onValueChange={(value) => {
                   form.setValue('address.state', value, {
@@ -198,7 +327,7 @@ export function SheetDemo({
                 }}
                 value={form.watch('address.state')}
               >
-                <SelectTrigger className="w-[233px]">
+                <SelectTrigger>
                   <SelectValue>
                     {form.getValues('address.state') || 'Choose a state'}
                   </SelectValue>
@@ -221,7 +350,7 @@ export function SheetDemo({
   const renderSelectField = (field: FormFieldConfig, form: any) => {
     return (
       <Select onValueChange={(value) => form.setValue(field.name, value)}>
-        <SelectTrigger className="w-[233px]">
+        <SelectTrigger>
           <SelectValue placeholder={data?.divisionName || ''} />
         </SelectTrigger>
         <SelectContent>
@@ -248,8 +377,8 @@ export function SheetDemo({
           name={field.name}
           render={({ field: renderField }) => (
             <FormItem>
-              <div className="grid grid-cols-6 items-center gap-4">
-                <FormLabel className="col-span-2 text-right text-sm font-semibold">
+              <div className="flex flex-col gap-2">
+                <FormLabel className="text-sm font-semibold text-[#52525b]">
                   {field.label}
                 </FormLabel>
                 <FormControl>
@@ -259,7 +388,7 @@ export function SheetDemo({
                     <Input
                       placeholder={field.placeholder || ''}
                       readOnly={isViewMode || field.name === 'id'}
-                      className="col-span-4"
+                      className="placeholder:text-shadcn-400"
                       autoFocus={false}
                       value={renderField.value ?? ''}
                       onChange={renderField.onChange}
@@ -267,6 +396,12 @@ export function SheetDemo({
                     />
                   )}
                 </FormControl>
+
+                {field.description ? (
+                  <FormDescription className="text-xs font-medium text-shadcn-400">
+                    {field.description}
+                  </FormDescription>
+                ) : null}
               </div>
             </FormItem>
           )}
@@ -280,14 +415,14 @@ export function SheetDemo({
     form: any,
     isCreateMode: boolean,
     isViewMode: boolean,
-    onCountryChange: any,
-    countries: Country[],
-    statesOptions: State[]
+    onCountryChange?: any,
+    countries?: Country[],
+    statesOptions?: State[]
   ) => {
     if (field.name === 'address.country') {
-      return renderCountryField(field, form, onCountryChange, countries)
+      return renderCountryField(field, form, onCountryChange, countries ?? [])
     } else if (field.name === 'address.state') {
-      return renderStateField(field, form, statesOptions)
+      return renderStateField(field, form, statesOptions ?? [])
     }
 
     if (!(isCreateMode && field.name === 'id')) {
@@ -300,11 +435,11 @@ export function SheetDemo({
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent
-        className="max-h-screen w-full min-w-[406px] overflow-x-auto px-6 py-5"
+        className="max-h-screen w-full min-w-[594px] overflow-x-auto"
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
         <SheetHeader>
-          <SheetTitle className="text-lg font-bold">
+          <SheetTitle className="text-xl font-bold text-[#52525b]">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -316,13 +451,13 @@ export function SheetDemo({
               </Tooltip>
             </TooltipProvider>
           </SheetTitle>
-          <SheetDescription className="text-xs font-medium text-[#71717A]">
+          <SheetDescription className="text-sm font-medium text-shadcn-500">
             {description}
           </SheetDescription>
         </SheetHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="mt-5 grid gap-4 py-4">
+            <div className="mt-5 grid gap-8 py-4">
               {fields.map((field) =>
                 renderField(
                   field,
@@ -334,12 +469,28 @@ export function SheetDemo({
                   statesOptions
                 )
               )}
+
+              <div className="gap- flex flex-col gap-4">
+                <Label htmlFor="metadata">Metadados</Label>
+                <Switch
+                  id="metadata"
+                  checked={isSwitchOn}
+                  onCheckedChange={() => setSwitchOn(!isSwitchOn)}
+                  className="data-[state=checked]:bg-[#52525B] data-[state=unchecked]:bg-[#E5E7EB]"
+                />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                {isSwitchOn && renderMetadataFields()}
+                {renderPreviewMetadataFields()}
+              </div>
             </div>
+
             <SheetFooter>
               <SheetClose asChild>
                 <Button
                   type={isViewMode ? 'button' : 'submit'}
-                  className="mt-5 bg-sunglow-400 text-black hover:bg-sunglow-400/70"
+                  className="mt-5 bg-shadcn-600 text-white hover:bg-shadcn-600/70"
                 >
                   {buttonText}
                 </Button>
