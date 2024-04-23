@@ -14,12 +14,6 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
       <div className="flex min-h-screen w-full bg-background text-foreground">
         <Sidebar />
         <div className="flex w-full flex-col">
@@ -27,15 +21,10 @@ export default function RootLayout({
 
           <div className="w-full p-8">
             {children}
-            {/*<Suspense*/}
-            {/*  children={children}*/}
-            {/*  fallback={<Skeleton className="h-[80px] w-full flex align-middle items-center" />}*/}
-            {/*/>*/}
           </div>
         </div>
         <Toaster />
       </div>
-    </ThemeProvider>
   )
 }
 
