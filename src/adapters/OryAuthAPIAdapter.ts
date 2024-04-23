@@ -2,6 +2,7 @@ import { OryAuthRepository } from '@/repositories/OryAuthRepository'
 import process from 'node:process'
 import { OryCreateLoginFlowResponseDTO } from '@/domain/dto/OryResponseDTO'
 import { OrySubmitLoginRequestDTO } from '@/domain/dto/OryRequestDTO'
+import { OrySessionEntity } from '@/domain/entities/OrySessionEntity'
 
 export class OryAuthAPIAdapter implements OryAuthRepository {
   readonly baseUrl: string = process.env.ORY_KRATOS_PUBLIC_URL + ''
@@ -49,7 +50,7 @@ export class OryAuthAPIAdapter implements OryAuthRepository {
 
   async submitLoginFlow(
     submitLoginData: OrySubmitLoginRequestDTO
-  ): Promise<any> {
+  ): Promise<OrySessionEntity> {
     const data = await fetch(submitLoginData.nextActionUrl, {
       method: 'POST',
       headers: {
@@ -72,7 +73,10 @@ export class OryAuthAPIAdapter implements OryAuthRepository {
       sessionToken: this.getSessionCookieFromHeaders(data.headers),
       active: json.session.active,
       expiresAt: json.session.expires_at,
-      authenticatedAt: json.session.authenticated_at
+      authenticatedAt: json.session.authenticated_at,
+      userInfo: {
+        ...json.session.identity.traits
+      }
     }
   }
 

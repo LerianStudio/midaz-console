@@ -1,9 +1,13 @@
 import { OryAuthRepository } from '@/repositories/OryAuthRepository'
 import { OrySubmitLoginRequestDTO } from '@/domain/dto/OryRequestDTO'
 import { OryCreateLoginFlowResponseDTO } from '@/domain/dto/OryResponseDTO'
+import { OrySessionEntity } from '@/domain/entities/OrySessionEntity'
 
 type IOryAuthUseCases = {
-  usernamePasswordLogin: (username: string, password: string) => Promise<any>
+  usernamePasswordLogin: (
+    username: string,
+    password: string
+  ) => Promise<OrySessionEntity>
 }
 
 class OryAuthUseCases implements IOryAuthUseCases {
@@ -12,7 +16,7 @@ class OryAuthUseCases implements IOryAuthUseCases {
   async usernamePasswordLogin(
     username: string,
     password: string
-  ): Promise<any> {
+  ): Promise<OrySessionEntity> {
     try {
       const loginFlow: OryCreateLoginFlowResponseDTO =
         await this.oryAuthAdapter.createLoginFlow()
