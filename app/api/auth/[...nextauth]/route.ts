@@ -1,5 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server'
-
 import { OryAuthAPIAdapter } from '@/adapters/OryAuthAPIAdapter'
 import OryAuthUseCases from '@/useCases/OryAuthUseCases'
 import { OrySessionEntity } from '@/domain/entities/OrySessionEntity'
@@ -49,7 +47,7 @@ export const nextAuthOptions: NextAuthOptions = {
     })
   ],
   pages: {
-    signIn: '/signin'
+    signIn: '/en/signin'
   },
   callbacks: {
     jwt: async ({ token, user }) => {
