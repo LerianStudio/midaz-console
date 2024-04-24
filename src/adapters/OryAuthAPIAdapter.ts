@@ -69,6 +69,7 @@ export class OryAuthAPIAdapter implements OryAuthRepository {
     const json = await data.json()
 
     return {
+      id: json.session.id,
       sessionId: json.session.id,
       sessionToken: this.getSessionCookieFromHeaders(data.headers),
       active: json.session.active,

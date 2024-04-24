@@ -1,4 +1,5 @@
 export interface OrySessionEntity {
+  id: string
   sessionId: string
   sessionToken: string
   active: boolean
