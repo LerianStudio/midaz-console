@@ -3,6 +3,7 @@ import process from 'node:process'
 import { OryCreateLoginFlowResponseDTO } from '@/domain/dto/OryResponseDTO'
 import { OrySubmitLoginRequestDTO } from '@/domain/dto/OryRequestDTO'
 import { OrySessionEntity } from '@/domain/entities/OrySessionEntity'
+import { httpExceptionHelper, UnauthorizedException } from '@/errors/HttpExceptions'
 
 export class OryAuthAPIAdapter implements OryAuthRepository {
   readonly baseUrl: string = process.env.ORY_KRATOS_PUBLIC_URL + ''
@@ -28,7 +29,7 @@ export class OryAuthAPIAdapter implements OryAuthRepository {
   }
 
   async createLoginFlow(): Promise<OryCreateLoginFlowResponseDTO> {
-    const oryCreateLoginFlowUrl = this.baseUrl + '/self-service/login/browser'
+    const oryCreateLoginFlowUrl = this.baseUrl + 'self-service/login/browser'
 
     const data = await fetch(oryCreateLoginFlowUrl, {
       method: 'GET',
@@ -36,6 +37,11 @@ export class OryAuthAPIAdapter implements OryAuthRepository {
         Accept: 'application/json'
       }
     })
+    
+    if(!data.ok){
+      console.error('Error on createLoginFlow', data.status)
+      throw httpExceptionHelper(data.status)
+    }
 
     const oryLoginResponseJson = await data.json()
     const csrfCookie = this.getCsrfCookieFromHeaders(data.headers)
@@ -65,6 +71,14 @@ export class OryAuthAPIAdapter implements OryAuthRepository {
         csrf_token: submitLoginData.csrfToken
       })
     })
+    
+    if(!data.ok){
+      if(data.status === 400){
+        throw new UnauthorizedException('User or password incorrect')
+      }
+      
+      throw httpExceptionHelper(data.status)
+    }
 
     const json = await data.json()
 
@@ -87,7 +101,7 @@ export class OryAuthAPIAdapter implements OryAuthRepository {
     )
 
     if (!csrfNode) {
-      throw new Error('Csrf token not found')
+      throw new UnauthorizedException("Csrf token not found!")
     }
 
     return csrfNode.attributes.value
@@ -100,7 +114,7 @@ export class OryAuthAPIAdapter implements OryAuthRepository {
       ?.split(';')[0]
 
     if (!csrfCookie) {
-      throw new Error('Csrf cookie not found')
+      throw new UnauthorizedException('Csrf cookie not found')
     }
 
     return csrfCookie
@@ -113,7 +127,7 @@ export class OryAuthAPIAdapter implements OryAuthRepository {
       ?.split(';')[0]
 
     if (!sessionCookie) {
-      throw new Error('Ory Kratos Session cookie not found')
+      throw new UnauthorizedException('Ory Kratos Session cookie not found')
     }
 
     return sessionCookie

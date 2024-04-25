@@ -2,6 +2,7 @@ import { OryAuthRepository } from '@/repositories/OryAuthRepository'
 import { OrySubmitLoginRequestDTO } from '@/domain/dto/OryRequestDTO'
 import { OryCreateLoginFlowResponseDTO } from '@/domain/dto/OryResponseDTO'
 import { OrySessionEntity } from '@/domain/entities/OrySessionEntity'
+import { HttpException, InternalServerErrorException } from '@/errors/HttpExceptions'
 
 type IOryAuthUseCases = {
   usernamePasswordLogin: (
@@ -11,8 +12,9 @@ type IOryAuthUseCases = {
 }
 
 class OryAuthUseCases implements IOryAuthUseCases {
-  constructor(private readonly oryAuthAdapter: OryAuthRepository) {}
-
+  constructor(private readonly oryAuthAdapter: OryAuthRepository) {
+  }
+  
   async usernamePasswordLogin(
     username: string,
     password: string
@@ -20,7 +22,7 @@ class OryAuthUseCases implements IOryAuthUseCases {
     try {
       const loginFlow: OryCreateLoginFlowResponseDTO =
         await this.oryAuthAdapter.createLoginFlow()
-
+      
       const loginData: OrySubmitLoginRequestDTO = {
         identifier: username,
         password: password,
@@ -28,12 +30,16 @@ class OryAuthUseCases implements IOryAuthUseCases {
         csrfToken: loginFlow.csrfToken,
         csrfCookie: loginFlow.csrfCookie
       }
-
+      
       return await this.oryAuthAdapter.submitLoginFlow(loginData)
     } catch (error: any) {
       console.error(error)
-
-      throw new Error('User or password incorrect')
+      
+      if (error instanceof HttpException) {
+        throw error
+      }
+      
+      throw new InternalServerErrorException()
     }
   }
 }
