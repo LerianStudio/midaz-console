@@ -1,13 +1,13 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import '@/globals.css'
 import { Header } from '@/components/Header'
 import { Metadata } from 'next'
-import { Toaster } from '@/components/ui/toaster'
 import { Sidebar } from '@/components/Sidebar'
 import { getMetadata } from '../../../services/configs/applicationConfig'
 import { getServerSession } from 'next-auth'
 import { nextAuthOptions } from '@/api/auth/[...nextauth]/route'
 import { redirect, RedirectType } from 'next/navigation'
+import { Toaster } from 'react-hot-toast'
 
 export default async function RootLayout({
                                            children,
@@ -33,14 +33,14 @@ export default async function RootLayout({
           {children}
         </div>
       </div>
-      <Toaster />
+      <Toaster position="top-right" containerStyle={{ top: 60 }} />
     </div>
   )
 }
 
 export async function generateMetadata(props: {}): Promise<Metadata> {
   const { title, icons, description } = await getMetadata()
-  
+
   return {
     title: title,
     icons: icons,

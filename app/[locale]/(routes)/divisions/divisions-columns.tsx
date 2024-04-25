@@ -10,7 +10,7 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
-import { useToast } from '@/components/ui/use-toast'
+import useCustomToast from '@/hooks/useCustomToast'
 import { DivisionEntity } from '@/domain/entities/DivisionEntity'
 
 export type DivisionColumnsEvents = {
@@ -29,7 +29,7 @@ export const getDivisionsColumns = (
   divisionsEvents: DivisionColumnsEvents,
   t: any
 ) => {
-  const { toast } = useToast()
+  const { showInfo } = useCustomToast()
 
   const translateHeader = (itemNamespace: string) => {
     return t(`columnsTable.${itemNamespace}`)
@@ -42,9 +42,7 @@ export const getDivisionsColumns = (
   const handleCopyToClipboard = (value: string, itemNamespace: string) => {
     navigator.clipboard.writeText(value)
 
-    toast({
-      description: translateToast(itemNamespace)
-    })
+    showInfo(translateToast(itemNamespace))
   }
 
   return [

@@ -29,7 +29,7 @@ export class OryAuthAPIAdapter implements OryAuthRepository {
   }
 
   async createLoginFlow(): Promise<OryCreateLoginFlowResponseDTO> {
-    const oryCreateLoginFlowUrl = this.baseUrl + 'self-service/login/browser'
+    const oryCreateLoginFlowUrl = this.baseUrl + '/self-service/login/browser'
 
     const data = await fetch(oryCreateLoginFlowUrl, {
       method: 'GET',

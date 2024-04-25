@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input/input'
 import { Button } from '@/components/ui/button/button'
+import useCustomToast from '@/hooks/useCustomToast'
 
 const formSchema = z.object({
   username: z.string({
@@ -29,7 +30,7 @@ const LoginView = () => {
     resolver: zodResolver(formSchema)
   })
   
-  const [showInvalidCredentialsMessage, setShowInvalidCredentialsMessage] = useState(false)
+  const { showSuccess, showError } = useCustomToast()
   
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const result = await signIn('credentials', {
@@ -39,12 +40,11 @@ const LoginView = () => {
     
     if (result?.error) {
       console.log('Login error ->', result)
-      setShowInvalidCredentialsMessage(true)
-      
-    } else {
-      setShowInvalidCredentialsMessage(false)
-      route.replace('/en')
+      showError('Invalid user or password!')
+      return
     }
+    
+    route.replace('/en')
   }
   
   return (
@@ -78,9 +78,6 @@ const LoginView = () => {
               </FormItem>
             )}
           />
-          
-          {showInvalidCredentialsMessage && (<FormMessage>Invalid user or password!</FormMessage>)}
-          
           <Button disabled={form.formState.isSubmitting} className="w-full"
                   type="submit">{form.formState.isSubmitting ? 'Carregando...' : 'Entrar'}</Button>
         </form>

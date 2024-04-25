@@ -2,10 +2,19 @@
   "auth": {
     "titleLogin": "Bem vindo(a) de volta!"
   },
-  "popoverHeader": {
-    "settings": "Configurações",
-    "support": "Suporte",
-    "logout": "Sair"
+  "header": {
+    "userDropdown": {
+      "profile": "Perfil",
+      "support": "Suporte",
+      "logout": "Sair"
+    },
+    "settingsDropdown": {
+      "settings": "Configurações",
+      "organizations": "Organizações",
+      "system": "Sistema",
+      "security": "Segurança",
+      "language": "Idioma"
+    }
   },
   "sideNavBar": {
     "home": "Início",
@@ -172,7 +181,7 @@
       "delete": "Deletar"
     },
     "sheetCreate": {
-      "title": "Criar Ledger",
+      "title": "Novo Ledger",
       "description": "Preencha os dados da Ledger que você deseja criar.",
       "button": "Criar"
     },
@@ -188,20 +197,9 @@
     },
     "formFields": {
       "name": {
-        "name": "Nome",
-        "placeholder": "Name"
-      },
-      "divisionName": {
-        "name": "Nome da Division",
-        "placeholder": "Nome da Division"
-      },
-      "defaultTimezone": {
-        "name": "Fuso Horário",
-        "placeholder": "Fuso Horário (opcional)"
-      },
-      "defaultCurrency": {
-        "name": "Moeda Padrão",
-        "placeholder": "Moeda Padrão (opcional)"
+        "name": "Nome do Ledger",
+        "placeholder": "Digite...",
+        "description": "O nome público do seu Ledger"
       }
     },
     "dialog": {
@@ -210,7 +208,11 @@
       "deleteBtnText": "Apagar Ledger"
     },
     "toast": {
-      "ledgerDeleted": "Ledger deletado",
+      "ledgerCreated": "Ledger {ledgerName} criado com sucesso",
+      "ledgerUpdated": "Ledger {ledgerName} atualizado com sucesso",
+      "ledgerDeleteFailed": "Falha ao deletar ledger",
+      "ledgerNotFound": "Nenhum ledger selecionado para exclusão",
+      "ledgerDeleted": "Ledger {ledgerName} deletado",
       "copyId": "O id foi copiado para sua área de transferência."
     }
   },

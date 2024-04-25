@@ -50,7 +50,7 @@ const SettingsDialog = ({ open, setOpen }: Props) => {
             </Label>
             <Input
               id="username"
-              defaultValue="gabriel.sanchez@leriand.com"
+              defaultValue="gabriel@lerian.studio"
               className="col-span-4"
               readOnly={true}
             />
