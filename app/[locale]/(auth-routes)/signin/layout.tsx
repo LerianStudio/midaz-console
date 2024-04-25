@@ -1,8 +1,8 @@
-import { redirect } from 'next/navigation'
+import { redirect, RedirectType } from 'next/navigation'
+import '@/globals.css'
 import { getServerSession } from 'next-auth'
-import { nextAuthOptions } from '@/api/auth/[...nextauth]/route'
 import React from 'react'
-import { Toaster } from 'react-hot-toast'
+import { nextAuthOptions } from '@/utils/OryCredentialsProvider'
 
 type AuthRoutesProps = {
   children: React.ReactNode
@@ -18,14 +18,9 @@ const AuthRoutes = async ({
   const session = await getServerSession(nextAuthOptions)
 
   if (session?.user) {
-    redirect(`/${locale}/home`)
+    redirect(`/${locale}/`, RedirectType.replace)
   }
-  return (
-    <div>
-      <div>{children}</div>
-      <Toaster position="top-right" containerStyle={{ top: 60 }} />
-    </div>
-  )
+  return <>{children}</>
 }
 
 export default AuthRoutes
