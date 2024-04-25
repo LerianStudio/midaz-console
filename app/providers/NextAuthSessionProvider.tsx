@@ -4,10 +4,8 @@ type NextAuthSessionProviderProps = {
   children: React.ReactNode
 }
 
-const NextAuthSessionProvider = ({ children }: NextAuthSessionProviderProps) => {
-  return (
-    <SessionProvider>
-      {children}
-    </SessionProvider>
-  )
+const NextAuthSessionProvider = ({
+  children
+}: NextAuthSessionProviderProps) => {
+  return <SessionProvider>{children}</SessionProvider>
 }

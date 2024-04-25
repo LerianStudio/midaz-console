@@ -7,7 +7,6 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 const oryAuthUseCases = new OryAuthUseCases(new OryAuthAPIAdapter())
 
 export const nextAuthOptions: NextAuthOptions = {
-  
   providers: [
     CredentialsProvider({
       name: 'credentials',
@@ -15,26 +14,25 @@ export const nextAuthOptions: NextAuthOptions = {
         username: { label: 'username', type: 'text' },
         password: { label: 'password', type: 'password' }
       },
-      
+
       async authorize(credentials, req) {
-        
         try {
           const username = credentials?.username
           const password = credentials?.password
-          
+
           if (!username || !password) {
             console.error('username or password is missing')
             return null
           }
-          
+
           const loginResponse: OrySessionEntity =
             await oryAuthUseCases.usernamePasswordLogin(username, password)
-          
+
           if (!loginResponse || !loginResponse.sessionToken) {
             console.error('login failed')
             return null
           }
-          
+
           if (loginResponse.sessionToken) {
             return {
               id: loginResponse.id,

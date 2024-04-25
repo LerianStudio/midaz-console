@@ -3,7 +3,6 @@ import '@/globals.css'
 import { QueryProvider } from '@/utils/queryProvider'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
-
 export default function RootLayout({
   children,
   params: { locale }
@@ -14,14 +13,13 @@ export default function RootLayout({
   const messages = useMessages()
 
   return (
-      <div>
-        <QueryProvider>
-          <NextIntlClientProvider locale={locale} messages={messages}>
-            {children}
-          </NextIntlClientProvider>
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryProvider>
-      
-      </div>
+    <div>
+      <QueryProvider>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          {children}
+        </NextIntlClientProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryProvider>
+    </div>
   )
 }

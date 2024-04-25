@@ -3,7 +3,10 @@ import process from 'node:process'
 import { OryCreateLoginFlowResponseDTO } from '@/domain/dto/OryResponseDTO'
 import { OrySubmitLoginRequestDTO } from '@/domain/dto/OryRequestDTO'
 import { OrySessionEntity } from '@/domain/entities/OrySessionEntity'
-import { httpExceptionHelper, UnauthorizedException } from '@/errors/HttpExceptions'
+import {
+  httpExceptionHelper,
+  UnauthorizedException
+} from '@/errors/HttpExceptions'
 
 export class OryAuthAPIAdapter implements OryAuthRepository {
   readonly baseUrl: string = process.env.ORY_KRATOS_PUBLIC_URL + ''
@@ -37,8 +40,8 @@ export class OryAuthAPIAdapter implements OryAuthRepository {
         Accept: 'application/json'
       }
     })
-    
-    if(!data.ok){
+
+    if (!data.ok) {
       console.error('Error on createLoginFlow', data.status)
       throw httpExceptionHelper(data.status)
     }
@@ -71,12 +74,12 @@ export class OryAuthAPIAdapter implements OryAuthRepository {
         csrf_token: submitLoginData.csrfToken
       })
     })
-    
-    if(!data.ok){
-      if(data.status === 400){
+
+    if (!data.ok) {
+      if (data.status === 400) {
         throw new UnauthorizedException('User or password incorrect')
       }
-      
+
       throw httpExceptionHelper(data.status)
     }
 
@@ -101,7 +104,7 @@ export class OryAuthAPIAdapter implements OryAuthRepository {
     )
 
     if (!csrfNode) {
-      throw new UnauthorizedException("Csrf token not found!")
+      throw new UnauthorizedException('Csrf token not found!')
     }
 
     return csrfNode.attributes.value
