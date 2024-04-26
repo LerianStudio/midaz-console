@@ -1,6 +1,5 @@
 'use client'
 import React from 'react'
-import { ThemeProvider } from '@/components/theme-provider'
 import { Inter } from 'next/font/google'
 import NextAuthSessionProvider from '@/providers/NextAuthSessionProvider'
 
@@ -15,14 +14,14 @@ export default function RootLayout({
     <html suppressHydrationWarning>
       <body suppressHydrationWarning className={inter.className}>
         <NextAuthSessionProvider>
-          <ThemeProvider
+          {/* <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+          > */}
+          {children}
+          {/* </ThemeProvider> */}
         </NextAuthSessionProvider>
       </body>
     </html>
