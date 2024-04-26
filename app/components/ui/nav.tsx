@@ -69,7 +69,7 @@ export const Nav = ({ categories, isCollapsed }: NavProps) => {
                       >
                         <link.icon
                           className={cn(
-                            'h-6 w-6 text-shadcn-400 dark:text-white',
+                            'h-6 w-6 text-shadcn-400',
                             isHovered && 'text-white',
                             isActive(link.href) && 'text-black'
                           )}
@@ -99,16 +99,15 @@ export const Nav = ({ categories, isCollapsed }: NavProps) => {
                           : 'hoverLink',
                         size: 'sm'
                       }),
-                      'flex items-center justify-start hover:dark:text-black'
+                      'flex items-center justify-start'
                     )}
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                   >
                     <link.icon
                       className={cn(
-                        'mr-2 h-5 w-5 text-shadcn-400 dark:text-white',
-                        isHovered && 'text-white',
-                        isActive(link.href) && 'text-black'
+                        'mr-2 h-6 w-6 text-shadcn-400',
+                        (isActive(link.href) || isHovered) && 'text-black'
                       )}
                     />
                     {!isCollapsed && <span>{link.title}</span>}
@@ -116,8 +115,7 @@ export const Nav = ({ categories, isCollapsed }: NavProps) => {
                       <span
                         className={cn(
                           'ml-auto',
-                          link.variant === 'default' &&
-                            'text-background dark:text-black'
+                          link.variant === 'default' && 'text-background'
                         )}
                       >
                         {link.label}

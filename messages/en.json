@@ -4,6 +4,7 @@
   },
   "header": {
     "userDropdown": {
+      "subscription": "Subscription",
       "profile": "Profile",
       "support": "Support",
       "logout": "Logout"
@@ -18,31 +19,30 @@
   },
   "sideNavBar": {
     "home": "Home",
+    "ledgers": "Ledgers",
+    "team": "Team",
     "expand": "Expand",
-    "organization": {
-      "title": "Organization",
-      "divisions": "Divisions",
-      "ledgers": "Ledgers",
-      "team": "Team",
-      "billing": "Billing"
-    },
-    "portfolio": {
-      "title": "Portfolio",
-      "accountTypes": "Account types",
-      "assets": "Instruments",
-      "portfolios": "Portfolios",
-      "accounts": "Accounts"
+    "accountHolders": {
+      "title": "AccountHolders",
+      "products": "Products",
+      "accounts": "Accounts",
+      "portfolios": "Portfolios"
     },
     "transactions": {
       "title": "Transactions",
-      "transactions": "Transactions",
-      "limits": "Limits",
-      "governance": "Governance"
+      "types": "Types",
+      "resume": "Resume"
     },
     "reports": {
       "title": "Reports",
-      "runReport": "Run report"
+      "runReport": "Run Report"
     }
+  },
+  "organizationSwitcher": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "edit": "Edit",
+    "organizations": "Organizations"
   },
   "pageTitle": {
     "overview": "HomePage",

@@ -14,7 +14,6 @@ export const SettingsDropdown = () => {
       trigger={trigger}
       menuItems={userMenuItems}
       menuLabel={t('settingsDropdown.settings')}
-      menuIcon={<Settings className="text-shadcn-400" size={16} />}
     />
   )
 }

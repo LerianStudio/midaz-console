@@ -1,10 +1,10 @@
 import React from 'react'
 import '@/globals.css'
 import { Header } from '@/components/Header'
-import { Sidebar } from '@/components/Sidebar'
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import { nextAuthOptions } from '@/utils/OryCredentialsProvider'
+import { Sidebar } from '@/components/Sidebar'
 
 export default async function RootLayout({
   children,

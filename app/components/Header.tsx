@@ -6,7 +6,7 @@ import { Separator } from './ui/separator'
 
 export const Header = () => {
   return (
-    <div className="flex h-[60px] w-full items-center border-b bg-white p-5 dark:bg-codGray-950">
+    <div className="flex h-[60px] w-full items-center border-b bg-white py-5 pr-16">
       <nav className="flex w-full items-center justify-end gap-4">
         {/* <ToggleMode /> */}
         {/* <LocaleSwitcher /> */}
@@ -14,8 +14,10 @@ export const Header = () => {
           Midaz Console v.0.1
         </p>
         <Separator orientation="vertical" className="h-10" />
-        <SettingsDropdown />
-        <UserDropdown />
+        <div className="flex gap-6 pl-2">
+          <SettingsDropdown />
+          <UserDropdown />
+        </div>
       </nav>
     </div>
   )

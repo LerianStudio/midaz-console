@@ -222,9 +222,12 @@ export function SheetDemo({
           </div>
           <Button
             onClick={() => remove(index)}
-            className="h-9 w-9 rounded-full border border-shadcn-200 bg-white"
+            className="group h-9 w-9 rounded-full border border-shadcn-200 bg-white hover:border-none"
           >
-            <Trash size={16} className="shrink-0 text-black" />
+            <Trash
+              size={16}
+              className="shrink-0 text-black group-hover:text-white"
+            />
           </Button>
         </div>
       </div>
