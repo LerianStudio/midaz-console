@@ -10,8 +10,8 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
-import { DivisionEntity } from '@/entities/DivisionEntity'
 import useCustomToast from '@/hooks/useCustomToast'
+import { DivisionEntity } from '@/domain/entities/DivisionEntity'
 
 export type DivisionColumnsEvents = {
   handleClickId?: (id: string) => void

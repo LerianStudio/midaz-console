@@ -1,10 +1,13 @@
 {
-  "plugins": ["prettier-plugin-tailwindcss"],
-  "trailingComma": "none",
-  "semi": false,
-  "singleQuote": true,
-  "tabWidth": 2,
-  "useTabs": false,
-  "jsxSingleQuote": false,
-  "bracketSpacing": true
+    "plugins": [
+        "prettier-plugin-tailwindcss"
+    ],
+    "trailingComma": "none",
+    "semi": false,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "useTabs": false,
+    "jsxSingleQuote": false,
+    "bracketSpacing": true,
+    "endOfLine": "auto"
 }

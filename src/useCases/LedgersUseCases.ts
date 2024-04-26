@@ -1,4 +1,4 @@
-import { LedgerEntity } from '@/entities/LedgerEntity'
+import { LedgerEntity } from '@/domain/entities/LedgerEntity'
 import { LedgerRepository } from '@/repositories/LedgerRepository'
 
 type ILedgerssUseCases = {

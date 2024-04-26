@@ -1,6 +1,5 @@
 'use client'
 
-import { LedgerEntity } from '@/entities/LedgerEntity'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { useLedgers } from '@/utils/queries'
@@ -14,6 +13,7 @@ import { NoResource } from '@/components/NoResource'
 import { DialogDemo } from '@/components/Dialog'
 import { SheetDemo } from '@/components/Sheet'
 import useCustomToast from '@/hooks/useCustomToast'
+import { LedgerEntity } from '@/domain/entities/LedgerEntity'
 
 type SheetModeState = {
   isOpen: boolean

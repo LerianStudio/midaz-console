@@ -1,11 +1,6 @@
 import path from 'path'
 import readYamlFile from 'read-yaml-file'
-// import LeriandLogo from '../../public/images/leriand-logo.png'
-import type {
-  Icon,
-  Icons,
-  IconURL
-} from 'next/dist/lib/metadata/types/metadata-types'
+import type { Icon, Icons, IconURL } from 'next/dist/lib/metadata/types/metadata-types'
 
 export interface Config {
   metadata: {

@@ -1,30 +1,42 @@
-import { NextIntlClientProvider, useMessages } from 'next-intl'
+import React from 'react'
+import { NextIntlClientProvider } from 'next-intl'
 import '@/globals.css'
-import { Inter } from 'next/font/google'
 import { QueryProvider } from '@/utils/queryProvider'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { Toaster } from 'react-hot-toast'
+import { Metadata } from 'next'
+import { getMetadata } from '../../services/configs/applicationConfig'
+import { getMessages } from 'next-intl/server'
 
-const inter = Inter({ subsets: ['latin'] })
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
   params: { locale }
 }: {
   children: React.ReactNode
   params: { locale: string }
 }) {
-  const messages = useMessages()
+  const messages = await getMessages()
 
   return (
-    <html lang={locale} suppressHydrationWarning>
-      <body className={inter.className}>
-        <QueryProvider>
-          <NextIntlClientProvider locale={locale} messages={messages}>
-            {children}
-          </NextIntlClientProvider>
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryProvider>
-      </body>
-    </html>
+    <div>
+      <QueryProvider>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <div>{children}</div>
+          <Toaster position="top-right" containerStyle={{ top: 60 }} />
+        </NextIntlClientProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryProvider>
+    </div>
   )
+}
+
+export async function generateMetadata(props: {}): Promise<Metadata> {
+  const { title, icons, description } = await getMetadata()
+
+  return {
+    title: title,
+    icons: icons,
+    description: description,
+    ...props
+  }
 }

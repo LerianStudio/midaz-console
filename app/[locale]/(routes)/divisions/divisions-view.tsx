@@ -1,6 +1,5 @@
 'use client'
 
-import { DivisionEntity } from '@/entities/DivisionEntity'
 import { DataTable } from '@/components/DataTable'
 import { getDivisionsColumns } from '@/[locale]/(routes)/divisions/divisions-columns'
 import { NoResource } from '@/components/NoResource'
@@ -20,6 +19,7 @@ import { getDivisionsFormFields } from '@/[locale]/(routes)/divisions/divisions-
 import { z } from 'zod'
 import countriesJson from '@/countries.json'
 import useCustomToast from '@/hooks/useCustomToast'
+import { DivisionEntity } from '@/domain/entities/DivisionEntity'
 
 type SheetModeState = {
   isOpen: boolean
