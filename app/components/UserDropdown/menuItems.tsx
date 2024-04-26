@@ -1,4 +1,11 @@
-import { ExternalLink, Github, LifeBuoy, LogOut, User } from 'lucide-react'
+import {
+  CreditCard,
+  ExternalLink,
+  Github,
+  LifeBuoy,
+  LogOut,
+  User
+} from 'lucide-react'
 
 export const getUserMenuItems = (t: any) => {
   return [
@@ -9,18 +16,18 @@ export const getUserMenuItems = (t: any) => {
       action: () => {},
       icon: <User size={16} />
     },
+    {
+      type: 'action',
+      label: t('userDropdown.subscription'),
+      action: () => {},
+      icon: <CreditCard size={16} />
+    },
     { type: 'separator' },
     {
       type: 'action',
       label: 'Github',
       action: () => {},
       icon: <Github size={16} />
-    },
-    {
-      type: 'action',
-      label: t('userDropdown.support'),
-      action: () => {},
-      icon: <LifeBuoy size={16} />
     },
     {
       type: 'action',
@@ -33,6 +40,12 @@ export const getUserMenuItems = (t: any) => {
       label: 'CLI Docs',
       action: () => {},
       icon: <ExternalLink size={16} />
+    },
+    {
+      type: 'action',
+      label: t('userDropdown.support'),
+      action: () => {},
+      icon: <LifeBuoy size={16} />
     },
     { type: 'separator' },
     {
