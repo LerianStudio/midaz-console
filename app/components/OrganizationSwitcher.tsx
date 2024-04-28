@@ -124,6 +124,7 @@ const PopoverContentComponent = ({
             organization={organization}
             setIsPopoverOpen={setIsPopoverOpen}
             dataLength={data.length}
+            key={organization.id}
           />
         ))}
 
@@ -161,14 +162,15 @@ const SwitcherTrigger = ({
   return (
     <PopoverTrigger asChild>
       <div className="group flex items-center gap-3">
-        <div
+        <Image
+          src={image}
+          alt={alt}
+          height={40}
           className={cn(
             'box-border rounded-lg border-[3px] p-[1px] group-hover:border-shadcn-300',
             isPopoverOpen && 'border-shadcn-400 group-hover:border-shadcn-400'
           )}
-        >
-          <Image src={image} alt={alt} height={36} />
-        </div>
+        />
 
         {!isCollapsed && (
           <h1
