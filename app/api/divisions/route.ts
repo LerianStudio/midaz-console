@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { DivisionAPIAdapter } from '@/adapters/DivisionAPIAdapter'
 import DivisionsUseCases from '@/useCases/DivisionsUseCases'
+import { container, Registry } from '@/infra/container-registry'
 
-const divisionsUseCases = new DivisionsUseCases(new DivisionAPIAdapter())
+const divisionsUseCases = container.get<DivisionsUseCases>(
+  Registry.DivisionsUseCases
+)
 
 export async function GET() {
   const divisions = await divisionsUseCases.listDivisionsUseCases()

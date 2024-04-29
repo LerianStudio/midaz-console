@@ -2,9 +2,9 @@ import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { OrySessionEntity } from '@/domain/entities/OrySessionEntity'
 import OryAuthUseCases from '@/useCases/OryAuthUseCases'
-import { OryAuthAPIAdapter } from '@/adapters/OryAuthAPIAdapter'
+import { container, Registry } from '@/infra/container-registry'
 
-const oryAuthUseCases = new OryAuthUseCases(new OryAuthAPIAdapter())
+const oryAuthUseCases = container.get<OryAuthUseCases>(Registry.OryAuthUseCases)
 
 export const nextAuthOptions: NextAuthOptions = {
   providers: [
