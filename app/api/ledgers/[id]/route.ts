@@ -1,8 +1,8 @@
 import LedgersUseCases from '@/useCases/LedgersUseCases'
-import { LedgersAPIAdapter } from '@/adapters/LedgersAPIAdapter'
 import { NextResponse } from 'next/server'
+import { container, Registry } from '@/infra/container-registry'
 
-const ledgersUseCases = new LedgersUseCases(new LedgersAPIAdapter())
+const ledgersUseCases = container.get<LedgersUseCases>(Registry.LedgersUseCases)
 
 export async function GET(
   request: Request,
