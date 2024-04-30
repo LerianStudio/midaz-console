@@ -22,7 +22,7 @@ export default async function RootLayout({
   return (
     <div className="flex min-h-screen w-full bg-background text-foreground">
       <Sidebar />
-      <div className="flex w-full flex-col">
+      <div className="flex w-full flex-col bg-shadcn-100">
         <Header />
 
         <div className="w-full p-8">{children}</div>

@@ -26,20 +26,18 @@ export const BreadcrumbComponent = ({ paths }: BreadcrumbProps) => {
         {paths.map((path, index) => (
           <React.Fragment key={index}>
             <BreadcrumbItem>
-              <BreadcrumbLink>
-                {path.href ? (
-                  <Link
-                    href={path.href}
-                    className={'font-medium text-[#3f3f46] underline'}
-                  >
-                    {path.name}
-                  </Link>
-                ) : (
-                  <span className="text-sm font-normal text-shadcn-400">
-                    {path.name}
-                  </span>
-                )}
-              </BreadcrumbLink>
+              {path.href ? (
+                <BreadcrumbLink
+                  href={path.href}
+                  className={'font-medium text-[#3f3f46] underline'}
+                >
+                  {path.name}
+                </BreadcrumbLink>
+              ) : (
+                <span className="text-sm font-normal text-shadcn-400">
+                  {path.name}
+                </span>
+              )}
             </BreadcrumbItem>
 
             {index < paths.length - 1 && (

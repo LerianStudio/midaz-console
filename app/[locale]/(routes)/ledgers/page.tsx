@@ -11,6 +11,17 @@ const Page = async () => {
     { name: 'Detalhe da Ledger' }
   ]
 
+  const getHelperTriggerTranslate = (t: any) => ({
+    question: t('helperTrigger.question'),
+    answer: t('helperTrigger.answer'),
+    seeMore: t('helperTrigger.seeMore')
+  })
+
+  const getListingTemplateTranslate = (t: any) => ({
+    configureButton: t('listingTemplate.configureButton'),
+    addButton: t('listingTemplate.addButton')
+  })
+
   return (
     <div>
       <BreadcrumbComponent paths={breadcrumbPaths} />
@@ -21,6 +32,8 @@ const Page = async () => {
           subtitle={t('subtitle')}
           hasInfo={true}
           type="listing"
+          helperTriggerTranslate={getHelperTriggerTranslate(t)}
+          listingTemplateTranslate={getListingTemplateTranslate(t)}
         />
       </div>
 

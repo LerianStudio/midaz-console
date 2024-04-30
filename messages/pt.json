@@ -215,6 +215,15 @@
       "ledgerNotFound": "Nenhum ledger selecionado para exclusão",
       "ledgerDeleted": "Ledger {ledgerName} deletado",
       "copyId": "O id foi copiado para sua área de transferência."
+    },
+    "helperTrigger": {
+      "question": "O que é um Ledger?",
+      "answer": "Livro com o registro de todas as transações e operações da Organização.",
+      "seeMore": "Leia a documentação"
+    },
+    "listingTemplate": {
+      "configureButton": "Configurar",
+      "addButton": "Nova Ledger"
     }
   },
   "settingsDialog": {

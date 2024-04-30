@@ -13,21 +13,27 @@ import { useState } from 'react'
 import useCustomToast from '@/hooks/useCustomToast'
 import { useTranslations } from 'next-intl'
 import DropdownButton from './DropdownButton'
+import { HelperTriggerTranslate } from '@/types/HelperTriggerTranslate'
+import { ListingTemplateTranslate } from '@/types/PageHeader'
 
 type Props = {
   title: string
-  subtitle: string
+  subtitle?: string
   className?: string
-  hasInfo: boolean
-  type: 'listing' | 'entity'
+  hasInfo?: boolean
+  type?: 'listing' | 'entity'
+  helperTriggerTranslate?: HelperTriggerTranslate
+  listingTemplateTranslate?: ListingTemplateTranslate
 }
 
 export const PageHeader = ({
   title,
   subtitle,
   className,
-  hasInfo,
-  type
+  hasInfo = false,
+  type,
+  helperTriggerTranslate,
+  listingTemplateTranslate
 }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
   const t = useTranslations()
@@ -55,7 +61,7 @@ export const PageHeader = ({
 
           <div className="flex items-center gap-2">
             <p className="text-sm font-medium text-shadcn-400">{subtitle}</p>
-            {type === 'entity' && (
+            {type === 'entity' && subtitle && (
               <Copy
                 size={16}
                 onClick={() => handleCopyToClipboard(subtitle)}
@@ -70,7 +76,7 @@ export const PageHeader = ({
             <CollapsibleTrigger asChild>
               <Button variant="link" className="flex gap-1">
                 <span className="text-sm font-medium text-[#3f3f46]">
-                  O que é um Ledger?
+                  {helperTriggerTranslate?.question}
                 </span>
                 <HelpCircle className="h-4 w-4" />
               </Button>
@@ -79,9 +85,11 @@ export const PageHeader = ({
 
           {type === 'listing' && (
             <div className="flex gap-2">
-              <Button variant="outline">Configurar</Button>
-              <Button variant="default" className="flex gap-2">
-                <span>Nova Ledger</span>
+              <Button variant="outline" size="default">
+                {listingTemplateTranslate?.configureButton}
+              </Button>
+              <Button variant="default" className="flex gap-2" size="default">
+                <span>{listingTemplateTranslate?.addButton}</span>
                 <Plus size={24} />
               </Button>
             </div>
@@ -103,18 +111,17 @@ export const PageHeader = ({
         <CollapsibleContent>
           <div className="my-12 flex flex-col gap-3">
             <h1 className="text-xl font-bold text-[#3f3f46]">
-              O que é um Ledger?
+              {helperTriggerTranslate?.question}
             </h1>
 
             <div className="flex items-center gap-3">
               <p className="text-sm font-medium text-shadcn-500">
-                Livro com o registro de todas as transações e operações da
-                Organização.
+                {helperTriggerTranslate?.answer}
               </p>
 
               <div className="flex items-center gap-1">
                 <Button variant="link" onClick={() => {}} className="p-0">
-                  Leia a documentação
+                  {helperTriggerTranslate?.seeMore}
                 </Button>
                 <ExternalLink size={16} />
               </div>
