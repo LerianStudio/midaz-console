@@ -1,4 +1,3 @@
-import { PageTitle } from '@/components/PageTitle'
 import { getTranslations } from 'next-intl/server'
 import DivisionsView from '@/[locale]/(routes)/divisions/divisions-view'
 
@@ -7,8 +6,6 @@ const Page = async () => {
 
   return (
     <div>
-      <PageTitle title={t('title')} subtitle={t('subtitle')} />
-
       <div className="mt-10">
         <DivisionsView />
       </div>
