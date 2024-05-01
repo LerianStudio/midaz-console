@@ -1,4 +1,5 @@
 {
+  "genericCopyMessage": "Copied to clipboard!",
   "auth": {
     "titleLogin": "Welcome again!"
   },
@@ -214,6 +215,15 @@
       "ledgerNotFound": "No ledger selected for deletion",
       "ledgerDeleted": "Ledger {ledgerName} deleted",
       "copyId": "The id has been copied to your clipboard."
+    },
+    "helperTrigger": {
+      "question": "What is a Ledger?",
+      "answer": "Book with the record of all transactions and operations of the Organization.",
+      "seeMore": "Read the docs"
+    },
+    "listingTemplate": {
+      "configureButton": "Configure",
+      "addButton": "New Ledger"
     }
   },
   "settingsDialog": {

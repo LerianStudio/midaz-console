@@ -1,39 +1,53 @@
 import Link from 'next/link'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator
+} from '@/components/ui/breadcrumb'
 import React from 'react'
+import { ChevronRight } from 'lucide-react'
 
-export interface BreadcrumbPath {
+export type BreadcrumbPath = {
   name: string
   href?: string
   active: boolean
 }
 
-interface BreadcrumbProps {
+type BreadcrumbProps = {
   paths: BreadcrumbPath[]
 }
 
-const Breadcrumb = ({ paths }: BreadcrumbProps) => {
+export const BreadcrumbComponent = ({ paths }: BreadcrumbProps) => {
   return (
-    <div className="flex gap-1 pb-5">
-      {paths.map((path, index) => (
-        <React.Fragment key={index}>
-          {index > 0 && <span> ❯ </span>}
-          {path.href ? (
-            <Link href={path.href}>
-              <span
-                className={`${path.active ? 'cursor-pointer font-bold' : 'cursor-pointer hover:underline'}`}
-              >
-                {path.name}
-              </span>
-            </Link>
-          ) : (
-            <span className={`${path.active ? 'font-bold' : ''}`}>
-              {path.name}
-            </span>
-          )}
-        </React.Fragment>
-      ))}
-    </div>
+    <Breadcrumb>
+      <BreadcrumbList>
+        {paths.map((path, index) => (
+          <React.Fragment key={index}>
+            <BreadcrumbItem>
+              {path.href ? (
+                <BreadcrumbLink
+                  href={path.href}
+                  className={'font-medium text-[#3f3f46] underline'}
+                >
+                  {path.name}
+                </BreadcrumbLink>
+              ) : (
+                <span className="text-sm font-normal text-shadcn-400">
+                  {path.name}
+                </span>
+              )}
+            </BreadcrumbItem>
+
+            {index < paths.length - 1 && (
+              <BreadcrumbSeparator>
+                <ChevronRight size={16} className="text-shadcn-400" />
+              </BreadcrumbSeparator>
+            )}
+          </React.Fragment>
+        ))}
+      </BreadcrumbList>
+    </Breadcrumb>
   )
 }
-
-export default Breadcrumb
