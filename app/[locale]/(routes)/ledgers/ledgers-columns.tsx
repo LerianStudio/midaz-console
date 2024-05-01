@@ -9,10 +9,19 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui/tooltip'
-import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
+import { MoreVertical, Trash } from 'lucide-react'
 
 import useCustomToast from '@/hooks/useCustomToast'
 import { LedgerEntity } from '@/domain/entities/LedgerEntity'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+import { Button } from '@/components/ui/button/button'
 
 export type LedgersColumnsEvents = {
   handleClickId?: (id: string) => void
@@ -48,15 +57,18 @@ export const getLedgersColumns = (
   return [
     {
       accessorKey: 'id',
-      header: 'ID',
+      header: 'Ledger ID',
       cell: ({ row }: ColumnRow) => {
         const id = row.original.id
-        const displayId = id && id.length > 6 ? `${truncateString(id, 6)}` : id
+        const displayId = id && id.length > 8 ? `${truncateString(id, 8)}` : id
         return (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <p onClick={() => handleCopyToClipboard(id, 'copyId')}>
+                <p
+                  onClick={() => handleCopyToClipboard(id, 'copyId')}
+                  className="text-shadcn-600 underline"
+                >
                   {displayId}
                 </p>
               </TooltipTrigger>
@@ -68,7 +80,6 @@ export const getLedgersColumns = (
         )
       }
     },
-
     {
       accessorKey: 'name',
       header: translateHeader('name'),
@@ -77,56 +88,61 @@ export const getLedgersColumns = (
         return <p>{nameToDisplay}</p>
       }
     },
-
     {
       accessorKey: 'divisionName',
-      header: translateHeader('divisionName'),
+      header: translateHeader('instruments'),
       cell: ({ row }: ColumnRow) => {
         const legalDocument = row.original.divisionName || 'No Division'
         return <p>{legalDocument}</p>
       }
     },
-
+    {
+      accessorKey: 'divisionName',
+      header: translateHeader('metadata'),
+      cell: ({ row }: ColumnRow) => {
+        const legalDocument = row.original.divisionName || 'No Division'
+        return <p>{legalDocument}</p>
+      }
+    },
     {
       accessorKey: 'status',
-      header: translateHeader('status')
+      header: translateHeader('status'),
+      cell: ({ row }: ColumnRow) => {
+        const status = row.original.status
+        return <p className="capitalize">{status}</p>
+      }
     },
-
-    {
-      accessorKey: 'edit',
-      header: () => translateHeader('edit'),
-      cell: ({ row }: ColumnRow) => (
-        <div className="flex pl-3">
-          <Pencil
-            className="h-4 w-4 cursor-pointer"
-            onClick={() => ledgersEvents.handleOpenEditSheet(row.original)}
-          />
-        </div>
-      )
-    },
-
-    {
-      accessorKey: 'delete',
-      header: () => translateHeader('delete'),
-      cell: ({ row }: ColumnRow) => (
-        <div className="flex pl-4">
-          <Trash2
-            className="h-4 w-4 cursor-pointer"
-            onClick={() => ledgersEvents.handleOpenDeleteSheet(row.original)}
-          />
-        </div>
-      )
-    },
-
     {
       id: 'actions',
+      header: translateHeader('actions'),
       cell: ({ row }: ColumnRow) => (
-        <div className="flex pl-4">
-          <MoreHorizontal
-            className="h-4 w-4 cursor-pointer"
-            onClick={() => ledgersEvents.handleOpenViewSheet(row.original)}
-          />
-        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button className="h-auto w-max rounded-md border border-shadcn-300 bg-white p-2 text-black shadow-sm outline-none hover:bg-white">
+              <MoreVertical
+                size={16}
+                onClick={() => ledgersEvents.handleOpenViewSheet(row.original)}
+              />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem
+              onClick={() => ledgersEvents.handleOpenEditSheet(row.original)}
+            >
+              Editar
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Inativar</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className="flex gap-3"
+              onClick={() => ledgersEvents.handleOpenDeleteSheet(row.original)}
+            >
+              <span>Apagar</span>
+              <Trash size={16} className="text-shadcn-400" />
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       )
     }
   ]

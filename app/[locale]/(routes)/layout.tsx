@@ -25,7 +25,7 @@ export default async function RootLayout({
       <div className="flex w-full flex-col bg-shadcn-100">
         <Header />
 
-        <div className="w-full p-8">{children}</div>
+        <div className="w-full p-[60px]">{children}</div>
       </div>
     </div>
   )

@@ -15,7 +15,7 @@ interface DropdownProps {
   menuItems: MenuEntry[]
   menuLabel?: string
   menuIcon?: ReactNode
-  className: string
+  className?: string
 }
 
 const Dropdown = ({

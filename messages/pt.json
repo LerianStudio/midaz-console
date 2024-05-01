@@ -175,8 +175,10 @@
     "title": "Ledgers",
     "subtitle": "Visualize e edite os Ledgers da sua Organização.",
     "columnsTable": {
-      "name": "Nome",
-      "divisionName": "Nome da Divisão",
+      "name": "Nome do Ledger",
+      "instruments": "Instruments",
+      "metadata": "Metadata",
+      "actions": "Ações",
       "status": "Status",
       "edit": "Editar",
       "delete": "Deletar"

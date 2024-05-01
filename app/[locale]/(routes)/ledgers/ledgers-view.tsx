@@ -14,7 +14,6 @@ import { DialogDemo } from '@/components/Dialog'
 import { SheetDemo } from '@/components/Sheet'
 import useCustomToast from '@/hooks/useCustomToast'
 import { LedgerEntity } from '@/domain/entities/LedgerEntity'
-import { TabsComponent } from '@/components/Tabs'
 
 type SheetModeState = {
   isOpen: boolean
