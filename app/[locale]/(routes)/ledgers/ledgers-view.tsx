@@ -1,184 +1,126 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
-import { useLedgers } from '@/utils/queries'
 import { getLedgersFormFields } from '@/[locale]/(routes)/ledgers/ledgers-form-fields'
 import { getLedgersColumns } from '@/[locale]/(routes)/ledgers/ledgers-columns'
 import { Skeleton } from '@/components/ui/skeleton'
 import { formSchema } from '@/[locale]/(routes)/ledgers/ledgers-form-schema'
-import { createLedger, deleteLedger, updateLedger } from '@/client/ledgerClient'
 import { DataTable } from '@/components/DataTable'
 import { NoResource } from '@/components/NoResource'
 import { DialogDemo } from '@/components/Dialog'
 import { SheetDemo } from '@/components/Sheet'
-import useCustomToast from '@/hooks/useCustomToast'
 import { LedgerEntity } from '@/domain/entities/LedgerEntity'
-
-type SheetModeState = {
-  isOpen: boolean
-  mode: 'create' | 'edit' | 'view'
-  ledgersData: LedgerEntity | null
-}
+import { PageHeader } from '@/components/PageHeader'
+import { BreadcrumbComponent, BreadcrumbPath } from '@/components/Breadcrumb'
+import { useSheetMode } from '@/hooks/ledgers/useSheetMode'
+import { useDeleteLedger } from '@/hooks/ledgers/useDeleteLedger'
+import { useCreateLedger } from '@/hooks/ledgers/useCreateLedger'
+import { v4 as uuidv4 } from 'uuid'
+import { useEnhancedLedgers } from '@/hooks/ledgers/useEnhancedLedgers'
+import React from 'react'
 
 const LedgersView = () => {
   const t = useTranslations('ledgers')
-  const { showSuccess, showError } = useCustomToast()
   const formFields: any = getLedgersFormFields(t)
-  const ledgers = useLedgers()
+  const ledgers = useEnhancedLedgers()
+  const createLedgerData = useCreateLedger()
 
-  const [sheetMode, setSheetMode] = useState<SheetModeState>({
-    isOpen: false,
-    mode: 'create',
-    ledgersData: null
-  })
+  const {
+    sheetMode,
+    handleOpenCreateSheet,
+    handleOpenViewSheet,
+    setSheetMode
+  } = useSheetMode()
 
-  const handleOpenCreateSheet = () => {
-    setSheetMode({ isOpen: true, mode: 'create', ledgersData: null })
-  }
-
-  const handleOpenEditSheet = (ledgerData: LedgerEntity) => {
-    setSheetMode({ isOpen: true, mode: 'edit', ledgersData: ledgerData })
-  }
-
-  const handleOpenViewSheet = (ledgerData: LedgerEntity) => {
-    setSheetMode({ isOpen: true, mode: 'view', ledgersData: ledgerData })
-  }
-
-  const getSheetTitle = (
-    mode: string,
-    ledgerData: LedgerEntity | null,
-    t: any
-  ) => {
-    if (mode === 'create') {
-      return t('sheetCreate.title')
-    }
-
-    if (mode === 'edit') {
-      return `${t('sheetEdit.title')} ${ledgerData?.name}`
-    }
-
-    return `${t('sheetView.title')} ${ledgerData?.name}`
-  }
-
-  const getSheetDescription = (mode: string, t: any) => {
-    if (mode === 'create') {
-      return t('sheetCreate.description')
-    }
-
-    if (mode === 'edit') {
-      return t('sheetEdit.description')
-    }
-
-    return t('sheetView.description')
-  }
-
-  const getSheetButtonText = (mode: string, t: any) => {
-    if (mode === 'create') {
-      return t('sheetCreate.button')
-    }
-
-    if (mode === 'edit') {
-      return t('sheetEdit.button')
-    }
-
-    return t('sheetView.button')
-  }
-
-  const handleOpenDeleteSheet = (ledgerData: LedgerEntity) => {
-    setCurrentLedgerForDeletion(ledgerData)
-    setIsDialogOpen(true)
-  }
+  const {
+    isDialogOpen,
+    setIsDialogOpen,
+    currentLedgerForDeletion,
+    handleOpenDeleteSheet,
+    handleConfirmDeleteLedger
+  } = useDeleteLedger(ledgers.refetch)
 
   const ledgersColumns = getLedgersColumns(
     {
-      handleOpenEditSheet,
       handleOpenViewSheet,
       handleOpenDeleteSheet
     },
     t
   )
 
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [currentLedgerForDeletion, setCurrentLedgerForDeletion] = useState<
-    LedgerEntity | undefined
-  >(undefined)
-
-  const deleteLedgerAndRefetch = async (ledgerId: string) => {
-    await deleteLedger(ledgerId)
-    await ledgers.refetch()
-  }
-
-  const createLedgerAndRefetch = async (values: LedgerEntity) => {
-    await createLedger(values)
-    await ledgers.refetch()
-  }
-
-  const updateLedgerDataAndRefetch = async (
-    sheetId: string,
-    values: LedgerEntity
+  const getSheetInfo = (
+    mode: string,
+    ledgerData: LedgerEntity | null,
+    t: any
   ) => {
-    await updateLedger(sheetId, values)
-    await ledgers.refetch()
+    const info = {
+      create: {
+        title: t('sheetCreate.title'),
+        description: t('sheetCreate.description'),
+        buttonText: t('sheetCreate.button')
+      },
+      edit: {
+        title: `${t('sheetEdit.title')} ${ledgerData?.name}`,
+        description: t('sheetEdit.description'),
+        buttonText: t('sheetEdit.button')
+      },
+      view: {
+        title: `${t('sheetView.title')} ${ledgerData?.name}`,
+        description: t('sheetView.description'),
+        buttonText: t('sheetView.button')
+      }
+    }
+
+    return info[mode as keyof typeof info]
   }
 
-  const handleConfirmDeleteLedger = async () => {
-    if (!currentLedgerForDeletion) {
-      showError(t('toast.ledgerNotFound'))
-      return
-    }
-
-    try {
-      setIsDialogOpen(false)
-      await deleteLedgerAndRefetch(currentLedgerForDeletion.id)
-      showSuccess(
-        t('toast.ledgerDeleted', { ledgerName: currentLedgerForDeletion.name })
-      )
-    } catch (error) {
-      const err = error as Error
-      showError(t('toast.ledgerDeleteFailed', { message: err.message }))
-    }
-  }
-
-  const createLedgerData = async (values: LedgerEntity) => {
-    try {
-      await createLedgerAndRefetch(values)
-      showSuccess(t('toast.ledgerCreated', { ledgerName: values.name }))
-    } catch (error) {
-      const err = error as Error
-      console.error(err)
-      showError(err.message)
-    }
-  }
-
-  const updateLedgerData = async (id: string, values: LedgerEntity) => {
-    if (!sheetMode.ledgersData || !sheetMode.ledgersData.id) {
-      showError('Division ID not found')
-      return
-    }
-
-    try {
-      await updateLedgerDataAndRefetch(sheetMode.ledgersData.id, values as any)
-      showSuccess(t('toast.ledgerUpdated', { ledgerName: values.name }))
-    } catch (error) {
-      const err = error as Error
-      showError(err.message)
-    }
-  }
+  const sheetInfo = getSheetInfo(sheetMode.mode, sheetMode.ledgersData, t)
 
   const getLoadingSkeleton = () => {
-    return <Skeleton className="h-[80px] w-full" />
+    return (
+      <React.Fragment>
+        <Skeleton className="h-[84px] w-full bg-white" />
+        <Skeleton className="mt-6 h-[390px] w-full bg-white" />
+      </React.Fragment>
+    )
+  }
+
+  const defaultLedgerSchema: any = {
+    id: uuidv4(),
+    organizationId: 'cc15194a-6bc9-4ebb-b15d-43411a54ba4b',
+    instruments: null,
+    status: {
+      code: 'ACTIVE',
+      description: null
+    },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    deletedAt: null
   }
 
   const handleSubmit = async (values: LedgerEntity) => {
-    if (sheetMode.mode === 'create') {
-      await createLedgerData(values)
-    }
+    const mergedValues = { ...defaultLedgerSchema, ...values }
 
-    if (sheetMode.mode === 'edit') {
-      await updateLedgerData(sheetMode.ledgersData?.id as string, values)
+    if (sheetMode.mode === 'create') {
+      await createLedgerData(mergedValues)
     }
   }
+
+  const breadcrumbPaths: BreadcrumbPath[] = [
+    { name: 'Ledgers', href: '#' },
+    { name: 'Detalhe da Ledger' }
+  ]
+
+  const getHelperTriggerTranslate = (t: any) => ({
+    question: t('helperTrigger.question'),
+    answer: t('helperTrigger.answer'),
+    seeMore: t('helperTrigger.seeMore')
+  })
+
+  const getListingTemplateTranslate = (t: any) => ({
+    configureButton: t('listingTemplate.configureButton'),
+    addButton: t('listingTemplate.addButton')
+  })
 
   const getLedgersComponents = () => {
     return (
@@ -189,14 +131,11 @@ const LedgersView = () => {
 
         {!ledgers.data ||
           (ledgers.data.length === 0 && (
-            <>
-              <div className="h-[1px] w-full bg-black"></div>
-              <NoResource
-                resourceName="Ledger"
-                onClick={handleOpenCreateSheet}
-                pronoun="she"
-              />
-            </>
+            <NoResource
+              resourceName="Ledger"
+              onClick={handleOpenCreateSheet}
+              pronoun="she"
+            />
           ))}
 
         <DialogDemo
@@ -215,21 +154,37 @@ const LedgersView = () => {
           mode={sheetMode.mode}
           fields={formFields}
           formSchema={formSchema}
-          title={getSheetTitle(sheetMode.mode, sheetMode.ledgersData, t)}
-          description={getSheetDescription(sheetMode.mode, t)}
-          buttonText={getSheetButtonText(sheetMode.mode, t)}
+          title={sheetInfo.title}
+          description={sheetInfo.description}
+          buttonText={sheetInfo.buttonText}
           data={sheetMode.ledgersData}
           onSubmit={handleSubmit}
         />
-
-        {/* <TabsComponent /> */}
       </div>
     )
   }
 
   return (
-    <div className="mt-10">
-      {ledgers.isLoading ? getLoadingSkeleton() : getLedgersComponents()}
+    <div>
+      <BreadcrumbComponent paths={breadcrumbPaths} />
+
+      <div className="mt-12">
+        <PageHeader
+          title={t('title')}
+          subtitle={t('subtitle')}
+          hasInfo={true}
+          type="listing"
+          helperTriggerTranslate={getHelperTriggerTranslate(t)}
+          listingTemplateTranslate={getListingTemplateTranslate(t)}
+          onCreate={handleOpenCreateSheet}
+        />
+      </div>
+
+      <div className="mt-10">
+        {ledgers.isLoading || ledgers.data === undefined
+          ? getLoadingSkeleton()
+          : getLedgersComponents()}
+      </div>
     </div>
   )
 }

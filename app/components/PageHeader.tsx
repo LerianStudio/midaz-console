@@ -24,6 +24,7 @@ type Props = {
   type?: 'listing' | 'entity'
   helperTriggerTranslate?: HelperTriggerTranslate
   listingTemplateTranslate?: ListingTemplateTranslate
+  onCreate: () => void
 }
 
 export const PageHeader = ({
@@ -33,7 +34,8 @@ export const PageHeader = ({
   hasInfo = false,
   type,
   helperTriggerTranslate,
-  listingTemplateTranslate
+  listingTemplateTranslate,
+  onCreate
 }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
   const t = useTranslations()
@@ -88,7 +90,12 @@ export const PageHeader = ({
               <Button variant="outline" size="default">
                 {listingTemplateTranslate?.configureButton}
               </Button>
-              <Button variant="default" className="flex gap-2" size="default">
+              <Button
+                variant="default"
+                className="flex gap-2"
+                size="default"
+                onClick={onCreate}
+              >
                 <span>{listingTemplateTranslate?.addButton}</span>
                 <Plus size={24} />
               </Button>

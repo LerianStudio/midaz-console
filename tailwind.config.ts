@@ -19,7 +19,9 @@ const config = {
     },
     extend: {
       boxShadow: {
-        sidebar: '5px 0px 15px -3px rgba(0, 0, 0, 0.05)'
+        sidebar: '5px 0px 15px -3px rgba(0, 0, 0, 0.05)',
+        dataTable:
+          '0px 1px 2px 0px rgba(0, 0, 0, 0.10), 0px 10px 20px 0px rgba(0, 0, 0, 0.05)'
       },
       colors: {
         sunglow: {

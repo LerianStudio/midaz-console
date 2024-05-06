@@ -12,7 +12,7 @@ import { ChevronRight } from 'lucide-react'
 export type BreadcrumbPath = {
   name: string
   href?: string
-  active: boolean
+  active?: boolean
 }
 
 type BreadcrumbProps = {
