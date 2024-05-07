@@ -38,7 +38,6 @@ export class LedgersAPIAdapter implements LedgerRepository {
   }
 
   async delete(id: string): Promise<void> {
-    console.log('id', id)
     const response = await fetch(`${this.baseUrl}/${id}`, {
       method: 'DELETE',
       headers: {

@@ -157,8 +157,6 @@ const SwitcherTrigger = ({
   isPopoverOpen,
   isCollapsed
 }: SwitcherTriggerProps) => {
-  console.log(isPopoverOpen)
-
   return (
     <PopoverTrigger asChild>
       <div className="group flex items-center gap-3">

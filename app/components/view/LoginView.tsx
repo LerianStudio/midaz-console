@@ -49,7 +49,7 @@ const LoginView = () => {
     })
 
     if (result?.error) {
-      console.log('Login error ->', result)
+      console.error('Login error ->', result)
       showError('Invalid user or password!')
       return
     }

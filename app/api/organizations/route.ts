@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 const mock = [
   {
     id: 'cc15194a-6bc9-4ebb-b15d-43411a54ba4b',
-    name: 'Sanchez Tech LTDA',
+    legalName: 'Sanchez Tech LTDA',
     doingBusinessAs: 'The ledger.io',
     legalDocument: '48784548000104',
     address: {
@@ -33,7 +33,10 @@ const mock = [
       }
     ],
     metadata: null,
-    status: 'ACTIVE',
+    status: {
+      code: 'ACTIVE',
+      description: null
+    },
     createdAt: '2024-02-08T16:59:31+0300',
     updatedAt: '2024-02-08T16:59:31+0300',
     deletedAt: null

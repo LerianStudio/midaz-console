@@ -1,240 +1,274 @@
 {
-  "genericCopyMessage": "Copiado para a area de transferência!",
-  "auth": {
-    "titleLogin": "Bem vindo(a) de volta!"
-  },
-  "header": {
-    "userDropdown": {
-      "subscription": "Assinatura",
-      "profile": "Perfil",
-      "support": "Suporte",
-      "logout": "Sair"
+    "genericCopyMessage": "Copiado para a area de transferência!",
+    "auth": {
+        "titleLogin": "Bem vindo(a) de volta!"
     },
-    "settingsDropdown": {
-      "settings": "Configurações",
-      "organizations": "Organizações",
-      "system": "Sistema",
-      "security": "Segurança",
-      "language": "Idioma"
+    "header": {
+        "userDropdown": {
+            "subscription": "Assinatura",
+            "profile": "Perfil",
+            "support": "Suporte",
+            "logout": "Sair"
+        },
+        "settingsDropdown": {
+            "settings": "Configurações",
+            "organizations": "Organizações",
+            "system": "Sistema",
+            "security": "Segurança",
+            "language": "Idioma"
+        }
+    },
+    "sideNavBar": {
+        "home": "Home",
+        "ledgers": "Ledgers",
+        "team": "Time",
+        "expand": "Ampliar",
+        "accountHolders": {
+            "title": "AccountHolders",
+            "products": "Produtos",
+            "accounts": "Contas",
+            "portfolios": "Portfólios"
+        },
+        "transactions": {
+            "title": "Transações",
+            "types": "Tipos",
+            "resume": "Resumo"
+        },
+        "reports": {
+            "title": "Relatórios",
+            "runReport": "Extrair"
+        }
+    },
+    "organizationSwitcher": {
+        "active": "Ativo",
+        "inactive": "Inativo",
+        "edit": "Editar",
+        "organizations": "Organizações"
+    },
+    "pageTitle": {
+        "overview": "Página Inicial",
+        "ledgers": "Ledgers",
+        "transactions": "Transações",
+        "accounts": "Contas",
+        "organizations": "Organizações"
+    },
+    "breadcrumb": {
+        "dashboard": "Painel",
+        "overview": "Visão geral",
+        "allLedgers": "Todas ledgers",
+        "ledgers": "Ledgers",
+        "allTransactions": "Todas transações",
+        "transactions": "Transações",
+        "allAccounts": "Todas contas",
+        "accounts": "Contas",
+        "myOrganizations": "Minha orgarnização",
+        "organizations": "Organização"
+    },
+    "table": {
+        "headerName": "Nome"
+    },
+    "dataTable": {
+        "previousBtn": "Página anterior",
+        "nextBtn": "Próxima página"
+    },
+    "emptyState": {
+        "texts": {
+            "create": "Crie",
+            "hasNoResource": "Parece que você ainda não possui",
+            "clickBtnBelow": "clicando no botão abaixo",
+            "createBtn": "Criar"
+        },
+        "pronouns": {
+            "he": {
+                "possessive": "seu primeiro",
+                "object": "nenhum"
+            },
+            "she": {
+                "possessive": "sua primeira",
+                "object": "nenhuma"
+            }
+        }
+    },
+    "divisions": {
+        "title": "Divisions",
+        "subtitle": "Visualize e edite os sub-grupos da sua Organização.",
+        "columnsTable": {
+            "name": "Nome",
+            "legalDocument": "Documento legal",
+            "status": "Status",
+            "edit": "Editar",
+            "delete": "Deletar"
+        },
+        "sheetCreate": {
+            "title": "Criar Division",
+            "description": "Preencha os dados da Division que você deseja criar.",
+            "button": "Criar"
+        },
+        "sheetEdit": {
+            "title": "Editar Division",
+            "description": "Edite o que desejar e depois clique em “Salvar”.",
+            "button": "Salvar"
+        },
+        "sheetView": {
+            "title": "Division",
+            "description": "Abaixo estão listados os dados da sua Division.",
+            "button": "Fechar"
+        },
+        "formFields": {
+            "legalName": {
+                "name": "Razão Social",
+                "placeholder": "Razão Social"
+            },
+            "doingBusinessAs": {
+                "name": "Nome Fantasia",
+                "placeholder": "Nome Fantasia (opcional)"
+            },
+            "legalDocument": {
+                "name": "Documento Legal",
+                "placeholder": "Documento Legal"
+            },
+            "address": {
+                "name": "Endereço",
+                "placeholder": "Endereço"
+            },
+            "address2": {
+                "name": "Complemento",
+                "placeholder": "Complemento"
+            },
+            "country": {
+                "name": "País",
+                "placeholder": "País"
+            },
+            "state": {
+                "name": "Estado",
+                "placeholder": "Estado"
+            },
+            "city": {
+                "name": "Cidade",
+                "placeholder": "Cidade"
+            },
+            "zipCode": {
+                "name": "CEP",
+                "placeholder": "CEP"
+            },
+            "defaultTimezone": {
+                "name": "Fuso Horário",
+                "placeholder": "Fuso Horário (opcional)"
+            },
+            "defaultCurrency": {
+                "name": "Moeda Padrão",
+                "placeholder": "Moeda Padrão (opcional)"
+            }
+        },
+        "dialog": {
+            "title": "Você tem certeza?",
+            "subtitle": "Essa ação é irreversível. Isso vai inativar para sempre a sua Division",
+            "deleteBtnText": "Apagar Division"
+        },
+        "toast": {
+            "divisionDeleted": "Division deletada",
+            "copyId": "O id foi copiado para sua área de transferência.",
+            "copyLegalDocument": "O número do documento foi copiado para sua área de transferência."
+        }
+    },
+    "ledgers": {
+        "title": "Ledgers",
+        "subtitle": "Visualize e edite os Ledgers da sua Organização.",
+        "columnsTable": {
+            "name": "Nome do Ledger",
+            "instruments": "Instruments",
+            "metadata": "Metadata",
+            "actions": "Ações",
+            "status": "Status",
+            "edit": "Editar",
+            "delete": "Deletar"
+        },
+        "sheetCreate": {
+            "title": "Novo Ledger",
+            "description": "Preencha os dados da Ledger que você deseja criar.",
+            "button": "Criar"
+        },
+        "sheetEdit": {
+            "title": "Editar Ledger",
+            "description": "Edite o que desejar e depois clique em “Salvar”.",
+            "button": "Salvar"
+        },
+        "sheetView": {
+            "title": "Ledger",
+            "description": "Abaixo estão listados os dados da sua Ledger.",
+            "button": "Fechar"
+        },
+        "formFields": {
+            "name": {
+                "name": "Nome do Ledger",
+                "placeholder": "Digite...",
+                "description": "O nome público do seu Ledger"
+            }
+        },
+        "dialog": {
+            "title": "Você tem certeza?",
+            "subtitle": "Essa ação é irreversível. Isso vai inativar para sempre a sua Ledger",
+            "deleteBtnText": "Apagar Ledger"
+        },
+        "toast": {
+            "ledgerCreated": "Ledger {ledgerName} criado com sucesso",
+            "ledgerUpdated": "Ledger {ledgerName} atualizado com sucesso",
+            "ledgerDeleteFailed": "Falha ao deletar ledger",
+            "ledgerNotFound": "Nenhum ledger selecionado para exclusão",
+            "ledgerDeleted": "Ledger {ledgerName} deletado",
+            "copyId": "O id foi copiado para sua área de transferência."
+        },
+        "helperTrigger": {
+            "question": "O que é um Ledger?",
+            "answer": "Livro com o registro de todas as transações e operações da Organização.",
+            "seeMore": "Leia a documentação"
+        },
+        "listingTemplate": {
+            "configureButton": "Configurar",
+            "addButton": "Nova Ledger"
+        }
+    },
+
+    "organizations": {
+        "title": "Configurações",
+        "subtitle": "Visualize e edite as Organizações.",
+        "columnsTable": {
+            "name": "Nome da Organização",
+            "legalName": "Nome Legal",
+            "doingBusinessAs": "Nome Comercial",
+            "legalDocument": "Documento",
+            "status": "Status",
+            "actions": "Ações",
+            "edit": "Editar",
+            "delete": "Excluir",
+            "inactivate": "Inativar"
+        },
+        "toast": {
+            "organizationDeletedFailed": "Falha ao excluir organização",
+            "organizationNotFound": "Nenhuma organização selecionada para exclusão",
+            "organizationDeleted": "Organização {organizationName} excluída",
+            "copyId": "O ID foi copiado para a sua área de transferência.",
+            "copyLegalDocument": "O número do documento foi copiado para a sua área de transferência."
+        },
+        "listingTemplate": {
+            "addButton": "Nova Organização"
+        }
+    },
+    "settingsDialog": {
+        "title": "Configurações",
+        "description": "Faça as alterações desejadas e clique em “Salvar” quando finalizar.",
+        "btnText": "Salvar",
+        "label": {
+            "name": "Nome",
+            "email": "E-mail"
+        }
+    },
+    "settings": {
+        "title": "Configurações",
+        "tabs": {
+            "organizations": "Organizações",
+            "others": "Outras Configurações"
+        }
     }
-  },
-  "sideNavBar": {
-    "home": "Home",
-    "ledgers": "Ledgers",
-    "team": "Time",
-    "expand": "Ampliar",
-    "accountHolders": {
-      "title": "AccountHolders",
-      "products": "Produtos",
-      "accounts": "Contas",
-      "portfolios": "Portfólios"
-    },
-    "transactions": {
-      "title": "Transações",
-      "types": "Tipos",
-      "resume": "Resumo"
-    },
-    "reports": {
-      "title": "Relatórios",
-      "runReport": "Extrair"
-    }
-  },
-  "organizationSwitcher": {
-    "active": "Ativo",
-    "inactive": "Inativo",
-    "edit": "Editar",
-    "organizations": "Organizações"
-  },
-  "pageTitle": {
-    "overview": "Página Inicial",
-    "ledgers": "Ledgers",
-    "transactions": "Transações",
-    "accounts": "Contas",
-    "organizations": "Organizações"
-  },
-  "breadcrumb": {
-    "dashboard": "Painel",
-    "overview": "Visão geral",
-    "allLedgers": "Todas ledgers",
-    "ledgers": "Ledgers",
-    "allTransactions": "Todas transações",
-    "transactions": "Transações",
-    "allAccounts": "Todas contas",
-    "accounts": "Contas",
-    "myOrganizations": "Minha orgarnização",
-    "organizations": "Organização"
-  },
-  "table": {
-    "headerName": "Nome"
-  },
-  "dataTable": {
-    "previousBtn": "Página anterior",
-    "nextBtn": "Próxima página"
-  },
-  "emptyState": {
-    "texts": {
-      "create": "Crie",
-      "hasNoResource": "Parece que você ainda não possui",
-      "clickBtnBelow": "clicando no botão abaixo",
-      "createBtn": "Criar"
-    },
-    "pronouns": {
-      "he": {
-        "possessive": "seu primeiro",
-        "object": "nenhum"
-      },
-      "she": {
-        "possessive": "sua primeira",
-        "object": "nenhuma"
-      }
-    }
-  },
-  "divisions": {
-    "title": "Divisions",
-    "subtitle": "Visualize e edite os sub-grupos da sua Organização.",
-    "columnsTable": {
-      "name": "Nome",
-      "legalDocument": "Documento legal",
-      "status": "Status",
-      "edit": "Editar",
-      "delete": "Deletar"
-    },
-    "sheetCreate": {
-      "title": "Criar Division",
-      "description": "Preencha os dados da Division que você deseja criar.",
-      "button": "Criar"
-    },
-    "sheetEdit": {
-      "title": "Editar Division",
-      "description": "Edite o que desejar e depois clique em “Salvar”.",
-      "button": "Salvar"
-    },
-    "sheetView": {
-      "title": "Division",
-      "description": "Abaixo estão listados os dados da sua Division.",
-      "button": "Fechar"
-    },
-    "formFields": {
-      "legalName": {
-        "name": "Razão Social",
-        "placeholder": "Razão Social"
-      },
-      "doingBusinessAs": {
-        "name": "Nome Fantasia",
-        "placeholder": "Nome Fantasia (opcional)"
-      },
-      "legalDocument": {
-        "name": "Documento Legal",
-        "placeholder": "Documento Legal"
-      },
-      "address": {
-        "name": "Endereço",
-        "placeholder": "Endereço"
-      },
-      "address2": {
-        "name": "Complemento",
-        "placeholder": "Complemento"
-      },
-      "country": {
-        "name": "País",
-        "placeholder": "País"
-      },
-      "state": {
-        "name": "Estado",
-        "placeholder": "Estado"
-      },
-      "city": {
-        "name": "Cidade",
-        "placeholder": "Cidade"
-      },
-      "zipCode": {
-        "name": "CEP",
-        "placeholder": "CEP"
-      },
-      "defaultTimezone": {
-        "name": "Fuso Horário",
-        "placeholder": "Fuso Horário (opcional)"
-      },
-      "defaultCurrency": {
-        "name": "Moeda Padrão",
-        "placeholder": "Moeda Padrão (opcional)"
-      }
-    },
-    "dialog": {
-      "title": "Você tem certeza?",
-      "subtitle": "Essa ação é irreversível. Isso vai inativar para sempre a sua Division",
-      "deleteBtnText": "Apagar Division"
-    },
-    "toast": {
-      "divisionDeleted": "Division deletada",
-      "copyId": "O id foi copiado para sua área de transferência.",
-      "copyLegalDocument": "O número do documento foi copiado para sua área de transferência."
-    }
-  },
-  "ledgers": {
-    "title": "Ledgers",
-    "subtitle": "Visualize e edite os Ledgers da sua Organização.",
-    "columnsTable": {
-      "name": "Nome do Ledger",
-      "instruments": "Instruments",
-      "metadata": "Metadata",
-      "actions": "Ações",
-      "status": "Status",
-      "edit": "Editar",
-      "delete": "Deletar"
-    },
-    "sheetCreate": {
-      "title": "Novo Ledger",
-      "description": "Preencha os dados da Ledger que você deseja criar.",
-      "button": "Criar"
-    },
-    "sheetEdit": {
-      "title": "Editar Ledger",
-      "description": "Edite o que desejar e depois clique em “Salvar”.",
-      "button": "Salvar"
-    },
-    "sheetView": {
-      "title": "Ledger",
-      "description": "Abaixo estão listados os dados da sua Ledger.",
-      "button": "Fechar"
-    },
-    "formFields": {
-      "name": {
-        "name": "Nome do Ledger",
-        "placeholder": "Digite...",
-        "description": "O nome público do seu Ledger"
-      }
-    },
-    "dialog": {
-      "title": "Você tem certeza?",
-      "subtitle": "Essa ação é irreversível. Isso vai inativar para sempre a sua Ledger",
-      "deleteBtnText": "Apagar Ledger"
-    },
-    "toast": {
-      "ledgerCreated": "Ledger {ledgerName} criado com sucesso",
-      "ledgerUpdated": "Ledger {ledgerName} atualizado com sucesso",
-      "ledgerDeleteFailed": "Falha ao deletar ledger",
-      "ledgerNotFound": "Nenhum ledger selecionado para exclusão",
-      "ledgerDeleted": "Ledger {ledgerName} deletado",
-      "copyId": "O id foi copiado para sua área de transferência."
-    },
-    "helperTrigger": {
-      "question": "O que é um Ledger?",
-      "answer": "Livro com o registro de todas as transações e operações da Organização.",
-      "seeMore": "Leia a documentação"
-    },
-    "listingTemplate": {
-      "configureButton": "Configurar",
-      "addButton": "Nova Ledger"
-    }
-  },
-  "settingsDialog": {
-    "title": "Configurações",
-    "description": "Faça as alterações desejadas e clique em “Salvar” quando finalizar.",
-    "btnText": "Salvar",
-    "label": {
-      "name": "Nome",
-      "email": "E-mail"
-    }
-  }
+
 }

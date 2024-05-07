@@ -1,6 +1,7 @@
 import { getLedgers } from '@/client/ledgerClient'
 import { useQuery } from '@tanstack/react-query'
 import { getDivisions } from '@/client/divisionsClient'
+import { getOrganization } from '@/client/organizationClient'
 
 export const useDivisions = () => {
   return useQuery({
@@ -13,5 +14,12 @@ export const useLedgers = () => {
   return useQuery({
     queryKey: ['ledgers'],
     queryFn: getLedgers
+  })
+}
+
+export const useOrganizations = () => {
+  return useQuery({
+    queryKey: ['organizations'],
+    queryFn: getOrganization
   })
 }

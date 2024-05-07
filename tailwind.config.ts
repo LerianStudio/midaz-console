@@ -22,6 +22,19 @@ const config = {
         sidebar: '5px 0px 15px -3px rgba(0, 0, 0, 0.05)'
       },
       colors: {
+        base: {
+          '50': '#f8f8f8',
+          '100': '#f1f1f1',
+          '200': '#e1e1e1',
+          '300': '#c1c1c1',
+          '400': '#a1a1aa',
+          '500': '#818181',
+          '600': '#616161',
+          '700': '#515151',
+          '800': '#414141',
+          '900': '#313131',
+          '950': '#111111'
+        },
         sunglow: {
           '50': '#fefbe8',
           '100': '#fff8c2',
@@ -132,6 +145,14 @@ const config = {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' }
         }
+      },
+      fontSize: {
+        xs: '12px',
+        md: '14px',
+        lg: '16px',
+        xl: '18px',
+        '2xl': '20px',
+        '3xl': '24px'
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',

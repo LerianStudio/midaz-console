@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer base {
   :root {
     /* Default background color of <body /> */
@@ -44,6 +45,7 @@
 
     /* Used for border radius */
     --radius: 0.5rem;
+
   }
 
   .dark {

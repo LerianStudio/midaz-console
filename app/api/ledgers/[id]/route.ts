@@ -25,7 +25,6 @@ export async function DELETE(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  console.log('params', params)
   await ledgersUseCases.deleteLedgersUseCases(params.id)
   return NextResponse.json({ message: 'Ledger deleted!' })
 }

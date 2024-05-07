@@ -10,9 +10,8 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { MoreVertical, Trash } from 'lucide-react'
-
 import useCustomToast from '@/hooks/useCustomToast'
-import { LedgerEntity } from '@/domain/entities/LedgerEntity'
+import { OrganizationEntity } from '@/domain/entities/OrganizationEntity'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,20 +21,20 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button/button'
 
-export type LedgersColumnsEvents = {
+export type OrganizationsColumnsEvents = {
   handleClickId?: (id: string) => void
   handleClickLegalDocument?: (document: string) => void
-  handleOpenEditSheet: (ledgersData: LedgerEntity) => void
-  handleOpenViewSheet: (ledgersData: LedgerEntity) => void
-  handleOpenDeleteSheet: (ledgersData: LedgerEntity) => void
+  handleOpenEditSheet: (organizationData: OrganizationEntity) => void
+  handleOpenViewSheet: (organizationData: OrganizationEntity) => void
+  handleOpenDeleteSheet: (organizationData: OrganizationEntity) => void
 }
 
 type ColumnRow = {
-  row: Row<LedgerEntity>
+  row: Row<OrganizationEntity>
 }
 
-export const getLedgersColumns = (
-  ledgersEvents: LedgersColumnsEvents,
+export const getOrganizationsColumns = (
+  organizationsEvents: OrganizationsColumnsEvents,
   t: any
 ) => {
   const { showInfo } = useCustomToast()
@@ -50,13 +49,14 @@ export const getLedgersColumns = (
 
   const handleCopyToClipboard = (value: string, itemNamespace: string) => {
     navigator.clipboard.writeText(value)
+
     showInfo(translateToast(itemNamespace))
   }
 
   return [
     {
       accessorKey: 'id',
-      header: 'Ledger ID',
+      header: 'Organization ID',
       cell: ({ row }: ColumnRow) => {
         const id = row.original.id
         const displayId = id && id.length > 8 ? `${truncateString(id, 8)}` : id
@@ -65,8 +65,8 @@ export const getLedgersColumns = (
             <Tooltip>
               <TooltipTrigger asChild>
                 <p
-                  onClick={() => handleCopyToClipboard(id, 'copyId')}
-                  className="text-shadcn-600 underline"
+                  className="text-sm font-normal leading-tight text-zinc-800 underline"
+                  onClick={() => handleCopyToClipboard(id as string, 'copyId')}
                 >
                   {displayId}
                 </p>
@@ -79,35 +79,48 @@ export const getLedgersColumns = (
         )
       }
     },
+
     {
-      accessorKey: 'name',
-      header: translateHeader('name'),
+      accessorKey: 'legalName',
+      header: translateHeader('legalName'),
       cell: ({ row }: ColumnRow) => {
-        const nameToDisplay = row.original.name || row.original.name
+        const nameToDisplay: string = row.original.legalName
         return <p>{nameToDisplay}</p>
       }
     },
+
     {
-      accessorKey: 'divisionName',
-      header: translateHeader('instruments'),
+      accessorKey: 'doingBusinessAs',
+      header: translateHeader('doingBusinessAs'),
       cell: ({ row }: ColumnRow) => {
-        const legalDocument = row.original.divisionName || 'No Division'
-        return <p>{legalDocument}</p>
+        const nameToDisplay =
+          row.original.doingBusinessAs || row.original.legalName
+        return <p>{nameToDisplay}</p>
       }
     },
+
     {
-      accessorKey: 'divisionName',
-      header: translateHeader('metadata'),
+      accessorKey: 'legalDocument',
+      header: translateHeader('legalDocument'),
       cell: ({ row }: ColumnRow) => {
-        const legalDocument = row.original.divisionName || 'No Division'
-        return <p>{legalDocument}</p>
+        const legalDocument = row.original.legalDocument
+        return (
+          <p
+            onClick={() =>
+              handleCopyToClipboard(legalDocument, 'copyLegalDocument')
+            }
+          >
+            {legalDocument}
+          </p>
+        )
       }
     },
+
     {
       accessorKey: 'status',
       header: translateHeader('status'),
       cell: ({ row }: ColumnRow) => {
-        const status = row.original.status
+        const status = row.original.status.code
         return (
           <div className="inline-flex h-6 items-center justify-center rounded-xl bg-emerald-100 px-3 py-0.5">
             <p className="ext-center text-sm font-medium capitalize text-emerald-800">
@@ -117,6 +130,7 @@ export const getLedgersColumns = (
         )
       }
     },
+
     {
       id: 'actions',
       header: translateHeader('actions'),
@@ -126,24 +140,30 @@ export const getLedgersColumns = (
             <Button className="h-auto w-max rounded-md border border-shadcn-300 bg-white p-2 text-black shadow-sm outline-none hover:bg-white">
               <MoreVertical
                 size={16}
-                onClick={() => ledgersEvents.handleOpenViewSheet(row.original)}
+                onClick={() =>
+                  organizationsEvents.handleOpenViewSheet(row.original)
+                }
               />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem
-              onClick={() => ledgersEvents.handleOpenEditSheet(row.original)}
+              onClick={() =>
+                organizationsEvents.handleOpenEditSheet(row.original)
+              }
             >
-              Editar
+              {translateHeader('edit')}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Inativar</DropdownMenuItem>
+            <DropdownMenuItem>{translateHeader('inactivate')}</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className="flex gap-3"
-              onClick={() => ledgersEvents.handleOpenDeleteSheet(row.original)}
+              onClick={() =>
+                organizationsEvents.handleOpenDeleteSheet(row.original)
+              }
             >
-              <span>Apagar</span>
+              <span>{translateHeader('delete')}</span>
               <Trash size={16} className="text-shadcn-400" />
             </DropdownMenuItem>
           </DropdownMenuContent>
