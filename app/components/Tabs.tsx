@@ -16,7 +16,7 @@ export const TabsComponent = ({ tabs }: any) => {
       </TabsList>
 
       {tabs.map((tab: any) => (
-        <TabsContent value={tab.value} className="mt-4">
+        <TabsContent value={tab.value} className="mt-4" key={tab.id}>
           <div className="min-h-[113px] w-full rounded-md bg-white p-6 shadow-sm">
             <h1>{tab.name}</h1>
           </div>

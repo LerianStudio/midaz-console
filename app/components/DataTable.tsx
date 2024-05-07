@@ -108,7 +108,7 @@ export function DataTable<TData, TValue>({
         ) : null}
       </div>
 
-      <div className="shadow-dataTable mt-6 rounded-lg bg-white">
+      <div className="mt-6 rounded-lg bg-white shadow-dataTable">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
