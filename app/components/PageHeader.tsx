@@ -24,7 +24,7 @@ type Props = {
   type?: 'listing' | 'entity'
   helperTriggerTranslate?: HelperTriggerTranslate
   listingTemplateTranslate?: ListingTemplateTranslate
-  onCreate: () => void
+  onCreate?: () => void
 }
 
 export const PageHeader = ({
