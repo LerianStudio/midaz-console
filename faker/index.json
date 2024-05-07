@@ -23,9 +23,7 @@
       "id": "0df8d87f-f26e-451c-b650-f8af7af947dc",
       "organizationId": "cc15194a-6bc9-4ebb-b15d-43411a54ba4b",
       "name": "Black Rock US",
-      "instruments": [
-        "bb907427-5a8c-4622-b1ce-801b70e40d0c"
-      ],
+      "instruments": ["bb907427-5a8c-4622-b1ce-801b70e40d0c"],
       "metadata": {
         "officeAddress": "123 Broadway",
         "generalManager": "Larry Fink"
