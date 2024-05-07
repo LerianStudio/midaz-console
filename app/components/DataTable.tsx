@@ -4,7 +4,6 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
-  ColumnFiltersState,
   getFilteredRowModel,
   getPaginationRowModel,
   useReactTable
@@ -24,7 +23,6 @@ import React from 'react'
 import { useTranslations } from 'next-intl'
 import { ChevronLeft, ChevronRight, Search } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { Input } from './ui/input/input'
 import {
   Select,
   SelectContent,
@@ -32,7 +30,6 @@ import {
   SelectTrigger,
   SelectValue
 } from './ui/select'
-import { PasswordInput } from './ui/password-input/password-input'
 import { InputWithIcon } from './ui/input-with-icon'
 
 interface DataTableProps<TData, TValue> {
