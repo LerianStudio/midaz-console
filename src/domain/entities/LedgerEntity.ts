@@ -2,17 +2,15 @@ export type LedgerEntity = {
   id: string
   organizationId: string
   name: string
-  divisionId: string
-  defaultTimezone: string
-  defaultCurrency: string
-  defaultHolidayList: string
-  assets: []
+  instruments: []
   metadata: {
     value: string
   }
-  status: string
+  status: {
+    code: string
+    description: string
+  }
   createdAt: string
   updatedAt: string
   deletedAt: string
-  divisionName?: string
 }

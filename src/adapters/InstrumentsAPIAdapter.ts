@@ -1,17 +1,17 @@
-import { LedgerEntity } from '@/domain/entities/LedgerEntity'
-import { LedgerRepository } from '@/repositories/LedgerRepository'
+import { InstrumentsEntity } from '@/domain/entities/InstrumentsEntity'
+import { InstrumentsRepository } from '@/repositories/InstrumentsRepository'
 import * as process from 'node:process'
 
-export class LedgersAPIAdapter implements LedgerRepository {
-  readonly baseUrl: string = process.env.MIDAZ_BASE_PATH + '/ledgers'
+export class InstrumentsAPIAdapter implements InstrumentsRepository {
+  readonly baseUrl: string = process.env.MIDAZ_BASE_PATH + '/instruments'
 
-  async create(ledger: LedgerEntity): Promise<void> {
+  async create(instrument: InstrumentsEntity): Promise<void> {
     const response = await fetch(this.baseUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(ledger)
+      body: JSON.stringify(instrument)
     })
 
     if (!response.ok) {
@@ -21,13 +21,13 @@ export class LedgersAPIAdapter implements LedgerRepository {
     return response.json()
   }
 
-  async update(id: string, ledger: LedgerEntity): Promise<void> {
+  async update(id: string, instrument: InstrumentsEntity): Promise<void> {
     const response = await fetch(`${this.baseUrl}/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(ledger)
+      body: JSON.stringify(instrument)
     })
 
     if (!response.ok) {
@@ -52,7 +52,7 @@ export class LedgersAPIAdapter implements LedgerRepository {
     return response.json()
   }
 
-  async list(): Promise<LedgerEntity[]> {
+  async list(): Promise<InstrumentsEntity[]> {
     const response = await fetch(this.baseUrl, {
       method: 'GET',
       headers: {
@@ -67,7 +67,7 @@ export class LedgersAPIAdapter implements LedgerRepository {
     return response.json()
   }
 
-  async getById(id: string): Promise<LedgerEntity | null> {
+  async getById(id: string): Promise<InstrumentsEntity | null> {
     const response = await fetch(`${this.baseUrl}/${id}`, {
       method: 'GET',
       headers: {

@@ -21,7 +21,7 @@ import {
   FormItem,
   FormLabel
 } from '@/components/ui/form'
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   Select,
   SelectContent,
@@ -156,54 +156,52 @@ export function SheetDemo({
 
   const renderMetadataFields = () => {
     return (
-      <div className="flex flex-col gap-4">
-        <div className="flex gap-5">
-          <div className="flex gap-2">
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="key">Chave</Label>
-              <Input
-                id="key"
-                value={currentMetadata.key}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  handleMetadataChange(e, 'key')
-                }
-                placeholder="Key"
-                className="h-9"
-              />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="value">Valor</Label>
-              <Input
-                id="value"
-                value={currentMetadata.value}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  handleMetadataChange(e, 'value')
-                }
-                placeholder="Value"
-                className="h-9"
-              />
-            </div>
+      <div className="flex gap-5">
+        <div className="flex w-full gap-2">
+          <div className="flex flex-1 flex-col gap-2">
+            <Label htmlFor="key">Chave</Label>
+            <Input
+              id="key"
+              value={currentMetadata.key}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleMetadataChange(e, 'key')
+              }
+              placeholder="Key"
+              className="h-9"
+            />
           </div>
 
-          <Button
-            onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-              handleAddMetadata(e)
-            }
-            className="h-9 w-9 self-end rounded-full bg-shadcn-600 disabled:bg-shadcn-200"
-            disabled={!currentMetadata.key || !currentMetadata.value}
-          >
-            <Plus
-              size={16}
-              className={cn(
-                'shrink-0',
-                !currentMetadata.key || !currentMetadata.value
-                  ? 'text-shadcn-400'
-                  : 'text-white'
-              )}
+          <div className="flex flex-1 flex-col gap-2">
+            <Label htmlFor="value">Valor</Label>
+            <Input
+              id="value"
+              value={currentMetadata.value}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleMetadataChange(e, 'value')
+              }
+              placeholder="Value"
+              className="h-9"
             />
-          </Button>
+          </div>
         </div>
+
+        <Button
+          onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
+            handleAddMetadata(e)
+          }
+          className="h-9 w-9 self-end rounded-full bg-shadcn-600 disabled:bg-shadcn-200"
+          disabled={!currentMetadata.key || !currentMetadata.value}
+        >
+          <Plus
+            size={16}
+            className={cn(
+              'shrink-0',
+              !currentMetadata.key || !currentMetadata.value
+                ? 'text-shadcn-400'
+                : 'text-white'
+            )}
+          />
+        </Button>
       </div>
     )
   }
@@ -438,7 +436,7 @@ export function SheetDemo({
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent
-        className="max-h-screen w-full min-w-[594px] overflow-x-auto"
+        className="max-h-screen w-2/5 overflow-x-auto"
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
         <SheetHeader>
@@ -484,8 +482,12 @@ export function SheetDemo({
               </div>
 
               <div className="flex flex-col gap-2">
-                {isSwitchOn && renderMetadataFields()}
-                {renderPreviewMetadataFields()}
+                {isSwitchOn && (
+                  <React.Fragment>
+                    {renderMetadataFields()}
+                    {renderPreviewMetadataFields()}
+                  </React.Fragment>
+                )}
               </div>
             </div>
 

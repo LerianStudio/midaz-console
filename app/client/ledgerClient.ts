@@ -62,4 +62,19 @@ const getLedgers = async () => {
   return await response.json()
 }
 
-export { createLedger, updateLedger, deleteLedger, getLedgers }
+const getLedgerById = async (id: string) => {
+  const response = await fetch(`/api/ledgers/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch ledger with id ${id}`)
+  }
+
+  return await response.json()
+}
+
+export { createLedger, updateLedger, deleteLedger, getLedgers, getLedgerById }

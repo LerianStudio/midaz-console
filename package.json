@@ -80,6 +80,7 @@
     "prettier-plugin-tailwindcss": "^0.5.11",
     "storybook": "^8.0.4",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5",
+    "uuid": "^9.0.1"
   }
 }

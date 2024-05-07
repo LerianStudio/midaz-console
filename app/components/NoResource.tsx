@@ -31,7 +31,7 @@ export const NoResource = ({ resourceName, onClick, pronoun }: Props) => {
   const { possessive, object } = pronounTexts[pronoun] || pronounTexts['he']
 
   return (
-    <div className="flex h-[calc(100vh-229px)] items-center justify-center">
+    <div className="flex flex-1 items-center justify-center">
       <div className="flex w-full max-w-[455px] flex-col items-center justify-center gap-4">
         <Image src={NoResourceLogo} alt="" />
         <h1 className="text-3xl">
