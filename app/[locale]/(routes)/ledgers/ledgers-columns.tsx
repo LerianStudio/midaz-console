@@ -1,7 +1,7 @@
 'use client'
 
 import { Row } from '@tanstack/react-table'
-import React, { useState } from 'react'
+import React from 'react'
 import { capitalizeFirstLetter, truncateString } from '@/helpers'
 import {
   Tooltip,
@@ -23,6 +23,7 @@ import {
 import { Button } from '@/components/ui/button/button'
 import { Badge } from '@/components/ui/badge'
 import { Arrow } from '@radix-ui/react-tooltip'
+import { Link } from 'navigation'
 
 export type LedgersColumnsEvents = {
   handleClickId?: (id: string) => void
@@ -74,10 +75,7 @@ export const getLedgersColumns = (
                 arrowPadding={0}
               >
                 <p className="text-shadcn-400">{id}</p>
-                <p
-                  className="text-center text-white"
-                  onClick={() => handleCopyToClipboard(id, 'copyId')}
-                >
+                <p className="text-center text-white">
                   {t('columnsTable.tooltipCopyText')}
                 </p>
                 <Arrow height={8} width={15} />
@@ -99,9 +97,11 @@ export const getLedgersColumns = (
       accessorKey: 'instruments',
       header: translateHeader('instruments'),
       cell: ({ row }: ColumnRow) => {
-        const instruments = row.original.instruments as { code: string }[]
+        const instruments = row.original.instruments as
+          | { code: string }[]
+          | undefined
 
-        if (instruments === null || instruments.length === 0) {
+        if (!instruments || instruments.length === 0) {
           return (
             <Button variant="link" className="p-0">
               {t('columnsTable.instrumentsAdd')}
@@ -171,9 +171,11 @@ export const getLedgersColumns = (
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => {}} disabled={true}>
-                {t('columnsTable.actionsText.edit')}
-              </DropdownMenuItem>
+              <Link href={`/ledgers/${row.original.id}`}>
+                <DropdownMenuItem>
+                  {t('columnsTable.actionsText.edit')}
+                </DropdownMenuItem>
+              </Link>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
                 {t('columnsTable.actionsText.inactivate')}

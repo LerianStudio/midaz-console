@@ -1,5 +1,6 @@
 {
   "genericCopyMessage": "Copied to clipboard!",
+  "tooltipCopyText": "Click to copy",
   "auth": {
     "titleLogin": "Welcome again!"
   },
