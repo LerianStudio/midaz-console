@@ -1,11 +1,15 @@
 import { CustomCardContent } from './CardContent'
-import { CustomCardContentMetadata } from './CardContentMetadata'
+import { CardMetadata } from './CardMetadata'
 import { CustomCardHeader } from './CardHeader'
 import { CardRoot } from './CardRoot'
+import { CardResources } from './CardResources'
+import { CardChart } from './CardChart'
 
 export const Card = {
   Root: CardRoot,
   Header: CustomCardHeader,
   Content: CustomCardContent,
-  Metadata: CustomCardContentMetadata
+  Metadata: CardMetadata,
+  Resources: CardResources,
+  Chart: CardChart
 }

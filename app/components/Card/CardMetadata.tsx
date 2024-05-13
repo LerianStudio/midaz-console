@@ -103,7 +103,7 @@ const PreviewMetadataFields = ({ register, item, index, remove }: any) => (
   </div>
 )
 
-export const CustomCardContentMetadata = ({ data }: any) => {
+export const CardMetadata = ({ data }: any) => {
   const [currentMetadata, setCurrentMetadata] = useState({ key: '', value: '' })
 
   const initialFormData = {

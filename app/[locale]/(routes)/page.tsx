@@ -7,7 +7,7 @@ const Page = () => {
   const t = useTranslations('auth')
 
   return (
-    <div>
+    <div className="mt-12">
       <PageHeader title={t('titleLogin')} />
     </div>
   )

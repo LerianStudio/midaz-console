@@ -48,7 +48,7 @@ const Page = async ({ params }: Params) => {
 
             <Card.Root>
               <Card.Header title="Recursos" />
-              <Card.Content />
+              <Card.Resources />
             </Card.Root>
           </div>
 
@@ -70,7 +70,7 @@ const Page = async ({ params }: Params) => {
                   icon={BarChart}
                   className="text-[#52525B]"
                 />
-                <Card.Content />
+                <Card.Chart />
               </Card.Root>
             </div>
 
