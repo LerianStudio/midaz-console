@@ -1,38 +1,49 @@
 {
+  "genericCopyMessage": "Copiado para a area de transferência!",
   "auth": {
     "titleLogin": "Bem vindo(a) de volta!"
   },
-  "popoverHeader": {
-    "settings": "Configurações",
-    "support": "Suporte",
-    "logout": "Sair"
+  "header": {
+    "userDropdown": {
+      "subscription": "Assinatura",
+      "profile": "Perfil",
+      "support": "Suporte",
+      "logout": "Sair"
+    },
+    "settingsDropdown": {
+      "settings": "Configurações",
+      "organizations": "Organizações",
+      "system": "Sistema",
+      "security": "Segurança",
+      "language": "Idioma"
+    }
   },
   "sideNavBar": {
-    "home": "Início",
-    "organization": {
-      "title": "Organização",
-      "divisions": "Divisions",
-      "ledgers": "Ledgers",
-      "team": "Time",
-      "billing": "Faturamento"
-    },
-    "portfolio": {
-      "title": "Portfólio",
-      "accountTypes": "Tipos de conta",
-      "assets": "Ativos",
-      "portfolios": "Portfólios",
-      "accounts": "Contas"
+    "home": "Home",
+    "ledgers": "Ledgers",
+    "team": "Time",
+    "expand": "Ampliar",
+    "accountHolders": {
+      "title": "AccountHolders",
+      "products": "Produtos",
+      "accounts": "Contas",
+      "portfolios": "Portfólios"
     },
     "transactions": {
       "title": "Transações",
-      "transactions": "Transações",
-      "limits": "Limites",
-      "governance": "Governança"
+      "types": "Tipos",
+      "resume": "Resumo"
     },
     "reports": {
       "title": "Relatórios",
       "runReport": "Extrair"
     }
+  },
+  "organizationSwitcher": {
+    "active": "Ativo",
+    "inactive": "Inativo",
+    "edit": "Editar",
+    "organizations": "Organizações"
   },
   "pageTitle": {
     "overview": "Página Inicial",
@@ -164,14 +175,23 @@
     "title": "Ledgers",
     "subtitle": "Visualize e edite os Ledgers da sua Organização.",
     "columnsTable": {
-      "name": "Nome",
-      "divisionName": "Nome da Divisão",
+      "name": "Nome do Ledger",
+      "tooltipCopyText": "Toque para copiar",
+      "instruments": "Instruments",
+      "instrumentsAdd": "Adicionar",
+      "metadata": "Metadata",
+      "actions": "Ações",
       "status": "Status",
       "edit": "Editar",
-      "delete": "Deletar"
+      "delete": "Deletar",
+      "actionsText": {
+        "edit": "Editar",
+        "inactivate": "Inativar",
+        "delete": "Deletar"
+      }
     },
     "sheetCreate": {
-      "title": "Criar Ledger",
+      "title": "Novo Ledger",
       "description": "Preencha os dados da Ledger que você deseja criar.",
       "button": "Criar"
     },
@@ -187,20 +207,9 @@
     },
     "formFields": {
       "name": {
-        "name": "Nome",
-        "placeholder": "Name"
-      },
-      "divisionName": {
-        "name": "Nome da Division",
-        "placeholder": "Nome da Division"
-      },
-      "defaultTimezone": {
-        "name": "Fuso Horário",
-        "placeholder": "Fuso Horário (opcional)"
-      },
-      "defaultCurrency": {
-        "name": "Moeda Padrão",
-        "placeholder": "Moeda Padrão (opcional)"
+        "name": "Nome do Ledger",
+        "placeholder": "Digite...",
+        "description": "O nome público do seu Ledger"
       }
     },
     "dialog": {
@@ -209,8 +218,21 @@
       "deleteBtnText": "Apagar Ledger"
     },
     "toast": {
-      "ledgerDeleted": "Ledger deletado",
+      "ledgerCreated": "Ledger {ledgerName} criado com sucesso",
+      "ledgerUpdated": "Ledger {ledgerName} atualizado com sucesso",
+      "ledgerDeleteFailed": "Falha ao deletar ledger",
+      "ledgerNotFound": "Nenhum ledger selecionado para exclusão",
+      "ledgerDeleted": "Ledger {ledgerName} deletado",
       "copyId": "O id foi copiado para sua área de transferência."
+    },
+    "helperTrigger": {
+      "question": "O que é um Ledger?",
+      "answer": "Livro com o registro de todas as transações e operações da Organização.",
+      "seeMore": "Leia a documentação"
+    },
+    "listingTemplate": {
+      "configureButton": "Configurar",
+      "addButton": "Novo Ledger"
     }
   },
   "settingsDialog": {

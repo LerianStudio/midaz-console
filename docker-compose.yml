@@ -1,25 +1,23 @@
-version: "3.9"
+version: '3.9'
 
 services:
   midaz-console:
     build:
-        context: .
-        dockerfile: Dockerfile
-    container_name: "midaz-console"
+      context: .
+      dockerfile: Dockerfile
+    container_name: 'midaz-console'
     restart: always
     ports:
-      - "3000:3000"
+      - '3000:3000'
+    env_file:
+      - .env
 
-  storybook:
+  midaz-server-mock:
     build:
       context: .
-      dockerfile: Dockerfile-storybook
-    container_name: "storybook"
+      dockerfile: Dockerfile-json-server
+    container_name: 'midaz-server-mock'
     restart: always
-
-    ports:
-      - "8080:8080"
-
-networks:
-  compose-bridge:
-    driver: host
+    depends_on:
+      - midaz-console
+    network_mode: 'service:midaz-console'

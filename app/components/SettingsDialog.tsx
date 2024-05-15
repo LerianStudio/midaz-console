@@ -50,7 +50,7 @@ const SettingsDialog = ({ open, setOpen }: Props) => {
             </Label>
             <Input
               id="username"
-              defaultValue="gabriel.sanchez@leriand.com"
+              defaultValue="gabriel@lerian.studio"
               className="col-span-4"
               readOnly={true}
             />
@@ -59,7 +59,7 @@ const SettingsDialog = ({ open, setOpen }: Props) => {
         <DialogFooter>
           <Button
             type="submit"
-            className="bg-lemon-400 text-black hover:bg-lemon-400/70"
+            className="bg-sunglow-300 text-black hover:bg-sunglow-300/70"
           >
             {t('btnText')}
           </Button>

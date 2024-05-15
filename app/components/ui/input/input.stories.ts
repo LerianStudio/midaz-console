@@ -5,10 +5,6 @@ const meta: Meta<InputProps> = {
   title: 'Molecules/Input',
   component: Input,
   argTypes: {
-    suffix: {
-      type: 'string',
-      description: "The input's suffix"
-    },
     disabled: {
       type: 'boolean',
       description: 'If the input is disabled'

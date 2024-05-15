@@ -1,4 +1,9 @@
+'use client'
 import React from 'react'
+import { Inter } from 'next/font/google'
+import NextAuthSessionProvider from '@/providers/NextAuthSessionProvider'
+
+const inter = Inter({ subsets: ['latin'] })
 
 export default function RootLayout({
   children
@@ -7,7 +12,18 @@ export default function RootLayout({
 }) {
   return (
     <html suppressHydrationWarning>
-      <body suppressHydrationWarning >{children}</body>
+      <body suppressHydrationWarning className={inter.className}>
+        <NextAuthSessionProvider>
+          {/* <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          > */}
+          {children}
+          {/* </ThemeProvider> */}
+        </NextAuthSessionProvider>
+      </body>
     </html>
   )
 }

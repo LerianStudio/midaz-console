@@ -1,38 +1,49 @@
 {
+  "genericCopyMessage": "Copied to clipboard!",
   "auth": {
     "titleLogin": "Welcome again!"
   },
-  "popoverHeader": {
-    "settings": "Settings",
-    "support": "Support",
-    "logout": "Logout"
+  "header": {
+    "userDropdown": {
+      "subscription": "Subscription",
+      "profile": "Profile",
+      "support": "Support",
+      "logout": "Logout"
+    },
+    "settingsDropdown": {
+      "settings": "Settings",
+      "organizations": "Organizations",
+      "system": "System",
+      "security": "Security",
+      "language": "Language"
+    }
   },
   "sideNavBar": {
     "home": "Home",
-    "organization": {
-      "title": "Organization",
-      "divisions": "Divisions",
-      "ledgers": "Ledgers",
-      "team": "Team",
-      "billing": "Billing"
-    },
-    "portfolio": {
-      "title": "Portfolio",
-      "accountTypes": "Account types",
-      "assets": "Assets",
-      "portfolios": "Portfolios",
-      "accounts": "Accounts"
+    "ledgers": "Ledgers",
+    "team": "Team",
+    "expand": "Expand",
+    "accountHolders": {
+      "title": "AccountHolders",
+      "products": "Products",
+      "accounts": "Accounts",
+      "portfolios": "Portfolios"
     },
     "transactions": {
       "title": "Transactions",
-      "transactions": "Transactions",
-      "limits": "Limits",
-      "governance": "Governance"
+      "types": "Types",
+      "resume": "Resume"
     },
     "reports": {
       "title": "Reports",
-      "runReport": "Run report"
+      "runReport": "Run Report"
     }
+  },
+  "organizationSwitcher": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "edit": "Edit",
+    "organizations": "Organizations"
   },
   "pageTitle": {
     "overview": "HomePage",
@@ -164,14 +175,23 @@
     "title": "Ledgers",
     "subtitle": "Visualize and edit the Ledgers of your Organization.",
     "columnsTable": {
-      "name": "Name",
-      "divisionName": "Division Name",
+      "name": "Ledger Name",
+      "tooltipCopyText": "Click to copy",
+      "instruments": "Instruments",
+      "instrumentsAdd": "Add",
+      "metadata": "Metadata",
+      "actions": "Actions",
       "status": "Status",
       "edit": "Edit",
-      "delete": "Delete"
+      "delete": "Delete",
+      "actionsText": {
+        "edit": "Edit",
+        "inactivate": "Deactivate",
+        "delete": "Delete"
+      }
     },
     "sheetCreate": {
-      "title": "Create Ledger",
+      "title": "New Ledger",
       "description": "Fill in the data of the Ledger you wish to create.",
       "button": "Create"
     },
@@ -187,20 +207,9 @@
     },
     "formFields": {
       "name": {
-        "name": "Name",
-        "placeholder": "Name"
-      },
-      "divisionName": {
-        "name": "Division name",
-        "placeholder": "Division name"
-      },
-      "defaultTimezone": {
-        "name": "Time Zone",
-        "placeholder": "Time Zone (optional)"
-      },
-      "defaultCurrency": {
-        "name": "Default Currency",
-        "placeholder": "Default Currency (optional)"
+        "name": "Ledger Name",
+        "placeholder": "Type...",
+        "description": "The public name of your Ledger"
       }
     },
     "dialog": {
@@ -209,8 +218,21 @@
       "deleteBtnText": "Delete Ledger"
     },
     "toast": {
-      "ledgerDeleted": "Ledger deleted",
+      "ledgerCreated": "Ledger {ledgerName} created successfully",
+      "ledgerUpdated": "Ledger {ledgerName} updated successfully",
+      "ledgerDeletedFailed": "Failed to delete ledger",
+      "ledgerNotFound": "No ledger selected for deletion",
+      "ledgerDeleted": "Ledger {ledgerName} deleted",
       "copyId": "The id has been copied to your clipboard."
+    },
+    "helperTrigger": {
+      "question": "What is a Ledger?",
+      "answer": "Book with the record of all transactions and operations of the Organization.",
+      "seeMore": "Read the docs"
+    },
+    "listingTemplate": {
+      "configureButton": "Configure",
+      "addButton": "New Ledger"
     }
   },
   "settingsDialog": {
