@@ -252,6 +252,31 @@
         },
         "listingTemplate": {
             "addButton": "Nova Organização"
+        },
+        "newOrganization": {
+            "title": "Nova Organização",
+            "description": "Preencha os dados da Organização que você deseja criar.",
+            "button": "Criar Organização",
+            "cancel": "Cancelar",
+            "breadcrumbs": {
+                "settings": "Configurações",
+                "organizations": "Organizações",
+                "newOrganization": "Nova Organização"
+            },
+            "informationText": {
+                "metadataRegisterCountText": "{registerCount} registros adicionados",
+                "parentOrganizationText": "Selecione caso sua Organização seja filiada a outra"
+            }
+        },
+        "editOrganization": {
+            "title": "Editar Organização",
+            "description": "Visualize e edite os campos da Organização ",
+            "button": "Salvar",
+            "cancel": "Cancelar",
+            "informationText": {
+                "metadataRegisterCountText": "{registerCount} registros adicionados",
+                "parentOrganizationText": "Selecione caso sua Organização seja filiada a outra"
+            }
         }
     },
     "settingsDialog": {

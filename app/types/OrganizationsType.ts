@@ -22,11 +22,12 @@ type Organization = {
     weekDay?: number
     position?: number
   }> | null
-  metadata: any | null
-  status: 'ACTIVE' | 'INACTIVE'
+  parentOrganizationId: string | null
+  metadata: Record<string, any> | null
+  status: 'ACTIVE' | 'INACTIVE' | 'BLOCKED' | 'DELETED'
   createdAt: string
   updatedAt: string
   deletedAt: string | null
 }
 
-export type Organizations = Organization[]
+export type Organizations = Organization

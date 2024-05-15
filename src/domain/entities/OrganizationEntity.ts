@@ -12,11 +12,8 @@ export type OrganizationEntity = {
     state: string
     country: string
   }
-  metadata?: Record<string, any>
-  status: {
-    code: string
-    description?: string
-  }
+  metadata?: Record<string, string>
+  status: 'ACTIVE' | 'INACTIVE' | 'BLOCKED' | 'DELETED'
   createdAt: string
   updatedAt: string
   deletedAt: string | null

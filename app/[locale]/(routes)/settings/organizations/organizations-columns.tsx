@@ -65,7 +65,7 @@ export const getOrganizationsColumns = (
             <Tooltip>
               <TooltipTrigger asChild>
                 <p
-                  className="text-sm font-normal leading-tight text-zinc-800 underline"
+                  className="text-sm font-normal text-zinc-800 underline"
                   onClick={() => handleCopyToClipboard(id as string, 'copyId')}
                 >
                   {displayId}

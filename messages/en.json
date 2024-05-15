@@ -260,6 +260,30 @@
         },
         "listingTemplate": {
             "addButton": "New Organization"
+        },
+        "newOrganization": {
+            "title": "New Organization",
+            "description": "Fill in the data of the Organization you wish to create.",
+            "button": "Create Organization",
+            "cancel": "Cancel",
+            "breadcrumbs": {
+                "settings": "Settings",
+                "organizations": "Organizations",
+                "newOrganization": "New Organization"
+            },
+            "informationText": {
+                "metadataRegisterCountText": "{registerCount} added records",
+                "parentOrganizationText": "Select if your Organization is affiliated with another"
+            }
+        },
+        "editOrganization": {
+            "description": "Edit as desired and then click “Save”.",
+            "button": "Save",
+            "cancel": "Cancel",
+            "informationText": {
+                "metadataRegisterCountText": "{registerCount} added records",
+                "parentOrganizationText": "Select if your Organization is affiliated with another"
+            }
         }
     },
     "settings": {

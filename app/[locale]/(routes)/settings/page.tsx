@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import OrganizationsView from '@/[locale]/(routes)/settings/organizations/organizations-view'
+import OrganizationsTable from '@/[locale]/(routes)/settings/organizations/organizations-table'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { BreadcrumbComponent, BreadcrumbPath } from '@/components/Breadcrumb'
 
@@ -14,42 +14,29 @@ const Page = () => {
   const router = useRouter()
   const initialTab = searchParams.get('tab') || 'organizations'
   const [activeTab, setActiveTab] = useState(initialTab)
-  const breadcrumbPaths: BreadcrumbPath[] = [
+  const [breadcrumbPaths, setBreadcrumbPaths] = useState<BreadcrumbPath[]>([
     {
       name: t('title'),
       href: '#',
       active: false
     }
-  ]
-
-  const handleBreadcrumb = (
-    breadCrumpath: BreadcrumbPath,
-    action: 'add' | 'replace' | 'remove'
-  ) => {
-    const index = breadcrumbPaths.findIndex(
-      (path) => path.name === breadCrumpath.name
-    )
-
-    if (action === 'add' && index === -1) {
-      breadcrumbPaths.push(breadCrumpath)
-    }
-
-    if (action === 'replace' && index !== -1) {
-      breadcrumbPaths[index] = breadCrumpath
-    }
-
-    if (action === 'remove' && index !== -1) {
-      breadcrumbPaths.splice(index, 1)
-    }
-  }
+  ])
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab)
     router.push(`${pathname}?${createQueryString('tab', tab)}`)
+    handleBreadCrumb(tab)
   }
 
-  const handleRouterQueryParams = (tab: string) => {
-    router.push(`${pathname}?${createQueryString('tab', tab)}`)
+  const handleBreadCrumb = (tab: string) => {
+    if (breadcrumbPaths.length > 1) {
+      breadcrumbPaths.pop()
+    }
+    breadcrumbPaths.push({
+      name: t(`tabs.${tab}`),
+      active: true
+    })
+    setBreadcrumbPaths([...breadcrumbPaths])
   }
 
   const createQueryString = useCallback(
@@ -78,17 +65,19 @@ const Page = () => {
 
       <div>
         <Tabs value={activeTab} onValueChange={handleTabChange}>
-          {/*className={cn('mt-5', data.length >= 4 && 'mt-0')}*/}
-          {/*<TabsList className="gap-4 pb-0 pl-0">*/}
           <TabsList className="gap-4 pb-0 pl-0">
             <TabsTrigger
-              className={cn('data-[state=active]:bg-amber-400')}
+              className={cn(
+                'text-zinc-700 data-[state=active]:bg-amber-400 data-[state=active]:text-zinc-700'
+              )}
               value="organizations"
             >
               {t('tabs.organizations')}
             </TabsTrigger>
             <TabsTrigger
-              className={cn('data-[state=active]:bg-amber-400')}
+              className={cn(
+                ' data-[state=active]:bg-amber-400 data-[state=active]:text-zinc-700'
+              )}
               value="others"
             >
               {t('tabs.others')}
@@ -97,7 +86,7 @@ const Page = () => {
           <div className="mb-4 mt-4">
             <TabsContent value="organizations">
               <div>
-                <OrganizationsView />
+                <OrganizationsTable />
               </div>
             </TabsContent>
             <TabsContent value="others">
