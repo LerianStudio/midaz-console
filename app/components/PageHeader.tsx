@@ -53,12 +53,7 @@ export const PageHeader = ({
     showInfo(t('genericCopyMessage'))
   }
 
-  const buttonItems = [
-    { label: 'Item 1' },
-    { label: 'Item 2' },
-    { label: 'Item 3' },
-    { label: 'Item 4' }
-  ]
+  const buttonItems = [{ label: 'Inativar' }]
 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full">

@@ -6,21 +6,25 @@ import { Input } from '../ui/input/input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { Form, FormControl, FormField, FormItem, FormLabel } from '../ui/form'
-import { Button } from '../ui/button/button'
+import { useFormState } from '@/context/LedgerDetailsContext'
+import { Label } from '../ui/label/label'
 
 const formSchema = z.object({
   name: z.string()
 })
 
 export const CustomCardContent = ({ data, text, className }: any) => {
-  const form = useForm<z.infer<typeof formSchema>>({
+  const { updateFormData, markAsDirty } = useFormState()
+
+  const { register } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: data ? { name: data.name } : {}
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newName = e.target.value
+    markAsDirty()
+    updateFormData({ name: newName })
   }
 
   return (
@@ -32,24 +36,10 @@ export const CustomCardContent = ({ data, text, className }: any) => {
       )}
 
       {data && (
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nome do Ledger</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-
-            <Button type="submit">Submit</Button>
-          </form>
-        </Form>
+        <div className="mt-3 flex flex-col gap-4">
+          <Label>Nome do Ledger</Label>
+          <Input {...register('name')} onChange={handleNameChange} />
+        </div>
       )}
     </CardContent>
   )
