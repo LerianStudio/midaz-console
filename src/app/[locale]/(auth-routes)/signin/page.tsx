@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
-import GeometricShape from '../../../../public/images/geometric-shape.svg'
-import LeriandLogo from '../../../../public/images/leriand-logo.png'
+import GeometricShape from '../../../../../public/images/geometric-shape.svg'
+import LeriandLogo from '../../../../../public/images/leriand-logo.png'
 import {
   Card,
   CardContent,

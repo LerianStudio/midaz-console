@@ -1,11 +1,11 @@
-import { OryAuthRepository } from '@/repositories/OryAuthRepository'
-import { OrySubmitLoginRequestDTO } from '@/domain/dto/OryRequestDTO'
-import { OryCreateLoginFlowResponseDTO } from '@/domain/dto/OryResponseDTO'
-import { OrySessionEntity } from '@/domain/entities/OrySessionEntity'
+import { OryAuthRepository } from '@/core/repositories/OryAuthRepository'
+import { OrySubmitLoginRequestDTO } from '@/core/domain/dto/OryRequestDTO'
+import { OryCreateLoginFlowResponseDTO } from '@/core/domain/dto/OryResponseDTO'
+import { OrySessionEntity } from '@/core/domain/entities/OrySessionEntity'
 import {
   HttpException,
   InternalServerErrorException
-} from '@/errors/HttpExceptions'
+} from '@/core/errors/HttpExceptions'
 
 type IOryAuthUseCases = {
   usernamePasswordLogin: (
