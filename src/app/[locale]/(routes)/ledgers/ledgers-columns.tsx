@@ -33,7 +33,7 @@ export type LedgersColumnsEvents = {
 }
 
 type ColumnRow = {
-  row: Row<LedgerEntity>
+  row: Row<any>
 }
 
 export const getLedgersColumns = (
