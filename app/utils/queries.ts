@@ -1,7 +1,12 @@
 import { getLedgerById, getLedgers } from '@/client/ledgerClient'
 import { useQuery } from '@tanstack/react-query'
 import { getDivisions } from '@/client/divisionsClient'
-import { getInstrumentsById } from '@/client/instrumentsClient'
+import { getInstruments } from '@/client/instrumentsClient'
+import {
+  getChartsTotalAmount,
+  getChartsTotalTransactions,
+  getChartsTransactionsByStatus
+} from '@/client/chartsClient'
 
 export const useDivisions = () => {
   return useQuery({
@@ -24,9 +29,30 @@ export const useLedgerById = (id: string) => {
   })
 }
 
-export const useInstrumentById = (ledgerId: string, instrumentId: string) => {
+export const useInstruments = (ledgerId: string) => {
   return useQuery({
-    queryKey: ['instrument', ledgerId, instrumentId],
-    queryFn: () => getInstrumentsById(ledgerId, instrumentId)
+    queryKey: ['instrument', ledgerId],
+    queryFn: () => getInstruments(ledgerId)
+  })
+}
+
+export const useChartsTotalAmount = (ledgerId: string) => {
+  return useQuery({
+    queryKey: ['chartsTotalAmount', ledgerId],
+    queryFn: () => getChartsTotalAmount(ledgerId)
+  })
+}
+
+export const useChartsTotalTransactions = (ledgerId: string) => {
+  return useQuery({
+    queryKey: ['chartsTotalTransactions', ledgerId],
+    queryFn: () => getChartsTotalTransactions(ledgerId)
+  })
+}
+
+export const useChartsTransactionsByStatus = (ledgerId: string) => {
+  return useQuery({
+    queryKey: ['chartsTransactionsByStatus', ledgerId],
+    queryFn: () => getChartsTransactionsByStatus(ledgerId)
   })
 }

@@ -15,6 +15,13 @@ import { useTranslations } from 'next-intl'
 import DropdownButton from './DropdownButton'
 import { HelperTriggerTranslate } from '@/types/HelperTriggerTranslate'
 import { ListingTemplateTranslate } from '@/types/PageHeader'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from './ui/tooltip'
+import { Arrow } from '@radix-ui/react-tooltip'
 
 type Props = {
   title: string
@@ -46,12 +53,7 @@ export const PageHeader = ({
     showInfo(t('genericCopyMessage'))
   }
 
-  const buttonItems = [
-    { label: 'Item 1' },
-    { label: 'Item 2' },
-    { label: 'Item 3' },
-    { label: 'Item 4' }
-  ]
+  const buttonItems = [{ label: 'Inativar' }]
 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full">
@@ -64,11 +66,27 @@ export const PageHeader = ({
           <div className="flex items-center gap-2">
             <p className="text-sm font-medium text-shadcn-400">{subtitle}</p>
             {type === 'entity' && subtitle && (
-              <Copy
-                size={16}
-                onClick={() => handleCopyToClipboard(subtitle)}
-                className="cursor-pointer"
-              />
+              <TooltipProvider>
+                <Tooltip delayDuration={300}>
+                  <TooltipTrigger
+                    onClick={() => handleCopyToClipboard(subtitle)}
+                  >
+                    <Copy size={16} className="cursor-pointer" />
+                  </TooltipTrigger>
+                  <TooltipContent
+                    className="border-none bg-shadcn-600"
+                    arrowPadding={0}
+                  >
+                    <p className="text-sm font-medium text-shadcn-400">
+                      {subtitle}
+                    </p>
+                    <p className="text-center text-white">
+                      {t('tooltipCopyText')}
+                    </p>
+                    <Arrow height={8} width={15} />
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             )}
           </div>
         </div>

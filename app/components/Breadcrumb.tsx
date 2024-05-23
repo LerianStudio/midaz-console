@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,6 +7,7 @@ import {
 } from '@/components/ui/breadcrumb'
 import React from 'react'
 import { ChevronRight } from 'lucide-react'
+import { Link } from 'navigation'
 
 export type BreadcrumbPath = {
   name: string
@@ -27,12 +27,12 @@ export const BreadcrumbComponent = ({ paths }: BreadcrumbProps) => {
           <React.Fragment key={index}>
             <BreadcrumbItem>
               {path.href ? (
-                <BreadcrumbLink
+                <Link
                   href={path.href}
                   className={'font-medium text-[#3f3f46] underline'}
                 >
                   {path.name}
-                </BreadcrumbLink>
+                </Link>
               ) : (
                 <span className="text-sm font-normal text-shadcn-400">
                   {path.name}

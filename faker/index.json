@@ -3,11 +3,7 @@
     {
       "id": "77b0fb8b-1bd9-4810-9c6d-7e80064fab0c",
       "organizationId": "cc15194a-6bc9-4ebb-b15d-43411a54ba4b",
-      "name": "Black Rock Brazil",
-      "instruments": [
-        "bb907427-5a8c-4622-b1ce-801b70e40d0c",
-        "c3a89e04-b1cd-4df8-a5f9-0bb077e07e6d"
-      ],
+      "name": "The Neobank Brazil",
       "metadata": {
         "costCenter": "BR_11101997"
       },
@@ -22,8 +18,7 @@
     {
       "id": "0df8d87f-f26e-451c-b650-f8af7af947dc",
       "organizationId": "cc15194a-6bc9-4ebb-b15d-43411a54ba4b",
-      "name": "Black Rock US",
-      "instruments": ["bb907427-5a8c-4622-b1ce-801b70e40d0c"],
+      "name": "The Neobank US",
       "metadata": {
         "officeAddress": "123 Broadway",
         "generalManager": "Larry Fink"
@@ -40,7 +35,6 @@
       "id": "048bbdd0-1de6-4e36-a91b-a87b000778d9",
       "organizationId": "54c59721-8e31-4453-9a22-19d9376768bb",
       "name": "Just another ledger",
-      "instruments": null,
       "metadata": null,
       "status": {
         "code": "INACTIVE",
@@ -55,24 +49,90 @@
     {
       "id": "bb907427-5a8c-4622-b1ce-801b70e40d0c",
       "ledgerId": "77b0fb8b-1bd9-4810-9c6d-7e80064fab0c",
+      "organizationId": "5f3a4c55-8b28-4276-bed7-f7c8a4bb44e8",
       "name": "Bitcoin",
       "type": "crypto",
       "code": "BTC",
+      "status": {
+        "code": "002",
+        "description": "Blocked"
+      },
       "metadata": {
         "internalExchangeAddress": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
         "internalExchangeCustody": "Binance US"
       }
     },
     {
-      "id": "c3a89e04-b1cd-4df8-a5f9-0bb077e07e6d",
+      "id": "f9e838d6-d3a7-4975-b681-613999537d2e",
       "ledgerId": "77b0fb8b-1bd9-4810-9c6d-7e80064fab0c",
-      "name": "Ethereum",
-      "type": "crypto",
-      "code": "ETH",
+      "organizationId": "5f3a4c55-8b28-4276-bed7-f7c8a4bb44e8",
+      "name": "Real",
+      "type": "currency",
+      "code": "BRL",
+      "status": {
+        "code": "001",
+        "description": "Active"
+      },
       "metadata": {
-        "internalExchangeAddress": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
-        "internalExchangeCustody": "Binance US"
+        "localBank": "c6"
       }
+    }
+  ],
+  "charts": [
+    {
+      "chartType": "totalAmountByAsset",
+      "startDate": null,
+      "endDate": null,
+      "data": [
+        {
+          "instrumentCode": "BTC",
+          "instrumentName": "Bitcoin",
+          "totalAmount": 50000,
+          "scale": 0
+        },
+        {
+          "instrumentCode": "ETH",
+          "instrumentName": "Ethereum",
+          "totalAmount": 329189,
+          "scale": 0
+        },
+        {
+          "instrumentCode": "ZSN4",
+          "instrumentName": "Soy Futures Chicago",
+          "totalAmount": 2,
+          "scale": 0
+        }
+      ]
+    },
+    {
+      "type": "totalTransactions",
+      "startDate": "2024-01-01",
+      "endDate": "2024-05-12",
+      "data": [
+        {
+          "metric": "totalTransactions",
+          "count": 195
+        }
+      ]
+    },
+    {
+      "type": "transactionsByStatus",
+      "startDate": "2024-01-01",
+      "endDate": "2024-05-12",
+      "data": [
+        {
+          "status": "SENT",
+          "count": 120
+        },
+        {
+          "status": "CANCELED",
+          "count": 45
+        },
+        {
+          "status": "PRE_APPROVED",
+          "count": 30
+        }
+      ]
     }
   ]
 }

@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-export const TabsComponent = ({ tabs }: any) => {
+export const TabsComponent = ({ tabs, children }: any) => {
   return (
     <Tabs defaultValue={tabs[0].value} className="mt-6 w-full">
       <TabsList className="flex justify-start gap-4 bg-transparent">
@@ -16,10 +16,8 @@ export const TabsComponent = ({ tabs }: any) => {
       </TabsList>
 
       {tabs.map((tab: any) => (
-        <TabsContent value={tab.value} className="mt-4" key={tab.id}>
-          <div className="min-h-[113px] w-full rounded-md bg-white p-6 shadow-sm">
-            <h1>{tab.name}</h1>
-          </div>
+        <TabsContent value={tab.value} key={tab.value} className="mt-4">
+          {children}
         </TabsContent>
       ))}
     </Tabs>

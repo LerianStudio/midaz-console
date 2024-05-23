@@ -11,19 +11,20 @@ import { DialogDemo } from '@/components/Dialog'
 import { SheetDemo } from '@/components/Sheet'
 import { LedgerEntity } from '@/domain/entities/LedgerEntity'
 import { PageHeader } from '@/components/PageHeader'
-import { BreadcrumbComponent, BreadcrumbPath } from '@/components/Breadcrumb'
 import { useSheetMode } from '@/hooks/ledgers/useSheetMode'
 import { useDeleteLedger } from '@/hooks/ledgers/useDeleteLedger'
 import { useCreateLedger } from '@/hooks/ledgers/useCreateLedger'
 import { v4 as uuidv4 } from 'uuid'
 import { useEnhancedLedgers } from '@/hooks/ledgers/useEnhancedLedgers'
 import React from 'react'
+import { useLedgers } from '@/utils/queries'
 
 const LedgersView = () => {
   const t = useTranslations('ledgers')
   const formFields: any = getLedgersFormFields(t)
-  const ledgers = useEnhancedLedgers()
+  const ledgers = useLedgers()
   const createLedgerData = useCreateLedger()
+  const enhancedLedgers = useEnhancedLedgers()
 
   const {
     sheetMode,
@@ -79,8 +80,8 @@ const LedgersView = () => {
   const getLoadingSkeleton = () => {
     return (
       <React.Fragment>
-        <Skeleton className="h-[84px] w-full bg-white" />
-        <Skeleton className="mt-6 h-[390px] w-full bg-white" />
+        <Skeleton className="h-[84px] w-full bg-zinc-200" />
+        <Skeleton className="mt-6 h-[390px] w-full bg-zinc-200" />
       </React.Fragment>
     )
   }
@@ -106,11 +107,6 @@ const LedgersView = () => {
     }
   }
 
-  const breadcrumbPaths: BreadcrumbPath[] = [
-    { name: 'Ledgers', href: '#' },
-    { name: 'Detalhe da Ledger' }
-  ]
-
   const getHelperTriggerTranslate = (t: any) => ({
     question: t('helperTrigger.question'),
     answer: t('helperTrigger.answer'),
@@ -126,7 +122,7 @@ const LedgersView = () => {
     return (
       <div>
         {ledgers.data && ledgers.data.length > 0 && (
-          <DataTable columns={ledgersColumns} data={ledgers.data} />
+          <DataTable columns={ledgersColumns} data={enhancedLedgers.data} />
         )}
 
         {!ledgers.data ||
@@ -166,8 +162,6 @@ const LedgersView = () => {
 
   return (
     <div>
-      <BreadcrumbComponent paths={breadcrumbPaths} />
-
       <div className="mt-12">
         <PageHeader
           title={t('title')}

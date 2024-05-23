@@ -2,7 +2,6 @@ export type LedgerEntity = {
   id: string
   organizationId: string
   name: string
-  instruments: []
   metadata: {
     value: string
   }

@@ -3,30 +3,26 @@ import { Check, X, AlertTriangle, Info, XCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const customToast = (message: string, icon: JSX.Element, bgColor: string) => {
-  toast.custom(
-    (t) => (
-      <div
-        className={`${
-          t.visible ? 'animate-enter' : 'animate-leave'
-        } pointer-events-auto flex w-full max-w-[330px] rounded-lg bg-white px-4 py-5 shadow-lg`}
-      >
-        <div className="flex flex-1">
-          <div className="flex items-center gap-[10px]">
-            <div className={cn('rounded-md p-2', bgColor)}>{icon}</div>
-            <div className="w-full min-w-[234px] text-wrap">
-              <p className="text-sm font-medium text-shadcn-500">{message}</p>
-            </div>
+  toast.custom((t) => (
+    <div
+      className={cn(
+        'pointer-events-auto flex w-full max-w-[330px] rounded-lg bg-white px-4 py-5 shadow-lg transition-opacity duration-100 ease-in-out',
+        t.visible ? 'opacity-100' : 'opacity-0'
+      )}
+    >
+      <div className="flex flex-1">
+        <div className="flex items-center gap-[10px]">
+          <div className={cn('rounded-md p-2', bgColor)}>{icon}</div>
+          <div className="w-full min-w-[234px] text-wrap">
+            <p className="text-sm font-medium text-shadcn-500">{message}</p>
           </div>
-          <button onClick={() => toast.dismiss(t.id)} className="flex">
-            <X className="text-[#9CA3AF]" size={20} />
-          </button>
         </div>
+        <button onClick={() => toast.dismiss(t.id)} className="flex">
+          <X className="text-[#9CA3AF]" size={20} />
+        </button>
       </div>
-    ),
-    {
-      duration: 99999
-    }
-  )
+    </div>
+  ))
 }
 
 const useCustomToast = () => {
@@ -50,7 +46,7 @@ const useCustomToast = () => {
     customToast(
       message,
       <Info size={16} className="text-[#2563EB]" />,
-      'bg-[#BFDBFE]'
+      'bg-white'
     )
   }
 
