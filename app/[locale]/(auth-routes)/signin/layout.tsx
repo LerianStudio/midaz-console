@@ -15,11 +15,11 @@ const AuthRoutes = async ({
   children,
   params: { locale }
 }: AuthRoutesProps) => {
-  const session = await getServerSession(nextAuthOptions)
+  // const session = await getServerSession(nextAuthOptions)
 
-  if (session?.user) {
-    redirect(`/${locale}/`, RedirectType.replace)
-  }
+  // if (session?.user) {
+  //   redirect(`/${locale}/`, RedirectType.replace)
+  // }
   return <>{children}</>
 }
 

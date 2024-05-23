@@ -13,16 +13,16 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning>
       <body suppressHydrationWarning className={inter.className}>
-        <NextAuthSessionProvider>
-          {/* <ThemeProvider
+        {/* <NextAuthSessionProvider> */}
+        {/* <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
           > */}
-          {children}
-          {/* </ThemeProvider> */}
-        </NextAuthSessionProvider>
+        {children}
+        {/* </ThemeProvider> */}
+        {/* </NextAuthSessionProvider> */}
       </body>
     </html>
   )

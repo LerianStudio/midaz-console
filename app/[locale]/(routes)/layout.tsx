@@ -13,11 +13,11 @@ export default async function RootLayout({
   children: React.ReactNode
   params: { locale: string }
 }) {
-  const session = await getServerSession(nextAuthOptions)
+  // const session = await getServerSession(nextAuthOptions)
 
-  if (!session?.user) {
-    redirect(`/${locale}/signin`)
-  }
+  // if (!session?.user) {
+  //   redirect(`/${locale}/signin`)
+  // }
 
   return (
     <div className="flex min-h-screen w-full bg-background text-foreground">

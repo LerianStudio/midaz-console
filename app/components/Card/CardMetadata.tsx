@@ -161,3 +161,5 @@ export const CardMetadata = forwardRef(({ data }: any, ref) => {
     </CardContent>
   )
 })
+
+CardMetadata.displayName = 'CardMetadata'
