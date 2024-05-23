@@ -1,36 +1,42 @@
 import { z } from 'zod'
 
 const organizationFormSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  doingBusinessAs: z.string(),
-  legalDocument: z.string(),
-  address: z.object({
-    line1: z.string(),
-    line2: z.string().nullable(),
-    neighborhood: z.string(),
-    zipCode: z.string(),
-    city: z.string(),
-    state: z.string(),
-    country: z.string()
-  }),
-  defaultTimezone: z.string().nullable(),
-  defaultCurrency: z.string().nullable(),
-  defaultHolidayList: z
-    .array(
-      z.object({
-        type: z.enum(['static', 'dynamic']),
-        name: z.string(),
-        month: z.number(),
-        day: z.number().optional(),
-        weekDay: z.number().optional(),
-        position: z.number().optional()
-      })
-    )
-    .nullable(),
-  parentOrganizationId: z.string().nullable(),
-  metadata: z.record(z.string(), z.string()).nullable(),
-  status: z.enum(['ACTIVE', 'INACTIVE', 'BLOCKED', 'DELETED'])
+  id: z.string().optional(),
+  parentOrganizationId: z.string().optional(),
+  legalName: z.string().default(''),
+  doingBusinessAs: z.string().default(''),
+  legalDocument: z.string().default(''),
+  address: z
+    .object({
+      line1: z.string(),
+      line2: z.string().optional(),
+      neighborhood: z.string(),
+      zipCode: z.string(),
+      city: z.string(),
+      state: z.string(),
+      country: z.string()
+    })
+    .default({
+      line1: '',
+      neighborhood: '',
+      zipCode: '',
+      city: '',
+      state: '',
+      country: ''
+    }),
+  metadata: z.record(z.any()).optional(),
+  status: z
+    .object({
+      code: z.string(),
+      description: z.string()
+    })
+    .default({
+      code: 'ACTIVE',
+      description: 'organization is active'
+    }),
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
+  deletedAt: z.string().optional()
 })
 
 export { organizationFormSchema }

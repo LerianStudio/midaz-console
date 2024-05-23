@@ -1,48 +1,19 @@
 import { NextResponse } from 'next/server'
+import { container, Registry } from '@/infra/container-registry'
+import LedgersUseCases from '@/useCases/LedgersUseCases'
+import OrganizationsUseCases from '@/useCases/OrganizationsUseCases'
 
-const mock = [
-  {
-    id: 'cc15194a-6bc9-4ebb-b15d-43411a54ba4b',
-    legalName: 'Sanchez Tech LTDA',
-    doingBusinessAs: 'The ledger.io',
-    legalDocument: '48784548000104',
-    address: {
-      line1: 'Avenida Paulista, 1234',
-      line2: 'CJ 203',
-      neighborhood: 'Jardim Paulista',
-      zipCode: '04696040',
-      city: 'São Paulo',
-      state: 'SP',
-      country: 'BR'
-    },
-    defaultTimezone: 'America/Sao_Paulo',
-    defaultCurrency: 'BRL',
-    defaultHolidayList: [
-      {
-        type: 'static',
-        name: 'Natal',
-        month: 12,
-        day: 25
-      },
-      {
-        type: 'dynamic',
-        name: 'Dia dos pais',
-        month: 8,
-        weekDay: 6,
-        position: 2
-      }
-    ],
-    metadata: null,
-    status: {
-      code: 'ACTIVE',
-      description: null
-    },
-    createdAt: '2024-02-08T16:59:31+0300',
-    updatedAt: '2024-02-08T16:59:31+0300',
-    deletedAt: null
-  }
-]
+const organizationsUseCases = container.get<OrganizationsUseCases>(
+  Registry.OrganizationsUseCasesRegistry
+)
 
 export async function GET() {
-  return NextResponse.json(mock)
+  const organizations = await organizationsUseCases.listOrganizationsUseCases()
+  return NextResponse.json(organizations)
+}
+
+export async function POST(request: Request) {
+  const body = await request.json()
+  await organizationsUseCases.createOrganizationUseCases(body)
+  return NextResponse.json({ message: 'Organization created!' })
 }

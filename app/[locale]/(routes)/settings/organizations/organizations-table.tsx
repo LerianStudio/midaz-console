@@ -20,12 +20,11 @@ const OrganizationsTable = () => {
   }
 
   const handleOpenEditSheet = (organizationData: OrganizationEntity) => {
-    // setSheetMode({ isOpen: true, mode: 'edit', ledgersData: ledgerData })
+    console.log('organizationData', organizationData)
+    router.push(`${pathname}/organizations/${organizationData.id}`)
   }
 
-  const handleOpenViewSheet = (organizationData: OrganizationEntity) => {
-    // setSheetMode({ isOpen: true, mode: 'view', ledgersData: ledgerData })
-  }
+  const handleOpenViewSheet = (organizationData: OrganizationEntity) => {}
 
   const handleOpenDeleteSheet = (organizationData: OrganizationEntity) => {
     // setCurrentLedgerForDeletion(ledgerData)

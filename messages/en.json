@@ -261,29 +261,53 @@
         "listingTemplate": {
             "addButton": "New Organization"
         },
-        "newOrganization": {
-            "title": "New Organization",
-            "description": "Fill in the data of the Organization you wish to create.",
-            "button": "Create Organization",
-            "cancel": "Cancel",
+        "organizationView": {
+            "newOrganization": {
+                "title": "Organization",
+                "description": "Below are listed the data of your Organization.",
+                "button": "Create Organization"
+            },
+            "editOrganization": {
+                "description": "Edit as desired and then click “Save”.",
+                "button": "Save"
+            },
+            "avatarDialog": {
+                "title": "Avatar",
+                "description": "Insert your SVG or PNG image URL.",
+                "button": "Send"
+            },
             "breadcrumbs": {
                 "settings": "Settings",
                 "organizations": "Organizations",
                 "newOrganization": "New Organization"
             },
-            "informationText": {
-                "metadataRegisterCountText": "{registerCount} added records",
-                "parentOrganizationText": "Select if your Organization is affiliated with another"
-            }
-        },
-        "editOrganization": {
-            "description": "Edit as desired and then click “Save”.",
-            "button": "Save",
             "cancel": "Cancel",
+            "remove": "Remove",
             "informationText": {
                 "metadataRegisterCountText": "{registerCount} added records",
-                "parentOrganizationText": "Select if your Organization is affiliated with another"
-            }
+                "parentOrganizationText": "Select if your Organization is affiliated with another",
+                "avatarInformationText": "Organization Symbol, which will be applied in the UI. \nFormat: SVG or PNG, 512x512 px.",
+                "accentColorInformationText": "Brand color, which will be used specifically in the UI. \nFormat: Hexadecimal/HEX (Ex. #FF0000);"
+            },
+            "formFields": {
+                "id": "Organization ID",
+                "legalName": "Legal Name",
+                "doingBusinessAs": "Trade Name",
+                "legalDocument":  "Document",
+                "address": "Address",
+                "complement": "Complement",
+                "country": "Country",
+                "state": "State",
+                "city": "City",
+                "zipCode": "ZIP Code",
+                "parentOrganization": "Parent Organization",
+                "avatar": "Avatar",
+                "accentColor": "Accent Color",
+                "key": "Key",
+                "value": "Value"
+            },
+            "typePlaceholder": "Type...",
+            "selectPlaceholder": "Select..."
         }
     },
     "settings": {

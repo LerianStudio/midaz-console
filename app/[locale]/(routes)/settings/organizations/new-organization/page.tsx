@@ -1,20 +1,29 @@
+'use client'
 import { cn } from '@/lib/utils'
 import OrganizationsView from '@/[locale]/(routes)/settings/organizations/organizations-view'
 import { useTranslations } from 'next-intl'
 import { BreadcrumbComponent, BreadcrumbPath } from '@/components/Breadcrumb'
+import { OrganizationEntity } from '@/domain/entities/OrganizationEntity'
+import { createOrganization } from '@/client/organizationClient'
+import useCustomToast from '@/hooks/useCustomToast'
+import { usePathname } from 'next/navigation'
 
 const Page = () => {
-  const t = useTranslations('organizations.newOrganization')
+  const t = useTranslations('organizations.organizationView')
+  const pathname = usePathname()
+  const intlBasePath = pathname.split('/').filter(Boolean)[0]
+  const { showSuccess, showError } = useCustomToast()
+
   const breadCrumbPaths: BreadcrumbPath[] = [
     {
       name: t('breadcrumbs.settings'),
-      href: '/settings',
-      active: false
+      href: `/${intlBasePath}/settings`,
+      active: true
     },
     {
       name: t('breadcrumbs.organizations'),
-      href: '/settings?tab=organizations',
-      active: false
+      href: `/${intlBasePath}/settings?tab=organizations`,
+      active: true
     },
     {
       name: t('breadcrumbs.newOrganization'),
@@ -22,18 +31,23 @@ const Page = () => {
     }
   ]
 
+  const handleOnSubmit = async (values: OrganizationEntity) => {
+    await createOrganization(values)
+    showSuccess('Organization created successfully')
+  }
+
   return (
     <div>
       <BreadcrumbComponent paths={breadCrumbPaths} />
       <div>
         <div className="mb-12 mt-12">
           <h1 className={cn('text-4xl font-bold text-[#3f3f46]')}>
-            {t('title')}
+            {t('newOrganization.title')}
           </h1>
         </div>
         <OrganizationsView
           organizations={undefined}
-          description={t('description')}
+          onSubmit={handleOnSubmit}
         />
       </div>
     </div>

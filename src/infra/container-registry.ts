@@ -5,14 +5,22 @@ import { OryAuthAPIAdapter } from '@/adapters/OryAuthAPIAdapter'
 import DivisionsUseCases from '@/useCases/DivisionsUseCases'
 import LedgersUseCases from '@/useCases/LedgersUseCases'
 import OryAuthUseCases from '@/useCases/OryAuthUseCases'
+import OrganizationRepository from '@/repositories/OrganizationsRepository'
+import OrganizationsUseCases from '@/useCases/OrganizationsUseCases'
 
 export const Registry = {
   DivisionsAPIAdapter: Symbol.for('DivisionsAPIAdapter'),
   LedgersAPIAdapter: Symbol.for('LedgersAPIAdapter'),
   OryAuthAPIAdapter: Symbol.for('OryAuthAPIAdapter'),
+
+  // Repository
+  OrganizationRepositoryRegistry: Symbol.for('OrganizationRepositoryRegistry'),
+
+  // Use Cases
   DivisionsUseCases: Symbol.for('DivisionsUseCases'),
   LedgersUseCases: Symbol.for('LedgersUseCases'),
-  OryAuthUseCases: Symbol.for('OryAuthUseCases')
+  OryAuthUseCases: Symbol.for('OryAuthUseCases'),
+  OrganizationsUseCasesRegistry: Symbol.for('OrganizationsUseCasesRegistry')
 }
 
 export const container = new Container()
@@ -35,6 +43,12 @@ container
     return new OryAuthAPIAdapter()
   })
 
+container
+  .bind<OrganizationRepository>(Registry.OrganizationRepositoryRegistry)
+  .toDynamicValue((context) => {
+    return new OrganizationRepository()
+  })
+
 // Use Cases
 
 container
@@ -44,6 +58,7 @@ container
       context.container.get(Registry.DivisionsAPIAdapter)
     )
   })
+
 container
   .bind<LedgersUseCases>(Registry.LedgersUseCases)
   .toDynamicValue((context) => {
@@ -51,10 +66,19 @@ container
       context.container.get(Registry.LedgersAPIAdapter)
     )
   })
+
 container
   .bind<OryAuthUseCases>(Registry.OryAuthUseCases)
   .toDynamicValue((context) => {
     return new OryAuthUseCases(
       context.container.get(Registry.OryAuthAPIAdapter)
+    )
+  })
+
+container
+  .bind<OrganizationsUseCases>(Registry.OrganizationsUseCasesRegistry)
+  .toDynamicValue((context) => {
+    return new OrganizationsUseCases(
+      context.container.get(Registry.OrganizationRepositoryRegistry)
     )
   })

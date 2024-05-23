@@ -253,30 +253,53 @@
         "listingTemplate": {
             "addButton": "Nova Organização"
         },
-        "newOrganization": {
-            "title": "Nova Organização",
-            "description": "Preencha os dados da Organização que você deseja criar.",
-            "button": "Criar Organização",
-            "cancel": "Cancelar",
+        "organizationView": {
+            "newOrganization": {
+                "title": "Organização",
+                "description": "Abaixo estão listados os dados da sua Organização.",
+                "button": "Criar Organização"
+            },
+            "editOrganization": {
+                "description": "Edite conforme desejado e em seguida clique em “Salvar”.",
+                "button": "Salvar"
+            },
+            "avatarDialog": {
+                "title": "Avatar",
+                "description": "Insira a URL da imagem SVG ou PNG ",
+                "button": "Enviar"
+            },
             "breadcrumbs": {
                 "settings": "Configurações",
                 "organizations": "Organizações",
                 "newOrganization": "Nova Organização"
             },
-            "informationText": {
-                "metadataRegisterCountText": "{registerCount} registros adicionados",
-                "parentOrganizationText": "Selecione caso sua Organização seja filiada a outra"
-            }
-        },
-        "editOrganization": {
-            "title": "Editar Organização",
-            "description": "Visualize e edite os campos da Organização ",
-            "button": "Salvar",
             "cancel": "Cancelar",
+            "remove": "Remover",
             "informationText": {
                 "metadataRegisterCountText": "{registerCount} registros adicionados",
-                "parentOrganizationText": "Selecione caso sua Organização seja filiada a outra"
-            }
+                "parentOrganizationText": "Selecione se sua Organização está afiliada a outra",
+                "avatarInformationText": "Símbolo da Organização, que será aplicado na UI. \nFormato: SVG ou PNG, 512x512 px.",
+                "accentColorInformationText": "Cor da marca, que será usada especificamente na UI. \nFormato: Hexadecimal/HEX (Ex. #FF0000);"
+            },
+            "formFields": {
+                "id": "ID Organização",
+                "legalName": "Nome Legal",
+                "doingBusinessAs": "Nome Fantasia",
+                "legalDocument":  "Documento",
+                "address": "Endereço",
+                "complement": "Complemento",
+                "country": "País",
+                "state": "Estado",
+                "city": "Cidade",
+                "zipCode": "CEP",
+                "parentOrganization": "Organização Pai",
+                "avatar": "Avatar",
+                "accentColor": "Cor de Destaque",
+                "key": "Chave",
+                "value": "Valor"
+            },
+            "typePlaceholder": "Digite...",
+            "selectPlaceholder": "Selecione..."
         }
     },
     "settingsDialog": {

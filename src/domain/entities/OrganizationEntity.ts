@@ -1,20 +1,28 @@
 export type OrganizationEntity = {
   id?: string
-  parentOrganizationId: string | null
+  parentOrganizationId?: string
   legalName: string
   doingBusinessAs: string
   legalDocument: string
-  address: {
-    line1: string
-    line2?: string
-    zipCode: string
-    city: string
-    state: string
-    country: string
-  }
-  metadata?: Record<string, string>
-  status: 'ACTIVE' | 'INACTIVE' | 'BLOCKED' | 'DELETED'
-  createdAt: string
-  updatedAt: string
-  deletedAt: string | null
+  address: Address
+  metadata: Record<string, any>
+  status: OrganizationStatus
+  createdAt?: string
+  updatedAt?: string
+  deletedAt?: string
+}
+
+type OrganizationStatus = {
+  code: string
+  description: string
+}
+
+type Address = {
+  line1: string
+  line2: string
+  neighborhood: string
+  zipCode: string
+  city: string
+  state: string
+  country: string
 }

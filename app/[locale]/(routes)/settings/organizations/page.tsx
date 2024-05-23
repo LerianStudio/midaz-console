@@ -19,6 +19,10 @@ const Page = ({ organizations }: OrganiztionsPageProps) => {
 
   const title = organizations ? organizations.legalName : t('title')
 
+  const handleOnSubmit = (values: OrganizationEntity) => {
+    alert(JSON.stringify(values))
+  }
+
   return (
     <div>
       <div className="mb-12 mt-12">
@@ -26,7 +30,7 @@ const Page = ({ organizations }: OrganiztionsPageProps) => {
           {t('title')}
         </h1>
       </div>
-      <OrganizationsView organizations={null} />
+      <OrganizationsView onSubmit={handleOnSubmit} />
     </div>
   )
 }
