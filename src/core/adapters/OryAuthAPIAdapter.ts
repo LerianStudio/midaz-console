@@ -1,12 +1,12 @@
-import { OryAuthRepository } from '@/repositories/OryAuthRepository'
+import { OryAuthRepository } from '@/core/repositories/OryAuthRepository'
 import process from 'node:process'
-import { OryCreateLoginFlowResponseDTO } from '@/domain/dto/OryResponseDTO'
-import { OrySubmitLoginRequestDTO } from '@/domain/dto/OryRequestDTO'
-import { OrySessionEntity } from '@/domain/entities/OrySessionEntity'
+import { OryCreateLoginFlowResponseDTO } from '@/core/domain/dto/OryResponseDTO'
+import { OrySubmitLoginRequestDTO } from '@/core/domain/dto/OryRequestDTO'
+import { OrySessionEntity } from '@/core/domain/entities/OrySessionEntity'
 import {
   httpExceptionHelper,
   UnauthorizedException
-} from '@/errors/HttpExceptions'
+} from '@/core/errors/HttpExceptions'
 
 export class OryAuthAPIAdapter implements OryAuthRepository {
   readonly baseUrl: string = process.env.ORY_KRATOS_PUBLIC_URL + ''

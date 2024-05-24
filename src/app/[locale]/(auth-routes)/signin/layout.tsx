@@ -1,5 +1,5 @@
 import { redirect, RedirectType } from 'next/navigation'
-import '@/globals.css'
+import '@/app/globals.css'
 import { getServerSession } from 'next-auth'
 import React from 'react'
 import { nextAuthOptions } from '@/utils/OryCredentialsProvider'

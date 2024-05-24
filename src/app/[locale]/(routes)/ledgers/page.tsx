@@ -1,4 +1,4 @@
-import LedgersView from '@/[locale]/(routes)/ledgers/ledgers-view'
+import LedgersView from '@/app/[locale]/(routes)/ledgers/ledgers-view'
 
 const Page = async () => {
   return <LedgersView />

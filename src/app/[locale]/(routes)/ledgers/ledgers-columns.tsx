@@ -12,7 +12,7 @@ import {
 import { Minus, MoreVertical, Trash } from 'lucide-react'
 
 import useCustomToast from '@/hooks/useCustomToast'
-import { LedgerEntity } from '@/domain/entities/LedgerEntity'
+import { LedgerEntity } from '@/core/domain/entities/LedgerEntity'
 import {
   DropdownMenu,
   DropdownMenuContent,

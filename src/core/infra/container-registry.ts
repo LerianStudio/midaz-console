@@ -1,12 +1,12 @@
 import { Container } from 'inversify'
-import { DivisionAPIAdapter } from '@/adapters/DivisionAPIAdapter'
-import { LedgersAPIAdapter } from '@/adapters/LedgersAPIAdapter'
-import { OryAuthAPIAdapter } from '@/adapters/OryAuthAPIAdapter'
-import { InstrumentsAPIAdapter } from '@/adapters/InstrumentsAPIAdapter'
-import DivisionsUseCases from '@/useCases/DivisionsUseCases'
-import LedgersUseCases from '@/useCases/LedgersUseCases'
-import OryAuthUseCases from '@/useCases/OryAuthUseCases'
-import InstrumentsUseCases from '@/useCases/InstrumentsUseCases'
+import { DivisionAPIAdapter } from '@/core/adapters/DivisionAPIAdapter'
+import { LedgersAPIAdapter } from '@/core/adapters/LedgersAPIAdapter'
+import { OryAuthAPIAdapter } from '@/core/adapters/OryAuthAPIAdapter'
+import { InstrumentsAPIAdapter } from '@/core/adapters/InstrumentsAPIAdapter'
+import DivisionsUseCases from '@/core/useCases/DivisionsUseCases'
+import LedgersUseCases from '@/core/useCases/LedgersUseCases'
+import OryAuthUseCases from '@/core/useCases/OryAuthUseCases'
+import InstrumentsUseCases from '@/core/useCases/InstrumentsUseCases'
 
 export const Registry = {
   DivisionsAPIAdapter: Symbol.for('DivisionsAPIAdapter'),
