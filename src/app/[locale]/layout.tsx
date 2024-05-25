@@ -22,7 +22,10 @@ export default async function RootLayout({
       <QueryProvider>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <div>{children}</div>
-          <Toaster position="top-right" containerStyle={{ top: 60 }} />
+          <Toaster
+            position="top-right"
+            containerStyle={{ top: 60, right: 60 }}
+          />
         </NextIntlClientProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryProvider>

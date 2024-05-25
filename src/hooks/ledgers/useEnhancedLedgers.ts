@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useLedgers } from '@/utils/queries'
-import { LedgerEntity } from '@/domain/entities/LedgerEntity'
+import { LedgerEntity } from '@/core/domain/entities/LedgerEntity'
 
 export const useEnhancedLedgers = () => {
   const [enhancedLedgers, setEnhancedLedgers] = useState<LedgerEntity[]>([])

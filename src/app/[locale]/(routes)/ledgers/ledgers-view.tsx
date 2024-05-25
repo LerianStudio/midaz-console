@@ -10,7 +10,6 @@ import { NoResource } from '@/components/NoResource'
 import { DialogDemo } from '@/components/Dialog'
 import { SheetDemo } from '@/components/Sheet'
 import { LedgerEntity } from '@/core/domain/entities/LedgerEntity'
-import { PageHeader } from '@/components/PageHeader'
 import { useSheetMode } from '@/hooks/ledgers/useSheetMode'
 import { useDeleteLedger } from '@/hooks/ledgers/useDeleteLedger'
 import { useCreateLedger } from '@/hooks/ledgers/useCreateLedger'
@@ -18,6 +17,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { useEnhancedLedgers } from '@/hooks/ledgers/useEnhancedLedgers'
 import React from 'react'
 import { useLedgers } from '@/utils/queries'
+import { PageHeader } from '@/components/PageHeader'
 
 const LedgersView = () => {
   const t = useTranslations('ledgers')
@@ -162,17 +162,20 @@ const LedgersView = () => {
 
   return (
     <div>
-      <div className="mt-12">
-        <PageHeader
-          title={t('title')}
-          subtitle={t('subtitle')}
-          hasInfo={true}
-          type="listing"
+      <PageHeader.Root>
+        <div className="flex justify-between border-b">
+          <PageHeader.InfoTitle title={t('title')} subtitle={t('subtitle')} />
+          <PageHeader.ActionButtons
+            type="listing"
+            listingTemplateTranslate={getListingTemplateTranslate(t)}
+            helperTriggerTranslate={getHelperTriggerTranslate(t)}
+            onCreate={handleOpenCreateSheet}
+          />
+        </div>
+        <PageHeader.CollapsibleInfo
           helperTriggerTranslate={getHelperTriggerTranslate(t)}
-          listingTemplateTranslate={getListingTemplateTranslate(t)}
-          onCreate={handleOpenCreateSheet}
         />
-      </div>
+      </PageHeader.Root>
 
       <div className="mt-10">
         {ledgers.isLoading || ledgers.data === undefined
