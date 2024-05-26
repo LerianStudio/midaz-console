@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button/button'
 import { Input } from '@/components/ui/input/input'
 import {
-  Sheet,
+  Sheet as BaseSheet,
   SheetClose,
   SheetContent,
   SheetDescription,
@@ -36,7 +36,6 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { truncateString } from '@/helpers'
-import { Country, State } from '@/[locale]/(routes)/divisions/divisions-view'
 import { Switch } from './ui/switch'
 import { Label } from './ui/label/label'
 import { Plus, Trash } from 'lucide-react'
@@ -66,9 +65,6 @@ type SheetDemoProps = {
   mode: string
   data: any
   buttonText: string
-  countries?: Country[]
-  statesOptions?: State[]
-  onCountryChange?: (countryCode: string) => void
 }
 
 type MetadataItem = {
@@ -81,7 +77,7 @@ type MetadataValues = {
   metadata: MetadataItem[]
 }
 
-export function SheetDemo({
+export const Sheet = ({
   open,
   setOpen,
   fields,
@@ -91,11 +87,8 @@ export function SheetDemo({
   onSubmit,
   mode,
   data,
-  buttonText,
-  countries,
-  statesOptions,
-  onCountryChange
-}: SheetDemoProps) {
+  buttonText
+}: SheetDemoProps) => {
   const [isSwitchOn, setSwitchOn] = useState(false)
   const [currentMetadata, setCurrentMetadata] = useState({ key: '', value: '' })
 
@@ -250,104 +243,6 @@ export function SheetDemo({
     }
   }, [data, isEditMode, isViewMode, form])
 
-  const renderCountryField = (
-    field: FormFieldConfig,
-    form: any,
-    onCountryChange: any,
-    countries: Country[]
-  ) => {
-    if (field.name === 'address.country') {
-      return (
-        <div className="flex flex-col gap-2" key={field.name}>
-          <FormLabel className="text-sm font-semibold text-[#52525b]">
-            {field.label}
-          </FormLabel>
-          {isViewMode ? (
-            <Input
-              readOnly={isViewMode}
-              autoFocus={false}
-              value={form.getValues('address.country') || 'Choose a country'}
-            />
-          ) : (
-            <FormControl>
-              <Select
-                onValueChange={(value) => {
-                  if (!isViewMode) {
-                    onCountryChange(value)
-                    form.setValue('address.country', value, {
-                      shouldValidate: true
-                    })
-                  }
-                }}
-                value={form.watch('address.country')}
-              >
-                <SelectTrigger>
-                  <SelectValue>
-                    {form.getValues('address.country') || 'Choose a country'}
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  {countries.map((country) => (
-                    <SelectItem key={country.name} value={country.code2}>
-                      {country.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </FormControl>
-          )}
-        </div>
-      )
-    }
-  }
-
-  const renderStateField = (
-    field: FormFieldConfig,
-    form: any,
-    statesOptions: State[]
-  ) => {
-    if (field.name === 'address.state') {
-      return (
-        <div className="flex flex-col gap-2" key={field.name}>
-          <FormLabel className="text-sm font-semibold text-[#52525b]">
-            {field.label}
-          </FormLabel>
-          {isViewMode ? (
-            <Input
-              readOnly={isViewMode}
-              autoFocus={false}
-              value={form.getValues('address.state') || 'Choose a state'}
-            />
-          ) : (
-            <FormControl>
-              <Select
-                onValueChange={(value) => {
-                  form.setValue('address.state', value, {
-                    shouldValidate: true
-                  })
-                }}
-                value={form.watch('address.state')}
-              >
-                <SelectTrigger>
-                  <SelectValue>
-                    {form.getValues('address.state') || 'Choose a state'}
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                  {statesOptions.map((state) => (
-                    <SelectItem key={state.name} value={state.code}>
-                      {state.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </FormControl>
-          )}
-        </div>
-      )
-    }
-  }
-
   const renderSelectField = (field: FormFieldConfig, form: any) => {
     return (
       <Select onValueChange={(value) => form.setValue(field.name, value)}>
@@ -415,17 +310,8 @@ export function SheetDemo({
     field: FormFieldConfig,
     form: any,
     isCreateMode: boolean,
-    isViewMode: boolean,
-    onCountryChange?: any,
-    countries?: Country[],
-    statesOptions?: State[]
+    isViewMode: boolean
   ) => {
-    if (field.name === 'address.country') {
-      return renderCountryField(field, form, onCountryChange, countries ?? [])
-    } else if (field.name === 'address.state') {
-      return renderStateField(field, form, statesOptions ?? [])
-    }
-
     if (!(isCreateMode && field.name === 'id')) {
       return renderInputField(field, form, isViewMode)
     }
@@ -434,7 +320,7 @@ export function SheetDemo({
   }
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
+    <BaseSheet open={open} onOpenChange={setOpen}>
       <SheetContent
         className="max-h-screen w-2/5 overflow-x-auto"
         onOpenAutoFocus={(e) => e.preventDefault()}
@@ -460,15 +346,7 @@ export function SheetDemo({
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="mt-5 grid gap-8 py-4">
               {fields.map((field) =>
-                renderField(
-                  field,
-                  form,
-                  isCreateMode,
-                  isViewMode,
-                  onCountryChange,
-                  countries,
-                  statesOptions
-                )
+                renderField(field, form, isCreateMode, isViewMode)
               )}
 
               <div className="gap- flex flex-col gap-4">
@@ -504,6 +382,6 @@ export function SheetDemo({
           </form>
         </Form>
       </SheetContent>
-    </Sheet>
+    </BaseSheet>
   )
 }

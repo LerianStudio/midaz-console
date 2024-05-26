@@ -7,7 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { formSchema } from '@/app/[locale]/(routes)/ledgers/ledgers-form-schema'
 import { DataTable } from '@/components/DataTable'
 import { NoResource } from '@/components/NoResource'
-import { SheetDemo } from '@/components/Sheet'
+import { Sheet } from '@/components/Sheet'
 import { LedgerEntity } from '@/core/domain/entities/LedgerEntity'
 import { useSheetMode } from '@/hooks/ledgers/useSheetMode'
 import { useDeleteLedger } from '@/hooks/ledgers/useDeleteLedger'
@@ -144,7 +144,7 @@ const LedgersView = () => {
           </Dialog.Content>
         </Dialog.Root>
 
-        <SheetDemo
+        <Sheet
           open={sheetMode.isOpen}
           setOpen={(isOpen) => setSheetMode({ ...sheetMode, isOpen })}
           mode={sheetMode.mode}
@@ -161,9 +161,9 @@ const LedgersView = () => {
   }
 
   return (
-    <div>
+    <React.Fragment>
       <PageHeader.Root>
-        <div className="flex justify-between border-b">
+        <PageHeader.Wrapper>
           <PageHeader.InfoTitle title={t('title')} subtitle={t('subtitle')} />
           <PageHeader.ActionButtons
             type="listing"
@@ -171,7 +171,7 @@ const LedgersView = () => {
             helperTriggerTranslate={getHelperTriggerTranslate(t)}
             onCreate={handleOpenCreateSheet}
           />
-        </div>
+        </PageHeader.Wrapper>
         <PageHeader.CollapsibleInfo
           helperTriggerTranslate={getHelperTriggerTranslate(t)}
         />
@@ -182,7 +182,7 @@ const LedgersView = () => {
           ? getLoadingSkeleton()
           : getLedgersComponents()}
       </div>
-    </div>
+    </React.Fragment>
   )
 }
 
