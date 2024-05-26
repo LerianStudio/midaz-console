@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import useCustomToast from '@/hooks/useCustomToast'
 import { deleteLedger } from '@/client/ledgerClient'
-import { LedgerEntity } from '@/domain/entities/LedgerEntity'
+import { LedgerEntity } from '@/core/domain/entities/LedgerEntity'
 import { useTranslations } from 'next-intl'
 
 export const useDeleteLedger = (refetch: () => void) => {

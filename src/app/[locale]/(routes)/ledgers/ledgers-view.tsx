@@ -7,7 +7,6 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { formSchema } from '@/app/[locale]/(routes)/ledgers/ledgers-form-schema'
 import { DataTable } from '@/components/DataTable'
 import { NoResource } from '@/components/NoResource'
-import { DialogDemo } from '@/components/Dialog'
 import { SheetDemo } from '@/components/Sheet'
 import { LedgerEntity } from '@/core/domain/entities/LedgerEntity'
 import { useSheetMode } from '@/hooks/ledgers/useSheetMode'
@@ -18,6 +17,7 @@ import { useEnhancedLedgers } from '@/hooks/ledgers/useEnhancedLedgers'
 import React from 'react'
 import { useLedgers } from '@/utils/queries'
 import { PageHeader } from '@/components/PageHeader'
+import { Dialog } from '@/components/Dialog'
 
 const LedgersView = () => {
   const t = useTranslations('ledgers')
@@ -134,15 +134,15 @@ const LedgersView = () => {
             />
           ))}
 
-        <DialogDemo
-          open={isDialogOpen}
-          setOpen={() => setIsDialogOpen(false)}
-          title={t('dialog.title')}
-          subtitle={t('dialog.subtitle')}
-          deleteButtonText={t('dialog.deleteBtnText')}
-          doingBusinessAs={currentLedgerForDeletion?.name}
-          onDelete={handleConfirmDeleteLedger}
-        />
+        <Dialog.Root open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <Dialog.Content>
+            <Dialog.Header ledgerName={currentLedgerForDeletion?.name || ''} />
+            <Dialog.Footer
+              onDismiss={() => setIsDialogOpen(false)}
+              onDelete={handleConfirmDeleteLedger}
+            />
+          </Dialog.Content>
+        </Dialog.Root>
 
         <SheetDemo
           open={sheetMode.isOpen}
