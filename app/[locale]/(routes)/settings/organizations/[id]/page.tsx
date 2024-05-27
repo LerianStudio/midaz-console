@@ -39,7 +39,7 @@ const Page = ({ params }: { params: { id: string } }) => {
 
   const handleOnSubmit = async (values: OrganizationEntity) => {
     console.log('update organization', values)
-    await updateOrganization(organizationId, values)
+    // await updateOrganization(organizationId, values)
     alert('Organization updated successfully')
     showSuccess('Organization updated successfully')
   }

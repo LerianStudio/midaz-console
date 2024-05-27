@@ -316,5 +316,8 @@
             "organizations": "Organizations",
             "others": "Others Settings"
         }
+    },
+    "Select": {
+        "placeholder": "Select..."
     }
 }

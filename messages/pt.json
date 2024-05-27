@@ -317,6 +317,9 @@
             "organizations": "Organizações",
             "others": "Outras Configurações"
         }
+    },
+    "Select": {
+        "placeholder": "Selecione..."
     }
 
 }

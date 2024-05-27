@@ -19,14 +19,6 @@ import { useTranslations } from 'next-intl'
 import { Input } from '@/components/ui/input/input'
 import { Button } from '@/components/ui/button/button'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
-import { getCountries, getStateCountry } from '@/utils/CountryUtils'
-import {
   Camera,
   ChevronDown,
   ChevronUp,
@@ -48,6 +40,9 @@ import { Avatar } from '@radix-ui/react-avatar'
 import { AvatarFallback, AvatarImage } from '@/components/ui/avatar/avatar'
 import { ChromePicker } from 'react-color'
 import { isHexColor } from '@/utils/colorUtils'
+import CountrySelector from '@/components/CountrySelector'
+import StateSelector from '@/components/StateSelector'
+import { getCountryByNameOrCode, getStateByCodeOrName, getStateCountry } from '@/utils/CountryUtils'
 
 type OrganizationsViewProps = {
   organizations?: OrganizationEntity
@@ -61,7 +56,12 @@ const OrganizationsView = ({
   const t = useTranslations('organizations.organizationView')
   const router = useRouter()
   const isNewOrganization: boolean = organizations === undefined
-  const countries = getCountries()
+  const [selectedCountry, setSelectedCountry] = useState<string>(
+    organizations?.address.country || ''
+  )
+  const [selectedState, setSelectedState] = useState<string>(
+    organizations?.address.state || ''
+  )
 
   const [showChormePicker, setShowChormePicker] = useState(false)
   const [colorSelected, setColorSelected] = useState(getAccentColor())
@@ -70,11 +70,11 @@ const OrganizationsView = ({
   const [currentMetadata, setCurrentMetadata] = useState({ key: '', value: '' })
   const [metadataList, setMetadataList] =
     useState<Record<string, any>>(getMetadataItems())
-  const [statesOptions, setStatesOptions] = useState<string[]>([])
   const [showMetadataCollapse, setShowMetadataCollapse] = useState(false)
+
   const organizationForm = useForm<z.infer<typeof organizationFormSchema>>({
     resolver: zodResolver(organizationFormSchema),
-    defaultValues: getSchemaDefaultValues(organizationFormSchema),
+    // defaultValues: getSchemaDefaultValues(organizationFormSchema),
     values: organizations
   })
 
@@ -100,11 +100,6 @@ const OrganizationsView = ({
         }
       )
     )
-  }
-
-  const handlerCountryChange = (countryName: string) => {
-    organizationForm.setValue('address.state', '')
-    setStatesOptions(getStateCountry(countryName) || [])
   }
 
   const handleMetadataChange = (
@@ -142,7 +137,7 @@ const OrganizationsView = ({
 
     setMetadataList(newMetadata)
   }
-
+  
   const handleFormSubmit = (data: any) => {
     data.metadata = {
       ...data.metadata,
@@ -152,6 +147,9 @@ const OrganizationsView = ({
     Object.entries(metadataList).map(([key, value]) => {
       data.metadata[key] = value
     })
+    const country = getCountryByNameOrCode(selectedCountry)
+    data.address.country = country.code
+    data.address.state = getStateByCodeOrName(country.states, selectedState).code
 
     onSubmit(data)
   }
@@ -311,33 +309,11 @@ const OrganizationsView = ({
                                   {t('formFields.country')}
                                 </FormLabel>
                                 <FormControl>
-                                  <Select
-                                    onValueChange={(value) => {
-                                      field.onChange(value)
-                                      handlerCountryChange(value)
-                                    }}
-                                    {...field}
-                                  >
-                                    <SelectTrigger className="mt-2">
-                                      <SelectValue
-                                        placeholder={t('selectPlaceholder')}
-                                      >
-                                        {organizationForm.getValues(
-                                          'address.country'
-                                        )}
-                                      </SelectValue>
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                      {countries.map((country) => (
-                                        <SelectItem
-                                          key={country.code}
-                                          value={country.name}
-                                        >
-                                          {country.name}
-                                        </SelectItem>
-                                      ))}
-                                    </SelectContent>
-                                  </Select>
+                                  <CountrySelector
+                                    className="mt-2"
+                                    country={selectedCountry}
+                                    onSelectCountry={setSelectedCountry}
+                                  />
                                 </FormControl>
                                 <FormMessage />
                               </div>
@@ -355,30 +331,12 @@ const OrganizationsView = ({
                                   {t('formFields.state')}
                                 </FormLabel>
                                 <FormControl className="w-fit">
-                                  <Select
-                                    disabled={
-                                      statesOptions === undefined ||
-                                      statesOptions.length === 0
-                                    }
-                                    {...field}
-                                  >
-                                    <SelectTrigger className="mt-2 placeholder:text-sm  placeholder:font-medium placeholder:text-zinc-400 enabled:w-fit disabled:w-[124px] disabled:bg-zinc-100">
-                                      <SelectValue
-                                        placeholder={t('selectPlaceholder')}
-                                      >
-                                        {organizationForm.getValues(
-                                          'address.state'
-                                        ) || t('selectPlaceholder')}
-                                      </SelectValue>
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                      {statesOptions.map((state: any) => (
-                                        <SelectItem key={state} value={state}>
-                                          {state}
-                                        </SelectItem>
-                                      ))}
-                                    </SelectContent>
-                                  </Select>
+                                  <StateSelector
+                                    onSelectState={setSelectedState}
+                                    country={selectedCountry}
+                                    state={selectedState}
+                                    className="mt-2 placeholder:text-sm  placeholder:font-medium placeholder:text-zinc-400 enabled:w-fit disabled:w-[124px] disabled:bg-zinc-100"
+                                  />
                                 </FormControl>
                                 <FormMessage />
                               </div>

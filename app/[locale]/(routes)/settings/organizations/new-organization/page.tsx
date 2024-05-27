@@ -6,14 +6,16 @@ import { BreadcrumbComponent, BreadcrumbPath } from '@/components/Breadcrumb'
 import { OrganizationEntity } from '@/domain/entities/OrganizationEntity'
 import { createOrganization } from '@/client/organizationClient'
 import useCustomToast from '@/hooks/useCustomToast'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+
 
 const Page = () => {
   const t = useTranslations('organizations.organizationView')
   const pathname = usePathname()
   const intlBasePath = pathname.split('/').filter(Boolean)[0]
   const { showSuccess, showError } = useCustomToast()
-
+  const router = useRouter()
+  
   const breadCrumbPaths: BreadcrumbPath[] = [
     {
       name: t('breadcrumbs.settings'),
@@ -30,12 +32,21 @@ const Page = () => {
       active: false
     }
   ]
-
+  
   const handleOnSubmit = async (values: OrganizationEntity) => {
-    await createOrganization(values)
-    showSuccess('Organization created successfully')
+    try {
+      await createOrganization(values)
+      showSuccess('Organization created successfully')
+      router.replace(`/${intlBasePath}/settings?tab=organizations`)
+    } catch (error) {
+      console.log('Error creating organization', error)
+      showError('Error creating organization')
+      return
+    }
+    
+    
   }
-
+  
   return (
     <div>
       <BreadcrumbComponent paths={breadCrumbPaths} />
