@@ -74,7 +74,6 @@ const OrganizationsView = ({
 
   const organizationForm = useForm<z.infer<typeof organizationFormSchema>>({
     resolver: zodResolver(organizationFormSchema),
-    // defaultValues: getSchemaDefaultValues(organizationFormSchema),
     values: organizations
   })
 
@@ -138,26 +137,27 @@ const OrganizationsView = ({
     setMetadataList(newMetadata)
   }
   
-  const handleFormSubmit = (data: any) => {
+  const handleFormSubmit = (event: any) => {
+    event.preventDefault();
+    
+    const data = organizationForm.getValues();
     data.metadata = {
       ...data.metadata,
+      ...metadataList,
       organizationAccentColor: colorSelected
-    }
+    };
+    
+    const country = getCountryByNameOrCode(selectedCountry);
+    data.address.country = country.code;
+    data.address.state = getStateByCodeOrName(country.states, selectedState).code;
 
-    Object.entries(metadataList).map(([key, value]) => {
-      data.metadata[key] = value
-    })
-    const country = getCountryByNameOrCode(selectedCountry)
-    data.address.country = country.code
-    data.address.state = getStateByCodeOrName(country.states, selectedState).code
-
-    onSubmit(data)
+    onSubmit(data);
   }
 
   return (
     <div className="w-full justify-between">
       <Form {...organizationForm}>
-        <form onSubmit={organizationForm.handleSubmit(handleFormSubmit)}>
+        <form onSubmit={(event) => handleFormSubmit(event)}>
           <div>
             <div className="mb-16 flex gap-6">
               <div className="grow">
