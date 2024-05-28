@@ -42,7 +42,10 @@ import { ChromePicker } from 'react-color'
 import { isHexColor } from '@/utils/colorUtils'
 import CountrySelector from '@/components/CountrySelector'
 import StateSelector from '@/components/StateSelector'
-import { getCountryByNameOrCode, getStateByCodeOrName, getStateCountry } from '@/utils/CountryUtils'
+import {
+  getCountryByNameOrCode,
+  getStateByCodeOrName
+} from '@/utils/CountryUtils'
 
 type OrganizationsViewProps = {
   organizations?: OrganizationEntity
@@ -56,13 +59,6 @@ const OrganizationsView = ({
   const t = useTranslations('organizations.organizationView')
   const router = useRouter()
   const isNewOrganization: boolean = organizations === undefined
-  const [selectedCountry, setSelectedCountry] = useState<string>(
-    organizations?.address.country || ''
-  )
-  const [selectedState, setSelectedState] = useState<string>(
-    organizations?.address.state || ''
-  )
-
   const [showChormePicker, setShowChormePicker] = useState(false)
   const [colorSelected, setColorSelected] = useState(getAccentColor())
   const [showInputAvatarDialog, setShowInputAvatarDialog] = useState(false)
@@ -114,8 +110,6 @@ const OrganizationsView = ({
   }
 
   const handlerAddMetadata = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-
     if (currentMetadata.key && currentMetadata.value) {
       const newMetadataItem = {
         ...currentMetadata
@@ -136,28 +130,35 @@ const OrganizationsView = ({
 
     setMetadataList(newMetadata)
   }
-  
-  const handleFormSubmit = (event: any) => {
-    event.preventDefault();
-    
-    const data = organizationForm.getValues();
+
+  const onSelectCountry = (countryCode: string) => {
+    organizationForm.setValue('address.country', countryCode)
+    onSelectState('')
+  }
+
+  const onSelectState = (stateCode: string) => {
+    organizationForm.setValue('address.state', stateCode)
+  }
+
+  const handleFormSubmit = async (data: any) => {
     data.metadata = {
       ...data.metadata,
-      ...metadataList,
       organizationAccentColor: colorSelected
     };
     
-    const country = getCountryByNameOrCode(selectedCountry);
+    const country = getCountryByNameOrCode(data.address.country);
     data.address.country = country.code;
-    data.address.state = getStateByCodeOrName(country.states, selectedState).code;
+    data.address.state = getStateByCodeOrName(country.states, data.address.state).code;
+    
+    alert(JSON.stringify(data, null, 2));
 
     onSubmit(data);
   }
 
   return (
     <div className="w-full justify-between">
-      <Form {...organizationForm}>
-        <form onSubmit={(event) => handleFormSubmit(event)}>
+      <Form  {...organizationForm}>
+        <form onSubmit={organizationForm.handleSubmit(handleFormSubmit)}>
           <div>
             <div className="mb-16 flex gap-6">
               <div className="grow">
@@ -304,19 +305,17 @@ const OrganizationsView = ({
                           name="address.country"
                           render={({ field }) => (
                             <FormItem>
-                              <div>
-                                <FormLabel className="text-sm text-zinc-600">
-                                  {t('formFields.country')}
-                                </FormLabel>
-                                <FormControl>
-                                  <CountrySelector
-                                    className="mt-2"
-                                    country={selectedCountry}
-                                    onSelectCountry={setSelectedCountry}
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </div>
+                              <FormLabel className="text-sm text-zinc-600">
+                                {t('formFields.country')}
+                              </FormLabel>
+                              <FormControl>
+                                <CountrySelector
+                                  className="mt-2"
+                                  country={organizationForm.watch('address.country')}
+                                  onSelectCountry={onSelectCountry}
+                                />
+                              </FormControl>
+                              <FormMessage />
                             </FormItem>
                           )}
                         />
@@ -326,20 +325,21 @@ const OrganizationsView = ({
                           name="address.state"
                           render={({ field }) => (
                             <FormItem>
-                              <div>
-                                <FormLabel className="text-sm text-zinc-600">
-                                  {t('formFields.state')}
-                                </FormLabel>
-                                <FormControl className="w-fit">
-                                  <StateSelector
-                                    onSelectState={setSelectedState}
-                                    country={selectedCountry}
-                                    state={selectedState}
-                                    className="mt-2 placeholder:text-sm  placeholder:font-medium placeholder:text-zinc-400 enabled:w-fit disabled:w-[124px] disabled:bg-zinc-100"
-                                  />
-                                </FormControl>
-                                <FormMessage />
-                              </div>
+                              <FormLabel
+                                itemID={field.name}
+                                className="text-sm text-zinc-600"
+                              >
+                                {t('formFields.state')}
+                              </FormLabel>
+                              <FormControl className="w-fit">
+                                <StateSelector
+                                  onSelectState={onSelectState}
+                                  country={organizationForm.watch('address.country')}
+                                  state={field.value}
+                                  className="mt-2 placeholder:text-sm  placeholder:font-medium placeholder:text-zinc-400 enabled:w-fit disabled:w-[124px] disabled:bg-zinc-100"
+                                />
+                              </FormControl>
+                              <FormMessage />
                             </FormItem>
                           )}
                         />
@@ -533,7 +533,7 @@ const OrganizationsView = ({
                                         {Object.entries(metadataList).map(
                                           ([key, value], index) => (
                                             <div
-                                              key={key}
+                                              key={index}
                                               className="mt-2 flex items-center justify-between"
                                             >
                                               <div className="flex w-full gap-5">
@@ -736,6 +736,7 @@ const OrganizationsView = ({
                   className="flex items-center justify-center gap-2 rounded-md border border-zinc-300 bg-zinc-800 px-4 py-2 text-sm text-white shadow"
                   variant="outline"
                   size="default"
+                  type="submit"
                 >
                   {t(
                     isNewOrganization

@@ -10,6 +10,8 @@ import {
 import { cn } from '@/lib/utils'
 import { SelectItemText } from '@radix-ui/react-select'
 import { useTranslations } from 'next-intl'
+import * as React from 'react'
+import * as SelectPrimitive from '@radix-ui/react-select'
 
 type CountrySelectorProps = {
   country?: string
@@ -41,8 +43,12 @@ const CountrySelector = ({
 
         <SelectContent>
           {countryList.map((country, index) => (
-            <SelectItem key={country.code + index} value={country.name} asChild={false}>
-              <SelectItemText>{country.name}</SelectItemText>
+            <SelectItem
+              key={country.code + index}
+              value={country.name}
+              asChild={false}
+            >
+              {country.name}
             </SelectItem>
           ))}
         </SelectContent>

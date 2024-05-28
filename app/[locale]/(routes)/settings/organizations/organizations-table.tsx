@@ -15,10 +15,6 @@ const OrganizationsTable = () => {
   const router = useRouter()
   const pathname = usePathname()
 
-  const handleOpenCreateSheet = () => {
-    // setSheetMode({ isOpen: true, mode: 'create', ledgersData: null })
-  }
-
   const handleOpenEditSheet = (organizationData: OrganizationEntity) => {
     console.log('organizationData', organizationData)
     router.push(`${pathname}/organizations/${organizationData.id}`)
@@ -27,8 +23,7 @@ const OrganizationsTable = () => {
   const handleOpenViewSheet = (organizationData: OrganizationEntity) => {}
 
   const handleOpenDeleteSheet = (organizationData: OrganizationEntity) => {
-    // setCurrentLedgerForDeletion(ledgerData)
-    // setIsDialogOpen(true)
+  
   }
 
   const organizationsColumns = getOrganizationsColumns(

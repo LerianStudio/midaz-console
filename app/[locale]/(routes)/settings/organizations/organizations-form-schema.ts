@@ -3,9 +3,9 @@ import { z } from 'zod'
 const organizationFormSchema = z.object({
   id: z.string().optional(),
   parentOrganizationId: z.string().optional(),
-  legalName: z.string().default(''),
-  doingBusinessAs: z.string().default(''),
-  legalDocument: z.string().default(''),
+  legalName: z.string(),
+  doingBusinessAs: z.string(),
+  legalDocument: z.string(),
   address: z
     .object({
       line1: z.string(),
@@ -15,14 +15,6 @@ const organizationFormSchema = z.object({
       city: z.string(),
       state: z.string(),
       country: z.string()
-    })
-    .default({
-      line1: '',
-      neighborhood: '',
-      zipCode: '',
-      city: '',
-      state: '',
-      country: ''
     }),
   metadata: z.record(z.any()).optional(),
   status: z
@@ -33,10 +25,7 @@ const organizationFormSchema = z.object({
     .default({
       code: 'ACTIVE',
       description: 'organization is active'
-    }),
-  createdAt: z.string().optional(),
-  updatedAt: z.string().optional(),
-  deletedAt: z.string().optional()
+    })
 })
 
 export { organizationFormSchema }

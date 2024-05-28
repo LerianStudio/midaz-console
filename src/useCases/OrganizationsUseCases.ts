@@ -43,6 +43,12 @@ class OrganizationsUseCases implements IOrganizationsUseCases {
     id: string,
     organization: OrganizationEntity
   ) {
+    delete organization.id
+    delete organization.legalDocument
+    delete organization.createdAt
+    delete organization.updatedAt
+    delete organization.deletedAt
+    
     return await this.organizationRepository.update(id, organization)
   }
 }

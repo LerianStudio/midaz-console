@@ -62,6 +62,7 @@ class OrganizationRepository implements IOrganizationRepository {
     })
 
     if (!response.ok) {
+      console.error('Error updating organization', await response.json())
       throw new Error(`Failed to update organization`)
     }
 
