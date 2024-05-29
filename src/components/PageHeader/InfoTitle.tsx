@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 
 type InfoTitleProps = {
   title: string
-  subtitle: string
+  subtitle?: string
   className?: string
   children?: ReactNode
 }

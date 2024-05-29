@@ -4,6 +4,7 @@ import { LedgerEntity } from '@/core/domain/entities/LedgerEntity'
 
 export const useEnhancedLedgers = () => {
   const [enhancedLedgers, setEnhancedLedgers] = useState<LedgerEntity[]>([])
+  const [isLoading, setIsLoading] = useState(true)
   const [refreshIndex, setRefreshIndex] = useState(0)
   const ledgers = useLedgers()
 
@@ -33,10 +34,11 @@ export const useEnhancedLedgers = () => {
             return { ...ledger, instruments }
           })
         )
-
+        setIsLoading(false)
         return enhancedData
       } catch (error) {
         console.error('Error enhancing ledgers:', error)
+        setIsLoading(false)
         return []
       }
     }
@@ -49,8 +51,9 @@ export const useEnhancedLedgers = () => {
   }, [enhanceLedgers])
 
   const refreshLedgers = () => {
+    setIsLoading(true)
     setRefreshIndex((prev) => prev + 1)
   }
 
-  return { ...ledgers, data: enhancedLedgers, refreshLedgers }
+  return { ...ledgers, data: enhancedLedgers, isLoading, refreshLedgers }
 }

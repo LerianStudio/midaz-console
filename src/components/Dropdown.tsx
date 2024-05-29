@@ -7,7 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel
 } from './ui/dropdown-menu'
-import { MenuEntry } from '@/repositories/MenuEntry'
+import { MenuEntry } from '@/core/repositories/MenuEntry'
 import { cn } from '@/lib/utils'
 
 interface DropdownProps {

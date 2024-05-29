@@ -28,9 +28,9 @@ export const CardMetadata = forwardRef(({ data }: any, ref) => {
   const { control, handleSubmit, register, setValue, getValues } = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      metadata: Object.entries(data.metadata || {}).map(([key, value]) => ({
+      metadata: data.metadata.map(({ key, value }: any) => ({
         key,
-        value
+        value: value.toString()
       }))
     }
   })
@@ -45,10 +45,13 @@ export const CardMetadata = forwardRef(({ data }: any, ref) => {
       return new Promise((resolve) => {
         handleSubmit((values) => {
           updateFormData({
-            metadata: values.metadata.reduce((acc: any, { key, value }) => {
-              acc[key] = value
-              return acc
-            }, {})
+            metadata: values.metadata.reduce(
+              (acc: any, { key, value }: { key: string; value: string }) => {
+                acc[key] = value
+                return acc
+              },
+              {}
+            )
           })
 
           resolve(values)

@@ -17,15 +17,7 @@ import { useEffect, useRef, useState } from 'react'
 import { TransactionCard } from './transaction-card'
 import { TransactionStatusCard } from './transaction-status-card'
 import { TotalAmountCard } from './total-amount-card'
-
-type Metadata = {
-  key: string
-  value: string
-}
-
-type SubmitFormResponse = {
-  metadata: Metadata[]
-}
+import { MetadataItem, MetadataValues } from '@/types/MetadataType'
 
 type LedgerDetailsViewProps = {
   data: LedgerEntity
@@ -56,7 +48,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
   }, [isDirty])
 
   const metadataFormRef = useRef<{
-    submitForm: () => Promise<SubmitFormResponse>
+    submitForm: () => Promise<MetadataValues>
   }>(null)
 
   const breadcrumbPaths: BreadcrumbPath[] = [
@@ -67,7 +59,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
   const tabs = [{ id: 1, value: 'overview', name: 'Visão Geral' }]
 
   const handleGlobalSubmit = async () => {
-    let metadataValues: SubmitFormResponse = {
+    let metadataValues: MetadataValues = {
       metadata: []
     }
 
@@ -78,7 +70,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
     const dataToSubmit = {
       name: formData.name,
       metadata: metadataValues.metadata.reduce(
-        (acc: any, { key, value }: Metadata) => {
+        (acc: any, { key, value }: MetadataItem) => {
           acc[key] = value
           return acc
         },

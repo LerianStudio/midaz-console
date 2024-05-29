@@ -1,4 +1,4 @@
-import { LedgerEntity } from '@/domain/entities/LedgerEntity'
+import { LedgerEntity } from '@/core/domain/entities/LedgerEntity'
 
 const createLedger = async (ledger: LedgerEntity) => {
   const response = await fetch('/api/ledgers', {

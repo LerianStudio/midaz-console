@@ -1,6 +1,6 @@
 'use client'
 
-import { MenuEntry } from '@/repositories/MenuEntry'
+import { MenuEntry } from '@/core/repositories/MenuEntry'
 import { ChevronDown } from 'lucide-react'
 import Dropdown from './Dropdown'
 

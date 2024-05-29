@@ -1,7 +1,7 @@
 import { useLedgers } from '@/utils/queries'
 import { updateLedger } from '@/client/ledgerClient'
 import useCustomToast from '@/hooks/useCustomToast'
-import { LedgerEntity } from '@/domain/entities/LedgerEntity'
+import { LedgerEntity } from '@/core/domain/entities/LedgerEntity'
 import { useTranslations } from 'next-intl'
 
 export const useUpdateLedger = () => {
