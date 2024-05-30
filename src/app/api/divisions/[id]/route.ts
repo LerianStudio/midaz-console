@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { DivisionAPIAdapter } from '@/adapters/DivisionAPIAdapter'
-import DivisionsUseCases from '@/useCases/DivisionsUseCases'
-import { container, Registry } from '@/infra/container-registry'
+import { container, Registry } from '@/core/infra/container-registry'
+import DivisionsUseCases from '@/core/useCases/DivisionsUseCases'
+
 
 const divisionsUseCases = container.get<DivisionsUseCases>(
   Registry.DivisionsUseCases

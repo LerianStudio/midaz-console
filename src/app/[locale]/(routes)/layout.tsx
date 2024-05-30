@@ -1,5 +1,5 @@
 import React from 'react'
-import '@/globals.css'
+import '@/app/globals.css'
 import { Header } from '@/components/Header'
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
