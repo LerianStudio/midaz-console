@@ -1,51 +1,27 @@
 'use client'
 import { OrganizationEntity } from '@/domain/entities/OrganizationEntity'
 import { useRouter } from 'next/navigation'
-import { useForm } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { getSchemaDefaultValues } from '@/utils/zodUltils'
 import { organizationFormSchema } from '@/[locale]/(routes)/settings/organizations/organizations-form-schema'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import React, { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Input } from '@/components/ui/input/input'
 import { Button } from '@/components/ui/button/button'
-import {
-  Camera,
-  ChevronDown,
-  ChevronUp,
-  HashIcon,
-  Plus,
-  Trash
-} from 'lucide-react'
+import { Camera, ChevronDown, ChevronUp, HashIcon, Plus, Trash } from 'lucide-react'
 import { Collapsible } from '@/components/ui/collapsible'
 import { Label } from '@/components/ui/label/label'
 import { cn } from '@/lib/utils'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Avatar } from '@radix-ui/react-avatar'
 import { AvatarFallback, AvatarImage } from '@/components/ui/avatar/avatar'
 import { ChromePicker } from 'react-color'
 import { isHexColor } from '@/utils/colorUtils'
 import CountrySelector from '@/components/CountrySelector'
 import StateSelector from '@/components/StateSelector'
-import {
-  getCountryByNameOrCode,
-  getStateByCodeOrName
-} from '@/utils/CountryUtils'
+import useCustomToast from '@/hooks/useCustomToast'
 
 type OrganizationsViewProps = {
   organizations?: OrganizationEntity
@@ -53,9 +29,9 @@ type OrganizationsViewProps = {
 }
 
 const OrganizationsView = ({
-  organizations,
-  onSubmit
-}: OrganizationsViewProps) => {
+                             organizations,
+                             onSubmit
+                           }: OrganizationsViewProps) => {
   const t = useTranslations('organizations.organizationView')
   const router = useRouter()
   const isNewOrganization: boolean = organizations === undefined
@@ -67,12 +43,14 @@ const OrganizationsView = ({
   const [metadataList, setMetadataList] =
     useState<Record<string, any>>(getMetadataItems())
   const [showMetadataCollapse, setShowMetadataCollapse] = useState(false)
-
+  const { showSuccess, showError } = useCustomToast()
+  
   const organizationForm = useForm<z.infer<typeof organizationFormSchema>>({
     resolver: zodResolver(organizationFormSchema),
     values: organizations
   })
-
+  
+  
   function getAccentColor() {
     if (
       organizations &&
@@ -84,7 +62,7 @@ const OrganizationsView = ({
     }
     return ''
   }
-
+  
   function getMetadataItems() {
     return Object.fromEntries(
       Object.entries<Record<string, any>>(organizations?.metadata || {}).filter(
@@ -96,68 +74,91 @@ const OrganizationsView = ({
       )
     )
   }
-
+  
   const handleMetadataChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     field: 'key' | 'value'
   ) => {
     e.preventDefault()
-
+    
     setCurrentMetadata({
       ...currentMetadata,
       [field]: (e.target as HTMLInputElement).value
     })
   }
-
+  
   const handlerAddMetadata = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (currentMetadata.key && currentMetadata.value) {
       const newMetadataItem = {
         ...currentMetadata
       }
-
+      
       setMetadataList((prev) => ({
         ...prev,
         [newMetadataItem.key]: newMetadataItem.value
       }))
-
+      
       setCurrentMetadata({ key: '', value: '' })
     }
   }
-
+  
   const handlerRemoveMetadata = (key: string) => {
     const newMetadata = { ...metadataList }
     delete newMetadata[key]
-
+    
     setMetadataList(newMetadata)
   }
-
+  
   const onSelectCountry = (countryCode: string) => {
     organizationForm.setValue('address.country', countryCode)
     onSelectState('')
   }
-
+  
   const onSelectState = (stateCode: string) => {
     organizationForm.setValue('address.state', stateCode)
   }
-
-  const handleFormSubmit = async (data: any) => {
-    data.metadata = {
-      ...data.metadata,
-      organizationAccentColor: colorSelected
-    };
+  
+  const handleFormSubmit = async () => {
     
-    const country = getCountryByNameOrCode(data.address.country);
-    data.address.country = country.code;
-    data.address.state = getStateByCodeOrName(country.states, data.address.state).code;
     
-    alert(JSON.stringify(data, null, 2));
-
-    onSubmit(data);
+    // const data = organizationForm.getValues()
+    // data.metadata = {
+    //   ...data.metadata,
+    //   ...metadataList,
+    //   organizationAccentColor: colorSelected
+    // }
+    //
+    // // Prevent description saved as empty string or null
+    // if (data.status && data.status.description && false) {
+    //   data.status.description = 'description of status'
+    // }
+    //
+    // const country = getCountryByNameOrCode(data.address.country)
+    // data.address.country = country.code
+    // data.address.state = getStateByCodeOrName(
+    //   country.states,
+    //   data.address.state
+    // ).code
+    //
+    // const result = organizationFormSchema.safeParse(data)
+    // if (result.success) {
+    //   onSubmit(data)
+    // } else {
+    //   result.error.errors.forEach((error) => {
+    //     error.path.forEach((path) => {
+    //       return organizationForm.setError(path as any, {
+    //         type: 'manual',
+    //         message: error.message
+    //       })
+    //     })
+    //   })
+    // }
+    showSuccess('Organization created successfully')
   }
-
+  
   return (
     <div className="w-full justify-between">
-      <Form  {...organizationForm}>
+      <Form {...organizationForm}>
         <form onSubmit={organizationForm.handleSubmit(handleFormSubmit)}>
           <div>
             <div className="mb-16 flex gap-6">
@@ -173,7 +174,7 @@ const OrganizationsView = ({
                   <div className="border-t border-zinc-300">
                     <div>
                       {/*Organization Basic Information Section*/}
-
+                      
                       <div className="grid grid-cols-2 gap-5 p-6">
                         {!isNewOrganization && (
                           <FormField
@@ -184,20 +185,18 @@ const OrganizationsView = ({
                                 <FormLabel className="text-sm text-zinc-600">
                                   {t('formFields.id')}
                                 </FormLabel>
-                                <FormControl>
-                                  <Input
-                                    className="placeholder:text-sm placeholder:font-medium placeholder:text-zinc-400 disabled:bg-zinc-100"
-                                    placeholder={t('typePlaceholder')}
-                                    disabled
-                                    {...field}
-                                  />
-                                </FormControl>
+                                <Input
+                                  className="placeholder:text-sm placeholder:font-medium placeholder:text-zinc-400 disabled:bg-zinc-100"
+                                  placeholder={t('typePlaceholder')}
+                                  disabled
+                                  {...field}
+                                />
                                 <FormMessage />
                               </FormItem>
                             )}
                           />
                         )}
-
+                        
                         <FormField
                           control={organizationForm.control}
                           name="legalName"
@@ -206,17 +205,15 @@ const OrganizationsView = ({
                               <FormLabel className="text-sm text-zinc-600">
                                 {t('formFields.legalName')}
                               </FormLabel>
-                              <FormControl>
-                                <Input
-                                  placeholder={t('typePlaceholder')}
-                                  {...field}
-                                />
-                              </FormControl>
+                              <Input
+                                placeholder={t('typePlaceholder')}
+                                {...field}
+                              />
                               <FormMessage />
                             </FormItem>
                           )}
                         />
-
+                        
                         <FormField
                           control={organizationForm.control}
                           name="doingBusinessAs"
@@ -225,17 +222,15 @@ const OrganizationsView = ({
                               <FormLabel className="text-sm text-zinc-600">
                                 {t('formFields.doingBusinessAs')}
                               </FormLabel>
-                              <FormControl>
-                                <Input
-                                  placeholder={t('typePlaceholder')}
-                                  {...field}
-                                />
-                              </FormControl>
+                              <Input
+                                placeholder={t('typePlaceholder')}
+                                {...field}
+                              />
                               <FormMessage />
                             </FormItem>
                           )}
                         />
-
+                        
                         <FormField
                           control={organizationForm.control}
                           name="legalDocument"
@@ -244,21 +239,19 @@ const OrganizationsView = ({
                               <FormLabel className="text-sm text-zinc-600">
                                 {t('formFields.legalDocument')}
                               </FormLabel>
-                              <FormControl>
-                                <Input
-                                  placeholder={t('typePlaceholder')}
-                                  {...field}
-                                />
-                              </FormControl>
+                              <Input
+                                placeholder={t('typePlaceholder')}
+                                {...field}
+                              />
                               <FormMessage />
                             </FormItem>
                           )}
                         />
                       </div>
                     </div>
-
+                    
                     {/*Address Field Section*/}
-
+                    
                     <div className="border-t border-zinc-300">
                       <div className="grid grid-cols-2 gap-5 p-6">
                         <FormField
@@ -269,17 +262,15 @@ const OrganizationsView = ({
                               <FormLabel className="text-sm text-zinc-600">
                                 {t('formFields.address')}
                               </FormLabel>
-                              <FormControl>
-                                <Input
-                                  placeholder={t('typePlaceholder')}
-                                  {...field}
-                                />
-                              </FormControl>
+                              <Input
+                                placeholder={t('typePlaceholder')}
+                                {...field}
+                              />
                               <FormMessage />
                             </FormItem>
                           )}
                         />
-
+                        
                         <FormField
                           control={organizationForm.control}
                           name="address.line2"
@@ -288,18 +279,15 @@ const OrganizationsView = ({
                               <FormLabel className="text-sm text-zinc-600">
                                 {t('formFields.complement')}
                               </FormLabel>
-                              <FormControl>
-                                <Input
-                                  placeholder={t('typePlaceholder')}
-                                  {...field}
-                                  value={organizations?.address.line2}
-                                />
-                              </FormControl>
+                              <Input
+                                placeholder={t('typePlaceholder')}
+                                {...field}
+                              />
                               <FormMessage />
                             </FormItem>
                           )}
                         />
-
+                        
                         <FormField
                           control={organizationForm.control}
                           name="address.country"
@@ -308,18 +296,18 @@ const OrganizationsView = ({
                               <FormLabel className="text-sm text-zinc-600">
                                 {t('formFields.country')}
                               </FormLabel>
-                              <FormControl>
-                                <CountrySelector
-                                  className="mt-2"
-                                  country={organizationForm.watch('address.country')}
-                                  onSelectCountry={onSelectCountry}
-                                />
-                              </FormControl>
+                              <CountrySelector
+                                className="mt-2"
+                                country={organizationForm.watch(
+                                  'address.country'
+                                )}
+                                onSelectCountry={onSelectCountry}
+                              />
                               <FormMessage />
                             </FormItem>
                           )}
                         />
-
+                        
                         <FormField
                           control={organizationForm.control}
                           name="address.state"
@@ -331,19 +319,19 @@ const OrganizationsView = ({
                               >
                                 {t('formFields.state')}
                               </FormLabel>
-                              <FormControl className="w-fit">
-                                <StateSelector
-                                  onSelectState={onSelectState}
-                                  country={organizationForm.watch('address.country')}
-                                  state={field.value}
-                                  className="mt-2 placeholder:text-sm  placeholder:font-medium placeholder:text-zinc-400 enabled:w-fit disabled:w-[124px] disabled:bg-zinc-100"
-                                />
-                              </FormControl>
+                              <StateSelector
+                                onSelectState={onSelectState}
+                                country={organizationForm.watch(
+                                  'address.country'
+                                )}
+                                state={field.value}
+                                className="w-fit mt-2 placeholder:text-sm  placeholder:font-medium placeholder:text-zinc-400 enabled:w-fit disabled:w-[124px] disabled:bg-zinc-100"
+                              />
                               <FormMessage />
                             </FormItem>
                           )}
                         />
-
+                        
                         <FormField
                           control={organizationForm.control}
                           name="address.city"
@@ -352,17 +340,15 @@ const OrganizationsView = ({
                               <FormLabel className="text-sm text-zinc-600">
                                 {t('formFields.city')}
                               </FormLabel>
-                              <FormControl>
-                                <Input
-                                  placeholder={t('typePlaceholder')}
-                                  {...field}
-                                />
-                              </FormControl>
+                              <Input
+                                placeholder={t('typePlaceholder')}
+                                {...field}
+                              />
                               <FormMessage />
                             </FormItem>
                           )}
                         />
-
+                        
                         <FormField
                           control={organizationForm.control}
                           name="address.zipCode"
@@ -371,21 +357,19 @@ const OrganizationsView = ({
                               <FormLabel className="text-sm text-zinc-600">
                                 {t('formFields.zipCode')}
                               </FormLabel>
-                              <FormControl>
-                                <Input
-                                  placeholder={t('typePlaceholder')}
-                                  {...field}
-                                />
-                              </FormControl>
+                              <Input
+                                placeholder={t('typePlaceholder')}
+                                {...field}
+                              />
                               <FormMessage />
                             </FormItem>
                           )}
                         />
                       </div>
                     </div>
-
+                    
                     {/*Parent Id Field Section*/}
-
+                    
                     <div className="border-t border-zinc-300">
                       <div className="grid grid-cols-2 gap-5 p-6">
                         <FormField
@@ -396,16 +380,10 @@ const OrganizationsView = ({
                               <FormLabel className="text-sm text-zinc-600">
                                 {t('formFields.parentOrganization')}
                               </FormLabel>
-                              <FormControl>
-                                <Input
-                                  placeholder={t('typePlaceholder')}
-                                  {...field}
-                                  value={
-                                    organizations?.parentOrganizationId ||
-                                    undefined
-                                  }
-                                />
-                              </FormControl>
+                              <Input
+                                placeholder={t('typePlaceholder')}
+                                {...field}
+                              />
                               <p className="text-xs font-medium text-zinc-400">
                                 {t('informationText.parentOrganizationText')}
                               </p>
@@ -417,9 +395,9 @@ const OrganizationsView = ({
                     </div>
                   </div>
                 </div>
-
+                
                 {/*Metadata Section*/}
-
+                
                 <div className="rounded-lg bg-white shadow">
                   <div className="p-6 text-sm font-medium text-zinc-400">
                     <div className="w-full flex-col">
@@ -428,14 +406,14 @@ const OrganizationsView = ({
                           <div className="text-lg font-medium text-zinc-600 ">
                             Metadata
                           </div>
-
+                          
                           <p className="self-stretch text-xs font-normal italic text-zinc-400">
                             {t('informationText.metadataRegisterCountText', {
                               registerCount: Object.keys(metadataList).length
                             })}
                           </p>
                         </div>
-
+                        
                         <div className="content-end justify-end">
                           {!showMetadataCollapse ? (
                             <ChevronDown
@@ -454,7 +432,7 @@ const OrganizationsView = ({
                           )}
                         </div>
                       </div>
-
+                      
                       {showMetadataCollapse && (
                         <div className="mt-6 w-full border-t">
                           <div>
@@ -484,7 +462,7 @@ const OrganizationsView = ({
                                                 className="h-9 items-center justify-between"
                                               />
                                             </div>
-
+                                            
                                             <div className="flex w-full flex-col gap-2">
                                               <Label htmlFor="value">
                                                 Valor
@@ -505,7 +483,7 @@ const OrganizationsView = ({
                                               />
                                             </div>
                                           </div>
-
+                                          
                                           <Button
                                             onClick={(
                                               e: React.MouseEvent<HTMLButtonElement>
@@ -521,7 +499,7 @@ const OrganizationsView = ({
                                               className={cn(
                                                 'shrink-0',
                                                 !currentMetadata.key ||
-                                                  !currentMetadata.value
+                                                !currentMetadata.value
                                                   ? 'text-shadcn-400'
                                                   : 'text-white'
                                               )}
@@ -538,10 +516,12 @@ const OrganizationsView = ({
                                             >
                                               <div className="flex w-full gap-5">
                                                 <div className="flex flex-1 gap-2">
-                                                  <div className="flex h-9 flex-1 items-center rounded-md bg-shadcn-100 px-2">
+                                                  <div
+                                                    className="flex h-9 flex-1 items-center rounded-md bg-shadcn-100 px-2">
                                                     {key}
                                                   </div>
-                                                  <div className="flex h-9 flex-1 items-center rounded-md bg-shadcn-100 px-2">
+                                                  <div
+                                                    className="flex h-9 flex-1 items-center rounded-md bg-shadcn-100 px-2">
                                                     {value}
                                                   </div>
                                                 </div>
@@ -569,20 +549,20 @@ const OrganizationsView = ({
                           </div>
                         </div>
                       )}
-
+                      
                       <FormMessage />
                     </div>
                   </div>
                 </div>
               </div>
-
+              
               <div className="grow">
                 <div className="mb-6 rounded-lg bg-white shadow">
                   <div className="p-6">
                     <div className="mb-4 text-sm font-medium text-zinc-600">
                       {t('formFields.avatar')}
                     </div>
-
+                    
                     <div className="mb-4 flex w-full justify-center pb-0">
                       <Dialog
                         open={showInputAvatarDialog}
@@ -591,19 +571,21 @@ const OrganizationsView = ({
                         <DialogTrigger
                           onClick={() => setShowInputAvatarDialog(true)}
                         >
-                          <Avatar className="flex h-44 w-44 items-center justify-center rounded-[30px] border border-zinc-300 bg-zinc-200 shadow">
+                          <Avatar
+                            className="flex h-44 w-44 items-center justify-center rounded-[30px] border border-zinc-300 bg-zinc-200 shadow">
                             <AvatarImage
                               className="h-44 w-44 gap-2 rounded-[30px] border border-zinc-200 shadow"
                               src={organizationForm.getValues(
                                 'metadata.organizationAvatar'
                               )}
                             />
-                            <AvatarFallback className="flex h-10 w-10 gap-2 rounded-full border border-zinc-200 bg-white p-2 shadow">
+                            <AvatarFallback
+                              className="flex h-10 w-10 gap-2 rounded-full border border-zinc-200 bg-white p-2 shadow">
                               <Camera className="relative h-6 w-6" />
                             </AvatarFallback>
                           </Avatar>
                         </DialogTrigger>
-
+                        
                         <DialogContent>
                           <DialogTitle className="flex w-full items-center justify-center">
                             {t('avatarDialog.title')}
@@ -611,13 +593,13 @@ const OrganizationsView = ({
                           <DialogDescription className="flex w-full items-center justify-center">
                             {t('avatarDialog.description')}
                           </DialogDescription>
-
+                          
                           <Input
                             className="mt-4"
                             placeholder="https://example.com/image.png"
                             onChange={(e) => setAvatarURL(e.target.value)}
                           />
-
+                          
                           <Button
                             variant="outline"
                             onClick={() => {
@@ -633,7 +615,7 @@ const OrganizationsView = ({
                         </DialogContent>
                       </Dialog>
                     </div>
-
+                    
                     {organizationForm.getValues(
                       'metadata.organizationAvatar'
                     ) === '' ||
@@ -663,13 +645,13 @@ const OrganizationsView = ({
                     )}
                   </div>
                 </div>
-
+                
                 <div className="rounded-lg bg-white shadow">
                   <div className="p-6">
                     <div className="text-sm font-medium text-zinc-600">
                       {t('formFields.accentColor')}
                     </div>
-
+                    
                     <div>
                       <div className="inline-flex h-10 w-[180px] items-start justify-start gap-2 rounded-lg">
                         <div
@@ -719,7 +701,8 @@ const OrganizationsView = ({
             </div>
           </div>
           <div>
-            <footer className=" bottom-0 inline-flex h-[102px] w-full items-center justify-end gap-6 self-baseline rounded-none bg-white shadow">
+            <footer
+              className=" bottom-0 inline-flex h-[102px] w-full items-center justify-end gap-6 self-baseline rounded-none bg-white shadow">
               <div className="mr-10 flex items-center justify-end gap-6">
                 <Button
                   className="flex items-center justify-center gap-2 rounded-md border border-zinc-300 bg-white px-4 py-2 text-sm shadow"

@@ -8,14 +8,13 @@ import { createOrganization } from '@/client/organizationClient'
 import useCustomToast from '@/hooks/useCustomToast'
 import { usePathname, useRouter } from 'next/navigation'
 
-
 const Page = () => {
   const t = useTranslations('organizations.organizationView')
   const pathname = usePathname()
   const intlBasePath = pathname.split('/').filter(Boolean)[0]
   const { showSuccess, showError } = useCustomToast()
   const router = useRouter()
-  
+
   const breadCrumbPaths: BreadcrumbPath[] = [
     {
       name: t('breadcrumbs.settings'),
@@ -32,7 +31,7 @@ const Page = () => {
       active: false
     }
   ]
-  
+
   const handleOnSubmit = async (values: OrganizationEntity) => {
     try {
       await createOrganization(values)
@@ -43,10 +42,8 @@ const Page = () => {
       showError('Error creating organization')
       return
     }
-    
-    
   }
-  
+
   return (
     <div>
       <BreadcrumbComponent paths={breadCrumbPaths} />

@@ -2,14 +2,11 @@ export type OrganizationEntity = {
   id?: string
   parentOrganizationId?: string
   legalName: string
-  doingBusinessAs: string
-  legalDocument: string
+  doingBusinessAs?: string
+  legalDocument: number
   address: Address
   metadata: Record<string, any>
   status: OrganizationStatus
-  createdAt?: string
-  updatedAt?: string
-  deletedAt?: string
 }
 
 type OrganizationStatus = {
@@ -21,7 +18,7 @@ type Address = {
   line1: string
   line2: string
   neighborhood: string
-  zipCode: string
+  zipCode: number
   city: string
   state: string
   country: string

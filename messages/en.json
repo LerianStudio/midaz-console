@@ -306,6 +306,13 @@
                 "key": "Key",
                 "value": "Value"
             },
+            "formFieldErros": {
+                "required": "Required field",
+                "invalid": "Invalid field",
+                "minLength": "Minimum length of {minLength} characters",
+                "maxLength": "Maximum length of {maxLength} characters",
+                "pattern": "Invalid pattern"
+            },
             "typePlaceholder": "Type...",
             "selectPlaceholder": "Select..."
         }

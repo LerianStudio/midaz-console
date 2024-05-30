@@ -1,4 +1,5 @@
 import { getCountries, getCountryByNameOrCode } from '@/utils/CountryUtils'
+import * as React from 'react'
 import { useEffect, useMemo, useState } from 'react'
 import {
   Select,
@@ -8,21 +9,19 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
-import { SelectItemText } from '@radix-ui/react-select'
 import { useTranslations } from 'next-intl'
-import * as React from 'react'
-import * as SelectPrimitive from '@radix-ui/react-select'
 
 type CountrySelectorProps = {
   country?: string
   onSelectCountry: (countryCode: string) => void
   className?: string
-}
+} & React.ComponentProps<any>
 
 const CountrySelector = ({
   country,
   onSelectCountry,
-  className
+  className,
+  ...props
 }: CountrySelectorProps) => {
   const t = useTranslations('Select')
   const countryList = useMemo(() => getCountries(), [])
@@ -36,9 +35,16 @@ const CountrySelector = ({
 
   return (
     <div>
-      <Select name="CountrySelector" onValueChange={setValue} value={value}>
+      <Select
+        name="CountrySelector"
+        onValueChange={setValue}
+        value={value}
+        {...props}
+      >
         <SelectTrigger className={cn(className)}>
-          <SelectValue placeholder={t('placeholder')}>{value}</SelectValue>
+          <SelectValue placeholder={t('placeholder')} {...props}>
+            {value}
+          </SelectValue>
         </SelectTrigger>
 
         <SelectContent>

@@ -63,11 +63,7 @@ const StateSelector = ({
 
         <SelectContent>
           {stateList.map((state, index) => (
-            <SelectItem
-              key={state.code + index}
-              value={state.name}
-              asChild={false}
-            >
+            <SelectItem key={state.code} value={state.name} asChild={false}>
               {state.name}
             </SelectItem>
           ))}

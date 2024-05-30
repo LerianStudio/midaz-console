@@ -1,9 +1,8 @@
 'use client'
 import CountrySelector from '@/components/CountrySelector'
-import { useEffect, useState } from 'react'
 import StateSelector from '@/components/StateSelector'
 import { Button } from '@/components/ui/button/button'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -11,43 +10,39 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel
+  FormLabel,
+  FormMessage
 } from '@/components/ui/form'
 
-const ImplementationSchema = z.object({
-  country: z.string(),
-  state: z.string()
+const schema = z.object({
+  country: z.string().refine((value) => value.length > 0, {
+    message: 'Country is required'
+  }),
+  state: z.string().refine((value) => value.length > 0, {
+    message: 'State is required'
+  })
 })
 
+type ImplementationSchema = z.infer<typeof schema>
+
 const Page = () => {
-  const implementationForm = useForm<z.infer<typeof ImplementationSchema>>({
-    mode: 'onSubmit',
-    resolver: zodResolver(ImplementationSchema),
+  const implementationForm = useForm<ImplementationSchema>({
+    resolver: zodResolver(schema),
     values: {
-      country: 'BR',
+      country: '',
       state: ''
     }
   })
 
-  const onSelectCountry = (countryCode: string) => {
-    implementationForm.setValue('country', countryCode)
-    implementationForm.setValue('state', '')
-  }
-
-  const onSelectState = (stateCode: string) => {
-    implementationForm.setValue('state', stateCode)
-    alert(JSON.stringify(implementationForm.getValues(), null, 2))
-  }
-
-  const handleSubmit = (data: z.infer<typeof ImplementationSchema>) => {
-    alert(JSON.stringify(data, null, 2))
+  const handleSubmitForm = (data: ImplementationSchema) => {
+    alert(`Country: ${data.country}, State: ${data.state}`)
   }
 
   return (
     <div>
       <h1>Implementation</h1>
       <Form {...implementationForm}>
-        <form onSubmit={implementationForm.handleSubmit(handleSubmit)}>
+        <form onSubmit={implementationForm.handleSubmit(handleSubmitForm)}>
           <FormField
             control={implementationForm.control}
             name="country"
@@ -56,12 +51,15 @@ const Page = () => {
                 <FormLabel>Country</FormLabel>
                 <FormControl>
                   <CountrySelector
+                    {...implementationForm.register('country')}
                     className="mt-2"
                     country={implementationForm.watch('country')}
-                    onSelectCountry={onSelectCountry}
+                    onSelectCountry={field.field.onChange}
                     {...field.field}
+                    ref={field.field.ref}
                   />
                 </FormControl>
+                <FormMessage></FormMessage>
               </FormItem>
             )}
           ></FormField>
@@ -74,12 +72,13 @@ const Page = () => {
                 <FormLabel>State</FormLabel>
                 <FormControl>
                   <StateSelector
-                    onSelectState={onSelectState}
-                    country={implementationForm.getValues('country')}
+                    country={implementationForm.watch('country')}
                     state={field.field.value}
+                    onSelectState={field.field.onChange}
                     {...field.field}
                   />
                 </FormControl>
+                <FormMessage/>
               </FormItem>
             )}
           ></FormField>

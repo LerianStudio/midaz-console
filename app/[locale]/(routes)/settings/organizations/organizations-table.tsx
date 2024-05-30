@@ -22,9 +22,7 @@ const OrganizationsTable = () => {
 
   const handleOpenViewSheet = (organizationData: OrganizationEntity) => {}
 
-  const handleOpenDeleteSheet = (organizationData: OrganizationEntity) => {
-  
-  }
+  const handleOpenDeleteSheet = (organizationData: OrganizationEntity) => {}
 
   const organizationsColumns = getOrganizationsColumns(
     {

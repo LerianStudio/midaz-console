@@ -24,7 +24,7 @@ const customToast = (message: string, icon: JSX.Element, bgColor: string) => {
       </div>
     ),
     {
-      duration: 99999
+      duration: 3000
     }
   )
 }

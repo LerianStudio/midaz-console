@@ -38,16 +38,15 @@ const Page = ({ params }: { params: { id: string } }) => {
   ]
 
   const handleOnSubmit = async (values: OrganizationEntity) => {
-    try{
+    try {
       await updateOrganization(organizationId, values)
       showSuccess('Organization updated successfully')
-      router.replace(`/${intlBasePath}/settings?tab=organizations`)
-    }catch (error) {
+      router.push(`/${intlBasePath}/settings?tab=organizations`)
+    } catch (error) {
       console.log('Error updating organization', error)
       showError('Error updating organization')
       return
     }
-    
   }
 
   return (
