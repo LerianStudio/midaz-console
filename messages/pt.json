@@ -176,12 +176,19 @@
         "subtitle": "Visualize e edite os Ledgers da sua Organização.",
         "columnsTable": {
             "name": "Nome do Ledger",
+            "tooltipCopyText": "Toque para copiar",
             "instruments": "Instruments",
+            "instrumentsAdd": "Adicionar",
             "metadata": "Metadata",
             "actions": "Ações",
             "status": "Status",
             "edit": "Editar",
-            "delete": "Deletar"
+            "delete": "Deletar",
+            "actionsText": {
+                "edit": "Editar",
+                "inactivate": "Inativar",
+                "delete": "Deletar"
+            }
         },
         "sheetCreate": {
             "title": "Novo Ledger",
