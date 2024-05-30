@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { useTranslations } from 'next-intl'
 import { getLedgersFormFields } from '@/app/[locale]/(routes)/ledgers/ledgers-form-fields'
 import { getLedgersColumns } from '@/app/[locale]/(routes)/ledgers/ledgers-columns'
@@ -7,24 +8,28 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { formSchema } from '@/app/[locale]/(routes)/ledgers/ledgers-form-schema'
 import { DataTable } from '@/components/DataTable'
 import { NoResource } from '@/components/NoResource'
-import { DialogDemo } from '@/components/Dialog'
-import { SheetDemo } from '@/components/Sheet'
 import { LedgerEntity } from '@/core/domain/entities/LedgerEntity'
-import { PageHeader } from '@/components/PageHeader'
 import { useSheetMode } from '@/hooks/ledgers/useSheetMode'
 import { useDeleteLedger } from '@/hooks/ledgers/useDeleteLedger'
 import { useCreateLedger } from '@/hooks/ledgers/useCreateLedger'
 import { v4 as uuidv4 } from 'uuid'
 import { useEnhancedLedgers } from '@/hooks/ledgers/useEnhancedLedgers'
-import React from 'react'
+import { PageHeader } from '@/components/PageHeader'
+import { Dialog } from '@/components/Dialog'
+import { Sheet } from '@/components/Sheet'
+import {
+  getHelperTriggerTranslate,
+  getListingTemplateTranslate,
+  getSheetInfo
+} from '@/helpers/ledgers/ledgersHelpers'
 import { useLedgers } from '@/utils/queries'
 
 const LedgersView = () => {
   const t = useTranslations('ledgers')
   const formFields: any = getLedgersFormFields(t)
   const ledgers = useLedgers()
-  const createLedgerData = useCreateLedger()
   const enhancedLedgers = useEnhancedLedgers()
+  const createLedgerData = useCreateLedger()
 
   const {
     sheetMode,
@@ -49,32 +54,6 @@ const LedgersView = () => {
     t
   )
 
-  const getSheetInfo = (
-    mode: string,
-    ledgerData: LedgerEntity | null,
-    t: any
-  ) => {
-    const info = {
-      create: {
-        title: t('sheetCreate.title'),
-        description: t('sheetCreate.description'),
-        buttonText: t('sheetCreate.button')
-      },
-      edit: {
-        title: `${t('sheetEdit.title')} ${ledgerData?.name}`,
-        description: t('sheetEdit.description'),
-        buttonText: t('sheetEdit.button')
-      },
-      view: {
-        title: `${t('sheetView.title')} ${ledgerData?.name}`,
-        description: t('sheetView.description'),
-        buttonText: t('sheetView.button')
-      }
-    }
-
-    return info[mode as keyof typeof info]
-  }
-
   const sheetInfo = getSheetInfo(sheetMode.mode, sheetMode.ledgersData, t)
 
   const getLoadingSkeleton = () => {
@@ -89,7 +68,6 @@ const LedgersView = () => {
   const defaultLedgerSchema: any = {
     id: uuidv4(),
     organizationId: 'cc15194a-6bc9-4ebb-b15d-43411a54ba4b',
-    instruments: null,
     status: {
       code: 'ACTIVE',
       description: null
@@ -105,81 +83,75 @@ const LedgersView = () => {
     if (sheetMode.mode === 'create') {
       await createLedgerData(mergedValues)
     }
+
+    console.log(mergedValues)
   }
 
-  const getHelperTriggerTranslate = (t: any) => ({
-    question: t('helperTrigger.question'),
-    answer: t('helperTrigger.answer'),
-    seeMore: t('helperTrigger.seeMore')
-  })
-
-  const getListingTemplateTranslate = (t: any) => ({
-    configureButton: t('listingTemplate.configureButton'),
-    addButton: t('listingTemplate.addButton')
-  })
+  const sheetProps = React.useMemo(
+    () => ({
+      open: sheetMode.isOpen,
+      setOpen: (isOpen: boolean) => setSheetMode({ ...sheetMode, isOpen }),
+      fields: formFields,
+      formSchema: formSchema,
+      sheetInfo: sheetInfo,
+      onSubmit: handleSubmit,
+      mode: sheetMode.mode,
+      data: sheetMode.ledgersData
+    }),
+    [sheetMode, formFields, formSchema, sheetInfo, handleSubmit]
+  )
 
   const getLedgersComponents = () => {
+    if (enhancedLedgers.isLoading) {
+      return getLoadingSkeleton()
+    }
+
     return (
       <div>
-        {ledgers.data && ledgers.data.length > 0 && (
+        {ledgers.data && ledgers.data.length > 0 ? (
           <DataTable columns={ledgersColumns} data={enhancedLedgers.data} />
+        ) : (
+          <NoResource
+            resourceName="Ledger"
+            onClick={handleOpenCreateSheet}
+            pronoun="she"
+          />
         )}
 
-        {!ledgers.data ||
-          (ledgers.data.length === 0 && (
-            <NoResource
-              resourceName="Ledger"
-              onClick={handleOpenCreateSheet}
-              pronoun="she"
+        <Dialog.Root open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <Dialog.Content>
+            <Dialog.Header ledgerName={currentLedgerForDeletion?.name || ''} />
+            <Dialog.Footer
+              onDismiss={() => setIsDialogOpen(false)}
+              onDelete={handleConfirmDeleteLedger}
             />
-          ))}
+          </Dialog.Content>
+        </Dialog.Root>
 
-        <DialogDemo
-          open={isDialogOpen}
-          setOpen={() => setIsDialogOpen(false)}
-          title={t('dialog.title')}
-          subtitle={t('dialog.subtitle')}
-          deleteButtonText={t('dialog.deleteBtnText')}
-          doingBusinessAs={currentLedgerForDeletion?.name}
-          onDelete={handleConfirmDeleteLedger}
-        />
-
-        <SheetDemo
-          open={sheetMode.isOpen}
-          setOpen={(isOpen) => setSheetMode({ ...sheetMode, isOpen })}
-          mode={sheetMode.mode}
-          fields={formFields}
-          formSchema={formSchema}
-          title={sheetInfo.title}
-          description={sheetInfo.description}
-          buttonText={sheetInfo.buttonText}
-          data={sheetMode.ledgersData}
-          onSubmit={handleSubmit}
-        />
+        <Sheet {...sheetProps} />
       </div>
     )
   }
 
   return (
-    <div>
-      <div className="mt-12">
-        <PageHeader
-          title={t('title')}
-          subtitle={t('subtitle')}
-          hasInfo={true}
-          type="listing"
+    <React.Fragment>
+      <PageHeader.Root>
+        <PageHeader.Wrapper>
+          <PageHeader.InfoTitle title={t('title')} subtitle={t('subtitle')} />
+          <PageHeader.ActionButtons
+            type="listing"
+            listingTemplateTranslate={getListingTemplateTranslate(t)}
+            helperTriggerTranslate={getHelperTriggerTranslate(t)}
+            onCreate={handleOpenCreateSheet}
+          />
+        </PageHeader.Wrapper>
+        <PageHeader.CollapsibleInfo
           helperTriggerTranslate={getHelperTriggerTranslate(t)}
-          listingTemplateTranslate={getListingTemplateTranslate(t)}
-          onCreate={handleOpenCreateSheet}
         />
-      </div>
+      </PageHeader.Root>
 
-      <div className="mt-10">
-        {ledgers.isLoading || ledgers.data === undefined
-          ? getLoadingSkeleton()
-          : getLedgersComponents()}
-      </div>
-    </div>
+      <div className="mt-10">{getLedgersComponents()}</div>
+    </React.Fragment>
   )
 }
 

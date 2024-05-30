@@ -15,7 +15,7 @@ export const TotalAmountCard = ({
   data: any
 }) =>
   isLoading ? (
-    <div className="flex flex-1 flex-col gap-5">
+    <div className="flex flex-1 flex-col gap-6">
       <Skeleton className="h-[134px] bg-zinc-200" />
       <Skeleton className="h-[134px] bg-zinc-200" />
       <Skeleton className="h-[134px] bg-zinc-200" />

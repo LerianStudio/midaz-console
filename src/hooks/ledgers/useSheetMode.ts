@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { LedgerEntity } from '@/domain/entities/LedgerEntity'
+import { LedgerEntity } from '@/core/domain/entities/LedgerEntity'
 
 type SheetModeState = {
   isOpen: boolean

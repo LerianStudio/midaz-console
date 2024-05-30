@@ -6,7 +6,7 @@ import { Card } from '@/components/Card'
 import { PageHeader } from '@/components/PageHeader'
 import { TabsComponent } from '@/components/Tabs'
 import { useFormState } from '@/context/LedgerDetailsContext'
-import { LedgerEntity } from '@/domain/entities/LedgerEntity'
+import { LedgerEntity } from '@/core/domain/entities/LedgerEntity'
 import useCustomToast from '@/hooks/useCustomToast'
 import {
   useChartsTotalAmount,
@@ -17,15 +17,7 @@ import { useEffect, useRef, useState } from 'react'
 import { TransactionCard } from './transaction-card'
 import { TransactionStatusCard } from './transaction-status-card'
 import { TotalAmountCard } from './total-amount-card'
-
-type Metadata = {
-  key: string
-  value: string
-}
-
-type SubmitFormResponse = {
-  metadata: Metadata[]
-}
+import { MetadataItem, MetadataValues } from '@/types/MetadataType'
 
 type LedgerDetailsViewProps = {
   data: LedgerEntity
@@ -56,7 +48,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
   }, [isDirty])
 
   const metadataFormRef = useRef<{
-    submitForm: () => Promise<SubmitFormResponse>
+    submitForm: () => Promise<MetadataValues>
   }>(null)
 
   const breadcrumbPaths: BreadcrumbPath[] = [
@@ -67,7 +59,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
   const tabs = [{ id: 1, value: 'overview', name: 'Visão Geral' }]
 
   const handleGlobalSubmit = async () => {
-    let metadataValues: SubmitFormResponse = {
+    let metadataValues: MetadataValues = {
       metadata: []
     }
 
@@ -78,7 +70,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
     const dataToSubmit = {
       name: formData.name,
       metadata: metadataValues.metadata.reduce(
-        (acc: any, { key, value }: Metadata) => {
+        (acc: any, { key, value }: MetadataItem) => {
           acc[key] = value
           return acc
         },
@@ -101,13 +93,18 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
     <div className="pb-20">
       <BreadcrumbComponent paths={breadcrumbPaths} />
 
-      <div className="mt-12">
-        <PageHeader title={data.name} subtitle={data.id} type="entity" />
-      </div>
+      <PageHeader.Root>
+        <div className="flex justify-between">
+          <PageHeader.InfoTitle title={data.name} subtitle={data.id}>
+            <PageHeader.InfoTooltip subtitle={data.id} />
+          </PageHeader.InfoTitle>
+          <PageHeader.ActionButtons type="entity" />
+        </div>
+      </PageHeader.Root>
 
       <TabsComponent tabs={tabs}>
-        <div className="flex gap-5">
-          <div className="flex flex-1 flex-col gap-5">
+        <div className="flex gap-6">
+          <div className="flex flex-1 flex-col gap-6">
             <Card.Root>
               <Card.Header
                 title="Identificação"
@@ -118,18 +115,18 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
             </Card.Root>
 
             <Card.Root>
-              <Card.Header title="Metadados" className="text-lg" />
+              <Card.Header title="Metadados" className="text-lg capitalize" />
               <Card.Metadata data={data} ref={metadataFormRef} />
             </Card.Root>
 
-            <Card.Root>
+            <Card.Root className="py-4">
               <Card.Header title="Recursos" />
               <Card.Resources />
             </Card.Root>
           </div>
 
-          <div className="flex flex-1 gap-5">
-            <div className="flex flex-1 flex-col gap-5">
+          <div className="flex flex-1 gap-6">
+            <div className="flex flex-1 flex-col gap-6">
               <TransactionCard
                 isLoading={totalTransactions.isLoading}
                 count={totalTransactions?.data?.data[0]?.count}
@@ -141,7 +138,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
               />
             </div>
 
-            <div className="flex flex-1 flex-col gap-5">
+            <div className="flex flex-1 flex-col gap-6">
               <TotalAmountCard
                 isLoading={totalAmount.isLoading}
                 data={totalAmount?.data?.data}

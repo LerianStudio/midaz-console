@@ -1,6 +1,6 @@
-import LedgersUseCases from '@/useCases/LedgersUseCases'
+import LedgersUseCases from '@/core/useCases/LedgersUseCases'
 import { NextResponse } from 'next/server'
-import { container, Registry } from '@/infra/container-registry'
+import { container, Registry } from '@/core/infra/container-registry'
 
 const ledgersUseCases = container.get<LedgersUseCases>(Registry.LedgersUseCases)
 

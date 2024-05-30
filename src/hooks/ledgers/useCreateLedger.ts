@@ -2,7 +2,7 @@
 
 import { createLedger } from '@/client/ledgerClient'
 import useCustomToast from '@/hooks/useCustomToast'
-import { LedgerEntity } from '@/domain/entities/LedgerEntity'
+import { LedgerEntity } from '@/core/domain/entities/LedgerEntity'
 import { useTranslations } from 'next-intl'
 import { useEnhancedLedgers } from './useEnhancedLedgers'
 

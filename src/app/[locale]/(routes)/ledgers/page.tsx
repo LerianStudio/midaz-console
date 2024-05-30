@@ -1,6 +1,6 @@
 import LedgersView from '@/app/[locale]/(routes)/ledgers/ledgers-view'
 
-const Page = async () => {
+const Page = () => {
   return <LedgersView />
 }
 

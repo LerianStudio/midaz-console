@@ -11,6 +11,7 @@ import { Label } from '../ui/label/label'
 import { Input } from '../ui/input/input'
 import { Button } from '../ui/button/button'
 import { cn } from '@/lib/utils'
+import { MetadataItem } from '@/types/MetadataType'
 
 const formSchema = z.object({
   metadata: z.array(
@@ -21,6 +22,19 @@ const formSchema = z.object({
   )
 })
 
+const normalizeMetadata = (metadata: MetadataItem) => {
+  if (Array.isArray(metadata)) {
+    return metadata
+  } else if (typeof metadata === 'object' && metadata !== null) {
+    return Object.entries(metadata).map(([key, value]) => ({
+      key,
+      value: value?.toString()
+    }))
+  } else {
+    return []
+  }
+}
+
 export const CardMetadata = forwardRef(({ data }: any, ref) => {
   const { updateFormData, markAsDirty } = useFormState()
   const [newMetadata, setNewMetadata] = useState({ key: '', value: '' })
@@ -28,10 +42,7 @@ export const CardMetadata = forwardRef(({ data }: any, ref) => {
   const { control, handleSubmit, register, setValue, getValues } = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      metadata: Object.entries(data.metadata || {}).map(([key, value]) => ({
-        key,
-        value
-      }))
+      metadata: normalizeMetadata(data.metadata)
     }
   })
 
@@ -45,10 +56,13 @@ export const CardMetadata = forwardRef(({ data }: any, ref) => {
       return new Promise((resolve) => {
         handleSubmit((values) => {
           updateFormData({
-            metadata: values.metadata.reduce((acc: any, { key, value }) => {
-              acc[key] = value
-              return acc
-            }, {})
+            metadata: values.metadata.reduce(
+              (acc: any, { key, value }: { key: string; value: string }) => {
+                acc[key] = value
+                return acc
+              },
+              {}
+            )
           })
 
           resolve(values)
