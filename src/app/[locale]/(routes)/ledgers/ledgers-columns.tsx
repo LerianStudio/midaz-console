@@ -122,7 +122,7 @@ export const getLedgersColumns = (
       cell: ({ row }: ColumnRow) => {
         const metadata = row.original.metadata
 
-        if (metadata === null) {
+        if (metadata === null || metadata.length === 0) {
           return <Minus size={20} />
         }
 

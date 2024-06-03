@@ -1,6 +1,6 @@
 'use client'
 
-import { BottomSheet } from '@/components/BottomSheet'
+import { BottomDrawer } from '@/components/BottomDrawer'
 import { BreadcrumbComponent, BreadcrumbPath } from '@/components/Breadcrumb'
 import { Card } from '@/components/Card'
 import { PageHeader } from '@/components/PageHeader'
@@ -18,6 +18,7 @@ import { TransactionCard } from './transaction-card'
 import { TransactionStatusCard } from './transaction-status-card'
 import { TotalAmountCard } from './total-amount-card'
 import { MetadataItem, MetadataValues } from '@/types/MetadataType'
+import { cn } from '@/lib/utils'
 
 type LedgerDetailsViewProps = {
   data: LedgerEntity
@@ -90,11 +91,11 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
   }
 
   return (
-    <div className="pb-20">
+    <div className={cn('', isDirty && 'pb-40')}>
       <BreadcrumbComponent paths={breadcrumbPaths} />
 
       <PageHeader.Root>
-        <div className="flex justify-between">
+        <div className="flex justify-between border-b">
           <PageHeader.InfoTitle title={data.name} subtitle={data.id}>
             <PageHeader.InfoTooltip subtitle={data.id} />
           </PageHeader.InfoTitle>
@@ -149,7 +150,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
       </TabsComponent>
 
       {isDirty && (
-        <BottomSheet
+        <BottomDrawer
           isOpen={isSheetOpen}
           handleSubmit={handleGlobalSubmit}
           handleCancel={handleCancel}

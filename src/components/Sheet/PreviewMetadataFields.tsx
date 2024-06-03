@@ -21,11 +21,11 @@ export const PreviewMetadataFields = ({
     <div key={item.id} className="mt-2 flex items-center justify-between">
       <div className="flex w-full gap-5">
         <div className="flex flex-1 gap-2">
-          <div className="flex h-9 flex-1 items-center rounded-md bg-shadcn-100 px-2">
-            {item.key}
+          <div className="flex h-9 flex-1 items-center rounded-md bg-shadcn-100 px-3">
+            <span className="text-sm">{item.key}</span>
           </div>
-          <div className="flex h-9 flex-1 items-center rounded-md bg-shadcn-100 px-2">
-            {item.value}
+          <div className="flex h-9 flex-1 items-center rounded-md bg-shadcn-100 px-3">
+            <span className="text-sm">{item.value}</span>
           </div>
         </div>
         <Button

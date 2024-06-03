@@ -23,6 +23,7 @@ import {
   getSheetInfo
 } from '@/helpers/ledgers/ledgersHelpers'
 import { useLedgers } from '@/utils/queries'
+import useCustomToast from '@/hooks/useCustomToast'
 
 const LedgersView = () => {
   const t = useTranslations('ledgers')
@@ -78,6 +79,8 @@ const LedgersView = () => {
   }
 
   const handleSubmit = async (values: LedgerEntity) => {
+    console.log(values)
+
     const mergedValues = { ...defaultLedgerSchema, ...values }
 
     if (sheetMode.mode === 'create') {
@@ -114,7 +117,7 @@ const LedgersView = () => {
           <NoResource
             resourceName="Ledger"
             onClick={handleOpenCreateSheet}
-            pronoun="she"
+            pronoun="he"
           />
         )}
 

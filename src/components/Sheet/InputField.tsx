@@ -11,6 +11,8 @@ type InputFieldProps = {
 }
 
 export const InputField = ({ field, form, isViewMode }: InputFieldProps) => {
+  const { register } = form
+
   if (field.options) {
     return <SelectField field={field} form={form} />
   }
@@ -21,7 +23,7 @@ export const InputField = ({ field, form, isViewMode }: InputFieldProps) => {
       className="placeholder:text-shadcn-400"
       autoFocus={false}
       value={form.getValues(field.name) ?? ''}
-      onChange={(e) => form.setValue(field.name, e.target.value)}
+      {...register(field.name)}
     />
   )
 }

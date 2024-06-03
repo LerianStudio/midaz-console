@@ -1,7 +1,8 @@
 import { Button } from '@/components/ui/button/button'
-import NoResourceLogo from '../../public/images/no-resource.png'
+import NoResourceImage from '../../public/images/no-resource.png'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
+import { Plus } from 'lucide-react'
 
 type Props = {
   resourceName: string
@@ -28,33 +29,36 @@ export const NoResource = ({ resourceName, onClick, pronoun }: Props) => {
     }
   }
 
-  const { possessive, object } = pronounTexts[pronoun] || pronounTexts['he']
+  const { object } = pronounTexts[pronoun] || pronounTexts['he']
 
   return (
-    <div className="flex flex-1 items-center justify-center">
-      <div className="flex w-full max-w-[455px] flex-col items-center justify-center gap-4">
-        <Image src={NoResourceLogo} alt="" />
-        <h1 className="text-3xl">
-          {t('texts.create')} {possessive} {resourceName}
-        </h1>
-        <div className="flex w-full justify-center">
-          <div className="w-full max-w-[260px]">
-            <p className="text-center text-xl">
-              {t('texts.hasNoResource')} {object} {resourceName.toLowerCase()}.{' '}
-              <br />
-              {t('texts.create')} {possessive} {resourceName.toLowerCase()}{' '}
-              {t('texts.clickBtnBelow')}.
+    <div className="flex flex-1 flex-col items-center justify-center rounded-lg bg-white shadow-dataTable">
+      <div className="flex w-full flex-col items-center justify-center gap-4 p-6">
+        <div className="flex flex-col items-center gap-6">
+          <Image src={NoResourceImage} alt="No Resource" />
+          <div className="flex w-fit justify-center">
+            <p className="text-center text-sm font-medium text-shadcn-400">
+              {t('texts.hasNoResource')} {object}{' '}
+              {resourceName[0].toUpperCase() + resourceName.substring(1)}.{' '}
             </p>
           </div>
         </div>
         <div className="flex">
           <Button
-            className="w-fit rounded bg-sunglow-400 p-6 text-[18px] font-semibold text-black hover:bg-sunglow-400/60"
+            variant="outline"
+            size="default"
+            className="w-fit rounded-lg border-shadcn-300 text-[#52525b]"
             onClick={onClick}
+            icon={<Plus className="text-[#52525B]" />}
           >
             {t('texts.createBtn')} {resourceName}
           </Button>
         </div>
+      </div>
+      <div className="w-full border-t px-6 py-5">
+        <p className="text-sm font-normal italic text-shadcn-400">
+          Nenhum ledger encontrado.
+        </p>
       </div>
     </div>
   )

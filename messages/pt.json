@@ -75,7 +75,7 @@
   "emptyState": {
     "texts": {
       "create": "Crie",
-      "hasNoResource": "Parece que você ainda não possui",
+      "hasNoResource": "Você ainda não criou",
       "clickBtnBelow": "clicando no botão abaixo",
       "createBtn": "Criar"
     },
@@ -178,9 +178,9 @@
     "columnsTable": {
       "name": "Nome do Ledger",
       "tooltipCopyText": "Toque para copiar",
-      "instruments": "Instruments",
+      "instruments": "Instrumentos",
       "instrumentsAdd": "Adicionar",
-      "metadata": "Metadata",
+      "metadata": "Metadados",
       "actions": "Ações",
       "status": "Status",
       "edit": "Editar",
