@@ -25,6 +25,7 @@ import { Label } from '../ui/label/label'
 import { Switch } from '../ui/switch'
 import { MetadataFields } from './MetadataFields'
 import { PreviewMetadataFields } from './PreviewMetadataFields'
+import { cn } from '@/lib/utils'
 
 export const Sheet = ({
   open,
@@ -59,16 +60,23 @@ export const Sheet = ({
 
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: getDefaultValues(isEditMode, isViewMode, data, fields)
+    defaultValues: {
+      name: '',
+      metadata: [],
+      ...getDefaultValues(isEditMode, isViewMode, data, fields)
+    }
   })
 
-  const { control } = form
+  const { control, formState } = form
+  const { isValid, isDirty } = formState
+
+  console.log(isValid, isDirty)
 
   const {
     fields: metaFields,
     append,
     remove
-  } = useFieldArray({
+  } = useFieldArray<any>({
     control,
     name: 'metadata'
   })
@@ -94,7 +102,7 @@ export const Sheet = ({
   return (
     <BaseSheet open={open} onOpenChange={setOpen}>
       <SheetContent
-        className="max-h-screen w-2/5 overflow-x-auto"
+        className="flex max-h-screen w-2/5 flex-col justify-between overflow-x-auto px-8 pb-0"
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
         <SheetHeader>
@@ -115,8 +123,11 @@ export const Sheet = ({
           </SheetDescription>
         </SheetHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="mt-5 grid gap-8 py-4">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-grow flex-col"
+          >
+            <div className="mt-5 grid gap-8">
               {fields.map((field) => (
                 <RenderField
                   key={field.name}
@@ -150,13 +161,22 @@ export const Sheet = ({
                     />
                   </React.Fragment>
                 )}
+
+                <p className="text-xs font-normal italic text-shadcn-400">
+                  (*) campos obrigatórios.
+                </p>
               </div>
             </div>
-            <SheetFooter>
+            <SheetFooter className="mt-auto flex justify-center py-8 pt-20">
               <SheetClose asChild>
                 <Button
+                  size="lg"
                   type={isViewMode ? 'button' : 'submit'}
-                  className="mt-5 bg-shadcn-600 text-white hover:bg-shadcn-600/70"
+                  className={cn(
+                    'w-full bg-shadcn-600 text-white hover:bg-shadcn-600/70',
+                    !(isDirty && isValid) && 'bg-shadcn-200 text-shadcn-600'
+                  )}
+                  disabled={!(isDirty && isValid)}
                 >
                   {sheetInfo.buttonText}
                 </Button>

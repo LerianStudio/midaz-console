@@ -1,13 +1,13 @@
-import { OrganizationsData } from '@/domain/entities/OrganizationSwitcherEntity'
-import LerianLogo from '/public/svg/brand-lerian-symbol.svg'
+import { OrganizationsData } from '@/core/domain/entities/OrganizationSwitcherEntity'
+import MidazLogo from '/public/svg/brand-midaz.svg'
 
 export const getOrganizationData = (): OrganizationsData[] => {
   return [
     {
       id: 1,
-      name: 'Lerian 1',
-      image: LerianLogo,
-      alt: 'Lerian Logo'
+      name: 'Midaz 1',
+      image: MidazLogo,
+      alt: 'Midaz Logo'
     }
   ]
 }

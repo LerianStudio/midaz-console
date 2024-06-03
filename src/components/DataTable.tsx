@@ -105,7 +105,7 @@ export function DataTable<TData, TValue>({
         ) : null}
       </div>
 
-      <div className="mt-6 rounded-lg bg-white shadow-dataTable">
+      <div className="mt-4 rounded-lg bg-white shadow-dataTable">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -174,9 +174,16 @@ export function DataTable<TData, TValue>({
         <div className="flex items-center justify-between px-6 py-3">
           <div>
             <p className="text-sm font-normal italic text-shadcn-400">
-              Mostrando {table.getFilteredRowModel().rows.length} de{' '}
-              {table.getFilteredRowModel().rows.length} de um total de{' '}
-              {data.length} Ledgers.
+              Mostrando{' '}
+              <span className="font-bold">
+                {table.getFilteredRowModel().rows.length}
+              </span>{' '}
+              de{' '}
+              <span className="font-bold">
+                {table.getFilteredRowModel().rows.length}
+              </span>{' '}
+              de um total de <span className="font-bold">{data.length}</span>{' '}
+              Ledgers.
             </p>
           </div>
 

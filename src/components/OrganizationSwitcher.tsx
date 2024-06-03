@@ -16,7 +16,7 @@ import {
   PopoverContentComponentProps,
   StatusIndicatorProps,
   SwitcherTriggerProps
-} from '@/domain/entities/OrganizationSwitcherEntity'
+} from '@/core/domain/entities/OrganizationSwitcherEntity'
 import { useTranslations } from 'next-intl'
 
 const OrganizationLink = ({

@@ -75,7 +75,7 @@
   "emptyState": {
     "texts": {
       "create": "Create",
-      "hasNoResource": "It seems that you don't have any yet",
+      "hasNoResource": "You don't have any yet",
       "clickBtnBelow": "by clicking the button below",
       "createBtn": "Create"
     },
@@ -180,7 +180,7 @@
       "tooltipCopyText": "Click to copy",
       "instruments": "Instruments",
       "instrumentsAdd": "Add",
-      "metadata": "Metadata",
+      "metadata": "Metadatas",
       "actions": "Actions",
       "status": "Status",
       "edit": "Edit",

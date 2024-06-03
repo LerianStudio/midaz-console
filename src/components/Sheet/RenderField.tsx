@@ -25,6 +25,8 @@ export const RenderField = ({
 }: RenderFieldProps) => {
   if (isCreateMode && field.name === 'id') return null
 
+  console.log(field)
+
   return (
     <FormField
       key={field.name}
@@ -34,7 +36,7 @@ export const RenderField = ({
         <FormItem>
           <div className="flex flex-col gap-2">
             <FormLabel className="text-sm font-semibold text-[#52525b]">
-              {field.label}
+              {field.label} {field.isRequired && <span>*</span>}
             </FormLabel>
             <FormControl>
               <InputField field={field} form={form} isViewMode={isViewMode} />
