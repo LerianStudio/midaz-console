@@ -1,7 +1,7 @@
 // components/CountrySelect.tsx
 import React from 'react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { getCountries } from '@/utils/CountryUtils'
+import { getCountries, getCountryByNameOrCode } from '@/utils/CountryUtils'
 import { SelectFieldProps } from '@/components/Sheet/SelectField'
 import { cn } from '@/lib/utils'
 import { useFormField } from '@/components/ui/form'
@@ -17,7 +17,7 @@ export const CountrySelect = ({ field, form, className }: CountrySelectProps) =>
   return (
     <Select onValueChange={(value) => form.setValue(field.name, value)}>
       <SelectTrigger id={formItemId} className={cn(className)}>
-        <SelectValue placeholder={form.getValues(field.name) || field.placeholder} />
+        <SelectValue placeholder={getCountryByNameOrCode(form.getValues(field.name)).name || field.placeholder} />
       </SelectTrigger>
       <SelectContent>
         {getCountries().map((country) => (

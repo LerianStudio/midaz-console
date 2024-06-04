@@ -29,8 +29,6 @@ export const RenderField = ({
 }: RenderFieldProps) => {
   if (isCreateMode && field.name === 'id') return null
 
-  console.log(field)
-
   return (
     <FormField
       key={field.name}

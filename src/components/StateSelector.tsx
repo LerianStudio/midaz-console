@@ -1,5 +1,5 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { getStateCountry, StateType } from '@/utils/CountryUtils'
+import { getCountryByNameOrCode, getStateByCodeOrName, getStateCountry, StateType } from '@/utils/CountryUtils'
 import React, { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { SelectFieldProps } from '@/components/Sheet/SelectField'
@@ -23,13 +23,19 @@ const StateSelector = ({
   
   useEffect(() => {
     setStates(getStateCountry(country))
-    form.setValue(field.name, "")
+    
+    const stateByCountry = getStateCountry(country).find((state) => state.code === form.getValues(field.name))
+    
+    if(!stateByCountry){
+      form.setValue(field.name, "")
+    }
+    
   }, [country])
   
   return (
     <Select disabled={states.length === 0} onValueChange={(value) => form.setValue(field.name, value)}>
       <SelectTrigger id={formItemId} className={cn(className)}>
-        <SelectValue placeholder={field.placeholder} />
+        <SelectValue placeholder={getStateByCodeOrName(states, form.getValues(field.name)).name || field.placeholder} />
       </SelectTrigger>
       <SelectContent>
         {states.map((state) => {
