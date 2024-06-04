@@ -1,5 +1,5 @@
-import { InstrumentsEntity } from '@/domain/entities/InstrumentsEntity'
-import { InstrumentsRepository } from '@/repositories/InstrumentsRepository'
+import { InstrumentsEntity } from '@/core/domain/entities/InstrumentsEntity'
+import { InstrumentsRepository } from '@/core/repositories/InstrumentsRepository'
 import * as process from 'node:process'
 
 export class InstrumentsAPIAdapter implements InstrumentsRepository {

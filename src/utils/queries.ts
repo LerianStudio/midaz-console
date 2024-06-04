@@ -1,19 +1,11 @@
 import { getLedgerById, getLedgers } from '@/client/ledgerClient'
 import { useQuery } from '@tanstack/react-query'
-import { getDivisions } from '@/client/divisionsClient'
 import { getInstruments } from '@/client/instrumentsClient'
 import {
   getChartsTotalAmount,
   getChartsTotalTransactions,
   getChartsTransactionsByStatus
 } from '@/client/chartsClient'
-
-export const useDivisions = () => {
-  return useQuery({
-    queryKey: ['divisions'],
-    queryFn: getDivisions
-  })
-}
 
 export const useLedgers = () => {
   return useQuery({

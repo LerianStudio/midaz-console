@@ -18,7 +18,7 @@ export const BottomDrawer = ({
   return (
     <div
       className={cn(
-        'shadow-drawer fixed inset-x-0 bottom-0 z-50 ml-[136px] mr-16 transform rounded-t-2xl bg-white transition-transform',
+        'fixed inset-x-0 bottom-0 z-50 ml-[136px] mr-16 transform rounded-t-2xl bg-white shadow-drawer transition-transform',
         isOpen ? 'translate-y-0' : 'translate-y-full',
         !isCollapsed && 'ml-[315px]',
         'duration-300 ease-in-out'
