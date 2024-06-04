@@ -46,7 +46,7 @@ const OrganizationsTable = () => {
             <div className="flex w-full justify-between">
               <div>
                 <h1 className="text-xl font-normal">{t('title')}</h1>
-                <p className="text-md text-base-400">{t('subtitle')}</p>
+                <p className="text-sm font-medium text-zinc-400">{t('subtitle')}</p>
               </div>
 
               <Button

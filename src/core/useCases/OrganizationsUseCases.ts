@@ -13,7 +13,7 @@ type IOrganizationsUseCases = {
   ) => Promise<void>
   updateOrganizationUseCases: (
     id: string,
-    organization: Partial<OrganizationEntity>
+    organization: OrganizationsType
   ) => Promise<void>
 }
 
@@ -60,12 +60,14 @@ class OrganizationsUseCases implements IOrganizationsUseCases {
   
   async updateOrganizationUseCases(
     id: string,
-    organization: Partial<OrganizationEntity>
+    organization: OrganizationsType
   ) {
-    delete organization.id
-    delete organization.legalDocument
+    const organizationEntity: OrganizationEntity = this.castOrganizationToEntity(organization)
     
-    return await this.organizationRepository.update(id, organization)
+    delete organizationEntity.id;
+    delete (organizationEntity as {legalDocument?: string}).legalDocument;
+    
+    return await this.organizationRepository.update(id, organizationEntity)
   }
   
   private castOrganizationToEntity(organization: OrganizationsType) {

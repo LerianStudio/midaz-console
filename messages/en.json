@@ -165,7 +165,7 @@
   },
     "organizations": {
         "title": "Settings",
-        "subtitle": "Visualize and edit Organizations.",
+        "subtitle": "View and manage Organizations.",
         "columnsTable": {
             "name": "Organization Name",
             "legalName": "Legal Name",

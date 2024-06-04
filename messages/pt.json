@@ -156,7 +156,7 @@
     },
     "organizations": {
         "title": "Configurações",
-        "subtitle": "Visualize e edite as Organizações.",
+        "subtitle": "Visualize e gerencie as Organizações.",
         "columnsTable": {
             "name": "Nome da Organização",
             "legalName": "Nome Legal",

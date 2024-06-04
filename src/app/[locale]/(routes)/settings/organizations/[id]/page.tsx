@@ -1,11 +1,10 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import useCustomToast from '@/hooks/useCustomToast'
 import { BreadcrumbComponent, BreadcrumbPath } from '@/components/Breadcrumb'
 import { OrganizationsType } from '@/types/OrganizationsType'
-import { cn } from '@/lib/utils'
 import OrganizationsView from '@/app/[locale]/(routes)/settings/organizations/organizations-view'
 import { FormDetailsProvider } from '@/context/FormDetailsContext'
 import { useOrganizationById } from '@/utils/queries'
@@ -16,6 +15,8 @@ const Page = ({ params }: { params: { id: string } }) => {
   const router = useRouter()
   const t = useTranslations('organizations.organizationView')
   const organizationId: string = params.id
+  const pathname = usePathname()
+  const intlBasePath = pathname.split('/').filter(Boolean)[0]
   const organization = useOrganizationById(organizationId)
   
   const { showSuccess, showError } = useCustomToast()
@@ -41,7 +42,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     try {
       await updateOrganization(organizationId, values)
       showSuccess('Organization updated successfully')
-      router.push(`/settings?tab=organizations`)
+      router.replace(`/${intlBasePath}/settings?tab=organizations`)
     } catch (error) {
       console.log('Error updating organization', error)
       showError('Error updating organization')
