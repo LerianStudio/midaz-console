@@ -1,6 +1,6 @@
-import { OrganizationEntity } from '@/domain/entities/OrganizationEntity'
-import { BaseRepository } from '@/repositories/BaseRepository'
 import process from 'node:process'
+import { OrganizationEntity } from '@/core/domain/entities/OrganizationEntity'
+import { BaseRepository } from '@/core/repositories/BaseRepository'
 
 interface IOrganizationRepository extends BaseRepository<OrganizationEntity> {}
 
@@ -17,6 +17,7 @@ class OrganizationRepository implements IOrganizationRepository {
     })
 
     if (!response.ok) {
+      console.log('Error creating organization', response)
       throw new Error(`Failed to create organizations`)
     }
 
@@ -52,7 +53,7 @@ class OrganizationRepository implements IOrganizationRepository {
     return response.json()
   }
 
-  async update(id: string, data: OrganizationEntity): Promise<void> {
+  async update(id: string, data: Partial<OrganizationEntity>): Promise<void> {
     const response = await fetch(`${this.baseUrl}/${id}`, {
       method: 'PATCH',
       headers: {

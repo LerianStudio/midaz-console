@@ -1,76 +1,47 @@
-import {
-  CountryType,
-  getCountries,
-  getStateByCodeOrName,
-  getStateCountry,
-  StateType
-} from '@/utils/CountryUtils'
-import { useEffect, useMemo, useState } from 'react'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { getStateCountry, StateType } from '@/utils/CountryUtils'
+import React, { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
-import { SelectItemText } from '@radix-ui/react-select'
-import { useTranslations } from 'next-intl'
+import { SelectFieldProps } from '@/components/Sheet/SelectField'
+import { useFormField } from '@/components/ui/form'
 
 type StateSelectorProps = {
   country: string
-  isDisabled?: boolean
-  state?: string
-  onSelectState: (stateCode: string) => void
   className?: string
-}
+} & SelectFieldProps
+
+
 
 const StateSelector = ({
+  field,
+  form,
   country,
-  state,
-  onSelectState,
   className
 }: StateSelectorProps) => {
-  const t = useTranslations('Select')
-  const stateList = useMemo(() => getStateCountry(country), [country])
-  const [value, setValue] = useState<string>(
-    getStateByCodeOrName(stateList, state || '').name
-  )
-
+  const { formItemId } = useFormField()
+  const [states, setStates] = useState<StateType[]>(getStateCountry(country))
+  
   useEffect(() => {
-    onSelectState(value)
-  }, [value])
-
-  useEffect(() => {
-    setValue(
-      (stateList.length > 0 &&
-        stateList.find(
-          (stateItem) => stateItem.name === state || stateItem.code === state
-        )?.name) ||
-        ''
-    )
+    setStates(getStateCountry(country))
+    form.setValue(field.name, "")
   }, [country])
-
+  
   return (
-    <div>
-      <Select name="StateSelector" onValueChange={setValue} value={value}>
-        <SelectTrigger
-          disabled={stateList && stateList.length === 0}
-          className={cn(className)}
-        >
-          <SelectValue placeholder={t('placeholder')}>{value}</SelectValue>
-        </SelectTrigger>
-
-        <SelectContent>
-          {stateList.map((state, index) => (
-            <SelectItem key={state.code} value={state.name} asChild={false}>
-              {state.name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
+    <Select disabled={states.length === 0} onValueChange={(value) => form.setValue(field.name, value)}>
+      <SelectTrigger id={formItemId} className={cn(className)}>
+        <SelectValue placeholder={field.placeholder} />
+      </SelectTrigger>
+      <SelectContent>
+        {states.map((state) => {
+          return(
+          <SelectItem key={state.code} value={state.code} className="select-item">
+            {state.name}
+          </SelectItem>
+        )})}
+      </SelectContent>
+    </Select>
   )
+
 }
 
 export default StateSelector

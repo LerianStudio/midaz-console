@@ -270,12 +270,12 @@
         },
         "organizationView": {
             "newOrganization": {
-                "title": "Organization",
-                "description": "Below are listed the data of your Organization.",
+                "title": "New Organization",
+                "description": "Fill in the details of the Organization you wish to create.",
                 "button": "Create Organization"
             },
             "editOrganization": {
-                "description": "Edit as desired and then click “Save”.",
+                "description": "View and edit the Organization fields.",
                 "button": "Save"
             },
             "avatarDialog": {
@@ -306,6 +306,7 @@
                 "country": "Country",
                 "state": "State",
                 "city": "City",
+                "neighborhood": "Neighborhood",
                 "zipCode": "ZIP Code",
                 "parentOrganization": "Parent Organization",
                 "avatar": "Avatar",
@@ -333,5 +334,9 @@
     },
     "Select": {
         "placeholder": "Select..."
+    },
+    "metadata": {
+        "key": "Key",
+        "value": "Value"
     }
 }

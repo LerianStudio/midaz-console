@@ -4,6 +4,7 @@ import { ReactNode } from 'react'
 type InfoTitleProps = {
   title: string
   subtitle?: string
+  subtitleCopyToClipboard?: boolean
   className?: string
   children?: ReactNode
 }

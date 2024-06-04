@@ -5,7 +5,7 @@ export type FormFieldConfig = {
   label: string
   placeholder?: string
   description?: string
-  options: []
+  options?: any[]
 }
 
 type SheetInfo = {

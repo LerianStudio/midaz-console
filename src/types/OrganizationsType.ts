@@ -5,7 +5,9 @@ type OrganizationType = {
   doingBusinessAs?: string
   legalDocument: string
   address: Address
-  metadata: Record<string, any>
+  metadata?: Record<string, any>
+  organizationAccentColor?: string
+  organizationAvatar?: string
   status: OrganizationStatus
 }
 

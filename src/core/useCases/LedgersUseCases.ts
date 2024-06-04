@@ -1,5 +1,6 @@
-import { LedgerEntity } from '@/domain/entities/LedgerEntity'
-import { LedgerRepository } from '@/repositories/LedgerRepository'
+import { LedgerEntity } from '@/core/domain/entities/LedgerEntity'
+import { LedgerRepository } from '@/core/repositories/LedgerRepository'
+
 
 type ILedgerssUseCases = {
   listLedgersUseCases: () => Promise<LedgerEntity[]>

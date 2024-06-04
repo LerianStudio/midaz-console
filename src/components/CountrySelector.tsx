@@ -1,66 +1,33 @@
-import { getCountries, getCountryByNameOrCode } from '@/utils/CountryUtils'
-import * as React from 'react'
-import { useEffect, useMemo, useState } from 'react'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
+// components/CountrySelect.tsx
+import React from 'react'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { getCountries } from '@/utils/CountryUtils'
+import { SelectFieldProps } from '@/components/Sheet/SelectField'
 import { cn } from '@/lib/utils'
-import { useTranslations } from 'next-intl'
+import { useFormField } from '@/components/ui/form'
 
-type CountrySelectorProps = {
-  country?: string
-  onSelectCountry: (countryCode: string) => void
+
+type CountrySelectProps = {
   className?: string
-} & React.ComponentProps<any>
+} & SelectFieldProps
 
-const CountrySelector = ({
-  country,
-  onSelectCountry,
-  className,
-  ...props
-}: CountrySelectorProps) => {
-  const t = useTranslations('Select')
-  const countryList = useMemo(() => getCountries(), [])
-  const [value, setValue] = useState<string>(
-    getCountryByNameOrCode(country || '').name || ''
-  )
-
-  useEffect(() => {
-    onSelectCountry(value)
-  }, [value])
-
+export const CountrySelect = ({ field, form, className }: CountrySelectProps) => {
+  const { formItemId } = useFormField()
+  
   return (
-    <div>
-      <Select
-        name="CountrySelector"
-        onValueChange={setValue}
-        value={value}
-        {...props}
-      >
-        <SelectTrigger className={cn(className)}>
-          <SelectValue placeholder={t('placeholder')} {...props}>
-            {value}
-          </SelectValue>
-        </SelectTrigger>
-
-        <SelectContent>
-          {countryList.map((country, index) => (
-            <SelectItem
-              key={country.code + index}
-              value={country.name}
-              asChild={false}
-            >
-              {country.name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
+    <Select onValueChange={(value) => form.setValue(field.name, value)}>
+      <SelectTrigger id={formItemId} className={cn(className)}>
+        <SelectValue placeholder={form.getValues(field.name) || field.placeholder} />
+      </SelectTrigger>
+      <SelectContent>
+        {getCountries().map((country) => (
+          <SelectItem key={country.code} value={country.code} className="select-item">
+            {country.name}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   )
 }
 
-export default CountrySelector
+export default CountrySelect;
