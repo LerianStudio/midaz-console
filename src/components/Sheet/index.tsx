@@ -106,7 +106,7 @@ export const Sheet = ({
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
         <SheetHeader>
-          <SheetTitle className="text-xl font-bold text-[#52525b]">
+          <SheetTitle className="flex text-xl font-bold text-[#52525b]">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>

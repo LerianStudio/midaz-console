@@ -1,6 +1,16 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { ReactNode } from 'react'
 
-export const TabsComponent = ({ tabs, children }: any) => {
+type Tab = {
+  id: number
+  value: string
+  name: string
+  content: ReactNode
+}
+
+type TabsProps = { tabs: Tab[] }
+
+export const TabsComponent = ({ tabs }: TabsProps) => {
   return (
     <Tabs defaultValue={tabs[0].value} className="mt-6 w-full">
       <TabsList className="flex justify-start gap-4 bg-transparent">
@@ -15,9 +25,9 @@ export const TabsComponent = ({ tabs, children }: any) => {
         ))}
       </TabsList>
 
-      {tabs.map((tab: any) => (
+      {tabs.map((tab) => (
         <TabsContent value={tab.value} key={tab.value} className="mt-4">
-          {children}
+          {tab.content}
         </TabsContent>
       ))}
     </Tabs>
