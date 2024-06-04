@@ -18,7 +18,7 @@ export const CollapsibleInfo = ({
 }: CollapsibleInfoProps) => (
   <CollapsibleContent>
     <div className="flex w-full justify-between">
-      <div className="my-12 flex flex-col gap-3">
+      <div className="mt-12 flex flex-col gap-3">
         <h1 className="text-xl font-bold text-[#3f3f46]">
           {helperTriggerTranslate?.question}
         </h1>

@@ -1,5 +1,6 @@
 {
     "genericCopyMessage": "Copiado para a area de transferência!",
+    "tooltipCopyText": "Toque para copiar",
     "auth": {
         "titleLogin": "Bem vindo(a) de volta!"
     },
@@ -89,97 +90,15 @@
             }
         }
     },
-    "divisions": {
-        "title": "Divisions",
-        "subtitle": "Visualize e edite os sub-grupos da sua Organização.",
-        "columnsTable": {
-            "name": "Nome",
-            "legalDocument": "Documento legal",
-            "status": "Status",
-            "edit": "Editar",
-            "delete": "Deletar"
-        },
-        "sheetCreate": {
-            "title": "Criar Division",
-            "description": "Preencha os dados da Division que você deseja criar.",
-            "button": "Criar"
-        },
-        "sheetEdit": {
-            "title": "Editar Division",
-            "description": "Edite o que desejar e depois clique em “Salvar”.",
-            "button": "Salvar"
-        },
-        "sheetView": {
-            "title": "Division",
-            "description": "Abaixo estão listados os dados da sua Division.",
-            "button": "Fechar"
-        },
-        "formFields": {
-            "legalName": {
-                "name": "Razão Social",
-                "placeholder": "Razão Social"
-            },
-            "doingBusinessAs": {
-                "name": "Nome Fantasia",
-                "placeholder": "Nome Fantasia (opcional)"
-            },
-            "legalDocument": {
-                "name": "Documento Legal",
-                "placeholder": "Documento Legal"
-            },
-            "address": {
-                "name": "Endereço",
-                "placeholder": "Endereço"
-            },
-            "address2": {
-                "name": "Complemento",
-                "placeholder": "Complemento"
-            },
-            "country": {
-                "name": "País",
-                "placeholder": "País"
-            },
-            "state": {
-                "name": "Estado",
-                "placeholder": "Estado"
-            },
-            "city": {
-                "name": "Cidade",
-                "placeholder": "Cidade"
-            },
-            "zipCode": {
-                "name": "CEP",
-                "placeholder": "CEP"
-            },
-            "defaultTimezone": {
-                "name": "Fuso Horário",
-                "placeholder": "Fuso Horário (opcional)"
-            },
-            "defaultCurrency": {
-                "name": "Moeda Padrão",
-                "placeholder": "Moeda Padrão (opcional)"
-            }
-        },
-        "dialog": {
-            "title": "Você tem certeza?",
-            "subtitle": "Essa ação é irreversível. Isso vai inativar para sempre a sua Division",
-            "deleteBtnText": "Apagar Division"
-        },
-        "toast": {
-            "divisionDeleted": "Division deletada",
-            "copyId": "O id foi copiado para sua área de transferência.",
-            "copyLegalDocument": "O número do documento foi copiado para sua área de transferência."
-        }
-    },
     "ledgers": {
         "title": "Ledgers",
         "subtitle": "Visualize e edite os Ledgers da sua Organização.",
         "columnsTable": {
             "name": "Nome do Ledger",
             "tooltipCopyText": "Toque para copiar",
-            "instruments": "Instruments",
+            "instruments": "Instrumentos",
             "instrumentsAdd": "Adicionar",
-            "metadata": "Metadata",
+            "metadata": "Metadados",
             "actions": "Ações",
             "status": "Status",
             "edit": "Editar",
@@ -232,10 +151,9 @@
         },
         "listingTemplate": {
             "configureButton": "Configurar",
-            "addButton": "Nova Ledger"
+            "addButton": "Novo Ledger"
         }
     },
-
     "organizations": {
         "title": "Configurações",
         "subtitle": "Visualize e edite as Organizações.",
@@ -292,7 +210,7 @@
                 "id": "ID Organização",
                 "legalName": "Nome Legal",
                 "doingBusinessAs": "Nome Fantasia",
-                "legalDocument":  "Documento",
+                "legalDocument": "Documento",
                 "address": "Endereço",
                 "complement": "Complemento",
                 "country": "País",
@@ -333,5 +251,4 @@
         "key": "Chave",
         "value": "Valor"
     }
-
 }

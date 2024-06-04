@@ -1,7 +1,6 @@
 import { LedgerEntity } from '@/core/domain/entities/LedgerEntity'
 import { LedgerRepository } from '@/core/repositories/LedgerRepository'
 
-
 type ILedgerssUseCases = {
   listLedgersUseCases: () => Promise<LedgerEntity[]>
   getLedgersByIdUseCases: (id: string) => Promise<LedgerEntity | null>

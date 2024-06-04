@@ -1,7 +1,7 @@
-import { BaseRepository } from '@/repositories/BaseRepository'
-import { OryCreateLoginFlowResponseDTO } from '@/domain/dto/OryResponseDTO'
-import { OrySubmitLoginRequestDTO } from '@/domain/dto/OryRequestDTO'
-import { OrySessionEntity } from '@/domain/entities/OrySessionEntity'
+import { BaseRepository } from '@/core/repositories/BaseRepository'
+import { OryCreateLoginFlowResponseDTO } from '@/core/domain/dto/OryResponseDTO'
+import { OrySubmitLoginRequestDTO } from '@/core/domain/dto/OryRequestDTO'
+import { OrySessionEntity } from '@/core/domain/entities/OrySessionEntity'
 
 export interface OryAuthRepository extends BaseRepository<any> {
   createLoginFlow(): Promise<OryCreateLoginFlowResponseDTO>

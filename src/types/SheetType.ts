@@ -5,6 +5,7 @@ export type FormFieldConfig = {
   label: string
   placeholder?: string
   description?: string
+  isRequired?: boolean
   options?: any[]
 }
 

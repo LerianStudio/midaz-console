@@ -11,7 +11,9 @@ type InputFieldProps = {
   isDisabled?: boolean
 }
 
-export const InputField = ({ field, form, isViewMode, isDisabled = false }: InputFieldProps) => {
+export const InputField = ({ field, form, isViewMode, isDisabled }: InputFieldProps) => {
+  const { register } = form
+
   if (field.options) {
     return <SelectField field={field} form={form} />
   }
@@ -23,7 +25,7 @@ export const InputField = ({ field, form, isViewMode, isDisabled = false }: Inpu
       className="placeholder:text-shadcn-400"
       autoFocus={false}
       value={form.getValues(field.name) ?? ''}
-      onChange={(e) => form.setValue(field.name, e.target.value)}
+      {...register(field.name)}
     />
   )
 }

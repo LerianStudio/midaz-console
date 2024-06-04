@@ -1,9 +1,7 @@
 import { Container } from 'inversify'
-import { DivisionAPIAdapter } from '@/core/adapters/DivisionAPIAdapter'
 import { LedgersAPIAdapter } from '@/core/adapters/LedgersAPIAdapter'
 import { OryAuthAPIAdapter } from '@/core/adapters/OryAuthAPIAdapter'
 import { InstrumentsAPIAdapter } from '@/core/adapters/InstrumentsAPIAdapter'
-import DivisionsUseCases from '@/core/useCases/DivisionsUseCases'
 import LedgersUseCases from '@/core/useCases/LedgersUseCases'
 import OryAuthUseCases from '@/core/useCases/OryAuthUseCases'
 import InstrumentsUseCases from '@/core/useCases/InstrumentsUseCases'
@@ -32,11 +30,6 @@ export const container = new Container()
 // External API Adapters
 
 container
-  .bind<DivisionAPIAdapter>(Registry.DivisionsAPIAdapter)
-  .toDynamicValue((context) => {
-    return new DivisionAPIAdapter()
-  })
-container
   .bind<LedgersAPIAdapter>(Registry.LedgersAPIAdapter)
   .toDynamicValue((context) => {
     return new LedgersAPIAdapter()
@@ -59,14 +52,6 @@ container
   })
 
 // Use Cases
-
-container
-  .bind<DivisionsUseCases>(Registry.DivisionsUseCases)
-  .toDynamicValue((context) => {
-    return new DivisionsUseCases(
-      context.container.get(Registry.DivisionsAPIAdapter)
-    )
-  })
 
 container
   .bind<LedgersUseCases>(Registry.LedgersUseCases)

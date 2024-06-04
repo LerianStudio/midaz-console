@@ -2,7 +2,7 @@
 
 import { Nav } from '@/components/ui/nav'
 import { useEffect, useState } from 'react'
-import LerianLogo from '/public/svg/brand-lerian-symbol.svg'
+import MidazLogo from '/public/svg/brand-midaz.svg'
 import { cn } from '@/lib/utils'
 import { PanelLeftClose, PanelRightClose } from 'lucide-react'
 import { useTranslations } from 'next-intl'
@@ -18,6 +18,7 @@ import {
 } from '../ui/tooltip'
 import { getSidebarItems } from './sidebarItems'
 import { getOrganizationData } from './organizationData'
+import { useSidebarContext } from '@/context/SidebarContext'
 
 const sidebarVariants = {
   opened: {
@@ -36,7 +37,7 @@ export const Sidebar = () => {
   const t = useTranslations('sideNavBar')
   const sidebarItems = getSidebarItems(t)
   const organizations = getOrganizationData()
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(true)
+  const { isCollapsed, toggleSidebar } = useSidebarContext()
   const [isMobileWidth, setIsMobileWidth] = useState(false)
 
   useEffect(() => {
@@ -49,10 +50,6 @@ export const Sidebar = () => {
 
     return () => window.removeEventListener('resize', handleResize)
   }, [])
-
-  const toggleSidebar = () => {
-    setIsCollapsed(!isCollapsed)
-  }
 
   return (
     <AnimatePresence>
@@ -72,16 +69,16 @@ export const Sidebar = () => {
           >
             {organizations.length > 0 ? (
               <OrganizationSwitcher
-                image={LerianLogo}
-                orgName="Lerian"
+                image={MidazLogo}
+                orgName="Midaz"
                 status="active"
-                alt="Lerian Logo"
+                alt="Midaz Logo"
                 data={organizations}
                 isCollapsed={isCollapsed}
               />
             ) : (
               <div className="flex items-center gap-3">
-                <Image src={LerianLogo} alt={LerianLogo} height={36} />
+                <Image src={MidazLogo} alt="Midaz Logo" height={36} />
 
                 {!isCollapsed && (
                   <h1 className="text-sm font-medium capitalize text-shadcn-600">

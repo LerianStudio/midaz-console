@@ -1,249 +1,168 @@
 {
-    "genericCopyMessage": "Copied to clipboard!",
-    "auth": {
-        "titleLogin": "Welcome again!"
+  "genericCopyMessage": "Copied to clipboard!",
+  "tooltipCopyText": "Click to copy",
+  "auth": {
+    "titleLogin": "Welcome again!"
+  },
+  "header": {
+    "userDropdown": {
+      "subscription": "Subscription",
+      "profile": "Profile",
+      "support": "Support",
+      "logout": "Logout"
     },
-    "header": {
-        "userDropdown": {
-            "subscription": "Subscription",
-            "profile": "Profile",
-            "support": "Support",
-            "logout": "Logout"
-        },
-        "settingsDropdown": {
-            "settings": "Settings",
-            "organizations": "Organizations",
-            "system": "System",
-            "security": "Security",
-            "language": "Language"
-        }
+    "settingsDropdown": {
+      "settings": "Settings",
+      "organizations": "Organizations",
+      "system": "System",
+      "security": "Security",
+      "language": "Language"
+    }
+  },
+  "sideNavBar": {
+    "home": "Home",
+    "ledgers": "Ledgers",
+    "team": "Team",
+    "expand": "Expand",
+    "accountHolders": {
+      "title": "AccountHolders",
+      "products": "Products",
+      "accounts": "Accounts",
+      "portfolios": "Portfolios"
     },
-    "sideNavBar": {
-        "home": "Home",
-        "ledgers": "Ledgers",
-        "team": "Team",
-        "expand": "Expand",
-        "accountHolders": {
-            "title": "AccountHolders",
-            "products": "Products",
-            "accounts": "Accounts",
-            "portfolios": "Portfolios"
-        },
-        "transactions": {
-            "title": "Transactions",
-            "types": "Types",
-            "resume": "Resume"
-        },
-        "reports": {
-            "title": "Reports",
-            "runReport": "Run Report"
-        }
+    "transactions": {
+      "title": "Transactions",
+      "types": "Types",
+      "resume": "Resume"
     },
-    "organizationSwitcher": {
-        "active": "Active",
-        "inactive": "Inactive",
+    "reports": {
+      "title": "Reports",
+      "runReport": "Run Report"
+    }
+  },
+  "organizationSwitcher": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "edit": "Edit",
+    "organizations": "Organizations"
+  },
+  "pageTitle": {
+    "overview": "HomePage",
+    "ledgers": "Ledgers",
+    "transactions": "Transactions",
+    "accounts": "Accounts",
+    "organizations": "Organizations"
+  },
+  "breadcrumb": {
+    "dashboard": "Dashboard",
+    "overview": "Overview",
+    "allLedgers": "All ledgers",
+    "ledgers": "Ledgers",
+    "allTransactions": "All transactions",
+    "transactions": "Transactions",
+    "allAccounts": "All accounts",
+    "accounts": "Accounts",
+    "myOrganizations": "My organization",
+    "organizations": "Organization"
+  },
+  "table": {
+    "headerName": "Name"
+  },
+  "dataTable": {
+    "previousBtn": "Previous page",
+    "nextBtn": "Next page"
+  },
+  "emptyState": {
+    "texts": {
+      "create": "Create",
+      "hasNoResource": "You don't have any yet",
+      "clickBtnBelow": "by clicking the button below",
+      "createBtn": "Create"
+    },
+    "pronouns": {
+      "he": {
+        "possessive": "your first",
+        "object": "none"
+      },
+      "she": {
+        "possessive": "your first",
+        "object": "none"
+      }
+    }
+  },
+  "ledgers": {
+    "title": "Ledgers",
+    "subtitle": "Visualize and edit the Ledgers of your Organization.",
+    "columnsTable": {
+      "name": "Ledger Name",
+      "tooltipCopyText": "Click to copy",
+      "instruments": "Instruments",
+      "instrumentsAdd": "Add",
+      "metadata": "Metadata",
+      "actions": "Actions",
+      "status": "Status",
+      "edit": "Edit",
+      "delete": "Delete",
+      "actionsText": {
         "edit": "Edit",
-        "organizations": "Organizations"
+        "inactivate": "Deactivate",
+        "delete": "Delete"
+      }
     },
-    "pageTitle": {
-        "overview": "HomePage",
-        "ledgers": "Ledgers",
-        "transactions": "Transactions",
-        "accounts": "Accounts",
-        "organizations": "Organizations"
+    "sheetCreate": {
+      "title": "New Ledger",
+      "description": "Fill in the data of the Ledger you wish to create.",
+      "button": "Create"
     },
-    "breadcrumb": {
-        "dashboard": "Dashboard",
-        "overview": "Overview",
-        "allLedgers": "All ledgers",
-        "ledgers": "Ledgers",
-        "allTransactions": "All transactions",
-        "transactions": "Transactions",
-        "allAccounts": "All accounts",
-        "accounts": "Accounts",
-        "myOrganizations": "My organization",
-        "organizations": "Organization"
+    "sheetEdit": {
+      "title": "Edit Ledger",
+      "description": "Edit as desired and then click “Save”.",
+      "button": "Save"
     },
-    "table": {
-        "headerName": "Name"
+    "sheetView": {
+      "title": "Ledger",
+      "description": "Below are listed the data of your Ledger.",
+      "button": "Close"
     },
-    "dataTable": {
-        "previousBtn": "Previous page",
-        "nextBtn": "Next page"
+    "formFields": {
+      "name": {
+        "name": "Ledger Name",
+        "placeholder": "Type...",
+        "description": "The public name of your Ledger"
+      }
     },
-    "emptyState": {
-        "texts": {
-            "create": "Create",
-            "hasNoResource": "It seems that you don't have any yet",
-            "clickBtnBelow": "by clicking the button below",
-            "createBtn": "Create"
-        },
-        "pronouns": {
-            "he": {
-                "possessive": "your first",
-                "object": "none"
-            },
-            "she": {
-                "possessive": "your first",
-                "object": "none"
-            }
-        }
+    "dialog": {
+      "title": "Are you sure?",
+      "subtitle": "This action is irreversible. This will deactivate your Ledger forever",
+      "deleteBtnText": "Delete Ledger"
     },
-    "divisions": {
-        "title": "Divisions",
-        "subtitle": "Visualize and edit the sub-groups of your Organization.",
-        "columnsTable": {
-            "name": "Name",
-            "legalDocument": "Legal document",
-            "status": "Status",
-            "edit": "Edit",
-            "delete": "Delete"
-        },
-        "sheetCreate": {
-            "title": "Create Division",
-            "description": "Fill in the data of the Division you wish to create.",
-            "button": "Create"
-        },
-        "sheetEdit": {
-            "title": "Edit Division",
-            "description": "Edit as desired and then click “Save”.",
-            "button": "Save"
-        },
-        "sheetView": {
-            "title": "Division",
-            "description": "Below are listed the data of your Division.",
-            "button": "Close"
-        },
-        "formFields": {
-            "legalName": {
-                "name": "Legal Name",
-                "placeholder": "Legal Name"
-            },
-            "doingBusinessAs": {
-                "name": "Trade Name",
-                "placeholder": "Trade Name (optional)"
-            },
-            "legalDocument": {
-                "name": "Legal Document",
-                "placeholder": "Legal Document"
-            },
-            "address": {
-                "name": "Address",
-                "placeholder": "Adress"
-            },
-            "address2": {
-                "name": "Address 2",
-                "placeholder": "Address 2"
-            },
-            "country": {
-                "name": "Country",
-                "placeholder": "Country"
-            },
-            "state": {
-                "name": "State",
-                "placeholder": "State"
-            },
-            "city": {
-                "name": "City",
-                "placeholder": "City"
-            },
-            "zipCode": {
-                "name": "ZIP Code",
-                "placeholder": "ZIP Code"
-            },
-            "defaultTimezone": {
-                "name": "Time Zone",
-                "placeholder": "Time Zone (optional)"
-            },
-            "defaultCurrency": {
-                "name": "Default Currency",
-                "placeholder": "Default Currency (optional)"
-            }
-        },
-        "dialog": {
-            "title": "Are you sure?",
-            "subtitle": "This action is irreversible. This will deactivate your Division forever",
-            "deleteBtnText": "Delete Division"
-        },
-        "toast": {
-            "divisionDeleted": "Division deleted",
-            "copyId": "The id has been copied to your clipboard.",
-            "copyLegalDocument": "The document number has been copied to your clipboard."
-        }
+    "toast": {
+      "ledgerCreated": "Ledger {ledgerName} created successfully",
+      "ledgerUpdated": "Ledger {ledgerName} updated successfully",
+      "ledgerDeletedFailed": "Failed to delete ledger",
+      "ledgerNotFound": "No ledger selected for deletion",
+      "ledgerDeleted": "Ledger {ledgerName} deleted",
+      "copyId": "The id has been copied to your clipboard."
     },
-    "ledgers": {
-        "title": "Ledgers",
-        "subtitle": "Visualize and edit the Ledgers of your Organization.",
-        "columnsTable": {
-            "name": "Ledger Name",
-            "tooltipCopyText": "Click to copy",
-            "instruments": "Instruments",
-            "instrumentsAdd": "Add",
-            "metadata": "Metadata",
-            "actions": "Actions",
-            "status": "Status",
-            "edit": "Edit",
-            "delete": "Delete",
-            "actionsText": {
-                "edit": "Edit",
-                "inactivate": "Deactivate",
-                "delete": "Delete"
-            }
-        },
-        "sheetCreate": {
-            "title": "New Ledger",
-            "description": "Fill in the data of the Ledger you wish to create.",
-            "button": "Create"
-        },
-        "sheetEdit": {
-            "title": "Edit Ledger",
-            "description": "Edit as desired and then click “Save”.",
-            "button": "Save"
-        },
-        "sheetView": {
-            "title": "Ledger",
-            "description": "Below are listed the data of your Ledger.",
-            "button": "Close"
-        },
-        "formFields": {
-            "name": {
-                "name": "Ledger Name",
-                "placeholder": "Type...",
-                "description": "The public name of your Ledger"
-            }
-        },
-        "dialog": {
-            "title": "Are you sure?",
-            "subtitle": "This action is irreversible. This will deactivate your Ledger forever",
-            "deleteBtnText": "Delete Ledger"
-        },
-        "toast": {
-            "ledgerCreated": "Ledger {ledgerName} created successfully",
-            "ledgerUpdated": "Ledger {ledgerName} updated successfully",
-            "ledgerDeletedFailed": "Failed to delete ledger",
-            "ledgerNotFound": "No ledger selected for deletion",
-            "ledgerDeleted": "Ledger {ledgerName} deleted",
-            "copyId": "The id has been copied to your clipboard."
-        },
-        "helperTrigger": {
-            "question": "What is a Ledger?",
-            "answer": "Book with the record of all transactions and operations of the Organization.",
-            "seeMore": "Read the docs"
-        },
-        "listingTemplate": {
-            "configureButton": "Configure",
-            "addButton": "New Ledger"
-        }
+    "helperTrigger": {
+      "question": "What is a Ledger?",
+      "answer": "Book with the record of all transactions and operations of the Organization.",
+      "seeMore": "Read the docs"
     },
-    "settingsDialog": {
-        "title": "Settings",
-        "description": "Make the desired changes and click on 'Save' when finished.",
-        "btnText": "Save",
-        "label": {
-            "name": "Name",
-            "email": "E-mail"
-        }
-    },
+    "listingTemplate": {
+      "configureButton": "Configure",
+      "addButton": "New Ledger"
+    }
+  },
+  "settingsDialog": {
+    "title": "Settings",
+    "description": "Make the desired changes and click on 'Save' when finished.",
+    "btnText": "Save",
+    "label": {
+      "name": "Name",
+      "email": "E-mail"
+    }
+  },
     "organizations": {
         "title": "Settings",
         "subtitle": "Visualize and edit Organizations.",

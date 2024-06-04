@@ -108,7 +108,7 @@ export const CardMetadata = forwardRef(({ data }: any, ref) => {
               id="key"
               value={newMetadata.key}
               onChange={handleNewMetadataChange('key')}
-              placeholder="Type..."
+              placeholder="Digite..."
             />
           </div>
 
@@ -118,7 +118,7 @@ export const CardMetadata = forwardRef(({ data }: any, ref) => {
               id="value"
               value={newMetadata.value}
               onChange={handleNewMetadataChange('value')}
-              placeholder="Type..."
+              placeholder="Digite..."
             />
           </div>
         </div>

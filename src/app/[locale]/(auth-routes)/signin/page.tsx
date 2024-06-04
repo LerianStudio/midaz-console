@@ -1,7 +1,6 @@
 import Image from 'next/image'
 
 import GeometricShape from '../../../../../public/images/geometric-shape.svg'
-import LeriandLogo from '../../../../../public/images/leriand-logo.png'
 import {
   Card,
   CardContent,
@@ -14,9 +13,9 @@ import LoginView from '@/components/view/LoginView'
 const SignInPage = () => {
   return (
     <div className="flex h-screen w-screen flex-col bg-[#faf9f9]">
-      <div className="mt-6 flex w-full justify-center">
+      {/* <div className="mt-6 flex w-full justify-center">
         <Image src={LeriandLogo} alt="Leriand Logo" />
-      </div>
+      </div> */}
 
       <div className="absolute flex h-screen w-full items-center justify-center">
         <div className="w-full">
