@@ -2,23 +2,15 @@
 
 import { BottomDrawer } from '@/components/BottomDrawer'
 import { BreadcrumbComponent, BreadcrumbPath } from '@/components/Breadcrumb'
-import { Card } from '@/components/Card'
 import { PageHeader } from '@/components/PageHeader'
 import { TabsComponent } from '@/components/Tabs'
 import { useFormState } from '@/context/FormDetailsContext'
 import { LedgerEntity } from '@/core/domain/entities/LedgerEntity'
 import useCustomToast from '@/hooks/useCustomToast'
-import {
-  useChartsTotalAmount,
-  useChartsTotalTransactions,
-  useChartsTransactionsByStatus
-} from '@/utils/queries'
 import { useEffect, useRef, useState } from 'react'
-import { TransactionCard } from './transaction-card'
-import { TransactionStatusCard } from './transaction-status-card'
-import { TotalAmountCard } from './total-amount-card'
 import { MetadataItem, MetadataValues } from '@/types/MetadataType'
 import { cn } from '@/lib/utils'
+import { OverviewTabContent } from './overview-tab-content'
 
 type LedgerDetailsViewProps = {
   data: LedgerEntity
@@ -27,20 +19,7 @@ type LedgerDetailsViewProps = {
 const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
   const { formData, isDirty, resetDirty } = useFormState()
   const { showSuccess } = useCustomToast()
-  const totalAmount = useChartsTotalAmount(data.id)
-  const totalTransactions = useChartsTotalTransactions(data.id)
-  const transactionsByStatus = useChartsTransactionsByStatus(data.id)
   const [isSheetOpen, setIsSheetOpen] = useState(false)
-
-  const chartData = {
-    labels: transactionsByStatus?.data?.data?.map(
-      (status: { status: string; count: number }) => status.status
-    ),
-    datasets: transactionsByStatus?.data?.data?.map(
-      (status: { status: string; count: number }) => status.count
-    ),
-    colors: ['#74DB9A', '#FFED89', '#FAA589']
-  }
 
   useEffect(() => {
     if (isDirty) {
@@ -57,7 +36,20 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
     { name: 'Detalhe da Ledger' }
   ]
 
-  const tabs = [{ id: 1, value: 'overview', name: 'Visão Geral' }]
+  const tabs = [
+    {
+      id: 1,
+      value: 'overview',
+      name: 'Visão Geral',
+      content: <OverviewTabContent data={data} />
+    },
+    {
+      id: 2,
+      value: 'instruments',
+      name: 'Instrumentos',
+      content: <div>Instruments</div>
+    }
+  ]
 
   const handleGlobalSubmit = async () => {
     let metadataValues: MetadataValues = {
@@ -103,51 +95,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
         </div>
       </PageHeader.Root>
 
-      <TabsComponent tabs={tabs}>
-        <div className="flex gap-6">
-          <div className="flex flex-1 flex-col gap-6">
-            <Card.Root>
-              <Card.Header
-                title="Identificação"
-                className="text-lg font-semibold capitalize text-[#52525B]"
-              />
-
-              <Card.Content data={data} />
-            </Card.Root>
-
-            <Card.Root>
-              <Card.Header title="Metadados" className="text-lg capitalize" />
-              <Card.Metadata data={data} ref={metadataFormRef} />
-            </Card.Root>
-
-            <Card.Root className="py-4">
-              <Card.Header title="Recursos" />
-              <Card.Resources />
-            </Card.Root>
-          </div>
-
-          <div className="flex flex-1 gap-6">
-            <div className="flex flex-1 flex-col gap-6">
-              <TransactionCard
-                isLoading={totalTransactions.isLoading}
-                count={totalTransactions?.data?.data[0]?.count}
-              />
-
-              <TransactionStatusCard
-                isLoading={transactionsByStatus.isLoading}
-                chartData={chartData}
-              />
-            </div>
-
-            <div className="flex flex-1 flex-col gap-6">
-              <TotalAmountCard
-                isLoading={totalAmount.isLoading}
-                data={totalAmount?.data?.data}
-              />
-            </div>
-          </div>
-        </div>
-      </TabsComponent>
+      <TabsComponent tabs={tabs} />
 
       {isDirty && (
         <BottomDrawer
