@@ -9,7 +9,7 @@ type Params = {
 }
 
 const Page = async ({ params }: Params) => {
-  const ledgerReq = await fetch(`http://localhost:3001/ledgers/${params.id}`)
+  const ledgerReq = await fetch(`/api/ledgers/${params.id}`)
   const response = await ledgerReq.json()
 
   return (
