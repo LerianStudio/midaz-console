@@ -9,7 +9,9 @@ type Params = {
 }
 
 const Page = async ({ params }: Params) => {
-  const ledgerReq = await fetch(`/api/ledgers/${params.id}`)
+  const ledgerReq = await fetch(
+    `${process.env.MIDAZ_BASE_PATH}/ledgers/${params.id}`
+  )
   const response = await ledgerReq.json()
 
   return (
