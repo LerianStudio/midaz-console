@@ -35,8 +35,10 @@ class OrganizationRepository implements IOrganizationRepository {
       console.error('Failed to fetch organizations', await response.json())
       throw new Error(`Failed to fetch organizations`)
     }
-
-    return response.json()
+    
+    const { items } = await response.json()
+    
+    return items
   }
 
   async getById(id: string): Promise<OrganizationEntity | null> {
