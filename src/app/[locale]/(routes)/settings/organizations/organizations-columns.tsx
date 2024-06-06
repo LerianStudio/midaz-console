@@ -81,7 +81,7 @@ export const getOrganizationsColumns = (
     },
 
     {
-      accessorKey: 'legalName',
+      accessorKey: 'name',
       header: translateHeader('legalName'),
       cell: ({ row }: ColumnRow) => {
         const nameToDisplay: string = row.original.legalName
