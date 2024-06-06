@@ -9,7 +9,7 @@ import {
   SelectValue
 } from '@/components/ui/select'
 
-type SelectFieldProps = {
+export type SelectFieldProps = {
   field: FormFieldConfig
   form: UseFormReturn<any>
 }
@@ -21,7 +21,7 @@ export const SelectField = ({ field, form }: SelectFieldProps) => {
         <SelectValue placeholder={form.getValues(field.name) || ''} />
       </SelectTrigger>
       <SelectContent>
-        {field.options.map((option: { value: string; label: string }) => (
+        {field.options?.map((option: { value: string; label: string }) => (
           <SelectItem key={option.value} value={option.value}>
             {option.label}
           </SelectItem>

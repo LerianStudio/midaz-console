@@ -109,7 +109,7 @@ const PopoverContentComponent = ({
 
           <div className={cn('mt-5', data.length >= 4 && 'mt-0')}>
             <Link
-              href="/organization-edit"
+              href="/settings?tab=organizations"
               onClick={() => setIsPopoverOpen(false)}
               className="text-xs font-normal text-[#3F3F46] underline"
             >
@@ -129,7 +129,7 @@ const PopoverContentComponent = ({
         ))}
 
         <Link
-          href="/organizations"
+          href="/settings?tab=organizations"
           onClick={() => setIsPopoverOpen(false)}
           className={cn(
             'flex w-[320px] flex-1 items-center justify-between rounded-md bg-white p-4 text-black hover:bg-shadcn-100',

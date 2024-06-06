@@ -5,16 +5,24 @@ import { InstrumentsAPIAdapter } from '@/core/adapters/InstrumentsAPIAdapter'
 import LedgersUseCases from '@/core/useCases/LedgersUseCases'
 import OryAuthUseCases from '@/core/useCases/OryAuthUseCases'
 import InstrumentsUseCases from '@/core/useCases/InstrumentsUseCases'
+import OrganizationRepository from '@/core/repositories/OrganizationsRepository'
+import OrganizationsUseCases from '@/core/useCases/OrganizationsUseCases'
 
 export const Registry = {
   DivisionsAPIAdapter: Symbol.for('DivisionsAPIAdapter'),
   LedgersAPIAdapter: Symbol.for('LedgersAPIAdapter'),
   InstrumentsAPIAdapter: Symbol.for('InstrumentsAPIAdapter'),
   OryAuthAPIAdapter: Symbol.for('OryAuthAPIAdapter'),
+
+  // Repository
+  OrganizationRepositoryRegistry: Symbol.for('OrganizationRepositoryRegistry'),
+
+  // Use Cases
   DivisionsUseCases: Symbol.for('DivisionsUseCases'),
   LedgersUseCases: Symbol.for('LedgersUseCases'),
   OryAuthUseCases: Symbol.for('OryAuthUseCases'),
-  InstrumentsUseCases: Symbol.for('InstrumentsUseCases')
+  InstrumentsUseCases: Symbol.for('InstrumentsUseCases'),
+  OrganizationsUseCasesRegistry: Symbol.for('OrganizationsUseCasesRegistry')
 }
 
 export const container = new Container()
@@ -37,6 +45,12 @@ container
     return new OryAuthAPIAdapter()
   })
 
+container
+  .bind<OrganizationRepository>(Registry.OrganizationRepositoryRegistry)
+  .toDynamicValue((context) => {
+    return new OrganizationRepository()
+  })
+
 // Use Cases
 
 container
@@ -46,6 +60,7 @@ container
       context.container.get(Registry.LedgersAPIAdapter)
     )
   })
+
 container
   .bind<InstrumentsUseCases>(Registry.InstrumentsUseCases)
   .toDynamicValue((context) => {
@@ -58,5 +73,13 @@ container
   .toDynamicValue((context) => {
     return new OryAuthUseCases(
       context.container.get(Registry.OryAuthAPIAdapter)
+    )
+  })
+
+container
+  .bind<OrganizationsUseCases>(Registry.OrganizationsUseCasesRegistry)
+  .toDynamicValue((context) => {
+    return new OrganizationsUseCases(
+      context.container.get(Registry.OrganizationRepositoryRegistry)
     )
   })

@@ -6,6 +6,10 @@ import {
   getChartsTotalTransactions,
   getChartsTransactionsByStatus
 } from '@/client/chartsClient'
+import {
+  getOrganization,
+  getOrganizationById, getParentOrganizations
+} from '@/client/organizationClient'
 
 export const useLedgers = () => {
   return useQuery({
@@ -25,6 +29,27 @@ export const useInstruments = (ledgerId: string) => {
   return useQuery({
     queryKey: ['instrument', ledgerId],
     queryFn: () => getInstruments(ledgerId)
+  })
+}
+
+export const useOrganizations = () => {
+  return useQuery({
+    queryKey: ['organizations'],
+    queryFn: getOrganization
+  })
+}
+
+export const useParentOrganizations = (idActualOrganization?: string) => {
+  return useQuery({
+    queryKey: ['parentOrganizations'],
+    queryFn: () => getParentOrganizations(idActualOrganization)
+  })
+}
+
+export const useOrganizationById = (id: string) => {
+  return useQuery({
+    queryKey: ['organizationById', id],
+    queryFn: () => getOrganizationById(id)
   })
 }
 

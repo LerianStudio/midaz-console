@@ -3,6 +3,6 @@ export interface BaseRepository<T> {
   create(data: T): Promise<void>
   list(): Promise<T[]>
   getById(id: string): Promise<T | null>
-  update(id: string, data: T): Promise<void>
+  update(id: string, data: Partial<T>): Promise<void>
   delete(id: string): Promise<void>
 }

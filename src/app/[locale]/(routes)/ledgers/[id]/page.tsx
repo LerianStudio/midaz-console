@@ -1,4 +1,4 @@
-import { LedgerDetailsProvider } from '@/context/LedgerDetailsContext'
+import { FormDetailsProvider } from '@/context/FormDetailsContext'
 import LedgerDetailsView from './ledger-details-view'
 
 type Params = {
@@ -15,9 +15,9 @@ const Page = async ({ params }: Params) => {
   const response = await ledgerReq.json()
 
   return (
-    <LedgerDetailsProvider>
+    <FormDetailsProvider>
       <LedgerDetailsView data={response} />
-    </LedgerDetailsProvider>
+    </FormDetailsProvider>
   )
 }
 

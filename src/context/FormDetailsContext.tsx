@@ -22,12 +22,12 @@ const FormStateContext = createContext<FormStateContextType | undefined>(
 export const useFormState = () => {
   const context = useContext(FormStateContext)
   if (context === undefined) {
-    throw new Error('useFormState must be used within a LedgerDetailsProvider')
+    throw new Error('useFormState must be used within a DetailsProvider')
   }
   return context
 }
 
-export const LedgerDetailsProvider: React.FC<{ children: ReactNode }> = ({
+export const FormDetailsProvider: React.FC<{ children: ReactNode }> = ({
   children
 }) => {
   const [formData, setFormData] = useState<FormData>({ name: '', metadata: {} })

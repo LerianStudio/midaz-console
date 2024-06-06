@@ -14,11 +14,11 @@ export default async function RootLayout({
   children: React.ReactNode
   params: { locale: string }
 }) {
-  // const session = await getServerSession(nextAuthOptions)
+  const session = await getServerSession(nextAuthOptions)
 
-  // if (!session?.user) {
-  //   redirect(`/${locale}/signin`)
-  // }
+  if (!session?.user) {
+    redirect(`/${locale}/signin`)
+  }
 
   return (
     <SidebarProvider>

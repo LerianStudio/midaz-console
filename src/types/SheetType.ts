@@ -6,7 +6,7 @@ export type FormFieldConfig = {
   placeholder?: string
   description?: string
   isRequired?: boolean
-  options: []
+  options?: any[]
 }
 
 type SheetInfo = {
