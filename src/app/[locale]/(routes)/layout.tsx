@@ -16,9 +16,9 @@ export default async function RootLayout({
 }) {
   const session = await getServerSession(nextAuthOptions)
 
-  if (!session?.user) {
-    redirect(`/${locale}/signin`)
-  }
+  // if (!session?.user) {
+  //   redirect(`/${locale}/signin`)
+  // }
 
   return (
     <SidebarProvider>

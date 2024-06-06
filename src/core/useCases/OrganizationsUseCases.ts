@@ -28,7 +28,7 @@ class OrganizationsUseCases implements IOrganizationsUseCases {
 
   async listOrganizationsUseCases(): Promise<OrganizationsType[]> {
     const organizations = await this.organizationRepository.list()
-
+    
     return organizations.map((organization: OrganizationEntity) => {
       return this.castOrganizationToType(organization)
     })
