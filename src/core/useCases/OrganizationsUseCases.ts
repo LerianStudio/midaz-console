@@ -27,7 +27,6 @@ class OrganizationsUseCases implements IOrganizationsUseCases {
     const organizations = await this.organizationRepository.list()
     
     return organizations.map((organization: OrganizationEntity) => {
-      console.log('organizationEntity', organization)
       return this.castOrganizationToType(organization)
     })
   }
@@ -86,7 +85,7 @@ class OrganizationsUseCases implements IOrganizationsUseCases {
   }
   
   private castOrganizationToType(organization: OrganizationEntity) {
-    const organizationType = {
+    return {
       id: organization.id,
       legalName: organization.legalName,
       doingBusinessAs: organization.doingBusinessAs,
@@ -107,9 +106,6 @@ class OrganizationsUseCases implements IOrganizationsUseCases {
       )?.[1] || '',
       status: organization.status
     }
-    
-    console.log('organizationType', organizationType)
-    return organizationType
     
   }
 }
