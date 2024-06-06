@@ -15,14 +15,14 @@ export default function RootLayout({
     <html suppressHydrationWarning>
       <body suppressHydrationWarning className={inter.className}>
         <NextAuthSessionProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
+          {/*<ThemeProvider*/}
+          {/*  attribute="class"*/}
+          {/*  defaultTheme="system"*/}
+          {/*  enableSystem*/}
+          {/*  disableTransitionOnChange*/}
+          {/*>*/}
             {children}
-          </ThemeProvider>
+          {/*</ThemeProvider>*/}
         </NextAuthSessionProvider>
       </body>
     </html>
