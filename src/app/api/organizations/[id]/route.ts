@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server'
 import { container, Registry } from '@/core/infra/container-registry'
 import OrganizationsUseCases from '@/core/useCases/OrganizationsUseCases'
@@ -30,6 +29,14 @@ export async function DELETE(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  await organizationsUseCases.deleteOrganizationUseCases(params.id)
-  return NextResponse.json({ message: 'Organization deleted!' })
+  try {
+    await organizationsUseCases.deleteOrganizationUseCases(params.id)
+    return NextResponse.json({ message: 'Organization deleted!' })
+  } catch (error: any) {
+    return handlerErrorResponse(error)
+  }
+}
+
+function handlerErrorResponse(error: any) {
+  return NextResponse.json({ message: error.message }, { status: 400 })
 }

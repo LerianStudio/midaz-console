@@ -9,14 +9,16 @@ import { createOrganization } from '@/client/organizationClient'
 import { cn } from '@/lib/utils'
 import OrganizationsView from '@/app/[locale]/(routes)/settings/organizations/organizations-view'
 import { FormDetailsProvider } from '@/context/FormDetailsContext'
+import { ClientToastException } from '@/exceptions/client/clientToastException'
 
 const Page = () => {
   const t = useTranslations('organizations.organizationView')
+  const toastTranslator = useTranslations('organizations.toast')
   const pathname = usePathname()
   const intlBasePath = pathname.split('/').filter(Boolean)[0]
   const { showSuccess, showError } = useCustomToast()
   const router = useRouter()
-  
+
   const breadCrumbPaths: BreadcrumbPath[] = [
     {
       name: t('breadcrumbs.settings'),
@@ -33,19 +35,26 @@ const Page = () => {
       active: false
     }
   ]
-  
+
   const handleOnSubmit = async (values: OrganizationsType) => {
     try {
       await createOrganization(values)
-      showSuccess('Organization created successfully')
+      showSuccess(
+        toastTranslator('organizationCreateSuccess', {
+          organizationName: values.legalName
+        })
+      )
       router.replace(`/${intlBasePath}/settings?tab=organizations`)
     } catch (error) {
-      console.log('Error creating organization', error)
-      showError('Error creating organization')
-      return
+      const errorMessage =
+        error instanceof ClientToastException
+          ? toastTranslator(error.messageAttributeName)
+          : toastTranslator('genericError')
+
+      return showError(errorMessage)
     }
   }
-  
+
   return (
     <div>
       <BreadcrumbComponent paths={breadCrumbPaths} />
@@ -56,9 +65,7 @@ const Page = () => {
           </h1>
         </div>
         <FormDetailsProvider>
-          <OrganizationsView
-            onSubmit={handleOnSubmit}
-          />
+          <OrganizationsView onSubmit={handleOnSubmit} />
         </FormDetailsProvider>
       </div>
     </div>

@@ -11,7 +11,12 @@ type InputFieldProps = {
   isDisabled?: boolean
 }
 
-export const InputField = ({ field, form, isViewMode, isDisabled }: InputFieldProps) => {
+export const InputField = ({
+  field,
+  form,
+  isViewMode,
+  isDisabled
+}: InputFieldProps) => {
   const { register } = form
 
   if (field.options) {

@@ -10,16 +10,15 @@ const organizationFormSchema = z.object({
   legalDocument: z.coerce.string({
     invalid_type_error: 'Legal document must be a number'
   }),
-  address: z
-    .object({
-      line1: z.string(),
-      line2: z.string().optional().optional(),
-      neighborhood: z.string(),
-      zipCode: z.coerce.string(),
-      city: z.string(),
-      state: z.string(),
-      country: z.string()
-    }),
+  address: z.object({
+    line1: z.string(),
+    line2: z.string().optional().optional(),
+    neighborhood: z.string(),
+    zipCode: z.coerce.string(),
+    city: z.string(),
+    state: z.string(),
+    country: z.string()
+  }),
   metadata: z.record(z.string(), z.any()).optional(),
   organizationAccentColor: z.string().optional(),
   organizationAvatar: z.string().optional(),

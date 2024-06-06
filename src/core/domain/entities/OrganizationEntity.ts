@@ -5,7 +5,7 @@ export type OrganizationEntity = {
   doingBusinessAs?: string
   legalDocument: string
   address: Address
-  metadata: Record<string, any>
+  metadata?: Record<string, any>
   status: OrganizationStatus
 }
 

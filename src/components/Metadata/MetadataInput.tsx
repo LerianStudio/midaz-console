@@ -11,10 +11,10 @@ type MetadataInputProps = {
   handleAddMetadata: (metadata: { key: string; value: string }) => void
 }
 
-const MetadataInput = ({handleAddMetadata}: MetadataInputProps) => {
+const MetadataInput = ({ handleAddMetadata }: MetadataInputProps) => {
   const t = useTranslations('metadata')
   const [currentMetadata, setCurrentMetadata] = useState({ key: '', value: '' })
-  
+
   const onAddMetadata = (e: React.FormEvent) => {
     e.preventDefault()
     if (currentMetadata.key && currentMetadata.value) {
@@ -22,7 +22,7 @@ const MetadataInput = ({handleAddMetadata}: MetadataInputProps) => {
       setCurrentMetadata({ key: '', value: '' })
     }
   }
-  
+
   const handleMetadataChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     field: string
@@ -32,7 +32,7 @@ const MetadataInput = ({handleAddMetadata}: MetadataInputProps) => {
       [field]: e.target.value
     })
   }
-  
+
   return (
     <div className="flex gap-5">
       <div className="flex w-full gap-2">

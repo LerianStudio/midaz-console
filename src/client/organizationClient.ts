@@ -1,14 +1,7 @@
-import { OrganizationEntity } from '@/domain/entities/OrganizationEntity'
+import { ClientToastException } from '@/exceptions/client/clientToastException'
+import { OrganizationsType } from '@/types/OrganizationsType'
 
-const getOrganization = async () => {
-  const response = await fetch('http://localhost:3000/api/organizations')
-  if (!response.ok) {
-    throw new Error('Failed to fetch organizations')
-  }
-  return await response.json()
-}
-
-const createOrganization = async (organization: OrganizationEntity) => {
+const createOrganization = async (organization: OrganizationsType) => {
   const response = await fetch('http://localhost:3000/api/organizations', {
     method: 'POST',
     headers: {
@@ -17,12 +10,19 @@ const createOrganization = async (organization: OrganizationEntity) => {
     body: JSON.stringify(organization)
   })
 
+  if (!response.ok) {
+    throw new ClientToastException(
+      `Organization create Failed!`,
+      'organizationCreateFailed'
+    )
+  }
+
   return await response.json()
 }
 
-export const updateOrganization = async (
+const updateOrganization = async (
   id: string,
-  organization: OrganizationEntity
+  organization: OrganizationsType
 ) => {
   const response = await fetch(
     `http://localhost:3000/api/organizations/${id}`,
@@ -35,12 +35,82 @@ export const updateOrganization = async (
     }
   )
 
+  if (!response.ok) {
+    throw new ClientToastException(
+      `Organization ${id} update Failed!`,
+      'organizationUpdatedFailed'
+    )
+  }
+
   return await response.json()
 }
 
-export const getOrganizationById = async (id: string) => {
+const deleteOrganization = async (id: string) => {
+  const response = await fetch(
+    `http://localhost:3000/api/organizations/${id}`,
+    {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+  )
+
+  if (!response.ok) {
+    throw new ClientToastException(
+      `Organization ${id} delete Failed!`,
+      'organizationDeletedFailed'
+    )
+  }
+
+  return await response.json()
+}
+
+const getOrganization = async () => {
+  const response = await fetch('http://localhost:3000/api/organizations')
+
+  if (!response.ok) {
+    throw new ClientToastException(
+      `Fetch organizations Failed!`,
+      'organizationNotFound'
+    )
+  }
+  return await response.json()
+}
+
+const getOrganizationById = async (id: string) => {
   const response = await fetch(`http://localhost:3000/api/organizations/${id}`)
+
+  if (!response.ok) {
+    throw new ClientToastException(
+      'Error get organization by id',
+      `organizationNotFound`
+    )
+  }
+
   return await response.json()
 }
 
-export { getOrganization, createOrganization }
+const getParentOrganizations = async (idActualOrganization?: string) => {
+  const response = await fetch(
+    'http://localhost:3000/api/organizations/parentOrganizations?idActualOrganization=' +
+      idActualOrganization
+  )
+
+  if (!response.ok) {
+    throw new ClientToastException(
+      `Fetch parent organizations Failed!`,
+      'organizationNotFound'
+    )
+  }
+  return await response.json()
+}
+
+export {
+  getOrganization,
+  createOrganization,
+  deleteOrganization,
+  getOrganizationById,
+  updateOrganization,
+  getParentOrganizations
+}

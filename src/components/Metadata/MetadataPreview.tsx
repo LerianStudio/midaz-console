@@ -7,13 +7,16 @@ type MetadataPreviewProps = {
   handleRemoveMetadata: (key: string) => void
 }
 
-const MetadataPreview = ({metaFields, handleRemoveMetadata}: MetadataPreviewProps) => {
-  if(!metaFields) return null
-  
+const MetadataPreview = ({
+  metaFields,
+  handleRemoveMetadata
+}: MetadataPreviewProps) => {
+  if (!metaFields) return null
+
   const onRemoveMetadata = (key: string) => {
     handleRemoveMetadata(key)
   }
-  
+
   return Object.entries(metaFields).map(([key, value], index) => (
     <div key={index} className="mt-2 flex items-center justify-between">
       <div className="flex w-full gap-5">

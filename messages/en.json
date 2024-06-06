@@ -178,9 +178,14 @@
             "inactivate": "Inactivate"
         },
         "toast": {
-            "organizationDeletedFailed": "Failed to delete organization",
-            "organizationNotFound": "No organization selected for deletion",
+            "genericError": "An error occurred",
+            "organizationNotFound": "No organization found.",
+            "organizationCreateFailed": "Failed to create organization",
+            "organizationCreateSuccess": "Organization {organizationName} created",
+            "organizationDeletedFailed": "Failed to delete organization id: {organizationId}",
             "organizationDeleted": "Organization {organizationName} deleted",
+            "organizationUpdatedFailed": "Failed to update organization id: {organizationId}",
+            "organizationUpdateSuccess": "Organization {organizationName} updated",
             "copyId": "The id has been copied to your clipboard.",
             "copyLegalDocument": "The document number has been copied to your clipboard."
         },
@@ -241,7 +246,8 @@
                 "pattern": "Invalid pattern"
             },
             "typePlaceholder": "Type...",
-            "selectPlaceholder": "Select..."
+            "selectPlaceholder": "Select...",
+            "notApplicable": "N/A"
         }
     },
     "settings": {

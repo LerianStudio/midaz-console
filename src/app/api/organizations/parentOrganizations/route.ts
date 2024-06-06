@@ -6,13 +6,11 @@ const organizationsUseCases = container.get<OrganizationsUseCases>(
   Registry.OrganizationsUseCasesRegistry
 )
 
-export async function GET() {
-  const organizations = await organizationsUseCases.listOrganizationsUseCases()
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const idActualOrganization = searchParams.get("idActualOrganization");
+  const organizations =
+    await organizationsUseCases.getParentOrganizationsUseCases(idActualOrganization || undefined)
+  
   return NextResponse.json(organizations)
-}
-
-export async function POST(request: Request) {
-  const body = await request.json()
-  await organizationsUseCases.createOrganizationUseCases(body)
-  return NextResponse.json({ message: 'Organization created!' })
 }

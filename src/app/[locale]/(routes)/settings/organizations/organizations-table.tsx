@@ -9,9 +9,15 @@ import { DataTable } from '@/components/DataTable'
 import { useRouter, usePathname } from 'next/navigation'
 import { OrganizationsType } from '@/types/OrganizationsType'
 import { getOrganizationsColumns } from '@/app/[locale]/(routes)/settings/organizations/organizations-columns'
+import useCustomToast from '@/hooks/useCustomToast'
+import { deleteOrganization } from '@/client/organizationClient'
+import { ClientToastException } from '@/exceptions/client/clientToastException'
+import { NoResource } from '@/components/NoResource'
+import React from 'react'
 
 const OrganizationsTable = () => {
   const t = useTranslations('organizations')
+  const { showError, showSuccess } = useCustomToast()
   const organizations = useOrganizations()
   const router = useRouter()
   const pathname = usePathname()
@@ -23,7 +29,17 @@ const OrganizationsTable = () => {
 
   const handleOpenViewSheet = (organizationData: OrganizationsType) => {}
 
-  const handleOpenDeleteSheet = (organizationData: OrganizationsType) => {}
+  const handleOpenDeleteSheet = async (id: string) => {
+    try {
+      await deleteOrganization(id)
+    } catch (error: any) {
+      const errorMessage =
+        error instanceof ClientToastException
+          ? t(`toast.${error.messageAttributeName}`, { organizationId: id })
+          : t('toast.genericError')
+      return showError(errorMessage)
+    }
+  }
 
   const organizationsColumns = getOrganizationsColumns(
     {
@@ -46,7 +62,9 @@ const OrganizationsTable = () => {
             <div className="flex w-full justify-between">
               <div>
                 <h1 className="text-xl font-normal">{t('title')}</h1>
-                <p className="text-sm font-medium text-zinc-400">{t('subtitle')}</p>
+                <p className="text-sm font-medium text-zinc-400">
+                  {t('subtitle')}
+                </p>
               </div>
 
               <Button
@@ -64,8 +82,14 @@ const OrganizationsTable = () => {
       </div>
 
       <div className="mt-6">
-        {organizations.data && organizations.data.length > 0 && (
+        {organizations.data && organizations.data.length > 0 ? (
           <DataTable columns={organizationsColumns} data={organizations.data} />
+        ) : (
+          <NoResource
+            resourceName="Ledger"
+            onClick={handleCreateOrganization}
+            pronoun="he"
+          />
         )}
       </div>
     </div>

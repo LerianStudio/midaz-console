@@ -21,13 +21,13 @@ const Page = () => {
       active: false
     }
   ])
-  
+
   const handleTabChange = (tab: string) => {
     setActiveTab(tab)
     router.push(`${pathname}?${createQueryString('tab', tab)}`)
     handleBreadCrumb(tab)
   }
-  
+
   const handleBreadCrumb = (tab: string) => {
     if (breadcrumbPaths.length > 1) {
       breadcrumbPaths.pop()
@@ -38,31 +38,31 @@ const Page = () => {
     })
     setBreadcrumbPaths([...breadcrumbPaths])
   }
-  
+
   const createQueryString = useCallback(
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParams.toString())
       params.set(name, value)
-      
+
       return params.toString()
     },
     [searchParams]
   )
-  
+
   useEffect(() => {
     handleTabChange(activeTab)
   }, [searchParams])
-  
+
   return (
     <div>
       <BreadcrumbComponent paths={breadcrumbPaths} />
-      
+
       <div className="mb-12 mt-12">
         <h1 className={cn('text-4xl font-bold text-[#3f3f46]')}>
           {t('title')}
         </h1>
       </div>
-      
+
       <div>
         <Tabs value={activeTab} onValueChange={handleTabChange}>
           <TabsList className="gap-4 pb-0 pl-0">

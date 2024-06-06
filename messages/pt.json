@@ -169,9 +169,14 @@
             "inactivate": "Inativar"
         },
         "toast": {
-            "organizationDeletedFailed": "Falha ao excluir organização",
-            "organizationNotFound": "Nenhuma organização selecionada para exclusão",
+            "genericError": "An error occurred",
+            "organizationNotFound": "Nenhuma organização encontrada.",
+            "organizationCreateFailed": "Falha ao criar organização",
+            "organizationCreateSuccess": "Organização {organizationName} criada",
+            "organizationDeletedFailed": "Erro ao excluir organização: id: {organizationId}",
             "organizationDeleted": "Organização {organizationName} excluída",
+            "organizationUpdatedFailed": "Falha ao atualizar organização: id: {organizationId}",
+            "organizationUpdateSuccess": "Organização {organizationName} atualizada",
             "copyId": "O ID foi copiado para a sua área de transferência.",
             "copyLegalDocument": "O número do documento foi copiado para a sua área de transferência."
         },
@@ -225,7 +230,8 @@
                 "value": "Valor"
             },
             "typePlaceholder": "Digite...",
-            "selectPlaceholder": "Selecione..."
+            "selectPlaceholder": "Selecione...",
+            "notApplicable": "N/A"
         }
     },
     "settingsDialog": {

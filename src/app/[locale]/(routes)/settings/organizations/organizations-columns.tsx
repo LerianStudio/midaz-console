@@ -26,7 +26,7 @@ export type OrganizationsColumnsEvents = {
   handleClickLegalDocument?: (document: string) => void
   handleOpenEditSheet: (organizationData: OrganizationsType) => void
   handleOpenViewSheet: (organizationData: OrganizationsType) => void
-  handleOpenDeleteSheet: (organizationData: OrganizationsType) => void
+  handleOpenDeleteSheet: (id: string) => void
 }
 
 type ColumnRow = {
@@ -160,7 +160,9 @@ export const getOrganizationsColumns = (
             <DropdownMenuItem
               className="flex gap-3"
               onClick={() =>
-                organizationsEvents.handleOpenDeleteSheet(row.original)
+                organizationsEvents.handleOpenDeleteSheet(
+                  row.original.id as string
+                )
               }
             >
               <span>{translateHeader('delete')}</span>

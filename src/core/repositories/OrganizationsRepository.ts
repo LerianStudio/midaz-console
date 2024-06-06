@@ -17,7 +17,7 @@ class OrganizationRepository implements IOrganizationRepository {
     })
 
     if (!response.ok) {
-      console.log('Error creating organization', response)
+      console.log('Error creating organization', await response.json())
       throw new Error(`Failed to create organizations`)
     }
 
@@ -32,6 +32,7 @@ class OrganizationRepository implements IOrganizationRepository {
     })
 
     if (!response.ok) {
+      console.error('Failed to fetch organizations', await response.json())
       throw new Error(`Failed to fetch organizations`)
     }
 
@@ -47,6 +48,7 @@ class OrganizationRepository implements IOrganizationRepository {
     })
 
     if (!response.ok) {
+      console.error('Failed to fetch organization by id', await response.json())
       throw new Error(`Failed to fetch organization by id`)
     }
 
@@ -79,7 +81,7 @@ class OrganizationRepository implements IOrganizationRepository {
     })
 
     if (!response.ok) {
-      console.error(response)
+      console.error(response, await response.json())
       throw new Error(`Failed to delete organization`)
     }
 
