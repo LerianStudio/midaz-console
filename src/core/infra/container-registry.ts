@@ -9,7 +9,6 @@ import OrganizationRepository from '@/core/repositories/OrganizationsRepository'
 import OrganizationsUseCases from '@/core/useCases/OrganizationsUseCases'
 
 export const Registry = {
-  DivisionsAPIAdapter: Symbol.for('DivisionsAPIAdapter'),
   LedgersAPIAdapter: Symbol.for('LedgersAPIAdapter'),
   InstrumentsAPIAdapter: Symbol.for('InstrumentsAPIAdapter'),
   OryAuthAPIAdapter: Symbol.for('OryAuthAPIAdapter'),
@@ -18,7 +17,6 @@ export const Registry = {
   OrganizationRepositoryRegistry: Symbol.for('OrganizationRepositoryRegistry'),
 
   // Use Cases
-  DivisionsUseCases: Symbol.for('DivisionsUseCases'),
   LedgersUseCases: Symbol.for('LedgersUseCases'),
   OryAuthUseCases: Symbol.for('OryAuthUseCases'),
   InstrumentsUseCases: Symbol.for('InstrumentsUseCases'),
