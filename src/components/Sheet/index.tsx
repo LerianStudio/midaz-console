@@ -70,8 +70,6 @@ export const Sheet = ({
   const { control, formState } = form
   const { isValid, isDirty } = formState
 
-  console.log(isValid, isDirty)
-
   const {
     fields: metaFields,
     append,

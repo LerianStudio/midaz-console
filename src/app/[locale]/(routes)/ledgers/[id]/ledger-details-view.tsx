@@ -7,10 +7,10 @@ import { TabsComponent } from '@/components/Tabs'
 import { useFormState } from '@/context/FormDetailsContext'
 import { LedgerEntity } from '@/core/domain/entities/LedgerEntity'
 import useCustomToast from '@/hooks/useCustomToast'
-import { useEffect, useRef, useState } from 'react'
-import { MetadataItem, MetadataValues } from '@/types/MetadataType'
+import React, { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { OverviewTabContent } from './overview-tab-content'
+import { Skeleton } from '@/components/ui/skeleton'
 
 type LedgerDetailsViewProps = {
   data: LedgerEntity
@@ -20,6 +20,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
   const { formData, isDirty, resetDirty } = useFormState()
   const { showSuccess } = useCustomToast()
   const [isSheetOpen, setIsSheetOpen] = useState(false)
+  const [metadata, setMetadata] = useState<{ key: string; value: string }[]>([])
 
   useEffect(() => {
     if (isDirty) {
@@ -27,21 +28,33 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
     }
   }, [isDirty])
 
-  const metadataFormRef = useRef<{
-    submitForm: () => Promise<MetadataValues>
-  }>(null)
-
   const breadcrumbPaths: BreadcrumbPath[] = [
     { name: 'Ledgers', href: '/ledgers' },
     { name: 'Detalhe da Ledger' }
   ]
+
+  const handleGlobalSubmit = () => {
+    const dataToSubmit = {
+      ...formData,
+      metadata: metadata.reduce(
+        (acc, item) => ({ ...acc, [item.key]: item.value }),
+        {}
+      )
+    }
+
+    resetDirty()
+    console.log('Data to submit:', dataToSubmit)
+    showSuccess('Alterações salvas com sucesso.')
+  }
 
   const tabs = [
     {
       id: 1,
       value: 'overview',
       name: 'Visão Geral',
-      content: <OverviewTabContent data={data} />
+      content: data && (
+        <OverviewTabContent data={data} onMetadataChange={setMetadata} />
+      )
     },
     {
       id: 2,
@@ -51,35 +64,48 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
     }
   ]
 
-  const handleGlobalSubmit = async () => {
-    let metadataValues: MetadataValues = {
-      metadata: []
-    }
-
-    if (metadataFormRef.current) {
-      metadataValues = await metadataFormRef.current.submitForm()
-    }
-
-    const dataToSubmit = {
-      name: formData.name,
-      metadata: metadataValues.metadata.reduce(
-        (acc: any, { key, value }: MetadataItem) => {
-          acc[key] = value
-          return acc
-        },
-        {}
-      )
-    }
-
-    resetDirty()
-    setIsSheetOpen(false)
-    console.log(dataToSubmit)
-    showSuccess('Alterações salvas com sucesso.')
-  }
-
   const handleCancel = () => {
     setIsSheetOpen(false)
     resetDirty()
+  }
+
+  if (!data) {
+    return (
+      <React.Fragment>
+        <BreadcrumbComponent paths={breadcrumbPaths} />
+
+        <div className="mt-12 flex h-[125px] w-full flex-col gap-4 border-b">
+          <Skeleton className="h-10 w-80 bg-zinc-200" />
+          <Skeleton className="h-5 w-80 bg-zinc-200" />
+        </div>
+
+        <div className="mt-6 flex w-full gap-4">
+          <Skeleton className="h-10 w-24 bg-zinc-200" />
+          <Skeleton className="h-10 w-24 bg-zinc-200" />
+        </div>
+
+        <div className="mt-4 flex gap-6">
+          <div className="flex flex-1 flex-col gap-6">
+            <Skeleton className="h-[168px] bg-zinc-200" />
+            <Skeleton className="h-[168px] bg-zinc-200" />
+            <Skeleton className="h-[94px] bg-zinc-200" />
+          </div>
+
+          <div className="flex flex-1 gap-6">
+            <div className="flex flex-1 flex-col gap-6">
+              <Skeleton className="h-[134px] bg-zinc-200" />
+              <Skeleton className="h-[350px] bg-zinc-200" />
+            </div>
+
+            <div className="flex flex-1 flex-col gap-6">
+              <Skeleton className="h-[134px] bg-zinc-200" />
+              <Skeleton className="h-[134px] bg-zinc-200" />
+              <Skeleton className="h-[134px] bg-zinc-200" />
+            </div>
+          </div>
+        </div>
+      </React.Fragment>
+    )
   }
 
   return (

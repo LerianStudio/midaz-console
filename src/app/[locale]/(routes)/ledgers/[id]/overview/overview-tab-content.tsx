@@ -8,18 +8,12 @@ import {
   useChartsTotalTransactions,
   useChartsTransactionsByStatus
 } from '@/utils/queries'
-import { useState } from 'react'
 
 type OverviewTabContentProps = {
   data: LedgerEntity
-  onMetadataChange: any
 }
 
-export const OverviewTabContent = ({
-  data,
-  onMetadataChange
-}: OverviewTabContentProps) => {
-  const [metadata, setMetadata] = useState(data.metadata || [])
+export const OverviewTabContent = ({ data }: OverviewTabContentProps) => {
   const totalAmount = useChartsTotalAmount(data.id)
   const totalTransactions = useChartsTotalTransactions(data.id)
   const transactionsByStatus = useChartsTransactionsByStatus(data.id)
@@ -32,12 +26,6 @@ export const OverviewTabContent = ({
       (status: { status: string; count: number }) => status.count
     ),
     colors: ['#74DB9A', '#FFED89', '#FAA589']
-  }
-
-  const handleMetadataChange = (newMetadata: any) => {
-    console.log(newMetadata)
-    setMetadata(newMetadata)
-    onMetadataChange(newMetadata)
   }
 
   return (
@@ -54,7 +42,7 @@ export const OverviewTabContent = ({
 
         <Card.Root>
           <Card.Header title="Metadados" className="text-lg capitalize" />
-          <Card.Metadata data={{ metadata }} onChange={handleMetadataChange} />
+          <Card.Metadata data={data} />
         </Card.Root>
 
         <Card.Root className="py-4">

@@ -1,17 +1,19 @@
-'use client'
-
-import React, { forwardRef, useImperativeHandle, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm, useFieldArray } from 'react-hook-form'
 import { z } from 'zod'
-import { useFormState } from '@/context/FormDetailsContext'
-import { Plus, Trash } from 'lucide-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CardContent } from '../ui/card/card'
 import { Label } from '../ui/label/label'
 import { Input } from '../ui/input/input'
 import { Button } from '../ui/button/button'
+import { useFormState } from '@/context/FormDetailsContext'
+import { Plus, Trash } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { MetadataItem } from '@/types/MetadataType'
+
+type CardMetadataProps = {
+  data: any
+  onChange: (metadata: any[]) => void
+}
 
 const formSchema = z.object({
   metadata: z.array(
@@ -22,24 +24,20 @@ const formSchema = z.object({
   )
 })
 
-const normalizeMetadata = (metadata: MetadataItem) => {
-  if (Array.isArray(metadata)) {
-    return metadata
-  } else if (typeof metadata === 'object' && metadata !== null) {
-    return Object.entries(metadata).map(([key, value]) => ({
-      key,
-      value: value?.toString()
-    }))
-  } else {
-    return []
-  }
+const normalizeMetadata = (metadata: any) => {
+  return Array.isArray(metadata)
+    ? metadata
+    : Object.entries(metadata || {}).map(([key, value]) => ({
+        key,
+        value: value?.toString() || ''
+      }))
 }
 
-export const CardMetadata = forwardRef(({ data }: any, ref) => {
-  const { updateFormData, markAsDirty } = useFormState()
+export const CardMetadata = ({ data, onChange }: CardMetadataProps) => {
+  const { markAsDirty } = useFormState()
   const [newMetadata, setNewMetadata] = useState({ key: '', value: '' })
 
-  const { control, handleSubmit, register, setValue, getValues } = useForm({
+  const { control, register, handleSubmit, setValue, watch, reset } = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       metadata: normalizeMetadata(data.metadata)
@@ -51,56 +49,37 @@ export const CardMetadata = forwardRef(({ data }: any, ref) => {
     name: 'metadata'
   })
 
-  useImperativeHandle(ref, () => ({
-    submitForm: () => {
-      return new Promise((resolve) => {
-        handleSubmit((values) => {
-          updateFormData({
-            metadata: values.metadata.reduce(
-              (acc: any, { key, value }: { key: string; value: string }) => {
-                acc[key] = value
-                return acc
-              },
-              {}
-            )
-          })
-
-          resolve(values)
-        })()
-      })
-    }
-  }))
+  useEffect(() => {
+    const subscription = watch((newValue) => {
+      onChange(newValue.metadata ?? [])
+    })
+    return () => subscription.unsubscribe()
+  }, [watch, onChange])
 
   const handleNewMetadataChange =
     (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
       setNewMetadata((prev) => ({ ...prev, [field]: e.target.value }))
     }
 
-  const handleInputChange =
-    (index: number, field: 'key' | 'value') =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const fieldPath =
-        `metadata.${index}.${field}` as `metadata.${number}.${'key' | 'value'}`
-
-      const currentValue = getValues(fieldPath as any)
-
-      if (currentValue !== e.target.value) {
-        markAsDirty()
-      }
-      setValue(fieldPath as any, e.target.value, { shouldValidate: true })
-    }
-
   const handleAddMetadata = () => {
     if (newMetadata.key && newMetadata.value) {
-      append({ key: newMetadata.key, value: newMetadata.value })
-      markAsDirty()
+      append(newMetadata)
       setNewMetadata({ key: '', value: '' })
+      markAsDirty()
     }
   }
 
+  const handleInputChange =
+    (index: number, field: string) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setValue(`metadata.${index}.${field}`, e.target.value, {
+        shouldValidate: true
+      })
+    }
+
   return (
     <CardContent className="p-0">
-      <div className="mt-6 flex gap-5">
+      <div className="mt-6 flex gap-3">
         <div className="flex w-full gap-3">
           <div className="flex flex-1 flex-col gap-4">
             <Label htmlFor="key">Key</Label>
@@ -131,32 +110,32 @@ export const CardMetadata = forwardRef(({ data }: any, ref) => {
           <Plus
             size={16}
             className={cn(
-              'shrink-0',
-              !newMetadata.key || !newMetadata.value
-                ? 'text-shadcn-400'
-                : 'text-white'
+              'shrink-0 text-shadcn-400',
+              newMetadata.key && newMetadata.value && 'text-white'
             )}
           />
         </Button>
       </div>
 
-      {fields.map((item: any, index) => (
+      {fields.map((item, index) => (
         <div key={item.id} className="mt-3 flex items-center justify-between">
-          <div className="flex w-full gap-5">
-            <div className="flex flex-1 gap-3">
-              <Input
-                defaultValue={item.key}
-                {...register(`metadata.${index}.key` as const)}
-                onChange={handleInputChange(index, 'key')}
-              />
-
-              <Input
-                defaultValue={item.value}
-                {...register(`metadata.${index}.value` as const)}
-                onChange={handleInputChange(index, 'value')}
-              />
-            </div>
-
+          <div className="flex w-full gap-3">
+            <Input
+              defaultValue={item.key}
+              {...register(`metadata.${index}.key`)}
+              onChange={() => {
+                handleInputChange(index, 'key')
+                markAsDirty()
+              }}
+            />
+            <Input
+              defaultValue={item.value}
+              {...register(`metadata.${index}.value`)}
+              onChange={() => {
+                handleInputChange(index, 'value')
+                markAsDirty()
+              }}
+            />
             <Button
               onClick={() => {
                 remove(index)
@@ -174,6 +153,4 @@ export const CardMetadata = forwardRef(({ data }: any, ref) => {
       ))}
     </CardContent>
   )
-})
-
-CardMetadata.displayName = 'CardMetadata'
+}

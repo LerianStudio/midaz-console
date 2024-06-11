@@ -1,5 +1,9 @@
+'use client'
+
 import { FormDetailsProvider } from '@/context/FormDetailsContext'
 import LedgerDetailsView from './ledger-details-view'
+import { useLedgerById } from '@/utils/queries'
+import { FormProvider, useForm } from 'react-hook-form'
 
 type Params = {
   params: {
@@ -8,15 +12,15 @@ type Params = {
   }
 }
 
-const Page = async ({ params }: Params) => {
-  const ledgerReq = await fetch(
-    `${process.env.MIDAZ_BASE_PATH}/ledgers/${params.id}`
-  )
-  const response = await ledgerReq.json()
+const Page = ({ params }: Params) => {
+  const data = useLedgerById(params.id)
+  const methods = useForm()
 
   return (
     <FormDetailsProvider>
-      <LedgerDetailsView data={response} />
+      <FormProvider {...methods}>
+        <LedgerDetailsView data={data.data} />
+      </FormProvider>
     </FormDetailsProvider>
   )
 }
