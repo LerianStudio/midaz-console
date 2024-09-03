@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import { Inter } from 'next/font/google'
-import NextAuthSessionProvider from '@/providers/NextAuthSessionProvider'
+import NextAuthSessionProvider from '@/providers/next-auth-session-provider'
 import { ThemeProvider } from '@/components/theme-provider'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -21,7 +21,7 @@ export default function RootLayout({
           {/*  enableSystem*/}
           {/*  disableTransitionOnChange*/}
           {/*>*/}
-            {children}
+          {children}
           {/*</ThemeProvider>*/}
         </NextAuthSessionProvider>
       </body>

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import OrganizationsUseCases from '@/core/useCases/OrganizationsUseCases'
+import OrganizationsUseCases from '@/core/useCases/organizations-use-cases'
 import { container, Registry } from '@/core/infra/container-registry'
 
 const organizationsUseCases = container.get<OrganizationsUseCases>(

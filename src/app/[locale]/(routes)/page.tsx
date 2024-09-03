@@ -1,6 +1,6 @@
 'use client'
 
-import { PageHeader } from '@/components/PageHeader'
+import { PageHeader } from '@/components/page-header'
 import { useTranslations } from 'next-intl'
 
 const Page = () => {

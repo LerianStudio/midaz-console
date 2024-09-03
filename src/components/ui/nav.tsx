@@ -6,7 +6,7 @@ import {
 } from './tooltip'
 import { buttonVariants } from './button/button'
 import { cn } from '@/lib/utils'
-import { Category } from '@/types/SidebarType'
+import { Category } from '@/types/sidebar-type'
 import { usePathname } from 'next/navigation'
 import { Link } from '../../../navigation'
 import { useLocale } from 'next-intl'

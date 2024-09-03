@@ -1,6 +1,6 @@
 import createMiddleware from 'next-intl/middleware'
 
-import { AppConfig } from '@/utils/AppConfig'
+import { AppConfig } from '@/utils/app-config'
 
 export default createMiddleware({
   locales: AppConfig.locales,

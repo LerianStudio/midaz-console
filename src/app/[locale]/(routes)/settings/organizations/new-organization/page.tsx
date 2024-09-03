@@ -2,14 +2,14 @@
 
 import { usePathname, useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import useCustomToast from '@/hooks/useCustomToast'
-import { BreadcrumbComponent, BreadcrumbPath } from '@/components/Breadcrumb'
-import { OrganizationsType } from '@/types/OrganizationsType'
-import { createOrganization } from '@/client/organizationClient'
+import useCustomToast from '@/hooks/use-custom-toast'
+import { BreadcrumbComponent, BreadcrumbPath } from '@/components/breadcrumb'
+import { OrganizationsType } from '@/types/organizations-type'
+import { createOrganization } from '@/client/organization-client'
 import { cn } from '@/lib/utils'
 import OrganizationsView from '@/app/[locale]/(routes)/settings/organizations/organizations-view'
-import { FormDetailsProvider } from '@/context/FormDetailsContext'
-import { ClientToastException } from '@/exceptions/client/clientToastException'
+import { FormDetailsProvider } from '@/context/form-details-context'
+import { ClientToastException } from '@/exceptions/client/client-toast-exception'
 
 const Page = () => {
   const t = useTranslations('organizations.organizationView')

@@ -2,18 +2,16 @@
 
 import { usePathname, useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import useCustomToast from '@/hooks/useCustomToast'
-import { BreadcrumbComponent, BreadcrumbPath } from '@/components/Breadcrumb'
-import { OrganizationsType } from '@/types/OrganizationsType'
+import useCustomToast from '@/hooks/use-custom-toast'
+import { BreadcrumbComponent, BreadcrumbPath } from '@/components/breadcrumb'
+import { OrganizationsType } from '@/types/organizations-type'
 import OrganizationsView from '@/app/[locale]/(routes)/settings/organizations/organizations-view'
-import { FormDetailsProvider } from '@/context/FormDetailsContext'
+import { FormDetailsProvider } from '@/context/form-details-context'
 import { useOrganizationById } from '@/utils/queries'
-import { updateOrganization } from '@/client/organizationClient'
-import { PageHeader } from '@/components/PageHeader'
-import { ClientToastException } from '@/exceptions/client/clientToastException'
+import { updateOrganization } from '@/client/organization-client'
+import { PageHeader } from '@/components/page-header'
+import { ClientToastException } from '@/exceptions/client/client-toast-exception'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Card } from '@/components/Card'
-import { ArrowUpRight } from 'lucide-react'
 
 const Page = ({ params }: { params: { id: string } }) => {
   const router = useRouter()
@@ -59,7 +57,7 @@ const Page = ({ params }: { params: { id: string } }) => {
               organizationId: organizationId
             })
           : toastTranslator('genericError')
-      
+
       return showError(errorMessage)
     }
   }

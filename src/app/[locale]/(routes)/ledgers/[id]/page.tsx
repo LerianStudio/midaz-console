@@ -1,6 +1,6 @@
 'use client'
 
-import { FormDetailsProvider } from '@/context/FormDetailsContext'
+import { FormDetailsProvider } from '@/context/form-details-context'
 import LedgerDetailsView from './ledger-details-view'
 import { useLedgerById } from '@/utils/queries'
 import { FormProvider, useForm } from 'react-hook-form'

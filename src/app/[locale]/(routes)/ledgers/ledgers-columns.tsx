@@ -11,8 +11,8 @@ import {
 } from '@/components/ui/tooltip'
 import { Minus, MoreVertical, Trash } from 'lucide-react'
 
-import useCustomToast from '@/hooks/useCustomToast'
-import { LedgerEntity } from '@/core/domain/entities/LedgerEntity'
+import useCustomToast from '@/hooks/use-custom-toast'
+import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import {
   DropdownMenu,
   DropdownMenuContent,

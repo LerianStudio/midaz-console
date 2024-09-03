@@ -10,7 +10,7 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { MoreVertical, Trash } from 'lucide-react'
-import useCustomToast from '@/hooks/useCustomToast'
+import useCustomToast from '@/hooks/use-custom-toast'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,7 +19,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button/button'
-import { OrganizationsType } from '@/types/OrganizationsType'
+import { OrganizationsType } from '@/types/organizations-type'
 
 export type OrganizationsColumnsEvents = {
   handleClickId?: (id: string) => void

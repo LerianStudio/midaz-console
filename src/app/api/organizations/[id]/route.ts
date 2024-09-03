@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { container, Registry } from '@/core/infra/container-registry'
-import OrganizationsUseCases from '@/core/useCases/OrganizationsUseCases'
+import OrganizationsUseCases from '@/core/useCases/organizations-use-cases'
 
 const organizationsUseCases = container.get<OrganizationsUseCases>(
   Registry.OrganizationsUseCasesRegistry

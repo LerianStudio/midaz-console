@@ -2,7 +2,7 @@ import { redirect, RedirectType } from 'next/navigation'
 import '@/app/globals.css'
 import { getServerSession } from 'next-auth'
 import React from 'react'
-import { nextAuthOptions } from '@/utils/OryCredentialsProvider'
+import { nextAuthOptions } from '@/utils/ory-credentials-provider'
 
 type AuthRoutesProps = {
   children: React.ReactNode

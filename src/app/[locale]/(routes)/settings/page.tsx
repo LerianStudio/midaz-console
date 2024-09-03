@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { BreadcrumbComponent, BreadcrumbPath } from '@/components/Breadcrumb'
+import { BreadcrumbComponent, BreadcrumbPath } from '@/components/breadcrumb'
 import OrganizationsTable from '@/app/[locale]/(routes)/settings/organizations/organizations-table'
 
 const Page = () => {

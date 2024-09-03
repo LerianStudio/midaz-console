@@ -1,11 +1,11 @@
 import React from 'react'
 import { NextIntlClientProvider } from 'next-intl'
 import '@/app/globals.css'
-import { QueryProvider } from '@/utils/queryProvider'
+import { QueryProvider } from '@/utils/query-provider'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Toaster } from 'react-hot-toast'
 import { Metadata } from 'next'
-import { getMetadata } from '../../../services/configs/applicationConfig'
+import { getMetadata } from '../../../services/configs/application-config'
 import { getMessages } from 'next-intl/server'
 
 export default async function RootLayout({
