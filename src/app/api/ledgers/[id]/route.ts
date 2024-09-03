@@ -1,4 +1,4 @@
-import LedgersUseCases from '@/core/useCases/LedgersUseCases'
+import LedgersUseCases from '@/core/useCases/ledgers-use-cases'
 import { NextResponse } from 'next/server'
 import { container, Registry } from '@/core/infra/container-registry'
 

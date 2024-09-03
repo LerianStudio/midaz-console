@@ -6,22 +6,22 @@ import { getLedgersFormFields } from '@/app/[locale]/(routes)/ledgers/ledgers-fo
 import { getLedgersColumns } from '@/app/[locale]/(routes)/ledgers/ledgers-columns'
 import { Skeleton } from '@/components/ui/skeleton'
 import { formSchema } from '@/app/[locale]/(routes)/ledgers/ledgers-form-schema'
-import { DataTable } from '@/components/DataTable'
-import { NoResource } from '@/components/NoResource'
-import { LedgerEntity } from '@/core/domain/entities/LedgerEntity'
-import { useSheetMode } from '@/hooks/ledgers/useSheetMode'
-import { useDeleteLedger } from '@/hooks/ledgers/useDeleteLedger'
-import { useCreateLedger } from '@/hooks/ledgers/useCreateLedger'
+import { DataTable } from '@/components/data-table'
+import { NoResource } from '@/components/no-resource'
+import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
+import { useSheetMode } from '@/hooks/ledgers/use-sheet-mode'
+import { useDeleteLedger } from '@/hooks/ledgers/use-delete-ledger'
+import { useCreateLedger } from '@/hooks/ledgers/use-create-ledger'
 import { v4 as uuidv4 } from 'uuid'
-import { useEnhancedLedgers } from '@/hooks/ledgers/useEnhancedLedgers'
-import { PageHeader } from '@/components/PageHeader'
-import { Dialog } from '@/components/Dialog'
-import { Sheet } from '@/components/Sheet'
+import { useEnhancedLedgers } from '@/hooks/ledgers/use-enhanced-ledgers'
+import { PageHeader } from '@/components/page-header'
+import { Dialog } from '@/components/dialog'
+import { Sheet } from '@/components/sheet'
 import {
   getHelperTriggerTranslate,
   getListingTemplateTranslate,
   getSheetInfo
-} from '@/helpers/ledgers/ledgersHelpers'
+} from '@/helpers/ledgers/ledgers-helpers'
 import { useLedgers } from '@/utils/queries'
 
 const LedgersView = () => {

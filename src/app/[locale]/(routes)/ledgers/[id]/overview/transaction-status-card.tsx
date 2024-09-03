@@ -1,4 +1,4 @@
-import { Card } from '@/components/Card'
+import { Card } from '@/components/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { BarChart } from 'lucide-react'
 

@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card/card'
-import LoginView from '@/components/view/LoginView'
+import LoginView from '@/components/view/login-view'
 
 const SignInPage = () => {
   return (

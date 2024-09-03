@@ -1,16 +1,15 @@
-import { DataTable } from '@/components/DataTable'
+import { DataTable } from '@/components/data-table'
 import { useInstruments } from '@/utils/queries'
 import { instrumentsColumns } from './instruments-columns'
 import { Skeleton } from '@/components/ui/skeleton'
 import React from 'react'
-import { NoResource } from '@/components/NoResource'
-import { useSheetMode } from '@/hooks/ledgers/useSheetMode'
+import { NoResource } from '@/components/no-resource'
+import { useSheetMode } from '@/hooks/ledgers/use-sheet-mode'
 import { getInstrumentsFormFields } from './instruments-form-fields'
 import { instrumentsSchema } from './instruments-form-schema'
-import { getSheetInfo } from '@/helpers/ledgers/ledgersHelpers'
 import { useTranslations } from 'next-intl'
-import { Sheet } from '@/components/Sheet'
-import { getInstrumentsSheetInfo } from '@/helpers/instruments/instrumentsHelpers'
+import { Sheet } from '@/components/sheet'
+import { getInstrumentsSheetInfo } from '@/helpers/instruments/instruments-helpers'
 
 export const InstrumentsTabContent = ({ data }: any) => {
   const instruments = useInstruments(data?.id)

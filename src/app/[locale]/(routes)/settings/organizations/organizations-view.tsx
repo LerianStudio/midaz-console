@@ -1,7 +1,7 @@
 'use client'
 
-import type { OrganizationsType } from '@/types/OrganizationsType'
-import { Card } from '@/components/Card'
+import type { OrganizationsType } from '@/types/organizations-type'
+import { Card } from '@/components/card'
 import { useTranslations } from 'next-intl'
 import { Separator } from '@/components/ui/separator'
 import { CardContent, CardFooter } from '@/components/ui/card/card'
@@ -16,10 +16,10 @@ import {
   RenderField,
   RenderParentIdField,
   RenderStateField
-} from '@/components/Sheet/RenderField'
+} from '@/components/sheet/render-field'
 import React, { useState } from 'react'
-import MetadataInput from '@/components/Metadata/MetadataInput'
-import MetadataPreview from '@/components/Metadata/MetadataPreview'
+import MetadataInput from '@/components/metadata/metadata-input'
+import MetadataPreview from '@/components/metadata/metadata-preview'
 import {
   Collapsible,
   CollapsibleContent,

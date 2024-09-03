@@ -1,6 +1,6 @@
 import { createSharedPathnamesNavigation } from 'next-intl/navigation'
 
-import { AppConfig } from '@/utils/AppConfig'
+import { AppConfig } from '@/utils/app-config'
 
 export const { Link, usePathname, useRouter } = createSharedPathnamesNavigation(
   {
