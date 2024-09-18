@@ -1,6 +1,11 @@
 import { headers } from 'next/headers'
 
 export function _getAcceptLanguage(header: string | null) {
+  // Return empty as default if all languages are accepted
+  if (header === '*') {
+    return []
+  }
+
   // Split locales by comma
   let locales = header?.split(',')
 
