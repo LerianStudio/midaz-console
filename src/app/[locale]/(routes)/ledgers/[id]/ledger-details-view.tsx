@@ -11,6 +11,7 @@ import React, { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { OverviewTabContent } from './overview-tab-content'
 import { Skeleton } from '@/components/ui/skeleton'
+import { AccountsPortfoliosTabContent } from './accounts-portfolios-tab-content'
 
 type LedgerDetailsViewProps = {
   data: LedgerEntity
@@ -61,6 +62,12 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
       value: 'instruments',
       name: 'Instrumentos',
       content: <div>Instruments</div>
+    },
+    {
+      id: 3,
+      value: 'accountsportfolios',
+      name: 'Contas e Portfólios',
+      content: <AccountsPortfoliosTabContent />
     }
   ]
 
