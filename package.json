@@ -9,7 +9,10 @@
     "lint": "next lint --fix",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "json-server": "json-server ./faker/index.json -p 3001"
+    "json-server": "json-server ./faker/index.json -p 3001",
+    "extract:i18n": "formatjs extract \"./src/**/*.{js,ts,tsx}\" --additional-function-names \"$t\" --format simple --out-file \"./locales/extract/en.json\" --throws",
+    "compile:i18n": "formatjs compile-folder \"./locales/extract\" --format simple \"./locales/compiled\"",
+    "i18n": "npm run extract:i18n & npm run compile:i18n"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
@@ -36,6 +39,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "cmdk": "^0.2.1",
+    "cookies-next": "^4.2.1",
     "framer-motion": "^11.0.28",
     "inversify": "^6.0.2",
     "lucide-react": "^0.323.0",
@@ -49,6 +53,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.0",
     "react-hot-toast": "^2.4.1",
+    "react-intl": "^6.6.8",
     "read-yaml-file": "^2.1.0",
     "reflect-metadata": "^0.2.2",
     "swr": "^2.2.5",
@@ -58,6 +63,7 @@
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.2.25",
+    "@formatjs/cli": "^6.2.12",
     "@playwright/test": "^1.43.0",
     "@storybook/addon-essentials": "^8.0.4",
     "@storybook/addon-interactions": "^8.0.4",
