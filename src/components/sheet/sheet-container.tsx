@@ -62,7 +62,7 @@ export const SheetContainer = ({
       form.reset(getDefaultValues(data, fields))
       prevDataRef.current = data
     }
-  }, [data])
+  }, [data, fields])
 
   const handleSubmit = async (values: any) => {
     await onSubmit(values)

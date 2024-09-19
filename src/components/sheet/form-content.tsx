@@ -4,23 +4,17 @@ import { MetadataSection } from './metadata-section'
 import { FormContentProps, FormFieldConfig } from '@/types/sheet-type'
 
 export const FormContent = ({
-  formContentProps
-}: {
-  formContentProps: FormContentProps
-}) => {
-  const {
-    fields,
-    form,
-    isCreateMode,
-    isSwitchOn,
-    setSwitchOn,
-    currentMetadata,
-    setCurrentMetadata,
-    metaFields,
-    append,
-    remove
-  } = formContentProps
-
+  fields,
+  form,
+  isCreateMode,
+  isSwitchOn,
+  setSwitchOn,
+  currentMetadata,
+  setCurrentMetadata,
+  metaFields,
+  append,
+  remove
+}: FormContentProps) => {
   const metadataSectionProps = {
     isSwitchOn,
     setSwitchOn,

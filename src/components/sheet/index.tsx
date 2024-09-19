@@ -59,7 +59,7 @@ export const Sheet = ({ sheetProps, formProps, stateProps }: SheetProps) => {
             onSubmit={form.handleSubmit(handleSubmit)}
             className="flex flex-grow flex-col"
           >
-            <FormContent formContentProps={formContentProps} />
+            <FormContent {...formContentProps} />
             <SheetFooter className="mt-auto flex justify-center py-8 pt-20">
               <SheetClose asChild>
                 <Button
