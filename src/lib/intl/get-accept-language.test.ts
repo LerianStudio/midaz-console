@@ -1,4 +1,4 @@
-import { _getAcceptLanguage } from './getAcceptLanguage'
+import { _getAcceptLanguage } from './get-accept-language'
 
 describe('getAcceptLanguage', () => {
   test('Header with wildcard', () => {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { getIntl } from './getIntl'
+import { getIntl } from './get-intl'
 import { ClientLocalizationProvider } from './client-localization-provider'
 
 export const LocalizationProvider = async ({

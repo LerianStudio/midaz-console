@@ -2,8 +2,8 @@
 
 import { getCookie, hasCookie } from 'cookies-next'
 import { createIntl, createIntlCache } from 'react-intl'
-import { getIntlConfig } from './getIntlConfig'
-import { getLocale } from './getLocale'
+import { getIntlConfig } from './get-intl-config'
+import { getLocale } from './get-locale'
 import { cookies } from 'next/headers'
 
 export async function getIntl() {
@@ -25,7 +25,7 @@ export async function getIntl() {
     {
       defaultLocale: config.defaultLocale,
       locale: locale,
-      messages: (await import(`@/../locales/compiled/${locale}.json`)).default
+      messages: (await import(`@/../locales/extracted/${locale}.json`)).default
     },
     createIntlCache()
   )

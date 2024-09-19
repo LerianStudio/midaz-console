@@ -1,6 +1,6 @@
 import { match } from '@formatjs/intl-localematcher'
-import { getAcceptLanguage } from './getAcceptLanguage'
-import { getIntlConfig } from './getIntlConfig'
+import { getAcceptLanguage } from './get-accept-language'
+import { getIntlConfig } from './get-intl-config'
 
 /**
  * Matchs the locales available on i18n configuration,
