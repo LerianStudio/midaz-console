@@ -34,6 +34,19 @@ export const Sheet = ({ sheetProps, formProps, stateProps }: SheetProps) => {
     setCurrentMetadata
   } = stateProps
 
+  const formContentProps = {
+    fields,
+    form,
+    isCreateMode,
+    isSwitchOn,
+    setSwitchOn,
+    currentMetadata,
+    setCurrentMetadata,
+    metaFields,
+    append,
+    remove
+  }
+
   return (
     <BaseSheet open={open} onOpenChange={setOpen}>
       <SheetContent
@@ -46,18 +59,7 @@ export const Sheet = ({ sheetProps, formProps, stateProps }: SheetProps) => {
             onSubmit={form.handleSubmit(handleSubmit)}
             className="flex flex-grow flex-col"
           >
-            <FormContent
-              fields={fields}
-              form={form}
-              isCreateMode={isCreateMode}
-              isSwitchOn={isSwitchOn}
-              setSwitchOn={setSwitchOn}
-              currentMetadata={currentMetadata}
-              setCurrentMetadata={setCurrentMetadata}
-              metaFields={metaFields}
-              append={append}
-              remove={remove}
-            />
+            <FormContent formContentProps={formContentProps} />
             <SheetFooter className="mt-auto flex justify-center py-8 pt-20">
               <SheetClose asChild>
                 <Button
