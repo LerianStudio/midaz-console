@@ -4,12 +4,40 @@ import { intlConfig } from '../intl.config'
 import { mkdir, readFile, writeFile } from 'fs/promises'
 import path from 'path'
 import { existsSync } from 'fs'
+import { omit, mapValues } from 'lodash'
 
 const outputPath = './locales/extracted'
 const formatJsConfig = {
   format: 'simple',
   additionalFunctionNames: ['$t'],
   throws: true
+}
+
+/**
+ * Analyses the differences in keys of an object A in relation to B
+ * and returns the added and removed key values as new objects
+ * @param a
+ * @param b
+ * @returns
+ */
+function diff(a: object, b: object) {
+  return {
+    added: omit(a, Object.keys(b)),
+    removed: omit(b, Object.keys(a))
+  }
+}
+
+/**
+ * Apply the differences between an object A in relation to B
+ * adding or removing those keys from object B
+ * @param a Base line object
+ * @param b Target object
+ * @returns
+ */
+function applyDiff(a: object, b: object) {
+  const { added, removed } = diff(a, b)
+
+  return Object.assign({}, omit(b, Object.keys(removed)), added)
 }
 
 /**
@@ -20,14 +48,9 @@ const formatJsConfig = {
 function clearDefaultMessages(data: string) {
   let json = JSON.parse(data)
 
-  // Clear keys
-  for (const key in json) {
-    if (json.hasOwnProperty(key)) {
-      json[key] = ''
-    }
-  }
+  const temp = mapValues(json, () => '')
 
-  return JSON.stringify(json, null, 2)
+  return JSON.stringify(temp, null, 2)
 }
 
 /**
@@ -50,7 +73,7 @@ async function extractLocale(locale: string, data: string) {
     const localeJson = JSON.parse(localeFile.toString('utf-8'))
 
     // Merge existing keys with new empty keys, given preference to existing ones
-    outputJson = Object.assign({}, outputJson, localeJson)
+    outputJson = applyDiff(outputJson, localeJson)
 
     output = JSON.stringify(outputJson, null, 2)
   }
@@ -69,11 +92,8 @@ async function main() {
   // Runs formatjs and get the extracted keys
   const extracted = await extract(paths, formatJsConfig)
 
-  // Save default language
-  await writeFile(
-    path.join(outputPath, `${intlConfig.defaultLocale}.json`),
-    extracted
-  )
+  // Outputs default language file
+  await extractLocale(intlConfig.defaultLocale, extracted)
 
   // Remove default messages
   const extractedClean = clearDefaultMessages(extracted)
