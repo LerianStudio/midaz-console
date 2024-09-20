@@ -13,7 +13,7 @@ import {
 } from '@/utils/country-utils'
 import React, { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
-import { SelectFieldProps } from '@/components/sheet/select-field'
+import { SelectFieldProps } from '@/components/sheet/fields/select-field'
 import { useFormField } from '@/components/ui/form'
 
 type StateSelectorProps = {

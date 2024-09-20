@@ -7,7 +7,7 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { getCountries, getCountryByNameOrCode } from '@/utils/country-utils'
-import { SelectFieldProps } from '@/components/sheet/select-field'
+import { SelectFieldProps } from '@/components/sheet/fields/select-field'
 import { cn } from '@/lib/utils'
 import { useFormField } from '@/components/ui/form'
 

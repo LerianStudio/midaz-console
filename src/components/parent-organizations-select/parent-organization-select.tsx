@@ -8,8 +8,8 @@ import {
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 import React from 'react'
-import { SelectFieldProps } from '@/components/sheet/select-field'
-import { ParentOrganizationsType } from '@/types/ParentOrganizationsType'
+import { SelectFieldProps } from '@/components/sheet/fields/select-field'
+import { ParentOrganizationsType } from '@/types/parent-organizations-type'
 
 type CountrySelectProps = {
   className?: string
