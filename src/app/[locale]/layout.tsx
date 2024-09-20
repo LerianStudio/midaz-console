@@ -7,6 +7,7 @@ import { Toaster } from 'react-hot-toast'
 import { Metadata } from 'next'
 import { getMetadata } from '../../../services/configs/application-config'
 import { getMessages } from 'next-intl/server'
+import { LocalizationProvider } from '@/lib/intl'
 
 export default async function RootLayout({
   children,
@@ -21,11 +22,13 @@ export default async function RootLayout({
     <div>
       <QueryProvider>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <div>{children}</div>
-          <Toaster
-            position="top-right"
-            containerStyle={{ top: 60, right: 60 }}
-          />
+          <LocalizationProvider>
+            <div>{children}</div>
+            <Toaster
+              position="top-right"
+              containerStyle={{ top: 60, right: 60 }}
+            />
+          </LocalizationProvider>
         </NextIntlClientProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryProvider>

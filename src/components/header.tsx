@@ -1,5 +1,3 @@
-'use client'
-
 import { SettingsDropdown } from './settings-dropdown'
 import { UserDropdown } from './user-dropdown'
 import { Separator } from './ui/separator'
