@@ -89,6 +89,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
         <div className="mt-6 flex w-full gap-4">
           <Skeleton className="h-10 w-24 bg-zinc-200" />
           <Skeleton className="h-10 w-24 bg-zinc-200" />
+          <Skeleton className="h-10 w-24 bg-zinc-200" />
         </div>
 
         <div className="mt-4 flex gap-6">
