@@ -16,13 +16,13 @@ import { v4 as uuidv4 } from 'uuid'
 import { useEnhancedLedgers } from '@/hooks/ledgers/use-enhanced-ledgers'
 import { PageHeader } from '@/components/page-header'
 import { Dialog } from '@/components/dialog'
-import { Sheet } from '@/components/sheet'
 import {
   getHelperTriggerTranslate,
   getListingTemplateTranslate,
   getSheetInfo
 } from '@/helpers/ledgers/ledgers-helpers'
 import { useLedgers } from '@/utils/queries'
+import { SheetContainer } from '@/components/sheet/sheet-container'
 
 const LedgersView = () => {
   const t = useTranslations('ledgers')
@@ -130,7 +130,7 @@ const LedgersView = () => {
           </Dialog.Content>
         </Dialog.Root>
 
-        <Sheet {...sheetProps} />
+        <SheetContainer {...sheetProps} />
       </div>
     )
   }

@@ -1,7 +1,8 @@
-import { z } from 'zod'
+import { z } from "zod";
 
-export const formSchema = z.object({
+export const formSchemaPortfolio = z.object({
   name: z.string().min(3),
+  entity_id: z.string().min(3),
   metadata: z
     .array(
       z

@@ -2,6 +2,11 @@
 
 import { NextIntlClientProvider } from 'next-intl'
 
+/**
+ * TODO: Should be deprecated and removed soon
+ * @param param0
+ * @returns
+ */
 export default function MyCustomNextIntlClientProvider({
   children,
   locale,

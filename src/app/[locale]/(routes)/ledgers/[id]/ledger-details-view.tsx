@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { OverviewTabContent } from './overview-tab-content'
 import { Skeleton } from '@/components/ui/skeleton'
-import { AccountsPortfoliosTabContent } from './accounts-portfolios-tab-content'
+import { AccountsPortfoliosTabContent } from './accounts-and-portfolios/accounts-portfolios-tab-content'
 
 type LedgerDetailsViewProps = {
   data: LedgerEntity

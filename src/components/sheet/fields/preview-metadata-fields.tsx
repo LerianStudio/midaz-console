@@ -1,15 +1,16 @@
 import React from 'react'
 import { Button } from '@/components/ui/button/button'
 import { Trash } from 'lucide-react'
+import { MetadataItem } from '@/types/metadata-type'
 
-type MetadataValues = {
+export type PreviewMetadataFields = {
   id: string
   key: string
   value: string
 }
 
-type PreviewMetadataFieldsProps = {
-  metaFields: MetadataValues[]
+export type PreviewMetadataFieldsProps = {
+  metaFields: MetadataItem[]
   remove: (index: number) => void
 }
 

@@ -16,7 +16,7 @@ import {
   RenderField,
   RenderParentIdField,
   RenderStateField
-} from '@/components/sheet/render-field'
+} from '@/components/sheet/fields/render-field'
 import React, { useState } from 'react'
 import MetadataInput from '@/components/metadata/metadata-input'
 import MetadataPreview from '@/components/metadata/metadata-preview'

@@ -13,3 +13,12 @@ export type LedgerEntity = {
   updatedAt: string
   deletedAt: string
 }
+
+
+export type LedgerPortfoliosEntity = {
+  id: string
+  entity_id: string
+  metadata: {
+    value: string
+  }
+}

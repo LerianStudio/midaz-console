@@ -1,15 +1,15 @@
 import React from 'react'
 import { Button } from '@/components/ui/button/button'
 import { Input } from '@/components/ui/input/input'
-import { Label } from '../ui/label/label'
+import { Label } from '@/components/ui/label/label'
 import { Plus } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { MetadataItem } from '@/types/metadata-type'
 
 type MetadataFieldsProps = {
-  currentMetadata: { key: string; value: string }
+  currentMetadata: { id: string; key: string; value: string }
   setCurrentMetadata: React.Dispatch<
-    React.SetStateAction<{ key: string; value: string }>
+    React.SetStateAction<{ id: string; key: string; value: string }>
   >
   append: (value: MetadataItem) => void
 }
@@ -23,7 +23,7 @@ export const MetadataFields = ({
     e.preventDefault()
     if (currentMetadata.key && currentMetadata.value) {
       append({ ...currentMetadata })
-      setCurrentMetadata({ key: '', value: '' })
+      setCurrentMetadata({ id: '', key: '', value: '' })
     }
   }
 

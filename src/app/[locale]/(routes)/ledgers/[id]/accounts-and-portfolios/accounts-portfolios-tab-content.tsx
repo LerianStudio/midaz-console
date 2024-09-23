@@ -4,12 +4,13 @@ import { useSheetMode } from "@/hooks/ledgers/use-sheet-mode"
 import { PlusIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import React from "react"
-import { getPortfoliosFormField } from "../ledgers-form-fields"
-import { LedgerEntity } from "@/core/domain/entities/ledger-entity"
-import { formSchema } from "../ledgers-form-schema"
+import { LedgerPortfoliosEntity } from "@/core/domain/entities/ledger-entity"
 import { getSheetInfo } from "@/helpers/ledgers/ledgers-helpers"
-import { Sheet } from "@/components/sheet"
-import { Skeleton } from "@/components/ui/skeleton"
+import { SheetContainer } from "@/components/sheet/sheet-container"
+import { Dialog } from "@/components/dialog"
+import { formSchemaPortfolio } from "./accounts-and-portfolios-form-schema"
+import { getPortfoliosFormField } from "./accounts-and-portfolios-form-fields"
+import { useCreatePortfolio } from "@/hooks/accounts-portfolios/use-create-portfolio"
 
 export const AccountsPortfoliosTabContent = () => {
   const t = useTranslations('ledgers')
@@ -22,19 +23,15 @@ export const AccountsPortfoliosTabContent = () => {
     setSheetMode
   } = useSheetMode();
 
-
-  const getLoadingSkeleton = () => {
-    return (
-      <React.Fragment>
-        <Skeleton className="h-[84px] w-full bg-zinc-200" />
-        <Skeleton className="mt-6 h-[390px] w-full bg-zinc-200" />
-      </React.Fragment>
-    )
-  }
+  const {
+    isDialogOpen,
+    setIsDialogOpen
+  } = useCreatePortfolio();
 
 
-  const handleSubmit = async (values: LedgerEntity) => {
+  const handleSubmit = async (values: LedgerPortfoliosEntity) => {
     console.log(values)
+    setIsDialogOpen(true);
 
     // const mergedValues = { ...defaultLedgerSchema, ...values }
 
@@ -53,7 +50,7 @@ export const AccountsPortfoliosTabContent = () => {
       open: sheetMode.isOpen,
       setOpen: (isOpen: boolean) => setSheetMode({ ...sheetMode, isOpen }),
       fields: formFields,
-      formSchema: formSchema,
+      formSchema: formSchemaPortfolio,
       sheetInfo: sheetInfo,
       onSubmit: handleSubmit,
       mode: sheetMode.mode,
@@ -81,7 +78,18 @@ export const AccountsPortfoliosTabContent = () => {
             <PlusIcon className="ml-2 w-5 h-5" />
           </Button>
         </div>
-        <Sheet {...sheetProps} />
+
+        <Dialog.Root open={isDialogOpen} onOpenChange={() => {}}>
+          <Dialog.Content>
+            <Dialog.Header ledgerName={"blablabla"} />
+            <Dialog.Footer
+              onDismiss={() => (false)}
+              onDelete={() => console.log('deletar')}
+            />
+          </Dialog.Content>
+        </Dialog.Root>
+
+        <SheetContainer {...sheetProps} />
       </Card.Root>
 
       <Card.Root>

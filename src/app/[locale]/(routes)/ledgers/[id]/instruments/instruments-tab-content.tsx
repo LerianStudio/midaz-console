@@ -10,6 +10,7 @@ import { instrumentsSchema } from './instruments-form-schema'
 import { useTranslations } from 'next-intl'
 import { Sheet } from '@/components/sheet'
 import { getInstrumentsSheetInfo } from '@/helpers/instruments/instruments-helpers'
+import { SheetContainer } from '@/components/sheet/sheet-container'
 
 export const InstrumentsTabContent = ({ data }: any) => {
   const instruments = useInstruments(data?.id)
@@ -70,7 +71,7 @@ export const InstrumentsTabContent = ({ data }: any) => {
           />
         )}
 
-        <Sheet {...sheetProps} />
+        <SheetContainer {...sheetProps} />
       </div>
     )
   }

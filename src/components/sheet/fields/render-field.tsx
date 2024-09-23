@@ -17,19 +17,14 @@ type RenderFieldProps = {
   field: FormFieldConfig
   form: UseFormReturn<any>
   isCreateMode?: boolean
-  isViewMode?: boolean
   isDisabled?: boolean
 }
 
 export const RenderField = ({
   field,
   form,
-  isCreateMode = false,
-  isViewMode = false,
   isDisabled = false
 }: RenderFieldProps) => {
-  if (isCreateMode && field.name === 'id') return null
-
   return (
     <FormField
       key={field.name}
@@ -42,12 +37,7 @@ export const RenderField = ({
               {field.label} {field.isRequired && <span>*</span>}
             </FormLabel>
             <FormControl>
-              <InputField
-                field={field}
-                form={form}
-                isViewMode={isViewMode}
-                isDisabled={isDisabled}
-              />
+              <InputField field={field} form={form} isDisabled={isDisabled} />
             </FormControl>
             {field.description && (
               <FormDescription className="text-xs font-medium text-shadcn-400">
@@ -64,8 +54,7 @@ export const RenderField = ({
 export const RenderCountryField = ({
   field,
   form,
-  isCreateMode = false,
-  isViewMode = false
+  isCreateMode = false
 }: RenderFieldProps) => {
   if (isCreateMode && field.name === 'id') return null
 
@@ -105,8 +94,7 @@ export const RenderCountryField = ({
 export const RenderStateField = ({
   field,
   form,
-  isCreateMode = false,
-  isViewMode = false
+  isCreateMode = false
 }: RenderFieldProps) => {
   if (isCreateMode && field.name === 'id') return null
 
@@ -149,7 +137,6 @@ export const RenderParentIdField = ({
   field,
   form,
   isCreateMode = false,
-  isViewMode = false,
   isDisabled = false
 }: RenderFieldProps) => {
   if (isCreateMode && field.name === 'id') return null
