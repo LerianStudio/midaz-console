@@ -8,7 +8,6 @@ import { useSheetMode } from '@/hooks/ledgers/use-sheet-mode'
 import { getInstrumentsFormFields } from './instruments-form-fields'
 import { instrumentsSchema } from './instruments-form-schema'
 import { useTranslations } from 'next-intl'
-import { Sheet } from '@/components/sheet'
 import { getInstrumentsSheetInfo } from '@/helpers/instruments/instruments-helpers'
 import { SheetContainer } from '@/components/sheet/sheet-container'
 
@@ -16,12 +15,7 @@ export const InstrumentsTabContent = ({ data }: any) => {
   const instruments = useInstruments(data?.id)
   const t = useTranslations('instruments')
   const formFields: any = getInstrumentsFormFields(t)
-  const {
-    sheetMode,
-    handleOpenCreateSheet,
-    handleOpenViewSheet,
-    setSheetMode
-  } = useSheetMode()
+  const { sheetMode, handleOpenCreateSheet, setSheetMode } = useSheetMode()
 
   const getLoadingSkeleton = () => {
     return (

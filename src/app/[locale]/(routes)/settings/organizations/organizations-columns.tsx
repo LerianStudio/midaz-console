@@ -121,7 +121,7 @@ export const getOrganizationsColumns = (
               handleCopyToClipboard(
                 legalDocument,
                 intl.formatMessage({
-                  id: 'organizations.toast.copyId',
+                  id: 'organizations.toast.copyLegalDocument',
                   defaultMessage:
                     'The document number has been copied to your clipboard.'
                 })
