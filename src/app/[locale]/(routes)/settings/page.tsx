@@ -1,14 +1,14 @@
 'use client'
 import { cn } from '@/lib/utils'
 import { useCallback, useEffect, useState } from 'react'
-import { useTranslations } from 'next-intl'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { BreadcrumbComponent, BreadcrumbPath } from '@/components/breadcrumb'
 import OrganizationsTable from '@/app/[locale]/(routes)/settings/organizations/organizations-table'
+import { useIntl } from 'react-intl'
 
 const Page = () => {
-  const t = useTranslations('settings')
+  const intl = useIntl()
   const searchParams = useSearchParams()
   const pathname = usePathname()
   const router = useRouter()
@@ -16,7 +16,10 @@ const Page = () => {
   const [activeTab, setActiveTab] = useState(initialTab)
   const [breadcrumbPaths, setBreadcrumbPaths] = useState<BreadcrumbPath[]>([
     {
-      name: t('title'),
+      name: intl.formatMessage({
+        id: `settings.title`,
+        defaultMessage: 'Settings'
+      }),
       href: '#',
       active: false
     }
@@ -33,7 +36,8 @@ const Page = () => {
       breadcrumbPaths.pop()
     }
     breadcrumbPaths.push({
-      name: t(`tabs.${tab}`),
+      // name: intl.formatMessage({ id: `settings.tabs.${tab}` }),
+      name: '',
       active: true
     })
     setBreadcrumbPaths([...breadcrumbPaths])
@@ -59,7 +63,10 @@ const Page = () => {
 
       <div className="mb-12 mt-12">
         <h1 className={cn('text-4xl font-bold text-[#3f3f46]')}>
-          {t('title')}
+          {intl.formatMessage({
+            id: 'settings.title',
+            defaultMessage: 'Settings'
+          })}
         </h1>
       </div>
 
@@ -72,7 +79,10 @@ const Page = () => {
               )}
               value="organizations"
             >
-              {t('tabs.organizations')}
+              {intl.formatMessage({
+                id: 'settings.tabs.organizations',
+                defaultMessage: 'Organizations'
+              })}
             </TabsTrigger>
             <TabsTrigger
               className={cn(
@@ -80,7 +90,10 @@ const Page = () => {
               )}
               value="others"
             >
-              {t('tabs.others')}
+              {intl.formatMessage({
+                id: 'settings.tabs.others',
+                defaultMessage: 'Others Settings'
+              })}
             </TabsTrigger>
           </TabsList>
           <div className="mb-4 mt-4">

@@ -1,14 +1,19 @@
 'use client'
 
 import { PageHeader } from '@/components/page-header'
-import { useTranslations } from 'next-intl'
+import { useIntl } from 'react-intl'
 
 const Page = () => {
-  const t = useTranslations('auth')
+  const intl = useIntl()
 
   return (
     <PageHeader.Root>
-      <PageHeader.InfoTitle title={t('titleLogin')} />
+      <PageHeader.InfoTitle
+        title={intl.formatMessage({
+          id: 'auth.titleLogin',
+          defaultMessage: 'Welcome again!'
+        })}
+      />
     </PageHeader.Root>
   )
 }

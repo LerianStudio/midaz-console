@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button/button'
 import { OrganizationsType } from '@/types/organizations-type'
+import { useIntl } from 'react-intl'
 
 export type OrganizationsColumnsEvents = {
   handleClickId?: (id: string) => void
@@ -34,23 +35,15 @@ type ColumnRow = {
 }
 
 export const getOrganizationsColumns = (
-  organizationsEvents: OrganizationsColumnsEvents,
-  t: any
+  organizationsEvents: OrganizationsColumnsEvents
 ) => {
+  const intl = useIntl()
   const { showInfo } = useCustomToast()
 
-  const translateHeader = (itemNamespace: string) => {
-    return t(`columnsTable.${itemNamespace}`)
-  }
-
-  const translateToast = (itemNamespace: string) => {
-    return t(`toast.${itemNamespace}`)
-  }
-
-  const handleCopyToClipboard = (value: string, itemNamespace: string) => {
+  const handleCopyToClipboard = (value: string, message: string) => {
     navigator.clipboard.writeText(value)
 
-    showInfo(translateToast(itemNamespace))
+    showInfo(message)
   }
 
   return [
@@ -66,7 +59,16 @@ export const getOrganizationsColumns = (
               <TooltipTrigger asChild>
                 <p
                   className="text-sm font-normal text-zinc-800 underline"
-                  onClick={() => handleCopyToClipboard(id as string, 'copyId')}
+                  onClick={() =>
+                    handleCopyToClipboard(
+                      id as string,
+                      intl.formatMessage({
+                        id: 'organizations.toast.copyId',
+                        defaultMessage:
+                          'The id has been copied to your clipboard.'
+                      })
+                    )
+                  }
                 >
                   {displayId}
                 </p>
@@ -82,7 +84,10 @@ export const getOrganizationsColumns = (
 
     {
       accessorKey: 'name',
-      header: translateHeader('legalName'),
+      header: intl.formatMessage({
+        id: `organizations.columnsTable.legalName`,
+        defaultMessage: 'Legal Name'
+      }),
       cell: ({ row }: ColumnRow) => {
         const nameToDisplay: string = row.original.legalName
         return <p>{nameToDisplay}</p>
@@ -91,7 +96,10 @@ export const getOrganizationsColumns = (
 
     {
       accessorKey: 'doingBusinessAs',
-      header: translateHeader('doingBusinessAs'),
+      header: intl.formatMessage({
+        id: `organizations.columnsTable.doingBusinessAs`,
+        defaultMessage: 'Trade Name'
+      }),
       cell: ({ row }: ColumnRow) => {
         const nameToDisplay =
           row.original.doingBusinessAs || row.original.legalName
@@ -101,13 +109,23 @@ export const getOrganizationsColumns = (
 
     {
       accessorKey: 'legalDocument',
-      header: translateHeader('legalDocument'),
+      header: intl.formatMessage({
+        id: `organizations.columnsTable.legalDocument`,
+        defaultMessage: 'Document'
+      }),
       cell: ({ row }: ColumnRow) => {
         const legalDocument = row.original.legalDocument
         return (
           <p
             onClick={() =>
-              handleCopyToClipboard(legalDocument, 'copyLegalDocument')
+              handleCopyToClipboard(
+                legalDocument,
+                intl.formatMessage({
+                  id: 'organizations.toast.copyId',
+                  defaultMessage:
+                    'The document number has been copied to your clipboard.'
+                })
+              )
             }
           >
             {legalDocument}
@@ -118,7 +136,10 @@ export const getOrganizationsColumns = (
 
     {
       accessorKey: 'status',
-      header: translateHeader('status'),
+      header: intl.formatMessage({
+        id: `organizations.columnsTable.status`,
+        defaultMessage: 'Status'
+      }),
       cell: ({ row }: ColumnRow) => {
         const status = row.original.status.code
         return (
@@ -133,7 +154,10 @@ export const getOrganizationsColumns = (
 
     {
       id: 'actions',
-      header: translateHeader('actions'),
+      header: intl.formatMessage({
+        id: `organizations.columnsTable.actions`,
+        defaultMessage: 'Actions'
+      }),
       cell: ({ row }: ColumnRow) => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -152,10 +176,18 @@ export const getOrganizationsColumns = (
                 organizationsEvents.handleOpenEditSheet(row.original)
               }
             >
-              {translateHeader('edit')}
+              {intl.formatMessage({
+                id: `organizations.columnsTable.edit`,
+                defaultMessage: 'Edit'
+              })}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>{translateHeader('inactivate')}</DropdownMenuItem>
+            <DropdownMenuItem>
+              {intl.formatMessage({
+                id: `organizations.columnsTable.inactivate`,
+                defaultMessage: 'Inactivate'
+              })}
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className="flex gap-3"
@@ -165,7 +197,12 @@ export const getOrganizationsColumns = (
                 )
               }
             >
-              <span>{translateHeader('delete')}</span>
+              <span>
+                {intl.formatMessage({
+                  id: `organizations.columnsTable.delete`,
+                  defaultMessage: 'Delete'
+                })}
+              </span>
               <Trash size={16} className="text-shadcn-400" />
             </DropdownMenuItem>
           </DropdownMenuContent>

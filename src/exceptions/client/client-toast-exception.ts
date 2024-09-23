@@ -1,8 +1,10 @@
-export class ClientToastException extends Error {
-  messageAttributeName: string
+import { MessageDescriptor } from 'react-intl'
 
-  constructor(message: string, messageAttributeName: string) {
+export class ClientToastException extends Error {
+  messageDescriptor: MessageDescriptor
+
+  constructor(message: string, messageDescriptor: MessageDescriptor) {
     super(message)
-    this.messageAttributeName = messageAttributeName
+    this.messageDescriptor = messageDescriptor
   }
 }

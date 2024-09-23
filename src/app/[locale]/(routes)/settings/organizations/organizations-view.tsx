@@ -2,7 +2,6 @@
 
 import type { OrganizationsType } from '@/types/organizations-type'
 import { Card } from '@/components/card'
-import { useTranslations } from 'next-intl'
 import { Separator } from '@/components/ui/separator'
 import { CardContent, CardFooter } from '@/components/ui/card/card'
 import { Form } from '@/components/ui/form'
@@ -42,6 +41,7 @@ import { Input } from '@/components/ui/input/input'
 import { ChromePicker } from 'react-color'
 import { useRouter } from 'next/navigation'
 import { useParentOrganizations } from '@/utils/queries'
+import { useIntl } from 'react-intl'
 
 type OrganizationsViewProps = {
   organizations?: OrganizationsType
@@ -54,7 +54,7 @@ const OrganizationsView = ({
   organizations,
   onSubmit
 }: OrganizationsViewProps) => {
-  const t = useTranslations('organizations.organizationView')
+  const intl = useIntl()
   const router = useRouter()
   const [showMetadataCollapse, setShowMetadataCollapse] = useState(false)
   const [showInputAvatarDialog, setShowInputAvatarDialog] = useState(false)
@@ -63,9 +63,6 @@ const OrganizationsView = ({
   const isNewOrganization = !organizations
   const parentOrganizations = useParentOrganizations()
 
-  const cardText = isNewOrganization
-    ? t('newOrganization.description')
-    : t('editOrganization.description')
   const organizationForm = useForm<OrganizationFormData>({
     resolver: zodResolver(organizationFormSchema),
     values: organizations
@@ -101,7 +98,19 @@ const OrganizationsView = ({
             <div className="grow space-y-6">
               <Card.Root className="gap-0 space-x-0 space-y-0 p-0 shadow">
                 <Card.Header
-                  title={cardText}
+                  title={
+                    isNewOrganization
+                      ? intl.formatMessage({
+                          id: 'organizations.organizationView.newOrganization.description',
+                          defaultMessage:
+                            'Fill in the details of the Organization you wish to create.'
+                        })
+                      : intl.formatMessage({
+                          id: 'organizations.organizationView.editOrganization.description',
+                          defaultMessage:
+                            'View and edit the Organization fields.'
+                        })
+                  }
                   className="space-x-0 space-y-0 p-6 text-sm font-medium normal-case text-zinc-400"
                 />
                 <Separator />
@@ -111,8 +120,14 @@ const OrganizationsView = ({
                     <RenderField
                       field={{
                         name: 'id',
-                        label: t('formFields.id'),
-                        placeholder: t('typePlaceholder')
+                        label: intl.formatMessage({
+                          id: 'organizations.organizationView.formFields.id',
+                          defaultMessage: 'Organization ID'
+                        }),
+                        placeholder: intl.formatMessage({
+                          id: 'organizations.organizationView.typePlaceholder',
+                          defaultMessage: 'Type...'
+                        })
                       }}
                       isDisabled={true}
                       form={organizationForm}
@@ -122,8 +137,14 @@ const OrganizationsView = ({
                   <RenderField
                     field={{
                       name: 'legalName',
-                      label: t('formFields.legalName'),
-                      placeholder: t('typePlaceholder')
+                      label: intl.formatMessage({
+                        id: 'organizations.organizationView.formFields.legalName',
+                        defaultMessage: 'Legal Name'
+                      }),
+                      placeholder: intl.formatMessage({
+                        id: 'organizations.organizationView.typePlaceholder',
+                        defaultMessage: 'Type...'
+                      })
                     }}
                     form={organizationForm}
                   />
@@ -131,8 +152,14 @@ const OrganizationsView = ({
                   <RenderField
                     field={{
                       name: 'doingBusinessAs',
-                      label: t('formFields.doingBusinessAs'),
-                      placeholder: t('typePlaceholder')
+                      label: intl.formatMessage({
+                        id: 'organizations.organizationView.formFields.doingBusinessAs',
+                        defaultMessage: 'Trade Name'
+                      }),
+                      placeholder: intl.formatMessage({
+                        id: 'organizations.organizationView.typePlaceholder',
+                        defaultMessage: 'Type...'
+                      })
                     }}
                     form={organizationForm}
                   />
@@ -140,8 +167,14 @@ const OrganizationsView = ({
                   <RenderField
                     field={{
                       name: 'legalDocument',
-                      label: t('formFields.legalDocument'),
-                      placeholder: t('typePlaceholder')
+                      label: intl.formatMessage({
+                        id: 'organizations.organizationView.formFields.legalDocument',
+                        defaultMessage: 'Document'
+                      }),
+                      placeholder: intl.formatMessage({
+                        id: 'organizations.organizationView.typePlaceholder',
+                        defaultMessage: 'Type...'
+                      })
                     }}
                     form={organizationForm}
                   />
@@ -153,8 +186,14 @@ const OrganizationsView = ({
                   <RenderField
                     field={{
                       name: 'address.line1',
-                      label: t('formFields.address'),
-                      placeholder: t('typePlaceholder')
+                      label: intl.formatMessage({
+                        id: 'organizations.organizationView.formFields.address',
+                        defaultMessage: 'Address'
+                      }),
+                      placeholder: intl.formatMessage({
+                        id: 'organizations.organizationView.typePlaceholder',
+                        defaultMessage: 'Type...'
+                      })
                     }}
                     form={organizationForm}
                   />
@@ -162,8 +201,14 @@ const OrganizationsView = ({
                   <RenderField
                     field={{
                       name: 'address.line2',
-                      label: t('formFields.complement'),
-                      placeholder: t('typePlaceholder')
+                      label: intl.formatMessage({
+                        id: 'organizations.organizationView.formFields.complement',
+                        defaultMessage: 'Complement'
+                      }),
+                      placeholder: intl.formatMessage({
+                        id: 'organizations.organizationView.typePlaceholder',
+                        defaultMessage: 'Type...'
+                      })
                     }}
                     form={organizationForm}
                   />
@@ -171,8 +216,14 @@ const OrganizationsView = ({
                   <RenderCountryField
                     field={{
                       name: 'address.country',
-                      label: t('formFields.country'),
-                      placeholder: t('selectPlaceholder')
+                      label: intl.formatMessage({
+                        id: 'organizations.organizationView.formFields.country',
+                        defaultMessage: 'Country'
+                      }),
+                      placeholder: intl.formatMessage({
+                        id: 'organizations.organizationView.selectPlaceholder',
+                        defaultMessage: 'Select...'
+                      })
                     }}
                     form={organizationForm}
                   />
@@ -180,8 +231,14 @@ const OrganizationsView = ({
                   <RenderStateField
                     field={{
                       name: 'address.state',
-                      label: t('formFields.state'),
-                      placeholder: t('selectPlaceholder')
+                      label: intl.formatMessage({
+                        id: 'organizations.organizationView.formFields.state',
+                        defaultMessage: 'State'
+                      }),
+                      placeholder: intl.formatMessage({
+                        id: 'organizations.organizationView.selectPlaceholder',
+                        defaultMessage: 'Select...'
+                      })
                     }}
                     form={organizationForm}
                   />
@@ -189,8 +246,14 @@ const OrganizationsView = ({
                   <RenderField
                     field={{
                       name: 'address.city',
-                      label: t('formFields.city'),
-                      placeholder: t('typePlaceholder')
+                      label: intl.formatMessage({
+                        id: 'organizations.organizationView.formFields.city',
+                        defaultMessage: 'City'
+                      }),
+                      placeholder: intl.formatMessage({
+                        id: 'organizations.organizationView.typePlaceholder',
+                        defaultMessage: 'Type...'
+                      })
                     }}
                     form={organizationForm}
                   />
@@ -198,8 +261,14 @@ const OrganizationsView = ({
                   <RenderField
                     field={{
                       name: 'address.neighborhood',
-                      label: t('formFields.neighborhood'),
-                      placeholder: t('typePlaceholder')
+                      label: intl.formatMessage({
+                        id: 'organizations.organizationView.formFields.neighborhood',
+                        defaultMessage: 'Neighborhood'
+                      }),
+                      placeholder: intl.formatMessage({
+                        id: 'organizations.organizationView.typePlaceholder',
+                        defaultMessage: 'Type...'
+                      })
                     }}
                     form={organizationForm}
                   />
@@ -207,8 +276,14 @@ const OrganizationsView = ({
                   <RenderField
                     field={{
                       name: 'address.zipCode',
-                      label: t('formFields.zipCode'),
-                      placeholder: t('typePlaceholder')
+                      label: intl.formatMessage({
+                        id: 'organizations.organizationView.formFields.zipCode',
+                        defaultMessage: 'ZIP Code'
+                      }),
+                      placeholder: intl.formatMessage({
+                        id: 'organizations.organizationView.typePlaceholder',
+                        defaultMessage: 'Type...'
+                      })
                     }}
                     form={organizationForm}
                   />
@@ -221,8 +296,14 @@ const OrganizationsView = ({
                     <RenderField
                       field={{
                         name: 'parentOrganizationId',
-                        label: t('formFields.parentOrganization'),
-                        placeholder: t('notApplicable')
+                        label: intl.formatMessage({
+                          id: 'organizations.organizationView.formFields.parentOrganization',
+                          defaultMessage: 'Parent Organization'
+                        }),
+                        placeholder: intl.formatMessage({
+                          id: 'organizations.organizationView.notApplicable',
+                          defaultMessage: 'N/A'
+                        })
                       }}
                       isDisabled={true}
                       form={organizationForm}
@@ -233,11 +314,19 @@ const OrganizationsView = ({
                     <RenderParentIdField
                       field={{
                         name: 'parentOrganizationId',
-                        label: t('formFields.parentOrganization'),
-                        placeholder: t('selectPlaceholder'),
-                        description: t(
-                          'informationText.parentOrganizationText'
-                        ),
+                        label: intl.formatMessage({
+                          id: 'organizations.organizationView.formFields.parentOrganization',
+                          defaultMessage: 'Parent Organization'
+                        }),
+                        placeholder: intl.formatMessage({
+                          id: 'organizations.organizationView.selectPlaceholder',
+                          defaultMessage: 'Select...'
+                        }),
+                        description: intl.formatMessage({
+                          id: 'organizations.organizationView.informationText.parentOrganizationText',
+                          defaultMessage:
+                            'Select if your Organization is affiliated with another'
+                        }),
                         options:
                           parentOrganizations.data.length > 0
                             ? parentOrganizations.data
@@ -267,11 +356,17 @@ const OrganizationsView = ({
                         />
 
                         <p className="self-stretch text-xs font-normal italic text-zinc-400">
-                          {t('informationText.metadataRegisterCountText', {
-                            registerCount: Object.entries(
-                              organizationForm.getValues('metadata') || 0
-                            ).length
-                          })}
+                          {intl.formatMessage(
+                            {
+                              id: 'organizations.organizationView.informationText.metadataRegisterCountText',
+                              defaultMessage: '{registerCount} added records'
+                            },
+                            {
+                              registerCount: Object.entries(
+                                organizationForm.getValues('metadata') || 0
+                              ).length
+                            }
+                          )}
                         </p>
                       </div>
 
@@ -311,7 +406,10 @@ const OrganizationsView = ({
               <Card.Root className="p-6 shadow">
                 <Card.Header
                   className="text-md w-full font-medium normal-case text-zinc-600"
-                  title={t('formFields.avatar')}
+                  title={intl.formatMessage({
+                    id: 'organizations.organizationView.formFields.avatar',
+                    defaultMessage: 'Avatar'
+                  })}
                 />
 
                 <CardContent className="mb-4 self-center pb-0">
@@ -337,10 +435,16 @@ const OrganizationsView = ({
 
                     <DialogContent>
                       <DialogTitle className="flex w-full items-center justify-center">
-                        {t('avatarDialog.title')}
+                        {intl.formatMessage({
+                          id: 'organizations.organizationView.avatarDialog.title',
+                          defaultMessage: 'Avatar'
+                        })}
                       </DialogTitle>
                       <DialogDescription className="flex w-full items-center justify-center">
-                        {t('avatarDialog.description')}
+                        {intl.formatMessage({
+                          id: 'organizations.organizationView.avatarDialog.description',
+                          defaultMessage: 'Insert your SVG or PNG image URL.'
+                        })}
                       </DialogDescription>
 
                       <Input
@@ -359,7 +463,10 @@ const OrganizationsView = ({
                           setShowInputAvatarDialog(false)
                         }}
                       >
-                        {t('avatarDialog.button')}
+                        {intl.formatMessage({
+                          id: 'organizations.organizationView.avatarDialog.button',
+                          defaultMessage: 'Send'
+                        })}
                       </Button>
                     </DialogContent>
                   </Dialog>
@@ -369,7 +476,13 @@ const OrganizationsView = ({
                 organizationForm.getValues('organizationAvatar') ===
                   undefined ? (
                   <div className="w-fit justify-start whitespace-pre-wrap text-xs font-medium text-zinc-400">
-                    <p>{t('informationText.avatarInformationText')}</p>
+                    <p>
+                      {intl.formatMessage({
+                        id: 'organizations.organizationView.informationText.avatarInformationText',
+                        defaultMessage:
+                          'Organization Symbol, which will be applied in the UI. \nFormat: SVG or PNG, 512x512 px.'
+                      })}
+                    </p>
                   </div>
                 ) : (
                   <div className="flex w-full content-center items-center justify-center self-center">
@@ -382,7 +495,10 @@ const OrganizationsView = ({
                         organizationForm.setValue('organizationAvatar', '')
                       }}
                     >
-                      {t('remove')}
+                      {intl.formatMessage({
+                        id: 'organizations.organizationView.remove',
+                        defaultMessage: 'Remove'
+                      })}
                     </Button>
                   </div>
                 )}
@@ -391,7 +507,10 @@ const OrganizationsView = ({
               <Card.Root className="p-6 shadow ">
                 <Card.Header
                   className="text-sm font-medium text-zinc-600"
-                  title={t('formFields.accentColor')}
+                  title={intl.formatMessage({
+                    id: 'organizations.organizationView.formFields.accentColor',
+                    defaultMessage: 'Accent Color'
+                  })}
                 />
 
                 <CardContent className="inline-flex h-10 w-[180px] items-start justify-start gap-2 rounded-lg p-0">
@@ -433,7 +552,11 @@ const OrganizationsView = ({
                 {organizationForm.getValues('organizationAccentColor') === '' &&
                   !showChormePicker && (
                     <div className="mt-4 whitespace-pre-wrap text-xs font-medium text-zinc-400">
-                      {t('informationText.accentColorInformationText')}
+                      {intl.formatMessage({
+                        id: 'organizations.organizationView.informationText.accentColorInformationText',
+                        defaultMessage:
+                          'Brand color, which will be used specifically in the UI. \nFormat: Hexadecimal/HEX (Ex. #FF0000);'
+                      })}
                     </div>
                   )}
                 {showChormePicker && (
@@ -473,7 +596,10 @@ const OrganizationsView = ({
                     router.back()
                   }}
                 >
-                  {t('cancel')}
+                  {intl.formatMessage({
+                    id: 'organizations.organizationView.cancel',
+                    defaultMessage: 'Cancel'
+                  })}
                 </Button>
                 <Button
                   className="flex items-center justify-center gap-2 rounded-md border border-zinc-300 bg-zinc-800 px-4 text-sm text-white shadow"
@@ -481,11 +607,15 @@ const OrganizationsView = ({
                   size="default"
                   type="submit"
                 >
-                  {t(
-                    isNewOrganization
-                      ? 'newOrganization.button'
-                      : 'editOrganization.button'
-                  )}
+                  {isNewOrganization
+                    ? intl.formatMessage({
+                        id: 'organizations.organizationView.newOrganization.button',
+                        defaultMessage: 'Create Organization'
+                      })
+                    : intl.formatMessage({
+                        id: 'organizations.organizationView.editOrganization.button',
+                        defaultMessage: 'Save'
+                      })}
                 </Button>
               </div>
             </CardFooter>
