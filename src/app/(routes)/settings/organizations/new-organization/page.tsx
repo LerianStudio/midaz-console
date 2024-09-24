@@ -1,20 +1,18 @@
 'use client'
 
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { BreadcrumbComponent, BreadcrumbPath } from '@/components/breadcrumb'
 import { OrganizationsType } from '@/types/organizations-type'
 import { createOrganization } from '@/client/organization-client'
 import { cn } from '@/lib/utils'
-import OrganizationsView from '@/app/[locale]/(routes)/settings/organizations/organizations-view'
+import OrganizationsView from '@/app/(routes)/settings/organizations/organizations-view'
 import { FormDetailsProvider } from '@/context/form-details-context'
 import { ClientToastException } from '@/exceptions/client/client-toast-exception'
 import { useIntl } from 'react-intl'
 
 const Page = () => {
   const intl = useIntl()
-  const pathname = usePathname()
-  const intlBasePath = pathname.split('/').filter(Boolean)[0]
   const { showSuccess, showError } = useCustomToast()
   const router = useRouter()
 
@@ -58,7 +56,7 @@ const Page = () => {
           }
         )
       )
-      router.replace(`/${intlBasePath}/settings?tab=organizations`)
+      router.replace(`/settings?tab=organizations`)
     } catch (error) {
       const errorMessage =
         error instanceof ClientToastException

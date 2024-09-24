@@ -7,7 +7,7 @@ import { CardContent, CardFooter } from '@/components/ui/card/card'
 import { Form } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { organizationFormSchema } from '@/app/[locale]/(routes)/settings/organizations/organizations-form-schema'
+import { organizationFormSchema } from '@/app/(routes)/settings/organizations/organizations-form-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button/button'
 import {

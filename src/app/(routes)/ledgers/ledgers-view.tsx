@@ -1,9 +1,9 @@
 'use client'
 
 import React from 'react'
-import { getLedgersColumns } from '@/app/[locale]/(routes)/ledgers/ledgers-columns'
+import { getLedgersColumns } from '@/app/(routes)/ledgers/ledgers-columns'
 import { Skeleton } from '@/components/ui/skeleton'
-import { formSchema } from '@/app/[locale]/(routes)/ledgers/ledgers-form-schema'
+import { formSchema } from '@/app/(routes)/ledgers/ledgers-form-schema'
 import { DataTable } from '@/components/data-table'
 import { NoResource } from '@/components/no-resource'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'

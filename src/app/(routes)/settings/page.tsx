@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { BreadcrumbComponent, BreadcrumbPath } from '@/components/breadcrumb'
-import OrganizationsTable from '@/app/[locale]/(routes)/settings/organizations/organizations-table'
+import OrganizationsTable from '@/app/(routes)/settings/organizations/organizations-table'
 import { useIntl } from 'react-intl'
 
 const Page = () => {
