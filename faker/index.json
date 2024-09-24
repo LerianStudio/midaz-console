@@ -134,5 +134,33 @@
         }
       ]
     }
+  ],
+  "portfolios": [
+    {
+      "id": "f9e838d6-d3a7-4975-b681-613999537d2e",
+      "ledgerId": "77b0fb8b-1bd9-4810-9c6d-7e80064fab0c",
+      "entityId": "54c59721-8e31-4453-9a22-19d9376768bb",
+      "name": "My portfolio",
+      "status": {
+        "code": "available",
+        "description": "Active"
+      },
+      "metadata": {
+        "anyKey": "anyValue"
+      }
+    },
+    {
+      "id": "f9e838d6-d3a7-4975-b681-613999537d2e",
+      "ledgerId": "0df8d87f-f26e-451c-b650-f8af7af947dc",
+      "entityId": "54c59721-8e31-4453-9a22-19d9376768bb",
+      "name": "My portfolio",
+      "status": {
+        "code": "available",
+        "description": "Active"
+      },
+      "metadata": {
+        "anyKey": "anyValue"
+      }
+    }
   ]
 }
