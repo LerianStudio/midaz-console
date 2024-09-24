@@ -7,7 +7,6 @@ import {
 } from '@/components/ui/popover'
 import { ArrowRight, ChevronDown, Settings } from 'lucide-react'
 import Image from 'next/image'
-import { Link } from 'navigation'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import {
@@ -18,6 +17,7 @@ import {
   SwitcherTriggerProps
 } from '@/core/domain/entities/organization-switcher-entity'
 import { useIntl } from 'react-intl'
+import Link from 'next/link'
 
 const OrganizationLink = ({
   organization,
