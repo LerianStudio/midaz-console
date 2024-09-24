@@ -1,0 +1,25 @@
+# syntax=docker/dockerfile:1.4
+FROM ubuntu:latest
+
+# Instalar dependências necessárias
+RUN apt-get update && \
+    apt-get install -y git ssh-client
+
+# Criar o diretório .ssh com as permissões corretas
+RUN mkdir -p /root/.ssh && chmod 0700 /root/.ssh
+
+# Adicionar o GitHub aos hosts conhecidos para evitar prompts de confirmação
+RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
+
+# Usar o build secret para acessar a chave privada durante o build
+RUN --mount=type=secret,id=id_rsa \
+    cp /run/secrets/id_rsa /root/.ssh/id_rsa && \
+    chmod 600 /root/.ssh/id_rsa && \
+    git clone -b develop git@github.com:LerianStudio/midaz-private.git /app && \
+    rm /root/.ssh/id_rsa
+
+# Definir o diretório de trabalho
+WORKDIR /app
+
+# Restante das instruções de build, por exemplo:
+# RUN make install
