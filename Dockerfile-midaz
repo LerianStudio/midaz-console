@@ -1,0 +1,21 @@
+# syntax=docker/dockerfile:1.4
+FROM ubuntu:latest
+
+
+RUN apt-get update && \
+    apt-get install -y git ssh-client
+
+
+RUN mkdir -p /root/.ssh && chmod 0700 /root/.ssh
+
+
+RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
+
+
+RUN --mount=type=secret,id=id_rsa \
+    cp /run/secrets/id_rsa /root/.ssh/id_rsa && \
+    chmod 600 /root/.ssh/id_rsa && \
+    git clone -b develop git@github.com:LerianStudio/midaz-private.git /app && \
+    rm /root/.ssh/id_rsa
+
+WORKDIR /app
