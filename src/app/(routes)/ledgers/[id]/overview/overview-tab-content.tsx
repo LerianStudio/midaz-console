@@ -42,7 +42,7 @@ export const OverviewTabContent = ({ data }: OverviewTabContentProps) => {
 
         <Card.Root>
           <Card.Header title="Metadados" className="text-lg capitalize" />
-          <Card.Metadata data={data} />
+          <Card.Metadata data={data} onChange={(metadata) => {}} />
         </Card.Root>
 
         <Card.Root className="py-4">
