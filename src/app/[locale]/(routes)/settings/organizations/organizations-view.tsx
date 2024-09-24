@@ -125,7 +125,7 @@ const OrganizationsView = ({
                           defaultMessage: 'Organization ID'
                         }),
                         placeholder: intl.formatMessage({
-                          id: 'organizations.organizationView.typePlaceholder',
+                          id: 'common.typePlaceholder',
                           defaultMessage: 'Type...'
                         })
                       }}
@@ -142,7 +142,7 @@ const OrganizationsView = ({
                         defaultMessage: 'Legal Name'
                       }),
                       placeholder: intl.formatMessage({
-                        id: 'organizations.organizationView.typePlaceholder',
+                        id: 'common.typePlaceholder',
                         defaultMessage: 'Type...'
                       })
                     }}
@@ -157,7 +157,7 @@ const OrganizationsView = ({
                         defaultMessage: 'Trade Name'
                       }),
                       placeholder: intl.formatMessage({
-                        id: 'organizations.organizationView.typePlaceholder',
+                        id: 'common.typePlaceholder',
                         defaultMessage: 'Type...'
                       })
                     }}
@@ -172,7 +172,7 @@ const OrganizationsView = ({
                         defaultMessage: 'Document'
                       }),
                       placeholder: intl.formatMessage({
-                        id: 'organizations.organizationView.typePlaceholder',
+                        id: 'common.typePlaceholder',
                         defaultMessage: 'Type...'
                       })
                     }}
@@ -191,7 +191,7 @@ const OrganizationsView = ({
                         defaultMessage: 'Address'
                       }),
                       placeholder: intl.formatMessage({
-                        id: 'organizations.organizationView.typePlaceholder',
+                        id: 'common.typePlaceholder',
                         defaultMessage: 'Type...'
                       })
                     }}
@@ -206,7 +206,7 @@ const OrganizationsView = ({
                         defaultMessage: 'Complement'
                       }),
                       placeholder: intl.formatMessage({
-                        id: 'organizations.organizationView.typePlaceholder',
+                        id: 'common.typePlaceholder',
                         defaultMessage: 'Type...'
                       })
                     }}
@@ -221,7 +221,7 @@ const OrganizationsView = ({
                         defaultMessage: 'Country'
                       }),
                       placeholder: intl.formatMessage({
-                        id: 'organizations.organizationView.selectPlaceholder',
+                        id: 'common.selectPlaceholder',
                         defaultMessage: 'Select...'
                       })
                     }}
@@ -236,7 +236,7 @@ const OrganizationsView = ({
                         defaultMessage: 'State'
                       }),
                       placeholder: intl.formatMessage({
-                        id: 'organizations.organizationView.selectPlaceholder',
+                        id: 'common.selectPlaceholder',
                         defaultMessage: 'Select...'
                       })
                     }}
@@ -251,7 +251,7 @@ const OrganizationsView = ({
                         defaultMessage: 'City'
                       }),
                       placeholder: intl.formatMessage({
-                        id: 'organizations.organizationView.typePlaceholder',
+                        id: 'common.typePlaceholder',
                         defaultMessage: 'Type...'
                       })
                     }}
@@ -266,7 +266,7 @@ const OrganizationsView = ({
                         defaultMessage: 'Neighborhood'
                       }),
                       placeholder: intl.formatMessage({
-                        id: 'organizations.organizationView.typePlaceholder',
+                        id: 'common.typePlaceholder',
                         defaultMessage: 'Type...'
                       })
                     }}
@@ -281,7 +281,7 @@ const OrganizationsView = ({
                         defaultMessage: 'ZIP Code'
                       }),
                       placeholder: intl.formatMessage({
-                        id: 'organizations.organizationView.typePlaceholder',
+                        id: 'common.typePlaceholder',
                         defaultMessage: 'Type...'
                       })
                     }}
@@ -319,7 +319,7 @@ const OrganizationsView = ({
                           defaultMessage: 'Parent Organization'
                         }),
                         placeholder: intl.formatMessage({
-                          id: 'organizations.organizationView.selectPlaceholder',
+                          id: 'common.selectPlaceholder',
                           defaultMessage: 'Select...'
                         }),
                         description: intl.formatMessage({

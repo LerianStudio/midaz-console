@@ -85,7 +85,7 @@ export const getOrganizationsColumns = (
     {
       accessorKey: 'name',
       header: intl.formatMessage({
-        id: `organizations.columnsTable.legalName`,
+        id: `entity.organization.legalName`,
         defaultMessage: 'Legal Name'
       }),
       cell: ({ row }: ColumnRow) => {
@@ -97,7 +97,7 @@ export const getOrganizationsColumns = (
     {
       accessorKey: 'doingBusinessAs',
       header: intl.formatMessage({
-        id: `organizations.columnsTable.doingBusinessAs`,
+        id: `entity.organization.doingBusinessAs`,
         defaultMessage: 'Trade Name'
       }),
       cell: ({ row }: ColumnRow) => {
@@ -110,7 +110,7 @@ export const getOrganizationsColumns = (
     {
       accessorKey: 'legalDocument',
       header: intl.formatMessage({
-        id: `organizations.columnsTable.legalDocument`,
+        id: `entity.organization.legalDocument`,
         defaultMessage: 'Document'
       }),
       cell: ({ row }: ColumnRow) => {
@@ -137,7 +137,7 @@ export const getOrganizationsColumns = (
     {
       accessorKey: 'status',
       header: intl.formatMessage({
-        id: `organizations.columnsTable.status`,
+        id: `entity.organization.status`,
         defaultMessage: 'Status'
       }),
       cell: ({ row }: ColumnRow) => {
@@ -177,14 +177,14 @@ export const getOrganizationsColumns = (
               }
             >
               {intl.formatMessage({
-                id: `organizations.columnsTable.edit`,
+                id: `common.edit`,
                 defaultMessage: 'Edit'
               })}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               {intl.formatMessage({
-                id: `organizations.columnsTable.inactivate`,
+                id: `common.inactivate`,
                 defaultMessage: 'Inactivate'
               })}
             </DropdownMenuItem>
@@ -199,7 +199,7 @@ export const getOrganizationsColumns = (
             >
               <span>
                 {intl.formatMessage({
-                  id: `organizations.columnsTable.delete`,
+                  id: `common.delete`,
                   defaultMessage: 'Delete'
                 })}
               </span>

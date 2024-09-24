@@ -11,24 +11,33 @@ import {
   UsersRound
 } from 'lucide-react'
 
-export const getSidebarItems = (t: any): Category[] => {
+export const getSidebarItems = (intl: any): Category[] => {
   return [
     {
       links: [
         {
-          title: t('home'),
+          title: intl.formatMessage({
+            id: 'sideBar.home',
+            defaultMessage: 'Home'
+          }),
           href: '/',
           icon: Home,
           variant: 'default'
         },
         {
-          title: t('ledgers'),
+          title: intl.formatMessage({
+            id: 'sideBar.ledgers',
+            defaultMessage: 'Ledgers'
+          }),
           href: '/ledgers',
           icon: DatabaseZap,
           variant: 'default'
         },
         {
-          title: t('team'),
+          title: intl.formatMessage({
+            id: 'sideBar.team',
+            defaultMessage: 'Team'
+          }),
           href: '/team',
           icon: UsersRound,
           variant: 'default'
@@ -36,22 +45,34 @@ export const getSidebarItems = (t: any): Category[] => {
       ]
     },
     {
-      name: t('accountHolders.title'),
+      name: intl.formatMessage({
+        id: 'sideBar.accountHolders.title',
+        defaultMessage: 'AccountHolders'
+      }),
       links: [
         {
-          title: t('accountHolders.products'),
+          title: intl.formatMessage({
+            id: 'sideBar.accountHolders.products',
+            defaultMessage: 'Products'
+          }),
           href: '/products',
           icon: Box,
           variant: 'default'
         },
         {
-          title: t('accountHolders.accounts'),
+          title: intl.formatMessage({
+            id: 'sideBar.accountHolders.accounts',
+            defaultMessage: 'Accounts'
+          }),
           href: '/accounts',
           icon: Coins,
           variant: 'default'
         },
         {
-          title: t('accountHolders.portfolios'),
+          title: intl.formatMessage({
+            id: 'sideBar.accountHolders.portfolios',
+            defaultMessage: 'Portfolios'
+          }),
           href: '/portfolios',
           icon: Briefcase,
           variant: 'default'
@@ -59,16 +80,25 @@ export const getSidebarItems = (t: any): Category[] => {
       ]
     },
     {
-      name: t('transactions.title'),
+      name: intl.formatMessage({
+        id: 'sideBar.transactions.title',
+        defaultMessage: 'Transactions'
+      }),
       links: [
         {
-          title: t('transactions.types'),
+          title: intl.formatMessage({
+            id: 'sideBar.transactions.types',
+            defaultMessage: 'Types'
+          }),
           href: '/types',
           icon: DollarSign,
           variant: 'default'
         },
         {
-          title: t('transactions.resume'),
+          title: intl.formatMessage({
+            id: 'sideBar.transactions.resume',
+            defaultMessage: 'Resume'
+          }),
           href: '/resume',
           icon: ArrowLeftRight,
           variant: 'default'
@@ -76,10 +106,16 @@ export const getSidebarItems = (t: any): Category[] => {
       ]
     },
     {
-      name: t('reports.title'),
+      name: intl.formatMessage({
+        id: 'sideBar.reports.title',
+        defaultMessage: 'Reports'
+      }),
       links: [
         {
-          title: t('reports.runReport'),
+          title: intl.formatMessage({
+            id: 'sideBar.reports.runReport',
+            defaultMessage: 'Run Report'
+          }),
           href: '/reports',
           icon: BarChartHorizontal,
           variant: 'default'

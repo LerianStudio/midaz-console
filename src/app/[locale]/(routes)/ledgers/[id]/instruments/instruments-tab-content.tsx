@@ -7,14 +7,14 @@ import { NoResource } from '@/components/no-resource'
 import { useSheetMode } from '@/hooks/ledgers/use-sheet-mode'
 import { getInstrumentsFormFields } from './instruments-form-fields'
 import { instrumentsSchema } from './instruments-form-schema'
-import { useTranslations } from 'next-intl'
 import { getInstrumentsSheetInfo } from '@/helpers/instruments/instruments-helpers'
 import { SheetContainer } from '@/components/sheet/sheet-container'
+import { useIntl } from 'react-intl'
 
 export const InstrumentsTabContent = ({ data }: any) => {
+  const intl = useIntl()
   const instruments = useInstruments(data?.id)
-  const t = useTranslations('instruments')
-  const formFields: any = getInstrumentsFormFields(t)
+  const formFields: any = getInstrumentsFormFields(intl)
   const { sheetMode, handleOpenCreateSheet, setSheetMode } = useSheetMode()
 
   const getLoadingSkeleton = () => {
@@ -29,7 +29,7 @@ export const InstrumentsTabContent = ({ data }: any) => {
   const sheetInfo = getInstrumentsSheetInfo(
     sheetMode.mode,
     sheetMode.ledgersData,
-    t
+    intl
   )
 
   const handleSubmit = async () => {}
