@@ -1,5 +1,6 @@
 'use client'
 
+import React, { useEffect } from 'react'
 import {
   ColumnDef,
   flexRender,
@@ -18,9 +19,6 @@ import {
   TableRow
 } from '@/components/ui/table'
 import { Button } from '@/components/ui/button/button'
-
-import React from 'react'
-import { useTranslations } from 'next-intl'
 import { ChevronLeft, ChevronRight, Search } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
@@ -30,38 +28,52 @@ import {
   SelectTrigger,
   SelectValue
 } from './ui/select'
+import { Checkbox } from '@/components/ui/checkbox'
 import { InputWithIcon } from './ui/input-with-icon'
+import { useTranslations } from 'next-intl'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   pageSizeOptions?: number[]
   data: TData[]
+  onSelectedRowsChange?: (selectedRows: TData[]) => void
+  enableRowSelection?: boolean
 }
 
 export function DataTable<TData, TValue>({
   columns,
   pageSizeOptions = [10, 50, 100],
-  data
+  data,
+  onSelectedRowsChange,
+  enableRowSelection = false
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<any>([])
+  const [rowSelection, setRowSelection] = React.useState({})
 
   const t = useTranslations('dataTable')
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
-    defaultColumn: {
-      minSize: 0,
-      size: Number.MAX_SAFE_INTEGER,
-      maxSize: Number.MAX_SAFE_INTEGER
-    },
+    onRowSelectionChange: setRowSelection,
     state: {
-      columnFilters
-    }
+      columnFilters,
+      rowSelection
+    },
+    enableRowSelection
   })
+
+  useEffect(() => {
+    if (onSelectedRowsChange) {
+      const selectedRows = table
+        .getSelectedRowModel()
+        .rows.map((row) => row.original)
+      onSelectedRowsChange(selectedRows)
+    }
+  }, [rowSelection, onSelectedRowsChange, table])
 
   return (
     <div className="w-full">
@@ -110,26 +122,27 @@ export function DataTable<TData, TValue>({
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead
-                      key={header.id}
-                      style={{
-                        width:
-                          header.getSize() === Number.MAX_SAFE_INTEGER
-                            ? 'auto'
-                            : header.getSize()
-                      }}
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  )
-                })}
+                {enableRowSelection && (
+                  <TableHead>
+                    <Checkbox
+                      checked={table.getIsAllRowsSelected()}
+                      onCheckedChange={(value) =>
+                        table.toggleAllRowsSelected(!!value)
+                      }
+                      aria-label="Select all"
+                    />
+                  </TableHead>
+                )}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -139,17 +152,19 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
+                  className={cn(row.getIsSelected() && 'bg-blue-50')}
                 >
+                  {enableRowSelection && (
+                    <TableCell>
+                      <Checkbox
+                        checked={row.getIsSelected()}
+                        onCheckedChange={(value) => row.toggleSelected(!!value)}
+                        aria-label="Select row"
+                      />
+                    </TableCell>
+                  )}
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      style={{
-                        width:
-                          cell.column.getSize() === Number.MAX_SAFE_INTEGER
-                            ? 'auto'
-                            : cell.column.getSize()
-                      }}
-                    >
+                    <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -161,7 +176,7 @@ export function DataTable<TData, TValue>({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={columns.length + (enableRowSelection ? 1 : 0)}
                   className="h-24 text-center"
                 >
                   No results.
@@ -175,10 +190,6 @@ export function DataTable<TData, TValue>({
           <div>
             <p className="text-sm font-normal italic text-shadcn-400">
               Mostrando{' '}
-              <span className="font-bold">
-                {table.getFilteredRowModel().rows.length}
-              </span>{' '}
-              de{' '}
               <span className="font-bold">
                 {table.getFilteredRowModel().rows.length}
               </span>{' '}
