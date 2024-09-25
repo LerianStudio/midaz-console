@@ -12,14 +12,27 @@ import { useState } from 'react'
 
 type OverviewTabContentProps = {
   data: LedgerEntity
-  onMetadataChange: any
+  onMetadataChange: (metadata: { key: string; value: string }[]) => void
+  onMetadataDirtyChange: (isDirty: boolean) => void
+  resetMetadataFormTrigger: boolean
 }
 
 export const OverviewTabContent = ({
   data,
-  onMetadataChange
+  onMetadataChange,
+  onMetadataDirtyChange,
+  resetMetadataFormTrigger
 }: OverviewTabContentProps) => {
-  const [metadata, setMetadata] = useState(data.metadata || [])
+  const [metadata, setMetadata] = useState(() => {
+    if (data && data.metadata) {
+      return Object.entries(data.metadata).map(([key, value]) => ({
+        key,
+        value
+      }))
+    }
+    return []
+  })
+
   const totalAmount = useChartsTotalAmount(data.id)
   const totalTransactions = useChartsTotalTransactions(data.id)
   const transactionsByStatus = useChartsTransactionsByStatus(data.id)
@@ -35,7 +48,6 @@ export const OverviewTabContent = ({
   }
 
   const handleMetadataChange = (newMetadata: any) => {
-    console.log(newMetadata)
     setMetadata(newMetadata)
     onMetadataChange(newMetadata)
   }
@@ -54,7 +66,12 @@ export const OverviewTabContent = ({
 
         <Card.Root>
           <Card.Header title="Metadados" className="text-lg capitalize" />
-          <Card.Metadata data={{ metadata }} onChange={handleMetadataChange} />
+          <Card.Metadata
+            data={{ metadata }}
+            onChange={handleMetadataChange}
+            onDirtyChange={onMetadataDirtyChange}
+            resetFormTrigger={resetMetadataFormTrigger}
+          />
         </Card.Root>
 
         <Card.Root className="py-4">

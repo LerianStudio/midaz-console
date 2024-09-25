@@ -71,28 +71,37 @@ const LedgersView = () => {
     )
   }
 
-  const defaultLedgerSchema: any = {
-    id: uuidv4(),
-    organizationId: 'cc15194a-6bc9-4ebb-b15d-43411a54ba4b',
-    status: {
-      code: 'ACTIVE',
-      description: null
-    },
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    deletedAt: null
-  }
-
   const handleSubmit = async (values: LedgerEntity) => {
-    console.log(values)
+    const metadataObject = Array.isArray(values.metadata)
+      ? values.metadata.reduce(
+          (
+            acc: Record<string, string>,
+            item: { key: string; value: string }
+          ) => ({
+            ...acc,
+            [item.key]: item.value
+          }),
+          {}
+        )
+      : null
 
-    const mergedValues = { ...defaultLedgerSchema, ...values }
-
-    if (sheetMode.mode === 'create') {
-      await createLedgerData(mergedValues)
+    const dataToSubmit: LedgerEntity = {
+      id: uuidv4(),
+      name: values.name,
+      organizationId: 'cc15194a-6bc9-4ebb-b15d-43411a54ba4b',
+      metadata: metadataObject,
+      status: {
+        code: 'ACTIVE',
+        description: null
+      },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      deletedAt: null
     }
 
-    console.log(mergedValues)
+    if (sheetMode.mode === 'create') {
+      await createLedgerData(dataToSubmit)
+    }
   }
 
   const sheetProps = React.useMemo(
