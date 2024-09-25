@@ -6,7 +6,7 @@ import {
 } from '@/components/ui/breadcrumb'
 import React from 'react'
 import { ChevronRight } from 'lucide-react'
-import { Link } from 'navigation'
+import Link from 'next/link'
 
 export type BreadcrumbPath = {
   name: string

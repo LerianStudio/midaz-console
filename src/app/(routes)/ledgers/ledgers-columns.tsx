@@ -23,8 +23,8 @@ import {
 import { Button } from '@/components/ui/button/button'
 import { Badge } from '@/components/ui/badge'
 import { Arrow } from '@radix-ui/react-tooltip'
-import { Link } from 'navigation'
 import { useIntl } from 'react-intl'
+import Link from 'next/link'
 
 export type LedgersColumnsEvents = {
   handleClickId?: (id: string) => void
