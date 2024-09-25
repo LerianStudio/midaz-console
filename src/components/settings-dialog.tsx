@@ -10,7 +10,7 @@ import {
 import { Input } from '@/components/ui/input/input'
 import { Label } from '@/components/ui/label/label'
 import { AvatarInputFile } from './avatar-input-file'
-import { useTranslations } from 'next-intl'
+import { useIntl } from 'react-intl'
 
 type Props = {
   open: boolean
@@ -18,7 +18,7 @@ type Props = {
 }
 
 const SettingsDialog = ({ open, setOpen }: Props) => {
-  const t = useTranslations('settingsDialog')
+  const intl = useIntl()
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -27,16 +27,28 @@ const SettingsDialog = ({ open, setOpen }: Props) => {
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
         <DialogHeader>
-          <DialogTitle className="text-lg font-bold">{t('title')}</DialogTitle>
+          <DialogTitle className="text-lg font-bold">
+            {intl.formatMessage({
+              id: 'settingsDialog.title',
+              defaultMessage: 'Settings'
+            })}
+          </DialogTitle>
           <DialogDescription className="text-xs font-medium">
-            {t('description')}
+            {intl.formatMessage({
+              id: 'settingsDialog.description',
+              defaultMessage:
+                "Make the desired changes and click on 'Save' when finished."
+            })}
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <AvatarInputFile />
           <div className="mt-4 grid grid-cols-5 items-center gap-4">
             <Label htmlFor="name" className="text-right font-semibold">
-              {t('label.name')}
+              {intl.formatMessage({
+                id: 'entity.user.name',
+                defaultMessage: 'Name'
+              })}
             </Label>
             <Input
               id="name"
@@ -46,7 +58,10 @@ const SettingsDialog = ({ open, setOpen }: Props) => {
           </div>
           <div className="grid grid-cols-5 items-center gap-4">
             <Label htmlFor="username" className="text-right font-semibold">
-              {t('label.email')}
+              {intl.formatMessage({
+                id: 'entity.user.email',
+                defaultMessage: 'E-mail'
+              })}
             </Label>
             <Input
               id="username"
@@ -61,7 +76,7 @@ const SettingsDialog = ({ open, setOpen }: Props) => {
             type="submit"
             className="bg-sunglow-300 text-black hover:bg-sunglow-300/70"
           >
-            {t('btnText')}
+            {intl.formatMessage({ id: 'common.save', defaultMessage: 'Save' })}
           </Button>
         </DialogFooter>
       </DialogContent>

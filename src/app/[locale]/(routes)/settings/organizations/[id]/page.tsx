@@ -1,7 +1,6 @@
 'use client'
 
 import { usePathname, useRouter } from 'next/navigation'
-import { useTranslations } from 'next-intl'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { BreadcrumbComponent, BreadcrumbPath } from '@/components/breadcrumb'
 import { OrganizationsType } from '@/types/organizations-type'
@@ -12,11 +11,11 @@ import { updateOrganization } from '@/client/organization-client'
 import { PageHeader } from '@/components/page-header'
 import { ClientToastException } from '@/exceptions/client/client-toast-exception'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useIntl } from 'react-intl'
 
 const Page = ({ params }: { params: { id: string } }) => {
   const router = useRouter()
-  const t = useTranslations('organizations.organizationView')
-  const toastTranslator = useTranslations('organizations.toast')
+  const intl = useIntl()
   const organizationId: string = params.id
   const pathname = usePathname()
   const intlBasePath = pathname.split('/').filter(Boolean)[0]
@@ -26,12 +25,18 @@ const Page = ({ params }: { params: { id: string } }) => {
 
   const breadCrumbPaths: BreadcrumbPath[] = [
     {
-      name: t('breadcrumbs.settings'),
+      name: intl.formatMessage({
+        id: 'organizations.organizationView.breadcrumbs.settings',
+        defaultMessage: 'Settings'
+      }),
       href: `/settings`,
       active: true
     },
     {
-      name: t('breadcrumbs.organizations'),
+      name: intl.formatMessage({
+        id: 'organizations.organizationView.breadcrumbs.organizations',
+        defaultMessage: 'Organizations'
+      }),
       href: `/settings?tab=organizations`,
       active: true
     },
@@ -45,18 +50,27 @@ const Page = ({ params }: { params: { id: string } }) => {
     try {
       await updateOrganization(organizationId, values)
       showSuccess(
-        toastTranslator('organizationUpdateSuccess', {
-          organizationName: values.legalName
-        })
+        intl.formatMessage(
+          {
+            id: 'organizations.toast.organizationUpdateSuccess',
+            defaultMessage: 'Organization {organizationName} updated'
+          },
+          {
+            organizationName: values.legalName
+          }
+        )
       )
       router.replace(`/${intlBasePath}/settings?tab=organizations`)
     } catch (error) {
       const errorMessage =
         error instanceof ClientToastException
-          ? toastTranslator(error.messageAttributeName, {
+          ? intl.formatMessage(error.messageDescriptor, {
               organizationId: organizationId
             })
-          : toastTranslator('genericError')
+          : intl.formatMessage({
+              id: 'organizations.toast.genericError',
+              defaultMessage: 'An error occurred'
+            })
 
       return showError(errorMessage)
     }

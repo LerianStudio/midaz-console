@@ -20,7 +20,6 @@ import {
 import { Button } from '@/components/ui/button/button'
 
 import React from 'react'
-import { useTranslations } from 'next-intl'
 import { ChevronLeft, ChevronRight, Search } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
@@ -31,6 +30,7 @@ import {
   SelectValue
 } from './ui/select'
 import { InputWithIcon } from './ui/input-with-icon'
+import { useIntl } from 'react-intl'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -43,9 +43,9 @@ export function DataTable<TData, TValue>({
   pageSizeOptions = [10, 50, 100],
   data
 }: DataTableProps<TData, TValue>) {
+  const intl = useIntl()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
 
-  const t = useTranslations('dataTable')
   const table = useReactTable({
     data,
     columns,
@@ -199,7 +199,12 @@ export function DataTable<TData, TValue>({
               )}
             >
               <ChevronLeft size={16} />
-              <span>{t('previousBtn')}</span>
+              <span>
+                {intl.formatMessage({
+                  id: 'common.previousPage',
+                  defaultMessage: 'Previous page'
+                })}
+              </span>
             </Button>
 
             <Button
@@ -212,7 +217,12 @@ export function DataTable<TData, TValue>({
                 !table.getCanNextPage() && 'bg-shadcn-100'
               )}
             >
-              <span>{t('nextBtn')}</span>
+              <span>
+                {intl.formatMessage({
+                  id: 'common.nextPage',
+                  defaultMessage: 'Next page'
+                })}
+              </span>
               <ChevronRight size={16} />
             </Button>
           </div>

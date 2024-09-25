@@ -1,8 +1,6 @@
 'use client'
 
 import React from 'react'
-import { useTranslations } from 'next-intl'
-import { getLedgersFormFields } from '@/app/[locale]/(routes)/ledgers/ledgers-form-fields'
 import { getLedgersColumns } from '@/app/[locale]/(routes)/ledgers/ledgers-columns'
 import { Skeleton } from '@/components/ui/skeleton'
 import { formSchema } from '@/app/[locale]/(routes)/ledgers/ledgers-form-schema'
@@ -16,20 +14,31 @@ import { v4 as uuidv4 } from 'uuid'
 import { useEnhancedLedgers } from '@/hooks/ledgers/use-enhanced-ledgers'
 import { PageHeader } from '@/components/page-header'
 import { Dialog } from '@/components/dialog'
-import {
-  getHelperTriggerTranslate,
-  getListingTemplateTranslate,
-  getSheetInfo
-} from '@/helpers/ledgers/ledgers-helpers'
+import { getSheetInfo } from '@/helpers/ledgers/ledgers-helpers'
 import { useLedgers } from '@/utils/queries'
 import { SheetContainer } from '@/components/sheet/sheet-container'
+import { useIntl } from 'react-intl'
 
 const LedgersView = () => {
-  const t = useTranslations('ledgers')
-  const formFields: any = getLedgersFormFields(t)
+  const intl = useIntl()
   const ledgers = useLedgers()
   const enhancedLedgers = useEnhancedLedgers()
   const createLedgerData = useCreateLedger()
+
+  const formFields: any = [
+    {
+      name: 'name',
+      label: intl.formatMessage({
+        id: 'entity.ledger.name',
+        defaultMessage: 'Ledger Name'
+      }),
+      placeholder: intl.formatMessage({
+        id: 'common.typePlaceholder',
+        defaultMessage: 'Type...'
+      }),
+      isRequired: true
+    }
+  ]
 
   const {
     sheetMode,
@@ -46,15 +55,12 @@ const LedgersView = () => {
     handleConfirmDeleteLedger
   } = useDeleteLedger(ledgers.refetch)
 
-  const ledgersColumns = getLedgersColumns(
-    {
-      handleOpenViewSheet,
-      handleOpenDeleteSheet
-    },
-    t
-  )
+  const ledgersColumns = getLedgersColumns({
+    handleOpenViewSheet,
+    handleOpenDeleteSheet
+  })
 
-  const sheetInfo = getSheetInfo(sheetMode.mode, sheetMode.ledgersData, t)
+  const sheetInfo = getSheetInfo(sheetMode.mode, sheetMode.ledgersData, intl)
 
   const getLoadingSkeleton = () => {
     return (
@@ -139,16 +145,50 @@ const LedgersView = () => {
     <React.Fragment>
       <PageHeader.Root>
         <PageHeader.Wrapper>
-          <PageHeader.InfoTitle title={t('title')} subtitle={t('subtitle')} />
+          <PageHeader.InfoTitle
+            title={intl.formatMessage({
+              id: 'ledgers.title',
+              defaultMessage: 'Ledgers'
+            })}
+            subtitle={intl.formatMessage({
+              id: 'ledgers.subtitle',
+              defaultMessage:
+                'Visualize and edit the Ledgers of your Organization.'
+            })}
+          />
           <PageHeader.ActionButtons
             type="listing"
-            listingTemplateTranslate={getListingTemplateTranslate(t)}
-            helperTriggerTranslate={getHelperTriggerTranslate(t)}
+            listingTemplateTranslate={{
+              addButton: intl.formatMessage({
+                id: 'ledgers.listingTemplate.addButton',
+                defaultMessage: 'New Ledger'
+              })
+            }}
+            helperTriggerTranslate={{
+              question: intl.formatMessage({
+                id: 'ledgers.helperTrigger.question',
+                defaultMessage: 'What is a Ledger?'
+              })
+            }}
             onCreate={handleOpenCreateSheet}
           />
         </PageHeader.Wrapper>
         <PageHeader.CollapsibleInfo
-          helperTriggerTranslate={getHelperTriggerTranslate(t)}
+          helperTriggerTranslate={{
+            question: intl.formatMessage({
+              id: 'ledgers.helperTrigger.question',
+              defaultMessage: 'What is a Ledger?'
+            }),
+            answer: intl.formatMessage({
+              id: 'ledgers.helperTrigger.answer',
+              defaultMessage:
+                'Book with the record of all transactions and operations of the Organization.'
+            }),
+            seeMore: intl.formatMessage({
+              id: 'ledgers.helperTrigger.seeMore',
+              defaultMessage: 'Read the docs'
+            })
+          }}
         />
       </PageHeader.Root>
 

@@ -11,7 +11,7 @@
     "build-storybook": "storybook build",
     "json-server": "json-server ./faker/index.json -p 3001",
     "extract:i18n": "tsx ./scripts/i18n-extract.ts",
-    "compile:i18n": "formatjs compile-folder \"./locales/extract\" --format simple \"./locales/compiled\"",
+    "compile:i18n": "formatjs compile-folder \"./locales/extracted\" --format simple \"./locales/compiled\"",
     "i18n": "npm run extract:i18n & npm run compile:i18n",
     "test": "jest"
   },
