@@ -25,27 +25,27 @@ export default meta
 
 export const Primary: StoryObj<ButtonProps> = {
   args: {
-    children: 'Botão'
+    children: 'Button'
   }
 }
 
 export const Disabled: StoryObj<ButtonProps> = {
   args: {
-    children: 'Botão',
+    children: 'Button',
     disabled: true
   }
 }
 
 export const Secundary: StoryObj<ButtonProps> = {
   args: {
-    children: 'Botão',
+    children: 'Button',
     variant: 'secondary'
   }
 }
 
 export const SecundaryDisabled: StoryObj<ButtonProps> = {
   args: {
-    children: 'Botão',
+    children: 'Button',
     variant: 'secondary',
     disabled: true
   }
