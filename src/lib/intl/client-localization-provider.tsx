@@ -16,7 +16,7 @@ export const ClientLocalizationProvider = ({
   children
 }: ClientLocalizationProviderProps) => {
   return (
-    <IntlProvider messages={messages} locale={locale}>
+    <IntlProvider messages={messages} locale={locale} onError={() => {}}>
       {children}
     </IntlProvider>
   )

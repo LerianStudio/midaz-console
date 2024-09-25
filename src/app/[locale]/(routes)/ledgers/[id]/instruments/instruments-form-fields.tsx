@@ -1,3 +1,9 @@
+/**
+ * TODO: This never had translations into the json file
+ * @param t
+ * @returns
+ */
+
 export const getInstrumentsFormFields = (t: any) => {
   return [
     {
@@ -12,13 +18,13 @@ export const getInstrumentsFormFields = (t: any) => {
     },
     {
       name: 'name',
-      label: t('formFields.name.name'),
+      label: 'formFields.name.name',
       placeholder: '',
       isRequired: true
     },
     {
       name: 'code',
-      label: t('formFields.code.name'),
+      label: 'formFields.code.name',
       placeholder: '',
       isRequired: true
     }

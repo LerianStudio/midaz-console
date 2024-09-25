@@ -30,7 +30,7 @@ import {
 } from './ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { InputWithIcon } from './ui/input-with-icon'
-import { useTranslations } from 'next-intl'
+import { useIntl } from 'react-intl'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -47,10 +47,9 @@ export function DataTable<TData, TValue>({
   onSelectedRowsChange,
   enableRowSelection = false
 }: DataTableProps<TData, TValue>) {
+  const intl = useIntl()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
   const [rowSelection, setRowSelection] = React.useState({})
-
-  const t = useTranslations('dataTable')
 
   const table = useReactTable({
     data,
@@ -210,7 +209,12 @@ export function DataTable<TData, TValue>({
               )}
             >
               <ChevronLeft size={16} />
-              <span>{t('previousBtn')}</span>
+              <span>
+                {intl.formatMessage({
+                  id: 'common.previousPage',
+                  defaultMessage: 'Previous page'
+                })}
+              </span>
             </Button>
 
             <Button
@@ -223,7 +227,12 @@ export function DataTable<TData, TValue>({
                 !table.getCanNextPage() && 'bg-shadcn-100'
               )}
             >
-              <span>{t('nextBtn')}</span>
+              <span>
+                {intl.formatMessage({
+                  id: 'common.nextPage',
+                  defaultMessage: 'Next page'
+                })}
+              </span>
               <ChevronRight size={16} />
             </Button>
           </div>

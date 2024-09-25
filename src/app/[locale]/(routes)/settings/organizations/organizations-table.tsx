@@ -1,9 +1,9 @@
 'use client'
+
 import { Card, CardHeader } from '@/components/ui/card/card'
 import { Button } from '@/components/ui/button/button'
 import { Plus } from 'lucide-react'
 
-import { useTranslations } from 'next-intl'
 import { useOrganizations } from '@/utils/queries'
 import { DataTable } from '@/components/data-table'
 import { useRouter, usePathname } from 'next/navigation'
@@ -14,9 +14,10 @@ import { deleteOrganization } from '@/client/organization-client'
 import { ClientToastException } from '@/exceptions/client/client-toast-exception'
 import { NoResource } from '@/components/no-resource'
 import React from 'react'
+import { useIntl } from 'react-intl'
 
 const OrganizationsTable = () => {
-  const t = useTranslations('organizations')
+  const intl = useIntl()
   const { showError, showSuccess } = useCustomToast()
   const organizations = useOrganizations()
   const router = useRouter()
@@ -35,20 +36,20 @@ const OrganizationsTable = () => {
     } catch (error: any) {
       const errorMessage =
         error instanceof ClientToastException
-          ? t(`toast.${error.messageAttributeName}`, { organizationId: id })
-          : t('toast.genericError')
+          ? intl.formatMessage(error.messageDescriptor, { organizationId: id })
+          : intl.formatMessage({
+              id: 'organizations.toast.genericError',
+              defaultMessage: 'An error occurred'
+            })
       return showError(errorMessage)
     }
   }
 
-  const organizationsColumns = getOrganizationsColumns(
-    {
-      handleOpenEditSheet,
-      handleOpenViewSheet,
-      handleOpenDeleteSheet
-    },
-    t
-  )
+  const organizationsColumns = getOrganizationsColumns({
+    handleOpenEditSheet,
+    handleOpenViewSheet,
+    handleOpenDeleteSheet
+  })
 
   const handleCreateOrganization = () => {
     router.push(`${pathname}/organizations/new-organization`)
@@ -61,9 +62,17 @@ const OrganizationsTable = () => {
           <CardHeader>
             <div className="flex w-full justify-between">
               <div>
-                <h1 className="text-xl font-normal">{t('title')}</h1>
+                <h1 className="text-xl font-normal">
+                  {intl.formatMessage({
+                    id: 'organizations.title',
+                    defaultMessage: 'Settings'
+                  })}
+                </h1>
                 <p className="text-sm font-medium text-zinc-400">
-                  {t('subtitle')}
+                  {intl.formatMessage({
+                    id: 'organizations.subtitle',
+                    defaultMessage: 'View and manage Organizations.'
+                  })}
                 </p>
               </div>
 
@@ -73,7 +82,12 @@ const OrganizationsTable = () => {
                 className="flex gap-2"
                 size="default"
               >
-                <span>{t('listingTemplate.addButton')}</span>
+                <span>
+                  {intl.formatMessage({
+                    id: 'organizations.listingTemplate.addButton',
+                    defaultMessage: 'New Organization'
+                  })}
+                </span>
                 <Plus size={24} />
               </Button>
             </div>

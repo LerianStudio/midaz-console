@@ -1,18 +1,19 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+
+import React, { useState } from 'react'
 import { Label } from '@/components/ui/label/label'
 import { Input } from '@/components/ui/input/input'
 import { Button } from '@/components/ui/button/button'
 import { Plus } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { useTranslations } from 'next-intl'
+import { useIntl } from 'react-intl'
 
 type MetadataInputProps = {
   handleAddMetadata: (metadata: { key: string; value: string }) => void
 }
 
 const MetadataInput = ({ handleAddMetadata }: MetadataInputProps) => {
-  const t = useTranslations('metadata')
+  const intl = useIntl()
   const [currentMetadata, setCurrentMetadata] = useState({ key: '', value: '' })
 
   const onAddMetadata = (e: React.FormEvent) => {
@@ -37,7 +38,12 @@ const MetadataInput = ({ handleAddMetadata }: MetadataInputProps) => {
     <div className="flex gap-5">
       <div className="flex w-full gap-2">
         <div className="flex flex-1 flex-col gap-2">
-          <Label htmlFor="key">{t('key')}</Label>
+          <Label htmlFor="key">
+            {intl.formatMessage({
+              id: 'entity.metadata.key',
+              defaultMessage: 'Key'
+            })}
+          </Label>
           <Input
             id="key"
             value={currentMetadata.key}
@@ -47,7 +53,12 @@ const MetadataInput = ({ handleAddMetadata }: MetadataInputProps) => {
           />
         </div>
         <div className="flex flex-1 flex-col gap-2">
-          <Label htmlFor="value">{t('value')}</Label>
+          <Label htmlFor="value">
+            {intl.formatMessage({
+              id: 'entity.metadata.value',
+              defaultMessage: 'Value'
+            })}
+          </Label>
           <Input
             id="value"
             value={currentMetadata.value}

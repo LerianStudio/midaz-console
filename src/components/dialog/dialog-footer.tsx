@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button/button'
-import { useTranslations } from 'next-intl'
 
 type DialogFooterProps = {
   onDismiss: () => void
@@ -7,8 +6,6 @@ type DialogFooterProps = {
 }
 
 const DialogFooter = ({ onDismiss, onDelete }: DialogFooterProps) => {
-  const t = useTranslations('ledgers')
-
   return (
     <div className="mt-5 flex justify-end gap-2">
       <Button onClick={onDismiss} variant="outline" autoFocus={false}>
@@ -19,7 +16,7 @@ const DialogFooter = ({ onDismiss, onDelete }: DialogFooterProps) => {
         onClick={onDelete}
         className="bg-sunglow-400 text-black hover:bg-sunglow-400/70"
       >
-        {t('dialog.deleteBtnText')}
+        Delete Ledger
       </Button>
     </div>
   )

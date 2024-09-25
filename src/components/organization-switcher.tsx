@@ -17,7 +17,7 @@ import {
   StatusIndicatorProps,
   SwitcherTriggerProps
 } from '@/core/domain/entities/organization-switcher-entity'
-import { useTranslations } from 'next-intl'
+import { useIntl } from 'react-intl'
 
 const OrganizationLink = ({
   organization,
@@ -67,15 +67,24 @@ const StatusIndicator = ({ status }: StatusIndicatorProps) => (
   />
 )
 
-const StatusDisplay = ({ status, t }: StatusIndicatorProps) => (
-  <div className="flex items-center gap-2">
-    <StatusIndicator status={status} />
-    <span className="text-xs font-medium text-shadcn-400">
-      {status === 'active' && t('active')}
-      {status === 'inactive' && t('inactive')}
-    </span>
-  </div>
-)
+const StatusDisplay = ({ status }: StatusIndicatorProps) => {
+  const intl = useIntl()
+
+  return (
+    <div className="flex items-center gap-2">
+      <StatusIndicator status={status} />
+      <span className="text-xs font-medium text-shadcn-400">
+        {status === 'active' &&
+          intl.formatMessage({ id: 'common.active', defaultMessage: 'Active' })}
+        {status === 'inactive' &&
+          intl.formatMessage({
+            id: 'common.inactive',
+            defaultMessage: 'Inactive'
+          })}
+      </span>
+    </div>
+  )
+}
 
 const PopoverContentComponent = ({
   orgName,
@@ -85,7 +94,7 @@ const PopoverContentComponent = ({
   data,
   setIsPopoverOpen
 }: PopoverContentComponentProps) => {
-  const t = useTranslations('organizationSwitcher')
+  const intl = useIntl()
 
   return (
     <PopoverContent className="flex w-auto gap-4" side="right">
@@ -95,7 +104,7 @@ const PopoverContentComponent = ({
             <h1 className="text-base font-semibold text-[#3f3f46]">
               {orgName}
             </h1>
-            <StatusDisplay status={status} t={t} />
+            <StatusDisplay status={status} />
           </div>
 
           <div className="flex flex-1 items-center justify-center">
@@ -113,7 +122,10 @@ const PopoverContentComponent = ({
               onClick={() => setIsPopoverOpen(false)}
               className="text-xs font-normal text-[#3F3F46] underline"
             >
-              {t('edit')}
+              {intl.formatMessage({
+                id: 'common.edit',
+                defaultMessage: 'Edit'
+              })}
             </Link>
           </div>
         </div>
@@ -138,7 +150,10 @@ const PopoverContentComponent = ({
         >
           <div>
             <h2 className="text-sm font-medium text-[#52525B]">
-              {t('organizations')}
+              {intl.formatMessage({
+                id: 'entity.organization',
+                defaultMessage: 'Organization'
+              })}
             </h2>
           </div>
           <div>

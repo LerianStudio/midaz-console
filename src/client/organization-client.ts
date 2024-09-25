@@ -1,5 +1,25 @@
 import { ClientToastException } from '@/exceptions/client/client-toast-exception'
 import { OrganizationsType } from '@/types/organizations-type'
+import { defineMessages } from 'react-intl'
+
+const messages = defineMessages({
+  organizationCreateFailed: {
+    id: 'organizations.toast.organizationCreateFailed',
+    defaultMessage: 'Failed to create organization'
+  },
+  organizationUpdatedFailed: {
+    id: 'organizations.toast.organizationUpdatedFailed',
+    defaultMessage: 'Failed to update organization id: {organizationId}'
+  },
+  organizationDeletedFailed: {
+    id: 'organizations.toast.organizationDeletedFailed',
+    defaultMessage: 'Failed to delete organization id: {organizationId}'
+  },
+  organizationNotFound: {
+    id: 'organizations.toast.organizationNotFound',
+    defaultMessage: 'No organization found'
+  }
+})
 
 const createOrganization = async (organization: OrganizationsType) => {
   const response = await fetch('http://localhost:3000/api/organizations', {
@@ -13,7 +33,7 @@ const createOrganization = async (organization: OrganizationsType) => {
   if (!response.ok) {
     throw new ClientToastException(
       `Organization create Failed!`,
-      'organizationCreateFailed'
+      messages.organizationCreateFailed
     )
   }
 
@@ -38,7 +58,7 @@ const updateOrganization = async (
   if (!response.ok) {
     throw new ClientToastException(
       `Organization ${id} update Failed!`,
-      'organizationUpdatedFailed'
+      messages.organizationUpdatedFailed
     )
   }
 
@@ -59,7 +79,7 @@ const deleteOrganization = async (id: string) => {
   if (!response.ok) {
     throw new ClientToastException(
       `Organization ${id} delete Failed!`,
-      'organizationDeletedFailed'
+      messages.organizationDeletedFailed
     )
   }
 
@@ -72,7 +92,7 @@ const getOrganization = async () => {
   if (!response.ok) {
     throw new ClientToastException(
       `Fetch organizations Failed!`,
-      'organizationNotFound'
+      messages.organizationNotFound
     )
   }
   return await response.json()
@@ -84,7 +104,7 @@ const getOrganizationById = async (id: string) => {
   if (!response.ok) {
     throw new ClientToastException(
       'Error get organization by id',
-      `organizationNotFound`
+      messages.organizationNotFound
     )
   }
 
@@ -100,7 +120,7 @@ const getParentOrganizations = async (idActualOrganization?: string) => {
   if (!response.ok) {
     throw new ClientToastException(
       `Fetch parent organizations Failed!`,
-      'organizationNotFound'
+      messages.organizationNotFound
     )
   }
   return await response.json()
