@@ -77,20 +77,14 @@ const Page = () => {
 
       <div>
         <Tabs value={activeTab} onValueChange={handleTabChange}>
-          <TabsList className="gap-4 pb-0 pl-0">
-            <TabsTrigger
-              className={cn('text-zinc-700 data-[state=active]:text-zinc-700')}
-              value="organizations"
-            >
+          <TabsList>
+            <TabsTrigger value="organizations">
               {intl.formatMessage({
                 id: 'settings.tabs.organizations',
                 defaultMessage: 'Organizations'
               })}
             </TabsTrigger>
-            <TabsTrigger
-              className={cn('data-[state=active]:text-zinc-700')}
-              value="others"
-            >
+            <TabsTrigger value="others">
               {intl.formatMessage({
                 id: 'settings.tabs.others',
                 defaultMessage: 'Others Settings'

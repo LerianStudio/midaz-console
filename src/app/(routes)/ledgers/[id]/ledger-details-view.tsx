@@ -3,7 +3,6 @@
 import { BottomDrawer } from '@/components/bottom-drawer'
 import { BreadcrumbComponent, BreadcrumbPath } from '@/components/breadcrumb'
 import { PageHeader } from '@/components/page-header'
-import { TabsComponent } from '@/components/tabs'
 import { useFormState } from '@/context/form-details-context'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import useCustomToast from '@/hooks/use-custom-toast'
@@ -11,12 +10,20 @@ import React, { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { OverviewTabContent } from './overview-tab-content'
 import { Skeleton } from '@/components/ui/skeleton'
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent
+} from '@/components/ui/tabs/tabs'
+import { useIntl } from 'react-intl'
 
 type LedgerDetailsViewProps = {
   data: LedgerEntity
 }
 
 const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
+  const intl = useIntl()
   const { formData, isDirty, resetDirty } = useFormState()
   const { showSuccess } = useCustomToast()
   const [isSheetOpen, setIsSheetOpen] = useState(false)
@@ -46,23 +53,6 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
     console.log('Data to submit:', dataToSubmit)
     showSuccess('Alterações salvas com sucesso.')
   }
-
-  const tabs = [
-    {
-      id: 1,
-      value: 'overview',
-      name: 'Visão Geral',
-      content: data && (
-        <OverviewTabContent data={data} onMetadataChange={setMetadata} />
-      )
-    },
-    {
-      id: 2,
-      value: 'instruments',
-      name: 'Instrumentos',
-      content: <div>Instruments</div>
-    }
-  ]
 
   const handleCancel = () => {
     setIsSheetOpen(false)
@@ -121,7 +111,28 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
         </div>
       </PageHeader.Root>
 
-      <TabsComponent tabs={tabs} />
+      <Tabs defaultValue="overview">
+        <TabsList>
+          <TabsTrigger value="overview">
+            {intl.formatMessage({
+              id: 'ledgers.tab.overview',
+              defaultMessage: 'Overview'
+            })}
+          </TabsTrigger>
+          <TabsTrigger value="assets">
+            {intl.formatMessage({
+              id: 'ledgers.tab.assets',
+              defaultMessage: 'Assets'
+            })}
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="overview">
+          <OverviewTabContent data={data} onMetadataChange={setMetadata} />
+        </TabsContent>
+        <TabsContent value="assets">
+          <p>Assets</p>
+        </TabsContent>
+      </Tabs>
 
       {isDirty && (
         <BottomDrawer
