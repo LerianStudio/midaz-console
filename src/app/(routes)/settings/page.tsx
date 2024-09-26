@@ -1,7 +1,12 @@
 'use client'
 import { cn } from '@/lib/utils'
 import { useCallback, useEffect, useState } from 'react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger
+} from '@/components/ui/tabs/tabs'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { BreadcrumbComponent, BreadcrumbPath } from '@/components/breadcrumb'
 import OrganizationsTable from '@/app/(routes)/settings/organizations/organizations-table'
@@ -72,24 +77,14 @@ const Page = () => {
 
       <div>
         <Tabs value={activeTab} onValueChange={handleTabChange}>
-          <TabsList className="gap-4 pb-0 pl-0">
-            <TabsTrigger
-              className={cn(
-                'text-zinc-700 data-[state=active]:bg-amber-400 data-[state=active]:text-zinc-700'
-              )}
-              value="organizations"
-            >
+          <TabsList>
+            <TabsTrigger value="organizations">
               {intl.formatMessage({
                 id: 'settings.tabs.organizations',
                 defaultMessage: 'Organizations'
               })}
             </TabsTrigger>
-            <TabsTrigger
-              className={cn(
-                ' data-[state=active]:bg-amber-400 data-[state=active]:text-zinc-700'
-              )}
-              value="others"
-            >
+            <TabsTrigger value="others">
               {intl.formatMessage({
                 id: 'settings.tabs.others',
                 defaultMessage: 'Others Settings'

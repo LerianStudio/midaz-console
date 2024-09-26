@@ -3,7 +3,6 @@
 import { BottomDrawer } from '@/components/bottom-drawer'
 import { BreadcrumbComponent, BreadcrumbPath } from '@/components/breadcrumb'
 import { PageHeader } from '@/components/page-header'
-import { TabsComponent } from '@/components/tabs'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import useCustomToast from '@/hooks/use-custom-toast'
 import React, { useEffect, useState } from 'react'
@@ -13,12 +12,20 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { useUpdateLedger } from '@/hooks/ledgers/use-update-ledger'
 import { useQueryClient } from '@tanstack/react-query'
 import { useFormState } from '@/context/form-details-context'
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent
+} from '@/components/ui/tabs/tabs'
+import { useIntl } from 'react-intl'
 
 type LedgerDetailsViewProps = {
   data: LedgerEntity
 }
 
 const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
+  const intl = useIntl()
   const { formData, isDirty, resetDirty } = useFormState()
   const { showSuccess, showError } = useCustomToast()
   const [isSheetOpen, setIsSheetOpen] = useState(false)
@@ -92,28 +99,6 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
     setResetMetadataFormTrigger((prev) => !prev)
   }
 
-  const tabs = [
-    {
-      id: 1,
-      value: 'overview',
-      name: 'Visão Geral',
-      content: data && (
-        <OverviewTabContent
-          data={data}
-          onMetadataChange={setMetadata}
-          onMetadataDirtyChange={setIsMetadataDirty}
-          resetMetadataFormTrigger={resetMetadataFormTrigger}
-        />
-      )
-    },
-    {
-      id: 2,
-      value: 'instruments',
-      name: 'Instrumentos',
-      content: <div>Instruments</div>
-    }
-  ]
-
   if (!data) {
     return (
       <React.Fragment>
@@ -162,11 +147,34 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
           <PageHeader.InfoTitle title={data.name} subtitle={data.id}>
             <PageHeader.InfoTooltip subtitle={data.id} />
           </PageHeader.InfoTitle>
-          <PageHeader.ActionButtons type="entity" />
+          <PageHeader.ActionButtons>
+            <PageHeader.StatusButton />
+          </PageHeader.ActionButtons>
         </div>
       </PageHeader.Root>
 
-      <TabsComponent tabs={tabs} />
+      <Tabs defaultValue="overview">
+        <TabsList>
+          <TabsTrigger value="overview">
+            {intl.formatMessage({
+              id: 'ledgers.tab.overview',
+              defaultMessage: 'Overview'
+            })}
+          </TabsTrigger>
+          <TabsTrigger value="assets">
+            {intl.formatMessage({
+              id: 'ledgers.tab.assets',
+              defaultMessage: 'Assets'
+            })}
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="overview">
+          <OverviewTabContent data={data} onMetadataChange={setMetadata} />
+        </TabsContent>
+        <TabsContent value="assets">
+          <p>Assets</p>
+        </TabsContent>
+      </Tabs>
 
       <BottomDrawer
         isOpen={isSheetOpen}

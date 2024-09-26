@@ -137,5 +137,7 @@
   "entity.organization.legalDocument": "Document",
   "entity.organization.legalName": "Legal Name",
   "entity.organization.status": "Status",
-  "common.selectPlaceholder": "Select..."
+  "common.selectPlaceholder": "Select...",
+  "ledgers.tab.assets": "Assets",
+  "ledgers.tab.overview": "Overview"
 }

@@ -7,12 +7,12 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuItemIcon,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '../ui/dropdown-menu'
+} from '../ui/dropdown-menu/dropdown-menu'
 import { useIntl } from 'react-intl'
-import { cn } from '@/lib/utils'
 import {
   CreditCard,
   ExternalLink,
@@ -29,70 +29,68 @@ export const UserDropdown = () => {
   return (
     <div>
       <DropdownMenu>
-        <DropdownMenuTrigger className="flex h-[60px] items-center justify-center outline-none">
+        <DropdownMenuTrigger>
           <Avatar>
             <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className={cn('rounded-lg', 'min-w-[241px]')}>
-          <div className="flex items-center gap-3 rounded-sm px-3 py-2 transition-colors hover:bg-shadcn-100">
-            <DropdownMenuLabel className="p-0 text-sm font-bold text-[#52525b]">
-              Rick Morty
-            </DropdownMenuLabel>
-          </div>
-          <DropdownMenuSeparator className="bg-shadcn-200" />
-          <DropdownMenuItem className="flex items-center gap-3 px-3 py-2 focus:bg-shadcn-100">
-            <span className="text-shadcn-400">{<User size={16} />}</span>
-            <p className="text-sm font-medium text-[#52525b]">
-              {intl.formatMessage({
-                id: 'header.userDropdown.profile',
-                defaultMessage: 'Profile'
-              })}
-            </p>
+        <DropdownMenuContent className="min-w-[241px]">
+          <DropdownMenuLabel>Rick Morty</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            <DropdownMenuItemIcon>
+              <User />
+            </DropdownMenuItemIcon>
+            {intl.formatMessage({
+              id: 'header.userDropdown.profile',
+              defaultMessage: 'Profile'
+            })}
           </DropdownMenuItem>
-          <DropdownMenuItem className="flex items-center gap-3 px-3 py-2 focus:bg-shadcn-100">
-            <span className="text-shadcn-400">{<CreditCard size={16} />}</span>
-            <p className="text-sm font-medium text-[#52525b]">
-              {intl.formatMessage({
-                id: 'header.userDropdown.subscription',
-                defaultMessage: 'Subscription'
-              })}
-            </p>
+          <DropdownMenuItem>
+            <DropdownMenuItemIcon>
+              <CreditCard />
+            </DropdownMenuItemIcon>
+            {intl.formatMessage({
+              id: 'header.userDropdown.subscription',
+              defaultMessage: 'Subscription'
+            })}
           </DropdownMenuItem>
-          <DropdownMenuItem className="flex items-center gap-3 px-3 py-2 focus:bg-shadcn-100">
-            <span className="text-shadcn-400">{<Github size={16} />}</span>
-            <p className="text-sm font-medium text-[#52525b]">Github</p>
+          <DropdownMenuItem>
+            <DropdownMenuItemIcon>
+              <Github />
+            </DropdownMenuItemIcon>
+            Github
           </DropdownMenuItem>
-          <DropdownMenuItem className="flex items-center gap-3 px-3 py-2 focus:bg-shadcn-100">
-            <span className="text-shadcn-400">
-              {<ExternalLink size={16} />}
-            </span>
-            <p className="text-sm font-medium text-[#52525b]">Docs</p>
+          <DropdownMenuItem>
+            <DropdownMenuItemIcon>
+              <ExternalLink />
+            </DropdownMenuItemIcon>
+            Docs
           </DropdownMenuItem>
-          <DropdownMenuItem className="flex items-center gap-3 px-3 py-2 focus:bg-shadcn-100">
-            <span className="text-shadcn-400">
-              {<ExternalLink size={16} />}
-            </span>
-            <p className="text-sm font-medium text-[#52525b]">CLI Docs</p>
+          <DropdownMenuItem>
+            <DropdownMenuItemIcon>
+              <ExternalLink />
+            </DropdownMenuItemIcon>
+            CLI Docs
           </DropdownMenuItem>
-          <DropdownMenuItem className="flex items-center gap-3 px-3 py-2 focus:bg-shadcn-100">
-            <span className="text-shadcn-400">{<LifeBuoy size={16} />}</span>
-            <p className="text-sm font-medium text-[#52525b]">
-              {intl.formatMessage({
-                id: 'header.userDropdown.support',
-                defaultMessage: 'Support'
-              })}
-            </p>
+          <DropdownMenuItem>
+            <DropdownMenuItemIcon>
+              <LifeBuoy />
+            </DropdownMenuItemIcon>
+            {intl.formatMessage({
+              id: 'header.userDropdown.support',
+              defaultMessage: 'Support'
+            })}
           </DropdownMenuItem>
-          <DropdownMenuItem className="flex items-center gap-3 px-3 py-2 focus:bg-shadcn-100">
-            <span className="text-shadcn-400">{<LogOut size={16} />}</span>
-            <p className="text-sm font-medium text-[#52525b]">
-              {intl.formatMessage({
-                id: 'header.userDropdown.logout',
-                defaultMessage: 'Logout'
-              })}
-            </p>
+          <DropdownMenuItem>
+            <DropdownMenuItemIcon>
+              <LogOut />
+            </DropdownMenuItemIcon>
+            {intl.formatMessage({
+              id: 'header.userDropdown.logout',
+              defaultMessage: 'Logout'
+            })}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
