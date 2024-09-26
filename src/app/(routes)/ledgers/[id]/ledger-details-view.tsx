@@ -169,7 +169,12 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="overview">
-          <OverviewTabContent data={data} onMetadataChange={setMetadata} />
+          <OverviewTabContent
+            data={data}
+            onMetadataChange={setMetadata}
+            onMetadataDirtyChange={setIsMetadataDirty}
+            resetMetadataFormTrigger={resetMetadataFormTrigger}
+          />
         </TabsContent>
         <TabsContent value="assets">
           <p>Assets</p>
