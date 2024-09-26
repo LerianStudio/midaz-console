@@ -19,7 +19,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
+} from '@/components/ui/dropdown-menu/dropdown-menu'
 import { Button } from '@/components/ui/button/button'
 import { Badge } from '@/components/ui/badge'
 import { Arrow } from '@radix-ui/react-tooltip'
