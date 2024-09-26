@@ -107,7 +107,9 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
           <PageHeader.InfoTitle title={data.name} subtitle={data.id}>
             <PageHeader.InfoTooltip subtitle={data.id} />
           </PageHeader.InfoTitle>
-          <PageHeader.ActionButtons type="entity" />
+          <PageHeader.ActionButtons>
+            <PageHeader.StatusButton />
+          </PageHeader.ActionButtons>
         </div>
       </PageHeader.Root>
 

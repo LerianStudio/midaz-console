@@ -18,6 +18,8 @@ import { getSheetInfo } from '@/helpers/ledgers/ledgers-helpers'
 import { useLedgers } from '@/utils/queries'
 import { SheetContainer } from '@/components/sheet/sheet-container'
 import { useIntl } from 'react-intl'
+import { Button } from '@/components/ui/button/button'
+import { Plus } from 'lucide-react'
 
 const LedgersView = () => {
   const intl = useIntl()
@@ -84,15 +86,11 @@ const LedgersView = () => {
   }
 
   const handleSubmit = async (values: LedgerEntity) => {
-    console.log(values)
-
     const mergedValues = { ...defaultLedgerSchema, ...values }
 
     if (sheetMode.mode === 'create') {
       await createLedgerData(mergedValues)
     }
-
-    console.log(mergedValues)
   }
 
   const sheetProps = React.useMemo(
@@ -156,39 +154,35 @@ const LedgersView = () => {
                 'Visualize and edit the Ledgers of your Organization.'
             })}
           />
-          <PageHeader.ActionButtons
-            type="listing"
-            listingTemplateTranslate={{
-              addButton: intl.formatMessage({
-                id: 'ledgers.listingTemplate.addButton',
-                defaultMessage: 'New Ledger'
-              })
-            }}
-            helperTriggerTranslate={{
-              question: intl.formatMessage({
+          <PageHeader.ActionButtons>
+            <PageHeader.CollapsibleInfoTrigger
+              question={intl.formatMessage({
                 id: 'ledgers.helperTrigger.question',
                 defaultMessage: 'What is a Ledger?'
-              })
-            }}
-            onCreate={handleOpenCreateSheet}
-          />
+              })}
+            />
+            <Button icon={<Plus />} onClick={handleOpenCreateSheet}>
+              {intl.formatMessage({
+                id: 'ledgers.listingTemplate.addButton',
+                defaultMessage: 'New Ledger'
+              })}
+            </Button>
+          </PageHeader.ActionButtons>
         </PageHeader.Wrapper>
         <PageHeader.CollapsibleInfo
-          helperTriggerTranslate={{
-            question: intl.formatMessage({
-              id: 'ledgers.helperTrigger.question',
-              defaultMessage: 'What is a Ledger?'
-            }),
-            answer: intl.formatMessage({
-              id: 'ledgers.helperTrigger.answer',
-              defaultMessage:
-                'Book with the record of all transactions and operations of the Organization.'
-            }),
-            seeMore: intl.formatMessage({
-              id: 'ledgers.helperTrigger.seeMore',
-              defaultMessage: 'Read the docs'
-            })
-          }}
+          question={intl.formatMessage({
+            id: 'ledgers.helperTrigger.question',
+            defaultMessage: 'What is a Ledger?'
+          })}
+          answer={intl.formatMessage({
+            id: 'ledgers.helperTrigger.answer',
+            defaultMessage:
+              'Book with the record of all transactions and operations of the Organization.'
+          })}
+          seeMore={intl.formatMessage({
+            id: 'ledgers.helperTrigger.seeMore',
+            defaultMessage: 'Read the docs'
+          })}
         />
       </PageHeader.Root>
 

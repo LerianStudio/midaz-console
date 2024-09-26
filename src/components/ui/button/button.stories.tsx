@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { ButtonProps, Button } from './button'
+import { Plus, Users } from 'lucide-react'
 
 const meta: Meta<ButtonProps> = {
   title: 'Molecules/Button',
-  // tags: ["autodocs"],
   component: Button,
   argTypes: {
     children: {
@@ -49,4 +49,11 @@ export const SecundaryDisabled: StoryObj<ButtonProps> = {
     variant: 'secondary',
     disabled: true
   }
+}
+
+export const WithIcon: StoryObj<ButtonProps> = {
+  args: {
+    children: 'Button'
+  },
+  render: (args) => <Button icon={<Users />} {...args} />
 }

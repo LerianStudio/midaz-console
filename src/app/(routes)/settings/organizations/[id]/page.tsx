@@ -91,7 +91,9 @@ const Page = ({ params }: { params: { id: string } }) => {
                   >
                     <PageHeader.InfoTooltip subtitle={organization.data?.id} />
                   </PageHeader.InfoTitle>
-                  <PageHeader.ActionButtons type="entity" />
+                  <PageHeader.ActionButtons>
+                    <PageHeader.StatusButton />
+                  </PageHeader.ActionButtons>
                 </div>
               </PageHeader.Root>
             </div>
