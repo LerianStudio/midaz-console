@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu'
-import { Check, ChevronRight, Circle } from 'lucide-react'
+import { Check, ChevronRight, Circle, LucideProps } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
@@ -106,11 +106,11 @@ const DropdownMenuItemIcon = React.forwardRef<
   HTMLSpanElement,
   React.HTMLAttributes<HTMLSpanElement>
 >(({ className, children, ...props }, ref) => (
-  <span className={cn('text-shadcn-400', className)} {...props}>
+  <span ref={ref} className={cn('text-shadcn-400', className)} {...props}>
     {React.Children.map(React.Children.toArray(children), (child) =>
-      typeof child === 'string'
-        ? child
-        : React.cloneElement(child, { size: 16 })
+      React.isValidElement(child)
+        ? React.cloneElement(child, { size: 16 } as LucideProps)
+        : child
     )}
   </span>
 ))
