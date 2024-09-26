@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuLabel
-} from './ui/dropdown-menu'
+} from './ui/dropdown-menu/dropdown-menu'
 import { MenuEntry } from '@/core/repositories/menu-entry'
 import { cn } from '@/lib/utils'
 
