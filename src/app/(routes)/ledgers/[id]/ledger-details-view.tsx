@@ -3,13 +3,15 @@
 import { BottomDrawer } from '@/components/bottom-drawer'
 import { BreadcrumbComponent, BreadcrumbPath } from '@/components/breadcrumb'
 import { PageHeader } from '@/components/page-header'
-import { useFormState } from '@/context/form-details-context'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import useCustomToast from '@/hooks/use-custom-toast'
 import React, { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { OverviewTabContent } from './overview-tab-content'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useUpdateLedger } from '@/hooks/ledgers/use-update-ledger'
+import { useQueryClient } from '@tanstack/react-query'
+import { useFormState } from '@/context/form-details-context'
 import {
   Tabs,
   TabsList,
@@ -25,38 +27,76 @@ type LedgerDetailsViewProps = {
 const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
   const intl = useIntl()
   const { formData, isDirty, resetDirty } = useFormState()
-  const { showSuccess } = useCustomToast()
+  const { showSuccess, showError } = useCustomToast()
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   const [metadata, setMetadata] = useState<{ key: string; value: string }[]>([])
+  const [isMetadataDirty, setIsMetadataDirty] = useState(false)
+  const [resetMetadataFormTrigger, setResetMetadataFormTrigger] =
+    useState(false)
+  const updateLedger = useUpdateLedger()
+  const queryClient = useQueryClient()
 
   useEffect(() => {
-    if (isDirty) {
+    if (isDirty || isMetadataDirty) {
       setIsSheetOpen(true)
+    } else {
+      setIsSheetOpen(false)
     }
-  }, [isDirty])
+  }, [isDirty, isMetadataDirty])
+
+  useEffect(() => {
+    if (data && data.metadata) {
+      const metadataArray = Object.entries(data.metadata).map(
+        ([key, value]) => ({
+          key,
+          value
+        })
+      )
+      setMetadata(metadataArray)
+    }
+  }, [data])
 
   const breadcrumbPaths: BreadcrumbPath[] = [
     { name: 'Ledgers', href: '/ledgers' },
     { name: 'Detalhe da Ledger' }
   ]
 
-  const handleGlobalSubmit = () => {
+  const metadataObject =
+    metadata.length > 0
+      ? metadata.reduce((acc, item) => ({ ...acc, [item.key]: item.value }), {})
+      : null
+
+  const handleGlobalSubmit = async () => {
+    const currentDateTime = new Date().toISOString()
+
     const dataToSubmit = {
-      ...formData,
-      metadata: metadata.reduce(
-        (acc, item) => ({ ...acc, [item.key]: item.value }),
-        {}
-      )
+      id: data.id,
+      organizationId: 'cc15194a-6bc9-4ebb-b15d-43411a54ba4b',
+      name: formData.name || data.name,
+      metadata: metadataObject,
+      status: data.status,
+      createdAt: data.createdAt,
+      updatedAt: currentDateTime,
+      deletedAt: data.deletedAt
     }
 
-    resetDirty()
-    console.log('Data to submit:', dataToSubmit)
-    showSuccess('Alterações salvas com sucesso.')
+    try {
+      await updateLedger(data.id, dataToSubmit)
+      queryClient.invalidateQueries({ queryKey: ['ledger', data.id] })
+      resetDirty()
+      setIsMetadataDirty(false)
+      setResetMetadataFormTrigger((prev) => !prev)
+      showSuccess('Alterações salvas com sucesso.')
+    } catch (error) {
+      showError('Erro ao salvar alterações.')
+    }
   }
 
   const handleCancel = () => {
     setIsSheetOpen(false)
     resetDirty()
+    setIsMetadataDirty(false)
+    setResetMetadataFormTrigger((prev) => !prev)
   }
 
   if (!data) {
@@ -136,13 +176,11 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
         </TabsContent>
       </Tabs>
 
-      {isDirty && (
-        <BottomDrawer
-          isOpen={isSheetOpen}
-          handleSubmit={handleGlobalSubmit}
-          handleCancel={handleCancel}
-        />
-      )}
+      <BottomDrawer
+        isOpen={isSheetOpen}
+        handleSubmit={handleGlobalSubmit}
+        handleCancel={handleCancel}
+      />
     </div>
   )
 }

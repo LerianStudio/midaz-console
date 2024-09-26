@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { useForm, useFieldArray } from 'react-hook-form'
+import { useForm, useFieldArray, useWatch } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CardContent } from '../ui/card/card'
 import { Label } from '../ui/label/label'
 import { Input } from '../ui/input/input'
 import { Button } from '../ui/button/button'
-import { useFormState } from '@/context/form-details-context'
 import { Plus, Trash } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 type CardMetadataProps = {
   data: any
   onChange: (metadata: any[]) => void
+  onDirtyChange: (isDirty: boolean) => void
+  resetFormTrigger: boolean
 }
 
 const formSchema = z.object({
@@ -33,11 +34,18 @@ const normalizeMetadata = (metadata: any) => {
       }))
 }
 
-export const CardMetadata = ({ data, onChange }: CardMetadataProps) => {
-  const { markAsDirty } = useFormState()
-  const [newMetadata, setNewMetadata] = useState({ key: '', value: '' })
-
-  const { control, register, handleSubmit, setValue, watch, reset } = useForm({
+export const CardMetadata = ({
+  data,
+  onChange,
+  onDirtyChange,
+  resetFormTrigger
+}: CardMetadataProps) => {
+  const {
+    control,
+    register,
+    reset,
+    formState: { isDirty }
+  } = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       metadata: normalizeMetadata(data.metadata)
@@ -49,12 +57,26 @@ export const CardMetadata = ({ data, onChange }: CardMetadataProps) => {
     name: 'metadata'
   })
 
+  const metadataValues = useWatch({
+    control,
+    name: 'metadata'
+  })
+
   useEffect(() => {
-    const subscription = watch((newValue) => {
-      onChange(newValue.metadata ?? [])
+    onChange(metadataValues ?? [])
+  }, [metadataValues, onChange])
+
+  useEffect(() => {
+    onDirtyChange(isDirty)
+  }, [isDirty, onDirtyChange])
+
+  useEffect(() => {
+    reset({
+      metadata: normalizeMetadata(data.metadata)
     })
-    return () => subscription.unsubscribe()
-  }, [watch, onChange])
+  }, [resetFormTrigger, reset])
+
+  const [newMetadata, setNewMetadata] = useState({ key: '', value: '' })
 
   const handleNewMetadataChange =
     (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,17 +87,8 @@ export const CardMetadata = ({ data, onChange }: CardMetadataProps) => {
     if (newMetadata.key && newMetadata.value) {
       append(newMetadata)
       setNewMetadata({ key: '', value: '' })
-      markAsDirty()
     }
   }
-
-  const handleInputChange =
-    (index: number, field: string) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setValue(`metadata.${index}.${field}`, e.target.value, {
-        shouldValidate: true
-      })
-    }
 
   return (
     <CardContent className="p-0">
@@ -120,26 +133,16 @@ export const CardMetadata = ({ data, onChange }: CardMetadataProps) => {
       {fields.map((item, index) => (
         <div key={item.id} className="mt-3 flex items-center justify-between">
           <div className="flex w-full gap-3">
+            <Input placeholder="Key" {...register(`metadata.${index}.key`)} />
+
             <Input
-              defaultValue={item.key}
-              {...register(`metadata.${index}.key`)}
-              onChange={() => {
-                handleInputChange(index, 'key')
-                markAsDirty()
-              }}
-            />
-            <Input
-              defaultValue={item.value}
+              placeholder="Value"
               {...register(`metadata.${index}.value`)}
-              onChange={() => {
-                handleInputChange(index, 'value')
-                markAsDirty()
-              }}
             />
+
             <Button
               onClick={() => {
                 remove(index)
-                markAsDirty()
               }}
               className="group h-9 w-9 rounded-full border border-shadcn-200 bg-white hover:border-none"
             >
