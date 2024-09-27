@@ -144,12 +144,16 @@ const LedgersView = () => {
             id: 'ledgers.dialog.title',
             defaultMessage: 'Are you sure?'
           })}
-          description={intl.formatMessage({
-            id: 'ledgers.dialog.subtitle',
-            defaultMessage:
-              'This action is irreversible. This will deactivate your Ledger forever'
-          })}
-          ledgerName={currentLedgerForDeletion?.name || ''}
+          description={intl.formatMessage(
+            {
+              id: 'ledgers.dialog.subtitle',
+              defaultMessage:
+                'This action asdasdasd is irreversible. This will deactivate your Ledger forever {ledgerName}.'
+            },
+            {
+              ledgerName: currentLedgerForDeletion?.name || ''
+            }
+          )}
           onConfirm={handleConfirmDeleteLedger}
           onCancel={() => setIsDialogOpen(false)}
         />

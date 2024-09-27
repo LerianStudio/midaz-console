@@ -21,6 +21,8 @@ type ConfirmationDialogProps = {
   icon?: React.ReactNode
   onConfirm?: () => void
   onCancel?: () => void
+  confirmLabel?: string
+  cancelLabel?: string
 }
 
 const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
@@ -28,10 +30,11 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   onOpenChange,
   title = '',
   description = '',
-  ledgerName = '',
-  icon = '',
+  icon,
   onConfirm = () => {},
-  onCancel = () => {}
+  onCancel = () => {},
+  confirmLabel = 'Confirmar',
+  cancelLabel = 'Cancelar'
 }) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -41,20 +44,22 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
             {icon && <span>{icon}</span>}
             <DialogTitle>{title}</DialogTitle>
           </div>
-          <DialogDescription>
-            {description} <strong>{ledgerName}</strong>
-          </DialogDescription>
+          <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
 
         <DialogFooter>
-          <Button onClick={onCancel} variant="outline">
-            Cancelar
+          <Button
+            onClick={onCancel}
+            variant="outline"
+            className="shadcn/--secondary hover:bg-shadcn-100"
+          >
+            {cancelLabel}
           </Button>
           <Button
             onClick={onConfirm}
-            className="bg-sunglow-400 text-black hover:bg-sunglow-400/70"
+            className="shadcn/--primary-foreground bg-shadcn-700 hover:bg-shadcn-500"
           >
-            Confirmar
+            {confirmLabel}
           </Button>
         </DialogFooter>
       </DialogContent>
