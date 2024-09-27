@@ -48,17 +48,10 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
         </DialogHeader>
 
         <DialogFooter>
-          <Button
-            onClick={onCancel}
-            variant="outline"
-            className="shadcn/--secondary hover:bg-shadcn-100"
-          >
+          <Button onClick={onCancel} variant="outline">
             {cancelLabel}
           </Button>
-          <Button
-            onClick={onConfirm}
-            className="shadcn/--primary-foreground bg-shadcn-700 hover:bg-shadcn-500"
-          >
+          <Button onClick={onConfirm} variant="default">
             {confirmLabel}
           </Button>
         </DialogFooter>
