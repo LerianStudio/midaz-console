@@ -140,5 +140,7 @@
   "common.selectPlaceholder": "Selecione...",
   "ledgers.tab.assets": "Ativos",
   "ledgers.tab.overview": "Visão Geral",
-  "common.status": ""
+  "common.status": "Status",
+  "common.cancel": "Cancelar",
+  "common.confirm": "Confirmar"
 }

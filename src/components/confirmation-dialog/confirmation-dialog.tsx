@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogDescription
 } from '../ui/dialog'
+import { useIntl } from 'react-intl'
 
 type ConfirmationDialogProps = {
   open: boolean
@@ -33,9 +34,10 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   icon,
   onConfirm = () => {},
   onCancel = () => {},
-  confirmLabel = 'Confirmar',
-  cancelLabel = 'Cancelar'
+  confirmLabel,
+  cancelLabel
 }) => {
+  const intl = useIntl()
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -49,10 +51,18 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
 
         <DialogFooter>
           <Button onClick={onCancel} variant="outline">
-            {cancelLabel}
+            {cancelLabel ??
+              intl.formatMessage({
+                id: 'common.cancel',
+                defaultMessage: 'Cancel'
+              })}
           </Button>
           <Button onClick={onConfirm} variant="default">
-            {confirmLabel}
+            {confirmLabel ??
+              intl.formatMessage({
+                id: 'common.confirm',
+                defaultMessage: 'Confirm'
+              })}
           </Button>
         </DialogFooter>
       </DialogContent>
