@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { ButtonProps, Button } from './button'
-import { Plus, Users } from 'lucide-react'
+import { Users } from 'lucide-react'
 
 const meta: Meta<ButtonProps> = {
-  title: 'Molecules/Button',
+  title: 'Primitives/Button',
   component: Button,
   argTypes: {
     children: {

@@ -34,7 +34,7 @@ import { Button } from '../button/button'
 import { DropdownMenuProps } from '@radix-ui/react-dropdown-menu'
 
 const meta: Meta<DropdownMenuProps> = {
-  title: 'Molecules/DropdownMenu',
+  title: 'Primitives/DropdownMenu',
   component: DropdownMenu,
   subcomponents: {
     DropdownMenuTrigger,

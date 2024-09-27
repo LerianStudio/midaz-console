@@ -11,7 +11,7 @@ import {
 } from '.'
 
 const meta: Meta<BreadcrumbProps> = {
-  title: 'Molecules/Breadcrumb',
+  title: 'Primitives/Breadcrumb',
   component: Breadcrumb,
   subcomponents: {
     Breadcrumb,

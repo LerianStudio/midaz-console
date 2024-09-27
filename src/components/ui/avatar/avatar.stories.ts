@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react'
 import { Avatar, AvatarFallback, AvatarImage, AvatarProps } from './avatar'
 
 const meta: Meta = {
-  title: 'Molecules/Avatar',
+  title: 'Primitives/Avatar',
   tags: [''],
   component: Avatar,
   argTypes: {

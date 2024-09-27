@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react'
 import { Label } from './label'
 
 const meta: Meta = {
-  title: 'Molecules/Label',
+  title: 'Primitives/Label',
   component: Label,
   argTypes: {
     className: {

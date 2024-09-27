@@ -4,6 +4,7 @@ import '../src/app/globals.css'
 
 import React from 'react'
 import { ThemeProvider } from '../src/lib/theme/theme-provider'
+import { IntlProvider } from 'react-intl'
 
 const preview: Preview = {
   parameters: {
@@ -23,7 +24,9 @@ const preview: Preview = {
 export const decorators = [
   (Story) => (
     <ThemeProvider>
-      <Story />
+      <IntlProvider locale="en">
+        <Story />
+      </IntlProvider>
     </ThemeProvider>
   )
 ]

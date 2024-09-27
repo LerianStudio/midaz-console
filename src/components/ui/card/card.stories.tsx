@@ -11,7 +11,7 @@ import {
 import { Button } from '../button/button'
 
 const meta: Meta<CardProps> = {
-  title: 'Molecules/Card',
+  title: 'Primitives/Card',
   component: Card,
   subcomponents: {
     CardTitle,
