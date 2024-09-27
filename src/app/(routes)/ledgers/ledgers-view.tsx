@@ -13,12 +13,12 @@ import { useCreateLedger } from '@/hooks/ledgers/use-create-ledger'
 import { v4 as uuidv4 } from 'uuid'
 import { useEnhancedLedgers } from '@/hooks/ledgers/use-enhanced-ledgers'
 import { PageHeader } from '@/components/page-header'
-import { Dialog } from '@/components/dialog'
 import { getSheetInfo } from '@/helpers/ledgers/ledgers-helpers'
 import { useLedgers } from '@/utils/queries'
 import { SheetContainer } from '@/components/sheet/sheet-container'
 import { useIntl } from 'react-intl'
 import { Button } from '@/components/ui/button/button'
+import ConfirmationDialog from '@/components/confirmation-dialog/confirmation-dialog'
 import { Plus } from 'lucide-react'
 
 const LedgersView = () => {
@@ -137,15 +137,22 @@ const LedgersView = () => {
           />
         )}
 
-        <Dialog.Root open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <Dialog.Content>
-            <Dialog.Header ledgerName={currentLedgerForDeletion?.name || ''} />
-            <Dialog.Footer
-              onDismiss={() => setIsDialogOpen(false)}
-              onDelete={handleConfirmDeleteLedger}
-            />
-          </Dialog.Content>
-        </Dialog.Root>
+        <ConfirmationDialog
+          open={isDialogOpen}
+          onOpenChange={setIsDialogOpen}
+          title={intl.formatMessage({
+            id: 'ledgers.dialog.title',
+            defaultMessage: 'Are you sure?'
+          })}
+          description={intl.formatMessage({
+            id: 'ledgers.dialog.subtitle',
+            defaultMessage:
+              'This action is irreversible. This will deactivate your Ledger forever'
+          })}
+          ledgerName={currentLedgerForDeletion?.name || ''}
+          onConfirm={handleConfirmDeleteLedger}
+          onCancel={() => setIsDialogOpen(false)}
+        />
 
         <SheetContainer {...sheetProps} />
       </div>
