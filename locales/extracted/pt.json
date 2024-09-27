@@ -139,5 +139,8 @@
   "entity.organization.status": "Status",
   "common.selectPlaceholder": "Selecione...",
   "ledgers.tab.assets": "Ativos",
-  "ledgers.tab.overview": "Visão Geral"
+  "ledgers.tab.overview": "Visão Geral",
+  "common.status": "Status",
+  "common.cancel": "Cancelar",
+  "common.confirm": "Confirmar"
 }
