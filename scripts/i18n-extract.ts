@@ -93,7 +93,11 @@ async function main() {
   const extracted = await extract(paths, formatJsConfig)
 
   // Outputs default language file
-  await extractLocale(intlConfig.defaultLocale, extracted)
+  await writeFile(
+    path.join(outputPath, `${intlConfig.defaultLocale}.json`),
+    extracted,
+    'utf-8'
+  )
 
   // Remove default messages
   const extractedClean = clearDefaultMessages(extracted)

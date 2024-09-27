@@ -148,7 +148,7 @@ const LedgersView = () => {
             {
               id: 'ledgers.dialog.subtitle',
               defaultMessage:
-                'This action asdasdasd is irreversible. This will deactivate your Ledger forever {ledgerName}.'
+                'This action is irreversible. This will deactivate your Ledger forever {ledgerName}.'
             },
             {
               ledgerName: currentLedgerForDeletion?.name || ''
