@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import useCustomToast from '@/hooks/use-custom-toast'
-import { BreadcrumbComponent, BreadcrumbPath } from '@/components/breadcrumb'
+import { Breadcrumb, BreadcrumbPath } from '@/components/breadcrumb'
 import { OrganizationsType } from '@/types/organizations-type'
 import OrganizationsView from '@/app/(routes)/settings/organizations/organizations-view'
 import { FormDetailsProvider } from '@/context/form-details-context'
@@ -80,7 +80,7 @@ const Page = ({ params }: { params: { id: string } }) => {
         <Skeleton className="h-screen bg-zinc-200" />
       ) : (
         <div>
-          <BreadcrumbComponent paths={breadCrumbPaths} />
+          <Breadcrumb paths={breadCrumbPaths} />
           <div>
             <div className="mb-6 mt-12">
               <PageHeader.Root>
