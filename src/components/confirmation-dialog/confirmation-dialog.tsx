@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { Button } from '@/components/ui/button/button'
+import { Button } from '@/components/ui/button'
 
 import {
   DialogHeader,
@@ -13,7 +13,7 @@ import {
 } from '../ui/dialog'
 import { useIntl } from 'react-intl'
 
-type ConfirmationDialogProps = {
+export type ConfirmationDialogProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
   title?: string
@@ -38,6 +38,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   cancelLabel
 }) => {
   const intl = useIntl()
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>

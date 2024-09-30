@@ -17,8 +17,8 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu/dropdown-menu'
-import { Button } from '@/components/ui/button/button'
+} from '@/components/ui/dropdown-menu'
+import { Button } from '@/components/ui/button'
 import { OrganizationsType } from '@/types/organizations-type'
 import { useIntl } from 'react-intl'
 

@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button/button'
+import { Button } from '@/components/ui/button'
 import { Trash } from 'lucide-react'
 import React from 'react'
 

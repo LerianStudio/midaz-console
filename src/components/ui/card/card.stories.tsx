@@ -7,11 +7,11 @@ import {
   CardDescription,
   CardContent,
   CardFooter
-} from './card'
-import { Button } from '../button/button'
+} from '.'
+import { Button } from '../button'
 
 const meta: Meta<CardProps> = {
-  title: 'Molecules/Card',
+  title: 'Primitives/Card',
   component: Card,
   subcomponents: {
     CardTitle,

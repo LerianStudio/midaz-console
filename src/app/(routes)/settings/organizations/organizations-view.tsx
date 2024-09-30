@@ -3,13 +3,13 @@
 import type { OrganizationsType } from '@/types/organizations-type'
 import { Card } from '@/components/card'
 import { Separator } from '@/components/ui/separator'
-import { CardContent, CardFooter } from '@/components/ui/card/card'
+import { CardContent, CardFooter } from '@/components/ui/card'
 import { Form } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { organizationFormSchema } from '@/app/(routes)/settings/organizations/organizations-form-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button } from '@/components/ui/button/button'
+import { Button } from '@/components/ui/button'
 import {
   RenderCountryField,
   RenderField,
@@ -37,7 +37,7 @@ import {
   AvatarFallback,
   AvatarImage
 } from '@/components/ui/avatar/avatar'
-import { Input } from '@/components/ui/input/input'
+import { Input } from '@/components/ui/input'
 import { ChromePicker } from 'react-color'
 import { useRouter } from 'next/navigation'
 import { useParentOrganizations } from '@/utils/queries'

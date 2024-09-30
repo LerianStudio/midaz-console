@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button/button'
+import { Button } from '@/components/ui/button'
 import NoResourceImage from '../../public/images/no-resource.png'
 import Image from 'next/image'
 import { Plus } from 'lucide-react'

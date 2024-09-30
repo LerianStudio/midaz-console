@@ -8,7 +8,7 @@ import { PanelLeftClose, PanelRightClose } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
 import { OrganizationSwitcher } from '../organization-switcher'
-import { Button } from '../ui/button/button'
+import { Button } from '../ui/button'
 import {
   Tooltip,
   TooltipContent,

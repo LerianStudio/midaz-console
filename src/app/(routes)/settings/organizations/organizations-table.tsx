@@ -1,7 +1,7 @@
 'use client'
 
-import { Card, CardHeader } from '@/components/ui/card/card'
-import { Button } from '@/components/ui/button/button'
+import { Card, CardHeader } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 
 import { useOrganizations } from '@/utils/queries'

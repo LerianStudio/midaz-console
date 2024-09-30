@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '.'
 import { TabsProps } from '@radix-ui/react-tabs'
 
 const meta: Meta<TabsProps> = {
-  title: 'Molecules/Tabs',
+  title: 'Primitives/Tabs',
   component: Tabs,
   subcomponents: {
     TabsTrigger,

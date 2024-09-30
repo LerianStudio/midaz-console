@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-import { Button } from './ui/button/button'
+import { Button } from './ui/button'
 import { useSidebarContext } from '@/context/sidebar-context'
 
 interface BottomDrawerProps {

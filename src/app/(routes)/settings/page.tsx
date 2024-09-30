@@ -1,12 +1,7 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger
-} from '@/components/ui/tabs/tabs'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useSearchParams } from 'next/navigation'
 import { Breadcrumb } from '@/components/breadcrumb'
 import OrganizationsTable from '@/app/(routes)/settings/organizations/organizations-table'

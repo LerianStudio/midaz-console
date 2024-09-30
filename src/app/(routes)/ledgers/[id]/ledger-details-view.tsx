@@ -12,12 +12,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { useUpdateLedger } from '@/hooks/ledgers/use-update-ledger'
 import { useQueryClient } from '@tanstack/react-query'
 import { useFormState } from '@/context/form-details-context'
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent
-} from '@/components/ui/tabs/tabs'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { useIntl } from 'react-intl'
 
 type LedgerDetailsViewProps = {
