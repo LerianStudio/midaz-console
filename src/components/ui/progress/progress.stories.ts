@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { Progress } from './progress'
+import { Progress } from '.'
 
 const meta: Meta = {
   title: 'Primitives/Progress',
