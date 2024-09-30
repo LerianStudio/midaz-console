@@ -1,7 +1,7 @@
 'use client'
 
 import { BottomDrawer } from '@/components/bottom-drawer'
-import { BreadcrumbComponent, BreadcrumbPath } from '@/components/breadcrumb'
+import { Breadcrumb, BreadcrumbPath } from '@/components/breadcrumb'
 import { PageHeader } from '@/components/page-header'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import useCustomToast from '@/hooks/use-custom-toast'
@@ -102,7 +102,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
   if (!data) {
     return (
       <React.Fragment>
-        <BreadcrumbComponent paths={breadcrumbPaths} />
+        <Breadcrumb paths={breadcrumbPaths} />
 
         <div className="mt-12 flex h-[125px] w-full flex-col gap-4 border-b">
           <Skeleton className="h-10 w-80 bg-zinc-200" />
@@ -140,7 +140,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
 
   return (
     <div className={cn('', isDirty && 'pb-40')}>
-      <BreadcrumbComponent paths={breadcrumbPaths} />
+      <Breadcrumb paths={breadcrumbPaths} />
 
       <PageHeader.Root>
         <div className="flex justify-between border-b">

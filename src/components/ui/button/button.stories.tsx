@@ -51,6 +51,13 @@ export const SecundaryDisabled: StoryObj<ButtonProps> = {
   }
 }
 
+export const Outline: StoryObj<ButtonProps> = {
+  args: {
+    children: 'Button',
+    variant: 'outline'
+  }
+}
+
 export const WithIcon: StoryObj<ButtonProps> = {
   args: {
     children: 'Button'
