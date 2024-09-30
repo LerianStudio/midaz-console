@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { Label } from './label'
+import { Label } from '.'
 
 const meta: Meta = {
   title: 'Primitives/Label',

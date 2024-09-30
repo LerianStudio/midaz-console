@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { ButtonProps, Button } from './button'
+import { ButtonProps, Button } from '.'
 import { Users } from 'lucide-react'
 
 const meta: Meta<ButtonProps> = {

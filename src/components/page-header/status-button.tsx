@@ -5,7 +5,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem
-} from '../ui/dropdown-menu/dropdown-menu'
+} from '../ui/dropdown-menu'
 
 export type StatusButtonProps = {}
 

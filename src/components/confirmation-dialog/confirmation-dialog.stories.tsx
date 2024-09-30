@@ -2,7 +2,7 @@ import { Meta } from '@storybook/react'
 import ConfirmationDialog, {
   ConfirmationDialogProps
 } from './confirmation-dialog'
-import { Button } from '../ui/button/button'
+import { Button } from '../ui/button'
 import React from 'react'
 
 const meta: Meta<ConfirmationDialogProps> = {

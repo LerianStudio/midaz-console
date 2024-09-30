@@ -17,7 +17,7 @@ import { getSheetInfo } from '@/helpers/ledgers/ledgers-helpers'
 import { useLedgers } from '@/utils/queries'
 import { SheetContainer } from '@/components/sheet/sheet-container'
 import { useIntl } from 'react-intl'
-import { Button } from '@/components/ui/button/button'
+import { Button } from '@/components/ui/button'
 import ConfirmationDialog from '@/components/confirmation-dialog/confirmation-dialog'
 import { Plus } from 'lucide-react'
 

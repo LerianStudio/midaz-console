@@ -1,5 +1,5 @@
 import { HelpCircle } from 'lucide-react'
-import { Button } from '../ui/button/button'
+import { Button } from '../ui/button'
 import { CollapsibleTrigger } from '../ui/collapsible'
 
 export type CollapsibleInfoTrigger = {

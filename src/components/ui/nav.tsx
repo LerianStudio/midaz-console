@@ -4,7 +4,7 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from './tooltip'
-import { buttonVariants } from './button/button'
+import { buttonVariants } from './button'
 import { cn } from '@/lib/utils'
 import { Category } from '@/types/sidebar-type'
 import { usePathname } from 'next/navigation'

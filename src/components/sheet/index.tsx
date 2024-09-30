@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from '@/components/ui/button/button'
+import { Button } from '@/components/ui/button'
 import {
   Sheet as BaseSheet,
   SheetClose,

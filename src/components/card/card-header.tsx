@@ -1,5 +1,5 @@
 import { ElementType } from 'react'
-import { CardHeader, CardTitle } from '../ui/card/card'
+import { CardHeader, CardTitle } from '../ui/card'
 import { cn } from '@/lib/utils'
 
 type CustomCardHeaderProps = {

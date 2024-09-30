@@ -13,7 +13,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger
-} from './dropdown-menu'
+} from '.'
 import {
   Cloud,
   CreditCard,
@@ -30,7 +30,7 @@ import {
   UserPlus,
   Users
 } from 'lucide-react'
-import { Button } from '../button/button'
+import { Button } from '../button'
 import { DropdownMenuProps } from '@radix-ui/react-dropdown-menu'
 
 const meta: Meta<DropdownMenuProps> = {

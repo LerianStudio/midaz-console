@@ -9,7 +9,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '../ui/dropdown-menu/dropdown-menu'
+} from '../ui/dropdown-menu'
 import { useIntl } from 'react-intl'
 import { setCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'

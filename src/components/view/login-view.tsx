@@ -13,8 +13,8 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input/input'
-import { Button } from '@/components/ui/button/button'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 import useCustomToast from '@/hooks/use-custom-toast'
 
 const formSchema = z.object({

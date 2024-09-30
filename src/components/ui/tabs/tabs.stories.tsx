@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '.'
 import { TabsProps } from '@radix-ui/react-tabs'
 
 const meta: Meta<TabsProps> = {

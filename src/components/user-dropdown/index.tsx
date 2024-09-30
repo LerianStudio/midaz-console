@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import SettingsDialog from '../settings-dialog'
 import {
   DropdownMenu,
@@ -11,7 +11,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '../ui/dropdown-menu/dropdown-menu'
+} from '../ui/dropdown-menu'
 import { useIntl } from 'react-intl'
 import {
   CreditCard,
