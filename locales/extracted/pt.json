@@ -92,11 +92,6 @@
   "common.nextPage": "Próxima Página",
   "common.previousPage": "Página Anterior",
   "common.tooltipCopyText": "Toque para copiar",
-  "emptyState.pronouns.he.object": "nenhuma",
-  "emptyState.pronouns.he.possessive": "seu primeiro",
-  "emptyState.pronouns.she.object": "nenhuma",
-  "emptyState.pronouns.she.possessive": "sua primeira",
-  "emptyState.texts.hasNoResource": "Parece que você ainda não possui",
   "entity.metadata.key": "Chave",
   "entity.metadata.value": "Valor",
   "entity.organization": "Organização",
@@ -142,5 +137,13 @@
   "ledgers.tab.overview": "Visão Geral",
   "common.status": "Status",
   "common.cancel": "Cancelar",
-  "common.confirm": "Confirmar"
+  "common.confirm": "Confirmar",
+  "ledgers.assets.emptyResource": "Você ainda não criou nenhum Ativo",
+  "ledgers.assets.emptyResourceExtra": "Nenhum Ativo encontrado",
+  "ledgers.emptyResource": "Você ainda não criou nenhum Ledger",
+  "ledgers.emptyResourceExtra": "Nenhum Ledger encontrado.",
+  "organizations.emptyResource": "Você ainda não criou nenhuma Organização",
+  "organizations.emptyResourceExtra": "Nenhuma Organização encontrado",
+  "settings.tab.organizations": "Organização",
+  "settings.tab.otherSettings": "Outras Configurações"
 }
