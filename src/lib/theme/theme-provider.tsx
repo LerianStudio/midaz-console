@@ -6,16 +6,22 @@ import { isNil } from 'lodash'
 
 const isServer = typeof window === 'undefined'
 
-type ThemeContextProps = {
+type ThemeState = {
+  logoUrl: string
   accentColor: string
-  setAccentColor: (color: string) => void
 }
 
+type ThemeContextProps = ThemeState & {
+  setTheme: (theme: Partial<ThemeState>) => void
+}
+
+const logoUrlKey = 'logoUrl'
 const accentColorKey = 'accentColor'
 
 const defaultContext: ThemeContextProps = {
+  logoUrl: '',
   accentColor: '',
-  setAccentColor: (_) => {}
+  setTheme: (_) => {}
 }
 
 const ThemeContext = React.createContext<ThemeContextProps>(defaultContext)
@@ -23,15 +29,24 @@ const ThemeContext = React.createContext<ThemeContextProps>(defaultContext)
 export const useTheme = () => React.useContext(ThemeContext) ?? defaultContext
 
 export const ThemeProvider = ({ children }: React.PropsWithChildren) => {
-  const [accentColor, _setAccentColor] = React.useState(
-    getStorage(accentColorKey, defaultContext.accentColor)
+  const [theme, _setTheme] = React.useReducer(
+    (prev: ThemeState, state: Partial<ThemeState>) => ({ ...prev, ...state }),
+    {
+      logoUrl: getStorage(logoUrlKey, defaultContext.logoUrl),
+      accentColor: getStorage(accentColorKey, defaultContext.accentColor)
+    }
   )
 
   // Handles storage change events
   React.useEffect(() => {
     const handleStorage = (e: StorageEvent) => {
       if (e.key === accentColorKey) {
-        _setAccentColor(e.newValue || defaultContext.accentColor)
+        _setTheme({
+          [accentColorKey]: e.newValue || defaultContext.accentColor
+        })
+      }
+      if (e.key === logoUrlKey) {
+        _setTheme({ [logoUrlKey]: e.newValue || defaultContext.logoUrl })
       }
     }
 
@@ -40,33 +55,42 @@ export const ThemeProvider = ({ children }: React.PropsWithChildren) => {
     return () => {
       window.removeEventListener('storage', handleStorage)
     }
-  }, [_setAccentColor])
+  }, [_setTheme])
 
-  // External color setter
-  const setAccentColor = (color: string) => {
-    _setAccentColor(color)
-
+  const _save = (theme: Partial<ThemeState>) => {
     try {
-      localStorage.setItem(accentColorKey, color)
+      if (!isNil(theme.accentColor)) {
+        localStorage.setItem(accentColorKey, theme.accentColor)
+
+        document.documentElement.style.setProperty(
+          '--accent',
+          theme.accentColor
+        )
+      }
+
+      if (!isNil(theme.logoUrl)) {
+        localStorage.setItem(logoUrlKey, theme.logoUrl)
+      }
     } catch {}
   }
 
-  // Apply new color when changed
+  const setTheme = (theme: Partial<ThemeState>) => {
+    _setTheme(theme)
+  }
+
   React.useEffect(() => {
-    if (!isNil(accentColor)) {
-      document.documentElement.style.setProperty('--accent', accentColor)
-    }
-  }, [accentColor])
+    _save(theme)
+  }, [theme])
 
   return (
     <>
       <script
         suppressHydrationWarning
         dangerouslySetInnerHTML={{
-          __html: `(${script.toString()})(${accentColor})`
+          __html: `(${script.toString()})(${theme.accentColor})`
         }}
       />
-      <ThemeContext.Provider value={{ accentColor, setAccentColor }}>
+      <ThemeContext.Provider value={{ ...theme, setTheme }}>
         {children}
       </ThemeContext.Provider>
     </>
