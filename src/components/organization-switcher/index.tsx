@@ -1,5 +1,3 @@
-'use client'
-
 import React from 'react'
 import { Popover } from '@/components/ui/popover'
 import { SwitcherTrigger } from './organization-switcher-trigger'

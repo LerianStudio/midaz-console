@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Image from './ClientImage'
 import { cn } from '@/lib/utils'
 import { PopoverTrigger } from '../ui/popover'
 import { ChevronDown } from 'lucide-react'
