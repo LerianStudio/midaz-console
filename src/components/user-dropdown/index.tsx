@@ -1,31 +1,99 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
 import { useState } from 'react'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar/avatar'
-import Dropdown from '../dropdown'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import SettingsDialog from '../settings-dialog'
-import { getUserMenuItems } from './menu-items'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuItemIcon,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '../ui/dropdown-menu'
+import { useIntl } from 'react-intl'
+import {
+  CreditCard,
+  ExternalLink,
+  Github,
+  LifeBuoy,
+  LogOut,
+  User
+} from 'lucide-react'
 
 export const UserDropdown = () => {
-  const t = useTranslations('header')
+  const intl = useIntl()
   const [openSettings, setOpenSettings] = useState(false)
-  const userMenuItems = getUserMenuItems(t)
-
-  const trigger = (
-    <Avatar>
-      <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-      <AvatarFallback>CN</AvatarFallback>
-    </Avatar>
-  )
 
   return (
     <div>
-      <Dropdown
-        trigger={trigger}
-        menuItems={userMenuItems}
-        menuLabel="Rick Morty"
-      />
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <Avatar>
+            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="min-w-[241px]">
+          <DropdownMenuLabel>Rick Morty</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            <DropdownMenuItemIcon>
+              <User />
+            </DropdownMenuItemIcon>
+            {intl.formatMessage({
+              id: 'header.userDropdown.profile',
+              defaultMessage: 'Profile'
+            })}
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <DropdownMenuItemIcon>
+              <CreditCard />
+            </DropdownMenuItemIcon>
+            {intl.formatMessage({
+              id: 'header.userDropdown.subscription',
+              defaultMessage: 'Subscription'
+            })}
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <DropdownMenuItemIcon>
+              <Github />
+            </DropdownMenuItemIcon>
+            Github
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <DropdownMenuItemIcon>
+              <ExternalLink />
+            </DropdownMenuItemIcon>
+            Docs
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <DropdownMenuItemIcon>
+              <ExternalLink />
+            </DropdownMenuItemIcon>
+            CLI Docs
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <DropdownMenuItemIcon>
+              <LifeBuoy />
+            </DropdownMenuItemIcon>
+            {intl.formatMessage({
+              id: 'header.userDropdown.support',
+              defaultMessage: 'Support'
+            })}
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <DropdownMenuItemIcon>
+              <LogOut />
+            </DropdownMenuItemIcon>
+            {intl.formatMessage({
+              id: 'header.userDropdown.logout',
+              defaultMessage: 'Logout'
+            })}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
 
       <SettingsDialog open={openSettings} setOpen={setOpenSettings} />
     </div>

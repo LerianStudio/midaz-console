@@ -4,10 +4,10 @@ import { useState } from 'react'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { deleteLedger } from '@/client/ledger-client'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
-import { useTranslations } from 'next-intl'
+import { useIntl } from 'react-intl'
 
 export const useDeleteLedger = (refetch: () => void) => {
-  const t = useTranslations('ledgers')
+  const intl = useIntl()
   const { showError, showSuccess } = useCustomToast()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [currentLedgerForDeletion, setCurrentLedgerForDeletion] = useState<
@@ -26,7 +26,12 @@ export const useDeleteLedger = (refetch: () => void) => {
 
   const handleConfirmDeleteLedger = async () => {
     if (!currentLedgerForDeletion) {
-      showError(t('toast.ledgerNotFound'))
+      showError(
+        intl.formatMessage({
+          id: 'ledgers.toast.ledgerNotFound',
+          defaultMessage: 'No ledger selected for deletion'
+        })
+      )
       return
     }
 
@@ -34,11 +39,25 @@ export const useDeleteLedger = (refetch: () => void) => {
       setIsDialogOpen(false)
       await deleteLedgerAndRefetch(currentLedgerForDeletion.id)
       showSuccess(
-        t('toast.ledgerDeleted', { ledgerName: currentLedgerForDeletion.name })
+        intl.formatMessage(
+          {
+            id: 'ledgers.toast.ledgerDeleted',
+            defaultMessage: 'Ledger {ledgerName} deleted'
+          },
+          { ledgerName: currentLedgerForDeletion.name }
+        )
       )
     } catch (error) {
       const err = error as Error
-      showError(t('toast.ledgerDeleteFailed', { message: err.message }))
+      showError(
+        intl.formatMessage(
+          {
+            id: 'ledgers.toast.ledgerDeleteFailed',
+            defaultMessage: 'Failed to delete ledger'
+          },
+          { message: err.message }
+        )
+      )
     }
   }
 

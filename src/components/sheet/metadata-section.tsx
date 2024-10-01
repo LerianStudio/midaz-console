@@ -1,5 +1,5 @@
 import React from 'react'
-import { Label } from '@/components/ui/label/label'
+import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { MetadataFields } from './fields/metadata-fields'
 import { PreviewMetadataFields } from './fields/preview-metadata-fields'

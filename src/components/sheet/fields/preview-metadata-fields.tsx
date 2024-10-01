@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from '@/components/ui/button/button'
+import { Button } from '@/components/ui/button'
 import { Trash } from 'lucide-react'
 import { MetadataItem } from '@/types/metadata-type'
 

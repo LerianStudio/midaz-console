@@ -1,8 +1,8 @@
-import { Button } from '@/components/ui/button/button'
+import { Button } from '@/components/ui/button'
 import NoResourceImage from '../../public/images/no-resource.png'
 import Image from 'next/image'
-import { useTranslations } from 'next-intl'
 import { Plus } from 'lucide-react'
+import { useIntl } from 'react-intl'
 
 type Props = {
   resourceName: string
@@ -15,17 +15,35 @@ type PronounText = {
   object: string
 }
 
+/**
+ * TODO: This solution is not gonna work like this,
+ * Needs refactor
+ * @param param0
+ * @returns
+ */
 export const NoResource = ({ resourceName, onClick, pronoun }: Props) => {
-  const t = useTranslations('emptyState')
+  const intl = useIntl()
 
   const pronounTexts: Record<string, PronounText> = {
     he: {
-      possessive: t('pronouns.he.possessive'),
-      object: t('pronouns.he.object')
+      possessive: intl.formatMessage({
+        id: 'emptyState.pronouns.he.possessive',
+        defaultMessage: 'your first'
+      }),
+      object: intl.formatMessage({
+        id: 'emptyState.pronouns.he.object',
+        defaultMessage: 'none'
+      })
     },
     she: {
-      possessive: t('pronouns.she.possessive'),
-      object: t('pronouns.she.object')
+      possessive: intl.formatMessage({
+        id: 'emptyState.pronouns.she.possessive',
+        defaultMessage: 'your first'
+      }),
+      object: intl.formatMessage({
+        id: 'emptyState.pronouns.she.object',
+        defaultMessage: 'none'
+      })
     }
   }
 
@@ -38,7 +56,11 @@ export const NoResource = ({ resourceName, onClick, pronoun }: Props) => {
           <Image src={NoResourceImage} alt="No Resource" />
           <div className="flex w-fit justify-center">
             <p className="text-center text-sm font-medium text-shadcn-400">
-              {t('texts.hasNoResource')} {object}{' '}
+              {intl.formatMessage({
+                id: 'emptyState.texts.hasNoResource',
+                defaultMessage: "You don't have any yet"
+              })}{' '}
+              {object}{' '}
               {resourceName[0].toUpperCase() + resourceName.substring(1)}.{' '}
             </p>
           </div>
@@ -51,7 +73,11 @@ export const NoResource = ({ resourceName, onClick, pronoun }: Props) => {
             onClick={onClick}
             icon={<Plus className="text-[#52525B]" />}
           >
-            {t('texts.createBtn')} {resourceName}
+            {intl.formatMessage({
+              id: 'common.create',
+              defaultMessage: 'Create'
+            })}{' '}
+            {resourceName}
           </Button>
         </div>
       </div>

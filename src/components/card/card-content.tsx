@@ -1,13 +1,13 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import { CardContent } from '../ui/card/card'
-import { Input } from '../ui/input/input'
+import { CardContent } from '../ui/card'
+import { Input } from '../ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useFormState } from '@/context/form-details-context'
-import { Label } from '../ui/label/label'
+import { Label } from '../ui/label'
 
 const formSchema = z.object({
   name: z.string()

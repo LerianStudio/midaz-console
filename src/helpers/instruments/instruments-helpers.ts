@@ -1,23 +1,57 @@
+/**
+ * TODO: This never had translations into the json file
+ * @param mode
+ * @param instrumentsData
+ * @param intl
+ */
+
 export const getInstrumentsSheetInfo = (
   mode: string,
   instrumentsData: any | null,
-  t: any
+  intl: any
 ) => {
   const info = {
     create: {
-      title: t('sheetCreate.title'),
-      description: t('sheetCreate.description'),
-      buttonText: t('sheetCreate.button')
+      title: intl.formatMessage({
+        id: 'sheetCreate.title',
+        defaultMessage: ''
+      }),
+      description: intl.formatMessage({
+        id: 'sheetCreate.description',
+        defaultMessage: ''
+      }),
+      buttonText: intl.formatMessage({
+        id: 'sheetCreate.button',
+        defaultMessage: ''
+      })
     },
     edit: {
-      title: `${t('sheetEdit.title')} ${instrumentsData?.name}`,
-      description: t('sheetEdit.description'),
-      buttonText: t('sheetEdit.button')
+      title: intl.formatMessage(
+        { id: 'sheetEdit.title', defaultMessage: '' },
+        { assetName: instrumentsData?.name }
+      ),
+      description: intl.formatMessage({
+        id: 'sheetEdit.description',
+        defaultMessage: ''
+      }),
+      buttonText: intl.formatMessage({
+        id: 'sheetEdit.button',
+        defaultMessage: ''
+      })
     },
     view: {
-      title: `${t('sheetView.title')} ${instrumentsData?.name}`,
-      description: t('sheetView.description'),
-      buttonText: t('sheetView.button')
+      title: intl.formatMessage(
+        { id: 'sheetView.title', defaultMessage: '' },
+        { assetName: instrumentsData?.name }
+      ),
+      description: intl.formatMessage({
+        id: 'sheetView.description',
+        defaultMessage: ''
+      }),
+      buttonText: intl.formatMessage({
+        id: 'sheetView.button',
+        defaultMessage: ''
+      })
     }
   }
 

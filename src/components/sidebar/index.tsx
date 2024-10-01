@@ -5,11 +5,10 @@ import { useEffect, useState } from 'react'
 import MidazLogo from '/public/svg/brand-midaz.svg'
 import { cn } from '@/lib/utils'
 import { PanelLeftClose, PanelRightClose } from 'lucide-react'
-import { useTranslations } from 'next-intl'
 import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
 import { OrganizationSwitcher } from '../organization-switcher'
-import { Button } from '../ui/button/button'
+import { Button } from '../ui/button'
 import {
   Tooltip,
   TooltipContent,
@@ -19,6 +18,7 @@ import {
 import { getSidebarItems } from './sidebar-items'
 import { getOrganizationData } from './organization-data'
 import { useSidebarContext } from '@/context/sidebar-context'
+import { useIntl } from 'react-intl'
 
 const sidebarVariants = {
   opened: {
@@ -34,8 +34,8 @@ const sidebarVariants = {
 }
 
 export const Sidebar = () => {
-  const t = useTranslations('sideNavBar')
-  const sidebarItems = getSidebarItems(t)
+  const intl = useIntl()
+  const sidebarItems = getSidebarItems(intl)
   const organizations = getOrganizationData()
   const { isCollapsed, toggleSidebar } = useSidebarContext()
   const [isMobileWidth, setIsMobileWidth] = useState(false)
@@ -122,7 +122,12 @@ export const Sidebar = () => {
                   <PanelRightClose className="group-hover:text-white dark:text-white" />
                 </TooltipTrigger>
                 <TooltipContent side="right">
-                  <p>{t('expand')}</p>
+                  <p>
+                    {intl.formatMessage({
+                      id: 'common.expand',
+                      defaultMessage: 'Expand'
+                    })}
+                  </p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>

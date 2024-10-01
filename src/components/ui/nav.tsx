@@ -4,13 +4,12 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from './tooltip'
-import { buttonVariants } from './button/button'
+import { buttonVariants } from './button'
 import { cn } from '@/lib/utils'
 import { Category } from '@/types/sidebar-type'
 import { usePathname } from 'next/navigation'
-import { Link } from '../../../navigation'
-import { useLocale } from 'next-intl'
 import { useState } from 'react'
+import Link from 'next/link'
 
 interface NavProps {
   isCollapsed: boolean
@@ -19,7 +18,7 @@ interface NavProps {
 
 export const Nav = ({ categories, isCollapsed }: NavProps) => {
   const pathName = usePathname()
-  const locale = useLocale()
+  const locale = 'en-US'
 
   const isActive = (href: string) => {
     const localePrefix = `/${locale}`

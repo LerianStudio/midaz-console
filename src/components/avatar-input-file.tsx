@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Input } from '@/components/ui/input/input'
+import { Input } from '@/components/ui/input'
 import Image from 'next/image'
 import { Camera } from 'lucide-react'
 
