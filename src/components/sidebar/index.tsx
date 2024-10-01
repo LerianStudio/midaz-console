@@ -1,24 +1,29 @@
 'use client'
 
-import { Nav } from '@/components/ui/nav'
-import { useEffect, useState } from 'react'
-import MidazLogo from '/public/svg/brand-midaz.svg'
-import { cn } from '@/lib/utils'
-import { PanelLeftClose, PanelRightClose } from 'lucide-react'
-import { AnimatePresence, motion } from 'framer-motion'
-import Image from 'next/image'
-import { OrganizationSwitcher } from '../organization-switcher'
-import { Button } from '../ui/button'
+import { SidebarItem } from './sidebar-item'
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
-} from '../ui/tooltip'
-import { getSidebarItems } from './sidebar-items'
-import { getOrganizationData } from './organization-data'
+  ArrowLeftRight,
+  BarChartHorizontal,
+  Box,
+  Briefcase,
+  Coins,
+  DatabaseZap,
+  DollarSign,
+  Home,
+  UsersRound
+} from 'lucide-react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { OrganizationSwitcher } from '../organization-switcher'
 import { useSidebarContext } from '@/context/sidebar-context'
 import { useIntl } from 'react-intl'
+import {
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupTitle,
+  SidebarHeader
+} from './sidebar'
+import { SidebarExpandButton } from './sidebar-expand-button'
+import React from 'react'
 
 const sidebarVariants = {
   opened: {
@@ -35,12 +40,10 @@ const sidebarVariants = {
 
 export const Sidebar = () => {
   const intl = useIntl()
-  const sidebarItems = getSidebarItems(intl)
-  const organizations = getOrganizationData()
   const { isCollapsed, toggleSidebar } = useSidebarContext()
-  const [isMobileWidth, setIsMobileWidth] = useState(false)
+  const [isMobileWidth, setIsMobileWidth] = React.useState(false)
 
-  useEffect(() => {
+  React.useEffect(() => {
     const handleResize = () => {
       setIsMobileWidth(window.innerWidth < 768)
     }
@@ -54,84 +57,136 @@ export const Sidebar = () => {
   return (
     <AnimatePresence>
       <motion.div
-        className="relative flex flex-col justify-between shadow-sidebar dark:bg-codGray-950"
+        data-collapsed={isCollapsed}
+        className="group/sidebar relative flex flex-col justify-between shadow-sidebar dark:bg-codGray-950"
         variants={sidebarVariants}
         initial="closed"
         animate={isCollapsed ? 'closed' : 'opened'}
       >
         <div>
-          <div
-            data-collapsed={isCollapsed}
-            className={cn(
-              'flex h-[60px] items-center border-b bg-white px-4 dark:bg-codGray-950',
-              isCollapsed && 'justify-center p-0'
-            )}
-          >
-            {organizations.length > 0 ? (
-              <OrganizationSwitcher
-                image={MidazLogo}
-                orgName="Midaz"
-                status="active"
-                alt="Midaz Logo"
-                data={organizations}
-                isCollapsed={isCollapsed}
+          <SidebarHeader>
+            <OrganizationSwitcher collapsed={isCollapsed} />
+          </SidebarHeader>
+
+          <SidebarContent>
+            <SidebarGroup>
+              <SidebarItem
+                title={intl.formatMessage({
+                  id: 'sideBar.home',
+                  defaultMessage: 'Home'
+                })}
+                icon={<Home />}
+                href="/"
+                collapsed={isCollapsed}
               />
-            ) : (
-              <div className="flex items-center gap-3">
-                <Image src={MidazLogo} alt="Midaz Logo" height={36} />
+              <SidebarItem
+                title={intl.formatMessage({
+                  id: 'sideBar.ledgers',
+                  defaultMessage: 'Ledgers'
+                })}
+                icon={<DatabaseZap />}
+                href="/ledgers"
+                collapsed={isCollapsed}
+              />
+              <SidebarItem
+                title={intl.formatMessage({
+                  id: 'sideBar.team',
+                  defaultMessage: 'Team'
+                })}
+                icon={<UsersRound />}
+                href="/team"
+                collapsed={isCollapsed}
+              />
+            </SidebarGroup>
 
-                {!isCollapsed && (
-                  <h1 className="text-sm font-medium capitalize text-shadcn-600">
-                    Lerian
-                  </h1>
-                )}
-              </div>
-            )}
-          </div>
+            <SidebarGroup>
+              <SidebarGroupTitle collapsed={isCollapsed}>
+                {intl.formatMessage({
+                  id: 'sideBar.accountHolders.title',
+                  defaultMessage: 'AccountHolders'
+                })}
+              </SidebarGroupTitle>
+              <SidebarItem
+                title={intl.formatMessage({
+                  id: 'sideBar.accountHolders.products',
+                  defaultMessage: 'Products'
+                })}
+                icon={<Box />}
+                href="/products"
+                collapsed={isCollapsed}
+              />
+              <SidebarItem
+                title={intl.formatMessage({
+                  id: 'sideBar.accountHolders.accounts',
+                  defaultMessage: 'Accounts'
+                })}
+                icon={<Coins />}
+                href="/accounts"
+                collapsed={isCollapsed}
+              />
+              <SidebarItem
+                title={intl.formatMessage({
+                  id: 'sideBar.accountHolders.portfolios',
+                  defaultMessage: 'Portfolios'
+                })}
+                icon={<Briefcase />}
+                href="/portfolios"
+                collapsed={isCollapsed}
+              />
+            </SidebarGroup>
 
-          <div className={cn('px-4', isCollapsed && 'px-2')}>
-            <Nav
-              isCollapsed={isMobileWidth ? true : isCollapsed}
-              categories={sidebarItems}
-            />
-          </div>
+            <SidebarGroup>
+              <SidebarGroupTitle collapsed={isCollapsed}>
+                {intl.formatMessage({
+                  id: 'sideBar.transactions.title',
+                  defaultMessage: 'Transactions'
+                })}
+              </SidebarGroupTitle>
+              <SidebarItem
+                title={intl.formatMessage({
+                  id: 'sideBar.transactions.types',
+                  defaultMessage: 'Types'
+                })}
+                icon={<DollarSign />}
+                href="/types"
+                collapsed={isCollapsed}
+              />
+              <SidebarItem
+                title={intl.formatMessage({
+                  id: 'sideBar.transactions.resume',
+                  defaultMessage: 'Resume'
+                })}
+                icon={<ArrowLeftRight />}
+                href="/resume"
+                collapsed={isCollapsed}
+              />
+            </SidebarGroup>
+
+            <SidebarGroup>
+              <SidebarGroupTitle collapsed={isCollapsed}>
+                {intl.formatMessage({
+                  id: 'sideBar.reports.title',
+                  defaultMessage: 'Reports'
+                })}
+              </SidebarGroupTitle>
+              <SidebarItem
+                title={intl.formatMessage({
+                  id: 'sideBar.reports.runReport',
+                  defaultMessage: 'Run Report'
+                })}
+                icon={<BarChartHorizontal />}
+                href="/reports"
+                collapsed={isCollapsed}
+              />
+            </SidebarGroup>
+          </SidebarContent>
         </div>
 
-        {!isMobileWidth && !isCollapsed && (
-          <div className="flex w-full border-shadcn-200">
-            <div className="absolute bottom-4 right-[-20px]">
-              <Button
-                variant="white"
-                className="rounded-full border border-shadcn-200 p-2"
-                onClick={toggleSidebar}
-              >
-                <PanelLeftClose className="text-shadcn-400" />
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {!isMobileWidth && isCollapsed && (
-          <div className="flex w-full justify-center border-t border-shadcn-200 p-4">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger
-                  className="group rounded-sm bg-transparent p-2 text-shadcn-400 hover:bg-sunglow-400"
-                  onClick={toggleSidebar}
-                >
-                  <PanelRightClose className="group-hover:text-white dark:text-white" />
-                </TooltipTrigger>
-                <TooltipContent side="right">
-                  <p>
-                    {intl.formatMessage({
-                      id: 'common.expand',
-                      defaultMessage: 'Expand'
-                    })}
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
+        {!isMobileWidth && (
+          <SidebarExpandButton
+            collapsed={isCollapsed}
+            onClick={toggleSidebar}
+          />
         )}
       </motion.div>
     </AnimatePresence>
