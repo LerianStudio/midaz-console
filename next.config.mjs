@@ -29,6 +29,9 @@ const nextConfig = {
         ]
       }
     ]
+  },
+  images: {
+    domains: ['localhost']
   }
 }
 

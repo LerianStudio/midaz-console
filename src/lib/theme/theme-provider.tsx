@@ -6,7 +6,7 @@ import { isNil } from 'lodash'
 
 const isServer = typeof window === 'undefined'
 
-type ThemeState = {
+export type ThemeState = {
   logoUrl: string
   accentColor: string
 }
