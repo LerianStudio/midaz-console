@@ -4,7 +4,7 @@ import { createPortfolio } from '@/client/ledger-client'
 import { useTranslations } from 'next-intl'
 
 export const useCreatePortfolio = () => {
-  const t = useTranslations('ledgers')
+  // const t = useTranslations('ledgers')
   const { showSuccess, showError } = useCustomToast()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
@@ -15,9 +15,9 @@ export const useCreatePortfolio = () => {
   const handleCreatePortfolio = async (ledgerId: string, portfolio: any) => {
     try {
       await createPortfolio(ledgerId, portfolio)
-      showSuccess(
-        t('toast.portfolioCreated', { portfolioName: portfolio.name })
-      )
+      showSuccess('Portfolio created successfully')
+      // t('toast.portfolioCreated', { portfolioName: portfolio.name })
+      // )
     } catch (error) {
       const err = error as Error
       console.error(err)

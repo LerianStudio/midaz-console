@@ -14,6 +14,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useFormState } from '@/context/form-details-context'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { useIntl } from 'react-intl'
+import { AccountsPortfoliosTabContent } from './accounts-and-portfolios/accounts-portfolios-tab-content'
 
 type LedgerDetailsViewProps = {
   data: LedgerEntity
@@ -107,6 +108,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
         <div className="mt-6 flex w-full gap-4">
           <Skeleton className="h-10 w-24 bg-zinc-200" />
           <Skeleton className="h-10 w-24 bg-zinc-200" />
+          <Skeleton className="h-10 w-24 bg-zinc-200" />
         </div>
 
         <div className="mt-4 flex gap-6">
@@ -162,6 +164,13 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
               defaultMessage: 'Assets'
             })}
           </TabsTrigger>
+
+          <TabsTrigger value="portfolios-and-accounts">
+            {intl.formatMessage({
+              id: 'ledgers.tab.portfolios-and-accounts',
+              defaultMessage: 'portfolios-and-accounts'
+            })}
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="overview">
           <OverviewTabContent
@@ -173,6 +182,9 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
         </TabsContent>
         <TabsContent value="assets">
           <p>Assets</p>
+        </TabsContent>
+        <TabsContent value="portfolios-and-accounts">
+          <AccountsPortfoliosTabContent />
         </TabsContent>
       </Tabs>
 

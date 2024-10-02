@@ -52,7 +52,7 @@ export type SheetProps = {
   sheetProps: {
     open?: boolean
     setOpen: (open: boolean) => void
-    sheetInfo: SheetInfo
+    sheetInfo?: SheetInfo
   }
   formProps: {
     form: UseFormReturn<any>
