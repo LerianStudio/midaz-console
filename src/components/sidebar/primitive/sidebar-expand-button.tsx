@@ -1,34 +1,29 @@
+'use client'
+
 import { PanelLeftClose, PanelRightClose } from 'lucide-react'
-import { Button } from '../ui/button'
+import { Button } from '../../ui/button'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger
-} from '../ui/tooltip'
+} from '../../ui/tooltip'
 import { useIntl } from 'react-intl'
-import { SidebarFooter } from './sidebar'
+import { SidebarFooter, useSidebar } from '.'
 
-export type SidebarExpandButtonProps = {
-  collapsed?: boolean
-  onClick?: React.MouseEventHandler
-}
-
-export const SidebarExpandButton = ({
-  collapsed,
-  onClick
-}: SidebarExpandButtonProps) => {
+export const SidebarExpandButton = () => {
   const intl = useIntl()
+  const { isCollapsed, toggleSidebar } = useSidebar()
 
   return (
     <>
-      {!collapsed && (
+      {!isCollapsed && (
         <div className="flex w-full border-shadcn-200">
           <div className="absolute bottom-4 right-[-20px]">
             <Button
               variant="white"
               className="rounded-full border border-shadcn-200 p-2"
-              onClick={onClick}
+              onClick={toggleSidebar}
             >
               <PanelLeftClose className="text-shadcn-400" />
             </Button>
@@ -36,13 +31,13 @@ export const SidebarExpandButton = ({
         </div>
       )}
 
-      {collapsed && (
+      {isCollapsed && (
         <SidebarFooter>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger
                 className="group/expand-button rounded-sm bg-transparent p-2 text-shadcn-400 hover:bg-accent"
-                onClick={onClick}
+                onClick={toggleSidebar}
               >
                 <PanelRightClose className="group-hover/expand-button:text-white dark:text-white" />
               </TooltipTrigger>

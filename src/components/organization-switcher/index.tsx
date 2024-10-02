@@ -6,16 +6,12 @@ import { getOrganizationData } from '../sidebar/organization-data'
 import { useTheme } from '@/lib/theme'
 import { useIntl } from 'react-intl'
 import MidazLogo from '/public/svg/brand-midaz.svg'
+import { useSidebar } from '../sidebar/primitive'
 
-export type OrganizationSwitcherProps = {
-  collapsed?: boolean
-}
-
-export const OrganizationSwitcher = ({
-  collapsed
-}: OrganizationSwitcherProps) => {
+export const OrganizationSwitcher = () => {
   const intl = useIntl()
   const { logoUrl } = useTheme()
+  const { isCollapsed } = useSidebar()
   const organizations = getOrganizationData()
   const [open, setOpen] = React.useState(false)
 
@@ -30,7 +26,7 @@ export const OrganizationSwitcher = ({
           defaultMessage: 'Your organization logo'
         })}
         disabled={organizations.length === 0}
-        collapsed={collapsed}
+        collapsed={isCollapsed}
       />
 
       <OrganizationSwitcherContent

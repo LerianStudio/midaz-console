@@ -29,7 +29,7 @@ const SidebarContent = React.forwardRef<HTMLDivElement, SidebarContentProps>(
     <div
       ref={ref}
       className={cn(
-        'group flex flex-col gap-4 px-4 pt-4',
+        'group flex flex-1 flex-col gap-4 px-4 pt-4',
         'group-data-[collapsed=true]/sidebar:items-center group-data-[collapsed=true]/sidebar:px-2',
         'group-data-[collapsed=false]/sidebar:min-w-[244px]',
         className

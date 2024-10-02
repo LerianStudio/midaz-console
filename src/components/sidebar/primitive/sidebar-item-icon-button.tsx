@@ -4,8 +4,8 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger
-} from '../ui/tooltip'
-import { buttonVariants } from '../ui/button'
+} from '@/components/ui/tooltip'
+import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import React from 'react'
 
