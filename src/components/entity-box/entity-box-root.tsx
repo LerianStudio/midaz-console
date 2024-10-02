@@ -6,13 +6,18 @@ type EntityBoxRootProps = {
   className?: string
 }
 
-export const EntityBoxRoot = ({ children, className }: EntityBoxRootProps) => {
+export const EntityBoxRoot = ({
+  children,
+  className,
+  ...props
+}: EntityBoxRootProps) => {
   return (
     <div
       className={cn(
-        'shadow-entityBox mb-2 flex justify-between rounded-lg bg-white p-6',
+        'mb-2 flex justify-between rounded-lg bg-white p-6 shadow-entityBox',
         className
       )}
+      {...props}
     >
       {children}
     </div>

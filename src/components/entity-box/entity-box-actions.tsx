@@ -8,7 +8,12 @@ type EntityBoxActionsProps = {
 
 export const EntityBoxActions = ({
   children,
-  className
+  className,
+  ...props
 }: EntityBoxActionsProps) => {
-  return <div className={cn('flex items-center', className)}>{children}</div>
+  return (
+    <div className={cn('flex items-center', className)} {...props}>
+      {children}
+    </div>
+  )
 }

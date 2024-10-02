@@ -8,7 +8,12 @@ type EntityBoxContentProps = {
 
 export const EntityBoxContent = ({
   children,
-  className
+  className,
+  ...props
 }: EntityBoxContentProps) => {
-  return <div className={cn('mt-4', className)}>{children}</div>
+  return (
+    <div className={cn('mt-4', className)} {...props}>
+      {children}
+    </div>
+  )
 }
