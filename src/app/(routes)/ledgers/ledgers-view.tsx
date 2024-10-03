@@ -102,6 +102,7 @@ const LedgersView = () => {
     }
 
     if (sheetMode.mode === 'create') {
+      console.log(createLedgerData(dataToSubmit))
       await createLedgerData(dataToSubmit)
     }
   }

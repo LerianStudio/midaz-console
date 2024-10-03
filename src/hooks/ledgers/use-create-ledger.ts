@@ -12,6 +12,7 @@ export const useCreateLedger = () => {
   const ledgers = useEnhancedLedgers()
 
   const createLedgerData = async (values: LedgerEntity) => {
+    console.log('values', values)
     try {
       await createLedger(values)
       await ledgers.refetch()

@@ -2,12 +2,12 @@ import { Card } from '@/components/card'
 import { TransactionCard } from './transaction-card'
 import { TransactionStatusCard } from './transaction-status-card'
 import { TotalAmountCard } from './total-amount-card'
-import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import {
   useChartsTotalAmount,
   useChartsTotalTransactions,
   useChartsTransactionsByStatus
 } from '@/utils/queries'
+import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 
 type OverviewTabContentProps = {
   data: LedgerEntity
