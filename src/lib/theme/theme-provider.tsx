@@ -18,6 +18,7 @@ type ThemeContextProps = ThemeState & {
 
 const logoUrlKey = 'logoUrl'
 const accentColorKey = 'accentColor'
+const accentForegroundColorKey = 'accentForegroundColor'
 
 const defaultContext: ThemeContextProps = {
   logoUrl: '',
@@ -62,9 +63,19 @@ export const ThemeProvider = ({ children }: React.PropsWithChildren) => {
   const _save = (theme: Partial<ThemeState>) => {
     try {
       if (!isNil(theme.accentColor)) {
-        localStorage.setItem(accentColorKey, theme.accentColor)
+        const accentForegroundColor = getContrastColor(theme.accentColor)
 
-        setProperty(theme.accentColor)
+        localStorage.setItem(accentColorKey, theme.accentColor)
+        localStorage.setItem(accentForegroundColorKey, accentForegroundColor)
+
+        document.documentElement.style.setProperty(
+          '--accent',
+          theme.accentColor
+        )
+        document.documentElement.style.setProperty(
+          '--accent-foreground',
+          accentForegroundColor
+        )
       }
 
       if (!isNil(theme.logoUrl)) {
@@ -82,7 +93,7 @@ export const ThemeProvider = ({ children }: React.PropsWithChildren) => {
       <script
         suppressHydrationWarning
         dangerouslySetInnerHTML={{
-          __html: `(${script.toString()})(${theme.accentColor}, ${getContrastColor(theme.accentColor)})`
+          __html: `(${script.toString()})("${accentColorKey}", "${accentForegroundColorKey}")`
         }}
       />
       <ThemeContext.Provider value={{ ...theme, setTheme: _setTheme }}>
@@ -151,12 +162,4 @@ const getContrastColor = (color: string) => {
   } catch {
     return ''
   }
-}
-
-const setProperty = (color: string) => {
-  document.documentElement.style.setProperty('--accent', color)
-  document.documentElement.style.setProperty(
-    '--accent-foreground',
-    getContrastColor(color)
-  )
 }
