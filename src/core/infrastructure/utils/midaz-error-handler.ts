@@ -1,5 +1,5 @@
-import { FailureMidazError, MidazError } from '../errors/midaz-error'
 import { getIntl } from '@/lib/intl'
+import { MidazError } from '../errors/midaz-error'
 
 export interface MidazErrorData {
   code: string
@@ -14,6 +14,14 @@ export async function handleMidazError(
   console.error('MidazError', midazError.code)
 
   switch (midazError.code) {
+    case '0002':
+      throw new MidazError(
+        intl.formatMessage({
+          id: 'error.midaz.ledgerNameConflict',
+          defaultMessage: 'Error Midaz name conflict'
+        })
+      )
+
     case '0007':
       throw new MidazError(
         intl.formatMessage({

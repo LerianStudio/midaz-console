@@ -144,5 +144,6 @@
   "error.midaz.missingFields": "Sua solicitação está faltando um ou mais campos obrigatórios. Consulte a documentação para verificar os campos necessários para sua solicitação.",
   "error.midaz.unknowError": "Erro no Midaz, por favor, entre em contato com o suporte.",
   "error.midaz.actionNotPermitted": "A ação que você está tentando não é permitida no ambiente atual. Consulte a documentação para obter orientação sobre como proceder.",
-  "error.midaz.entityNotFound": "Nenhuma entidade foi encontrada que corresponda ao ID fornecido. Certifique-se de que o ID correto esteja sendo usado para a entidade que você está tentando gerenciar."
+  "error.midaz.entityNotFound": "Nenhuma entidade foi encontrada que corresponda ao ID fornecido. Certifique-se de que o ID correto esteja sendo usado para a entidade que você está tentando gerenciar.",
+  "error.midaz.ledgerNameConflict": "Já existe um ledger com este nome na sua organização. Renomeie o ledger ou, se quiser usar o mesmo nome, considere criar um novo ledger para uma divisão diferente."
 }

@@ -1,8 +1,11 @@
 import { CreateOrganization } from '@/core/application/use-cases/organizations/create-organization-use-case'
 import { FetchAllOrganizations } from '@/core/application/use-cases/organizations/fetch-all-organizations-use-case'
-import { container, Registry } from '@/core/infra/container-registry'
 import { NextResponse } from 'next/server'
 import { apiErrorHandler } from '../utils/api-error-handler'
+import {
+  container,
+  Registry
+} from '@/core/infrastructure/container-registry/container-registry'
 
 const createOrganizationUseCase = container.get<CreateOrganization>(
   Registry.CreateOrganizationUseCase

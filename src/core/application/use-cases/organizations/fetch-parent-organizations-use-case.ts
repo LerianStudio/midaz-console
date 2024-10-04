@@ -13,13 +13,14 @@ export class FetchParentOrganizationsUseCase
     private readonly fetchAllOrganizationsRepository: FetchAllOrganizationsRepository
   ) {}
 
-  async execute(organizationId: string): Promise<OrganizationResponseDto[]> {
-    const organizations = await this.fetchAllOrganizationsRepository.fetchAll()
+  async execute(organizationId?: string): Promise<OrganizationResponseDto[]> {
+    const organizations = await this.fetchAllOrganizationsRepository.fetchAll(
+      100,
+      1
+    )
 
-    const parentOrganizationsFiltered = organizations.filter(
-      (organization) =>
-        organization.parentOrganizationId != null &&
-        organization.id !== organizationId
+    const parentOrganizationsFiltered = organizations.items.filter(
+      (organization) => organization.id !== organizationId
     )
 
     const parentOrganizations: OrganizationResponseDto[] =

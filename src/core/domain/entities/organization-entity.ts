@@ -1,3 +1,5 @@
+import { StatusEntity } from './status-entity'
+
 export type OrganizationEntity = {
   id?: string
   parentOrganizationId?: string
@@ -6,15 +8,10 @@ export type OrganizationEntity = {
   legalDocument: string
   address: Address
   metadata?: Record<string, any>
-  status: OrganizationStatus
+  status: StatusEntity
   createdAt?: Date
   updatedAt?: Date
   deletedAt?: Date
-}
-
-type OrganizationStatus = {
-  code: string
-  description: string
 }
 
 type Address = {

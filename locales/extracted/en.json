@@ -144,5 +144,6 @@
   "error.midaz.missingFields": "Your request is missing one or more required fields. Please refer to the documentation to verify the necessary fields for your request.",
   "error.midaz.unknowError": "Error on Midaz. Please contact support.",
   "error.midaz.actionNotPermitted": "The action you are attempting is not allowed in the current environment. Please consult the documentation for guidance on how to proceed.",
-  "error.midaz.entityNotFound": "No entity was found matching the provided ID. Ensure the correct ID is being used for the entity you are attempting to manage."
+  "error.midaz.entityNotFound": "No entity was found matching the provided ID. Ensure the correct ID is being used for the entity you are attempting to manage.",
+  "error.midaz.ledgerNameConflict": "A ledger named already exists in your organization. Please rename the ledger, or if you want to use the same name, consider creating a new ledger for a different division."
 }

@@ -1,5 +1,8 @@
 import { FetchParentOrganizations } from '@/core/application/use-cases/organizations/fetch-parent-organizations-use-case'
-import { container, Registry } from '@/core/infra/container-registry'
+import {
+  container,
+  Registry
+} from '@/core/infrastructure/container-registry/container-registry'
 import { NextResponse } from 'next/server'
 
 const fetchParentOrganizations = container.get<FetchParentOrganizations>(

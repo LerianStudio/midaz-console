@@ -1,7 +1,10 @@
 import { DeleteOrganization } from '@/core/application/use-cases/organizations/delete-organization-use-case'
 import { FetchOrganizationById } from '@/core/application/use-cases/organizations/fetch-organization-by-id-use-case'
 import { UpdateOrganization } from '@/core/application/use-cases/organizations/update-organization-use-case'
-import { container, Registry } from '@/core/infra/container-registry'
+import {
+  container,
+  Registry
+} from '@/core/infrastructure/container-registry/container-registry'
 import { NextResponse } from 'next/server'
 import { apiErrorHandler } from '../../utils/api-error-handler'
 

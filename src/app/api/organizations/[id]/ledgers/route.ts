@@ -1,23 +1,19 @@
+import { apiErrorHandler } from '@/app/api/utils/api-error-handler'
 import { CreateLedger } from '@/core/application/use-cases/ledgers/create-ledgers-use-case'
 import {
   container,
   Registry
 } from '@/core/infrastructure/container-registry/container-registry'
 import { NextResponse } from 'next/server'
-import { apiErrorHandler } from '../utils/api-error-handler'
 
 const ledgerUseCases = container.get<CreateLedger>(Registry.CreateLedgerUseCase)
-
-// export async function GET() {
-//   const ledgers = await ledgersUseCases.listLedgersUseCases()
-//   return NextResponse.json(ledgers)
-// }
 
 export async function POST(
   request: Request,
   { params }: { params: { id: string } }
 ) {
   try {
+    console.log('params', params)
     const organizationId = params.id
     const body = await request.json()
 
