@@ -31,8 +31,8 @@ export const SidebarItemButton = ({
         ? React.cloneElement(icon as React.ReactElement, {
             className: cn(
               'mr-2 h-6 w-6 text-shadcn-400',
-              'group-hover/link:text-black',
-              active && 'text-black'
+              'group-hover/link:text-accent-foreground',
+              active && 'text-black group-hover/link:text-black'
             )
           })
         : icon}
