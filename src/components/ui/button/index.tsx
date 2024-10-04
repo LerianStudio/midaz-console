@@ -14,7 +14,7 @@ const buttonVariants = cva(
         activeLink: 'bg-shadcn-100 text-black font-medium',
         hoverLink: 'hover:bg-accent text-black',
         default:
-          'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm',
+          'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm disabled:bg-shadcn-200 disabled:text-shadcn-600',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         outline:
@@ -44,14 +44,20 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
   icon?: JSX.Element
+  fullWidth?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, icon, ...props }, ref) => {
+  (
+    { className, variant, size, asChild = false, icon, fullWidth, ...props },
+    ref
+  ) => {
     const Comp = asChild ? Slot : 'button'
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(buttonVariants({ variant, size, className }), {
+          'w-full': fullWidth
+        })}
         ref={ref}
         {...props}
       >

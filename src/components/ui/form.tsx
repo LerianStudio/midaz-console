@@ -50,7 +50,7 @@ const useFormField = () => {
     throw new Error('useFormField should be used within <FormField>')
   }
 
-  const { id } = itemContext
+  const { id, required } = itemContext
 
   return {
     id,
@@ -58,45 +58,57 @@ const useFormField = () => {
     formItemId: `${id}-form-item`,
     formDescriptionId: `${id}-form-item-description`,
     formMessageId: `${id}-form-item-message`,
+    required,
     ...fieldState
   }
 }
 
 type FormItemContextValue = {
   id: string
+  required?: boolean
 }
 
 const FormItemContext = React.createContext<FormItemContextValue>(
   {} as FormItemContextValue
 )
 
-const FormItem = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => {
-  const id = React.useId()
+export type FormItemProps = React.HTMLAttributes<HTMLDivElement> & {
+  required?: boolean
+}
 
-  return (
-    <FormItemContext.Provider value={{ id }}>
-      <div ref={ref} className={cn('space-y-2', className)} {...props} />
-    </FormItemContext.Provider>
-  )
-})
+const FormItem = React.forwardRef<HTMLDivElement, FormItemProps>(
+  ({ className, required, ...props }, ref) => {
+    const id = React.useId()
+
+    return (
+      <FormItemContext.Provider value={{ id, required }}>
+        <div ref={ref} className={cn('space-y-2', className)} {...props} />
+      </FormItemContext.Provider>
+    )
+  }
+)
 FormItem.displayName = 'FormItem'
 
 const FormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
->(({ className, ...props }, ref) => {
-  const { error, formItemId } = useFormField()
+>(({ className, children, ...props }, ref) => {
+  const { required, error, formItemId } = useFormField()
 
   return (
     <Label
       ref={ref}
-      className={cn(error && 'text-destructive', className)}
+      className={cn(
+        'text-sm font-semibold text-[#52525b]',
+        error && 'text-destructive',
+        className
+      )}
       htmlFor={formItemId}
       {...props}
-    />
+    >
+      {children}
+      {required ? ' *' : ''}
+    </Label>
   )
 })
 FormLabel.displayName = 'FormLabel'
@@ -133,7 +145,7 @@ const FormDescription = React.forwardRef<
     <p
       ref={ref}
       id={formDescriptionId}
-      className={cn('text-sm text-muted-foreground', className)}
+      className={cn('text-xs font-medium text-shadcn-400', className)}
       {...props}
     />
   )
