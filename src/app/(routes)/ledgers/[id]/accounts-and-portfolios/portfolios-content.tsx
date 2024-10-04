@@ -4,9 +4,14 @@ import { Button } from '@/components/ui/button'
 import { PlusIcon } from 'lucide-react'
 import { useState } from 'react'
 import { PortfolioSheet } from './portfolios-sheet'
+import { usePortfolios } from '@/utils/queries'
+import { useParams } from 'next/navigation'
 
 export const PortfoliosContent = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const { id: ledgerId } = useParams()
+
+  const portfolios = usePortfolios(ledgerId as string)
   return (
     <Card.Root>
       {/* {ledgers.data && ledgers.data.length > 0 ? (

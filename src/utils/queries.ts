@@ -1,8 +1,4 @@
-import {
-  getLedgerById,
-  getLedgers,
-  getPortfolios
-} from '@/client/ledger-client'
+import { getLedgerById, getLedgers } from '@/client/ledger-client'
 import { useQuery } from '@tanstack/react-query'
 import { getInstruments } from '@/client/instruments-client'
 import {
@@ -15,6 +11,7 @@ import {
   getOrganizationById,
   getParentOrganizations
 } from '@/client/organization-client'
+import { getPortfolios } from '@/client/portfolios-client'
 
 export const useLedgers = () => {
   return useQuery({
@@ -79,7 +76,7 @@ export const useChartsTransactionsByStatus = (ledgerId: string) => {
   })
 }
 
-export const usePorfolios = (ledgerId: string) => {
+export const usePortfolios = (ledgerId: string) => {
   return useQuery({
     queryKey: ['portfolios', ledgerId],
     queryFn: () => getPortfolios(ledgerId)

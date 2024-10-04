@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import useCustomToast from '../use-custom-toast'
-import { createPortfolio } from '@/client/ledger-client'
-import { useTranslations } from 'next-intl'
+import { LedgerPortfoliosEntity } from '@/core/domain/entities/portfolios-entity'
+import { createPortfolio } from '@/client/portfolios-client'
 
 export const useCreatePortfolio = () => {
   // const t = useTranslations('ledgers')
@@ -12,12 +12,14 @@ export const useCreatePortfolio = () => {
     setIsDialogOpen(false)
   }
 
-  const handleCreatePortfolio = async (ledgerId: string, portfolio: any) => {
+  const handleCreatePortfolio = async (
+    ledgerId: string,
+    portfolio: LedgerPortfoliosEntity
+  ) => {
+    console.log('values', ledgerId, portfolio)
     try {
       await createPortfolio(ledgerId, portfolio)
       showSuccess('Portfolio created successfully')
-      // t('toast.portfolioCreated', { portfolioName: portfolio.name })
-      // )
     } catch (error) {
       const err = error as Error
       console.error(err)

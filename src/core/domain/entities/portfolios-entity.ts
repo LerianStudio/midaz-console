@@ -1,7 +1,8 @@
-export type LedgerEntity = {
+export type LedgerPortfoliosEntity = {
   id: string
-  organizationId: string
-  name: string
+  ledger_id: string
+  entity_id: string
+  portfolio_name: string
   metadata: Record<string, string> | null
   status: {
     code: string

@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod'
 
 export const formSchemaPortfolio = z.object({
   portfolio_name: z.string().min(3),
