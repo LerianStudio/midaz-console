@@ -1,46 +1,45 @@
 import { Card } from '@/components/card'
 import { DataTable } from '@/components/data-table'
 import { Button } from '@/components/ui/button'
-import { PlusIcon } from 'lucide-react'
+import { Plus, PlusIcon } from 'lucide-react'
 import { useState } from 'react'
 import { PortfolioSheet } from './portfolios-sheet'
 import { usePortfolios } from '@/utils/queries'
 import { useParams } from 'next/navigation'
+import { EntityBox } from '@/components/entity-box'
+import { portfoliosColumns } from './portfolios-columns'
 
 export const PortfoliosContent = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const { id: ledgerId } = useParams()
 
   const portfolios = usePortfolios(ledgerId as string)
+  console.log(portfolios.data)
   return (
-    <Card.Root>
-      {/* {ledgers.data && ledgers.data.length > 0 ? (
-        <DataTable columns={ledgersColumns} data={enhancedLedgers.data} />
-      ) : ( */}
-      <div className="flex items-center justify-between">
-        <div>
-          <Card.Header title="Portfólios" className="text-lg capitalize" />
-          <p className="mt-2 text-sm text-gray-500">
-            Nenhum portfólio encontrado.
-          </p>
-        </div>
+    <>
+      <EntityBox.Root>
+        <EntityBox.Header
+          title="Assets"
+          subtitle="Moedas ou ativos de quaisquer naturezas transacionados neste Ledger."
+        />
+        <EntityBox.Actions>
+          <Button
+            variant="outline"
+            onClick={() => setIsDialogOpen(true)}
+            icon={<Plus />}
+          >
+            Criar o primeiro Asset
+          </Button>
+        </EntityBox.Actions>
+      </EntityBox.Root>
 
-        <Button
-          variant="outline"
-          size="lg"
-          onClick={() => setIsDialogOpen(true)}
-          className="flex items-center rounded-md px-4 py-2 shadow transition"
-        >
-          <span>Criar o primeiro portfólio</span>
-
-          <PlusIcon className="ml-2 h-5 w-5" />
-        </Button>
-      </div>
-      {/* )} */}
+      {portfolios.data && portfolios.data.length > 0 && (
+        <DataTable columns={portfoliosColumns} data={portfolios.data} />
+      )}
 
       <PortfolioSheet
         sheetProps={{ open: isDialogOpen, setOpen: setIsDialogOpen }}
       />
-    </Card.Root>
+    </>
   )
 }

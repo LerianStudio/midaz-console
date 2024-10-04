@@ -1,16 +1,23 @@
+import { container, Registry } from '@/core/infra/container-registry'
+import PortfoliosUseCases from '@/core/useCases/portfolio-use-cases'
 import { NextRequest, NextResponse } from 'next/server'
 
 const JSON_SERVER_URL = 'http://localhost:3001'
+const portfolioUseCases = container.get<PortfoliosUseCases>(
+  Registry.PortfolioUseCases
+)
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { ledgerId: string } }
-) {
-  const response = await fetch(
-    `${JSON_SERVER_URL}/portfolios?ledgerId=${params.ledgerId}`
-  )
-  const portfolios = await response.json()
-  return NextResponse.json(portfolios)
+export async function GET() {
+  try {
+    const portfolios = await portfolioUseCases.listPortfoliosUseCases()
+    return NextResponse.json(portfolios)
+  } catch (error) {
+    console.error('Error fetching portfolios:', error)
+    return NextResponse.json(
+      { error: 'Failed to fetch portfolios' },
+      { status: 500 }
+    )
+  }
 }
 
 export async function POST(
@@ -19,12 +26,10 @@ export async function POST(
 ) {
   const body = await request.json()
   console.log('body', body)
-  // Validate the ledgerId
   if (params.ledgerId !== body.ledgerId) {
     return NextResponse.json({ error: 'Invalid ledgerId' }, { status: 400 })
   }
 
-  // Create a new portfolio
   const newPortfolio = {
     id: crypto.randomUUID(),
     ledger_id: params.ledgerId,
@@ -39,7 +44,6 @@ export async function POST(
 
   console.log(newPortfolio)
 
-  // Add the new portfolio using json-server
   const response = await fetch(`${JSON_SERVER_URL}/portfolios`, {
     method: 'POST',
     headers: {

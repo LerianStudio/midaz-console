@@ -7,11 +7,14 @@ import OryAuthUseCases from '@/core/useCases/ory-auth-use-cases'
 import InstrumentsUseCases from '@/core/useCases/instruments-use-cases'
 import OrganizationRepository from '@/core/repositories/organizations-repository'
 import OrganizationsUseCases from '@/core/useCases/organizations-use-cases'
+import { PortfoliosAPIAdapter } from '../adapters/portfolios-api-adapter'
+import PortfoliosUseCases from '../useCases/portfolio-use-cases'
 
 export const Registry = {
   LedgersAPIAdapter: Symbol.for('LedgersAPIAdapter'),
   InstrumentsAPIAdapter: Symbol.for('InstrumentsAPIAdapter'),
   OryAuthAPIAdapter: Symbol.for('OryAuthAPIAdapter'),
+  PortfolioAPIAdapter: Symbol.for('PortfolioAPIAdapter'),
 
   // Repository
   OrganizationRepositoryRegistry: Symbol.for('OrganizationRepositoryRegistry'),
@@ -20,7 +23,8 @@ export const Registry = {
   LedgersUseCases: Symbol.for('LedgersUseCases'),
   OryAuthUseCases: Symbol.for('OryAuthUseCases'),
   InstrumentsUseCases: Symbol.for('InstrumentsUseCases'),
-  OrganizationsUseCasesRegistry: Symbol.for('OrganizationsUseCasesRegistry')
+  OrganizationsUseCasesRegistry: Symbol.for('OrganizationsUseCasesRegistry'),
+  PortfolioUseCases: Symbol.for('PortfolioUseCases')
 }
 
 export const container = new Container()
@@ -79,5 +83,21 @@ container
   .toDynamicValue((context) => {
     return new OrganizationsUseCases(
       context.container.get(Registry.OrganizationRepositoryRegistry)
+    )
+  })
+
+// Portfolio API Adapter
+container
+  .bind<PortfoliosAPIAdapter>(Registry.PortfolioAPIAdapter)
+  .toDynamicValue((context) => {
+    return new PortfoliosAPIAdapter()
+  })
+
+// Portfolio Use Cases
+container
+  .bind<PortfoliosUseCases>(Registry.PortfolioUseCases)
+  .toDynamicValue((context) => {
+    return new PortfoliosUseCases(
+      context.container.get(Registry.PortfolioAPIAdapter)
     )
   })

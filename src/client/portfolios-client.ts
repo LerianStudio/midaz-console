@@ -29,6 +29,8 @@ const getPortfolios = async (ledgerId: string) => {
     }
   })
 
+  console.log('response', response)
+
   if (!response.ok) {
     throw new Error('Failed to fetch portfolios')
   }
