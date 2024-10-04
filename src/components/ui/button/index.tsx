@@ -20,7 +20,7 @@ const buttonVariants = cva(
         outline:
           'border border-shadcn-300 bg-background hover:bg-accent hover:text-accent-foreground shadow-sm',
         secondary:
-          'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+          'border border-shadcn-300 bg-background hover:bg-primary/5 text-secondary-foreground shadow-sm',
         ghost: 'hover:bg-shadcn-300',
         link: 'text-shadcn-600 underline-offset-4 underline text-sm font-normal justify-start font-medium'
       },
