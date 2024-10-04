@@ -139,5 +139,10 @@
   "entity.organization.status": "Status",
   "common.selectPlaceholder": "Select...",
   "ledgers.tab.assets": "Assets",
-  "ledgers.tab.overview": "Overview"
+  "ledgers.tab.overview": "Overview",
+  "error.midaz.invalidCountryCode": "The provided country code does not conform to the ISO-3166 alpha-2 standard. Please provide a valid alpha-2 country code.",
+  "error.midaz.missingFields": "Your request is missing one or more required fields. Please refer to the documentation to verify the necessary fields for your request.",
+  "error.midaz.unknowError": "Error on Midaz. Please contact support.",
+  "error.midaz.actionNotPermitted": "The action you are attempting is not allowed in the current environment. Please consult the documentation for guidance on how to proceed.",
+  "error.midaz.entityNotFound": "No entity was found matching the provided ID. Ensure the correct ID is being used for the entity you are attempting to manage."
 }

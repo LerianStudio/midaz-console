@@ -1,12 +1,41 @@
-import { Container } from 'inversify'
+import { InstrumentsAPIAdapter } from '@/core/adapters/instruments-api-adapter'
 import { LedgersAPIAdapter } from '@/core/adapters/ledgers-api-adapter'
 import { OryAuthAPIAdapter } from '@/core/adapters/ory-auth-api-adapter'
-import { InstrumentsAPIAdapter } from '@/core/adapters/instruments-api-adapter'
-import LedgersUseCases from '@/core/useCases/ledgers-use-cases'
-import OryAuthUseCases from '@/core/useCases/ory-auth-use-cases'
-import InstrumentsUseCases from '@/core/useCases/instruments-use-cases'
 import OrganizationRepository from '@/core/repositories/organizations-repository'
+import InstrumentsUseCases from '@/core/useCases/instruments-use-cases'
+import LedgersUseCases from '@/core/useCases/ledgers-use-cases'
 import OrganizationsUseCases from '@/core/useCases/organizations-use-cases'
+import OryAuthUseCases from '@/core/useCases/ory-auth-use-cases'
+import { Container } from 'inversify'
+import {
+  CreateOrganization,
+  CreateOrganizationUseCase
+} from '../application/use-cases/organizations/create-organization-use-case'
+import {
+  FetchAllOrganizations,
+  FetchAllOrganizationsUseCase
+} from '../application/use-cases/organizations/fetch-all-organizations-use-case'
+import {
+  FetchOrganizationById,
+  FetchOrganizationByIdUseCase
+} from '../application/use-cases/organizations/fetch-organization-by-id-use-case'
+import {
+  FetchParentOrganizations,
+  FetchParentOrganizationsUseCase
+} from '../application/use-cases/organizations/fetch-parent-organizations-use-case'
+import {
+  UpdateOrganization,
+  UpdateOrganizationUseCase
+} from '../application/use-cases/organizations/update-organization-use-case'
+import { MidazCreateOrganizationRepository } from '../infrastructure/midaz/organizations/midaz-create-organization-repository'
+import { MidazFetchAllOrganizationsRepository } from '../infrastructure/midaz/organizations/midaz-fetch-all-organizations-repository'
+import { MidazFetchOrganizationByIdRepository } from '../infrastructure/midaz/organizations/midaz-fetch-organization-by-id-repository'
+import {
+  DeleteOrganization,
+  DeleteOrganizationUseCase
+} from '../application/use-cases/organizations/delete-organization-use-case'
+import { MidazDeleteOrganizationRepository } from '../infrastructure/midaz/organizations/midaz-delete-organization-repository'
+import { MidazUpdateOrganizationRepository } from '../infrastructure/midaz/organizations/midaz-update-organization-repository'
 
 export const Registry = {
   LedgersAPIAdapter: Symbol.for('LedgersAPIAdapter'),
@@ -16,11 +45,25 @@ export const Registry = {
   // Repository
   OrganizationRepositoryRegistry: Symbol.for('OrganizationRepositoryRegistry'),
 
-  // Use Cases
+  /**
+   * TODO Remove old Registry
+   */
   LedgersUseCases: Symbol.for('LedgersUseCases'),
   OryAuthUseCases: Symbol.for('OryAuthUseCases'),
   InstrumentsUseCases: Symbol.for('InstrumentsUseCases'),
-  OrganizationsUseCasesRegistry: Symbol.for('OrganizationsUseCasesRegistry')
+  OrganizationsUseCasesRegistry: Symbol.for('OrganizationsUseCasesRegistry'),
+
+  /**
+   * TODO Improve import and instantiation containers
+   */
+  CreateOrganizationUseCase: Symbol.for('CreateOrganizationUseCase'),
+  FetchAllOrganizationsUseCase: Symbol.for('FetchAllOrganizationsUseCase'),
+  FetchOrganizationByIdUseCase: Symbol.for('FetchOrganizationByIdUseCase'),
+  FetchParentOrganizationsUseCase: Symbol.for(
+    'FetchParentOrganizationsUseCase'
+  ),
+  UpdateOrganizationUseCase: Symbol.for('UpdateOrganizationUseCase'),
+  DeleteOrganizationUseCase: Symbol.for('DeleteOrganizationUseCase')
 }
 
 export const container = new Container()
@@ -81,3 +124,45 @@ container
       context.container.get(Registry.OrganizationRepositoryRegistry)
     )
   })
+
+/**
+ * New Containers
+ */
+
+container
+  .bind<CreateOrganization>(Registry.CreateOrganizationUseCase)
+  .toConstantValue(
+    new CreateOrganizationUseCase(new MidazCreateOrganizationRepository())
+  )
+
+container
+  .bind<FetchAllOrganizations>(Registry.FetchAllOrganizationsUseCase)
+  .toConstantValue(
+    new FetchAllOrganizationsUseCase(new MidazFetchAllOrganizationsRepository())
+  )
+
+container
+  .bind<FetchOrganizationById>(Registry.FetchOrganizationByIdUseCase)
+  .toConstantValue(
+    new FetchOrganizationByIdUseCase(new MidazFetchOrganizationByIdRepository())
+  )
+
+container
+  .bind<FetchParentOrganizations>(Registry.FetchParentOrganizationsUseCase)
+  .toConstantValue(
+    new FetchParentOrganizationsUseCase(
+      new MidazFetchAllOrganizationsRepository()
+    )
+  )
+
+container
+  .bind<UpdateOrganization>(Registry.UpdateOrganizationUseCase)
+  .toConstantValue(
+    new UpdateOrganizationUseCase(new MidazUpdateOrganizationRepository())
+  )
+
+container
+  .bind<DeleteOrganization>(Registry.DeleteOrganizationUseCase)
+  .toConstantValue(
+    new DeleteOrganizationUseCase(new MidazDeleteOrganizationRepository())
+  )

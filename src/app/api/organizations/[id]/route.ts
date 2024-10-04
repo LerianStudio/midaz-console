@@ -1,28 +1,60 @@
-import { NextResponse } from 'next/server'
+import { DeleteOrganization } from '@/core/application/use-cases/organizations/delete-organization-use-case'
+import { FetchOrganizationById } from '@/core/application/use-cases/organizations/fetch-organization-by-id-use-case'
+import { UpdateOrganization } from '@/core/application/use-cases/organizations/update-organization-use-case'
 import { container, Registry } from '@/core/infra/container-registry'
-import OrganizationsUseCases from '@/core/useCases/organizations-use-cases'
+import { NextResponse } from 'next/server'
+import { apiErrorHandler } from '../../utils/api-error-handler'
 
-const organizationsUseCases = container.get<OrganizationsUseCases>(
-  Registry.OrganizationsUseCasesRegistry
+const updateOrganizationUseCase = container.get<UpdateOrganization>(
+  Registry.UpdateOrganizationUseCase
+)
+
+const fetchOrganizationByIdUseCase = container.get<FetchOrganizationById>(
+  Registry.FetchOrganizationByIdUseCase
+)
+
+const deleteOrganizationUseCase = container.get<DeleteOrganization>(
+  Registry.DeleteOrganizationUseCase
 )
 
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  const organizations = await organizationsUseCases.getOrganizationByIdUseCases(
-    params.id
-  )
-  return NextResponse.json(organizations)
+  try {
+    const organizationId = params.id
+
+    const organizations =
+      await fetchOrganizationByIdUseCase.execute(organizationId)
+
+    return NextResponse.json(organizations)
+  } catch (error: any) {
+    console.error('Error fetching organization', error)
+
+    const { message, status } = await apiErrorHandler(error)
+
+    return NextResponse.json({ message }, { status })
+  }
 }
 
-export async function PUT(
+export async function PATCH(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  const body = await request.json()
-  await organizationsUseCases.updateOrganizationUseCases(params.id, body)
-  return NextResponse.json({ message: 'Organization updated!' })
+  try {
+    const body = await request.json()
+    const organizationUpdated = await updateOrganizationUseCase.execute(
+      params.id,
+      body
+    )
+    return NextResponse.json({ organizationUpdated })
+  } catch (error: any) {
+    console.error('Error updating organization', error)
+
+    const { message, status } = await apiErrorHandler(error)
+
+    return NextResponse.json({ message }, { status })
+  }
 }
 
 export async function DELETE(
@@ -30,13 +62,12 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    await organizationsUseCases.deleteOrganizationUseCases(params.id)
+    await deleteOrganizationUseCase.execute(params.id)
     return NextResponse.json({ message: 'Organization deleted!' })
   } catch (error: any) {
-    return handlerErrorResponse(error)
-  }
-}
+    console.log('Error deleting organization', error)
+    const { message, status } = await apiErrorHandler(error)
 
-function handlerErrorResponse(error: any) {
-  return NextResponse.json({ message: error.message }, { status: 400 })
+    return NextResponse.json({ message }, { status })
+  }
 }

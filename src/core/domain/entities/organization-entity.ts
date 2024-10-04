@@ -7,6 +7,9 @@ export type OrganizationEntity = {
   address: Address
   metadata?: Record<string, any>
   status: OrganizationStatus
+  createdAt?: Date
+  updatedAt?: Date
+  deletedAt?: Date
 }
 
 type OrganizationStatus = {

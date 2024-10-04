@@ -1,18 +1,23 @@
-import { NextResponse } from 'next/server'
-import OrganizationsUseCases from '@/core/useCases/organizations-use-cases'
+import { FetchParentOrganizations } from '@/core/application/use-cases/organizations/fetch-parent-organizations-use-case'
 import { container, Registry } from '@/core/infra/container-registry'
+import { NextResponse } from 'next/server'
 
-const organizationsUseCases = container.get<OrganizationsUseCases>(
-  Registry.OrganizationsUseCasesRegistry
+const fetchParentOrganizations = container.get<FetchParentOrganizations>(
+  Registry.FetchParentOrganizationsUseCase
 )
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url)
-  const idActualOrganization = searchParams.get('idActualOrganization')
-  const organizations =
-    await organizationsUseCases.getParentOrganizationsUseCases(
-      idActualOrganization || undefined
-    )
+  try {
+    const { searchParams } = new URL(request.url)
+    const organizationId = searchParams.get('organizationId') || undefined
 
-  return NextResponse.json(organizations)
+    const organizations = await fetchParentOrganizations.execute(organizationId)
+
+    return NextResponse.json(organizations)
+  } catch (error: unknown) {
+    return NextResponse.json(
+      { message: 'Error fetching parent organizations' },
+      { status: 400 }
+    )
+  }
 }
