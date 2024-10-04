@@ -9,7 +9,7 @@ export interface FetchAllOrganizations {
   execute: (
     limit: number,
     page: number
-  ) => Promise<PaginationDto<OrganizationEntity>>
+  ) => Promise<PaginationDto<OrganizationResponseDto>>
 }
 
 export class FetchAllOrganizationsUseCase implements FetchAllOrganizations {
@@ -20,7 +20,7 @@ export class FetchAllOrganizationsUseCase implements FetchAllOrganizations {
   async execute(
     limit: number,
     page: number
-  ): Promise<PaginationDto<OrganizationEntity>> {
+  ): Promise<PaginationDto<OrganizationResponseDto>> {
     const organizationsResult: PaginationEntity<OrganizationEntity> =
       await this.fetchAllOrganizationsRepository.fetchAll(limit, page)
 
@@ -29,7 +29,7 @@ export class FetchAllOrganizationsUseCase implements FetchAllOrganizations {
     const organizationDto =
       items && items !== null ? items.map(organizationEntityToDto) : []
 
-    const organizationsResponse: PaginationDto<OrganizationEntity> = {
+    const organizationsResponse: PaginationDto<OrganizationResponseDto> = {
       items: organizationDto,
       limit: organizationsResult.limit,
       page: organizationsResult.page

@@ -26,26 +26,32 @@ import {
   UpdateOrganizationUseCase
 } from '@/core/application/use-cases/organizations/update-organization-use-case'
 
+import {
+  CreateLedger,
+  CreateLedgerUseCase
+} from '@/core/application/use-cases/ledgers/create-ledgers-use-case'
+import {
+  FetchAllLedgers,
+  FetchAllLedgersUseCase
+} from '@/core/application/use-cases/ledgers/fetch-all-ledgers-use-case'
+import { CreateLedgerRepository } from '@/core/domain/repositories/legders/create-ledger-repository'
+import { FetchAllLedgersRepository } from '@/core/domain/repositories/legders/fetch-all-ledgers-repository'
+import { CreateOrganizationRepository } from '@/core/domain/repositories/organizations/create-organization-repository'
+import { DeleteOrganizationRepository } from '@/core/domain/repositories/organizations/delete-organization-repository'
+import { FetchAllOrganizationsRepository } from '@/core/domain/repositories/organizations/fetch-all-organizations-repository'
+import { FetchOrganizationByIdRepository } from '@/core/domain/repositories/organizations/fetch-organization-by-id-repository'
+import { UpdateOrganizationRepository } from '@/core/domain/repositories/organizations/update-organization-repository'
 import InstrumentsUseCases from '@/core/useCases/instruments-use-cases'
 import LedgersUseCases from '@/core/useCases/ledgers-use-cases'
 import OryAuthUseCases from '@/core/useCases/ory-auth-use-cases'
 import { Container } from 'inversify'
+import { MidazCreateLedgerRepository } from '../midaz/ledgers/midaz-create-ledger-repository'
+import { MidazFetchAllLedgersRepository } from '../midaz/ledgers/midaz-fetch-all-ledgers-repository'
 import { MidazCreateOrganizationRepository } from '../midaz/organizations/midaz-create-organization-repository'
 import { MidazDeleteOrganizationRepository } from '../midaz/organizations/midaz-delete-organization-repository'
 import { MidazFetchAllOrganizationsRepository } from '../midaz/organizations/midaz-fetch-all-organizations-repository'
 import { MidazFetchOrganizationByIdRepository } from '../midaz/organizations/midaz-fetch-organization-by-id-repository'
 import { MidazUpdateOrganizationRepository } from '../midaz/organizations/midaz-update-organization-repository'
-import { CreateOrganizationRepository } from '@/core/domain/repositories/organizations/create-organization-repository'
-import { FetchAllOrganizationsRepository } from '@/core/domain/repositories/organizations/fetch-all-organizations-repository'
-import { FetchOrganizationByIdRepository } from '@/core/domain/repositories/organizations/fetch-organization-by-id-repository'
-import { DeleteOrganizationRepository } from '@/core/domain/repositories/organizations/delete-organization-repository'
-import { UpdateOrganizationRepository } from '@/core/domain/repositories/organizations/update-organization-repository'
-import {
-  CreateLedger,
-  CreateLedgerUseCase
-} from '@/core/application/use-cases/ledgers/create-ledgers-use-case'
-import { CreateLedgerRepository } from '@/core/domain/repositories/legders/create-ledger-repository'
-import { MidazCreateLedgerRepository } from '../midaz/ledgers/midaz-create-ledger-repository'
 
 export const Registry = {
   LedgersAPIAdapter: Symbol.for('LedgersAPIAdapter'),
@@ -87,7 +93,9 @@ export const Registry = {
   // Ledgers
 
   CreateLedgerUseCase: Symbol.for('CreateLedgerUseCase'),
-  CreateLedgerRepository: Symbol.for('CreateLedgerRepository')
+  CreateLedgerRepository: Symbol.for('CreateLedgerRepository'),
+  FetchAllLedgersUseCase: Symbol.for('FetchAllLedgersUseCase'),
+  FetchAllLedgersRepository: Symbol.for('FetchAllLedgersRepository')
 }
 
 export const container = new Container()
@@ -224,5 +232,17 @@ container
   .toDynamicValue((context) => {
     return new CreateLedgerUseCase(
       context.container.get(Registry.CreateLedgerRepository)
+    )
+  })
+
+container
+  .bind<FetchAllLedgersRepository>(Registry.FetchAllLedgersRepository)
+  .toConstantValue(new MidazFetchAllLedgersRepository())
+
+container
+  .bind<FetchAllLedgers>(Registry.FetchAllLedgersUseCase)
+  .toDynamicValue((context) => {
+    return new FetchAllLedgersUseCase(
+      context.container.get(Registry.FetchAllLedgersRepository)
     )
   })
