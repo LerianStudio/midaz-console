@@ -25,7 +25,9 @@ const config = {
         sheetBottom:
           '0px -1px 2px 0px rgba(0, 0, 0, 0.10), 0px -10px 20px 0px rgba(0, 0, 0, 0.05)',
         drawer:
-          '0px 4px 8px 0px rgba(0, 0, 0, 0.20), 0px -1px 16px 0px rgba(0, 0, 0, 0.10), 0px 0px 32px 0px rgba(0, 0, 0, 0.05);'
+          '0px 4px 8px 0px rgba(0, 0, 0, 0.20), 0px -1px 16px 0px rgba(0, 0, 0, 0.10), 0px 0px 32px 0px rgba(0, 0, 0, 0.05);',
+        entityBox:
+          '0px 10px 20px rgba(0, 0, 0, 0.05), 0px 1px 2px rgba(0, 0, 0, 0.10)'
       },
       colors: {
         sunglow: {
