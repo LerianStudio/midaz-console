@@ -1,13 +1,12 @@
-import { CreateLedgerUseCase } from './create-ledgers-use-case'
-import { CreateLedgerRepository } from '@/core/domain/repositories/legders/create-ledger-repository'
-import { CreateLedgerDto } from '../../dto/create-ledger-dto'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
+import { CreateLedgerRepository } from '@/core/domain/repositories/ledgers/create-ledger-repository'
+import { CreateLedgerDto } from '../../dto/create-ledger-dto'
 import { LedgerResponseDto } from '../../dto/ledger-response-dto'
 import {
   ledgerDtoToEntity,
   ledgerEntityToDto
 } from '../../mappers/ledger-mapper'
-import { MidazCreateLedgerRepository } from '@/core/infrastructure/midaz/ledgers/midaz-create-ledger-repository'
+import { CreateLedgerUseCase } from './create-ledger-use-case'
 
 jest.mock('../../mappers/ledger-mapper')
 

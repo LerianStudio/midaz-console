@@ -22,3 +22,11 @@ export function ledgerEntityToDto(entity: LedgerEntity): LedgerResponseDto {
     deletedAt: entity.deletedAt!
   }
 }
+
+export function ledgerUpdateDtoToEntity(
+  dto: Partial<CreateLedgerDto>
+): Partial<LedgerEntity> {
+  return {
+    ...dto
+  }
+}

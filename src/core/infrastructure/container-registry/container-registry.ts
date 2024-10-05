@@ -29,13 +29,13 @@ import {
 import {
   CreateLedger,
   CreateLedgerUseCase
-} from '@/core/application/use-cases/ledgers/create-ledgers-use-case'
+} from '@/core/application/use-cases/ledgers/create-ledger-use-case'
 import {
   FetchAllLedgers,
   FetchAllLedgersUseCase
 } from '@/core/application/use-cases/ledgers/fetch-all-ledgers-use-case'
-import { CreateLedgerRepository } from '@/core/domain/repositories/legders/create-ledger-repository'
-import { FetchAllLedgersRepository } from '@/core/domain/repositories/legders/fetch-all-ledgers-repository'
+import { CreateLedgerRepository } from '@/core/domain/repositories/ledgers/create-ledger-repository'
+import { FetchAllLedgersRepository } from '@/core/domain/repositories/ledgers/fetch-all-ledgers-repository'
 import { CreateOrganizationRepository } from '@/core/domain/repositories/organizations/create-organization-repository'
 import { DeleteOrganizationRepository } from '@/core/domain/repositories/organizations/delete-organization-repository'
 import { FetchAllOrganizationsRepository } from '@/core/domain/repositories/organizations/fetch-all-organizations-repository'
@@ -52,6 +52,18 @@ import { MidazDeleteOrganizationRepository } from '../midaz/organizations/midaz-
 import { MidazFetchAllOrganizationsRepository } from '../midaz/organizations/midaz-fetch-all-organizations-repository'
 import { MidazFetchOrganizationByIdRepository } from '../midaz/organizations/midaz-fetch-organization-by-id-repository'
 import { MidazUpdateOrganizationRepository } from '../midaz/organizations/midaz-update-organization-repository'
+import {
+  FetchLedgerById,
+  FetchLedgerByIdUseCase
+} from '@/core/application/use-cases/ledgers/fetch-ledger-by-id-use-case'
+import { FetchLedgerByIdRepository } from '@/core/domain/repositories/ledgers/fetch-ledger-by-id-repository'
+import { MidazFetchLedgerByIdRepository } from '../midaz/ledgers/midaz-fetch-ledger-by-id-repository'
+import {
+  UpdateLedger,
+  UpdateLedgerUseCase
+} from '@/core/application/use-cases/ledgers/update-ledger-use-case'
+import { UpdateLedgerRepository } from '@/core/domain/repositories/ledgers/update-ledger-repository'
+import { MidazUpdateLedgerRepository } from '../midaz/ledgers/midaz-update-ledger-repository'
 
 export const Registry = {
   LedgersAPIAdapter: Symbol.for('LedgersAPIAdapter'),
@@ -95,7 +107,11 @@ export const Registry = {
   CreateLedgerUseCase: Symbol.for('CreateLedgerUseCase'),
   CreateLedgerRepository: Symbol.for('CreateLedgerRepository'),
   FetchAllLedgersUseCase: Symbol.for('FetchAllLedgersUseCase'),
-  FetchAllLedgersRepository: Symbol.for('FetchAllLedgersRepository')
+  FetchAllLedgersRepository: Symbol.for('FetchAllLedgersRepository'),
+  FetchLedgerByIdUseCase: Symbol.for('FetchLedgerByIdUseCase'),
+  FetchLedgerByIdRepository: Symbol.for('FetchLedgerByIdRepository'),
+  UpdateLedgerUseCase: Symbol.for('UpdateLedgerUseCase'),
+  UpdateLedgerRepository: Symbol.for('UpdateLedgerRepository')
 }
 
 export const container = new Container()
@@ -244,5 +260,29 @@ container
   .toDynamicValue((context) => {
     return new FetchAllLedgersUseCase(
       context.container.get(Registry.FetchAllLedgersRepository)
+    )
+  })
+
+container
+  .bind<FetchLedgerByIdRepository>(Registry.FetchLedgerByIdRepository)
+  .toConstantValue(new MidazFetchLedgerByIdRepository())
+
+container
+  .bind<FetchLedgerById>(Registry.FetchLedgerByIdUseCase)
+  .toDynamicValue((context) => {
+    return new FetchLedgerByIdUseCase(
+      context.container.get(Registry.FetchLedgerByIdRepository)
+    )
+  })
+
+container
+  .bind<UpdateLedgerRepository>(Registry.UpdateLedgerRepository)
+  .toConstantValue(new MidazUpdateLedgerRepository())
+
+container
+  .bind<UpdateLedger>(Registry.UpdateLedgerUseCase)
+  .toDynamicValue((context) => {
+    return new UpdateLedgerUseCase(
+      context.container.get(Registry.UpdateLedgerRepository)
     )
   })

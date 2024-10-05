@@ -1,6 +1,6 @@
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { CreateLedgerDto } from '../../dto/create-ledger-dto'
-import { CreateLedgerRepository } from '@/core/domain/repositories/legders/create-ledger-repository'
+import { CreateLedgerRepository } from '@/core/domain/repositories/ledgers/create-ledger-repository'
 import {
   ledgerDtoToEntity,
   ledgerEntityToDto

@@ -1,5 +1,5 @@
 import { apiErrorHandler } from '@/app/api/utils/api-error-handler'
-import { CreateLedger } from '@/core/application/use-cases/ledgers/create-ledgers-use-case'
+import { CreateLedger } from '@/core/application/use-cases/ledgers/create-ledger-use-case'
 import { FetchAllLedgers } from '@/core/application/use-cases/ledgers/fetch-all-ledgers-use-case'
 import {
   container,

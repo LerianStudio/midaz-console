@@ -1,6 +1,6 @@
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { LedgerResponseDto } from '../../dto/ledger-response-dto'
-import { FetchAllLedgersRepository } from '@/core/domain/repositories/legders/fetch-all-ledgers-repository'
+import { FetchAllLedgersRepository } from '@/core/domain/repositories/ledgers/fetch-all-ledgers-repository'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { ledgerEntityToDto } from '../../mappers/ledger-mapper'
 import { PaginationDto } from '../../dto/pagination-dto'

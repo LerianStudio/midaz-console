@@ -1,4 +1,4 @@
-import { CreateLedger } from '@/core/application/use-cases/ledgers/create-ledgers-use-case'
+import { CreateLedger } from '@/core/application/use-cases/ledgers/create-ledger-use-case'
 import {
   container,
   Registry
