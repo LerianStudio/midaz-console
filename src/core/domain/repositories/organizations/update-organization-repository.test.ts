@@ -4,11 +4,22 @@ import { OrganizationEntity } from '../../entities/organization-entity'
 class MockUpdateOrganizationRepository implements UpdateOrganizationRepository {
   async updateOrganization(
     organizationId: string,
-    organization: OrganizationEntity
+    organization: Partial<OrganizationEntity>
   ): Promise<OrganizationEntity> {
     return {
       ...organization,
-      id: organizationId
+      id: organizationId,
+      legalName: organization.legalName || '',
+      legalDocument: organization.legalDocument || '',
+      address: organization.address || {
+        line1: '',
+        neighborhood: '',
+        zipCode: '',
+        city: '',
+        state: '',
+        country: ''
+      },
+      status: organization.status || { code: '', description: '' }
     }
   }
 }

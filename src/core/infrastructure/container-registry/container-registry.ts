@@ -1,5 +1,4 @@
 import { InstrumentsAPIAdapter } from '@/core/adapters/instruments-api-adapter'
-import { LedgersAPIAdapter } from '@/core/adapters/ledgers-api-adapter'
 import { OryAuthAPIAdapter } from '@/core/adapters/ory-auth-api-adapter'
 import {
   CreateOrganization,
@@ -66,20 +65,14 @@ import { UpdateLedgerRepository } from '@/core/domain/repositories/ledgers/updat
 import { MidazUpdateLedgerRepository } from '../midaz/ledgers/midaz-update-ledger-repository'
 
 export const Registry = {
-  LedgersAPIAdapter: Symbol.for('LedgersAPIAdapter'),
   InstrumentsAPIAdapter: Symbol.for('InstrumentsAPIAdapter'),
   OryAuthAPIAdapter: Symbol.for('OryAuthAPIAdapter'),
 
   /**
    * TODO Remove old Registry
    */
-  LedgersUseCases: Symbol.for('LedgersUseCases'),
   OryAuthUseCases: Symbol.for('OryAuthUseCases'),
   InstrumentsUseCases: Symbol.for('InstrumentsUseCases'),
-
-  /**
-   * TODO Improve import and instantiation containers
-   */
 
   // Organizations
 
@@ -105,12 +98,12 @@ export const Registry = {
   // Ledgers
 
   CreateLedgerUseCase: Symbol.for('CreateLedgerUseCase'),
-  CreateLedgerRepository: Symbol.for('CreateLedgerRepository'),
   FetchAllLedgersUseCase: Symbol.for('FetchAllLedgersUseCase'),
-  FetchAllLedgersRepository: Symbol.for('FetchAllLedgersRepository'),
   FetchLedgerByIdUseCase: Symbol.for('FetchLedgerByIdUseCase'),
-  FetchLedgerByIdRepository: Symbol.for('FetchLedgerByIdRepository'),
   UpdateLedgerUseCase: Symbol.for('UpdateLedgerUseCase'),
+  CreateLedgerRepository: Symbol.for('CreateLedgerRepository'),
+  FetchAllLedgersRepository: Symbol.for('FetchAllLedgersRepository'),
+  FetchLedgerByIdRepository: Symbol.for('FetchLedgerByIdRepository'),
   UpdateLedgerRepository: Symbol.for('UpdateLedgerRepository')
 }
 
@@ -118,11 +111,6 @@ export const container = new Container()
 
 // External API Adapters
 
-container
-  .bind<LedgersAPIAdapter>(Registry.LedgersAPIAdapter)
-  .toDynamicValue((context) => {
-    return new LedgersAPIAdapter()
-  })
 container
   .bind<InstrumentsAPIAdapter>(Registry.InstrumentsAPIAdapter)
   .toDynamicValue((context) => {
@@ -135,14 +123,6 @@ container
   })
 
 // Use Cases
-
-container
-  .bind<LedgersUseCases>(Registry.LedgersUseCases)
-  .toDynamicValue((context) => {
-    return new LedgersUseCases(
-      context.container.get(Registry.LedgersAPIAdapter)
-    )
-  })
 
 container
   .bind<InstrumentsUseCases>(Registry.InstrumentsUseCases)

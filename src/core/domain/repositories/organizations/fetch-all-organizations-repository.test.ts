@@ -11,6 +11,8 @@ describe('FetchAllOrganizationsRepository', () => {
   })
 
   it('should fetch all organizations', async () => {
+    const limit = 10
+    const page = 1
     const mockOrganizations: OrganizationEntity[] = [
       {
         id: '1',
@@ -46,22 +48,24 @@ describe('FetchAllOrganizationsRepository', () => {
       mockOrganizations
     )
 
-    const result = await fetchAllOrganizationsRepository.fetchAll()
+    const result = await fetchAllOrganizationsRepository.fetchAll(limit, page)
 
     expect(result).toEqual(mockOrganizations)
     expect(fetchAllOrganizationsRepository.fetchAll).toHaveBeenCalledTimes(1)
   })
 
   it('should handle fetch error', async () => {
+    const limit = 10
+    const page = 1
     const mockError = new Error('Failed to fetch organizations')
 
     ;(fetchAllOrganizationsRepository.fetchAll as jest.Mock).mockRejectedValue(
       mockError
     )
 
-    await expect(fetchAllOrganizationsRepository.fetchAll()).rejects.toThrow(
-      'Failed to fetch organizations'
-    )
+    await expect(
+      fetchAllOrganizationsRepository.fetchAll(limit, page)
+    ).rejects.toThrow('Failed to fetch organizations')
     expect(fetchAllOrganizationsRepository.fetchAll).toHaveBeenCalledTimes(1)
   })
 })
