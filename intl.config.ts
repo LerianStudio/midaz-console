@@ -1,4 +1,4 @@
 export const intlConfig = {
   locales: ['en', 'pt'],
-  defaultLocale: 'pt'
+  defaultLocale: 'en'
 }

@@ -63,6 +63,13 @@ import {
 } from '@/core/application/use-cases/ledgers/update-ledger-use-case'
 import { UpdateLedgerRepository } from '@/core/domain/repositories/ledgers/update-ledger-repository'
 import { MidazUpdateLedgerRepository } from '../midaz/ledgers/midaz-update-ledger-repository'
+import { Delete } from 'lucide-react'
+import { DeleteLedgerRepository } from '@/core/domain/repositories/ledgers/delete-ledger-repository'
+import { MidazDeleteLedgerRepository } from '../midaz/ledgers/midaz-delete-ledger-repository'
+import {
+  DeleteLedger,
+  DeleteLedgerUseCase
+} from '@/core/application/use-cases/ledgers/delete-ledger-use-case'
 
 export const Registry = {
   InstrumentsAPIAdapter: Symbol.for('InstrumentsAPIAdapter'),
@@ -101,10 +108,13 @@ export const Registry = {
   FetchAllLedgersUseCase: Symbol.for('FetchAllLedgersUseCase'),
   FetchLedgerByIdUseCase: Symbol.for('FetchLedgerByIdUseCase'),
   UpdateLedgerUseCase: Symbol.for('UpdateLedgerUseCase'),
+  DeleteLedgerUseCase: Symbol.for('DeleteLedgerUseCase'),
+
   CreateLedgerRepository: Symbol.for('CreateLedgerRepository'),
   FetchAllLedgersRepository: Symbol.for('FetchAllLedgersRepository'),
   FetchLedgerByIdRepository: Symbol.for('FetchLedgerByIdRepository'),
-  UpdateLedgerRepository: Symbol.for('UpdateLedgerRepository')
+  UpdateLedgerRepository: Symbol.for('UpdateLedgerRepository'),
+  DeleteLedgerRepository: Symbol.for('DeleteLedgerRepository')
 }
 
 export const container = new Container()
@@ -264,5 +274,17 @@ container
   .toDynamicValue((context) => {
     return new UpdateLedgerUseCase(
       context.container.get(Registry.UpdateLedgerRepository)
+    )
+  })
+
+container
+  .bind<DeleteLedgerRepository>(Registry.DeleteLedgerRepository)
+  .toConstantValue(new MidazDeleteLedgerRepository())
+
+container
+  .bind<DeleteLedger>(Registry.DeleteLedgerUseCase)
+  .toDynamicValue((context) => {
+    return new DeleteLedgerUseCase(
+      context.container.get(Registry.DeleteLedgerRepository)
     )
   })
