@@ -9,8 +9,10 @@ export class MidazCreateAssetRepository implements CreateAssetRepository {
     ledgerId: string,
     asset: AssetEntity
   ): Promise<AssetEntity> {
+    console.log('MidazCreateAssetRepository', asset)
+
     const response = await fetch(
-      `${this.baseUrl}/${organizationId}/ledgers/${ledgerId}/assets`,
+      `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets`,
       {
         method: 'POST',
         headers: {

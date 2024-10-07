@@ -21,7 +21,7 @@ export class MidazFetchAllAssetsRepository implements FetchAllAssetsRepository {
       type: type || '',
       code: code || ''
     })
-    const assetUrl = `${this.baseUrl}/${organizationId}/ledgers/${ledgerId}/assets?${params.toString()}`
+    const assetUrl = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets?${params.toString()}`
 
     const response = await fetch(assetUrl, {
       method: 'GET',

@@ -79,7 +79,7 @@ export async function DELETE(
 
     await deleteLedgerUseCase.execute(organizationId, ledgerId)
 
-    return NextResponse.json({}, { status: 204 })
+    return NextResponse.json({}, { status: 200 })
   } catch (error: any) {
     console.error('Error deleting ledger', error)
 

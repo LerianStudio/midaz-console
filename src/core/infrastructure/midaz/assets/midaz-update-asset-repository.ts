@@ -11,9 +11,9 @@ export class MidazUpdateAssetRepository implements UpdateAssetRepository {
     asset: Partial<AssetEntity>
   ): Promise<AssetEntity> {
     const response = await fetch(
-      `${this.baseUrl}/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`,
+      `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`,
       {
-        method: 'PUT',
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
         },

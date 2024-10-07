@@ -10,7 +10,7 @@ export class MidazDeleteAssetRepository implements DeleteAssetRepository {
     assetId: string
   ): Promise<void> {
     const response = await fetch(
-      `${this.baseUrl}/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`,
+      `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`,
       {
         method: 'DELETE',
         headers: {
@@ -19,13 +19,15 @@ export class MidazDeleteAssetRepository implements DeleteAssetRepository {
       }
     )
 
-    const midazResponse = await response.json()
+    console.log('MidazDeleteAssetRepository', response)
 
     if (!response.ok) {
+      const midazResponse = await response.json()
+
       console.error('MidazDeleteAssetRepository', midazResponse)
       throw await handleMidazError(midazResponse)
     }
 
-    return midazResponse
+    return
   }
 }

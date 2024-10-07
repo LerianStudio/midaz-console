@@ -67,7 +67,7 @@ export async function DELETE(
 ) {
   try {
     await deleteOrganizationUseCase.execute(params.id)
-    return NextResponse.json({}, { status: 204 })
+    return NextResponse.json({}, { status: 200 })
   } catch (error: any) {
     console.log('Error deleting organization', error)
     const { message, status } = await apiErrorHandler(error)

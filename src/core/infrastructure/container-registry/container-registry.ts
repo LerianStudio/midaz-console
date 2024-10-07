@@ -68,6 +68,33 @@ import { MidazDeleteOrganizationRepository } from '../midaz/organizations/midaz-
 import { MidazFetchAllOrganizationsRepository } from '../midaz/organizations/midaz-fetch-all-organizations-repository'
 import { MidazFetchOrganizationByIdRepository } from '../midaz/organizations/midaz-fetch-organization-by-id-repository'
 import { MidazUpdateOrganizationRepository } from '../midaz/organizations/midaz-update-organization-repository'
+import {
+  CreateAsset,
+  CreateAssetUseCase
+} from '@/core/application/use-cases/assets/create-asset-use-case'
+import {
+  FetchAllAssets,
+  FetchAllAssetsUseCase
+} from '@/core/application/use-cases/assets/fetch-all-assets-use-case'
+import { FetchAssetByIdUseCase } from '@/core/application/use-cases/assets/fetch-asset-by-id-use-case'
+import {
+  UpdateAsset,
+  UpdateAssetUseCase
+} from '@/core/application/use-cases/assets/update-asset-use-case'
+import {
+  DeleteAsset,
+  DeleteAssetUseCase
+} from '@/core/application/use-cases/assets/delete-asset-use-case'
+import { CreateAssetRepository } from '@/core/domain/repositories/assets/create-asset-repository'
+import { MidazCreateAssetRepository } from '../midaz/assets/midaz-create-asset-repository'
+import { FetchAllAssetsRepository } from '@/core/domain/repositories/assets/fetch-all-assets-repository'
+import { MidazFetchAllAssetsRepository } from '../midaz/assets/midaz-fetch-all-assets-repository'
+import { FetchAssetByIdRepository } from '@/core/domain/repositories/assets/fetch-asset-by-id-repository'
+import { MidazFetchAssetByIdRepository } from '../midaz/assets/midaz-fetch-asset-by-id-repository'
+import { UpdateAssetRepository } from '@/core/domain/repositories/assets/update-asset-repository'
+import { MidazUpdateAssetRepository } from '../midaz/assets/midaz-update-asset-repository'
+import { DeleteAssetRepository } from '@/core/domain/repositories/assets/delete-asset-repository'
+import { MidazDeleteAssetRepository } from '../midaz/assets/midaz-delete-asset-repository'
 
 export const Registry = {
   InstrumentsAPIAdapter: Symbol.for('InstrumentsAPIAdapter'),
@@ -112,7 +139,20 @@ export const Registry = {
   FetchAllLedgersRepository: Symbol.for('FetchAllLedgersRepository'),
   FetchLedgerByIdRepository: Symbol.for('FetchLedgerByIdRepository'),
   UpdateLedgerRepository: Symbol.for('UpdateLedgerRepository'),
-  DeleteLedgerRepository: Symbol.for('DeleteLedgerRepository')
+  DeleteLedgerRepository: Symbol.for('DeleteLedgerRepository'),
+
+  // Assets
+  CreateAssetUseCase: Symbol.for('CreateAssetUseCase'),
+  FetchAllAssetsUseCase: Symbol.for('FetchAllAssetsUseCase'),
+  FetchAssetByIdUseCase: Symbol.for('FetchAssetByIdUseCase'),
+  UpdateAssetUseCase: Symbol.for('UpdateAssetUseCase'),
+  DeleteAssetUseCase: Symbol.for('DeleteAssetUseCase'),
+
+  CreateAssetRepository: Symbol.for('CreateAssetRepository'),
+  FetchAllAssetsRepository: Symbol.for('FetchAllAssetsRepository'),
+  FetchAssetByIdRepository: Symbol.for('FetchAssetByIdRepository'),
+  UpdateAssetRepository: Symbol.for('UpdateAssetRepository'),
+  DeleteAssetRepository: Symbol.for('DeleteAssetRepository')
 }
 
 export const container = new Container()
@@ -284,5 +324,65 @@ container
   .toDynamicValue((context) => {
     return new DeleteLedgerUseCase(
       context.container.get(Registry.DeleteLedgerRepository)
+    )
+  })
+
+container
+  .bind<CreateAssetRepository>(Registry.CreateAssetRepository)
+  .toConstantValue(new MidazCreateAssetRepository())
+
+container
+  .bind<CreateAsset>(Registry.CreateAssetUseCase)
+  .toDynamicValue((context) => {
+    return new CreateAssetUseCase(
+      context.container.get(Registry.CreateAssetRepository)
+    )
+  })
+
+container
+  .bind<FetchAllAssetsRepository>(Registry.FetchAllAssetsRepository)
+  .toConstantValue(new MidazFetchAllAssetsRepository())
+
+container
+  .bind<FetchAllAssets>(Registry.FetchAllAssetsUseCase)
+  .toDynamicValue((context) => {
+    return new FetchAllAssetsUseCase(
+      context.container.get(Registry.FetchAllAssetsRepository)
+    )
+  })
+
+container
+  .bind<FetchAssetByIdRepository>(Registry.FetchAssetByIdRepository)
+  .toConstantValue(new MidazFetchAssetByIdRepository())
+
+container
+  .bind<FetchAssetByIdUseCase>(Registry.FetchAssetByIdUseCase)
+  .toDynamicValue((context) => {
+    return new FetchAssetByIdUseCase(
+      context.container.get(Registry.FetchAssetByIdRepository)
+    )
+  })
+
+container
+  .bind<UpdateAssetRepository>(Registry.UpdateAssetRepository)
+  .toConstantValue(new MidazUpdateAssetRepository())
+
+container
+  .bind<UpdateAsset>(Registry.UpdateAssetUseCase)
+  .toDynamicValue((context) => {
+    return new UpdateAssetUseCase(
+      context.container.get(Registry.UpdateAssetRepository)
+    )
+  })
+
+container
+  .bind<DeleteAssetRepository>(Registry.DeleteAssetRepository)
+  .toConstantValue(new MidazDeleteAssetRepository())
+
+container
+  .bind<DeleteAsset>(Registry.DeleteAssetUseCase)
+  .toDynamicValue((context) => {
+    return new DeleteAssetUseCase(
+      context.container.get(Registry.DeleteAssetRepository)
     )
   })

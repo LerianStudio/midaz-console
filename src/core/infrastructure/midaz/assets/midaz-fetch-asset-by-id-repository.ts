@@ -10,7 +10,7 @@ export class MidazFetchAssetByIdRepository implements FetchAssetByIdRepository {
     ledgerId: string,
     assetId: string
   ): Promise<AssetEntity> {
-    const assetUrl = `${this.baseUrl}/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`
+    const assetUrl = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`
 
     const response = await fetch(assetUrl, {
       method: 'GET',
