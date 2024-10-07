@@ -5,7 +5,6 @@ import { getLedgersColumns } from '@/app/(routes)/ledgers/ledgers-columns'
 import { Skeleton } from '@/components/ui/skeleton'
 import { formSchema } from '@/app/(routes)/ledgers/ledgers-form-schema'
 import { DataTable } from '@/components/data-table'
-import { NoResource } from '@/components/no-resource'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { useSheetMode } from '@/hooks/ledgers/use-sheet-mode'
 import { useDeleteLedger } from '@/hooks/ledgers/use-delete-ledger'
@@ -17,9 +16,10 @@ import { getSheetInfo } from '@/helpers/ledgers/ledgers-helpers'
 import { useLedgers } from '@/utils/queries'
 import { SheetContainer } from '@/components/sheet/sheet-container'
 import { useIntl } from 'react-intl'
-import { Button } from '@/components/ui/button/button'
+import { Button } from '@/components/ui/button'
 import ConfirmationDialog from '@/components/confirmation-dialog/confirmation-dialog'
 import { Plus } from 'lucide-react'
+import { EmptyResource } from '@/components/empty-resource'
 
 const LedgersView = () => {
   const intl = useIntl()
@@ -130,11 +130,27 @@ const LedgersView = () => {
         {ledgers.data && ledgers.data.length > 0 ? (
           <DataTable columns={ledgersColumns} data={enhancedLedgers.data} />
         ) : (
-          <NoResource
-            resourceName="Ledger"
-            onClick={handleOpenCreateSheet}
-            pronoun="he"
-          />
+          <EmptyResource
+            message={intl.formatMessage({
+              id: 'ledgers.emptyResource',
+              defaultMessage: "You haven't created any Ledger yet"
+            })}
+            extra={intl.formatMessage({
+              id: 'ledgers.emptyResourceExtra',
+              defaultMessage: 'No Ledger found.'
+            })}
+          >
+            <Button
+              variant="outline"
+              onClick={handleOpenCreateSheet}
+              icon={<Plus />}
+            >
+              {intl.formatMessage({
+                id: 'common.create',
+                defaultMessage: 'Create'
+              })}
+            </Button>
+          </EmptyResource>
         )}
 
         <ConfirmationDialog
@@ -144,12 +160,16 @@ const LedgersView = () => {
             id: 'ledgers.dialog.title',
             defaultMessage: 'Are you sure?'
           })}
-          description={intl.formatMessage({
-            id: 'ledgers.dialog.subtitle',
-            defaultMessage:
-              'This action is irreversible. This will deactivate your Ledger forever'
-          })}
-          ledgerName={currentLedgerForDeletion?.name || ''}
+          description={intl.formatMessage(
+            {
+              id: 'ledgers.dialog.subtitle',
+              defaultMessage:
+                'This action is irreversible. This will deactivate your Ledger forever {ledgerName}.'
+            },
+            {
+              ledgerName: currentLedgerForDeletion?.name || ''
+            }
+          )}
           onConfirm={handleConfirmDeleteLedger}
           onCancel={() => setIsDialogOpen(false)}
         />

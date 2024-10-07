@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { Card } from '../ui/card/card'
+import { Card } from '../ui/card'
 import { cn } from '@/lib/utils'
 
 type CardRootProps = {

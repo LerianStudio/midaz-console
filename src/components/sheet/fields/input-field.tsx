@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormFieldConfig } from '@/types/sheet-type'
 import { UseFormReturn } from 'react-hook-form'
-import { Input } from '@/components/ui/input/input'
+import { Input } from '@/components/ui/input'
 import { SelectField } from './select-field'
 
 type InputFieldProps = {

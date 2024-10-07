@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { ButtonProps, Button } from './button'
-import { Plus, Users } from 'lucide-react'
+import { ButtonProps, Button } from '.'
+import { Users } from 'lucide-react'
 
 const meta: Meta<ButtonProps> = {
-  title: 'Molecules/Button',
+  title: 'Primitives/Button',
   component: Button,
   argTypes: {
     children: {
@@ -48,6 +48,13 @@ export const SecundaryDisabled: StoryObj<ButtonProps> = {
     children: 'Button',
     variant: 'secondary',
     disabled: true
+  }
+}
+
+export const Outline: StoryObj<ButtonProps> = {
+  args: {
+    children: 'Button',
+    variant: 'outline'
   }
 }
 

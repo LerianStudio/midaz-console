@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { InputProps, Input } from './input'
+import { InputProps, Input } from '.'
 
 const meta: Meta<InputProps> = {
-  title: 'Molecules/Input',
+  title: 'Primitives/Input',
   component: Input,
   argTypes: {
     disabled: {

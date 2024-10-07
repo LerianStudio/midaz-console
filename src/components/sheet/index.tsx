@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button } from '@/components/ui/button/button'
+import { Button } from '@/components/ui/button'
 import {
   Sheet as BaseSheet,
   SheetClose,
@@ -13,6 +13,7 @@ import { FormContent } from './form-content'
 import { SheetProps } from '@/types/sheet-type'
 
 export const Sheet = ({ sheetProps, formProps, stateProps }: SheetProps) => {
+  // console.log(sheetProps, formProps, stateProps)
   const { open, setOpen, sheetInfo } = sheetProps
 
   const {

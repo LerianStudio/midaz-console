@@ -129,6 +129,11 @@
         "name": "Ledger Name",
         "placeholder": "Type...",
         "description": "The public name of your Ledger"
+      },
+      "portfolio": {
+        "name": "Portfolio Name",
+        "placeholder": "Select...",
+        "description": "Fill in the data of the Ledger you wish to create."
       }
     },
     "dialog": {

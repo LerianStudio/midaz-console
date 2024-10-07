@@ -1,70 +1,49 @@
 'use client'
+
 import { cn } from '@/lib/utils'
-import { useCallback, useEffect, useState } from 'react'
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger
-} from '@/components/ui/tabs/tabs'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { BreadcrumbComponent, BreadcrumbPath } from '@/components/breadcrumb'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useSearchParams } from 'next/navigation'
+import { Breadcrumb } from '@/components/breadcrumb'
 import OrganizationsTable from '@/app/(routes)/settings/organizations/organizations-table'
 import { useIntl } from 'react-intl'
+import { useTabs } from '@/hooks/use-tabs'
+import { getBreadcrumbPaths } from '@/components/breadcrumb/get-breadcrumb-paths'
 
 const Page = () => {
   const intl = useIntl()
   const searchParams = useSearchParams()
-  const pathname = usePathname()
-  const router = useRouter()
-  const initialTab = searchParams.get('tab') || 'organizations'
-  const [activeTab, setActiveTab] = useState(initialTab)
-  const [breadcrumbPaths, setBreadcrumbPaths] = useState<BreadcrumbPath[]>([
-    {
-      name: intl.formatMessage({
-        id: `settings.title`,
-        defaultMessage: 'Settings'
-      }),
-      href: '#',
-      active: false
-    }
-  ])
 
-  const handleTabChange = (tab: string) => {
-    setActiveTab(tab)
-    router.push(`${pathname}?${createQueryString('tab', tab)}`)
-    handleBreadCrumb(tab)
-  }
-
-  const handleBreadCrumb = (tab: string) => {
-    if (breadcrumbPaths.length > 1) {
-      breadcrumbPaths.pop()
-    }
-    breadcrumbPaths.push({
-      // name: intl.formatMessage({ id: `settings.tabs.${tab}` }),
-      name: '',
-      active: true
-    })
-    setBreadcrumbPaths([...breadcrumbPaths])
-  }
-
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString())
-      params.set(name, value)
-
-      return params.toString()
-    },
-    [searchParams]
-  )
-
-  useEffect(() => {
-    handleTabChange(activeTab)
-  }, [searchParams])
+  const { activeTab, handleTabChange } = useTabs({
+    initialValue: searchParams.get('tab') || 'organizations'
+  })
 
   return (
     <div>
-      <BreadcrumbComponent paths={breadcrumbPaths} />
+      <Breadcrumb
+        paths={getBreadcrumbPaths([
+          {
+            name: intl.formatMessage({
+              id: `settings.title`,
+              defaultMessage: 'Settings'
+            }),
+            href: '#'
+          },
+          {
+            name: intl.formatMessage({
+              id: `settings.tab.organizations`,
+              defaultMessage: 'Organizations'
+            }),
+            active: () => activeTab === 'organizations'
+          },
+          {
+            name: intl.formatMessage({
+              id: `settings.tab.otherSettings`,
+              defaultMessage: 'Other Settings'
+            }),
+            active: () => activeTab === 'others'
+          }
+        ])}
+      />
 
       <div className="mb-12 mt-12">
         <h1 className={cn('text-4xl font-bold text-[#3f3f46]')}>

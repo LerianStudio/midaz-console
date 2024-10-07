@@ -2,7 +2,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger
 } from '@/components/ui/collapsible'
-import { Button } from '../ui/button/button'
+import { Button } from '../ui/button'
 import { ChevronUp, ExternalLink } from 'lucide-react'
 
 type CollapsibleInfoProps = {

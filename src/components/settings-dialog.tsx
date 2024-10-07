@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button/button'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -7,8 +7,8 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input/input'
-import { Label } from '@/components/ui/label/label'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { AvatarInputFile } from './avatar-input-file'
 import { useIntl } from 'react-intl'
 

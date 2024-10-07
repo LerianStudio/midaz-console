@@ -1,7 +1,7 @@
 'use client'
 
-import { Card, CardHeader } from '@/components/ui/card/card'
-import { Button } from '@/components/ui/button/button'
+import { Card, CardHeader } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 
 import { useOrganizations } from '@/utils/queries'
@@ -12,9 +12,9 @@ import { getOrganizationsColumns } from '@/app/(routes)/settings/organizations/o
 import useCustomToast from '@/hooks/use-custom-toast'
 import { deleteOrganization } from '@/client/organization-client'
 import { ClientToastException } from '@/exceptions/client/client-toast-exception'
-import { NoResource } from '@/components/no-resource'
 import React from 'react'
 import { useIntl } from 'react-intl'
+import { EmptyResource } from '@/components/empty-resource'
 
 const OrganizationsTable = () => {
   const intl = useIntl()
@@ -99,11 +99,27 @@ const OrganizationsTable = () => {
         {organizations.data && organizations.data.length > 0 ? (
           <DataTable columns={organizationsColumns} data={organizations.data} />
         ) : (
-          <NoResource
-            resourceName="Ledger"
-            onClick={handleCreateOrganization}
-            pronoun="he"
-          />
+          <EmptyResource
+            message={intl.formatMessage({
+              id: 'organizations.emptyResource',
+              defaultMessage: "You haven't created any Organization yet"
+            })}
+            extra={intl.formatMessage({
+              id: 'organizations.emptyResourceExtra',
+              defaultMessage: 'No Organization found.'
+            })}
+          >
+            <Button
+              variant="outline"
+              onClick={handleCreateOrganization}
+              icon={<Plus />}
+            >
+              {intl.formatMessage({
+                id: 'common.create',
+                defaultMessage: 'Create'
+              })}
+            </Button>
+          </EmptyResource>
         )}
       </div>
     </div>

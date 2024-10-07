@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react'
-import { Progress } from './progress'
+import { Progress } from '.'
 
 const meta: Meta = {
-  title: 'Molecules/Progress',
+  title: 'Primitives/Progress',
   component: Progress,
   argTypes: {
     percent: {

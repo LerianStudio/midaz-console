@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import useCustomToast from '@/hooks/use-custom-toast'
-import { BreadcrumbComponent, BreadcrumbPath } from '@/components/breadcrumb'
+import { Breadcrumb, BreadcrumbPath } from '@/components/breadcrumb'
 import { OrganizationsType } from '@/types/organizations-type'
 import { createOrganization } from '@/client/organization-client'
 import { cn } from '@/lib/utils'
@@ -72,7 +72,7 @@ const Page = () => {
 
   return (
     <div>
-      <BreadcrumbComponent paths={breadCrumbPaths} />
+      <Breadcrumb paths={breadCrumbPaths} />
       <div className="mt-0">
         <div className="mb-12 mt-12">
           <h1 className={cn('text-4xl font-bold text-[#3f3f46]')}>

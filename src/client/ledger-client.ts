@@ -77,4 +77,44 @@ const getLedgerById = async (id: string) => {
   return await response.json()
 }
 
-export { createLedger, updateLedger, deleteLedger, getLedgers, getLedgerById }
+const getPortfolios = async (ledgerId: string) => {
+  const response = await fetch(`/api/ledgers/${ledgerId}/portfolios`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch portfolios')
+  }
+
+  return await response.json()
+}
+
+const createPortfolio = async (ledgerId: string, portfolio: any) => {
+  console.log(ledgerId, portfolio)
+  const response = await fetch(`/api/ledgers/${ledgerId}/portfolios`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(portfolio)
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to create portfolio')
+  }
+
+  return await response.json()
+}
+
+export {
+  createLedger,
+  updateLedger,
+  deleteLedger,
+  getLedgers,
+  getLedgerById,
+  getPortfolios,
+  createPortfolio
+}

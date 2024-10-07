@@ -92,11 +92,6 @@
   "common.nextPage": "Próxima Página",
   "common.previousPage": "Página Anterior",
   "common.tooltipCopyText": "Toque para copiar",
-  "emptyState.pronouns.he.object": "nenhuma",
-  "emptyState.pronouns.he.possessive": "seu primeiro",
-  "emptyState.pronouns.she.object": "nenhuma",
-  "emptyState.pronouns.she.possessive": "sua primeira",
-  "emptyState.texts.hasNoResource": "Parece que você ainda não possui",
   "entity.metadata.key": "Chave",
   "entity.metadata.value": "Valor",
   "entity.organization": "Organização",
@@ -140,6 +135,7 @@
   "common.selectPlaceholder": "Selecione...",
   "ledgers.tab.assets": "Ativos",
   "ledgers.tab.overview": "Visão Geral",
+
   "error.midaz.invalidCountryCode": "O código do país fornecido não está em conformidade com o padrão ISO-3166 alfa-2. Forneça um código de país alfa-2 válido.",
   "error.midaz.missingFields": "Sua solicitação está faltando um ou mais campos obrigatórios. Consulte a documentação para verificar os campos necessários para sua solicitação.",
   "error.midaz.unknowError": "Erro no Midaz, por favor, entre em contato com o suporte.",
@@ -152,5 +148,16 @@
   "error.midaz.invalidType": "O 'tipo' fornecido não é válido. Os tipos aceitos são moeda, criptografia, commodities ou outros. Forneça um tipo válido.",
   "error.midaz.assetNameOrCodeDuplicate": "Já existe um ativo com o mesmo nome ou código em seu razão. Modifique o nome ou código do seu novo ativo.",
   "error.midaz.invalidScriptError": "O script fornecido na sua solicitação é inválido ou está em um formato incompatível. Verifique o formato do script e tente novamente.",
-  "error.midaz.duplicateProductNameError": "Já existe um produto com o nome para este ID contábil. Tente novamente com um razão ou nome diferente."
+  "error.midaz.duplicateProductNameError": "Já existe um produto com o nome para este ID contábil. Tente novamente com um razão ou nome diferente.",
+  "common.status": "Status",
+  "common.cancel": "Cancelar",
+  "common.confirm": "Confirmar",
+  "ledgers.assets.emptyResource": "Você ainda não criou nenhum Ativo",
+  "ledgers.assets.emptyResourceExtra": "Nenhum Ativo encontrado",
+  "ledgers.emptyResource": "Você ainda não criou nenhum Ledger",
+  "ledgers.emptyResourceExtra": "Nenhum Ledger encontrado.",
+  "organizations.emptyResource": "Você ainda não criou nenhuma Organização",
+  "organizations.emptyResourceExtra": "Nenhuma Organização encontrado",
+  "settings.tab.organizations": "Organização",
+  "settings.tab.otherSettings": "Outras Configurações"
 }

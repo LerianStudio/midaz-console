@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
-import { Button } from './ui/button/button'
-import { useSidebarContext } from '@/context/sidebar-context'
+import { Button } from './ui/button'
+import { useSidebar } from './sidebar/primitive'
 
 interface BottomDrawerProps {
   isOpen: boolean
@@ -13,7 +13,7 @@ export const BottomDrawer = ({
   handleSubmit,
   handleCancel
 }: BottomDrawerProps) => {
-  const { isCollapsed } = useSidebarContext()
+  const { isCollapsed } = useSidebar()
 
   return (
     <div

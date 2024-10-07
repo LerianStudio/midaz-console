@@ -50,7 +50,7 @@ export type SheetContainerProps = {
 
 export type SheetProps = {
   sheetProps: {
-    open: boolean
+    open?: boolean
     setOpen: (open: boolean) => void
     sheetInfo: SheetInfo
   }

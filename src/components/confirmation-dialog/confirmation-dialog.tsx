@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { Button } from '@/components/ui/button/button'
+import { Button } from '@/components/ui/button'
 
 import {
   DialogHeader,
@@ -11,8 +11,9 @@ import {
   DialogTitle,
   DialogDescription
 } from '../ui/dialog'
+import { useIntl } from 'react-intl'
 
-type ConfirmationDialogProps = {
+export type ConfirmationDialogProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
   title?: string
@@ -21,6 +22,8 @@ type ConfirmationDialogProps = {
   icon?: React.ReactNode
   onConfirm?: () => void
   onCancel?: () => void
+  confirmLabel?: string
+  cancelLabel?: string
 }
 
 const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
@@ -28,11 +31,14 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   onOpenChange,
   title = '',
   description = '',
-  ledgerName = '',
-  icon = '',
+  icon,
   onConfirm = () => {},
-  onCancel = () => {}
+  onCancel = () => {},
+  confirmLabel,
+  cancelLabel
 }) => {
+  const intl = useIntl()
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -41,20 +47,23 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
             {icon && <span>{icon}</span>}
             <DialogTitle>{title}</DialogTitle>
           </div>
-          <DialogDescription>
-            {description} <strong>{ledgerName}</strong>
-          </DialogDescription>
+          <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
 
         <DialogFooter>
           <Button onClick={onCancel} variant="outline">
-            Cancelar
+            {cancelLabel ??
+              intl.formatMessage({
+                id: 'common.cancel',
+                defaultMessage: 'Cancel'
+              })}
           </Button>
-          <Button
-            onClick={onConfirm}
-            className="bg-sunglow-400 text-black hover:bg-sunglow-400/70"
-          >
-            Confirmar
+          <Button onClick={onConfirm} variant="default">
+            {confirmLabel ??
+              intl.formatMessage({
+                id: 'common.confirm',
+                defaultMessage: 'Confirm'
+              })}
           </Button>
         </DialogFooter>
       </DialogContent>

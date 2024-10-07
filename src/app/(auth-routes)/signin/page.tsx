@@ -7,7 +7,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle
-} from '@/components/ui/card/card'
+} from '@/components/ui/card'
 import LoginView from '@/components/view/login-view'
 
 const SignInPage = () => {

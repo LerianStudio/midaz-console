@@ -10,3 +10,12 @@ export type LedgerEntity = {
   updatedAt?: Date
   deletedAt?: Date | null
 }
+
+
+export type LedgerPortfoliosEntity = {
+  id: string
+  entity_id: string
+  metadata: {
+    value: string
+  }
+}
