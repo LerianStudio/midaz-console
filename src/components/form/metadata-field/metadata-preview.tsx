@@ -1,23 +1,24 @@
+import React from 'react'
 import { Button } from '@/components/ui/button'
 import { Trash } from 'lucide-react'
-import React from 'react'
+import { ControllerRenderProps } from 'react-hook-form'
+import { Metadata } from '@/types/metadata-type'
+import { isNil } from 'lodash'
 
-type MetadataPreviewProps = {
-  metaFields?: Record<string, any>
-  handleRemoveMetadata: (key: string) => void
+export type MetadataPreviewProps = ControllerRenderProps<Metadata> & {
+  value: Metadata
+  onRemoveMetadata?: (key: string) => void
 }
 
-const MetadataPreview = ({
-  metaFields,
-  handleRemoveMetadata
+export const MetadataPreview = ({
+  value,
+  onRemoveMetadata
 }: MetadataPreviewProps) => {
-  if (!metaFields) return null
-
-  const onRemoveMetadata = (key: string) => {
-    handleRemoveMetadata(key)
+  if (isNil(value)) {
+    return null
   }
 
-  return Object.entries(metaFields).map(([key, value], index) => (
+  return Object.entries(value).map(([key, value], index) => (
     <div key={index} className="mt-2 flex items-center justify-between">
       <div className="flex w-full gap-5">
         <div className="flex flex-1 gap-2">
@@ -25,13 +26,13 @@ const MetadataPreview = ({
             {key}
           </div>
           <div className="flex h-9 flex-1 items-center rounded-md bg-shadcn-100 px-2">
-            {value}
+            {value as any}
           </div>
         </div>
         <Button
           onClick={(e) => {
             e.preventDefault()
-            onRemoveMetadata(key)
+            onRemoveMetadata?.(key)
           }}
           className="group h-9 w-9 rounded-full border border-shadcn-200 bg-white hover:border-none"
         >
@@ -44,5 +45,3 @@ const MetadataPreview = ({
     </div>
   ))
 }
-
-export default MetadataPreview

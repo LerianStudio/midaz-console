@@ -14,6 +14,9 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useFormState } from '@/context/form-details-context'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { useIntl } from 'react-intl'
+import { ProductsTabContent } from './products/products-tab-content'
+import { useTabs } from '@/hooks/use-tabs'
+import { getBreadcrumbPaths } from '@/components/breadcrumb/get-breadcrumb-paths'
 
 type LedgerDetailsViewProps = {
   data: LedgerEntity
@@ -21,6 +24,7 @@ type LedgerDetailsViewProps = {
 
 const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
   const intl = useIntl()
+  const { activeTab, handleTabChange } = useTabs({ initialValue: 'overview' })
   const { formData, isDirty, resetDirty } = useFormState()
   const { showSuccess, showError } = useCustomToast()
   const [isSheetOpen, setIsSheetOpen] = useState(false)
@@ -51,10 +55,36 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
     }
   }, [data])
 
-  const breadcrumbPaths: BreadcrumbPath[] = [
-    { name: 'Ledgers', href: '/ledgers' },
-    { name: 'Detalhe da Ledger' }
-  ]
+  const breadcrumbPaths = getBreadcrumbPaths([
+    {
+      name: intl.formatMessage({
+        id: `ledgers.title`,
+        defaultMessage: 'Ledgers'
+      }),
+      href: '#'
+    },
+    {
+      name: intl.formatMessage({
+        id: `ledgers.tab.overview`,
+        defaultMessage: 'Overview'
+      }),
+      active: () => activeTab === 'overview'
+    },
+    {
+      name: intl.formatMessage({
+        id: `ledgers.tab.assets`,
+        defaultMessage: 'Assets'
+      }),
+      active: () => activeTab === 'assets'
+    },
+    {
+      name: intl.formatMessage({
+        id: `settings.tab.products`,
+        defaultMessage: 'Products'
+      }),
+      active: () => activeTab === 'products'
+    }
+  ])
 
   const metadataObject =
     metadata.length > 0
@@ -134,7 +164,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
   }
 
   return (
-    <div className={cn('', isDirty && 'pb-40')}>
+    <div className={cn(isDirty && 'pb-40')}>
       <Breadcrumb paths={breadcrumbPaths} />
 
       <PageHeader.Root>
@@ -148,7 +178,11 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
         </div>
       </PageHeader.Root>
 
-      <Tabs defaultValue="overview">
+      <Tabs
+        value={activeTab}
+        defaultValue="overview"
+        onValueChange={handleTabChange}
+      >
         <TabsList>
           <TabsTrigger value="overview">
             {intl.formatMessage({
@@ -162,6 +196,12 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
               defaultMessage: 'Assets'
             })}
           </TabsTrigger>
+          <TabsTrigger value="products">
+            {intl.formatMessage({
+              id: 'ledgers.tab.products',
+              defaultMessage: 'Products'
+            })}
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="overview">
           <OverviewTabContent
@@ -173,6 +213,9 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
         </TabsContent>
         <TabsContent value="assets">
           <p>Assets</p>
+        </TabsContent>
+        <TabsContent value="products">
+          <ProductsTabContent />
         </TabsContent>
       </Tabs>
 
