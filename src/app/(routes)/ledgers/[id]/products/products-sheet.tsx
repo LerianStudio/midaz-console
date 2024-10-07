@@ -24,7 +24,7 @@ import { product } from '@/schema/product'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DialogProps } from '@radix-ui/react-dialog'
 import React from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useIntl } from 'react-intl'
 import { z } from 'zod'
 
@@ -75,7 +75,7 @@ export const ProductsSheet = ({ ...others }) => {
 
         <Form {...form}>
           <form
-            className="flex flex-grow flex-col"
+            className="flex flex-grow flex-col gap-8"
             onSubmit={form.handleSubmit(handleSubmit)}
           >
             <FormField
@@ -111,18 +111,20 @@ export const ProductsSheet = ({ ...others }) => {
                   onCheckedChange={() => setMetadataEnabled(!metadataEnabled)}
                 />
               </div>
-
-              {metadataEnabled && (
-                <MetadataField name="metadata" control={form.control} />
-              )}
-
-              <p className="text-xs font-normal italic text-shadcn-400">
-                {intl.formatMessage({
-                  id: 'common.requiredFields',
-                  defaultMessage: '(*) required fields.'
-                })}
-              </p>
             </div>
+
+            {metadataEnabled && (
+              <div>
+                <MetadataField name="metadata" control={form.control} />
+              </div>
+            )}
+
+            <p className="text-xs font-normal italic text-shadcn-400">
+              {intl.formatMessage({
+                id: 'common.requiredFields',
+                defaultMessage: '(*) required fields.'
+              })}
+            </p>
 
             <SheetFooter>
               <SheetClose asChild>
