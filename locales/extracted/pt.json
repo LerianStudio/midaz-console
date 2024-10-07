@@ -151,5 +151,6 @@
   "error.midaz.invalidCodeFormat": "O campo 'código' deve ser alfanumérico, em caixa alta, e deve conter pelo menos uma letra. Forneça um código válido.",
   "error.midaz.invalidType": "O 'tipo' fornecido não é válido. Os tipos aceitos são moeda, criptografia, commodities ou outros. Forneça um tipo válido.",
   "error.midaz.assetNameOrCodeDuplicate": "Já existe um ativo com o mesmo nome ou código em seu razão. Modifique o nome ou código do seu novo ativo.",
-  "error.midaz.invalidScriptError": "O script fornecido na sua solicitação é inválido ou está em um formato incompatível. Verifique o formato do script e tente novamente."
+  "error.midaz.invalidScriptError": "O script fornecido na sua solicitação é inválido ou está em um formato incompatível. Verifique o formato do script e tente novamente.",
+  "error.midaz.duplicateProductNameError": "Já existe um produto com o nome para este ID contábil. Tente novamente com um razão ou nome diferente."
 }

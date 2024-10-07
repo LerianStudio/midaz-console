@@ -5,8 +5,8 @@ export interface ProductEntity {
   ledgerId?: string
   organizationId?: string
   name: string
-  status?: StatusEntity
-  metadata?: Record<string, any>
+  status: StatusEntity
+  metadata: Record<string, any>
   createdAt?: Date
   updatedAt?: Date
   deletedAt?: Date | null

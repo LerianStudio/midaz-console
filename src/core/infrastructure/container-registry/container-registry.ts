@@ -95,6 +95,36 @@ import { UpdateAssetRepository } from '@/core/domain/repositories/assets/update-
 import { MidazUpdateAssetRepository } from '../midaz/assets/midaz-update-asset-repository'
 import { DeleteAssetRepository } from '@/core/domain/repositories/assets/delete-asset-repository'
 import { MidazDeleteAssetRepository } from '../midaz/assets/midaz-delete-asset-repository'
+import { MidazCreateProductRepository } from '../midaz/product/midaz-create-product-repository'
+import { CreateProductRepository } from '@/core/domain/repositories/products/create-product-repository'
+import {
+  CreateProduct,
+  CreateProductUseCase
+} from '@/core/application/use-cases/product/create-product-use-case'
+import {
+  FetchAllProducts,
+  FetchAllProductsUseCase
+} from '@/core/application/use-cases/product/fetch-all-products-use-case'
+import { FetchAllProductsRepository } from '@/core/domain/repositories/products/fetch-all-products-repository'
+import { MidazFetchAllProductsRepository } from '../midaz/product/midaz-fetch-all-products-repository'
+import { MidazUpdateProductRepository } from '../midaz/product/midaz-update-product-repository'
+import { UpdateProductRepository } from '@/core/domain/repositories/products/update-product-repository'
+import { DeleteProductRepository } from '@/core/domain/repositories/products/delete-product-repository'
+import { MidazDeleteProductRepository } from '../midaz/product/midaz-delete-product-repository'
+import { FetchProductByIdRepository } from '@/core/domain/repositories/products/fetch-product-by-id-repository'
+import { MidazFetchProductByIdRepository } from '../midaz/product/midaz-fetch-product-by-id-repository'
+import {
+  UpdateProduct,
+  UpdateProductUseCase
+} from '@/core/application/use-cases/product/update-product-use-case'
+import {
+  DeleteProduct,
+  DeleteProductUseCase
+} from '@/core/application/use-cases/product/delete-product-use-case'
+import {
+  FetchProductById,
+  FetchProductByIdUseCase
+} from '@/core/application/use-cases/product/fetch-product-by-id-use-case'
 
 export const Registry = {
   InstrumentsAPIAdapter: Symbol.for('InstrumentsAPIAdapter'),
@@ -152,7 +182,21 @@ export const Registry = {
   FetchAllAssetsRepository: Symbol.for('FetchAllAssetsRepository'),
   FetchAssetByIdRepository: Symbol.for('FetchAssetByIdRepository'),
   UpdateAssetRepository: Symbol.for('UpdateAssetRepository'),
-  DeleteAssetRepository: Symbol.for('DeleteAssetRepository')
+  DeleteAssetRepository: Symbol.for('DeleteAssetRepository'),
+
+  // Products
+
+  CreateProductUseCase: Symbol.for('CreateProductUseCase'),
+  FetchAllProductsUseCase: Symbol.for('FetchAllProductsUseCase'),
+  FetchProductByIdUseCase: Symbol.for('FetchProductByIdUseCase'),
+  UpdateProductUseCase: Symbol.for('UpdateProductUseCase'),
+  DeleteProductUseCase: Symbol.for('DeleteProductUseCase'),
+
+  CreateProductRepository: Symbol.for('CreateProductRepository'),
+  FetchAllProductsRepository: Symbol.for('FetchAllProductsRepository'),
+  FetchProductByIdRepository: Symbol.for('FetchProductByIdRepository'),
+  UpdateProductRepository: Symbol.for('UpdateProductRepository'),
+  DeleteProductRepository: Symbol.for('DeleteProductRepository')
 }
 
 export const container = new Container()
@@ -384,5 +428,67 @@ container
   .toDynamicValue((context) => {
     return new DeleteAssetUseCase(
       context.container.get(Registry.DeleteAssetRepository)
+    )
+  })
+
+// Products
+
+container
+  .bind<CreateProductRepository>(Registry.CreateProductRepository)
+  .toConstantValue(new MidazCreateProductRepository())
+
+container
+  .bind<CreateProduct>(Registry.CreateProductUseCase)
+  .toDynamicValue((context) => {
+    return new CreateProductUseCase(
+      context.container.get(Registry.CreateProductRepository)
+    )
+  })
+
+container
+  .bind<FetchAllProductsRepository>(Registry.FetchAllProductsRepository)
+  .toConstantValue(new MidazFetchAllProductsRepository())
+
+container
+  .bind<FetchAllProducts>(Registry.FetchAllProductsUseCase)
+  .toDynamicValue((context) => {
+    return new FetchAllProductsUseCase(
+      context.container.get(Registry.FetchAllProductsRepository)
+    )
+  })
+
+container
+  .bind<UpdateProductRepository>(Registry.UpdateProductRepository)
+  .toConstantValue(new MidazUpdateProductRepository())
+
+container
+  .bind<UpdateProduct>(Registry.UpdateProductUseCase)
+  .toDynamicValue((context) => {
+    return new UpdateProductUseCase(
+      context.container.get(Registry.UpdateProductRepository)
+    )
+  })
+
+container
+  .bind<DeleteProductRepository>(Registry.DeleteProductRepository)
+  .toConstantValue(new MidazDeleteProductRepository())
+
+container
+  .bind<DeleteProduct>(Registry.DeleteProductUseCase)
+  .toDynamicValue((context) => {
+    return new DeleteProductUseCase(
+      context.container.get(Registry.DeleteProductRepository)
+    )
+  })
+
+container
+  .bind<FetchProductByIdRepository>(Registry.FetchProductByIdRepository)
+  .toConstantValue(new MidazFetchProductByIdRepository())
+
+container
+  .bind<FetchProductById>(Registry.FetchProductByIdUseCase)
+  .toDynamicValue((context) => {
+    return new FetchProductByIdUseCase(
+      context.container.get(Registry.FetchProductByIdRepository)
     )
   })
