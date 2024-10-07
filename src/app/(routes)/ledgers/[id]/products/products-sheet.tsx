@@ -1,5 +1,4 @@
 import { MetadataField } from '@/components/form/metadata-field'
-import { MetadataInput, MetadataPreview } from '@/components/metadata-field'
 import { Button } from '@/components/ui/button'
 import {
   Form,
