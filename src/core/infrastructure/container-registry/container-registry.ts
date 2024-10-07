@@ -30,46 +30,44 @@ import {
   CreateLedgerUseCase
 } from '@/core/application/use-cases/ledgers/create-ledger-use-case'
 import {
+  DeleteLedger,
+  DeleteLedgerUseCase
+} from '@/core/application/use-cases/ledgers/delete-ledger-use-case'
+import {
   FetchAllLedgers,
   FetchAllLedgersUseCase
 } from '@/core/application/use-cases/ledgers/fetch-all-ledgers-use-case'
+import {
+  FetchLedgerById,
+  FetchLedgerByIdUseCase
+} from '@/core/application/use-cases/ledgers/fetch-ledger-by-id-use-case'
+import {
+  UpdateLedger,
+  UpdateLedgerUseCase
+} from '@/core/application/use-cases/ledgers/update-ledger-use-case'
 import { CreateLedgerRepository } from '@/core/domain/repositories/ledgers/create-ledger-repository'
+import { DeleteLedgerRepository } from '@/core/domain/repositories/ledgers/delete-ledger-repository'
 import { FetchAllLedgersRepository } from '@/core/domain/repositories/ledgers/fetch-all-ledgers-repository'
+import { FetchLedgerByIdRepository } from '@/core/domain/repositories/ledgers/fetch-ledger-by-id-repository'
+import { UpdateLedgerRepository } from '@/core/domain/repositories/ledgers/update-ledger-repository'
 import { CreateOrganizationRepository } from '@/core/domain/repositories/organizations/create-organization-repository'
 import { DeleteOrganizationRepository } from '@/core/domain/repositories/organizations/delete-organization-repository'
 import { FetchAllOrganizationsRepository } from '@/core/domain/repositories/organizations/fetch-all-organizations-repository'
 import { FetchOrganizationByIdRepository } from '@/core/domain/repositories/organizations/fetch-organization-by-id-repository'
 import { UpdateOrganizationRepository } from '@/core/domain/repositories/organizations/update-organization-repository'
 import InstrumentsUseCases from '@/core/useCases/instruments-use-cases'
-import LedgersUseCases from '@/core/useCases/ledgers-use-cases'
 import OryAuthUseCases from '@/core/useCases/ory-auth-use-cases'
 import { Container } from 'inversify'
 import { MidazCreateLedgerRepository } from '../midaz/ledgers/midaz-create-ledger-repository'
+import { MidazDeleteLedgerRepository } from '../midaz/ledgers/midaz-delete-ledger-repository'
 import { MidazFetchAllLedgersRepository } from '../midaz/ledgers/midaz-fetch-all-ledgers-repository'
+import { MidazFetchLedgerByIdRepository } from '../midaz/ledgers/midaz-fetch-ledger-by-id-repository'
+import { MidazUpdateLedgerRepository } from '../midaz/ledgers/midaz-update-ledger-repository'
 import { MidazCreateOrganizationRepository } from '../midaz/organizations/midaz-create-organization-repository'
 import { MidazDeleteOrganizationRepository } from '../midaz/organizations/midaz-delete-organization-repository'
 import { MidazFetchAllOrganizationsRepository } from '../midaz/organizations/midaz-fetch-all-organizations-repository'
 import { MidazFetchOrganizationByIdRepository } from '../midaz/organizations/midaz-fetch-organization-by-id-repository'
 import { MidazUpdateOrganizationRepository } from '../midaz/organizations/midaz-update-organization-repository'
-import {
-  FetchLedgerById,
-  FetchLedgerByIdUseCase
-} from '@/core/application/use-cases/ledgers/fetch-ledger-by-id-use-case'
-import { FetchLedgerByIdRepository } from '@/core/domain/repositories/ledgers/fetch-ledger-by-id-repository'
-import { MidazFetchLedgerByIdRepository } from '../midaz/ledgers/midaz-fetch-ledger-by-id-repository'
-import {
-  UpdateLedger,
-  UpdateLedgerUseCase
-} from '@/core/application/use-cases/ledgers/update-ledger-use-case'
-import { UpdateLedgerRepository } from '@/core/domain/repositories/ledgers/update-ledger-repository'
-import { MidazUpdateLedgerRepository } from '../midaz/ledgers/midaz-update-ledger-repository'
-import { Delete } from 'lucide-react'
-import { DeleteLedgerRepository } from '@/core/domain/repositories/ledgers/delete-ledger-repository'
-import { MidazDeleteLedgerRepository } from '../midaz/ledgers/midaz-delete-ledger-repository'
-import {
-  DeleteLedger,
-  DeleteLedgerUseCase
-} from '@/core/application/use-cases/ledgers/delete-ledger-use-case'
 
 export const Registry = {
   InstrumentsAPIAdapter: Symbol.for('InstrumentsAPIAdapter'),

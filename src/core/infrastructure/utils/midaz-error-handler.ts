@@ -22,6 +22,30 @@ export async function handleMidazError(
         })
       )
 
+    case '0003':
+      throw new MidazError(
+        intl.formatMessage({
+          id: 'error.midaz.assetNameOrCodeDuplicate',
+          defaultMessage: 'Error Midaz asset name or code duplicate'
+        })
+      )
+
+    case '0004':
+      throw new MidazError(
+        intl.formatMessage({
+          id: 'error.midaz.codeUpperCaseRequirement',
+          defaultMessage: 'Error Midaz code upper case requirement'
+        })
+      )
+
+    case '0005':
+      throw new MidazError(
+        intl.formatMessage({
+          id: 'error.midaz.currencyCodeStandardCompliance',
+          defaultMessage: 'Error Midaz currency code standard compliance'
+        })
+      )
+
     case '0007':
       throw new MidazError(
         intl.formatMessage({
@@ -45,11 +69,36 @@ export async function handleMidazError(
           defaultMessage: 'Error Midaz missing fields'
         })
       )
+
+    case '0017':
+      throw new MidazError(
+        intl.formatMessage({
+          id: 'error.midaz.invalidScriptError',
+          defaultMessage: 'Error Midaz invalid script error'
+        })
+      )
+
     case '0032':
       throw new MidazError(
         intl.formatMessage({
           id: 'error.midaz.invalidCountryCode',
           defaultMessage: 'Error Midaz invalid country code'
+        })
+      )
+
+    case '0033':
+      throw new MidazError(
+        intl.formatMessage({
+          id: 'error.midaz.invalidCodeFormat',
+          defaultMessage: 'Error Midaz invalid code format'
+        })
+      )
+
+    case '0040':
+      throw new MidazError(
+        intl.formatMessage({
+          id: 'error.midaz.invalidType',
+          defaultMessage: 'Error Midaz invalid type'
         })
       )
 

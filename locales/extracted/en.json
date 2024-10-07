@@ -145,5 +145,11 @@
   "error.midaz.unknowError": "Error on Midaz. Please contact support.",
   "error.midaz.actionNotPermitted": "The action you are attempting is not allowed in the current environment. Please consult the documentation for guidance on how to proceed.",
   "error.midaz.entityNotFound": "No entity was found matching the provided ID. Ensure the correct ID is being used for the entity you are attempting to manage.",
-  "error.midaz.ledgerNameConflict": "A ledger named already exists in your organization. Please rename the ledger, or if you want to use the same name, consider creating a new ledger for a different division."
+  "error.midaz.ledgerNameConflict": "A ledger named already exists in your organization. Please rename the ledger, or if you want to use the same name, consider creating a new ledger for a different division.",
+  "error.midaz.codeUpperCaseRequirement": "The code must be in uppercase. Please ensure that the code is in uppercase format and try again.",
+  "error.midaz.currencyCodeStandardCompliance": "Currency-type assets must comply with the ISO-4217 standard. Please use a currency code that conforms to ISO-4217 guidelines.",
+  "error.midaz.invalidCodeFormat": "The 'code' field must be alphanumeric, in upper case, and must contain at least one letter. Please provide a valid code.",
+  "error.midaz.invalidType": "The provided 'type' is not valid. Accepted types are currency, crypto, commodities, or others. Please provide a valid type.",
+  "error.midaz.assetNameOrCodeDuplicate": "An asset with the same name or code already exists in your ledger. Please modify the name or code of your new asset.",
+  "error.midaz.invalidScriptError": "The script provided in your request is invalid or in an unsupported format. Please verify the script format and try again."
 }
