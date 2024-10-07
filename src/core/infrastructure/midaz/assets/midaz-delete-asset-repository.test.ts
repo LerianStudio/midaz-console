@@ -28,7 +28,7 @@ describe('MidazDeleteAssetRepository', () => {
     await repository.delete(organizationId, ledgerId, assetId)
 
     expect(global.fetch).toHaveBeenCalledWith(
-      `${baseUrl}/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`,
+      `${baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`,
       {
         method: 'DELETE',
         headers: {
@@ -39,7 +39,7 @@ describe('MidazDeleteAssetRepository', () => {
   })
 
   it('should handle a successful delete request', async () => {
-    const mockResponse = {}
+    const mockResponse = undefined
     global.fetch = jest.fn().mockResolvedValue({
       ok: true,
       json: jest.fn().mockResolvedValue(mockResponse)

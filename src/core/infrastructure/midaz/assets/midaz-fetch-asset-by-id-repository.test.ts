@@ -13,7 +13,7 @@ describe('MidazFetchAssetByIdRepository', () => {
   const organizationId = 'org123'
   const ledgerId = 'ledger123'
   const assetId = 'asset123'
-  const assetUrl = `${baseUrl}/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`
+  const assetUrl = `${baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`
 
   beforeEach(() => {
     repository = new MidazFetchAssetByIdRepository()

@@ -41,7 +41,7 @@ describe('MidazCreateAssetRepository', () => {
     const result = await repository.create(organizationId, ledgerId, asset)
 
     expect(fetchMock).toHaveBeenCalledWith(
-      `${baseUrl}/${organizationId}/ledgers/${ledgerId}/assets`,
+      `${baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets`,
       {
         method: 'POST',
         headers: {
@@ -79,7 +79,7 @@ describe('MidazCreateAssetRepository', () => {
     ).rejects.toThrow('Handled Error')
 
     expect(fetchMock).toHaveBeenCalledWith(
-      `${baseUrl}/${organizationId}/ledgers/${ledgerId}/assets`,
+      `${baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets`,
       {
         method: 'POST',
         headers: {

@@ -28,7 +28,7 @@ describe('MidazFetchAllAssetsRepository', () => {
     const result = await repository.fetchAll('orgId', 'ledgerId', 10, 1)
 
     expect(mockFetch).toHaveBeenCalledWith(
-      `${mockBaseUrl}/orgId/ledgers/ledgerId/assets?limit=10&page=1&type=&code=`,
+      `${mockBaseUrl}/organizations/orgId/ledgers/ledgerId/assets?limit=10&page=1&type=&code=`,
       {
         method: 'GET',
         headers: {
@@ -54,7 +54,7 @@ describe('MidazFetchAllAssetsRepository', () => {
     ).rejects.toThrow('Handled Error')
 
     expect(mockFetch).toHaveBeenCalledWith(
-      `${mockBaseUrl}/orgId/ledgers/ledgerId/assets?limit=10&page=1&type=&code=`,
+      `${mockBaseUrl}/organizations/orgId/ledgers/ledgerId/assets?limit=10&page=1&type=&code=`,
       {
         method: 'GET',
         headers: {

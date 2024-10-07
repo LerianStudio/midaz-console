@@ -36,9 +36,9 @@ describe('MidazUpdateAssetRepository', () => {
     )
 
     expect(global.fetch).toHaveBeenCalledWith(
-      `${baseUrl}/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`,
+      `${baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`,
       {
-        method: 'PUT',
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -62,9 +62,9 @@ describe('MidazUpdateAssetRepository', () => {
     ).rejects.toThrow('Handled Error')
 
     expect(global.fetch).toHaveBeenCalledWith(
-      `${baseUrl}/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`,
+      `${baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`,
       {
-        method: 'PUT',
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
         },
