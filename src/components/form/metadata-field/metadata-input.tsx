@@ -1,36 +1,35 @@
-'use client'
-
-import React, { useState } from 'react'
+import React from 'react'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useIntl } from 'react-intl'
+import { ControllerRenderProps } from 'react-hook-form'
 
-type MetadataInputProps = {
-  handleAddMetadata: (metadata: { key: string; value: string }) => void
+const defaultValues = { key: '', value: '' }
+
+export type MetadataInputProps = ControllerRenderProps & {
+  onAddMetadata?: (metadata: { key: string; value: string }) => void
 }
 
-const MetadataInput = ({ handleAddMetadata }: MetadataInputProps) => {
+export const MetadataInput = ({ onAddMetadata }: MetadataInputProps) => {
   const intl = useIntl()
-  const [currentMetadata, setCurrentMetadata] = useState({ key: '', value: '' })
+  const [currentMetadata, setCurrentMetadata] = React.useState(defaultValues)
 
-  const onAddMetadata = (e: React.FormEvent) => {
+  const handleAddMetadata = (e: React.FormEvent) => {
     e.preventDefault()
+
     if (currentMetadata.key && currentMetadata.value) {
-      handleAddMetadata(currentMetadata)
-      setCurrentMetadata({ key: '', value: '' })
+      onAddMetadata?.(currentMetadata)
+      setCurrentMetadata(defaultValues)
     }
   }
 
-  const handleMetadataChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    field: string
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentMetadata({
       ...currentMetadata,
-      [field]: e.target.value
+      [e.target.id]: e.target.value
     })
   }
 
@@ -47,7 +46,7 @@ const MetadataInput = ({ handleAddMetadata }: MetadataInputProps) => {
           <Input
             id="key"
             value={currentMetadata.key}
-            onChange={(e) => handleMetadataChange(e, 'key')}
+            onChange={handleChange}
             placeholder="Key"
             className="h-9"
           />
@@ -62,29 +61,19 @@ const MetadataInput = ({ handleAddMetadata }: MetadataInputProps) => {
           <Input
             id="value"
             value={currentMetadata.value}
-            onChange={(e) => handleMetadataChange(e, 'value')}
+            onChange={handleChange}
             placeholder="Value"
             className="h-9"
           />
         </div>
       </div>
       <Button
-        onClick={onAddMetadata}
         className="h-9 w-9 self-end rounded-full bg-shadcn-600 disabled:bg-shadcn-200"
+        onClick={handleAddMetadata}
         disabled={!currentMetadata.key || !currentMetadata.value}
       >
-        <Plus
-          size={16}
-          className={cn(
-            'shrink-0',
-            !currentMetadata.key || !currentMetadata.value
-              ? 'text-shadcn-400'
-              : 'text-white'
-          )}
-        />
+        <Plus size={16} className={cn('shrink-0')} />
       </Button>
     </div>
   )
 }
-
-export default MetadataInput
