@@ -14,6 +14,8 @@ describe('FetchAllProductsRepository', () => {
   it('should fetch all products with given organizationId and ledgerId', async () => {
     const organizationId = 'org123'
     const ledgerId = 'ledger123'
+    const limit = 10
+    const page = 1
     const expectedProducts: PaginationEntity<ProductEntity> = {
       items: [
         {
@@ -48,12 +50,16 @@ describe('FetchAllProductsRepository', () => {
 
     const result = await fetchAllProductsRepository.fetchAll(
       organizationId,
-      ledgerId
+      ledgerId,
+      limit,
+      page
     )
 
     expect(fetchAllProductsRepository.fetchAll).toHaveBeenCalledWith(
       organizationId,
-      ledgerId
+      ledgerId,
+      limit,
+      page
     )
     expect(result).toEqual(expectedProducts)
   })
@@ -61,12 +67,14 @@ describe('FetchAllProductsRepository', () => {
   it('should handle errors when fetching products', async () => {
     const organizationId = 'org123'
     const ledgerId = 'ledger123'
+    const limit = 10
+    const page = 1
     const error = new Error('Failed to fetch products')
 
     ;(fetchAllProductsRepository.fetchAll as jest.Mock).mockRejectedValue(error)
 
     await expect(
-      fetchAllProductsRepository.fetchAll(organizationId, ledgerId)
+      fetchAllProductsRepository.fetchAll(organizationId, ledgerId, limit, page)
     ).rejects.toThrow('Failed to fetch products')
   })
 })
