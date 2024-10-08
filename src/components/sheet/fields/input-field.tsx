@@ -7,10 +7,10 @@ import { SelectField } from './select-field'
 type InputFieldProps = {
   field: FormFieldConfig
   form: UseFormReturn<any>
-  isDisabled?: boolean
+  disabled?: boolean
 }
 
-export const InputField = ({ field, form, isDisabled }: InputFieldProps) => {
+export const InputField = ({ field, form, disabled }: InputFieldProps) => {
   const { register } = form
 
   if (field.options) {
@@ -19,8 +19,7 @@ export const InputField = ({ field, form, isDisabled }: InputFieldProps) => {
   return (
     <Input
       placeholder={field.placeholder || ''}
-      disabled={isDisabled}
-      className="placeholder:text-shadcn-400"
+      disabled={disabled}
       autoFocus={false}
       value={form.getValues(field.name) ?? ''}
       {...register(field.name)}

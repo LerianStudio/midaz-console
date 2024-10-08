@@ -37,7 +37,7 @@ export const RenderField = ({
               {field.label} {field.isRequired && <span>*</span>}
             </FormLabel>
             <FormControl>
-              <InputField field={field} form={form} isDisabled={isDisabled} />
+              <InputField field={field} form={form} disabled={isDisabled} />
             </FormControl>
             {field.description && (
               <FormDescription className="text-xs font-medium text-shadcn-400">

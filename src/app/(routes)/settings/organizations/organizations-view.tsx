@@ -17,8 +17,6 @@ import {
   RenderStateField
 } from '@/components/sheet/fields/render-field'
 import React, { useState } from 'react'
-import MetadataInput from '@/components/metadata/metadata-input'
-import MetadataPreview from '@/components/metadata/metadata-preview'
 import {
   Collapsible,
   CollapsibleContent,
@@ -32,16 +30,13 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage
-} from '@/components/ui/avatar/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
 import { ChromePicker } from 'react-color'
 import { useRouter } from 'next/navigation'
 import { useParentOrganizations } from '@/utils/queries'
 import { useIntl } from 'react-intl'
+import { MetadataField } from '@/components/form/metadata-field'
 
 type OrganizationsViewProps = {
   organizations?: OrganizationsType
@@ -390,10 +385,9 @@ const OrganizationsView = ({
 
                     <CardContent className="pt-6">
                       <React.Fragment>
-                        <MetadataInput handleAddMetadata={handleAddMetadata} />
-                        <MetadataPreview
-                          metaFields={organizationForm.watch('metadata')}
-                          handleRemoveMetadata={handlerRemoveMetadata}
+                        <MetadataField
+                          name="metadata"
+                          control={organizationForm.control}
                         />
                       </React.Fragment>
                     </CardContent>
