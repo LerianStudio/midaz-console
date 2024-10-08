@@ -13,13 +13,6 @@ import { Button } from '../button'
 const meta: Meta<CardProps> = {
   title: 'Primitives/Card',
   component: Card,
-  subcomponents: {
-    CardTitle,
-    CardHeader,
-    CardDescription,
-    CardContent,
-    CardFooter
-  },
   argTypes: {
     className: {
       type: 'string',

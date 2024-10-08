@@ -25,14 +25,6 @@ import {
 const meta: Meta = {
   title: 'Components/Sidebar',
   component: SidebarRoot,
-  subcomponents: {
-    SidebarHeader,
-    SidebarContent,
-    SidebarGroup,
-    SidebarGroupTitle,
-    SidebarItem,
-    SidebarExpandButton
-  },
   argTypes: {}
 }
 
