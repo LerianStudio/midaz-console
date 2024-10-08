@@ -11,7 +11,6 @@ export type LedgerEntity = {
   deletedAt?: Date | null
 }
 
-
 export type LedgerPortfoliosEntity = {
   id: string
   entity_id: string

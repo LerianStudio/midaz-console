@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+
 import { Meta, StoryObj } from '@storybook/react'
 import {
   ArrowLeftRight,
@@ -36,7 +38,7 @@ function Template() {
   return (
     <SidebarRoot>
       <SidebarHeader>
-        <img className="w-10" src="/svg/brand-midaz.svg" />
+        <img className="w-10" alt="" src="/svg/brand-midaz.svg" />
       </SidebarHeader>
 
       <SidebarContent>
