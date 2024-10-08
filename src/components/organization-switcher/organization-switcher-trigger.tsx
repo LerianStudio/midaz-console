@@ -1,4 +1,4 @@
-import Image from './ClientImage'
+import Image from './client-image'
 import { cn } from '@/lib/utils'
 import { PopoverTrigger } from '../ui/popover'
 import { ChevronDown } from 'lucide-react'

@@ -1,14 +1,8 @@
+import { useCreateProduct } from '@/client/products'
+import { InputField } from '@/components/form'
 import { MetadataField } from '@/components/form/metadata-field'
 import { Button } from '@/components/ui/button'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
+import { Form } from '@/components/ui/form'
 import { Label } from '@/components/ui/label'
 import {
   Sheet,
@@ -20,9 +14,11 @@ import {
   SheetTitle
 } from '@/components/ui/sheet'
 import { Switch } from '@/components/ui/switch'
+import { useOrganization } from '@/context/organization-provider'
 import { product } from '@/schema/product'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DialogProps } from '@radix-ui/react-dialog'
+import { useParams } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useIntl } from 'react-intl'
@@ -31,8 +27,10 @@ import { z } from 'zod'
 export type ProductsSheetProps = DialogProps & {}
 
 const defaultValues = {
-  name: '',
-  metadata: {}
+  name: 'Product Test',
+  metadata: {
+    data: 'meta'
+  }
 }
 
 const FormSchema = z.object({
@@ -43,7 +41,14 @@ type FormData = z.infer<typeof FormSchema>
 
 export const ProductsSheet = ({ ...others }) => {
   const intl = useIntl()
+  const { currentOrganization } = useOrganization()
+  const { id: ledgerId } = useParams<{ id: string }>()
   const [metadataEnabled, setMetadataEnabled] = React.useState(false)
+
+  const { mutate } = useCreateProduct({
+    organizationId: currentOrganization.id,
+    ledgerId
+  })
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -51,7 +56,7 @@ export const ProductsSheet = ({ ...others }) => {
   })
 
   const handleSubmit = (data: FormData) => {
-    console.log(data)
+    mutate(data)
   }
 
   return (
@@ -78,23 +83,14 @@ export const ProductsSheet = ({ ...others }) => {
             className="flex flex-grow flex-col gap-8"
             onSubmit={form.handleSubmit(handleSubmit)}
           >
-            <FormField
-              control={form.control}
+            <InputField
               name="name"
-              render={({ field }) => (
-                <FormItem required>
-                  <FormLabel>
-                    {intl.formatMessage({
-                      id: 'entity.product.name',
-                      defaultMessage: 'Product Name'
-                    })}
-                  </FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              label={intl.formatMessage({
+                id: 'entity.product.name',
+                defaultMessage: 'Product Name'
+              })}
+              control={form.control}
+              required
             />
 
             <div className="flex flex-col gap-2">
