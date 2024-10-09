@@ -33,6 +33,8 @@ export function useConfirmDialog<TData = {}>({
     setOpen(true)
   }
 
+  const handleDialogClose = () => setOpen(false)
+
   const onCancel = () => {
     setId('')
     setData(null)
@@ -42,13 +44,13 @@ export function useConfirmDialog<TData = {}>({
   const onConfirm = () => {
     setId('')
     setData(null)
-    setOpen(false)
     onConfirmProp?.(id)
   }
 
   return {
     id,
     data,
+    handleDialogClose,
     handleDialogOpen,
     dialogProps: {
       open,

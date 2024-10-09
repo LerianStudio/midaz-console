@@ -42,15 +42,20 @@ export const ProductsTabContent = () => {
     organizationId: '1c494870-8c14-41ba-b63f-8fe40c5173c3',
     ledgerId: '74e15716-f5c6-4c86-9641-a7ffa729895c'
   })
-  const { mutate: deleteMutate } = useDeleteProduct({
+  const { mutate: deleteMutate, isPending: deletePending } = useDeleteProduct({
     organizationId: '1c494870-8c14-41ba-b63f-8fe40c5173c3',
     ledgerId: '74e15716-f5c6-4c86-9641-a7ffa729895c',
-    onSuccess: () => refetch()
+    onSuccess: () => {
+      handleDialogClose()
+      refetch()
+    }
   })
 
-  const { handleDialogOpen, dialogProps } = useConfirmDialog({
-    onConfirm: (id: string) => deleteMutate({ id })
-  })
+  const { handleDialogOpen, dialogProps, handleDialogClose } = useConfirmDialog(
+    {
+      onConfirm: (id: string) => deleteMutate({ id })
+    }
+  )
   const { handleCreate, handleEdit, sheetProps } =
     useCreateUpdateSheet<ProductResponseDto>()
 
@@ -80,10 +85,11 @@ export const ProductsTabContent = () => {
           id: 'ledgers.products.deleteDialog.description',
           defaultMessage: 'You will delete a product'
         })}
+        loading={deletePending}
         {...dialogProps}
       />
 
-      <ProductsSheet onSave={refetch} {...sheetProps} />
+      <ProductsSheet onSucess={refetch} {...sheetProps} />
 
       <EntityBox.Root>
         <EntityBox.Header

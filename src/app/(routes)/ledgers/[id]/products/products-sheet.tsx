@@ -30,7 +30,7 @@ import { LoadingButton } from '@/components/ui/loading-button'
 export type ProductsSheetProps = DialogProps & {
   mode: 'create' | 'edit'
   data?: ProductResponseDto | null
-  onSave?: () => void
+  onSucess?: () => void
 }
 
 const defaultValues = {
@@ -47,7 +47,7 @@ type FormData = z.infer<typeof FormSchema>
 export const ProductsSheet = ({
   mode,
   data,
-  onSave,
+  onSucess,
   onOpenChange,
   ...others
 }: ProductsSheetProps) => {
@@ -58,13 +58,19 @@ export const ProductsSheet = ({
   const { mutate: createProduct, isPending: createPending } = useCreateProduct({
     organizationId: '1c494870-8c14-41ba-b63f-8fe40c5173c3',
     ledgerId: '74e15716-f5c6-4c86-9641-a7ffa729895c',
-    onSuccess: () => onOpenChange?.(false)
+    onSuccess: () => {
+      onSucess?.()
+      onOpenChange?.(false)
+    }
   })
   const { mutate: updateProduct, isPending: updatePending } = useUpdateProduct({
     organizationId: '1c494870-8c14-41ba-b63f-8fe40c5173c3',
     ledgerId: '74e15716-f5c6-4c86-9641-a7ffa729895c',
     productId: data?.id!,
-    onSuccess: () => onOpenChange?.(false)
+    onSuccess: () => {
+      onSucess?.()
+      onOpenChange?.(false)
+    }
   })
 
   const form = useForm({
@@ -84,7 +90,6 @@ export const ProductsSheet = ({
     }
 
     form.reset(defaultValues)
-    onSave?.()
   }
 
   // Resets information if using creation mode
