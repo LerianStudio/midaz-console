@@ -17,7 +17,7 @@ import { useLedgers } from '@/utils/queries'
 import { SheetContainer } from '@/components/sheet/sheet-container'
 import { useIntl } from 'react-intl'
 import { Button } from '@/components/ui/button'
-import ConfirmationDialog from '@/components/confirmation-dialog/confirmation-dialog'
+import ConfirmationDialog from '@/components/confirmation-dialog'
 import { Plus } from 'lucide-react'
 import { EmptyResource } from '@/components/empty-resource'
 
