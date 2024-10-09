@@ -12,6 +12,7 @@ import {
   DialogDescription
 } from '../ui/dialog'
 import { useIntl } from 'react-intl'
+import { LoadingButton } from '../ui/loading-button'
 
 export type ConfirmationDialogProps = {
   open: boolean
@@ -20,6 +21,7 @@ export type ConfirmationDialogProps = {
   description?: string
   ledgerName?: string
   icon?: React.ReactNode
+  loading?: boolean
   onConfirm?: () => void
   onCancel?: () => void
   confirmLabel?: string
@@ -32,6 +34,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   title = '',
   description = '',
   icon,
+  loading,
   onConfirm = () => {},
   onCancel = () => {},
   confirmLabel,
@@ -58,13 +61,17 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
                 defaultMessage: 'Cancel'
               })}
           </Button>
-          <Button onClick={onConfirm} variant="default">
+          <LoadingButton
+            loading={loading}
+            onClick={onConfirm}
+            variant="default"
+          >
             {confirmLabel ??
               intl.formatMessage({
                 id: 'common.confirm',
                 defaultMessage: 'Confirm'
               })}
-          </Button>
+          </LoadingButton>
         </DialogFooter>
       </DialogContent>
     </Dialog>
