@@ -108,8 +108,7 @@ export const ProductsTabContent = () => {
               table.getColumn('name')?.setFilterValue(event.target.value)
             }
             className="w-full min-w-[300px]"
-            icon={<Search size={20} className="text-shadcn-400" />}
-            iconPosition="left"
+            icon={<Search />}
           />
           <Button variant="secondary" onClick={handleCreate}>
             <Plus />

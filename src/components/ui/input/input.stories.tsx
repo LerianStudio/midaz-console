@@ -1,5 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react'
 import { InputProps, Input } from '.'
+import { FormField } from '../form'
+import { FormProvider, useForm } from 'react-hook-form'
 
 const meta: Meta<InputProps> = {
   title: 'Primitives/Input',
@@ -21,5 +23,13 @@ export default meta
 export const Default: StoryObj<InputProps> = {
   args: {
     placeholder: 'Input'
+  },
+  render: (args) => {
+    const form = useForm()
+    return (
+      <FormProvider {...form}>
+        <Input {...args} />
+      </FormProvider>
+    )
   }
 }
