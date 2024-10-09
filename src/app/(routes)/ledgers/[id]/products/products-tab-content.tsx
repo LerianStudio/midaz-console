@@ -101,7 +101,7 @@ export const ProductsTabContent = () => {
           <InputWithIcon
             placeholder={intl.formatMessage({
               id: 'common.filter',
-              defaultMessage: 'Filtrar'
+              defaultMessage: 'Filter'
             })}
             value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
             onChange={(event) =>

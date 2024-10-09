@@ -141,7 +141,7 @@ export const ProductsSheet = ({
             <SheetDescription>
               {intl.formatMessage({
                 id: 'ledgers.products.sheet.edit.description',
-                defaultMessage: 'View and edit product fields..'
+                defaultMessage: 'View and edit product fields.'
               })}
             </SheetDescription>
           </SheetHeader>
