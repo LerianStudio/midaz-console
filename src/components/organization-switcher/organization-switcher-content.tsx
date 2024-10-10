@@ -24,6 +24,7 @@ export type OrganizationSwitcherProps = {
 }
 
 export type OrganizationSwitcherContentProps = OrganizationSwitcherProps & {
+  onChange?: (organization: OrganizationEntity) => void
   onClose: () => void
 }
 
@@ -33,6 +34,7 @@ export const OrganizationSwitcherContent = ({
   alt,
   image,
   data,
+  onChange,
   onClose
 }: OrganizationSwitcherContentProps) => {
   const intl = useIntl()
@@ -67,10 +69,10 @@ export const OrganizationSwitcherContent = ({
         {data.map((organization) => (
           <PopoverPanelLink
             key={organization.id}
-            href={`/${organization.id}`}
+            href="#"
             icon={<ArrowRight />}
             dense={data.length >= 4}
-            onClick={onClose}
+            onClick={() => onChange?.(organization)}
           >
             <Image
               src={MidazLogo}

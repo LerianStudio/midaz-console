@@ -9,14 +9,25 @@ import { useSidebar } from '../sidebar/primitive'
 import { useListOrganizations } from '@/client/organizations'
 import { Skeleton } from '../ui/skeleton'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
+import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
+
+/**
+ * TODO: Fix potential bug of user changing the organization and still having old stale data in the UI
+ * @returns
+ */
 
 export const OrganizationSwitcher = () => {
   const intl = useIntl()
   const { logoUrl } = useTheme()
   const { isCollapsed } = useSidebar()
   const { data, isPending } = useListOrganizations({})
-  const { currentOrganization } = useOrganization()
+  const { currentOrganization, setOrganization } = useOrganization()
   const [open, setOpen] = React.useState(false)
+
+  const handleChange = (organization: OrganizationEntity) => {
+    setOrganization(organization)
+    setOpen(false)
+  }
 
   if (isPending) {
     return <Skeleton className="h-10 w-10" />
@@ -44,6 +55,7 @@ export const OrganizationSwitcher = () => {
         })}
         image={logoUrl || MidazLogo}
         data={data.items}
+        onChange={handleChange}
         onClose={() => setOpen(false)}
       />
     </Popover>
