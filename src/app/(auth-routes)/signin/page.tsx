@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import GeometricShape from '../../../../../public/images/geometric-shape.svg'
+import GeometricShape from '@/../public/images/geometric-shape.svg'
 import {
   Card,
   CardContent,

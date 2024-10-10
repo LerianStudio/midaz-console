@@ -19,6 +19,7 @@ const SidebarHeader = React.forwardRef<HTMLDivElement, SidebarHeaderProps>(
     />
   )
 )
+SidebarHeader.displayName = 'SidebarHeader'
 
 export type SidebarContentProps = React.HTMLAttributes<HTMLDivElement> & {
   className?: string
@@ -38,6 +39,7 @@ const SidebarContent = React.forwardRef<HTMLDivElement, SidebarContentProps>(
     />
   )
 )
+SidebarContent.displayName = 'SidebarContent'
 
 export type SidebarGroupProps = {
   className?: string
@@ -56,6 +58,7 @@ const SidebarGroup = React.forwardRef<HTMLElement, SidebarGroupProps>(
     />
   )
 )
+SidebarGroup.displayName = 'SidebarGroup'
 
 export type SidebarGroupTitleProps = React.PropsWithChildren & {
   collapsed?: boolean
@@ -91,6 +94,7 @@ const SidebarFooter = React.forwardRef<HTMLElement, SidebarFooterProps>(
     />
   )
 )
+SidebarFooter.displayName = 'SidebarFooter'
 
 export {
   SidebarHeader,

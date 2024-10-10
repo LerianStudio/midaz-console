@@ -13,15 +13,6 @@ import {
 const meta: Meta<BreadcrumbProps> = {
   title: 'Primitives/Breadcrumb',
   component: Breadcrumb,
-  subcomponents: {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
-    BreadcrumbEllipsis
-  },
   argTypes: {
     className: {
       type: 'string'

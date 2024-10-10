@@ -12,14 +12,6 @@ import {
 const meta: Meta<React.HTMLAttributes<HTMLTableElement>> = {
   title: 'Primitives/Table',
   component: Table,
-  subcomponents: {
-    TableContainer,
-    TableHeader,
-    TableHead,
-    TableBody,
-    TableRow,
-    TableCell
-  },
   argTypes: {}
 }
 export default meta

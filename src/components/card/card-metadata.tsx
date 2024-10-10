@@ -12,8 +12,8 @@ import { cn } from '@/lib/utils'
 type CardMetadataProps = {
   data: any
   onChange: (metadata: any[]) => void
-  onDirtyChange: (isDirty: boolean) => void
-  resetFormTrigger: boolean
+  onDirtyChange?: (isDirty: boolean) => void
+  resetFormTrigger?: boolean
 }
 
 const formSchema = z.object({
@@ -67,7 +67,7 @@ export const CardMetadata = ({
   }, [metadataValues, onChange])
 
   useEffect(() => {
-    onDirtyChange(isDirty)
+    onDirtyChange?.(isDirty)
   }, [isDirty, onDirtyChange])
 
   useEffect(() => {

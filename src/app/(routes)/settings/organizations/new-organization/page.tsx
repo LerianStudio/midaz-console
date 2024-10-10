@@ -22,23 +22,20 @@ const Page = () => {
         id: 'organizations.organizationView.breadcrumbs.settings',
         defaultMessage: 'Settings'
       }),
-      href: `/settings`,
-      active: true
+      href: `/settings`
     },
     {
       name: intl.formatMessage({
         id: 'organizations.organizationView.breadcrumbs.organizations',
         defaultMessage: 'Organizations'
       }),
-      href: `/settings?tab=organizations`,
-      active: true
+      href: `/settings?tab=organizations`
     },
     {
       name: intl.formatMessage({
         id: 'organizations.organizationView.breadcrumbs.newOrganization',
         defaultMessage: 'New Organization'
-      }),
-      active: false
+      })
     }
   ]
 

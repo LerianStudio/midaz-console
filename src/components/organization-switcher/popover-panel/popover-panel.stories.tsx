@@ -1,5 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
+
 import { Meta, StoryObj } from '@storybook/react'
-import midazLogo from '../../../../public/svg/brand-midaz.svg'
 import {
   PopoverPanel,
   PopoverPanelActions,
@@ -32,6 +33,7 @@ export const Primary: StoryObj<PopoverPanelProps> = {
         <PopoverPanelContent>
           <img
             src="/svg/brand-midaz.svg"
+            alt=""
             className="rounded-full"
             height={24}
           />
@@ -43,7 +45,7 @@ export const Primary: StoryObj<PopoverPanelProps> = {
 
       <PopoverPanelActions>
         <PopoverPanelLink href="" icon={<ArrowRight />} onClick={() => {}}>
-          <img src="/svg/brand-midaz.svg" className="w-6 rounded-full" />
+          <img src="/svg/brand-midaz.svg" alt="" className="w-6 rounded-full" />
           Midaz
         </PopoverPanelLink>
 
@@ -70,6 +72,7 @@ export const Dense: StoryObj<PopoverPanelProps> = {
         <PopoverPanelContent>
           <img
             src="/svg/brand-midaz.svg"
+            alt=""
             className="rounded-full"
             height={24}
           />
@@ -86,7 +89,7 @@ export const Dense: StoryObj<PopoverPanelProps> = {
           icon={<ArrowRight />}
           onClick={() => {}}
         >
-          <img src="/svg/brand-midaz.svg" className="w-6 rounded-full" />
+          <img src="/svg/brand-midaz.svg" alt="" className="w-6 rounded-full" />
           Midaz
         </PopoverPanelLink>
         <PopoverPanelLink
@@ -95,7 +98,7 @@ export const Dense: StoryObj<PopoverPanelProps> = {
           icon={<ArrowRight />}
           onClick={() => {}}
         >
-          <img src="/svg/brand-midaz.svg" className="w-6 rounded-full" />
+          <img src="/svg/brand-midaz.svg" alt="" className="w-6 rounded-full" />
           Midaz
         </PopoverPanelLink>
         <PopoverPanelLink
@@ -104,7 +107,7 @@ export const Dense: StoryObj<PopoverPanelProps> = {
           icon={<ArrowRight />}
           onClick={() => {}}
         >
-          <img src="/svg/brand-midaz.svg" className="w-6 rounded-full" />
+          <img src="/svg/brand-midaz.svg" alt="" className="w-6 rounded-full" />
           Midaz
         </PopoverPanelLink>
 
