@@ -51,7 +51,7 @@ export type PortfolioSheetProps = DialogProps & {
 
 const defaultValues = {
   name: '',
-  entity_id: '',
+  entityId: '',
   metadata: []
 }
 
@@ -145,7 +145,7 @@ export const PortfolioSheet = ({
 
               <FormField
                 control={form.control}
-                name="entity_id"
+                name="entityId"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="flex justify-between">

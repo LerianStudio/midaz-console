@@ -1,22 +1,19 @@
-import { Card } from '@/components/card'
-import { DataTable } from '@/components/data-table'
 import { Button } from '@/components/ui/button'
-import { Plus, PlusIcon } from 'lucide-react'
-import { useState } from 'react'
+import { Plus } from 'lucide-react'
 import { PortfolioSheet } from './portfolios-sheet'
-import { usePortfolios } from '@/utils/queries'
 import { useParams } from 'next/navigation'
 import { EntityBox } from '@/components/entity-box'
-import { portfoliosColumns } from './portfolios-columns'
 import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
 import { PortfolioResponseDto } from '@/core/application/dto/portfolios-dto'
 import { useListPortfolios } from '@/client/portfolios'
+import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 
 export const PortfoliosContent = () => {
   const { id: ledgerId } = useParams()
+  const { currentOrganization } = useOrganization()
 
   const { data, refetch } = useListPortfolios({
-    organizationId: 'b36c9055-01cd-4232-8bed-d4dd2b826b1e',
+    organizationId: currentOrganization.id!,
     ledgerId: ledgerId as string
   })
 

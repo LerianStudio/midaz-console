@@ -36,7 +36,7 @@ export const useListPortfolios = ({
   return useQuery<PaginationDto<PortfoliosEntity>>({
     queryKey: [organizationId, ledgerId, 'portfolios'],
     queryFn: getFetcher(
-      `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios`
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios?page=1&limit=100`
     ),
     ...options
   })

@@ -2,13 +2,13 @@ import { StatusEntity } from './status-entity'
 
 export type PortfoliosEntity = {
   id?: string
-  entityId: string
-  ledgerId: string
-  organizationId: string
+  ledgerId?: string
+  organizationId?: string
   name: string
+  entityId: string
   status: StatusEntity
-  metadata: Record<string, any> | null
-  createdAt?: string
-  updatedAt?: string
-  deletedAt?: string | null
+  metadata: Record<string, any>
+  createdAt?: Date
+  updatedAt?: Date
+  deletedAt?: Date | null
 }
