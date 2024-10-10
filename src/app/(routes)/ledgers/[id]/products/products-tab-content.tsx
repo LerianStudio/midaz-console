@@ -33,7 +33,7 @@ import {
   getFilteredRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import { useOrganization } from '@/context/organization-provider'
+import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import { useParams } from 'next/navigation'
 
 export const ProductsTabContent = () => {
@@ -43,12 +43,12 @@ export const ProductsTabContent = () => {
   const [columnFilters, setColumnFilters] = React.useState<any>([])
 
   const { data, refetch } = useListProducts({
-    organizationId: '1c494870-8c14-41ba-b63f-8fe40c5173c3',
-    ledgerId: '74e15716-f5c6-4c86-9641-a7ffa729895c'
+    organizationId: currentOrganization.id!,
+    ledgerId
   })
   const { mutate: deleteMutate, isPending: deletePending } = useDeleteProduct({
-    organizationId: '1c494870-8c14-41ba-b63f-8fe40c5173c3',
-    ledgerId: '74e15716-f5c6-4c86-9641-a7ffa729895c',
+    organizationId: currentOrganization.id!,
+    ledgerId,
     onSuccess: () => {
       handleDialogClose()
       refetch()
