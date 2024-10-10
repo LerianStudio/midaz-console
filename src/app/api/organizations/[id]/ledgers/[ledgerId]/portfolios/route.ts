@@ -44,6 +44,8 @@ export async function GET(
       page
     )
 
+    console.log('route.ts', portfolios)
+
     return NextResponse.json(portfolios)
   } catch (error: any) {
     console.error('Error fetching all portfolios', error)
@@ -62,15 +64,13 @@ export async function POST(
     const organizationId = params.id
     const ledgerId = params.ledgerId
 
-    const result = await createPortfolioUseCase.execute(
+    const portfolio = await createPortfolioUseCase.execute(
       organizationId,
       ledgerId,
       body
     )
 
-    console.log(result)
-
-    return NextResponse.json(result, { status: 201 })
+    return NextResponse.json(portfolio)
   } catch (error: any) {
     console.error('Error creating portfolio', error)
     const { message, status } = await apiErrorHandler(error)

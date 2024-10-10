@@ -11,7 +11,6 @@ import {
   getOrganizationById,
   getParentOrganizations
 } from '@/client/organization-client'
-import { getPortfolios } from '@/client/portfolios-client'
 
 export const useLedgers = () => {
   return useQuery({
@@ -76,9 +75,9 @@ export const useChartsTransactionsByStatus = (ledgerId: string) => {
   })
 }
 
-export const usePortfolios = (organizationId: string, ledgerId: string) => {
-  return useQuery({
-    queryKey: ['portfolios', ledgerId],
-    queryFn: () => getPortfolios(organizationId, ledgerId)
-  })
-}
+// export const usePortfolios = (organizationId: string, ledgerId: string) => {
+//   return useQuery({
+//     queryKey: ['portfolios', ledgerId],
+//     queryFn: () => getPortfolios(organizationId, ledgerId)
+//   })
+// }

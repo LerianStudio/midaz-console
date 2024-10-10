@@ -34,8 +34,12 @@ export class CreatePortfolioUseCase implements CreatePortfolio {
       portfolioEntity
     )
 
+    console.log('portfolioCreated', portfolioCreated)
+
     const portfolioResponseDto: PortfolioResponseDto =
       portfolioEntityToDto(portfolioCreated)
+
+    console.log('portfolioResponseDto', portfolioResponseDto)
 
     return portfolioResponseDto
   }
