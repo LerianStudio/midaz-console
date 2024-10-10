@@ -1,12 +1,10 @@
 import { useCreateProduct, useUpdateProduct } from '@/client/products'
 import { InputField } from '@/components/form'
 import { MetadataField } from '@/components/form/metadata-field'
-import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
 import { Label } from '@/components/ui/label'
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
   SheetFooter,
@@ -14,17 +12,16 @@ import {
   SheetTitle
 } from '@/components/ui/sheet'
 import { Switch } from '@/components/ui/switch'
-import { useOrganization } from '@/context/organization-provider'
+import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import { ProductResponseDto } from '@/core/application/dto/product-dto'
 import { product } from '@/schema/product'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DialogProps } from '@radix-ui/react-dialog'
-import { useParams } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useIntl } from 'react-intl'
 import { z } from 'zod'
-import { isNil, update } from 'lodash'
+import { isNil } from 'lodash'
 import { LoadingButton } from '@/components/ui/loading-button'
 
 export type ProductsSheetProps = DialogProps & {
@@ -57,16 +54,16 @@ export const ProductsSheet = ({
   const { currentOrganization } = useOrganization()
 
   const { mutate: createProduct, isPending: createPending } = useCreateProduct({
-    organizationId: '1c494870-8c14-41ba-b63f-8fe40c5173c3',
-    ledgerId: '74e15716-f5c6-4c86-9641-a7ffa729895c',
+    organizationId: currentOrganization.id!,
+    ledgerId,
     onSuccess: () => {
       onSucess?.()
       onOpenChange?.(false)
     }
   })
   const { mutate: updateProduct, isPending: updatePending } = useUpdateProduct({
-    organizationId: '1c494870-8c14-41ba-b63f-8fe40c5173c3',
-    ledgerId: '74e15716-f5c6-4c86-9641-a7ffa729895c',
+    organizationId: currentOrganization!.id!,
+    ledgerId,
     productId: data?.id!,
     onSuccess: () => {
       onSucess?.()

@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { OrganizationsData } from '@/core/domain/entities/organization-switcher-entity'
+import MidazLogo from '/public/svg/brand-midaz.svg'
 import { useIntl } from 'react-intl'
 import { PopoverContent } from '../ui/popover'
 import { StatusDisplay } from './status'
@@ -13,9 +13,10 @@ import {
   PopoverPanelLink,
   PopoverPanelTitle
 } from './popover-panel'
+import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 
 export type OrganizationSwitcherProps = {
-  data: OrganizationsData[]
+  data: OrganizationEntity[]
   orgName: string
   status: 'active' | 'inactive'
   image: string
@@ -72,13 +73,13 @@ export const OrganizationSwitcherContent = ({
             onClick={onClose}
           >
             <Image
-              src={organization.image}
-              alt={organization.alt}
+              src={MidazLogo}
+              alt=""
               className="rounded-full"
               height={24}
             />
 
-            {organization.name}
+            {organization.legalName}
           </PopoverPanelLink>
         ))}
 
