@@ -13,7 +13,10 @@ export const PortfoliosContent = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const { id: ledgerId } = useParams()
 
-  const portfolios = usePortfolios(ledgerId as string)
+  const portfolios = usePortfolios(
+    'b36c9055-01cd-4232-8bed-d4dd2b826b1e',
+    ledgerId as string
+  )
   console.log(portfolios.data)
   return (
     <>

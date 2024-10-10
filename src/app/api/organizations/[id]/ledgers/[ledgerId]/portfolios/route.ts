@@ -1,5 +1,6 @@
 import { apiErrorHandler } from '@/app/api/utils/api-error-handler'
 import { CreatePortfolio } from '@/core/application/use-cases/portfolios/create-portfolio-use-case'
+import { FetchAllPortfolios } from '@/core/application/use-cases/portfolios/fetch-all-portfolio-use-case'
 // import { CreatePortfolio } from '@/core/application/use-cases/portfolio/create-portfolio-use-case'
 // import { FetchAllPortfolios } from '@/core/application/use-cases/portfolio/fetch-all-portfolios-use-case'
 // import { DeletePortfolio } from '@/core/application/use-cases/portfolio/delete-portfolio-use-case'
@@ -14,8 +15,8 @@ const createPortfolioUseCase: CreatePortfolio = container.get<CreatePortfolio>(
   Registry.CreatePortfolioSymbolUseCase
 )
 
-// const fetchAllPortfoliosUseCase: FetchAllPortfolios =
-//   container.get<FetchAllPortfolios>(Registry.FetchAllPortfoliosUseCase)
+const fetchAllPortfoliosUseCase: FetchAllPortfolios =
+  container.get<FetchAllPortfolios>(Registry.FetchAllPortfoliosUseCase)
 
 // const deletePortfolioUseCase: DeletePortfolio = container.get<DeletePortfolio>(
 //   Registry.DeletePortfolioUseCase
@@ -25,32 +26,32 @@ const createPortfolioUseCase: CreatePortfolio = container.get<CreatePortfolio>(
 //   Registry.UpdatePortfolioUseCase
 // )
 
-// export async function GET(
-//   request: Request,
-//   { params }: { params: { id: string; ledgerId: string } }
-// ) {
-//   try {
-//     const { searchParams } = new URL(request.url)
-//     const limit = Number(searchParams.get('limit')) || 10
-//     const page = Number(searchParams.get('page')) || 1
-//     const organizationId = params.id
-//     const ledgerId = params.ledgerId
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string; ledgerId: string } }
+) {
+  try {
+    const { searchParams } = new URL(request.url)
+    const limit = Number(searchParams.get('limit')) || 10
+    const page = Number(searchParams.get('page')) || 1
+    const organizationId = params.id
+    const ledgerId = params.ledgerId
 
-//     const portfolios = await fetchAllPortfoliosUseCase.execute(
-//       organizationId,
-//       ledgerId,
-//       limit,
-//       page
-//     )
+    const portfolios = await fetchAllPortfoliosUseCase.execute(
+      organizationId,
+      ledgerId,
+      limit,
+      page
+    )
 
-//     return NextResponse.json(portfolios)
-//   } catch (error: any) {
-//     console.error('Error fetching all portfolios', error)
-//     const { message, status } = await apiErrorHandler(error)
+    return NextResponse.json(portfolios)
+  } catch (error: any) {
+    console.error('Error fetching all portfolios', error)
+    const { message, status } = await apiErrorHandler(error)
 
-//     return NextResponse.json({ message }, { status })
-//   }
-// }
+    return NextResponse.json({ message }, { status })
+  }
+}
 
 export async function POST(
   request: Request,

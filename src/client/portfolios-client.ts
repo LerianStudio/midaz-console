@@ -5,8 +5,9 @@ const createPortfolio = async (
   ledgerId: string,
   portfolio: PortfoliosEntity
 ) => {
+  console.log('0000----portfolio', portfolio)
   const response = await fetch(
-    `/api/organizations/b36c9055-01cd-4232-8bed-d4dd2b826b1e/ledgers/${ledgerId}/portfolios`,
+    `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios`,
     {
       method: 'POST',
       headers: {
@@ -16,10 +17,7 @@ const createPortfolio = async (
     }
   )
 
-  console.log(
-    '==========================================================================================',
-    response
-  )
+  console.log('createPortfolio', response)
 
   if (!response.ok) {
     throw new Error('Failed to create portfolio')
@@ -28,17 +26,22 @@ const createPortfolio = async (
   return await response.json()
 }
 
-const getPortfolios = async (ledgerId: string) => {
-  const response = await fetch(`/api/ledgers/${ledgerId}/portfolios`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
+const getPortfolios = async (organizationId: string, ledgerId: string) => {
+  const response = await fetch(
+    `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
     }
-  })
+  )
 
   if (!response.ok) {
     throw new Error('Failed to fetch portfolios')
   }
+
+  console.log('getPortfolios', response.json)
 
   return await response.json()
 }

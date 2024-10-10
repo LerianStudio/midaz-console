@@ -76,9 +76,9 @@ export const useChartsTransactionsByStatus = (ledgerId: string) => {
   })
 }
 
-export const usePortfolios = (ledgerId: string) => {
+export const usePortfolios = (organizationId: string, ledgerId: string) => {
   return useQuery({
     queryKey: ['portfolios', ledgerId],
-    queryFn: () => getPortfolios(ledgerId)
+    queryFn: () => getPortfolios(organizationId, ledgerId)
   })
 }

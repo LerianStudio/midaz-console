@@ -73,6 +73,7 @@ export const PortfolioSheet = ({ sheetProps }: SheetProps) => {
   } = form
 
   const onSubmit = async (data: z.infer<typeof formSchemaPortfolio>) => {
+    console.log('-data-', data)
     try {
       const dataToSubmit: PortfoliosEntity = {
         id: uuidv4(),
@@ -90,8 +91,7 @@ export const PortfolioSheet = ({ sheetProps }: SheetProps) => {
             .map((item) => [item.key, item.value]) ?? []
         ),
         status: {
-          code: 'ACTIVE',
-          description: null
+          code: 'ACTIVE'
         },
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),

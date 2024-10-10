@@ -133,6 +133,12 @@ import {
 } from '@/core/application/use-cases/portfolios/create-portfolio-use-case'
 import { CreatePortfolioRepository } from '@/core/domain/repositories/portfolios/create-portfolio-repository'
 import { MidazCreatePortfolioRepository } from '../midaz/portfolios/midaz-create-portfolio-repository'
+import { FetchAllPortfoliosRepository } from '@/core/domain/repositories/portfolios/fetch-all-portfolio-repository'
+import { MidazFetchAllPortfoliosRepository } from '../midaz/portfolios/midaz-fetch-all-portfolio-repository'
+import {
+  FetchAllPortfolios,
+  FetchAllPortfoliosUseCase
+} from '@/core/application/use-cases/portfolios/fetch-all-portfolio-use-case'
 
 export const Registry = {
   InstrumentsAPIAdapter: Symbol.for('InstrumentsAPIAdapter'),
@@ -211,7 +217,15 @@ export const Registry = {
   DeleteProductRepository: Symbol.for('DeleteProductRepository'),
 
   CreatePortfolioSymbolUseCase: Symbol.for('CreatePortfolioSymbolUseCase'),
-  CreatePortfolioSymbolRepository: Symbol.for('CreatePortfolioSymbolRepository')
+  CreatePortfolioSymbolRepository: Symbol.for(
+    'CreatePortfolioSymbolRepository'
+  ),
+
+  // Portfolios
+  CreatePortfolioUseCase: Symbol.for('CreatePortfolioUseCase'),
+  CreatePortfolioRepository: Symbol.for('CreatePortfolioRepository'),
+  FetchAllPortfoliosUseCase: Symbol.for('FetchAllPortfoliosUseCase'),
+  FetchAllPortfoliosRepository: Symbol.for('FetchAllPortfoliosRepository')
 }
 
 export const container = new Container()
@@ -531,5 +545,29 @@ container
   .toDynamicValue((context) => {
     return new CreatePortfolioUseCase(
       context.container.get(Registry.CreatePortfolioSymbolRepository)
+    )
+  })
+
+container
+  .bind<CreatePortfolioRepository>(Registry.CreatePortfolioRepository)
+  .toConstantValue(new MidazCreatePortfolioRepository())
+
+container
+  .bind<CreatePortfolio>(Registry.CreatePortfolioUseCase)
+  .toDynamicValue((context) => {
+    return new CreatePortfolioUseCase(
+      context.container.get(Registry.CreatePortfolioRepository)
+    )
+  })
+
+container
+  .bind<FetchAllPortfoliosRepository>(Registry.FetchAllPortfoliosRepository)
+  .toConstantValue(new MidazFetchAllPortfoliosRepository())
+
+container
+  .bind<FetchAllPortfolios>(Registry.FetchAllPortfoliosUseCase)
+  .toDynamicValue((context) => {
+    return new FetchAllPortfoliosUseCase(
+      context.container.get(Registry.FetchAllPortfoliosRepository)
     )
   })
