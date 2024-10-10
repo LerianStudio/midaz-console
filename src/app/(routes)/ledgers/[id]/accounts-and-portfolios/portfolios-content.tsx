@@ -19,8 +19,12 @@ export const PortfoliosContent = () => {
     <>
       <EntityBox.Root>
         <EntityBox.Header
-          title="Assets"
-          subtitle="Moedas ou ativos de quaisquer naturezas transacionados neste Ledger."
+          title="Portfolios"
+          subtitle={
+            portfolios.data
+              ? undefined
+              : 'Moedas ou ativos de quaisquer naturezas transacionados neste Ledger.'
+          }
         />
         <EntityBox.Actions>
           <Button
@@ -28,7 +32,7 @@ export const PortfoliosContent = () => {
             onClick={() => setIsDialogOpen(true)}
             icon={<Plus />}
           >
-            Criar o primeiro Asset
+            {!portfolios.data ?? 'Criar o primeiro porfolio'}
           </Button>
         </EntityBox.Actions>
       </EntityBox.Root>

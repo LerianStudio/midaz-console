@@ -51,12 +51,15 @@ const deleteLedger = async (id: string) => {
 }
 
 const getLedgers = async () => {
-  const response = await fetch('/api/ledgers', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
+  const response = await fetch(
+    '/api/organizations/b7c10056-4200-4555-b444-2ffb5e85ea48/ledgers',
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
     }
-  })
+  )
 
   if (!response.ok) {
     throw new Error('Failed to fetch ledgers')

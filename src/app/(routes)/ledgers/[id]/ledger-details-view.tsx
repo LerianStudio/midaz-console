@@ -208,7 +208,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
           <TabsTrigger value="portfolios-and-accounts">
             {intl.formatMessage({
               id: 'ledgers.tab.portfolios-and-accounts',
-              defaultMessage: 'portfolios-and-accounts'
+              defaultMessage: 'Portfolios and Accounts'
             })}
           </TabsTrigger>
           <TabsTrigger value="products">

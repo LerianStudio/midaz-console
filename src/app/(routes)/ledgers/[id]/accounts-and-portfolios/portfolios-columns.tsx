@@ -4,7 +4,7 @@ import { ColumnDef } from '@tanstack/react-table'
 
 export type TPortfolio = {
   id: string
-  portfolio_name: string
+  name: string
   accounts: string
   metadata: string
   status: string
@@ -17,7 +17,7 @@ export const portfoliosColumns: ColumnDef<TPortfolio>[] = [
     header: 'ID'
   },
   {
-    accessorKey: 'portfolio_name',
+    accessorKey: 'name',
     header: 'Nome do Portfolio'
   },
   {

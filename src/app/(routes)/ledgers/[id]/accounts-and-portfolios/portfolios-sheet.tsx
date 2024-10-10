@@ -36,7 +36,7 @@ import ConfirmationDialog from '@/components/confirmation-dialog/confirmation-di
 import { useCreatePortfolio } from '@/hooks/portfolios-and-accounts/use-create-portfolio'
 import { useIntl } from 'react-intl'
 import { v4 as uuidv4 } from 'uuid'
-import { LedgerPortfoliosEntity } from '@/core/domain/entities/portfolios-entity'
+import { PortfoliosEntity } from '@/core/domain/entities/portfolios-entity'
 
 export const PortfolioSheet = ({ sheetProps }: SheetProps) => {
   const { id: ledgerId } = useParams()
@@ -56,7 +56,7 @@ export const PortfolioSheet = ({ sheetProps }: SheetProps) => {
   const form = useForm<z.infer<typeof formSchemaPortfolio>>({
     resolver: zodResolver(formSchemaPortfolio),
     defaultValues: {
-      portfolio_name: '',
+      name: '',
       entity_id: '',
       metadata: []
     }
@@ -74,9 +74,9 @@ export const PortfolioSheet = ({ sheetProps }: SheetProps) => {
 
   const onSubmit = async (data: z.infer<typeof formSchemaPortfolio>) => {
     try {
-      const dataToSubmit: LedgerPortfoliosEntity = {
+      const dataToSubmit: PortfoliosEntity = {
         id: uuidv4(),
-        portfolio_name: data.portfolio_name,
+        name: data.name,
         entity_id: data.entity_id,
         ledger_id: ledgerId as string,
         metadata: Object.fromEntries(
@@ -106,7 +106,7 @@ export const PortfolioSheet = ({ sheetProps }: SheetProps) => {
       )
 
       form.reset({
-        portfolio_name: '',
+        name: '',
         entity_id: '',
         metadata: []
       })
@@ -133,7 +133,7 @@ export const PortfolioSheet = ({ sheetProps }: SheetProps) => {
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <FormField
                   control={form.control}
-                  name="portfolio_name"
+                  name="name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Portfolio Name *</FormLabel>

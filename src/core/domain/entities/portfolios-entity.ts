@@ -1,14 +1,14 @@
-export type LedgerPortfoliosEntity = {
-  id: string
-  ledger_id: string
-  entity_id: string
-  portfolio_name: string
-  metadata: Record<string, string> | null
-  status: {
-    code: string
-    description: string | null
-  }
-  createdAt: string
-  updatedAt: string
-  deletedAt: string | null
+import { StatusEntity } from './status-entity'
+
+export type PortfoliosEntity = {
+  id?: string
+  entityId: string
+  ledgerId: string
+  organizationId: string
+  name: string
+  status: StatusEntity
+  metadata: Record<string, any> | null
+  createdAt?: string
+  updatedAt?: string
+  deletedAt?: string | null
 }

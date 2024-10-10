@@ -1,24 +1,22 @@
-import { LedgerPortfoliosEntity } from '../domain/entities/portfolios-entity'
+import { PortfoliosEntity } from '../domain/entities/portfolios-entity'
 import { PortfolioRepository } from '../repositories/portfolio-repository'
 
 type IPortfoliossUseCases = {
-  listPortfoliosUseCases: () => Promise<LedgerPortfoliosEntity[]>
-  getPortfoliosByIdUseCases: (
-    id: string
-  ) => Promise<LedgerPortfoliosEntity | null>
+  listPortfoliosUseCases: () => Promise<PortfoliosEntity[]>
+  getPortfoliosByIdUseCases: (id: string) => Promise<PortfoliosEntity | null>
   deletePortfoliosUseCases: (id: string) => Promise<void>
 }
 
 export class PortfoliosUseCases implements IPortfoliossUseCases {
   constructor(private readonly portfoliosAdapter: PortfolioRepository) {}
 
-  async listPortfoliosUseCases(): Promise<LedgerPortfoliosEntity[]> {
+  async listPortfoliosUseCases(): Promise<PortfoliosEntity[]> {
     return await this.portfoliosAdapter.list()
   }
 
   async getPortfoliosByIdUseCases(
     id: string
-  ): Promise<LedgerPortfoliosEntity | null> {
+  ): Promise<PortfoliosEntity | null> {
     return await this.portfoliosAdapter.getById(id)
   }
 
@@ -26,11 +24,11 @@ export class PortfoliosUseCases implements IPortfoliossUseCases {
     return await this.portfoliosAdapter.delete(id)
   }
 
-  async createPortfoliosUseCases(ledger: LedgerPortfoliosEntity) {
+  async createPortfoliosUseCases(ledger: PortfoliosEntity) {
     return await this.portfoliosAdapter.create(ledger)
   }
 
-  async updatePortfoliosUseCases(id: string, ledger: LedgerPortfoliosEntity) {
+  async updatePortfoliosUseCases(id: string, ledger: PortfoliosEntity) {
     return await this.portfoliosAdapter.update(id, ledger)
   }
 }

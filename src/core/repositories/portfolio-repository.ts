@@ -1,5 +1,4 @@
-import { LedgerPortfoliosEntity } from '@/core/domain/entities/portfolios-entity'
+import { PortfoliosEntity } from '@/core/domain/entities/portfolios-entity'
 import { BaseRepository } from '@/core/repositories/base-repository'
 
-export interface PortfolioRepository
-  extends BaseRepository<LedgerPortfoliosEntity> {}
+export interface PortfolioRepository extends BaseRepository<PortfoliosEntity> {}

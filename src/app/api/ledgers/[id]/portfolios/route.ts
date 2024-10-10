@@ -1,8 +1,11 @@
-import { container, Registry } from '@/core/infra/container-registry'
+import {
+  container,
+  Registry
+} from '@/core/infrastructure/container-registry/container-registry'
 import PortfoliosUseCases from '@/core/useCases/portfolio-use-cases'
 import { NextRequest, NextResponse } from 'next/server'
 
-const JSON_SERVER_URL = 'http://localhost:3001'
+const JSON_SERVER_URL = 'http://localhost:3001/v1'
 const portfolioUseCases = container.get<PortfoliosUseCases>(
   Registry.PortfolioUseCases
 )
@@ -32,8 +35,7 @@ export async function POST(
 
   const newPortfolio = {
     id: crypto.randomUUID(),
-    ledger_id: params.ledgerId,
-    portfolio_name: body.portfolio_name,
+    ledger_id: '38eff558-757a-4ca6-ae16-d4a6aef0f4d3',
     entity_id: body.entity_id,
     status: body.status || { code: 'ACTIVE', description: null },
     metadata: body.metadata || {},

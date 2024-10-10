@@ -125,10 +125,19 @@ import {
   FetchProductById,
   FetchProductByIdUseCase
 } from '@/core/application/use-cases/product/fetch-product-by-id-use-case'
+import { PortfoliosAPIAdapter } from '@/core/adapters/portfolios-api-adapter'
+import PortfoliosUseCases from '@/core/useCases/portfolio-use-cases'
+import {
+  CreatePortfolio,
+  CreatePortfolioUseCase
+} from '@/core/application/use-cases/portfolios/create-portfolio-use-case'
+import { CreatePortfolioRepository } from '@/core/domain/repositories/portfolios/create-portfolio-repository'
+import { MidazCreatePortfolioRepository } from '../midaz/portfolios/midaz-create-portfolio-repository'
 
 export const Registry = {
   InstrumentsAPIAdapter: Symbol.for('InstrumentsAPIAdapter'),
   OryAuthAPIAdapter: Symbol.for('OryAuthAPIAdapter'),
+  PortfolioAPIAdapter: Symbol.for('PortfolioAPIAdapter'),
 
   /**
    * TODO Remove old Registry
@@ -184,6 +193,9 @@ export const Registry = {
   UpdateAssetRepository: Symbol.for('UpdateAssetRepository'),
   DeleteAssetRepository: Symbol.for('DeleteAssetRepository'),
 
+  // Portfolio
+  PortfolioUseCases: Symbol.for('PortfolioUseCases'),
+
   // Products
 
   CreateProductUseCase: Symbol.for('CreateProductUseCase'),
@@ -196,7 +208,10 @@ export const Registry = {
   FetchAllProductsRepository: Symbol.for('FetchAllProductsRepository'),
   FetchProductByIdRepository: Symbol.for('FetchProductByIdRepository'),
   UpdateProductRepository: Symbol.for('UpdateProductRepository'),
-  DeleteProductRepository: Symbol.for('DeleteProductRepository')
+  DeleteProductRepository: Symbol.for('DeleteProductRepository'),
+
+  CreatePortfolioSymbolUseCase: Symbol.for('CreatePortfolioSymbolUseCase'),
+  CreatePortfolioSymbolRepository: Symbol.for('CreatePortfolioSymbolRepository')
 }
 
 export const container = new Container()
@@ -490,5 +505,31 @@ container
   .toDynamicValue((context) => {
     return new FetchProductByIdUseCase(
       context.container.get(Registry.FetchProductByIdRepository)
+    )
+  })
+
+container
+  .bind<PortfoliosAPIAdapter>(Registry.PortfolioAPIAdapter)
+  .toDynamicValue((context) => {
+    return new PortfoliosAPIAdapter()
+  })
+// Portfolio Use Cases
+container
+  .bind<PortfoliosUseCases>(Registry.PortfolioUseCases)
+  .toDynamicValue((context) => {
+    return new PortfoliosUseCases(
+      context.container.get(Registry.PortfolioAPIAdapter)
+    )
+  })
+
+container
+  .bind<CreatePortfolioRepository>(Registry.CreatePortfolioSymbolRepository)
+  .toConstantValue(new MidazCreatePortfolioRepository())
+
+container
+  .bind<CreatePortfolio>(Registry.CreatePortfolioSymbolUseCase)
+  .toDynamicValue((context) => {
+    return new CreatePortfolioUseCase(
+      context.container.get(Registry.CreatePortfolioSymbolRepository)
     )
   })

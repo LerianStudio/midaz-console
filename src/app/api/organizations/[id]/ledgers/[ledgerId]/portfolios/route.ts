@@ -1,64 +1,125 @@
-import { container, Registry } from '@/core/infra/container-registry'
-import PortfoliosUseCases from '@/core/useCases/portfolio-use-cases'
-import { NextRequest, NextResponse } from 'next/server'
+import { apiErrorHandler } from '@/app/api/utils/api-error-handler'
+import { CreatePortfolio } from '@/core/application/use-cases/portfolios/create-portfolio-use-case'
+// import { CreatePortfolio } from '@/core/application/use-cases/portfolio/create-portfolio-use-case'
+// import { FetchAllPortfolios } from '@/core/application/use-cases/portfolio/fetch-all-portfolios-use-case'
+// import { DeletePortfolio } from '@/core/application/use-cases/portfolio/delete-portfolio-use-case'
+// import { UpdatePortfolio } from '@/core/application/use-cases/portfolio/update-portfolio-use-case'
+import {
+  container,
+  Registry
+} from '@/core/infrastructure/container-registry/container-registry'
+import { NextResponse } from 'next/server'
 
-const JSON_SERVER_URL = 'http://localhost:3001'
-const portfolioUseCases = container.get<PortfoliosUseCases>(
-  Registry.PortfolioUseCases
+const createPortfolioUseCase: CreatePortfolio = container.get<CreatePortfolio>(
+  Registry.CreatePortfolioSymbolUseCase
 )
 
-export async function GET() {
-  try {
-    const portfolios = await portfolioUseCases.listPortfoliosUseCases()
-    return NextResponse.json(portfolios)
-  } catch (error) {
-    console.error('Error fetching portfolios:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch portfolios' },
-      { status: 500 }
-    )
-  }
-}
+// const fetchAllPortfoliosUseCase: FetchAllPortfolios =
+//   container.get<FetchAllPortfolios>(Registry.FetchAllPortfoliosUseCase)
+
+// const deletePortfolioUseCase: DeletePortfolio = container.get<DeletePortfolio>(
+//   Registry.DeletePortfolioUseCase
+// )
+
+// const updatePortfolioUseCase: UpdatePortfolio = container.get<UpdatePortfolio>(
+//   Registry.UpdatePortfolioUseCase
+// )
+
+// export async function GET(
+//   request: Request,
+//   { params }: { params: { id: string; ledgerId: string } }
+// ) {
+//   try {
+//     const { searchParams } = new URL(request.url)
+//     const limit = Number(searchParams.get('limit')) || 10
+//     const page = Number(searchParams.get('page')) || 1
+//     const organizationId = params.id
+//     const ledgerId = params.ledgerId
+
+//     const portfolios = await fetchAllPortfoliosUseCase.execute(
+//       organizationId,
+//       ledgerId,
+//       limit,
+//       page
+//     )
+
+//     return NextResponse.json(portfolios)
+//   } catch (error: any) {
+//     console.error('Error fetching all portfolios', error)
+//     const { message, status } = await apiErrorHandler(error)
+
+//     return NextResponse.json({ message }, { status })
+//   }
+// }
 
 export async function POST(
-  request: NextRequest,
-  { params }: { params: { ledgerId: string } }
+  request: Request,
+  { params }: { params: { id: string; ledgerId: string } }
 ) {
-  const body = await request.json()
-  console.log('body', body)
-  if (params.ledgerId !== body.ledgerId) {
-    return NextResponse.json({ error: 'Invalid ledgerId' }, { status: 400 })
-  }
+  try {
+    const body = await request.json()
+    const organizationId = params.id
+    const ledgerId = params.ledgerId
 
-  const newPortfolio = {
-    id: crypto.randomUUID(),
-    ledger_id: params.ledgerId,
-    portfolio_name: body.portfolio_name,
-    entity_id: body.entity_id,
-    status: body.status || { code: 'ACTIVE', description: null },
-    metadata: body.metadata || {},
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    deletedAt: null
-  }
-
-  console.log(newPortfolio)
-
-  const response = await fetch(`${JSON_SERVER_URL}/portfolios`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(newPortfolio)
-  })
-
-  if (!response.ok) {
-    return NextResponse.json(
-      { error: 'Failed to create portfolio' },
-      { status: 500 }
+    const result = await createPortfolioUseCase.execute(
+      organizationId,
+      ledgerId,
+      body
     )
-  }
 
-  const createdPortfolio = await response.json()
-  return NextResponse.json(createdPortfolio, { status: 201 })
+    console.log(result)
+
+    return NextResponse.json(result, { status: 201 })
+  } catch (error: any) {
+    console.error('Error creating portfolio', error)
+    const { message, status } = await apiErrorHandler(error)
+
+    return NextResponse.json({ message }, { status })
+  }
 }
+
+// export async function DELETE(
+//   request: Request,
+//   { params }: { params: { id: string; ledgerId: string; portfolioId: string } }
+// ) {
+//   try {
+//     const organizationId = params.id
+//     const ledgerId = params.ledgerId
+//     const portfolioId = params.portfolioId
+
+//     await deletePortfolioUseCase.execute(organizationId, ledgerId, portfolioId)
+
+//     return NextResponse.json({}, { status: 200 })
+//   } catch (error: any) {
+//     console.error('Error deleting portfolio', error)
+//     const { message, status } = await apiErrorHandler(error)
+
+//     return NextResponse.json({ message }, { status })
+//   }
+// }
+
+// export async function PATCH(
+//   request: Request,
+//   { params }: { params: { id: string; ledgerId: string; portfolioId: string } }
+// ) {
+//   try {
+//     const body = await request.json()
+//     const organizationId = params.id
+//     const ledgerId = params.ledgerId
+//     const portfolioId = params.portfolioId
+
+//     const portfolioUpdated = await updatePortfolioUseCase.execute(
+//       organizationId,
+//       ledgerId,
+//       portfolioId,
+//       body
+//     )
+
+//     return NextResponse.json(portfolioUpdated)
+//   } catch (error: any) {
+//     console.error('Error updating portfolio', error)
+//     const { message, status } = await apiErrorHandler(error)
+
+//     return NextResponse.json({ message }, { status })
+//   }
+// }

@@ -1,8 +1,8 @@
 export const getPortfoliosFormField = (t: any) => {
   return [
     {
-      name: 'portfolio_name',
-      label: "Nome do portfólio",
+      name: 'name',
+      label: 'Nome do portfólio',
       isRequired: true
     },
     {

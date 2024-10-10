@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import useCustomToast from '../use-custom-toast'
-import { LedgerPortfoliosEntity } from '@/core/domain/entities/portfolios-entity'
+import { PortfoliosEntity } from '@/core/domain/entities/portfolios-entity'
 import { createPortfolio } from '@/client/portfolios-client'
 
 export const useCreatePortfolio = () => {
@@ -14,11 +14,15 @@ export const useCreatePortfolio = () => {
 
   const handleCreatePortfolio = async (
     ledgerId: string,
-    portfolio: LedgerPortfoliosEntity
+    portfolio: PortfoliosEntity
   ) => {
     console.log('values', ledgerId, portfolio)
     try {
-      await createPortfolio(ledgerId, portfolio)
+      await createPortfolio(
+        'b36c9055-01cd-4232-8bed-d4dd2b826b1e',
+        ledgerId,
+        portfolio
+      )
       showSuccess('Portfolio created successfully')
     } catch (error) {
       const err = error as Error
