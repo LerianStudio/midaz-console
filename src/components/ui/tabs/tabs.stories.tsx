@@ -5,11 +5,6 @@ import { TabsProps } from '@radix-ui/react-tabs'
 const meta: Meta<TabsProps> = {
   title: 'Primitives/Tabs',
   component: Tabs,
-  subcomponents: {
-    TabsTrigger,
-    TabsList,
-    TabsContent
-  },
   argTypes: {
     defaultValue: {
       type: 'string',

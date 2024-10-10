@@ -36,18 +36,6 @@ import { DropdownMenuProps } from '@radix-ui/react-dropdown-menu'
 const meta: Meta<DropdownMenuProps> = {
   title: 'Primitives/DropdownMenu',
   component: DropdownMenu,
-  subcomponents: {
-    DropdownMenuTrigger,
-    DropdownMenuContent,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuItemIcon,
-    DropdownMenuShortcut,
-    DropdownMenuSub,
-    DropdownMenuPortal
-  },
   argTypes: {}
 }
 export default meta

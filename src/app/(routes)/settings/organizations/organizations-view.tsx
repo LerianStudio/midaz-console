@@ -67,22 +67,6 @@ const OrganizationsView = ({
     onSubmit(values)
   }
 
-  const handleAddMetadata = (data: { key: string; value: string }) => {
-    const metadataList = organizationForm.getValues('metadata')
-    organizationForm.setValue('metadata', {
-      ...metadataList,
-      [data.key]: data.value
-    })
-  }
-
-  const handlerRemoveMetadata = async (key: string) => {
-    const metadataList = organizationForm.getValues('metadata')
-    const newMetadata = { ...metadataList }
-    delete newMetadata[key]
-
-    organizationForm.setValue('metadata', newMetadata)
-  }
-
   return (
     <div>
       <Form {...organizationForm}>

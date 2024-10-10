@@ -1,7 +1,5 @@
 import { Meta } from '@storybook/react'
-import ConfirmationDialog, {
-  ConfirmationDialogProps
-} from './confirmation-dialog'
+import ConfirmationDialog, { ConfirmationDialogProps } from '.'
 import { Button } from '../ui/button'
 import React from 'react'
 
