@@ -28,6 +28,7 @@ import { isNil, update } from 'lodash'
 import { LoadingButton } from '@/components/ui/loading-button'
 
 export type ProductsSheetProps = DialogProps & {
+  ledgerId: string
   mode: 'create' | 'edit'
   data?: ProductResponseDto | null
   onSucess?: () => void
@@ -45,6 +46,7 @@ const FormSchema = z.object({
 type FormData = z.infer<typeof FormSchema>
 
 export const ProductsSheet = ({
+  ledgerId,
   mode,
   data,
   onSucess,
@@ -53,7 +55,6 @@ export const ProductsSheet = ({
 }: ProductsSheetProps) => {
   const intl = useIntl()
   const { currentOrganization } = useOrganization()
-  const { id: ledgerId } = useParams<{ id: string }>()
 
   const { mutate: createProduct, isPending: createPending } = useCreateProduct({
     organizationId: '1c494870-8c14-41ba-b63f-8fe40c5173c3',

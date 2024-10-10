@@ -38,7 +38,7 @@ describe('useConfirmDialog', () => {
     expect(result.current.dialogProps.open).toBe(false)
   })
 
-  it('should call onConfirmProp and close dialog on confirm', () => {
+  it('should call onConfirmProp and stay open on confirm', () => {
     const onConfirmMock = jest.fn()
     const { result } = renderHook(() =>
       useConfirmDialog({ onConfirm: onConfirmMock })
@@ -55,6 +55,6 @@ describe('useConfirmDialog', () => {
     expect(onConfirmMock).toHaveBeenCalledWith('123')
     expect(result.current.id).toBe('')
     expect(result.current.data).toBeNull()
-    expect(result.current.dialogProps.open).toBe(false)
+    expect(result.current.dialogProps.open).toBe(true)
   })
 })

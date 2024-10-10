@@ -33,9 +33,13 @@ import {
   getFilteredRowModel,
   useReactTable
 } from '@tanstack/react-table'
+import { useOrganization } from '@/context/organization-provider'
+import { useParams } from 'next/navigation'
 
 export const ProductsTabContent = () => {
   const intl = useIntl()
+  const { currentOrganization } = useOrganization()
+  const { id: ledgerId } = useParams<{ id: string }>()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
 
   const { data, refetch } = useListProducts({
@@ -89,7 +93,7 @@ export const ProductsTabContent = () => {
         {...dialogProps}
       />
 
-      <ProductsSheet onSucess={refetch} {...sheetProps} />
+      <ProductsSheet ledgerId={ledgerId} onSucess={refetch} {...sheetProps} />
 
       <EntityBox.Root>
         <EntityBox.Header
