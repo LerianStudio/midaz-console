@@ -1,16 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Skeleton } from '@/components/ui/skeleton'
-import { formSchema } from '@/app/(routes)/ledgers/ledgers-form-schema'
-import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
-import { useSheetMode } from '@/hooks/ledgers/use-sheet-mode'
-import { useCreateLedger } from '@/hooks/ledgers/use-create-ledger'
-import { v4 as uuidv4 } from 'uuid'
-import { useEnhancedLedgers } from '@/hooks/ledgers/use-enhanced-ledgers'
 import { PageHeader } from '@/components/page-header'
-import { getSheetInfo } from '@/helpers/ledgers/ledgers-helpers'
-import { useLedgers } from '@/utils/queries'
 import { useIntl } from 'react-intl'
 import { Button } from '@/components/ui/button'
 import ConfirmationDialog from '@/components/confirmation-dialog'
@@ -23,17 +14,23 @@ import {
 import { LedgersDataTable } from './ledgers-data-table'
 import { LedgersSheet } from './ledgers-sheet'
 import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
-import { useDeleteLedger } from '@/client/ledger-client'
+import { useDeleteLedger, useListLedgers } from '@/client/ledger-client'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
+import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 
 const LedgersView = () => {
-  const organizationId = '45d0c9e6-7fb5-4675-b300-3c3fbd554559'
   const intl = useIntl()
-  const { data: ledgers, isLoading, refetch } = useLedgers(organizationId)
-  // const enhancedLedgers = useEnhancedLedgers()
-  const createLedgerData = useCreateLedger(organizationId)
+  const { currentOrganization } = useOrganization()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
   const [ledgerNameToDelete, setLedgerNameToDelete] = React.useState<string>('')
+
+  const {
+    data: ledgers,
+    refetch,
+    isLoading
+  } = useListLedgers({
+    organizationId: currentOrganization.id!
+  })
 
   const { handleDialogOpen, dialogProps, handleDialogClose } = useConfirmDialog(
     {
@@ -47,8 +44,7 @@ const LedgersView = () => {
   }
 
   const { mutate: deleteMutate, isPending: deletePending } = useDeleteLedger({
-    organizationId: '45d0c9e6-7fb5-4675-b300-3c3fbd554559',
-    ledgerId: '74e15716-f5c6-4c86-9641-a7ffa729895c',
+    organizationId: currentOrganization.id!,
     onSuccess: () => {
       handleDialogClose()
       refetch()
@@ -73,102 +69,7 @@ const LedgersView = () => {
     }
   })
 
-  const formFields: any = [
-    {
-      name: 'name',
-      label: intl.formatMessage({
-        id: 'entity.ledger.name',
-        defaultMessage: 'Ledger Name'
-      }),
-      placeholder: intl.formatMessage({
-        id: 'common.typePlaceholder',
-        defaultMessage: 'Type...'
-      }),
-      isRequired: true
-    }
-  ]
-
-  console.log(ledgers?.items)
-
-  // const {
-  //   sheetMode,
-  //   handleOpenCreateSheet,
-  //   handleOpenViewSheet,
-  //   setSheetMode
-  // } = useSheetMode()
-
-  // const {
-  //   isDialogOpen,
-  //   setIsDialogOpen,
-  //   currentLedgerForDeletion,
-  //   handleOpenDeleteSheet,
-  //   handleConfirmDeleteLedger
-  // } = useDeleteLedger(refetch)
-
-  // const ledgersColumns = getLedgersColumns({
-  //   handleOpenViewSheet,
-  //   handleOpenDeleteSheet
-  // })
-
-  const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>()
-
-  // const sheetInfo = getSheetInfo(sheetMode.mode, sheetMode.ledgersData, intl)
-
-  const getLoadingSkeleton = () => {
-    return (
-      <React.Fragment>
-        <Skeleton className="h-[84px] w-full bg-zinc-200" />
-        <Skeleton className="mt-6 h-[390px] w-full bg-zinc-200" />
-      </React.Fragment>
-    )
-  }
-
-  const handleSubmit = async (values: LedgerEntity) => {
-    const metadataObject = Array.isArray(values.metadata)
-      ? values.metadata.reduce(
-          (
-            acc: Record<string, string>,
-            item: { key: string; value: string }
-          ) => ({
-            ...acc,
-            [item.key]: item.value
-          }),
-          {}
-        )
-      : null
-
-    const dataToSubmit: LedgerEntity = {
-      id: uuidv4(),
-      name: values.name,
-      organizationId: '45d0c9e6-7fb5-4675-b300-3c3fbd554559',
-      metadata: metadataObject,
-      status: {
-        code: 'ACTIVE',
-        description: null
-      },
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      deletedAt: null
-    }
-
-    // if (sheetMode.mode === 'create') {
-    //   await createLedgerData(dataToSubmit)
-    // }
-  }
-
-  // const sheetProps = React.useMemo(
-  //   () => ({
-  //     open: sheetMode.isOpen,
-  //     setOpen: (isOpen: boolean) => setSheetMode({ ...sheetMode, isOpen }),
-  //     fields: formFields,
-  //     formSchema: formSchema,
-  //     sheetInfo: sheetInfo,
-  //     onSubmit: handleSubmit,
-  //     mode: sheetMode.mode,
-  //     data: sheetMode.ledgersData
-  //   }),
-  //   [sheetMode, formFields, formSchema, sheetInfo, handleSubmit]
-  // )
+  const { handleCreate, sheetProps } = useCreateUpdateSheet<any>()
 
   return (
     <React.Fragment>
@@ -217,15 +118,17 @@ const LedgersView = () => {
         />
       </PageHeader.Root>
 
-      <LedgersSheet ledgerId={'123'} onSucess={refetch} {...sheetProps} />
+      <LedgersSheet onSucess={refetch} {...sheetProps} />
 
       <div className="mt-10">
-        <LedgersDataTable
-          ledgers={ledgers}
-          isLoading={isLoading}
-          table={table}
-          handleDialogOpen={handleDialogOpenWithLedgerName}
-        />
+        {ledgers && (
+          <LedgersDataTable
+            ledgers={ledgers}
+            isLoading={isLoading}
+            table={table}
+            handleDialogOpen={handleDialogOpenWithLedgerName}
+          />
+        )}
       </div>
 
       <ConfirmationDialog
@@ -237,7 +140,7 @@ const LedgersView = () => {
           {
             id: 'ledgers.deleteDialog.subtitle',
             defaultMessage:
-              'This action is irreversible. This will deactivate your Ledger forever {ledgerName}.'
+              'This action is irreversible. This will deactivate your Ledger {ledgerName} forever'
           },
           {
             ledgerName: ledgerNameToDelete

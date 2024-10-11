@@ -11,7 +11,6 @@ import {
   SheetTitle
 } from '@/components/ui/sheet'
 import { Switch } from '@/components/ui/switch'
-import { useOrganization } from '@/context/organization-provider'
 import { ledger } from '@/schema/ledger'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DialogProps } from '@radix-ui/react-dialog'
@@ -23,9 +22,9 @@ import { isNil } from 'lodash'
 import { LoadingButton } from '@/components/ui/loading-button'
 import { useCreateLedger } from '@/client/ledger-client'
 import { LedgerResponseDto } from '@/core/application/dto/ledger-response-dto'
+import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 
 export type LedgersSheetProps = DialogProps & {
-  ledgerId: string
   mode: 'create' | 'edit'
   data?: LedgerResponseDto | null
   onSucess?: () => void
@@ -44,7 +43,6 @@ const FormSchema = z.object({
 type FormData = z.infer<typeof FormSchema>
 
 export const LedgersSheet = ({
-  ledgerId,
   mode,
   data,
   onSucess,
@@ -55,7 +53,7 @@ export const LedgersSheet = ({
   const { currentOrganization } = useOrganization()
 
   const { mutate: createLedger, isPending: createPending } = useCreateLedger({
-    organizationId: '45d0c9e6-7fb5-4675-b300-3c3fbd554559',
+    organizationId: currentOrganization.id!,
     onSuccess: () => {
       onSucess?.()
       onOpenChange?.(false)

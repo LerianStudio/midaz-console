@@ -1,5 +1,5 @@
 import React from 'react'
-import { useIntl } from 'react-intl'
+import { IntlShape, useIntl } from 'react-intl'
 import {
   Table,
   TableBody,
@@ -33,22 +33,34 @@ import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet
 import useCustomToast from '@/hooks/use-custom-toast'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
+import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 
-interface LedgersTableProps {
-  ledgers: any
+type LedgersTableProps = {
+  ledgers: { items: LedgerEntity[] }
   isLoading: boolean
-  table: any
+  table: {
+    getRowModel: () => {
+      rows: { id: string; original: LedgerEntity }[]
+    }
+  }
   handleDialogOpen: (id: string, name: string) => void
 }
 
-const LedgerRow: React.FC<{
-  ledger: any
-  intl: any
-  handleCopyToClipboard: any
-  handleEdit: any
+type LedgerRowProps = {
+  ledger: { id: string; original: LedgerEntity }
+  intl: IntlShape
+  handleCopyToClipboard: (value: string, message: string) => void
+  handleEdit: (ledger: LedgerEntity) => void
   handleDialogOpen: (id: string, name: string) => void
-}> = ({ ledger, intl, handleCopyToClipboard, handleDialogOpen }) => {
-  const id = ledger.original.id
+}
+
+const LedgerRow: React.FC<LedgerRowProps> = ({
+  ledger,
+  intl,
+  handleCopyToClipboard,
+  handleDialogOpen
+}) => {
+  const id = ledger.original.id || ''
   const displayId = id && id.length > 8 ? `${truncateString(id, 8)}` : id
   const status = ledger.original.status
   const badgeVariant = status.code === 'ACTIVE' ? 'active' : 'inactive'
@@ -141,7 +153,10 @@ const LedgerRow: React.FC<{
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() =>
-                handleDialogOpen(ledger.original.id, ledger.original.name)
+                handleDialogOpen(
+                  ledger.original.id || '',
+                  ledger.original.name || ''
+                )
               }
             >
               {intl.formatMessage({
@@ -163,7 +178,7 @@ export const LedgersDataTable: React.FC<LedgersTableProps> = ({
   handleDialogOpen
 }) => {
   const intl = useIntl()
-  const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>()
+  const { handleCreate, handleEdit } = useCreateUpdateSheet<LedgerEntity>()
   const { showInfo } = useCustomToast()
 
   const handleCopyToClipboard = (value: string, message: string) => {
@@ -242,7 +257,7 @@ export const LedgersDataTable: React.FC<LedgersTableProps> = ({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {table.getRowModel().rows.map((ledger: any) => (
+              {table.getRowModel().rows.map((ledger) => (
                 <LedgerRow
                   key={ledger.id}
                   ledger={ledger}
