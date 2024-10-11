@@ -152,6 +152,12 @@ import {
   DeletePortfolio,
   DeletePortfolioUseCase
 } from '@/core/application/use-cases/portfolios/delete-portfolio-use-case'
+import { FetchPortfolioByIdRepository } from '@/core/domain/repositories/portfolios/fetch-portfolio-by-id-repository'
+import { MidazFetchPortfolioByIdRepository } from '../midaz/portfolios/midaz-fetch-portfolio-by-id-repository'
+import {
+  FetchPortfolioById,
+  FetchPortfolioByIdUseCase
+} from '@/core/application/use-cases/portfolios/fetch-portfolio-by-id-use-case'
 
 export const Registry = {
   InstrumentsAPIAdapter: Symbol.for('InstrumentsAPIAdapter'),
@@ -241,7 +247,10 @@ export const Registry = {
   CreatePortfolioRepository: Symbol.for('CreatePortfolioRepository'),
   FetchAllPortfoliosRepository: Symbol.for('FetchAllPortfoliosRepository'),
   UpdatePortfolioRepository: Symbol.for('UpdatePortfolioRepository'),
-  DeletePortfolioRepository: Symbol.for('DeletePortfolioRepository')
+  DeletePortfolioRepository: Symbol.for('DeletePortfolioRepository'),
+
+  FetchPortfolioByIdUseCase: Symbol.for('FetchPortfolioByIdUseCase'),
+  FetchPortfolioByIdRepository: Symbol.for('FetchPortfolioByIdRepository')
 }
 
 export const container = new Container()
@@ -609,5 +618,17 @@ container
   .toDynamicValue((context) => {
     return new DeletePortfolioUseCase(
       context.container.get(Registry.DeletePortfolioRepository)
+    )
+  })
+
+container
+  .bind<FetchPortfolioByIdRepository>(Registry.FetchPortfolioByIdRepository)
+  .toConstantValue(new MidazFetchPortfolioByIdRepository())
+
+container
+  .bind<FetchPortfolioById>(Registry.FetchPortfolioByIdUseCase)
+  .toDynamicValue((context) => {
+    return new FetchPortfolioByIdUseCase(
+      context.container.get(Registry.FetchPortfolioByIdRepository)
     )
   })

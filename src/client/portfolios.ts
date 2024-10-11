@@ -92,3 +92,24 @@ export const useDeletePortfolio = ({
     ...options
   })
 }
+
+type UseGetPortfolioProps = {
+  organizationId: string
+  ledgerId: string
+  portfolioId: string
+} & UseMutationOptions
+
+export const useGetPortfolio = ({
+  organizationId,
+  ledgerId,
+  portfolioId,
+  ...options
+}: UseGetPortfolioProps) => {
+  return useQuery<PortfolioResponseDto>({
+    queryKey: [organizationId, ledgerId, 'portfolio', portfolioId],
+    queryFn: getFetcher(
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}`
+    ),
+    ...options
+  })
+}

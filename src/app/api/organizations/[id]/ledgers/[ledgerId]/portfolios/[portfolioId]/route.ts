@@ -1,5 +1,6 @@
 import { apiErrorHandler } from '@/app/api/utils/api-error-handler'
 import { DeletePortfolio } from '@/core/application/use-cases/portfolios/delete-portfolio-use-case'
+import { FetchPortfolioById } from '@/core/application/use-cases/portfolios/fetch-portfolio-by-id-use-case'
 import { UpdatePortfolio } from '@/core/application/use-cases/portfolios/update-portfolio-use-case'
 import {
   container,
@@ -14,6 +15,9 @@ const deletePortfolioUseCase: DeletePortfolio = container.get<DeletePortfolio>(
 const updatePortfolioUseCase: UpdatePortfolio = container.get<UpdatePortfolio>(
   Registry.UpdatePortfolioUseCase
 )
+
+const getPortfolioByIdUseCase: FetchPortfolioById =
+  container.get<FetchPortfolioById>(Registry.FetchPortfolioByIdUseCase)
 
 export async function DELETE(
   request: Request,
@@ -55,6 +59,30 @@ export async function PATCH(
     return NextResponse.json(portfolioUpdated)
   } catch (error: any) {
     console.error('Error updating portfolio', error)
+    const { message, status } = await apiErrorHandler(error)
+
+    return NextResponse.json({ message }, { status })
+  }
+}
+
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string; ledgerId: string; portfolioId: string } }
+) {
+  try {
+    const organizationId = params.id
+    const ledgerId = params.ledgerId
+    const portfolioId = params.portfolioId
+
+    const portfolio = await getPortfolioByIdUseCase.execute(
+      organizationId,
+      ledgerId,
+      portfolioId
+    )
+
+    return NextResponse.json(portfolio)
+  } catch (error: any) {
+    console.error('Error getting portfolio', error)
     const { message, status } = await apiErrorHandler(error)
 
     return NextResponse.json({ message }, { status })
