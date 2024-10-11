@@ -140,6 +140,19 @@ import {
   FetchAllPortfoliosUseCase
 } from '@/core/application/use-cases/portfolios/fetch-all-portfolio-use-case'
 
+import { UpdatePortfolioRepository } from '@/core/domain/repositories/portfolios/update-portfolio-repository'
+import { MidazUpdatePortfolioRepository } from '../midaz/portfolios/midaz-update-portfolio-repository'
+import {
+  UpdatePortfolio,
+  UpdatePortfolioUseCase
+} from '@/core/application/use-cases/portfolios/update-portfolio-use-case'
+import { DeletePortfolioRepository } from '@/core/domain/repositories/portfolios/delete-portfolio-repository'
+import { MidazDeletePortfolioRepository } from '../midaz/portfolios/midaz-delete-portfolio-repository'
+import {
+  DeletePortfolio,
+  DeletePortfolioUseCase
+} from '@/core/application/use-cases/portfolios/delete-portfolio-use-case'
+
 export const Registry = {
   InstrumentsAPIAdapter: Symbol.for('InstrumentsAPIAdapter'),
   OryAuthAPIAdapter: Symbol.for('OryAuthAPIAdapter'),
@@ -217,15 +230,18 @@ export const Registry = {
   DeleteProductRepository: Symbol.for('DeleteProductRepository'),
 
   CreatePortfolioSymbolUseCase: Symbol.for('CreatePortfolioSymbolUseCase'),
+  UpdatePortfolioUseCase: Symbol.for('UpdatePortfolioUseCase'),
+  CreatePortfolioUseCase: Symbol.for('CreatePortfolioUseCase'),
+  FetchAllPortfoliosUseCase: Symbol.for('FetchAllPortfoliosUseCase'),
+  DeletePortfolioUseCase: Symbol.for('DeletePortfolioUseCase'),
+
   CreatePortfolioSymbolRepository: Symbol.for(
     'CreatePortfolioSymbolRepository'
   ),
-
-  // Portfolios
-  CreatePortfolioUseCase: Symbol.for('CreatePortfolioUseCase'),
   CreatePortfolioRepository: Symbol.for('CreatePortfolioRepository'),
-  FetchAllPortfoliosUseCase: Symbol.for('FetchAllPortfoliosUseCase'),
-  FetchAllPortfoliosRepository: Symbol.for('FetchAllPortfoliosRepository')
+  FetchAllPortfoliosRepository: Symbol.for('FetchAllPortfoliosRepository'),
+  UpdatePortfolioRepository: Symbol.for('UpdatePortfolioRepository'),
+  DeletePortfolioRepository: Symbol.for('DeletePortfolioRepository')
 }
 
 export const container = new Container()
@@ -522,12 +538,12 @@ container
     )
   })
 
+// Portfolio Use Cases
 container
   .bind<PortfoliosAPIAdapter>(Registry.PortfolioAPIAdapter)
   .toDynamicValue((context) => {
     return new PortfoliosAPIAdapter()
   })
-// Portfolio Use Cases
 container
   .bind<PortfoliosUseCases>(Registry.PortfolioUseCases)
   .toDynamicValue((context) => {
@@ -569,5 +585,29 @@ container
   .toDynamicValue((context) => {
     return new FetchAllPortfoliosUseCase(
       context.container.get(Registry.FetchAllPortfoliosRepository)
+    )
+  })
+
+container
+  .bind<UpdatePortfolioRepository>(Registry.UpdatePortfolioRepository)
+  .toConstantValue(new MidazUpdatePortfolioRepository())
+
+container
+  .bind<UpdatePortfolio>(Registry.UpdatePortfolioUseCase)
+  .toDynamicValue((context) => {
+    return new UpdatePortfolioUseCase(
+      context.container.get(Registry.UpdatePortfolioRepository)
+    )
+  })
+
+container
+  .bind<DeletePortfolioRepository>(Registry.DeletePortfolioRepository)
+  .toConstantValue(new MidazDeletePortfolioRepository())
+
+container
+  .bind<DeletePortfolio>(Registry.DeletePortfolioUseCase)
+  .toDynamicValue((context) => {
+    return new DeletePortfolioUseCase(
+      context.container.get(Registry.DeletePortfolioRepository)
     )
   })

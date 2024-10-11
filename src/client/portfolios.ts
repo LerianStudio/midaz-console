@@ -1,6 +1,15 @@
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
+import {
+  PortfolioResponseDto,
+  UpdatePortfolioDto
+} from '@/core/application/dto/portfolios-dto'
 import { PortfoliosEntity } from '@/core/domain/entities/portfolios-entity'
-import { getFetcher, postFetcher } from '@/lib/fetcher'
+import {
+  getFetcher,
+  postFetcher,
+  patchFetcher,
+  deleteFetcher
+} from '@/lib/fetcher'
 import {
   useMutation,
   UseMutationOptions,
@@ -42,4 +51,44 @@ export const useListPortfolios = ({
   })
 }
 
-// Existing createPortfolio and getPortfolios functions can be removed or kept as needed
+type UseUpdatePortfolioProps = UseMutationOptions & {
+  organizationId: string
+  ledgerId: string
+  portfolioId: string
+}
+
+export const useUpdatePortfolio = ({
+  organizationId,
+  ledgerId,
+  portfolioId,
+  ...options
+}: UseUpdatePortfolioProps) => {
+  return useMutation<any, any, any>({
+    mutationKey: [organizationId, ledgerId, portfolioId],
+    mutationFn: patchFetcher(
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}`
+    ),
+    ...options
+  })
+}
+
+type UseDeletePortfolioProps = UseMutationOptions & {
+  organizationId: string
+  ledgerId: string
+  portfolioId: string
+}
+
+export const useDeletePortfolio = ({
+  organizationId,
+  ledgerId,
+  portfolioId,
+  ...options
+}: UseDeletePortfolioProps) => {
+  return useMutation<any, any, any>({
+    mutationKey: [organizationId, ledgerId, portfolioId],
+    mutationFn: deleteFetcher(
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}`
+    ),
+    ...options
+  })
+}

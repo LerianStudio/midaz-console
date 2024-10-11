@@ -31,7 +31,7 @@ export function portfolioDtoToEntity(
     ledgerId: dto.ledgerId,
     organizationId: dto.organizationId,
     status: dto.status,
-    metadata: dto.metadata
+    metadata: dto.metadata ?? {}
   }
 }
 

@@ -7,10 +7,10 @@ export class MidazDeletePortfolioRepository implements DeleteProductRepository {
   async delete(
     organizationId: string,
     ledgerId: string,
-    productId: string
+    portfolioId: string
   ): Promise<void> {
     const response = await fetch(
-      `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/products/${productId}`,
+      `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}`,
       {
         method: 'DELETE',
         headers: {

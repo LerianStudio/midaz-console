@@ -17,9 +17,9 @@ export interface PortfolioResponseDto {
   name: string
   status: StatusDto
   metadata: Record<string, any> | null
-  createdAt?: string
-  updatedAt?: string
-  deletedAt?: string | null
+  createdAt?: Date
+  updatedAt?: Date
+  deletedAt?: Date | null
 }
 
 export interface UpdatePortfolioDto {
