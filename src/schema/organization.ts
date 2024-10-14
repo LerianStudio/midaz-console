@@ -3,7 +3,7 @@ import { address } from './address'
 
 const id = z.string().optional()
 
-const parentOrganizationId = z.string().optional()
+const parentOrganizationId = z.string().optional().nullable()
 
 const legalName = z.string().min(1)
 
