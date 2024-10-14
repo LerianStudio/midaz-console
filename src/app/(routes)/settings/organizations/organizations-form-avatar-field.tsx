@@ -37,7 +37,7 @@ export const AvatarField = React.forwardRef<unknown, AvatarFieldProps>(
     }
 
     return (
-      <div className="mb-4 flex justify-center">
+      <div className="mb-4 flex flex-col items-center justify-center gap-4">
         <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
           <DialogTrigger onClick={() => setOpen(true)}>
             <Avatar className="flex h-44 w-44 items-center justify-center rounded-[30px] border border-zinc-300 bg-zinc-200 shadow hover:border-zinc-400">

@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import type { OrganizationsType } from '@/types/organizations-type'
 import { Card } from '@/components/card'
 import { Separator } from '@/components/ui/separator'
@@ -10,23 +11,15 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import {
-  RenderCountryField,
-  RenderField,
-  RenderParentIdField,
-  RenderStateField
-} from '@/components/sheet/fields/render-field'
-import React from 'react'
-import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger
 } from '@/components/ui/collapsible'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useParentOrganizations } from '@/utils/queries'
 import { useIntl } from 'react-intl'
 import { MetadataField } from '@/components/form/metadata-field'
-import { InputField } from '@/components/form'
+import { CountryField, InputField, StateField } from '@/components/form'
 import { organization } from '@/schema/organization'
 import { OrganizationsFormColorField } from './organizations-form-color-field'
 import { OrganizationsFormAvatarField } from './organizations-form-avatar-field'
@@ -35,6 +28,8 @@ import {
   useUpdateOrganization
 } from '@/client/organizations'
 import { LoadingButton } from '@/components/ui/loading-button'
+import { omit } from 'lodash'
+import { OrganizationsFormParentIdField } from './organizations-form-parent-id-field'
 
 type OrganizationsViewProps = {
   data?: OrganizationsType
@@ -50,8 +45,7 @@ const formSchema = z.object({
   address: z.object(organization.address),
   metadata: organization.metadata,
   organizationAccentColor: organization.organizationAccentColor,
-  organizationAvatar: organization.organizationAvatar,
-  status: organization.status
+  organizationAvatar: organization.organizationAvatar
 })
 
 const defaultValues = {
@@ -64,7 +58,6 @@ const defaultValues = {
     country: '',
     state: '',
     city: '',
-    neighborhood: '',
     zipCode: ''
   },
   organizationAccentColor: '',
@@ -72,7 +65,34 @@ const defaultValues = {
   metadata: {}
 }
 
-type OrganizationFormData = z.infer<typeof formSchema>
+const parseInputMetadata = (data?: Partial<OrganizationFormData>) => ({
+  ...data,
+  organizationAccentColor: data?.metadata?.organizationAccentColor,
+  organizationAvatar: data?.metadata?.organizationAvatar,
+  metadata:
+    omit(data?.metadata, ['organizationAccentColor', 'organizationAvatar']) ||
+    defaultValues.metadata
+})
+
+const parseInputData = (data?: OrganizationsType) =>
+  Object.assign({}, defaultValues, parseInputMetadata(omit(data, ['status'])))
+
+const parseMetadata = (data?: Partial<OrganizationFormData>) => ({
+  ...omit(data, ['organizationAccentColor', 'organizationAvatar']),
+  metadata: {
+    ...data?.metadata,
+    organizationAccentColor: data?.organizationAccentColor,
+    organizationAvatar: data?.organizationAvatar
+  }
+})
+
+export const parseCreateData = (data?: OrganizationFormData) =>
+  parseMetadata(data)
+
+export const parseUpdateData = (data?: OrganizationFormData) =>
+  parseMetadata(omit(data, ['id', 'legalDocument']))
+
+export type OrganizationFormData = z.infer<typeof formSchema>
 
 export const OrganizationsForm = ({
   data,
@@ -82,7 +102,6 @@ export const OrganizationsForm = ({
   const router = useRouter()
   const [showMetadataCollapse, setShowMetadataCollapse] = React.useState(false)
   const isNewOrganization = !data
-  const parentOrganizations = useParentOrganizations()
 
   const { mutate: createOrganization, isPending: createPending } =
     useCreateOrganization({
@@ -90,20 +109,20 @@ export const OrganizationsForm = ({
     })
   const { mutate: updateOrganization, isPending: updatePending } =
     useUpdateOrganization({
+      organizationId: data?.id!,
       onSuccess
     })
 
   const form = useForm<OrganizationFormData>({
     resolver: zodResolver(formSchema),
-    values: data,
-    defaultValues
+    defaultValues: parseInputData(data!)
   })
 
   const handleSubmit = (values: OrganizationFormData) => {
     if (isNewOrganization) {
-      createOrganization(values)
+      createOrganization(parseCreateData(values))
     } else {
-      updateOrganization(values)
+      updateOrganization(parseUpdateData(values))
     }
   }
 
@@ -132,20 +151,18 @@ export const OrganizationsForm = ({
 
               <CardContent className="grid grid-cols-2 gap-5 p-6">
                 {!isNewOrganization && (
-                  <RenderField
-                    field={{
-                      name: 'id',
-                      label: intl.formatMessage({
-                        id: 'organizations.organizationView.formFields.id',
-                        defaultMessage: 'Organization ID'
-                      }),
-                      placeholder: intl.formatMessage({
-                        id: 'common.typePlaceholder',
-                        defaultMessage: 'Type...'
-                      })
-                    }}
-                    isDisabled={true}
-                    form={form}
+                  <InputField
+                    name="id"
+                    label={intl.formatMessage({
+                      id: 'organizations.organizationView.formFields.id',
+                      defaultMessage: 'Organization ID'
+                    })}
+                    placeholder={intl.formatMessage({
+                      id: 'common.typePlaceholder',
+                      defaultMessage: 'Type...'
+                    })}
+                    control={form.control}
+                    disabled
                   />
                 )}
 
@@ -218,34 +235,30 @@ export const OrganizationsForm = ({
                   control={form.control}
                 />
 
-                <RenderCountryField
-                  field={{
-                    name: 'address.country',
-                    label: intl.formatMessage({
-                      id: 'organizations.organizationView.formFields.country',
-                      defaultMessage: 'Country'
-                    }),
-                    placeholder: intl.formatMessage({
-                      id: 'common.selectPlaceholder',
-                      defaultMessage: 'Select...'
-                    })
-                  }}
-                  form={form}
+                <CountryField
+                  name="address.country"
+                  label={intl.formatMessage({
+                    id: 'organizations.organizationView.formFields.country',
+                    defaultMessage: 'Country'
+                  })}
+                  placeholder={intl.formatMessage({
+                    id: 'common.selectPlaceholder',
+                    defaultMessage: 'Select...'
+                  })}
+                  control={form.control}
                 />
 
-                <RenderStateField
-                  field={{
-                    name: 'address.state',
-                    label: intl.formatMessage({
-                      id: 'organizations.organizationView.formFields.state',
-                      defaultMessage: 'State'
-                    }),
-                    placeholder: intl.formatMessage({
-                      id: 'common.selectPlaceholder',
-                      defaultMessage: 'Select...'
-                    })
-                  }}
-                  form={form}
+                <StateField
+                  name="address.state"
+                  label={intl.formatMessage({
+                    id: 'organizations.organizationView.formFields.state',
+                    defaultMessage: 'State'
+                  })}
+                  placeholder={intl.formatMessage({
+                    id: 'common.selectPlaceholder',
+                    defaultMessage: 'Select...'
+                  })}
+                  control={form.control}
                 />
 
                 <InputField
@@ -253,19 +266,6 @@ export const OrganizationsForm = ({
                   label={intl.formatMessage({
                     id: 'organizations.organizationView.formFields.city',
                     defaultMessage: 'City'
-                  })}
-                  placeholder={intl.formatMessage({
-                    id: 'common.typePlaceholder',
-                    defaultMessage: 'Type...'
-                  })}
-                  control={form.control}
-                />
-
-                <InputField
-                  name="address.neighborhood"
-                  label={intl.formatMessage({
-                    id: 'organizations.organizationView.formFields.neighborhood',
-                    defaultMessage: 'Neighborhood'
                   })}
                   placeholder={intl.formatMessage({
                     id: 'common.typePlaceholder',
@@ -291,53 +291,23 @@ export const OrganizationsForm = ({
               <Separator />
 
               <CardContent className="grid grid-cols-2 gap-5 p-6">
-                {!isNewOrganization && (
-                  <RenderField
-                    field={{
-                      name: 'parentOrganizationId',
-                      label: intl.formatMessage({
-                        id: 'organizations.organizationView.formFields.parentOrganization',
-                        defaultMessage: 'Parent Organization'
-                      }),
-                      placeholder: intl.formatMessage({
-                        id: 'organizations.organizationView.notApplicable',
-                        defaultMessage: 'N/A'
-                      })
-                    }}
-                    isDisabled={true}
-                    form={form}
-                  />
-                )}
-
-                {isNewOrganization && !parentOrganizations.isLoading && (
-                  <RenderParentIdField
-                    field={{
-                      name: 'parentOrganizationId',
-                      label: intl.formatMessage({
-                        id: 'organizations.organizationView.formFields.parentOrganization',
-                        defaultMessage: 'Parent Organization'
-                      }),
-                      placeholder: intl.formatMessage({
-                        id: 'common.selectPlaceholder',
-                        defaultMessage: 'Select...'
-                      }),
-                      description: intl.formatMessage({
-                        id: 'organizations.organizationView.informationText.parentOrganizationText',
-                        defaultMessage:
-                          'Select if your Organization is affiliated with another'
-                      }),
-                      options:
-                        parentOrganizations?.data?.length > 0
-                          ? parentOrganizations.data
-                          : []
-                    }}
-                    isDisabled={
-                      parentOrganizations?.data?.length === 0 ||
-                      !isNewOrganization
-                    }
-                    form={form}
-                  />
-                )}
+                <OrganizationsFormParentIdField
+                  name="parentOrganizationId"
+                  label={intl.formatMessage({
+                    id: 'organizations.organizationView.formFields.parentOrganization',
+                    defaultMessage: 'Parent Organization'
+                  })}
+                  placeholder={intl.formatMessage({
+                    id: 'common.selectPlaceholder',
+                    defaultMessage: 'Select...'
+                  })}
+                  description={intl.formatMessage({
+                    id: 'organizations.organizationView.informationText.parentOrganizationText',
+                    defaultMessage:
+                      'Select if your Organization is affiliated with another'
+                  })}
+                  control={form.control}
+                />
               </CardContent>
             </Card.Root>
 
