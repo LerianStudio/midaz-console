@@ -16,7 +16,7 @@ const Page = () => {
   const handleSuccess = () => {
     showSuccess(
       intl.formatMessage({
-        id: 'organizations.toast.createdSuccess',
+        id: 'organizations.toast.create.success',
         defaultMessage: 'Organization created!'
       })
     )

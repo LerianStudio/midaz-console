@@ -20,7 +20,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   const handleSuccess = () => {
     showSuccess(
       intl.formatMessage({
-        id: 'organizations.organizationView.successMessage',
+        id: 'organizations.toast.update.success',
         defaultMessage: 'Organization updated successfully!'
       })
     )

@@ -44,8 +44,8 @@ const formSchema = z.object({
   legalDocument: organization.legalDocument,
   address: z.object(organization.address),
   metadata: organization.metadata,
-  organizationAccentColor: organization.organizationAccentColor,
-  organizationAvatar: organization.organizationAvatar
+  accentColor: organization.accentColor,
+  avatar: organization.avatar
 })
 
 const defaultValues = {
@@ -60,29 +60,28 @@ const defaultValues = {
     city: '',
     zipCode: ''
   },
-  organizationAccentColor: '',
-  organizationAvatar: '',
+  accentColor: '',
+  avatar: '',
   metadata: {}
 }
 
 const parseInputMetadata = (data?: Partial<OrganizationFormData>) => ({
   ...data,
-  organizationAccentColor: data?.metadata?.organizationAccentColor,
-  organizationAvatar: data?.metadata?.organizationAvatar,
+  accentColor: data?.metadata?.accentColor,
+  avatar: data?.metadata?.avatar,
   metadata:
-    omit(data?.metadata, ['organizationAccentColor', 'organizationAvatar']) ||
-    defaultValues.metadata
+    omit(data?.metadata, ['accentColor', 'avatar']) || defaultValues.metadata
 })
 
 const parseInputData = (data?: OrganizationsType) =>
   Object.assign({}, defaultValues, parseInputMetadata(omit(data, ['status'])))
 
 const parseMetadata = (data?: Partial<OrganizationFormData>) => ({
-  ...omit(data, ['organizationAccentColor', 'organizationAvatar']),
+  ...omit(data, ['accentColor', 'avatar']),
   metadata: {
     ...data?.metadata,
-    organizationAccentColor: data?.organizationAccentColor,
-    organizationAvatar: data?.organizationAvatar
+    accentColor: data?.accentColor,
+    avatar: data?.avatar
   }
 })
 
@@ -118,6 +117,8 @@ export const OrganizationsForm = ({
     defaultValues: parseInputData(data!)
   })
 
+  const metadataValue = form.watch('metadata')
+
   const handleSubmit = (values: OrganizationFormData) => {
     if (isNewOrganization) {
       createOrganization(parseCreateData(values))
@@ -136,12 +137,12 @@ export const OrganizationsForm = ({
                 title={
                   isNewOrganization
                     ? intl.formatMessage({
-                        id: 'organizations.organizationView.newOrganization.description',
+                        id: 'organizations.organizationForm.newOrganization.description',
                         defaultMessage:
                           'Fill in the details of the Organization you wish to create.'
                       })
                     : intl.formatMessage({
-                        id: 'organizations.organizationView.editOrganization.description',
+                        id: 'organizations.organizationForm.editOrganization.description',
                         defaultMessage: 'View and edit the Organization fields.'
                       })
                 }
@@ -154,7 +155,7 @@ export const OrganizationsForm = ({
                   <InputField
                     name="id"
                     label={intl.formatMessage({
-                      id: 'organizations.organizationView.formFields.id',
+                      id: 'entity.organization.id',
                       defaultMessage: 'Organization ID'
                     })}
                     placeholder={intl.formatMessage({
@@ -169,7 +170,7 @@ export const OrganizationsForm = ({
                 <InputField
                   name="legalName"
                   label={intl.formatMessage({
-                    id: 'organizations.organizationView.formFields.legalName',
+                    id: 'entity.organization.legalName',
                     defaultMessage: 'Legal Name'
                   })}
                   placeholder={intl.formatMessage({
@@ -182,7 +183,7 @@ export const OrganizationsForm = ({
                 <InputField
                   name="doingBusinessAs"
                   label={intl.formatMessage({
-                    id: 'organizations.organizationView.formFields.doingBusinessAs',
+                    id: 'entity.organization.doingBusinessAs',
                     defaultMessage: 'Trade Name'
                   })}
                   placeholder={intl.formatMessage({
@@ -195,7 +196,7 @@ export const OrganizationsForm = ({
                 <InputField
                   name="legalDocument"
                   label={intl.formatMessage({
-                    id: 'organizations.organizationView.formFields.legalDocument',
+                    id: 'entity.organization.legalDocument',
                     defaultMessage: 'Document'
                   })}
                   placeholder={intl.formatMessage({
@@ -203,6 +204,7 @@ export const OrganizationsForm = ({
                     defaultMessage: 'Type...'
                   })}
                   control={form.control}
+                  disabled={!isNewOrganization}
                 />
               </CardContent>
 
@@ -212,7 +214,7 @@ export const OrganizationsForm = ({
                 <InputField
                   name="address.line1"
                   label={intl.formatMessage({
-                    id: 'organizations.organizationView.formFields.address',
+                    id: 'entity.address',
                     defaultMessage: 'Address'
                   })}
                   placeholder={intl.formatMessage({
@@ -225,7 +227,7 @@ export const OrganizationsForm = ({
                 <InputField
                   name="address.line2"
                   label={intl.formatMessage({
-                    id: 'organizations.organizationView.formFields.complement',
+                    id: 'entity.address.complement',
                     defaultMessage: 'Complement'
                   })}
                   placeholder={intl.formatMessage({
@@ -238,7 +240,7 @@ export const OrganizationsForm = ({
                 <CountryField
                   name="address.country"
                   label={intl.formatMessage({
-                    id: 'organizations.organizationView.formFields.country',
+                    id: 'entity.address.country',
                     defaultMessage: 'Country'
                   })}
                   placeholder={intl.formatMessage({
@@ -251,7 +253,7 @@ export const OrganizationsForm = ({
                 <StateField
                   name="address.state"
                   label={intl.formatMessage({
-                    id: 'organizations.organizationView.formFields.state',
+                    id: 'entity.address.state',
                     defaultMessage: 'State'
                   })}
                   placeholder={intl.formatMessage({
@@ -264,7 +266,7 @@ export const OrganizationsForm = ({
                 <InputField
                   name="address.city"
                   label={intl.formatMessage({
-                    id: 'organizations.organizationView.formFields.city',
+                    id: 'entity.address.city',
                     defaultMessage: 'City'
                   })}
                   placeholder={intl.formatMessage({
@@ -277,7 +279,7 @@ export const OrganizationsForm = ({
                 <InputField
                   name="address.zipCode"
                   label={intl.formatMessage({
-                    id: 'organizations.organizationView.formFields.zipCode',
+                    id: 'entity.address.zipCode',
                     defaultMessage: 'ZIP Code'
                   })}
                   placeholder={intl.formatMessage({
@@ -294,7 +296,7 @@ export const OrganizationsForm = ({
                 <OrganizationsFormParentIdField
                   name="parentOrganizationId"
                   label={intl.formatMessage({
-                    id: 'organizations.organizationView.formFields.parentOrganization',
+                    id: 'entity.organization.parentOrganization',
                     defaultMessage: 'Parent Organization'
                   })}
                   placeholder={intl.formatMessage({
@@ -302,7 +304,7 @@ export const OrganizationsForm = ({
                     defaultMessage: 'Select...'
                   })}
                   description={intl.formatMessage({
-                    id: 'organizations.organizationView.informationText.parentOrganizationText',
+                    id: 'organizations.organizationForm.parentOrganizationText',
                     defaultMessage:
                       'Select if your Organization is affiliated with another'
                   })}
@@ -321,20 +323,21 @@ export const OrganizationsForm = ({
                     <div>
                       <Card.Header
                         className="text-lg font-medium normal-case text-zinc-600"
-                        title="Metadata"
+                        title={intl.formatMessage({
+                          id: 'common.metadata',
+                          defaultMessage: 'Metadata'
+                        })}
                       />
 
                       <p className="self-stretch text-xs font-normal italic text-zinc-400">
                         {intl.formatMessage(
                           {
-                            id: 'organizations.organizationView.informationText.metadataRegisterCountText',
+                            id: 'organizations.organizationForm.metadataRegisterCountText',
                             defaultMessage:
                               '{count} added {count, plural, =0 {records} one {record} other {records}}'
                           },
                           {
-                            count: Object.entries(
-                              form.getValues('metadata') || 0
-                            ).length
+                            count: Object.entries(metadataValue || 0).length
                           }
                         )}
                       </p>
@@ -369,16 +372,16 @@ export const OrganizationsForm = ({
               <Card.Header
                 className="text-md w-full font-medium normal-case text-zinc-600"
                 title={intl.formatMessage({
-                  id: 'organizations.organizationView.formFields.avatar',
+                  id: 'entity.organization.avatar',
                   defaultMessage: 'Avatar'
                 })}
               />
 
               <CardContent className="p-0">
                 <OrganizationsFormAvatarField
-                  name="organizationAvatar"
+                  name="avatar"
                   description={intl.formatMessage({
-                    id: 'organizations.organizationView.informationText.avatarInformationText',
+                    id: 'organizations.organizationForm.avatarInformationText',
                     defaultMessage:
                       'Organization Symbol, which will be applied in the UI. \nFormat: SVG or PNG, 512x512 px.'
                   })}
@@ -391,16 +394,16 @@ export const OrganizationsForm = ({
               <Card.Header
                 className="text-sm font-medium text-zinc-600"
                 title={intl.formatMessage({
-                  id: 'organizations.organizationView.formFields.accentColor',
+                  id: 'entity.organization.accentColor',
                   defaultMessage: 'Accent Color'
                 })}
               />
 
               <CardContent className="flex items-start justify-start gap-2 rounded-lg p-0">
                 <OrganizationsFormColorField
-                  name="organizationAccentColor"
+                  name="accentColor"
                   description={intl.formatMessage({
-                    id: 'organizations.organizationView.informationText.accentColorInformationText',
+                    id: 'organizations.organizationForm.accentColorInformationText',
                     defaultMessage:
                       'Brand color, which will be used specifically in the UI. \nFormat: Hexadecimal/HEX (Ex. #FF0000);'
                   })}
@@ -420,7 +423,7 @@ export const OrganizationsForm = ({
                 onClick={() => router.back()}
               >
                 {intl.formatMessage({
-                  id: 'organizations.organizationView.cancel',
+                  id: 'common.cancel',
                   defaultMessage: 'Cancel'
                 })}
               </Button>
@@ -430,11 +433,11 @@ export const OrganizationsForm = ({
               >
                 {isNewOrganization
                   ? intl.formatMessage({
-                      id: 'organizations.organizationView.newOrganization.button',
+                      id: 'organizations.organizationForm.createOrganization',
                       defaultMessage: 'Create Organization'
                     })
                   : intl.formatMessage({
-                      id: 'organizations.organizationView.editOrganization.button',
+                      id: 'common.save',
                       defaultMessage: 'Save'
                     })}
               </LoadingButton>
