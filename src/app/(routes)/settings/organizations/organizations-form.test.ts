@@ -24,16 +24,16 @@ describe('parseCreateData', () => {
       metadata: {
         key1: 'value1'
       },
-      organizationAccentColor: '#FF0000',
-      organizationAvatar: 'avatar.png'
+      accentColor: '#FF0000',
+      avatar: 'avatar.png'
     }
 
     const expectedOutput = {
-      ...omit(input, ['organizationAccentColor', 'organizationAvatar']),
+      ...omit(input, ['accentColor', 'avatar']),
       metadata: {
         ...input.metadata,
-        organizationAccentColor: input.organizationAccentColor,
-        organizationAvatar: input.organizationAvatar
+        accentColor: input.accentColor,
+        avatar: input.avatar
       }
     }
 
@@ -60,21 +60,16 @@ describe('parseUpdateData', () => {
       metadata: {
         key1: 'value1'
       },
-      organizationAccentColor: '#FF0000',
-      organizationAvatar: 'avatar.png'
+      accentColor: '#FF0000',
+      avatar: 'avatar.png'
     }
 
     const expectedOutput = {
-      ...omit(input, [
-        'id',
-        'legalDocument',
-        'organizationAccentColor',
-        'organizationAvatar'
-      ]),
+      ...omit(input, ['id', 'legalDocument', 'accentColor', 'avatar']),
       metadata: {
         ...input.metadata,
-        organizationAccentColor: input.organizationAccentColor,
-        organizationAvatar: input.organizationAvatar
+        accentColor: input.accentColor,
+        avatar: input.avatar
       }
     }
 
