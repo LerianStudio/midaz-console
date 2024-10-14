@@ -6,7 +6,11 @@ import {
   patchFetcher,
   postFetcher
 } from '@/lib/fetcher'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import {
+  useMutation,
+  UseMutationOptions,
+  useQuery
+} from '@tanstack/react-query'
 
 export const useListOrganizations = ({ ...options }) => {
   return useQuery<PaginationDto<OrganizationEntity>>({
@@ -39,10 +43,13 @@ export const useCreateOrganization = ({ ...options }) => {
   })
 }
 
-export const useUpdateOrganization = ({ ...options }) => {
+export const useUpdateOrganization = ({
+  organizationId,
+  ...options
+}: UseGetOrganizationProps & UseMutationOptions<any, any, any>) => {
   return useMutation({
     mutationKey: ['organizations'],
-    mutationFn: patchFetcher(`/api/organizations`),
+    mutationFn: patchFetcher(`/api/organizations/${organizationId}`),
     ...options
   })
 }
