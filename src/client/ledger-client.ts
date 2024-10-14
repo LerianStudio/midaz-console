@@ -43,7 +43,9 @@ const useListLedgers = ({
 }: UseListLedgersProps) => {
   return useQuery<PaginationDto<LedgerResponseDto>>({
     queryKey: [organizationId],
-    queryFn: getFetcher(`/api/organizations/${organizationId}/ledgers`),
+    queryFn: getFetcher(
+      `/api/organizations/${organizationId}/ledgers/ledgers-assets`
+    ),
     ...options
   })
 }

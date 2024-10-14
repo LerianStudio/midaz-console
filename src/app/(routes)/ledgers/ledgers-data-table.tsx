@@ -65,6 +65,7 @@ const LedgerRow: React.FC<LedgerRowProps> = ({
   const status = ledger.original.status
   const badgeVariant = status.code === 'ACTIVE' ? 'active' : 'inactive'
   const metadataCount = Object.entries(ledger.original.metadata || []).length
+  const assetsItems = ledger.original.assets || []
 
   return (
     <TableRow key={ledger.id}>
@@ -102,7 +103,16 @@ const LedgerRow: React.FC<LedgerRowProps> = ({
       </TableCell>
       <TableCell>{ledger.original.name}</TableCell>
       <TableCell>
-        <p>...</p>
+        {assetsItems.length > 0 ? (
+          <p>{assetsItems.map((asset: any) => asset.code).join(', ')}</p>
+        ) : (
+          <p className="text-shadcn-600 underline">
+            {intl.formatMessage({
+              id: 'common.add',
+              defaultMessage: 'Add'
+            })}
+          </p>
+        )}
       </TableCell>
       <TableCell>
         {metadataCount === 0 ? (
