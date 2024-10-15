@@ -16,17 +16,11 @@ export class MidazFetchAllLedgersRepository
   ): Promise<PaginationEntity<LedgerEntity>> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers?limit=${limit}&page=${page}`
 
-    const response = await httpMidazAuthFetch({
+    const response = await httpMidazAuthFetch<PaginationEntity<LedgerEntity>>({
       url,
       method: HTTP_METHODS.GET
     })
 
-    const midazResponse = await response.json()
-
-    if (!response.ok) {
-      throw await handleMidazError(midazResponse)
-    }
-
-    return midazResponse
+    return response
   }
 }

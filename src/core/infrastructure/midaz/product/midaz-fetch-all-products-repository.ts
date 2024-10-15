@@ -17,18 +17,11 @@ export class MidazFetchAllProductsRepository
   ): Promise<PaginationEntity<ProductEntity>> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/products?limit=${limit}&page=${page}`
 
-    const response = await httpMidazAuthFetch({
+    const response = await httpMidazAuthFetch<PaginationEntity<ProductEntity>>({
       url,
       method: HTTP_METHODS.GET
     })
 
-    const midazResponse = await response.json()
-
-    if (!response.ok) {
-      console.error('MidazFetchAllProductsRepository', midazResponse)
-      throw await handleMidazError(midazResponse)
-    }
-
-    return midazResponse
+    return response
   }
 }

@@ -12,19 +12,12 @@ export class MidazUpdateLedgerRepository implements UpdateLedgerRepository {
   ): Promise<LedgerEntity> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}`
 
-    const response = await httpMidazAuthFetch({
+    const response = await httpMidazAuthFetch<LedgerEntity>({
       url,
       method: HTTP_METHODS.PATCH,
       body: JSON.stringify(ledger)
     })
 
-    const midazResponse = await response.json()
-
-    if (!response.ok) {
-      console.error('MidazUpdateLedgerRepository', midazResponse)
-      throw await handleMidazError(midazResponse)
-    }
-
-    return midazResponse
+    return response
   }
 }

@@ -14,18 +14,11 @@ export class MidazFetchLedgerByIdRepository
   ): Promise<LedgerEntity> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}`
 
-    const response = await httpMidazAuthFetch({
+    const response = await httpMidazAuthFetch<LedgerEntity>({
       url,
       method: HTTP_METHODS.GET
     })
 
-    const midazResponse = await response.json()
-
-    if (!response.ok) {
-      console.error('midazResponse', midazResponse)
-      throw await handleMidazError(midazResponse)
-    }
-
-    return midazResponse
+    return response
   }
 }

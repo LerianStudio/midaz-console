@@ -12,19 +12,12 @@ export class MidazCreateAssetRepository implements CreateAssetRepository {
   ): Promise<AssetEntity> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets`
 
-    const response = await httpMidazAuthFetch({
+    const response = await httpMidazAuthFetch<AssetEntity>({
       url,
       method: HTTP_METHODS.POST,
       body: JSON.stringify(asset)
     })
 
-    const midazResponse = await response.json()
-
-    if (!response.ok) {
-      console.error('MidazCreateAssetRepository', midazResponse)
-      throw await handleMidazError(midazResponse)
-    }
-
-    return midazResponse
+    return response
   }
 }

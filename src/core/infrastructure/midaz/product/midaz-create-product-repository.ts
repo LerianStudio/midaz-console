@@ -9,22 +9,15 @@ export class MidazCreateProductRepository implements CreateProductRepository {
     organizationId: string,
     ledgerId: string,
     product: ProductEntity
-  ): Promise<any> {
+  ): Promise<ProductEntity> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/products`
 
-    const response = await httpMidazAuthFetch({
+    const response = await httpMidazAuthFetch<ProductEntity>({
       url,
       method: HTTP_METHODS.POST,
       body: JSON.stringify(product)
     })
 
-    const midazResponse = await response.json()
-
-    if (!response.ok) {
-      console.error('MidazCreateProductRepository', midazResponse)
-      throw await handleMidazError(midazResponse)
-    }
-
-    return midazResponse
+    return response
   }
 }

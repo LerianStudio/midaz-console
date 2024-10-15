@@ -10,15 +10,11 @@ export class MidazDeleteOrganizationRepository
   async deleteOrganization(id: string): Promise<void> {
     const url = `${this.baseUrl}/${id}`
 
-    const response = await httpMidazAuthFetch({
+    const response = await httpMidazAuthFetch<void>({
       url,
       method: HTTP_METHODS.DELETE
     })
 
-    const midazResponse = await response.json()
-
-    if (!response.ok) {
-      throw await handleMidazError(midazResponse)
-    }
+    return
   }
 }

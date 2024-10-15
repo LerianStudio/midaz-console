@@ -25,18 +25,11 @@ export class MidazFetchAllAssetsRepository implements FetchAllAssetsRepository {
     })
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets?${params.toString()}`
 
-    const response = await httpMidazAuthFetch({
+    const response = await httpMidazAuthFetch<PaginationEntity<AssetEntity>>({
       url,
       method: HTTP_METHODS.GET
     })
 
-    const midazResponse = await response.json()
-
-    if (!response.ok) {
-      console.error('MidazFetchAllAssetsRepository', midazResponse)
-      throw await handleMidazError(midazResponse)
-    }
-
-    return midazResponse
+    return response
   }
 }

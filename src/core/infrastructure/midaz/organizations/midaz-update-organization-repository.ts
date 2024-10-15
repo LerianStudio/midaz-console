@@ -13,18 +13,12 @@ export class MidazUpdateOrganizationRepository
   ): Promise<OrganizationEntity> {
     const url = `${this.baseUrl}/${organizationId}`
 
-    const response = await httpMidazAuthFetch({
+    const response = await httpMidazAuthFetch<OrganizationEntity>({
       url,
       method: HTTP_METHODS.PATCH,
       body: JSON.stringify(organization)
     })
 
-    const midazResponse = await response.json()
-
-    if (!response.ok) {
-      throw await handleMidazError(midazResponse)
-    }
-
-    return midazResponse
+    return response
   }
 }

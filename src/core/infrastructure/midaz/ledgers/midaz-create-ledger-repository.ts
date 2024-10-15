@@ -12,18 +12,12 @@ export class MidazCreateLedgerRepository implements CreateLedgerRepository {
   ): Promise<LedgerEntity> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers`
 
-    const response = await httpMidazAuthFetch({
+    const response = await httpMidazAuthFetch<LedgerEntity>({
       url,
       method: HTTP_METHODS.POST,
       body: JSON.stringify(ledger)
     })
 
-    const midazResponse = await response.json()
-
-    if (!response.ok) {
-      throw await handleMidazError(midazResponse)
-    }
-
-    return midazResponse
+    return response
   }
 }

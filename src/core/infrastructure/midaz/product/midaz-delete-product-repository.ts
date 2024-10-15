@@ -13,16 +13,10 @@ export class MidazDeleteProductRepository implements DeleteProductRepository {
   ): Promise<void> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/products/${productId}`
 
-    const response = await httpMidazAuthFetch({
+    await httpMidazAuthFetch<void>({
       url,
       method: HTTP_METHODS.DELETE
     })
-
-    if (!response.ok) {
-      const midazResponse = await response.json()
-      console.error('MidazDeleteProductRepository', midazResponse)
-      throw await handleMidazError(midazResponse)
-    }
 
     return
   }

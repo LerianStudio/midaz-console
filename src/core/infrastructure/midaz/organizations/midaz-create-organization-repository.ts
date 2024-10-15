@@ -11,18 +11,12 @@ export class MidazCreateOrganizationRepository
   async create(
     organizationData: OrganizationEntity
   ): Promise<OrganizationEntity> {
-    const response = await httpMidazAuthFetch({
+    const response = await httpMidazAuthFetch<OrganizationEntity>({
       url: this.baseUrl,
       method: HTTP_METHODS.POST,
       body: JSON.stringify(organizationData)
     })
 
-    const midazResponse = await response.json()
-
-    if (!response.ok) {
-      throw await handleMidazError(midazResponse)
-    }
-
-    return midazResponse
+    return response
   }
 }

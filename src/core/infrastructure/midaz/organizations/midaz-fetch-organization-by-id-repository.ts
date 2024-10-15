@@ -11,19 +11,11 @@ export class MidazFetchOrganizationByIdRepository
   async fetchById(id: string): Promise<OrganizationEntity> {
     const url = `${this.baseUrl}/${id}`
 
-    const response = await httpMidazAuthFetch({
+    const response = await httpMidazAuthFetch<OrganizationEntity>({
       url,
       method: HTTP_METHODS.GET
     })
 
-    const midazResponse = await response.json()
-
-    console.log('midazResponse', midazResponse)
-
-    if (!response.ok) {
-      throw await handleMidazError(midazResponse)
-    }
-
-    return midazResponse
+    return response
   }
 }

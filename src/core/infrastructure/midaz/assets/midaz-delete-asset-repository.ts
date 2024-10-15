@@ -12,17 +12,10 @@ export class MidazDeleteAssetRepository implements DeleteAssetRepository {
   ): Promise<void> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`
 
-    const response = await httpMidazAuthFetch({
+    const response = await httpMidazAuthFetch<void>({
       url,
       method: HTTP_METHODS.DELETE
     })
-
-    if (!response.ok) {
-      const midazResponse = await response.json()
-
-      console.error('MidazDeleteAssetRepository', midazResponse)
-      throw await handleMidazError(midazResponse)
-    }
 
     return
   }

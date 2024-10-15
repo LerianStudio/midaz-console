@@ -21,18 +21,13 @@ export class MidazFetchAllOrganizationsRepository
     })
     const url = `${this.baseUrl}?${params.toString()}`
 
-    const response = await httpMidazAuthFetch({
+    const response = await httpMidazAuthFetch<
+      PaginationEntity<OrganizationEntity>
+    >({
       url,
       method: HTTP_METHODS.GET
     })
 
-    const midazResponse: any = await response.json()
-
-    if (!response.ok) {
-      console.error('MidazFetchAllOrganizationsRepository', midazResponse)
-      throw await handleMidazError(midazResponse)
-    }
-
-    return midazResponse
+    return response
   }
 }

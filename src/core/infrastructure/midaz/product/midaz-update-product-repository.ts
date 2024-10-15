@@ -16,19 +16,12 @@ export class MidazUpdateProductRepository implements UpdateProductRepository {
   ): Promise<ProductEntity> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/products/${productId}`
 
-    const response = await httpMidazAuthFetch({
+    const response = await httpMidazAuthFetch<ProductEntity>({
       url,
       method: HTTP_METHODS.PATCH,
       body: JSON.stringify(product)
     })
 
-    const midazResponse = await response.json()
-
-    if (!response.ok) {
-      console.error('MidazUpdateProductRepository', midazResponse)
-      throw await handleMidazError(midazResponse)
-    }
-
-    return midazResponse
+    return response
   }
 }

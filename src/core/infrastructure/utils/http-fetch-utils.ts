@@ -1,5 +1,6 @@
 import { getServerSession } from 'next-auth'
 import { nextAuthCasdoorOptions } from '../next-auth/casdoor/next-auth-casdoor-provider'
+import { handleMidazError } from './midaz-error-handler'
 
 export enum HTTP_METHODS {
   GET = 'GET',
@@ -16,7 +17,9 @@ export type HttpFetchOptions = {
   body?: string
 }
 
-export async function httpMidazAuthFetch(httpFetchOptions: HttpFetchOptions) {
+export async function httpMidazAuthFetch<T>(
+  httpFetchOptions: HttpFetchOptions
+): Promise<T> {
   const session = await getServerSession(nextAuthCasdoorOptions)
   const { access_token } = session?.user as any
 
@@ -25,6 +28,7 @@ export async function httpMidazAuthFetch(httpFetchOptions: HttpFetchOptions) {
     Authorization: `Bearer ${access_token}`,
     ...httpFetchOptions.headers
   }
+
   const response = await fetch(httpFetchOptions.url, {
     method: httpFetchOptions.method,
     body: httpFetchOptions.body,
@@ -33,5 +37,12 @@ export async function httpMidazAuthFetch(httpFetchOptions: HttpFetchOptions) {
     }
   })
 
-  return response
+  const midazResponse = await response.json()
+
+  if (!response.ok) {
+    console.error('MidazUpdateProductRepository', midazResponse)
+    throw await handleMidazError(midazResponse)
+  }
+
+  return midazResponse
 }

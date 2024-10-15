@@ -13,18 +13,11 @@ export class MidazFetchAssetByIdRepository implements FetchAssetByIdRepository {
   ): Promise<AssetEntity> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`
 
-    const response = await httpMidazAuthFetch({
+    const response = await httpMidazAuthFetch<AssetEntity>({
       url,
       method: HTTP_METHODS.GET
     })
 
-    const midazResponse = await response.json()
-
-    if (!response.ok) {
-      console.error('MidazFetchAssetByIdRepository', midazResponse)
-      throw await handleMidazError(midazResponse)
-    }
-
-    return midazResponse
+    return response
   }
 }
