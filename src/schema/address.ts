@@ -1,16 +1,16 @@
 import { z } from 'zod'
 
-const line1 = z.string()
+const line1 = z.string().max(255)
 
-const line2 = z.string().nullable().optional()
+const line2 = z.string().max(255).nullable().optional()
 
 const zipCode = z.coerce.string()
 
-const city = z.string()
+const city = z.string().max(255)
 
-const state = z.string()
+const state = z.string().max(5)
 
-const country = z.string()
+const country = z.string().max(5)
 
 export const address = {
   line1,

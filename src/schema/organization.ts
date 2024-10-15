@@ -5,13 +5,15 @@ const id = z.string().optional()
 
 const parentOrganizationId = z.string().optional().nullable()
 
-const legalName = z.string().min(1)
+const legalName = z.string().min(1).max(255)
 
 const doingBusinessAs = z.string().min(1).max(100).optional()
 
-const legalDocument = z.coerce.string({
-  invalid_type_error: 'Legal document must be a number'
-})
+const legalDocument = z.coerce
+  .string({
+    invalid_type_error: 'Legal document must be a number'
+  })
+  .max(255)
 
 const metadata = z.record(z.string(), z.any()).optional()
 
