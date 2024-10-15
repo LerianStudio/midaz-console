@@ -1,27 +1,24 @@
-import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
-import { handleMidazError } from '../../utils/midaz-error-handler'
 import { MidazCreateOrganizationRepository } from './midaz-create-organization-repository'
-import { MidazError } from '../../errors/midaz-error'
+import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
+import { httpMidazAuthFetch } from '../../utils/http-fetch-utils'
+import { handleMidazError } from '../../utils/midaz-error-handler'
 
-jest.mock('../../utils/midaz-error-handler', () => ({
-  handleMidazError: jest.fn()
-}))
+jest.mock('../../utils/http-fetch-utils')
+jest.mock('../../utils/midaz-error-handler')
 
 describe('MidazCreateOrganizationRepository', () => {
+  const baseUrl = process.env.MIDAZ_BASE_PATH + '/organizations'
   let repository: MidazCreateOrganizationRepository
-  let originalFetch: typeof fetch
 
   beforeEach(() => {
     repository = new MidazCreateOrganizationRepository()
-    originalFetch = global.fetch
   })
 
   afterEach(() => {
-    global.fetch = originalFetch
     jest.clearAllMocks()
   })
 
-  it('should call fetch with the correct parameters', async () => {
+  it('should create an organization successfully', async () => {
     const organizationData: OrganizationEntity = {
       id: '123',
       legalName: 'Org 1',
@@ -39,29 +36,24 @@ describe('MidazCreateOrganizationRepository', () => {
         description: 'Active'
       }
     }
-
     const mockResponse = {
       ok: true,
       json: jest.fn().mockResolvedValue(organizationData)
-    } as any
+    }
 
-    global.fetch = jest.fn().mockResolvedValue(mockResponse)
+    ;(httpMidazAuthFetch as jest.Mock).mockResolvedValue(mockResponse)
 
-    await repository.create(organizationData)
+    const result = await repository.create(organizationData)
 
-    expect(global.fetch).toHaveBeenCalledWith(
-      process.env.MIDAZ_BASE_PATH + '/organizations',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(organizationData)
-      }
-    )
+    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+      url: baseUrl,
+      method: 'POST',
+      body: JSON.stringify(organizationData)
+    })
+    expect(result).toEqual(organizationData)
   })
 
-  it('should handle error when response is not successful', async () => {
+  it('should throw an error if the response is not ok', async () => {
     const organizationData: OrganizationEntity = {
       id: '123',
       legalName: 'Org 1',
@@ -79,24 +71,22 @@ describe('MidazCreateOrganizationRepository', () => {
         description: 'Active'
       }
     }
-
-    const mockErrorResponse = {
+    const mockError = new Error('Test Error')
+    const mockResponse = {
       ok: false,
-      json: jest
-        .fn()
-        .mockResolvedValue({ message: 'Error when create organization' })
-    } as any
+      json: jest.fn().mockResolvedValue({ error: 'error' })
+    }
 
-    global.fetch = jest.fn().mockResolvedValue(mockErrorResponse)
-    ;(handleMidazError as jest.Mock).mockImplementation(() => {
-      throw new MidazError('Midaz error')
-    })
-    await expect(repository.create(organizationData)).rejects.toThrow(
-      'Midaz error'
-    )
+    ;(httpMidazAuthFetch as jest.Mock).mockResolvedValue(mockResponse)
+    ;(handleMidazError as jest.Mock).mockResolvedValue(mockError)
 
-    expect(handleMidazError).toHaveBeenCalledWith({
-      message: 'Error when create organization'
+    await expect(repository.create(organizationData)).rejects.toThrow(mockError)
+
+    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+      url: baseUrl,
+      method: 'POST',
+      body: JSON.stringify(organizationData)
     })
+    expect(handleMidazError).toHaveBeenCalledWith({ error: 'error' })
   })
 })

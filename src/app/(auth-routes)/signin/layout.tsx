@@ -2,7 +2,7 @@ import { redirect, RedirectType } from 'next/navigation'
 import '@/app/globals.css'
 import { getServerSession } from 'next-auth'
 import React from 'react'
-import { nextAuthOptions } from '@/utils/ory-credentials-provider'
+import { nextAuthCasdoorOptions } from '@/core/infrastructure/next-auth/casdoor/next-auth-casdoor-provider'
 
 type AuthRoutesProps = {
   children: React.ReactNode
@@ -15,11 +15,11 @@ const AuthRoutes = async ({
   children,
   params: { locale }
 }: AuthRoutesProps) => {
-  // const session = await getServerSession(nextAuthOptions)
+  const session = await getServerSession(nextAuthCasdoorOptions)
 
-  // if (session?.user) {
-  //   redirect(`/${locale}/`, RedirectType.replace)
-  // }
+  if (session?.user) {
+    redirect(`/`, RedirectType.replace)
+  }
   return <>{children}</>
 }
 
