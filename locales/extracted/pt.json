@@ -163,9 +163,6 @@
   "common.filter": "Filtrar",
   "ledgers.products.emptyResource": "Você ainda não criou um Produto.",
   "ledgers.products.sheet.edit.description": "Visualize e edite os campos do produto.",
-<<<<<<< HEAD
-  "ledgers.products.sheet.edit.title": "Editar {productName}"
-=======
   "ledgers.products.sheet.edit.title": "Editar {productName}",
   "common.confirmDeletion": "Confirmar Exclusão",
   "common.remove": "Remover",
@@ -191,5 +188,4 @@
   "organizations.organizationForm.parentOrganizationText": "Selecione se sua Organização está afiliada a outra",
   "organizations.toast.create.success": "Organização criada com sucesso!",
   "organizations.toast.update.success": "Organização editada com sucesso!"
->>>>>>> develop
 }
