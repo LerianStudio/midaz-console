@@ -3,7 +3,7 @@ import { address } from './address'
 
 const id = z.string().optional()
 
-const parentOrganizationId = z.string().optional()
+const parentOrganizationId = z.string().optional().nullable()
 
 const legalName = z.string().min(1)
 
@@ -15,9 +15,9 @@ const legalDocument = z.coerce.string({
 
 const metadata = z.record(z.string(), z.any()).optional()
 
-const organizationAccentColor = z.string().optional()
+const accentColor = z.string().optional()
 
-const organizationAvatar = z.string().optional()
+const avatar = z.string().optional()
 
 const status = z
   .object({
@@ -36,8 +36,8 @@ export const organization = {
   doingBusinessAs,
   legalDocument,
   metadata,
-  organizationAccentColor,
-  organizationAvatar,
+  accentColor,
+  avatar,
   status,
   address
 }

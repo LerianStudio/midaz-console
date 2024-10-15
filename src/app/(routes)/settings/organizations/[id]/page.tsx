@@ -2,108 +2,75 @@
 
 import { useRouter } from 'next/navigation'
 import useCustomToast from '@/hooks/use-custom-toast'
-import { Breadcrumb, BreadcrumbPath } from '@/components/breadcrumb'
-import { OrganizationsType } from '@/types/organizations-type'
-import OrganizationsView from '@/app/(routes)/settings/organizations/organizations-view'
-import { FormDetailsProvider } from '@/context/form-details-context'
-import { useOrganizationById } from '@/utils/queries'
-import { updateOrganization } from '@/client/organization-client'
+import { Breadcrumb } from '@/components/breadcrumb'
 import { PageHeader } from '@/components/page-header'
-import { ClientToastException } from '@/exceptions/client/client-toast-exception'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useIntl } from 'react-intl'
+import { useGetOrganization } from '@/client/organizations'
+import { OrganizationsForm } from '../organizations-form'
 
 const Page = ({ params }: { params: { id: string } }) => {
   const router = useRouter()
   const intl = useIntl()
   const organizationId: string = params.id
-  const organization = useOrganizationById(organizationId)
 
-  const { showSuccess, showError } = useCustomToast()
+  const { data, isPending } = useGetOrganization({ organizationId })
+  const { showSuccess } = useCustomToast()
 
-  const breadCrumbPaths: BreadcrumbPath[] = [
-    {
-      name: intl.formatMessage({
-        id: 'organizations.organizationView.breadcrumbs.settings',
-        defaultMessage: 'Settings'
-      }),
-      href: `/settings`
-    },
-    {
-      name: intl.formatMessage({
-        id: 'organizations.organizationView.breadcrumbs.organizations',
-        defaultMessage: 'Organizations'
-      }),
-      href: `/settings?tab=organizations`
-    },
-    {
-      name: params.id
-    }
-  ]
+  const handleSuccess = () => {
+    showSuccess(
+      intl.formatMessage({
+        id: 'organizations.toast.update.success',
+        defaultMessage: 'Organization updated successfully!'
+      })
+    )
+    router.push('/settings')
+  }
 
-  const handleOnSubmit = async (values: OrganizationsType) => {
-    try {
-      await updateOrganization(organizationId, values)
-      showSuccess(
-        intl.formatMessage(
-          {
-            id: 'organizations.toast.organizationUpdateSuccess',
-            defaultMessage: 'Organization {organizationName} updated'
-          },
-          {
-            organizationName: values.legalName
-          }
-        )
-      )
-      router.replace(`/settings?tab=organizations`)
-    } catch (error) {
-      const errorMessage =
-        error instanceof ClientToastException
-          ? intl.formatMessage(error.messageDescriptor, {
-              organizationId: organizationId
-            })
-          : intl.formatMessage({
-              id: 'organizations.toast.genericError',
-              defaultMessage: 'An error occurred'
-            })
-
-      return showError(errorMessage)
-    }
+  if (isPending && !data) {
+    return <Skeleton className="h-screen bg-zinc-200" />
   }
 
   return (
-    <div>
-      {organization.isLoading ? (
-        <Skeleton className="h-screen bg-zinc-200" />
-      ) : (
-        <div>
-          <Breadcrumb paths={breadCrumbPaths} />
-          <div>
-            <div className="mb-6 mt-12">
-              <PageHeader.Root>
-                <div className="flex justify-between">
-                  <PageHeader.InfoTitle
-                    title={organization.data?.legalName}
-                    subtitle={organizationId}
-                  >
-                    <PageHeader.InfoTooltip subtitle={organization.data?.id} />
-                  </PageHeader.InfoTitle>
-                  <PageHeader.ActionButtons>
-                    <PageHeader.StatusButton />
-                  </PageHeader.ActionButtons>
-                </div>
-              </PageHeader.Root>
-            </div>
-            <FormDetailsProvider>
-              <OrganizationsView
-                organizations={organization.data}
-                onSubmit={handleOnSubmit}
-              />
-            </FormDetailsProvider>
-          </div>
-        </div>
-      )}
-    </div>
+    <>
+      <Breadcrumb
+        paths={[
+          {
+            name: intl.formatMessage({
+              id: 'organizations.organizationView.breadcrumbs.settings',
+              defaultMessage: 'Settings'
+            }),
+            href: `/settings`
+          },
+          {
+            name: intl.formatMessage({
+              id: 'organizations.organizationView.breadcrumbs.organizations',
+              defaultMessage: 'Organizations'
+            }),
+            href: `/settings?tab=organizations`
+          },
+          {
+            name: params.id
+          }
+        ]}
+      />
+
+      <PageHeader.Root>
+        <PageHeader.Wrapper className="border-none">
+          <PageHeader.InfoTitle
+            title={data.legalName}
+            subtitle={organizationId}
+          >
+            <PageHeader.InfoTooltip subtitle={data.id} />
+          </PageHeader.InfoTitle>
+          <PageHeader.ActionButtons>
+            <PageHeader.StatusButton />
+          </PageHeader.ActionButtons>
+        </PageHeader.Wrapper>
+      </PageHeader.Root>
+
+      <OrganizationsForm data={data} onSuccess={handleSuccess} />
+    </>
   )
 }
 
