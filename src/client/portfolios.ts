@@ -75,19 +75,18 @@ export const useUpdatePortfolio = ({
 type UseDeletePortfolioProps = UseMutationOptions & {
   organizationId: string
   ledgerId: string
-  portfolioId: string
 }
 
 export const useDeletePortfolio = ({
   organizationId,
   ledgerId,
-  portfolioId,
   ...options
 }: UseDeletePortfolioProps) => {
+  console.log('1231231231asdasdazxc', organizationId, ledgerId)
   return useMutation<any, any, any>({
-    mutationKey: [organizationId, ledgerId, portfolioId],
+    mutationKey: [organizationId, ledgerId],
     mutationFn: deleteFetcher(
-      `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}`
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios`
     ),
     ...options
   })

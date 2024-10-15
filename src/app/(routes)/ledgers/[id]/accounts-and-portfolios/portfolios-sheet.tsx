@@ -41,6 +41,7 @@ import { useCreatePortfolio, useListPortfolios } from '@/client/portfolios'
 import { DialogProps } from '@radix-ui/react-dialog'
 import { PortfolioResponseDto } from '@/core/application/dto/portfolios-dto'
 import { LoadingButton } from '@/components/ui/loading-button'
+import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 
 export type PortfolioSheetProps = DialogProps & {
   ledgerId: string
@@ -64,7 +65,6 @@ export const PortfolioSheet = ({
   onOpenChange,
   ...others
 }: PortfolioSheetProps) => {
-  const { id: ledgerId } = useParams()
   const intl = useIntl()
   const [showMetadata, setShowMetadata] = useState(false)
   const [currentMetadata, setCurrentMetadata] = useState({
@@ -73,10 +73,13 @@ export const PortfolioSheet = ({
     value: ''
   })
 
+  const { id: ledgerId } = useParams<{ id: string }>()
+  const { currentOrganization } = useOrganization()
+
   const { mutate: createPortfolio, isPending: createPending } =
     useCreatePortfolio({
-      organizationId: 'b36c9055-01cd-4232-8bed-d4dd2b826b1e',
-      ledgerId: '38eff558-757a-4ca6-ae16-d4a6aef0f4d3',
+      organizationId: currentOrganization.id!,
+      ledgerId: ledgerId,
       onSuccess: () => {
         onSucess?.()
         onOpenChange?.(false)

@@ -11,6 +11,7 @@ export class MidazCreatePortfolioRepository
     ledgerId: string,
     portfolio: PortfoliosEntity
   ): Promise<any> {
+    console.log('teste drax portfolio', portfolio)
     const response = await fetch(
       `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios`,
       {
@@ -22,6 +23,7 @@ export class MidazCreatePortfolioRepository
       }
     )
 
+    console.log('teste drax', response)
     const midazResponse = await response.json()
 
     if (!response.ok) {

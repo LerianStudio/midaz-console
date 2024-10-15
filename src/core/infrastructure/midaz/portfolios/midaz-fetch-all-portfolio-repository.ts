@@ -17,7 +17,7 @@ export class MidazFetchAllPortfoliosRepository
     page: number
   ): Promise<PaginationEntity<PortfoliosEntity>> {
     const response = await fetch(
-      `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios?limit=10&page=1`,
+      `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios?limit=100&page=1`,
       {
         method: 'GET',
         headers: {

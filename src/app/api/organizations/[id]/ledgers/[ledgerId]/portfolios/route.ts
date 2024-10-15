@@ -33,8 +33,6 @@ export async function GET(
       page
     )
 
-    console.log('route.ts', portfolios)
-
     return NextResponse.json(portfolios)
   } catch (error: any) {
     console.error('Error fetching all portfolios', error)
