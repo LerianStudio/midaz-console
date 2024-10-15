@@ -2,7 +2,7 @@ import { FetchAllOrganizationsUseCase } from './fetch-all-organizations-use-case
 import { FetchAllOrganizationsRepository } from '@/core/domain/repositories/organizations/fetch-all-organizations-repository'
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
-import { organizationEntityToDto } from '../../mappers/oganization-mapper'
+import { organizationEntityToDto } from '../../mappers/organization-mapper'
 import { OrganizationResponseDto } from '../../dto/organization-response-dto'
 
 jest.mock('../../mappers/oganization-mapper')

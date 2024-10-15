@@ -1,6 +1,6 @@
 import { FetchOrganizationByIdRepository } from '@/core/domain/repositories/organizations/fetch-organization-by-id-repository'
 import { OrganizationResponseDto } from '../../dto/organization-response-dto'
-import { organizationEntityToDto } from '../../mappers/oganization-mapper'
+import { organizationEntityToDto } from '../../mappers/organization-mapper'
 
 export interface FetchOrganizationById {
   execute: (organizationId: string) => Promise<OrganizationResponseDto>

@@ -1,7 +1,7 @@
 import { FetchParentOrganizationsUseCase } from './fetch-parent-organizations-use-case'
 import { FetchAllOrganizationsRepository } from '@/core/domain/repositories/organizations/fetch-all-organizations-repository'
 import { OrganizationResponseDto } from '../../dto/organization-response-dto'
-import { organizationEntityToDto } from '../../mappers/oganization-mapper'
+import { organizationEntityToDto } from '../../mappers/organization-mapper'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 

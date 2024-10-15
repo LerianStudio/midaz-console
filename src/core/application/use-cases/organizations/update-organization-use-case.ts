@@ -4,7 +4,7 @@ import { UpdateOrganizationDto } from '../../dto/update-organization-dto'
 import {
   organizationEntityToDto,
   organizationUpdateDtoToEntity
-} from '../../mappers/oganization-mapper'
+} from '../../mappers/organization-mapper'
 import { UpdateOrganizationRepository } from '@/core/domain/repositories/organizations/update-organization-repository'
 
 export interface UpdateOrganization {

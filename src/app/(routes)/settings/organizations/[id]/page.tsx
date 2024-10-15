@@ -8,13 +8,16 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { useIntl } from 'react-intl'
 import { useGetOrganization } from '@/client/organizations'
 import { OrganizationsForm } from '../organizations-form'
+import { NotFoundContent } from '@/components/not-found-content'
 
 const Page = ({ params }: { params: { id: string } }) => {
   const router = useRouter()
   const intl = useIntl()
-  const organizationId: string = params.id
+  const organizationId = params.id
 
-  const { data, isPending } = useGetOrganization({ organizationId })
+  const { data, error, isPending } = useGetOrganization({
+    organizationId
+  })
   const { showSuccess } = useCustomToast()
 
   const handleSuccess = () => {
@@ -27,7 +30,18 @@ const Page = ({ params }: { params: { id: string } }) => {
     router.push('/settings')
   }
 
-  if (isPending && !data) {
+  if (error && !isPending) {
+    return (
+      <NotFoundContent
+        title={intl.formatMessage({
+          id: 'organizations.organizationView.notFound',
+          defaultMessage: 'Organization not found.'
+        })}
+      />
+    )
+  }
+
+  if (isPending) {
     return <Skeleton className="h-screen bg-zinc-200" />
   }
 

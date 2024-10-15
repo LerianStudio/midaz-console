@@ -13,10 +13,10 @@ export default async function RootLayout({
     <SidebarProvider>
       <div className="flex min-h-screen w-full bg-background text-foreground">
         <Sidebar />
-        <div className="flex w-full flex-col bg-shadcn-100">
+        <div className="flex min-h-full w-full flex-col bg-shadcn-100">
           <Header />
 
-          <div className="w-full px-16 pb-16 pt-6">{children}</div>
+          <div className="h-full w-full px-16 pb-16 pt-6">{children}</div>
         </div>
       </div>
     </SidebarProvider>
