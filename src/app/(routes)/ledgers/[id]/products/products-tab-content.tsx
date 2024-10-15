@@ -82,12 +82,13 @@ export const ProductsTabContent = () => {
     <>
       <ConfirmationDialog
         title={intl.formatMessage({
-          id: 'ledgers.products.deleteDialog.title',
-          defaultMessage: 'Are you sure?'
+          id: 'common.confirmDeletion',
+          defaultMessage: 'Confirm Deletion'
         })}
         description={intl.formatMessage({
-          id: 'ledgers.products.deleteDialog.description',
-          defaultMessage: 'You will delete a product'
+          id: 'products.delete.description',
+          defaultMessage:
+            'You are about to permanently delete this product. This action cannot be undone. Do you wish to continue?'
         })}
         loading={deletePending}
         {...dialogProps}

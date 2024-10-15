@@ -12,8 +12,7 @@ import {
 } from '@/client/charts-client'
 import {
   getOrganization,
-  getOrganizationById,
-  getParentOrganizations
+  getOrganizationById
 } from '@/client/organization-client'
 
 export const useLedgers = () => {
@@ -41,13 +40,6 @@ export const useOrganizations = () => {
   return useQuery({
     queryKey: ['organizations'],
     queryFn: getOrganization
-  })
-}
-
-export const useParentOrganizations = (idActualOrganization?: string) => {
-  return useQuery({
-    queryKey: ['parentOrganizations'],
-    queryFn: () => getParentOrganizations(idActualOrganization)
   })
 }
 

@@ -13,6 +13,7 @@ export type InputFieldProps = {
   label?: string
   placeholder?: string
   control: Control<any>
+  disabled?: boolean
   required?: boolean
 }
 

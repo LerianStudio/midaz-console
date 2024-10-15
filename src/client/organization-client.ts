@@ -111,26 +111,10 @@ const getOrganizationById = async (id: string) => {
   return await response.json()
 }
 
-const getParentOrganizations = async (idActualOrganization?: string) => {
-  const response = await fetch(
-    'http://localhost:3000/api/organizations/parentOrganizations?idActualOrganization=' +
-      idActualOrganization
-  )
-
-  if (!response.ok) {
-    throw new ClientToastException(
-      `Fetch parent organizations Failed!`,
-      messages.organizationNotFound
-    )
-  }
-  return await response.json()
-}
-
 export {
   getOrganization,
   createOrganization,
   deleteOrganization,
   getOrganizationById,
-  updateOrganization,
-  getParentOrganizations
+  updateOrganization
 }

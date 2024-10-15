@@ -36,7 +36,7 @@ export const SettingsDropdown = () => {
           })}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={() => router.push('/settings')}>
           <DropdownMenuItemIcon>
             <Building />
           </DropdownMenuItemIcon>

@@ -8,6 +8,7 @@ type LogoProps = {
   alt: string
   orgName: string
   active?: boolean
+  disabled?: boolean
   collapsed?: boolean
   button?: boolean
 }
@@ -17,6 +18,7 @@ const Logo = ({
   alt,
   orgName,
   active,
+  disabled,
   collapsed,
   button
 }: LogoProps) => {
@@ -50,7 +52,7 @@ const Logo = ({
         </h1>
       )}
 
-      {!collapsed && (
+      {!collapsed && !disabled && (
         <ChevronDown
           className={cn(active && 'rotate-180 text-shadcn-400')}
           size={16}
@@ -71,7 +73,7 @@ export const SwitcherTrigger = ({
   ...others
 }: SwitcherTriggerProps) => {
   if (disabled) {
-    return <Logo {...others} />
+    return <Logo disabled={disabled} {...others} />
   }
 
   return (
