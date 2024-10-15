@@ -9,6 +9,15 @@ import {
 } from '../../container-registry/container-registry'
 
 export const nextAuthCasdoorOptions: NextAuthOptions = {
+  session: {
+    strategy: 'jwt',
+    maxAge: 30 * 60,
+    updateAge: 24 * 60 * 60
+  },
+  jwt: {
+    maxAge: 30 * 60
+  },
+
   providers: [
     CredentialsProvider({
       name: 'credentials',
