@@ -1,5 +1,6 @@
 import { DeleteOrganizationRepository } from '@/core/domain/repositories/organizations/delete-organization-repository'
 import { handleMidazError } from '../../utils/midaz-error-handler'
+import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
 
 export class MidazDeleteOrganizationRepository
   implements DeleteOrganizationRepository
@@ -7,11 +8,11 @@ export class MidazDeleteOrganizationRepository
   private baseUrl: string = process.env.MIDAZ_BASE_PATH + '/organizations'
 
   async deleteOrganization(id: string): Promise<void> {
-    const response = await fetch(`${this.baseUrl}/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      }
+    const url = `${this.baseUrl}/${id}`
+
+    const response = await httpMidazAuthFetch({
+      url,
+      method: HTTP_METHODS.DELETE
     })
 
     const midazResponse = await response.json()

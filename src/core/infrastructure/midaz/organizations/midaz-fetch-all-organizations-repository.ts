@@ -19,9 +19,10 @@ export class MidazFetchAllOrganizationsRepository
       limit: limit.toString(),
       page: page.toString()
     })
+    const url = `${this.baseUrl}?${params.toString()}`
 
     const response = await httpMidazAuthFetch({
-      url: `${this.baseUrl}?${params.toString()}`,
+      url,
       method: HTTP_METHODS.GET
     })
 

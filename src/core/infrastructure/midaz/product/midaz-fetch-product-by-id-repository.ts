@@ -1,5 +1,6 @@
 import { FetchProductByIdRepository } from '@/core/domain/repositories/products/fetch-product-by-id-repository'
 import { handleMidazError } from '../../utils/midaz-error-handler'
+import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 export class MidazFetchProductByIdRepository
   implements FetchProductByIdRepository
@@ -11,15 +12,12 @@ export class MidazFetchProductByIdRepository
     ledgerId: string,
     productId: string
   ): Promise<any> {
-    const response = await fetch(
-      `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/products/${productId}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    )
+    const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/products/${productId}`
+
+    const response = await httpMidazAuthFetch({
+      url,
+      method: HTTP_METHODS.GET
+    })
 
     const midazResponse = await response.json()
 

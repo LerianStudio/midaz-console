@@ -16,9 +16,7 @@ export type HttpFetchOptions = {
   body?: string
 }
 
-export const httpMidazAuthFetch = async (
-  httpFetchOptions: HttpFetchOptions
-) => {
+export async function httpMidazAuthFetch(httpFetchOptions: HttpFetchOptions) {
   const session = await getServerSession(nextAuthCasdoorOptions)
   const { access_token } = session?.user as any
 
