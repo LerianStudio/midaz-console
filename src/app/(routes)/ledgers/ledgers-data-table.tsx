@@ -48,7 +48,6 @@ type LedgersTableProps = {
 
 type LedgerRowProps = {
   ledger: { id: string; original: LedgerEntity }
-  intl: IntlShape
   handleCopyToClipboard: (value: string, message: string) => void
   handleEdit: (ledger: LedgerEntity) => void
   handleDialogOpen: (id: string, name: string) => void
@@ -56,10 +55,10 @@ type LedgerRowProps = {
 
 const LedgerRow: React.FC<LedgerRowProps> = ({
   ledger,
-  intl,
   handleCopyToClipboard,
   handleDialogOpen
 }) => {
+  const intl = useIntl()
   const id = ledger.original.id || ''
   const displayId = id && id.length > 8 ? `${truncateString(id, 8)}` : id
   const status = ledger.original.status
@@ -271,7 +270,6 @@ export const LedgersDataTable: React.FC<LedgersTableProps> = ({
                 <LedgerRow
                   key={ledger.id}
                   ledger={ledger}
-                  intl={intl}
                   handleCopyToClipboard={handleCopyToClipboard}
                   handleEdit={handleEdit}
                   handleDialogOpen={handleDialogOpen}

@@ -22,7 +22,6 @@ const LedgersView = () => {
   const intl = useIntl()
   const { currentOrganization } = useOrganization()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
-  const [ledgerNameToDelete, setLedgerNameToDelete] = React.useState<string>('')
 
   const {
     data: ledgers,
@@ -32,16 +31,14 @@ const LedgersView = () => {
     organizationId: currentOrganization.id!
   })
 
-  const { handleDialogOpen, dialogProps, handleDialogClose } = useConfirmDialog(
-    {
-      onConfirm: (id: string) => deleteMutate({ id })
-    }
-  )
-
-  const handleDialogOpenWithLedgerName = (id: string, name: string) => {
-    setLedgerNameToDelete(name)
-    handleDialogOpen(id)
-  }
+  const {
+    handleDialogOpen,
+    dialogProps,
+    handleDialogClose,
+    data: ledgerName
+  } = useConfirmDialog({
+    onConfirm: (id: string) => deleteMutate({ id })
+  })
 
   const { mutate: deleteMutate, isPending: deletePending } = useDeleteLedger({
     organizationId: currentOrganization.id!,
@@ -126,7 +123,7 @@ const LedgersView = () => {
             ledgers={ledgers}
             isLoading={isLoading}
             table={table}
-            handleDialogOpen={handleDialogOpenWithLedgerName}
+            handleDialogOpen={handleDialogOpen}
           />
         )}
       </div>
@@ -142,9 +139,7 @@ const LedgersView = () => {
             defaultMessage:
               'This action is irreversible. This will deactivate your Ledger {ledgerName} forever'
           },
-          {
-            ledgerName: ledgerNameToDelete
-          }
+          { ledgerName: ledgerName as string }
         )}
         loading={deletePending}
         {...dialogProps}
