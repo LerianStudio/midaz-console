@@ -9,17 +9,18 @@ import * as jwt from 'jsonwebtoken'
 import { JwtPayload } from 'jsonwebtoken'
 
 export class CasdoorAuthLoginRepository implements AuthLoginRepository {
+  private readonly casdoorBaseUrl: string = process.env
+    .NEXTAUTH_CASDOOR_AUTH_URL as string
+
   async login(loginData: AuthEntity): Promise<AuthSessionEntity> {
-    const response = await fetch(
-      'http://localhost:8000/api/login/oauth/access_token',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(loginData)
-      }
-    )
+    const url = `${this.casdoorBaseUrl}/api/login/oauth/access_token`
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(loginData)
+    })
 
     const authLogin: AuthResponseEntity = await response.json()
 

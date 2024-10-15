@@ -2,6 +2,7 @@ import { getServerSession } from 'next-auth'
 import { nextAuthCasdoorOptions } from '../next-auth/casdoor/next-auth-casdoor-provider'
 import { handleMidazError } from './midaz-error-handler'
 import { signOut } from 'next-auth/react'
+import { unknown } from 'zod'
 
 export enum HTTP_METHODS {
   GET = 'GET',
@@ -41,11 +42,7 @@ export async function httpMidazAuthFetch<T>(
   const midazResponse = await response.json()
 
   if (!response.ok) {
-    if (response.status === 401) {
-      console.log('MidazUpdateProductRepository', 'Unauthorized')
-      signOut({ callbackUrl: '/signin' })
-    }
-    console.error('MidazUpdateProductRepository', midazResponse)
+    console.error('[ERROR] - httpMidazAuthFetch ', midazResponse)
     throw await handleMidazError(midazResponse)
   }
 

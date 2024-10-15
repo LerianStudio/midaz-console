@@ -148,6 +148,7 @@
   "error.midaz.assetNameOrCodeDuplicate": "Já existe um ativo com o mesmo nome ou código em seu razão. Modifique o nome ou código do seu novo ativo.",
   "error.midaz.invalidScriptError": "O script fornecido na sua solicitação é inválido ou está em um formato incompatível. Verifique o formato do script e tente novamente.",
   "error.midaz.duplicateProductNameError": "Já existe um produto com o nome para este ID contábil. Tente novamente com um razão ou nome diferente.",
+  "error.midaz.unauthorized": "O token fornecido está expirado, inválido ou malformado. Forneça um token válido e tente novamente.",
   "common.status": "Status",
   "common.cancel": "Cancelar",
   "common.confirm": "Confirmar",

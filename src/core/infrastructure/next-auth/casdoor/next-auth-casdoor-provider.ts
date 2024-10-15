@@ -17,6 +17,18 @@ export const nextAuthCasdoorOptions: NextAuthOptions = {
   jwt: {
     maxAge: 30 * 60
   },
+  debug: true,
+  logger: {
+    error(code, metadata) {
+      console.error(code, metadata)
+    },
+    warn(code) {
+      console.warn(code)
+    },
+    debug(code, metadata) {
+      console.debug(code, metadata)
+    }
+  },
 
   providers: [
     CredentialsProvider({
@@ -25,6 +37,7 @@ export const nextAuthCasdoorOptions: NextAuthOptions = {
         username: { label: 'username', type: 'text' },
         password: { label: 'password', type: 'password' }
       },
+      type: 'credentials',
 
       async authorize(credentials, req) {
         try {

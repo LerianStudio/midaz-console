@@ -56,6 +56,7 @@
   "error.midaz.ledgerNameConflict": "Já existe um ledger com este nome na sua organização. Renomeie o ledger ou, se quiser usar o mesmo nome, considere criar um novo ledger para uma divisão diferente.",
   "error.midaz.missingFields": "Sua solicitação está faltando um ou mais campos obrigatórios. Consulte a documentação para verificar os campos necessários para sua solicitação.",
   "error.midaz.unknowError": "Erro no Midaz, por favor, entre em contato com o suporte.",
+  "error.midaz.unauthorized": "O token fornecido está expirado, inválido ou malformado. Forneça um token válido e tente novamente.",
   "errors.custom.date.invalid": "",
   "errors.custom.one_lowercase_letter": "",
   "errors.custom.one_number": "",
