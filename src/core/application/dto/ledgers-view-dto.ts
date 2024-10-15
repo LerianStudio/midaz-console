@@ -1,6 +1,7 @@
+import { AssetResponseDto } from './asset-response-dto'
 import { StatusDto } from './status.dto'
 
-export interface LedgerResponseDto {
+export interface LedgersViewResponseDTO {
   id: string
   organizationId: string
   name: string
@@ -9,4 +10,5 @@ export interface LedgerResponseDto {
   createdAt: Date
   updatedAt: Date
   deletedAt: Date | null
+  assets: AssetResponseDto[]
 }
