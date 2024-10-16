@@ -17,7 +17,7 @@ export const nextAuthCasdoorOptions: NextAuthOptions = {
   jwt: {
     maxAge: 30 * 60
   },
-  debug: true,
+  debug: false,
   logger: {
     error(code, metadata) {
       console.error(code, metadata)
