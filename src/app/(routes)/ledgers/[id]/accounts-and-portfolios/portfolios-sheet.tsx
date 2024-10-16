@@ -86,7 +86,7 @@ export const PortfolioSheet = ({
   const { mutate: updatePortfolio, isPending: updatePending } =
     useUpdatePortfolio({
       organizationId: currentOrganization.id!,
-      ledgerId: ledgerId,
+      ledgerId,
       portfolioId: data?.id!,
       onSuccess: () => {
         onSucess?.()
@@ -249,22 +249,18 @@ export const PortfolioSheet = ({
                 })}
               </p>
               <SheetFooter className="sticky bottom-0 mt-auto bg-white py-4">
-                <SheetClose asChild>
-                  <LoadingButton
-                    size="lg"
-                    type="submit"
-                    disabled={
-                      !(form.formState.isDirty && form.formState.isValid)
-                    }
-                    fullWidth
-                    loading={createPending || updatePending}
-                  >
-                    {intl.formatMessage({
-                      id: 'common.save',
-                      defaultMessage: 'Save'
-                    })}
-                  </LoadingButton>
-                </SheetClose>
+                <LoadingButton
+                  size="lg"
+                  type="submit"
+                  disabled={!(form.formState.isDirty && form.formState.isValid)}
+                  fullWidth
+                  loading={createPending || updatePending}
+                >
+                  {intl.formatMessage({
+                    id: 'common.save',
+                    defaultMessage: 'Save'
+                  })}
+                </LoadingButton>
               </SheetFooter>
             </form>
           </Form>

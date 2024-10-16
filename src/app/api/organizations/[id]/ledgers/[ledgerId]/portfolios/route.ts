@@ -29,8 +29,8 @@ export async function GET(
     const portfolios = await fetchAllPortfoliosUseCase.execute(
       organizationId,
       ledgerId,
-      limit,
-      page
+      page,
+      limit
     )
 
     return NextResponse.json(portfolios)

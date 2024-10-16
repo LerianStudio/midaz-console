@@ -110,7 +110,11 @@ export const PortfoliosContent = () => {
               <Plus />
             ) : (
               <>
-                <Plus /> Criar o primeiro porfolio
+                {intl.formatMessage({
+                  id: `portfolio.create`,
+                  defaultMessage: 'Create first portfolio'
+                })}{' '}
+                <Plus />
               </>
             )}
           </Button>
