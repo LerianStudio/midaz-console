@@ -91,7 +91,7 @@ export const PortfoliosContent = () => {
         })}
         description={intl.formatMessage({
           id: 'ledgers.products.deleteDialog.description',
-          defaultMessage: 'You will delete a product'
+          defaultMessage: 'You will delete a portfolio'
         })}
         loading={deletePending}
         {...dialogProps}
@@ -155,10 +155,10 @@ export const PortfoliosContent = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {table.getRowModel().rows.map((product) => (
-                <TableRow key={product.id}>
-                  <TableCell>{product.original.id}</TableCell>
-                  <TableCell>{product.original.name}</TableCell>
+              {table.getRowModel().rows.map((portfolio) => (
+                <TableRow key={portfolio.id}>
+                  <TableCell>{portfolio.original.id}</TableCell>
+                  <TableCell>{portfolio.original.name}</TableCell>
                   <TableCell>
                     {intl.formatMessage(
                       {
@@ -167,20 +167,21 @@ export const PortfoliosContent = () => {
                           '{number, plural, =0 {-} one {# record} other {# records}}'
                       },
                       {
-                        number: Object.entries(product.original.metadata || [])
-                          .length
+                        number: Object.entries(
+                          portfolio.original.metadata || []
+                        ).length
                       }
                     )}
                   </TableCell>
                   <TableCell>
                     <Badge
                       variant={
-                        product?.original?.status?.code === 'ACTIVE'
+                        portfolio?.original?.status?.code === 'ACTIVE'
                           ? 'active'
                           : 'inactive'
                       }
                     >
-                      {capitalizeFirstLetter(product.original.status.code)}
+                      {capitalizeFirstLetter(portfolio.original.status.code)}
                     </Badge>
                   </TableCell>
 
@@ -193,7 +194,16 @@ export const PortfoliosContent = () => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem
-                          onClick={() => handleEdit(product.original)}
+                          onClick={() =>
+                            handleEdit({
+                              ...portfolio.original,
+                              status: {
+                                ...portfolio.original.status,
+                                description:
+                                  portfolio.original.status.description || ''
+                              }
+                            })
+                          }
                         >
                           {intl.formatMessage({
                             id: `common.edit`,
@@ -210,7 +220,7 @@ export const PortfoliosContent = () => {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           onClick={() => {
-                            handleDialogOpen(product?.original?.id!)
+                            handleDialogOpen(portfolio?.original?.id!)
                           }}
                         >
                           {intl.formatMessage({
