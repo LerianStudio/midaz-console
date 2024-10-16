@@ -1,9 +1,5 @@
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
-import {
-  CreateProductDto,
-  ProductResponseDto,
-  UpdateProductDto
-} from '@/core/application/dto/product-dto'
+import { ProductResponseDto } from '@/core/application/dto/product-dto'
 import {
   deleteFetcher,
   getFetcher,

@@ -11,7 +11,10 @@ export function assetEntityToDto(asset: AssetEntity): AssetResponseDto {
     name: asset.name,
     type: asset.type,
     code: asset.code,
-    status: asset.status,
+    status: {
+      ...asset.status,
+      description: asset.status.description ?? ''
+    },
     metadata: asset.metadata,
     createdAt: asset.createdAt!,
     updatedAt: asset.updatedAt!,

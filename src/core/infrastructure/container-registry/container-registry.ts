@@ -158,6 +158,10 @@ import {
   FetchPortfolioById,
   FetchPortfolioByIdUseCase
 } from '@/core/application/use-cases/portfolios/fetch-portfolio-by-id-use-case'
+import {
+  FetchAllLedgersAssets,
+  FetchAllLedgersAssetsUseCase
+} from '@/core/application/use-cases/ledgers-assets/fetch-ledger-assets-use-case'
 
 export const Registry = {
   InstrumentsAPIAdapter: Symbol.for('InstrumentsAPIAdapter'),
@@ -204,6 +208,9 @@ export const Registry = {
   FetchLedgerByIdRepository: Symbol.for('FetchLedgerByIdRepository'),
   UpdateLedgerRepository: Symbol.for('UpdateLedgerRepository'),
   DeleteLedgerRepository: Symbol.for('DeleteLedgerRepository'),
+
+  // Ledgers-Assets
+  FetchAllLedgersAssetsUseCase: Symbol.for('FetchAllLedgersAssetsUseCase'),
 
   // Assets
   CreateAssetUseCase: Symbol.for('CreateAssetUseCase'),
@@ -482,6 +489,16 @@ container
   .toDynamicValue((context) => {
     return new DeleteAssetUseCase(
       context.container.get(Registry.DeleteAssetRepository)
+    )
+  })
+
+//Ledgers-Assets
+container
+  .bind<FetchAllLedgersAssets>(Registry.FetchAllLedgersAssetsUseCase)
+  .toDynamicValue((context) => {
+    return new FetchAllLedgersAssetsUseCase(
+      context.container.get(Registry.FetchAllLedgersRepository),
+      context.container.get(Registry.FetchAllAssetsRepository)
     )
   })
 

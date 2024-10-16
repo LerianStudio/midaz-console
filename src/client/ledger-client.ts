@@ -1,55 +1,83 @@
-import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
+import { LedgerResponseDto } from '@/core/application/dto/ledger-response-dto'
+import { PaginationDto } from '@/core/application/dto/pagination-dto'
+import {
+  deleteFetcher,
+  getFetcher,
+  patchFetcher,
+  postFetcher
+} from '@/lib/fetcher'
+import {
+  useMutation,
+  UseMutationOptions,
+  useQuery
+} from '@tanstack/react-query'
 
-const createLedger = async (ledger: LedgerEntity) => {
-  const response = await fetch('/api/ledgers', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(ledger)
-  })
-
-  if (!response.ok) {
-    throw new Error('Failed to create ledgers')
-  }
-
-  return await response.json()
+type UseCreateLedgerProps = UseMutationOptions & {
+  organizationId: string
 }
 
-const updateLedger = async (id: string, ledger: LedgerEntity) => {
-  const response = await fetch(`/api/ledgers/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(ledger)
-  })
-
-  if (!response.ok) {
-    throw new Error('Failed to update ledgers')
-  }
-
-  return response.json()
+type UseUpdateLedgerProps = UseMutationOptions & {
+  organizationId: string
+  ledgerId: string
 }
 
-const deleteLedger = async (id: string) => {
-  const response = await fetch(`/api/ledgers/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-
-  if (!response.ok) {
-    throw new Error('Failed to delete ledgers')
-  }
-
-  return await response.json()
+type UseDeleteLedgerProps = UseMutationOptions & {
+  organizationId: string
 }
 
-const getLedgers = async () => {
+type UseListLedgersProps = UseCreateLedgerProps
+
+const useCreateLedger = ({
+  organizationId,
+  ...options
+}: UseCreateLedgerProps) => {
+  return useMutation<any, any, any>({
+    mutationFn: postFetcher(`/api/organizations/${organizationId}/ledgers`),
+    ...options
+  })
+}
+
+const useListLedgers = ({
+  organizationId,
+  ...options
+}: UseListLedgersProps) => {
+  return useQuery<PaginationDto<LedgerResponseDto>>({
+    queryKey: [organizationId],
+    queryFn: getFetcher(
+      `/api/organizations/${organizationId}/ledgers/ledgers-assets`
+    ),
+    ...options
+  })
+}
+
+const useUpdateLedger = ({
+  organizationId,
+  ledgerId,
+  ...options
+}: UseUpdateLedgerProps) => {
+  return useMutation<any, any, any>({
+    mutationKey: [organizationId, ledgerId],
+    mutationFn: patchFetcher(
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}}`
+    ),
+    ...options
+  })
+}
+
+const useDeleteLedger = ({
+  organizationId,
+  ...options
+}: UseDeleteLedgerProps) => {
+  return useMutation<any, any, any>({
+    mutationKey: [organizationId],
+    mutationFn: deleteFetcher(`/api/organizations/${organizationId}/ledgers`),
+    ...options
+  })
+}
+
+const getLedgerById = async (organizationId: string, id: string) => {
   const response = await fetch(
-    '/api/organizations/b7c10056-4200-4555-b444-2ffb5e85ea48/ledgers',
+    `/api/organizations/${organizationId}/ledgers/${id}`,
     {
       method: 'GET',
       headers: {
@@ -59,25 +87,10 @@ const getLedgers = async () => {
   )
 
   if (!response.ok) {
-    throw new Error('Failed to fetch ledgers')
-  }
-
-  return await response.json()
-}
-
-const getLedgerById = async (id: string) => {
-  const response = await fetch(`/api/ledgers/${id}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-
-  if (!response.ok) {
     throw new Error(`Failed to fetch ledger with id ${id}`)
   }
 
   return await response.json()
 }
 
-export { createLedger, updateLedger, deleteLedger, getLedgers, getLedgerById }
+export { getLedgerById }

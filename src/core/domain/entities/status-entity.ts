@@ -1,4 +1,4 @@
 export interface StatusEntity {
   code: string
-  description: string
+  description: string | null
 }
