@@ -147,7 +147,7 @@ export const PortfoliosContent = () => {
                 <TableHead>
                   {intl.formatMessage({
                     id: 'common.status',
-                    defaultMessage: 'status'
+                    defaultMessage: 'Status'
                   })}
                 </TableHead>
                 <TableHead className="w-0">
