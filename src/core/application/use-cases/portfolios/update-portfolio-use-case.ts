@@ -7,7 +7,7 @@ import {
   PortfolioResponseDto,
   UpdatePortfolioDto
 } from '../../dto/portfolios-dto'
-import { PortfoliosEntity } from '@/core/domain/entities/portfolios-entity'
+import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 
 export interface UpdatePortfolio {
   execute: (
@@ -33,9 +33,9 @@ export class UpdatePortfolioUseCase implements UpdatePortfolio {
       code: 'ACTIVE',
       description: 'Teste Portfolio'
     }
-    const portfolioEntity: Partial<PortfoliosEntity> =
+    const portfolioEntity: Partial<PortfolioEntity> =
       portfolioUpdateDtoToEntity(portfolio)
-    const updatedPortfolio: PortfoliosEntity =
+    const updatedPortfolio: PortfolioEntity =
       await this.updatePortfolioRepository.update(
         organizationId,
         ledgerId,

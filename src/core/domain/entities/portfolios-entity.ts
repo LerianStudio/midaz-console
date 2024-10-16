@@ -1,6 +1,6 @@
 import { StatusEntity } from './status-entity'
 
-export type PortfoliosEntity = {
+export type PortfolioEntity = {
   id?: string
   ledgerId?: string
   organizationId?: string

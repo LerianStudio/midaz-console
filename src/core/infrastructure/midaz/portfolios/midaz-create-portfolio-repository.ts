@@ -1,4 +1,4 @@
-import { PortfoliosEntity } from '@/core/domain/entities/portfolios-entity'
+import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { handleMidazError } from '../../utils/midaz-error-handler'
 import { CreatePortfolioRepository } from '@/core/domain/repositories/portfolios/create-portfolio-repository'
 
@@ -9,9 +9,8 @@ export class MidazCreatePortfolioRepository
   async create(
     organizationId: string,
     ledgerId: string,
-    portfolio: PortfoliosEntity
+    portfolio: PortfolioEntity
   ): Promise<any> {
-    console.log('teste drax portfolio', portfolio)
     const response = await fetch(
       `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios`,
       {
@@ -23,7 +22,6 @@ export class MidazCreatePortfolioRepository
       }
     )
 
-    console.log('teste drax', response)
     const midazResponse = await response.json()
 
     if (!response.ok) {

@@ -1,6 +1,6 @@
 import { UpdatePortfolioRepository } from '@/core/domain/repositories/portfolios/update-portfolio-repository'
 import { handleMidazError } from '../../utils/midaz-error-handler'
-import { PortfoliosEntity } from '@/core/domain/entities/portfolios-entity'
+import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 
 export class MidazUpdatePortfolioRepository
   implements UpdatePortfolioRepository
@@ -11,8 +11,8 @@ export class MidazUpdatePortfolioRepository
     organizationId: string,
     ledgerId: string,
     portfolioId: string,
-    portfolio: Partial<PortfoliosEntity>
-  ): Promise<PortfoliosEntity> {
+    portfolio: Partial<PortfolioEntity>
+  ): Promise<PortfolioEntity> {
     const response = await fetch(
       `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}`,
       {

@@ -66,10 +66,3 @@ export const useChartsTransactionsByStatus = (ledgerId: string) => {
     queryFn: () => getChartsTransactionsByStatus(ledgerId)
   })
 }
-
-// export const usePortfolios = (organizationId: string, ledgerId: string) => {
-//   return useQuery({
-//     queryKey: ['portfolios', ledgerId],
-//     queryFn: () => getPortfolios(organizationId, ledgerId)
-//   })
-// }

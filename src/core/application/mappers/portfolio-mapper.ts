@@ -1,4 +1,4 @@
-import { PortfoliosEntity } from '@/core/domain/entities/portfolios-entity'
+import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import {
   CreatePortfolioDto,
   PortfolioResponseDto,
@@ -6,7 +6,7 @@ import {
 } from '../dto/portfolios-dto'
 
 export function portfolioEntityToDto(
-  portfolio: PortfoliosEntity
+  portfolio: PortfolioEntity
 ): PortfolioResponseDto {
   return {
     id: portfolio.id!,
@@ -22,9 +22,7 @@ export function portfolioEntityToDto(
   }
 }
 
-export function portfolioDtoToEntity(
-  dto: CreatePortfolioDto
-): PortfoliosEntity {
+export function portfolioDtoToEntity(dto: CreatePortfolioDto): PortfolioEntity {
   return {
     entityId: dto.entityId,
     name: dto.name,
@@ -37,7 +35,7 @@ export function portfolioDtoToEntity(
 
 export function portfolioUpdateDtoToEntity(
   dto: UpdatePortfolioDto
-): Partial<PortfoliosEntity> {
+): Partial<PortfolioEntity> {
   return {
     ...dto
   }

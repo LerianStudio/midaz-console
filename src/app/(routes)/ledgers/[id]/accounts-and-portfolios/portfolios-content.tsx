@@ -113,7 +113,7 @@ export const PortfoliosContent = () => {
                 {intl.formatMessage({
                   id: `portfolio.create`,
                   defaultMessage: 'Create first portfolio'
-                })}{' '}
+                })}
                 <Plus />
               </>
             )}

@@ -7,7 +7,7 @@ import {
   CreatePortfolioDto,
   PortfolioResponseDto
 } from '../../dto/portfolios-dto'
-import { PortfoliosEntity } from '@/core/domain/entities/portfolios-entity'
+import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 
 export interface CreatePortfolio {
   execute: (
@@ -31,7 +31,7 @@ export class CreatePortfolioUseCase implements CreatePortfolio {
       code: 'ACTIVE',
       description: 'Teste Portfolio'
     }
-    const portfolioEntity: PortfoliosEntity = portfolioDtoToEntity(portfolio)
+    const portfolioEntity: PortfolioEntity = portfolioDtoToEntity(portfolio)
     const portfolioCreated = await this.createPortfolioRepository.create(
       organizationId,
       ledgerId,

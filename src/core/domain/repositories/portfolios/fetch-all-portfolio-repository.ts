@@ -1,5 +1,5 @@
 import { PaginationEntity } from '../../entities/pagination-entity'
-import { PortfoliosEntity } from '../../entities/portfolios-entity'
+import { PortfolioEntity } from '../../entities/portfolios-entity'
 
 export interface FetchAllPortfoliosRepository {
   fetchAll: (
@@ -7,5 +7,5 @@ export interface FetchAllPortfoliosRepository {
     ledgerId: string,
     limit: number,
     page: number
-  ) => Promise<PaginationEntity<PortfoliosEntity>>
+  ) => Promise<PaginationEntity<PortfolioEntity>>
 }

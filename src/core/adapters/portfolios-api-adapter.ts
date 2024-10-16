@@ -1,11 +1,11 @@
 import { PortfolioRepository } from '@/core/repositories/portfolio-repository'
 import * as process from 'node:process'
-import { PortfoliosEntity } from '../domain/entities/portfolios-entity'
+import { PortfolioEntity } from '../domain/entities/portfolios-entity'
 
 export class PortfoliosAPIAdapter implements PortfolioRepository {
   readonly baseUrl: string = process.env.MIDAZ_BASE_PATH + '/portfolios'
 
-  async create(portfolio: PortfoliosEntity): Promise<void> {
+  async create(portfolio: PortfolioEntity): Promise<void> {
     const response = await fetch(this.baseUrl, {
       method: 'POST',
       headers: {
@@ -21,7 +21,7 @@ export class PortfoliosAPIAdapter implements PortfolioRepository {
     return response.json()
   }
 
-  async update(id: string, portfolio: PortfoliosEntity): Promise<void> {
+  async update(id: string, portfolio: PortfolioEntity): Promise<void> {
     const response = await fetch(`${this.baseUrl}/${id}`, {
       method: 'PUT',
       headers: {
@@ -52,7 +52,7 @@ export class PortfoliosAPIAdapter implements PortfolioRepository {
     return response.json()
   }
 
-  async list(): Promise<PortfoliosEntity[]> {
+  async list(): Promise<PortfolioEntity[]> {
     const response = await fetch(this.baseUrl, {
       method: 'GET',
       headers: {
@@ -67,7 +67,7 @@ export class PortfoliosAPIAdapter implements PortfolioRepository {
     return response.json()
   }
 
-  async getById(id: string): Promise<PortfoliosEntity | null> {
+  async getById(id: string): Promise<PortfolioEntity | null> {
     const response = await fetch(`${this.baseUrl}/${id}`, {
       method: 'GET',
       headers: {

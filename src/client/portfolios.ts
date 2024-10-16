@@ -3,7 +3,7 @@ import {
   PortfolioResponseDto,
   UpdatePortfolioDto
 } from '@/core/application/dto/portfolios-dto'
-import { PortfoliosEntity } from '@/core/domain/entities/portfolios-entity'
+import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import {
   getFetcher,
   postFetcher,
@@ -41,7 +41,7 @@ export const useListPortfolios = ({
   ledgerId,
   ...options
 }: UseListPortfoliosProps) => {
-  return useQuery<PaginationDto<PortfoliosEntity>>({
+  return useQuery<PaginationDto<PortfolioEntity>>({
     queryKey: [organizationId, ledgerId, 'portfolios'],
     queryFn: getFetcher(
       `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios`

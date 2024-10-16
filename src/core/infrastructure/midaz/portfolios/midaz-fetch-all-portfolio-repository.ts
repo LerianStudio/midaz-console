@@ -3,7 +3,7 @@ import { ProductEntity } from '@/core/domain/entities/product-entity'
 import { FetchAllProductsRepository } from '@/core/domain/repositories/products/fetch-all-products-repository'
 import { handleMidazError } from '../../utils/midaz-error-handler'
 import { FetchAllPortfoliosRepository } from '@/core/domain/repositories/portfolios/fetch-all-portfolio-repository'
-import { PortfoliosEntity } from '@/core/domain/entities/portfolios-entity'
+import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 
 export class MidazFetchAllPortfoliosRepository
   implements FetchAllPortfoliosRepository
@@ -15,7 +15,7 @@ export class MidazFetchAllPortfoliosRepository
     ledgerId: string,
     limit: number,
     page: number
-  ): Promise<PaginationEntity<PortfoliosEntity>> {
+  ): Promise<PaginationEntity<PortfolioEntity>> {
     const response = await fetch(
       `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios?limit=${limit}&page=${page}`,
       {

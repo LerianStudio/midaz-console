@@ -1,4 +1,4 @@
-import { PortfoliosEntity } from '@/core/domain/entities/portfolios-entity'
+import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { FetchPortfolioByIdRepository } from '@/core/domain/repositories/portfolios/fetch-portfolio-by-id-repository'
 import { handleMidazError } from '../../utils/midaz-error-handler'
 
@@ -11,7 +11,7 @@ export class MidazFetchPortfolioByIdRepository
     organizationId: string,
     ledgerId: string,
     portfolioId: string
-  ): Promise<PortfoliosEntity> {
+  ): Promise<PortfolioEntity> {
     const response = await fetch(
       `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}`,
       {
@@ -29,6 +29,6 @@ export class MidazFetchPortfolioByIdRepository
       throw await handleMidazError(midazResponse)
     }
 
-    return midazResponse as PortfoliosEntity
+    return midazResponse as PortfolioEntity
   }
 }
