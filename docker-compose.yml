@@ -51,7 +51,7 @@ services:
     network_mode: 'service:midaz-console'
 
   ledger:
-    image: lerianstudio/midaz-ledger:latest
+    image: lerianstudio/midaz-ledger:1.13.0
     container_name: midaz-ledger
     restart: always
     env_file:
