@@ -71,6 +71,7 @@ export const PortfolioSheet = ({
   const [metadataEnabled, setMetadataEnabled] = React.useState(
     Object.entries(metadata || {}).length > 0
   )
+  const [newPortfolioName, setNewPortfolioName] = useState<string>('')
 
   const { mutate: createPortfolio, isPending: createPending } =
     useCreatePortfolio({
@@ -106,6 +107,7 @@ export const PortfolioSheet = ({
   const handleSubmit = (data: FormData) => {
     if (mode === 'create') {
       createPortfolio(data)
+      setNewPortfolioName(data.name)
     } else if (mode === 'edit') {
       updatePortfolio(data)
     }
@@ -135,13 +137,13 @@ export const PortfolioSheet = ({
             <SheetHeader>
               <SheetTitle>
                 {intl.formatMessage({
-                  id: 'ledgers.products.sheet.title',
+                  id: 'ledgers.portfolio.sheet.title',
                   defaultMessage: 'New Portfolio'
                 })}
               </SheetTitle>
               <SheetDescription>
                 {intl.formatMessage({
-                  id: 'ledgers.products.sheet.description',
+                  id: 'ledgers.portfolio.sheet.description',
                   defaultMessage:
                     'Fill in the details of the Portfolio you want to create.'
                 })}
@@ -154,17 +156,17 @@ export const PortfolioSheet = ({
               <SheetTitle>
                 {intl.formatMessage(
                   {
-                    id: 'ledgers.products.sheet.edit.title',
-                    defaultMessage: 'Edit {productName}'
+                    id: 'ledgers.portfolio.sheet.edit.title',
+                    defaultMessage: 'Edit {portfolioName}'
                   },
                   {
-                    productName: data?.name
+                    portfolioName: data?.name
                   }
                 )}
               </SheetTitle>
               <SheetDescription>
                 {intl.formatMessage({
-                  id: 'ledgers.products.sheet.edit.description',
+                  id: 'ledgers.portfolio.sheet.edit.description',
                   defaultMessage: 'View and edit product fields.'
                 })}
               </SheetDescription>
@@ -272,13 +274,18 @@ export const PortfolioSheet = ({
         onOpenChange={setIsDialogOpen}
         title={intl.formatMessage({
           id: 'ledgers.dialog.title',
-          defaultMessage: 'Are you sure?'
+          defaultMessage: 'Your new portfolio is ready'
         })}
-        description={intl.formatMessage({
-          id: 'ledgers.dialog.subtitle',
-          defaultMessage:
-            'This action is irreversible. This will deactivate your Ledger forever {ledgerName}.'
-        })}
+        description={intl.formatMessage(
+          {
+            id: 'ledgers.portfolio.dialog.create.description',
+            defaultMessage:
+              'Do you want to add the first account to the {portfolioName} you created? '
+          },
+          {
+            portfolioName: newPortfolioName
+          }
+        )}
         onConfirm={() => {}}
         onCancel={() => setIsDialogOpen(false)}
       />

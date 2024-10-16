@@ -86,11 +86,11 @@ export const PortfoliosContent = () => {
     <>
       <ConfirmationDialog
         title={intl.formatMessage({
-          id: 'ledgers.products.deleteDialog.title',
+          id: 'ledgers.portfolio.deleteDialog.title',
           defaultMessage: 'Are you sure?'
         })}
         description={intl.formatMessage({
-          id: 'ledgers.products.deleteDialog.description',
+          id: 'ledgers.portfolio.deleteDialog.description',
           defaultMessage: 'You will delete a portfolio'
         })}
         loading={deletePending}
