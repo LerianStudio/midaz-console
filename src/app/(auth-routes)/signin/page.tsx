@@ -11,7 +11,6 @@ import {
 import LoginView from '@/components/view/login-view'
 
 const SignInPage = () => {
-  console.log('SignInPage')
   return (
     <div className="flex h-screen w-screen flex-col bg-[#faf9f9]">
       {/* <div className="mt-6 flex w-full justify-center">
