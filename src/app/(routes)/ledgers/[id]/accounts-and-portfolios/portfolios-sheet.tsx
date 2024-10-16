@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
-import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
-import { Button } from '@/components/ui/button'
 import {
   Sheet,
   SheetClose,
   SheetContent,
+  SheetDescription,
   SheetFooter,
-  SheetHeader
+  SheetHeader,
+  SheetTitle
 } from '@/components/ui/sheet'
 import {
   Form,
@@ -25,22 +26,21 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui/tooltip'
-import { cn } from '@/lib/utils'
-import { SheetProps } from '@/types/sheet-type'
 import { HelpCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
-
-import { MetadataSection } from '@/components/sheet/metadata-section'
-// import { useCreatePortfolio } from '@/hooks/portfolios-and-accounts/use-create-portfolio'
+import { isNil } from 'lodash'
 import { useIntl } from 'react-intl'
-import { v4 as uuidv4 } from 'uuid'
-import { PortfoliosEntity } from '@/core/domain/entities/portfolios-entity'
 import { formSchemaPortfolio } from './accounts-and-portfolios-form-schema'
-import ConfirmationDialog from '@/components/confirmation-dialog'
-import { useCreatePortfolio, useListPortfolios } from '@/client/portfolios'
+import { useCreatePortfolio, useUpdatePortfolio } from '@/client/portfolios'
 import { DialogProps } from '@radix-ui/react-dialog'
 import { PortfolioResponseDto } from '@/core/application/dto/portfolios-dto'
 import { LoadingButton } from '@/components/ui/loading-button'
+import { useOrganization } from '@/context/organization-provider/organization-provider-client'
+import { Label } from '@/components/ui/label'
+import { MetadataField } from '@/components/form/metadata-field'
+import { Switch } from '@/components/ui/switch'
+import { metadata } from '@/schema/metadata'
+import ConfirmationDialog from '@/components/confirmation-dialog'
 
 export type PortfolioSheetProps = DialogProps & {
   ledgerId: string
@@ -52,7 +52,7 @@ export type PortfolioSheetProps = DialogProps & {
 const defaultValues = {
   name: '',
   entityId: '',
-  metadata: []
+  metadata: {}
 }
 
 type FormData = z.infer<typeof formSchemaPortfolio>
@@ -64,70 +64,117 @@ export const PortfolioSheet = ({
   onOpenChange,
   ...others
 }: PortfolioSheetProps) => {
-  const { id: ledgerId } = useParams()
   const intl = useIntl()
-  const [showMetadata, setShowMetadata] = useState(false)
-  const [currentMetadata, setCurrentMetadata] = useState({
-    id: '',
-    key: '',
-    value: ''
-  })
+  const { id: ledgerId } = useParams<{ id: string }>()
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const { currentOrganization } = useOrganization()
+  const [metadataEnabled, setMetadataEnabled] = React.useState(
+    Object.entries(metadata || {}).length > 0
+  )
 
   const { mutate: createPortfolio, isPending: createPending } =
     useCreatePortfolio({
-      organizationId: 'b36c9055-01cd-4232-8bed-d4dd2b826b1e',
-      ledgerId: '38eff558-757a-4ca6-ae16-d4a6aef0f4d3',
+      organizationId: currentOrganization.id!,
+      ledgerId: ledgerId,
+      onSuccess: () => {
+        setIsDialogOpen(true)
+        onSucess?.()
+        onOpenChange?.(false)
+      }
+    })
+
+  const { mutate: updatePortfolio, isPending: updatePending } =
+    useUpdatePortfolio({
+      organizationId: currentOrganization.id!,
+      ledgerId: ledgerId,
+      portfolioId: data?.id!,
       onSuccess: () => {
         onSucess?.()
         onOpenChange?.(false)
       }
     })
 
-  // const { mutate: updateProduct, isPending: updatePending } = useListPortfolios({
-  //   organizationId: '1c494870-8c14-41ba-b63f-8fe40c5173c3',
-  //   ledgerId: '74e15716-f5c6-4c86-9641-a7ffa729895c',
-  //   productId: data?.id!,
-  //   onSuccess: () => {
-  //     onSucess?.()
-  //     onOpenChange?.(false)
-  //   }
-  // })
-
   const form = useForm<z.infer<typeof formSchemaPortfolio>>({
     resolver: zodResolver(formSchemaPortfolio),
-    defaultValues: Object.assign({}, defaultValues, formSchemaPortfolio)
-  })
-
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: 'metadata'
+    defaultValues: Object.assign(
+      {},
+      defaultValues,
+      mode === 'create' ? { entityId: '' } : {}
+    )
   })
 
   const handleSubmit = (data: FormData) => {
-    console.log('whats the mode', mode)
-    console.log('gimme data', data)
     if (mode === 'create') {
       createPortfolio(data)
+    } else if (mode === 'edit') {
+      updatePortfolio(data)
     }
 
     form.reset(defaultValues)
   }
 
+  React.useEffect(() => {
+    if (!isNil(data)) {
+      setMetadataEnabled(Object.entries(data.metadata || {}).length > 0)
+      if (mode === 'edit') {
+        const { entityId, ...dataWithoutEntityId } = data
+        form.reset(dataWithoutEntityId, { keepDefaultValues: true })
+      } else {
+        form.reset(data, { keepDefaultValues: true })
+      }
+    } else {
+      setMetadataEnabled(false)
+    }
+  }, [data])
+
   return (
-    <Sheet onOpenChange={onOpenChange} {...others}>
-      <SheetContent
-        className="flex max-h-screen w-2/5 flex-col justify-between overflow-x-auto px-8 pb-0"
-        onOpenAutoFocus={(e) => e.preventDefault()}
-      >
-        <div className="flex flex-grow flex-col overflow-y-auto">
-          <SheetHeader>New Portfolio</SheetHeader>
-          <p className="mb-4 text-sm text-gray-500">
-            Preencha os dados do Portfólio que você deseja criar.
-          </p>
+    <>
+      <Sheet onOpenChange={onOpenChange} {...others}>
+        <SheetContent onOpenAutoFocus={(e) => e.preventDefault()}>
+          {mode === 'create' && (
+            <SheetHeader>
+              <SheetTitle>
+                {intl.formatMessage({
+                  id: 'ledgers.products.sheet.title',
+                  defaultMessage: 'New Portfolio'
+                })}
+              </SheetTitle>
+              <SheetDescription>
+                {intl.formatMessage({
+                  id: 'ledgers.products.sheet.description',
+                  defaultMessage:
+                    'Fill in the details of the Portfolio you want to create.'
+                })}
+              </SheetDescription>
+            </SheetHeader>
+          )}
+
+          {mode === 'edit' && (
+            <SheetHeader>
+              <SheetTitle>
+                {intl.formatMessage(
+                  {
+                    id: 'ledgers.products.sheet.edit.title',
+                    defaultMessage: 'Edit {productName}'
+                  },
+                  {
+                    productName: data?.name
+                  }
+                )}
+              </SheetTitle>
+              <SheetDescription>
+                {intl.formatMessage({
+                  id: 'ledgers.products.sheet.edit.description',
+                  defaultMessage: 'View and edit product fields.'
+                })}
+              </SheetDescription>
+            </SheetHeader>
+          )}
+
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(handleSubmit)}
-              className="space-y-4"
+              className="flex flex-grow flex-col gap-8"
             >
               <FormField
                 control={form.control}
@@ -142,49 +189,65 @@ export const PortfolioSheet = ({
                   </FormItem>
                 )}
               />
+              {mode === 'create' && (
+                <FormField
+                  control={form.control}
+                  name="entityId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex justify-between">
+                        Entity ID *
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <HelpCircle className="ml-2 h-4 w-4 text-gray-400" />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>
+                                Enter the unique identifier for the entity
+                                associated with this portfolio.
+                              </p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
 
-              <FormField
-                control={form.control}
-                name="entityId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="flex justify-between">
-                      Entity ID *
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <HelpCircle className="ml-2 h-4 w-4 text-gray-400" />
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>
-                              Enter the unique identifier for the entity
-                              associated with this portfolio.
-                            </p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="flex flex-col gap-2">
+                <div className="gap- flex flex-col gap-4">
+                  <Label htmlFor="metadata">
+                    {intl.formatMessage({
+                      id: 'common.metadata',
+                      defaultMessage: 'Metadata'
+                    })}
+                  </Label>
+                  <Switch
+                    id="metadata"
+                    checked={metadataEnabled}
+                    onCheckedChange={() => setMetadataEnabled(!metadataEnabled)}
+                  />
+                </div>
+              </div>
 
-              <MetadataSection
-                isSwitchOn={showMetadata}
-                setSwitchOn={setShowMetadata}
-                currentMetadata={currentMetadata}
-                setCurrentMetadata={setCurrentMetadata}
-                metaFields={fields.map((field) => ({
-                  ...field,
-                  key: field.key || '',
-                  value: field.value || ''
-                }))}
-                append={append}
-                remove={remove}
-              />
+              {metadataEnabled && (
+                <div>
+                  <MetadataField name="metadata" control={form.control} />
+                </div>
+              )}
+
+              <p className="text-xs font-normal italic text-shadcn-400">
+                {intl.formatMessage({
+                  id: 'common.requiredFields',
+                  defaultMessage: '(*) required fields.'
+                })}
+              </p>
               <SheetFooter className="sticky bottom-0 mt-auto bg-white py-4">
                 <SheetClose asChild>
                   <LoadingButton
@@ -194,7 +257,7 @@ export const PortfolioSheet = ({
                       !(form.formState.isDirty && form.formState.isValid)
                     }
                     fullWidth
-                    loading={createPending}
+                    loading={createPending || updatePending}
                   >
                     {intl.formatMessage({
                       id: 'common.save',
@@ -205,24 +268,24 @@ export const PortfolioSheet = ({
               </SheetFooter>
             </form>
           </Form>
-        </div>
-      </SheetContent>
-    </Sheet>
+        </SheetContent>
+      </Sheet>
 
-    //  {/* <ConfirmationDialog
-    //     open={isDialogOpen}
-    //     onOpenChange={setIsDialogOpen}
-    //     title={intl.formatMessage({
-    //       id: 'ledgers.dialog.title',
-    //       defaultMessage: 'Are you sure?'
-    //     })}
-    //     description={intl.formatMessage({
-    //       id: 'ledgers.dialog.subtitle',
-    //       defaultMessage:
-    //         'This action is irreversible. This will deactivate your Ledger forever {ledgerName}.'
-    //     })}
-    //     onConfirm={() => {}}
-    //     onCancel={() => setIsDialogOpen(false)}
-    //   /> */}
+      <ConfirmationDialog
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        title={intl.formatMessage({
+          id: 'ledgers.dialog.title',
+          defaultMessage: 'Are you sure?'
+        })}
+        description={intl.formatMessage({
+          id: 'ledgers.dialog.subtitle',
+          defaultMessage:
+            'This action is irreversible. This will deactivate your Ledger forever {ledgerName}.'
+        })}
+        onConfirm={() => {}}
+        onCancel={() => setIsDialogOpen(false)}
+      />
+    </>
   )
 }

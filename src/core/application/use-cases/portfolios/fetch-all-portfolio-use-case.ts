@@ -25,7 +25,6 @@ export class FetchAllPortfoliosUseCase implements FetchAllPortfolios {
     limit: number,
     page: number
   ): Promise<PaginationDto<PortfolioResponseDto>> {
-    console.log(organizationId, ledgerId, limit, page)
     const portfoliosResult: PaginationEntity<PortfoliosEntity> =
       await this.fetchAllPortfoliosRepository.fetchAll(
         organizationId,
@@ -34,11 +33,7 @@ export class FetchAllPortfoliosUseCase implements FetchAllPortfolios {
         limit
       )
 
-    console.log('portfoliosResultportfoliosResult', portfoliosResult)
-
     const { items } = portfoliosResult
-
-    console.log('items', items)
 
     const portfolioDto =
       items && items !== null ? items.map(portfolioEntityToDto) : []

@@ -1,7 +1,6 @@
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 
 const createLedger = async (ledger: LedgerEntity) => {
-  console.log(ledger)
   const response = await fetch('/api/ledgers', {
     method: 'POST',
     headers: {
@@ -9,8 +8,6 @@ const createLedger = async (ledger: LedgerEntity) => {
     },
     body: JSON.stringify(ledger)
   })
-
-  console.log(response)
 
   if (!response.ok) {
     throw new Error('Failed to create ledgers')

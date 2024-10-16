@@ -8,14 +8,13 @@ import {
 } from '@/core/infrastructure/container-registry/container-registry'
 import { NextResponse } from 'next/server'
 
-const deletePortfolioUseCase: DeletePortfolio = container.get<DeletePortfolio>(
-  Registry.DeletePortfolioUseCase
-)
-
 const updatePortfolioUseCase: UpdatePortfolio = container.get<UpdatePortfolio>(
   Registry.UpdatePortfolioUseCase
 )
 
+const deletePortfolioUseCase: DeletePortfolio = container.get<DeletePortfolio>(
+  Registry.DeletePortfolioUseCase
+)
 const getPortfolioByIdUseCase: FetchPortfolioById =
   container.get<FetchPortfolioById>(Registry.FetchPortfolioByIdUseCase)
 

@@ -27,6 +27,10 @@ export class CreatePortfolioUseCase implements CreatePortfolio {
     ledgerId: string,
     portfolio: CreatePortfolioDto
   ): Promise<PortfolioResponseDto> {
+    portfolio.status = {
+      code: 'ACTIVE',
+      description: 'Teste Portfolio'
+    }
     const portfolioEntity: PortfoliosEntity = portfolioDtoToEntity(portfolio)
     const portfolioCreated = await this.createPortfolioRepository.create(
       organizationId,
@@ -34,12 +38,8 @@ export class CreatePortfolioUseCase implements CreatePortfolio {
       portfolioEntity
     )
 
-    console.log('portfolioCreated', portfolioCreated)
-
     const portfolioResponseDto: PortfolioResponseDto =
       portfolioEntityToDto(portfolioCreated)
-
-    console.log('portfolioResponseDto', portfolioResponseDto)
 
     return portfolioResponseDto
   }

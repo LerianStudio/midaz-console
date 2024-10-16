@@ -29,9 +29,12 @@ export class UpdatePortfolioUseCase implements UpdatePortfolio {
     portfolioId: string,
     portfolio: Partial<UpdatePortfolioDto>
   ): Promise<PortfolioResponseDto> {
+    portfolio.status = {
+      code: 'ACTIVE',
+      description: 'Teste Portfolio'
+    }
     const portfolioEntity: Partial<PortfoliosEntity> =
       portfolioUpdateDtoToEntity(portfolio)
-
     const updatedPortfolio: PortfoliosEntity =
       await this.updatePortfolioRepository.update(
         organizationId,

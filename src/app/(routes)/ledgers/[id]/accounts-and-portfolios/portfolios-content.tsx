@@ -1,53 +1,232 @@
 import { Button } from '@/components/ui/button'
-import { Plus } from 'lucide-react'
+import { MoreVertical, Plus } from 'lucide-react'
 import { PortfolioSheet } from './portfolios-sheet'
 import { useParams } from 'next/navigation'
 import { EntityBox } from '@/components/entity-box'
 import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
 import { PortfolioResponseDto } from '@/core/application/dto/portfolios-dto'
-import { useListPortfolios } from '@/client/portfolios'
+import { useDeletePortfolio, useListPortfolios } from '@/client/portfolios'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
+import { useIntl } from 'react-intl'
+import { isNil } from 'lodash'
+import {
+  getCoreRowModel,
+  getFilteredRowModel,
+  useReactTable
+} from '@tanstack/react-table'
+import React from 'react'
+
+import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table'
+import { Badge } from '@/components/ui/badge'
+import { capitalizeFirstLetter } from '@/helpers'
+import ConfirmationDialog from '@/components/confirmation-dialog'
 
 export const PortfoliosContent = () => {
-  const { id: ledgerId } = useParams()
+  const intl = useIntl()
+  const { id: ledgerId } = useParams<{ id: string }>()
   const { currentOrganization } = useOrganization()
+  const [columnFilters, setColumnFilters] = React.useState<any>([])
 
   const { data, refetch } = useListPortfolios({
     organizationId: currentOrganization.id!,
-    ledgerId: ledgerId as string
+    ledgerId: ledgerId
   })
 
-  console.log('portfolios', data)
+  const { mutate: deletePortfolio, isPending: deletePending } =
+    useDeletePortfolio({
+      organizationId: currentOrganization.id!,
+      ledgerId,
+      onSuccess: () => {
+        handleDialogClose()
+        refetch()
+      }
+    })
+
+  const { handleDialogOpen, dialogProps, handleDialogClose } = useConfirmDialog(
+    {
+      onConfirm: (id: string) => deletePortfolio({ id })
+    }
+  )
 
   const { handleCreate, handleEdit, sheetProps } =
     useCreateUpdateSheet<PortfolioResponseDto>()
+
+  const table = useReactTable({
+    data: data?.items!,
+    columns: [
+      {
+        accessorKey: 'name'
+      }
+    ],
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    state: {
+      columnFilters
+    }
+  })
+
   return (
     <>
+      <ConfirmationDialog
+        title={intl.formatMessage({
+          id: 'ledgers.products.deleteDialog.title',
+          defaultMessage: 'Are you sure?'
+        })}
+        description={intl.formatMessage({
+          id: 'ledgers.products.deleteDialog.description',
+          defaultMessage: 'You will delete a product'
+        })}
+        loading={deletePending}
+        {...dialogProps}
+      />
+
+      <PortfolioSheet ledgerId={ledgerId} onSucess={refetch} {...sheetProps} />
+
       <EntityBox.Root>
         <EntityBox.Header
           title="Portfolios"
-          // subtitle={
-          //   // portfolios.data
-          //   //   ? undefined
-          //   //   : 'Moedas ou ativos de quaisquer naturezas transacionados neste Ledger.'
-          // }
+          subtitle={`${data?.items.length} portfolios encontrados`}
         />
         <EntityBox.Actions>
-          <Button variant="outline" onClick={handleCreate} icon={<Plus />}>
-            {/* {!portfolios.data ?? 'Criar o primeiro porfolio'} */}
+          <Button variant="secondary" onClick={handleCreate}>
+            {data?.items?.length && data.items.length > 0 ? (
+              <Plus />
+            ) : (
+              <>
+                <Plus /> Criar o primeiro porfolio
+              </>
+            )}
           </Button>
         </EntityBox.Actions>
       </EntityBox.Root>
 
-      {/* {portfolios.data && portfolios.data.length > 0 && (
-        <DataTable columns={portfoliosColumns} data={portfolios.data} />
-      )} */}
+      {!isNil(data?.items) && data?.items.length > 0 && (
+        <TableContainer>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>
+                  {intl.formatMessage({
+                    id: 'common.id',
+                    defaultMessage: 'ID'
+                  })}
+                </TableHead>
+                <TableHead>
+                  {intl.formatMessage({
+                    id: 'common.name',
+                    defaultMessage: 'Name'
+                  })}
+                </TableHead>
+                <TableHead>
+                  {intl.formatMessage({
+                    id: 'common.metadata',
+                    defaultMessage: 'Metadata'
+                  })}
+                </TableHead>
+                <TableHead>
+                  {intl.formatMessage({
+                    id: 'common.status',
+                    defaultMessage: 'status'
+                  })}
+                </TableHead>
+                <TableHead className="w-0">
+                  {intl.formatMessage({
+                    id: 'common.actions',
+                    defaultMessage: 'Actions'
+                  })}
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows.map((product) => (
+                <TableRow key={product.id}>
+                  <TableCell>{product.original.id}</TableCell>
+                  <TableCell>{product.original.name}</TableCell>
+                  <TableCell>
+                    {intl.formatMessage(
+                      {
+                        id: 'common.table.metadata',
+                        defaultMessage:
+                          '{number, plural, =0 {-} one {# record} other {# records}}'
+                      },
+                      {
+                        number: Object.entries(product.original.metadata || [])
+                          .length
+                      }
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={
+                        product?.original?.status?.code === 'ACTIVE'
+                          ? 'active'
+                          : 'inactive'
+                      }
+                    >
+                      {capitalizeFirstLetter(product.original.status.code)}
+                    </Badge>
+                  </TableCell>
 
-      <PortfolioSheet
-        ledgerId={ledgerId as string}
-        onSucess={refetch}
-        {...sheetProps}
-      />
+                  <TableCell className="w-0">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="secondary">
+                          <MoreVertical size={16} onClick={() => {}} />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem
+                          onClick={() => handleEdit(product.original)}
+                        >
+                          {intl.formatMessage({
+                            id: `common.edit`,
+                            defaultMessage: 'Edit'
+                          })}
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>
+                          {intl.formatMessage({
+                            id: `common.inactivate`,
+                            defaultMessage: 'Inactivate'
+                          })}
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          onClick={() => {
+                            handleDialogOpen(product?.original?.id!)
+                          }}
+                        >
+                          {intl.formatMessage({
+                            id: `common.delete`,
+                            defaultMessage: 'Delete'
+                          })}
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </>
   )
 }

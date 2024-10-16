@@ -6,7 +6,7 @@ export interface CreatePortfolioDto {
   organizationId: string
   name: string
   status: StatusDto
-  metadata: Record<string, any> | null
+  metadata: Record<string, any>
 }
 
 export interface PortfolioResponseDto {
@@ -16,7 +16,7 @@ export interface PortfolioResponseDto {
   entityId: string
   name: string
   status: StatusDto
-  metadata: Record<string, any> | null
+  metadata: Record<string, any>
   createdAt?: Date
   updatedAt?: Date
   deletedAt?: Date | null

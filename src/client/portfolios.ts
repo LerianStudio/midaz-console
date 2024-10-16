@@ -26,7 +26,6 @@ export const useCreatePortfolio = ({
   ledgerId,
   ...options
 }: UseCreatePortfolioProps) => {
-  console.log(organizationId, ledgerId, options)
   return useMutation<any, any, any>({
     mutationFn: postFetcher(
       `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios`
@@ -45,7 +44,7 @@ export const useListPortfolios = ({
   return useQuery<PaginationDto<PortfoliosEntity>>({
     queryKey: [organizationId, ledgerId, 'portfolios'],
     queryFn: getFetcher(
-      `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios?page=1&limit=100`
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios`
     ),
     ...options
   })
@@ -75,19 +74,17 @@ export const useUpdatePortfolio = ({
 type UseDeletePortfolioProps = UseMutationOptions & {
   organizationId: string
   ledgerId: string
-  portfolioId: string
 }
 
 export const useDeletePortfolio = ({
   organizationId,
   ledgerId,
-  portfolioId,
   ...options
 }: UseDeletePortfolioProps) => {
   return useMutation<any, any, any>({
-    mutationKey: [organizationId, ledgerId, portfolioId],
+    mutationKey: [organizationId, ledgerId],
     mutationFn: deleteFetcher(
-      `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}`
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios`
     ),
     ...options
   })
