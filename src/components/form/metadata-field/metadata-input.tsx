@@ -47,7 +47,10 @@ export const MetadataInput = ({ onAddMetadata }: MetadataInputProps) => {
             id="key"
             value={currentMetadata.key}
             onChange={handleChange}
-            placeholder="Key"
+            placeholder={intl.formatMessage({
+              id: 'entity.metadata.key',
+              defaultMessage: 'Key'
+            })}
             className="h-9"
           />
         </div>
@@ -62,7 +65,10 @@ export const MetadataInput = ({ onAddMetadata }: MetadataInputProps) => {
             id="value"
             value={currentMetadata.value}
             onChange={handleChange}
-            placeholder="Value"
+            placeholder={intl.formatMessage({
+              id: 'entity.metadata.value',
+              defaultMessage: 'Value'
+            })}
             className="h-9"
           />
         </div>
