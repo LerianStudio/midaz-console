@@ -6,7 +6,7 @@ import { OrySessionEntity } from '@/core/domain/entities/ory-session-entity'
 import {
   httpExceptionHelper,
   UnauthorizedException
-} from '@/core/errors/http-exceptions'
+} from '@/core/infrastructure/errors/http-exceptions'
 
 export class OryAuthAPIAdapter implements OryAuthRepository {
   readonly baseUrl: string = process.env.ORY_KRATOS_PUBLIC_URL + ''
