@@ -18,13 +18,9 @@ import { Button } from '@/components/ui/button'
 import useCustomToast from '@/hooks/use-custom-toast'
 
 const formSchema = z.object({
-  username: z
-    .string({
-      required_error: 'Informe um email válido'
-    })
-    .email({
-      message: 'Informe um email válido'
-    }),
+  username: z.string({
+    required_error: 'Informe o usuário'
+  }),
   password: z
     .string({
       required_error: 'Informe uma senha válida'
@@ -54,7 +50,7 @@ const LoginView = () => {
       return
     }
 
-    route.replace('/en')
+    route.replace('/')
   }
 
   return (
@@ -66,7 +62,7 @@ const LoginView = () => {
             name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>User</FormLabel>
                 <FormControl>
                   <Input placeholder="Digite seu email cadastrado" {...field} />
                 </FormControl>

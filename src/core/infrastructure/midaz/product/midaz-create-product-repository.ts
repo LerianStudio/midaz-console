@@ -1,6 +1,7 @@
 import { ProductEntity } from '@/core/domain/entities/product-entity'
 import { CreateProductRepository } from '@/core/domain/repositories/products/create-product-repository'
 import { handleMidazError } from '../../utils/midaz-error-handler'
+import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 export class MidazCreateProductRepository implements CreateProductRepository {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
@@ -8,25 +9,15 @@ export class MidazCreateProductRepository implements CreateProductRepository {
     organizationId: string,
     ledgerId: string,
     product: ProductEntity
-  ): Promise<any> {
-    const response = await fetch(
-      `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/products`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(product)
-      }
-    )
+  ): Promise<ProductEntity> {
+    const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/products`
 
-    const midazResponse = await response.json()
+    const response = await httpMidazAuthFetch<ProductEntity>({
+      url,
+      method: HTTP_METHODS.POST,
+      body: JSON.stringify(product)
+    })
 
-    if (!response.ok) {
-      console.error('MidazCreateProductRepository', midazResponse)
-      throw await handleMidazError(midazResponse)
-    }
-
-    return midazResponse
+    return response
   }
 }

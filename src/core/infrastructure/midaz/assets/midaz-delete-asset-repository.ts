@@ -1,5 +1,6 @@
 import { DeleteAssetRepository } from '@/core/domain/repositories/assets/delete-asset-repository'
 import { handleMidazError } from '../../utils/midaz-error-handler'
+import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 export class MidazDeleteAssetRepository implements DeleteAssetRepository {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
@@ -9,24 +10,12 @@ export class MidazDeleteAssetRepository implements DeleteAssetRepository {
     ledgerId: string,
     assetId: string
   ): Promise<void> {
-    const response = await fetch(
-      `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`,
-      {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    )
+    const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`
 
-    console.log('MidazDeleteAssetRepository', response)
-
-    if (!response.ok) {
-      const midazResponse = await response.json()
-
-      console.error('MidazDeleteAssetRepository', midazResponse)
-      throw await handleMidazError(midazResponse)
-    }
+    const response = await httpMidazAuthFetch<void>({
+      url,
+      method: HTTP_METHODS.DELETE
+    })
 
     return
   }

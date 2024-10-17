@@ -5,7 +5,7 @@ export interface LedgerResponseDto {
   organizationId: string
   name: string
   status: StatusDto
-  metadata: Record<string, string> | null
+  metadata: Record<string, any>
   createdAt: Date
   updatedAt: Date
   deletedAt: Date | null

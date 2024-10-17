@@ -1,5 +1,3 @@
-import { InstrumentsAPIAdapter } from '@/core/adapters/instruments-api-adapter'
-import { OryAuthAPIAdapter } from '@/core/adapters/ory-auth-api-adapter'
 import {
   CreateOrganization,
   CreateOrganizationUseCase
@@ -26,6 +24,27 @@ import {
 } from '@/core/application/use-cases/organizations/update-organization-use-case'
 
 import {
+  CreateAsset,
+  CreateAssetUseCase
+} from '@/core/application/use-cases/assets/create-asset-use-case'
+import {
+  DeleteAsset,
+  DeleteAssetUseCase
+} from '@/core/application/use-cases/assets/delete-asset-use-case'
+import {
+  FetchAllAssets,
+  FetchAllAssetsUseCase
+} from '@/core/application/use-cases/assets/fetch-all-assets-use-case'
+import { FetchAssetByIdUseCase } from '@/core/application/use-cases/assets/fetch-asset-by-id-use-case'
+import {
+  UpdateAsset,
+  UpdateAssetUseCase
+} from '@/core/application/use-cases/assets/update-asset-use-case'
+import {
+  AuthLogin,
+  AuthLoginUseCase
+} from '@/core/application/use-cases/auth/auth-login-use-case'
+import {
   CreateLedger,
   CreateLedgerUseCase
 } from '@/core/application/use-cases/ledgers/create-ledger-use-case'
@@ -45,6 +64,32 @@ import {
   UpdateLedger,
   UpdateLedgerUseCase
 } from '@/core/application/use-cases/ledgers/update-ledger-use-case'
+import {
+  CreateProduct,
+  CreateProductUseCase
+} from '@/core/application/use-cases/product/create-product-use-case'
+import {
+  DeleteProduct,
+  DeleteProductUseCase
+} from '@/core/application/use-cases/product/delete-product-use-case'
+import {
+  FetchAllProducts,
+  FetchAllProductsUseCase
+} from '@/core/application/use-cases/product/fetch-all-products-use-case'
+import {
+  FetchProductById,
+  FetchProductByIdUseCase
+} from '@/core/application/use-cases/product/fetch-product-by-id-use-case'
+import {
+  UpdateProduct,
+  UpdateProductUseCase
+} from '@/core/application/use-cases/product/update-product-use-case'
+import { CreateAssetRepository } from '@/core/domain/repositories/assets/create-asset-repository'
+import { DeleteAssetRepository } from '@/core/domain/repositories/assets/delete-asset-repository'
+import { FetchAllAssetsRepository } from '@/core/domain/repositories/assets/fetch-all-assets-repository'
+import { FetchAssetByIdRepository } from '@/core/domain/repositories/assets/fetch-asset-by-id-repository'
+import { UpdateAssetRepository } from '@/core/domain/repositories/assets/update-asset-repository'
+import { AuthLoginRepository } from '@/core/domain/repositories/auth/auth-login-repository'
 import { CreateLedgerRepository } from '@/core/domain/repositories/ledgers/create-ledger-repository'
 import { DeleteLedgerRepository } from '@/core/domain/repositories/ledgers/delete-ledger-repository'
 import { FetchAllLedgersRepository } from '@/core/domain/repositories/ledgers/fetch-all-ledgers-repository'
@@ -55,9 +100,18 @@ import { DeleteOrganizationRepository } from '@/core/domain/repositories/organiz
 import { FetchAllOrganizationsRepository } from '@/core/domain/repositories/organizations/fetch-all-organizations-repository'
 import { FetchOrganizationByIdRepository } from '@/core/domain/repositories/organizations/fetch-organization-by-id-repository'
 import { UpdateOrganizationRepository } from '@/core/domain/repositories/organizations/update-organization-repository'
-import InstrumentsUseCases from '@/core/useCases/instruments-use-cases'
-import OryAuthUseCases from '@/core/useCases/ory-auth-use-cases'
+import { CreateProductRepository } from '@/core/domain/repositories/products/create-product-repository'
+import { DeleteProductRepository } from '@/core/domain/repositories/products/delete-product-repository'
+import { FetchAllProductsRepository } from '@/core/domain/repositories/products/fetch-all-products-repository'
+import { FetchProductByIdRepository } from '@/core/domain/repositories/products/fetch-product-by-id-repository'
+import { UpdateProductRepository } from '@/core/domain/repositories/products/update-product-repository'
 import { Container } from 'inversify'
+import { CasdoorAuthLoginRepository } from '../casdoor/casdoor-auth-login-repository'
+import { MidazCreateAssetRepository } from '../midaz/assets/midaz-create-asset-repository'
+import { MidazDeleteAssetRepository } from '../midaz/assets/midaz-delete-asset-repository'
+import { MidazFetchAllAssetsRepository } from '../midaz/assets/midaz-fetch-all-assets-repository'
+import { MidazFetchAssetByIdRepository } from '../midaz/assets/midaz-fetch-asset-by-id-repository'
+import { MidazUpdateAssetRepository } from '../midaz/assets/midaz-update-asset-repository'
 import { MidazCreateLedgerRepository } from '../midaz/ledgers/midaz-create-ledger-repository'
 import { MidazDeleteLedgerRepository } from '../midaz/ledgers/midaz-delete-ledger-repository'
 import { MidazFetchAllLedgersRepository } from '../midaz/ledgers/midaz-fetch-all-ledgers-repository'
@@ -68,73 +122,21 @@ import { MidazDeleteOrganizationRepository } from '../midaz/organizations/midaz-
 import { MidazFetchAllOrganizationsRepository } from '../midaz/organizations/midaz-fetch-all-organizations-repository'
 import { MidazFetchOrganizationByIdRepository } from '../midaz/organizations/midaz-fetch-organization-by-id-repository'
 import { MidazUpdateOrganizationRepository } from '../midaz/organizations/midaz-update-organization-repository'
-import {
-  CreateAsset,
-  CreateAssetUseCase
-} from '@/core/application/use-cases/assets/create-asset-use-case'
-import {
-  FetchAllAssets,
-  FetchAllAssetsUseCase
-} from '@/core/application/use-cases/assets/fetch-all-assets-use-case'
-import { FetchAssetByIdUseCase } from '@/core/application/use-cases/assets/fetch-asset-by-id-use-case'
-import {
-  UpdateAsset,
-  UpdateAssetUseCase
-} from '@/core/application/use-cases/assets/update-asset-use-case'
-import {
-  DeleteAsset,
-  DeleteAssetUseCase
-} from '@/core/application/use-cases/assets/delete-asset-use-case'
-import { CreateAssetRepository } from '@/core/domain/repositories/assets/create-asset-repository'
-import { MidazCreateAssetRepository } from '../midaz/assets/midaz-create-asset-repository'
-import { FetchAllAssetsRepository } from '@/core/domain/repositories/assets/fetch-all-assets-repository'
-import { MidazFetchAllAssetsRepository } from '../midaz/assets/midaz-fetch-all-assets-repository'
-import { FetchAssetByIdRepository } from '@/core/domain/repositories/assets/fetch-asset-by-id-repository'
-import { MidazFetchAssetByIdRepository } from '../midaz/assets/midaz-fetch-asset-by-id-repository'
-import { UpdateAssetRepository } from '@/core/domain/repositories/assets/update-asset-repository'
-import { MidazUpdateAssetRepository } from '../midaz/assets/midaz-update-asset-repository'
-import { DeleteAssetRepository } from '@/core/domain/repositories/assets/delete-asset-repository'
-import { MidazDeleteAssetRepository } from '../midaz/assets/midaz-delete-asset-repository'
 import { MidazCreateProductRepository } from '../midaz/product/midaz-create-product-repository'
-import { CreateProductRepository } from '@/core/domain/repositories/products/create-product-repository'
-import {
-  CreateProduct,
-  CreateProductUseCase
-} from '@/core/application/use-cases/product/create-product-use-case'
-import {
-  FetchAllProducts,
-  FetchAllProductsUseCase
-} from '@/core/application/use-cases/product/fetch-all-products-use-case'
-import { FetchAllProductsRepository } from '@/core/domain/repositories/products/fetch-all-products-repository'
-import { MidazFetchAllProductsRepository } from '../midaz/product/midaz-fetch-all-products-repository'
-import { MidazUpdateProductRepository } from '../midaz/product/midaz-update-product-repository'
-import { UpdateProductRepository } from '@/core/domain/repositories/products/update-product-repository'
-import { DeleteProductRepository } from '@/core/domain/repositories/products/delete-product-repository'
 import { MidazDeleteProductRepository } from '../midaz/product/midaz-delete-product-repository'
-import { FetchProductByIdRepository } from '@/core/domain/repositories/products/fetch-product-by-id-repository'
+import { MidazFetchAllProductsRepository } from '../midaz/product/midaz-fetch-all-products-repository'
 import { MidazFetchProductByIdRepository } from '../midaz/product/midaz-fetch-product-by-id-repository'
+import { MidazUpdateProductRepository } from '../midaz/product/midaz-update-product-repository'
 import {
-  UpdateProduct,
-  UpdateProductUseCase
-} from '@/core/application/use-cases/product/update-product-use-case'
-import {
-  DeleteProduct,
-  DeleteProductUseCase
-} from '@/core/application/use-cases/product/delete-product-use-case'
-import {
-  FetchProductById,
-  FetchProductByIdUseCase
-} from '@/core/application/use-cases/product/fetch-product-by-id-use-case'
+  FetchAllLedgersAssets,
+  FetchAllLedgersAssetsUseCase
+} from '@/core/application/use-cases/ledgers-assets/fetch-ledger-assets-use-case'
 
 export const Registry = {
-  InstrumentsAPIAdapter: Symbol.for('InstrumentsAPIAdapter'),
-  OryAuthAPIAdapter: Symbol.for('OryAuthAPIAdapter'),
+  // Auth
 
-  /**
-   * TODO Remove old Registry
-   */
-  OryAuthUseCases: Symbol.for('OryAuthUseCases'),
-  InstrumentsUseCases: Symbol.for('InstrumentsUseCases'),
+  AuthLoginRepository: Symbol.for('AuthLoginRepository'),
+  AuthLoginUseCase: Symbol.for('AuthLoginUseCase'),
 
   // Organizations
 
@@ -171,6 +173,9 @@ export const Registry = {
   UpdateLedgerRepository: Symbol.for('UpdateLedgerRepository'),
   DeleteLedgerRepository: Symbol.for('DeleteLedgerRepository'),
 
+  // Ledgers-Assets
+  FetchAllLedgersAssetsUseCase: Symbol.for('FetchAllLedgersAssetsUseCase'),
+
   // Assets
   CreateAssetUseCase: Symbol.for('CreateAssetUseCase'),
   FetchAllAssetsUseCase: Symbol.for('FetchAllAssetsUseCase'),
@@ -201,39 +206,19 @@ export const Registry = {
 
 export const container = new Container()
 
-// External API Adapters
+// Auth
 
 container
-  .bind<InstrumentsAPIAdapter>(Registry.InstrumentsAPIAdapter)
-  .toDynamicValue((context) => {
-    return new InstrumentsAPIAdapter()
-  })
-container
-  .bind<OryAuthAPIAdapter>(Registry.OryAuthAPIAdapter)
-  .toDynamicValue((context) => {
-    return new OryAuthAPIAdapter()
-  })
-
-// Use Cases
+  .bind<AuthLoginRepository>(Registry.AuthLoginRepository)
+  .toConstantValue(new CasdoorAuthLoginRepository())
 
 container
-  .bind<InstrumentsUseCases>(Registry.InstrumentsUseCases)
+  .bind<AuthLogin>(Registry.AuthLoginUseCase)
   .toDynamicValue((context) => {
-    return new InstrumentsUseCases(
-      context.container.get(Registry.InstrumentsAPIAdapter)
+    return new AuthLoginUseCase(
+      context.container.get(Registry.AuthLoginRepository)
     )
   })
-container
-  .bind<OryAuthUseCases>(Registry.OryAuthUseCases)
-  .toDynamicValue((context) => {
-    return new OryAuthUseCases(
-      context.container.get(Registry.OryAuthAPIAdapter)
-    )
-  })
-
-/**
- * New Containers
- */
 
 // Organizations
 
@@ -428,6 +413,16 @@ container
   .toDynamicValue((context) => {
     return new DeleteAssetUseCase(
       context.container.get(Registry.DeleteAssetRepository)
+    )
+  })
+
+//Ledgers-Assets
+container
+  .bind<FetchAllLedgersAssets>(Registry.FetchAllLedgersAssetsUseCase)
+  .toDynamicValue((context) => {
+    return new FetchAllLedgersAssetsUseCase(
+      context.container.get(Registry.FetchAllLedgersRepository),
+      context.container.get(Registry.FetchAllAssetsRepository)
     )
   })
 

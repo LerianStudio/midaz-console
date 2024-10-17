@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth'
-import { nextAuthOptions } from '@/utils/ory-credentials-provider'
 
-const handler = NextAuth(nextAuthOptions)
+import { nextAuthCasdoorOptions } from '@/core/infrastructure/next-auth/casdoor/next-auth-casdoor-provider'
+
+const handler = NextAuth(nextAuthCasdoorOptions)
 
 export { handler as GET, handler as POST }

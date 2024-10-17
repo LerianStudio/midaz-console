@@ -69,6 +69,7 @@
   "error.midaz.ledgerNameConflict": "Error Midaz name conflict",
   "error.midaz.missingFields": "Error Midaz missing fields",
   "error.midaz.unknowError": "Error on Midaz.",
+  "error.midaz.unauthorized": "The provided token is expired, invalid or malformed. Please provide a valid token and try again.",
   "errors.custom.date.invalid": "Invalid date",
   "errors.custom.one_lowercase_letter": "Field must contain at least 1 lowercase letter",
   "errors.custom.one_number": "Field must contain at least 1 number",

@@ -1,3 +1,4 @@
+import { AssetEntity } from './asset-entity'
 import { StatusEntity } from './status-entity'
 
 export type LedgerEntity = {
@@ -9,6 +10,7 @@ export type LedgerEntity = {
   createdAt?: Date
   updatedAt?: Date
   deletedAt?: Date | null
+  assets?: AssetEntity[]
 }
 
 export type LedgerPortfoliosEntity = {
