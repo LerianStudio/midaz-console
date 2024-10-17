@@ -41,6 +41,7 @@ import { MetadataField } from '@/components/form/metadata-field'
 import { Switch } from '@/components/ui/switch'
 import { metadata } from '@/schema/metadata'
 import ConfirmationDialog from '@/components/confirmation-dialog'
+import { InputField } from '@/components/form'
 
 export type PortfolioSheetProps = DialogProps & {
   ledgerId: string
@@ -178,19 +179,16 @@ export const PortfolioSheet = ({
               onSubmit={form.handleSubmit(handleSubmit)}
               className="flex flex-grow flex-col gap-8"
             >
-              <FormField
-                control={form.control}
+              <InputField
                 name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Portfolio Name *</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                label={intl.formatMessage({
+                  id: 'entity.portfolio.name',
+                  defaultMessage: 'Portfolio Name'
+                })}
+                control={form.control}
+                required
               />
+
               {mode === 'create' && (
                 <FormField
                   control={form.control}
@@ -198,17 +196,21 @@ export const PortfolioSheet = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="flex justify-between">
-                        Entity ID *
+                        {intl.formatMessage({
+                          id: 'entity.portfolio.entityId',
+                          defaultMessage: 'Entity Id'
+                        })}
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
                               <HelpCircle className="ml-2 h-4 w-4 text-gray-400" />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>
-                                Enter the unique identifier for the entity
-                                associated with this portfolio.
-                              </p>
+                              {intl.formatMessage({
+                                id: 'entity.portfolio.description',
+                                defaultMessage:
+                                  'Enter the unique identifier for the entity associated with this portfolio'
+                              })}
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
