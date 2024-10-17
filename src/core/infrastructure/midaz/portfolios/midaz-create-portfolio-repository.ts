@@ -1,6 +1,7 @@
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { handleMidazError } from '../../utils/midaz-error-handler'
 import { CreatePortfolioRepository } from '@/core/domain/repositories/portfolios/create-portfolio-repository'
+import { PortfolioResponseDto } from '@/core/application/dto/portfolios-dto'
 
 export class MidazCreatePortfolioRepository
   implements CreatePortfolioRepository
@@ -10,7 +11,7 @@ export class MidazCreatePortfolioRepository
     organizationId: string,
     ledgerId: string,
     portfolio: PortfolioEntity
-  ): Promise<any> {
+  ): Promise<PortfolioResponseDto> {
     const response = await fetch(
       `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios`,
       {

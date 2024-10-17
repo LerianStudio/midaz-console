@@ -125,7 +125,6 @@ import {
   FetchProductById,
   FetchProductByIdUseCase
 } from '@/core/application/use-cases/product/fetch-product-by-id-use-case'
-import { PortfoliosAPIAdapter } from '@/core/adapters/portfolios-api-adapter'
 import {
   CreatePortfolio,
   CreatePortfolioUseCase
@@ -561,13 +560,6 @@ container
     return new FetchProductByIdUseCase(
       context.container.get(Registry.FetchProductByIdRepository)
     )
-  })
-
-// Portfolio Use Cases
-container
-  .bind<PortfoliosAPIAdapter>(Registry.PortfolioAPIAdapter)
-  .toDynamicValue((context) => {
-    return new PortfoliosAPIAdapter()
   })
 
 container

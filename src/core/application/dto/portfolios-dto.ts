@@ -10,16 +10,16 @@ export interface CreatePortfolioDto {
 }
 
 export interface PortfolioResponseDto {
-  id?: string
-  ledgerId?: string
-  organizationId?: string
+  id: string
+  ledgerId: string
+  organizationId: string
   entityId: string
   name: string
   status: StatusDto
   metadata: Record<string, any>
-  createdAt?: Date
-  updatedAt?: Date
-  deletedAt?: Date | null
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date | null
 }
 
 export interface UpdatePortfolioDto {
