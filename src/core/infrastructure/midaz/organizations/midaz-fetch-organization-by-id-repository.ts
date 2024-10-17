@@ -1,6 +1,7 @@
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { FetchOrganizationByIdRepository } from '@/core/domain/repositories/organizations/fetch-organization-by-id-repository'
 import { handleMidazError } from '../../utils/midaz-error-handler'
+import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 export class MidazFetchOrganizationByIdRepository
   implements FetchOrganizationByIdRepository
@@ -8,21 +9,13 @@ export class MidazFetchOrganizationByIdRepository
   private baseUrl: string = process.env.MIDAZ_BASE_PATH + '/organizations'
 
   async fetchById(id: string): Promise<OrganizationEntity> {
-    const response = await fetch(`${this.baseUrl}/${id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
+    const url = `${this.baseUrl}/${id}`
+
+    const response = await httpMidazAuthFetch<OrganizationEntity>({
+      url,
+      method: HTTP_METHODS.GET
     })
 
-    const midazResponse = await response.json()
-
-    console.log('midazResponse', midazResponse)
-
-    if (!response.ok) {
-      throw await handleMidazError(midazResponse)
-    }
-
-    return midazResponse
+    return response
   }
 }
