@@ -93,6 +93,7 @@ export const AvatarField = React.forwardRef<unknown, AvatarFieldProps>(
     )
   }
 )
+AvatarField.displayName = 'AvatarField'
 
 export type OrganizationsFormAvatarFieldProps = {
   name: string
