@@ -5,7 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Toaster } from 'react-hot-toast'
 import { LocalizationProvider } from '@/lib/intl'
 import { ThemeProvider } from '@/lib/theme'
-import { OrganizationProvider } from '@/context/organization-provider'
+import ZodSchemaProvider from '@/lib/zod/zod-schema-provider'
 
 export default async function App({ children }: { children: React.ReactNode }) {
   return (
@@ -13,11 +13,13 @@ export default async function App({ children }: { children: React.ReactNode }) {
       <QueryProvider>
         <LocalizationProvider>
           <ThemeProvider>
-            <div>{children}</div>
-            <Toaster
-              position="top-right"
-              containerStyle={{ top: 60, right: 60 }}
-            />
+            <ZodSchemaProvider>
+              <div>{children}</div>
+              <Toaster
+                position="top-right"
+                containerStyle={{ top: 60, right: 60 }}
+              />
+            </ZodSchemaProvider>
           </ThemeProvider>
         </LocalizationProvider>
         <ReactQueryDevtools initialIsOpen={false} />

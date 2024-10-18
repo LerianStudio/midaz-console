@@ -7,7 +7,6 @@ import {
 } from '@/core/infrastructure/container-registry/container-registry'
 import { NextResponse } from 'next/server'
 import { apiErrorHandler } from '../../utils/api-error-handler'
-import { stat } from 'fs'
 
 const updateOrganizationUseCase = container.get<UpdateOrganization>(
   Registry.UpdateOrganizationUseCase

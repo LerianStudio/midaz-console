@@ -1,15 +1,33 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { useIntl } from 'react-intl'
 
-const NotFound = () => {
+const NotFoundPage = () => {
+  const intl = useIntl()
+
   return (
-    <div className="flex h-[calc(100vh-120px)] items-center justify-center">
-      <div className="flex flex-col gap-4">
-        <h1 className="text-3xl">Essa página não existe</h1>
-        <h1 className="text-2xl">Tente acessar outra página.</h1>
+    <div className="flex h-full flex-col items-center justify-center">
+      <div className="flex flex-col justify-center gap-4 text-center">
+        <h1 className="text-3xl">
+          {intl.formatMessage({
+            id: 'notFound.title',
+            defaultMessage: 'The page you are looking for does not exist.'
+          })}
+        </h1>
+        <h1 className="mb-4 text-2xl">
+          {intl.formatMessage({
+            id: 'notFound.description',
+            defaultMessage: 'Try accessing another page.'
+          })}
+        </h1>
         <Link href="/">
-          <Button className="w-fit rounded bg-sunglow-400 p-6 text-[18px] font-semibold text-black hover:bg-sunglow-400/60">
-            Voltar para home
+          <Button>
+            {intl.formatMessage({
+              id: 'notFound.backToHome',
+              defaultMessage: 'Back to Home'
+            })}
           </Button>
         </Link>
       </div>
@@ -17,4 +35,4 @@ const NotFound = () => {
   )
 }
 
-export default NotFound
+export default NotFoundPage

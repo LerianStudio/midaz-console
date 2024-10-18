@@ -174,7 +174,15 @@ export const OrganizationsTabContent = () => {
                           : 'inactive'
                       }
                     >
-                      {organization.status.code.toLowerCase()}
+                      {organization.status.code === 'ACTIVE'
+                        ? intl.formatMessage({
+                            id: 'common.active',
+                            defaultMessage: 'Active'
+                          })
+                        : intl.formatMessage({
+                            id: 'common.inactive',
+                            defaultMessage: 'Inactive'
+                          })}
                     </Badge>
                   </TableCell>
                   <TableCell>

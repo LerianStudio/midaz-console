@@ -5,7 +5,7 @@ import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import {
   organizationDtoToEntity,
   organizationEntityToDto
-} from '../../mappers/oganization-mapper'
+} from '../../mappers/organization-mapper'
 import { MidazError } from '@/core/infrastructure/errors/midaz-error'
 
 export interface CreateOrganization {
