@@ -13,15 +13,18 @@ const messages = defineMessages({
   // too_small
   too_small_string_exact: {
     id: 'errors.too_small.string.exact',
-    defaultMessage: 'Field must contain exactly {minimum} characters'
+    defaultMessage:
+      'Field must contain exactly {minimum} {minimum, plural, =0 {characters} one {character} other {characters}}'
   },
   too_small_string_inclusive: {
     id: 'errors.too_small.string.inclusive',
-    defaultMessage: 'Field must contain at least {minimum} characters'
+    defaultMessage:
+      'Field must contain at least {minimum} {minimum, plural, =0 {characters} one {character} other {characters}}'
   },
   too_small_string_not_inclusive: {
     id: 'errors.too_small.string.not_inclusive',
-    defaultMessage: 'Field must contain over {minimum} characters'
+    defaultMessage:
+      'Field must contain over {minimum} {minimum, plural, =0 {characters} one {character} other {characters}}'
   },
   too_small_date_exact: {
     id: 'errors.too_small.date.exact',
@@ -39,15 +42,18 @@ const messages = defineMessages({
   // too_big
   too_big_string_exact: {
     id: 'errors.too_big.string.exact',
-    defaultMessage: 'Field must contain exactly {maximum} characters'
+    defaultMessage:
+      'Field must contain exactly {maximum} {maximum, plural, =0 {characters} one {character} other {characters}}'
   },
   too_big_string_inclusive: {
     id: 'errors.too_big.string.inclusive',
-    defaultMessage: 'Field must contain at most {maximum} characters'
+    defaultMessage:
+      'Field must contain at most {maximum} {maximum, plural, =0 {characters} one {character} other {characters}}'
   },
   too_big_string_not_inclusive: {
     id: 'errors.too_big.string.not_inclusive',
-    defaultMessage: 'Field must contain under {maximum} characters'
+    defaultMessage:
+      'Field must contain under {maximum} {maximum, plural, =0 {characters} one {character} other {characters}}'
   },
   too_big_date_exact: {
     id: 'errors.too_big.date.exact',
@@ -78,6 +84,10 @@ const messages = defineMessages({
   custom_one_number: {
     id: 'errors.custom.one_number',
     defaultMessage: 'Field must contain at least 1 number'
+  },
+  custom_only_numbers: {
+    id: 'errors.custom.only_numbers',
+    defaultMessage: 'Field must contain only numbers'
   },
   custom_date_invalid: {
     id: 'errors.custom.date.invalid',

@@ -4,7 +4,7 @@ import { UpdateOrganizationDto } from '../../dto/update-organization-dto'
 import {
   organizationEntityToDto,
   organizationUpdateDtoToEntity
-} from '../../mappers/oganization-mapper'
+} from '../../mappers/organization-mapper'
 
 jest.mock('../../mappers/oganization-mapper')
 

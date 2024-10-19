@@ -44,6 +44,7 @@
     "cmdk": "^0.2.1",
     "colorjs.io": "^0.5.2",
     "cookies-next": "^4.2.1",
+    "dayjs": "^1.11.13",
     "framer-motion": "^11.0.28",
     "inversify": "^6.0.2",
     "lucide-react": "^0.323.0",

@@ -1,6 +1,6 @@
 import { FetchAllOrganizationsRepository } from '@/core/domain/repositories/organizations/fetch-all-organizations-repository'
 import { OrganizationResponseDto } from '../../dto/organization-response-dto'
-import { organizationEntityToDto } from '../../mappers/oganization-mapper'
+import { organizationEntityToDto } from '../../mappers/organization-mapper'
 
 export interface FetchParentOrganizations {
   execute(organizationId?: string): Promise<OrganizationResponseDto[]>

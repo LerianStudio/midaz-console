@@ -57,6 +57,7 @@ const ColorInput = React.forwardRef<unknown, ColorInputProps>(
     )
   }
 )
+ColorInput.displayName = 'ColorInput'
 
 export type OrganizationsFormColorFieldProps = {
   name: string

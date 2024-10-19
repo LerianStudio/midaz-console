@@ -24,15 +24,6 @@ const getCountries = () => {
   }))
 }
 
-const getCountryByNameOrCode = (country: string): CountryType => {
-  return (
-    getCountries().find(
-      (countryItem) =>
-        countryItem.code === country || countryItem.name === country
-    ) || ({} as CountryType)
-  )
-}
-
 const getStateCountry = (country: string): StateType[] => {
   const selectedCountry = getCountries().find(
     (countryItem) =>
@@ -44,21 +35,4 @@ const getStateCountry = (country: string): StateType[] => {
   return selectedCountry.states || ([] as StateType[])
 }
 
-const getStateByCodeOrName = (
-  stateList: StateType[],
-  state: string
-): StateType => {
-  if (!stateList) return {} as StateType
-  return (
-    stateList.find(
-      (stateItem) => stateItem.code === state || stateItem.name === state
-    ) || ({} as StateType)
-  )
-}
-
-export {
-  getCountries,
-  getStateCountry,
-  getCountryByNameOrCode,
-  getStateByCodeOrName
-}
+export { getCountries, getStateCountry }

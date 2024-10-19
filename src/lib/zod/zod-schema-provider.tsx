@@ -11,7 +11,7 @@ export default function ZodSchemaProvider({
   const intl = useIntl()
 
   React.useEffect(() => {
-    // z.setErrorMap(createZodMap(intl))
+    z.setErrorMap(createZodMap(intl))
   }, [intl])
 
   return children
