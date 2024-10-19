@@ -1,5 +1,6 @@
 import { getIntl } from '@/lib/intl'
 import { MidazError } from '../errors/midaz-error'
+import { UnauthorizedException } from '../errors/http-exceptions'
 
 export interface MidazErrorData {
   code: string
@@ -10,8 +11,6 @@ export async function handleMidazError(
   midazError: MidazErrorData
 ): Promise<void> {
   const intl = await getIntl()
-
-  console.error('MidazError', midazError.code)
 
   switch (midazError.code) {
     case '0002':
@@ -107,6 +106,13 @@ export async function handleMidazError(
         intl.formatMessage({
           id: 'error.midaz.invalidType',
           defaultMessage: 'Error Midaz invalid type'
+        })
+      )
+    case '0042':
+      throw new MidazError(
+        intl.formatMessage({
+          id: 'error.midaz.unauthorized',
+          defaultMessage: 'Error Midaz unauthorized'
         })
       )
 

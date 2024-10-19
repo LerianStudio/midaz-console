@@ -21,6 +21,7 @@ import {
   LogOut,
   User
 } from 'lucide-react'
+import { signOut } from 'next-auth/react'
 
 export const UserDropdown = () => {
   const intl = useIntl()
@@ -83,7 +84,7 @@ export const UserDropdown = () => {
               defaultMessage: 'Support'
             })}
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => signOut({ callbackUrl: '/signin' })}>
             <DropdownMenuItemIcon>
               <LogOut />
             </DropdownMenuItemIcon>
