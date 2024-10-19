@@ -13,7 +13,6 @@ export default async function App({ children }: { children: React.ReactNode }) {
       <QueryProvider>
         <LocalizationProvider>
           <ThemeProvider>
-<<<<<<< HEAD
             <ZodSchemaProvider>
               <div>{children}</div>
               <Toaster
@@ -21,13 +20,6 @@ export default async function App({ children }: { children: React.ReactNode }) {
                 containerStyle={{ top: 60, right: 60 }}
               />
             </ZodSchemaProvider>
-=======
-            <div>{children}</div>
-            <Toaster
-              position="top-right"
-              containerStyle={{ top: 60, right: 60 }}
-            />
->>>>>>> parent of a350b08 (Revert "Merge branch 'develop' of github.com:LerianStudio/midaz-console into feature/MZC-4.1")
           </ThemeProvider>
         </LocalizationProvider>
         <ReactQueryDevtools initialIsOpen={false} />

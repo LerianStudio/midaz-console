@@ -93,4 +93,10 @@ const getLedgerById = async (organizationId: string, id: string) => {
   return await response.json()
 }
 
-export { getLedgerById }
+export {
+  useCreateLedger,
+  useUpdateLedger,
+  useDeleteLedger,
+  useListLedgers,
+  getLedgerById
+}

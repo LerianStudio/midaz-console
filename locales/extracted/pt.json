@@ -183,7 +183,6 @@
   "organizations.organizationForm.parentOrganizationText": "Selecione se sua Organização está afiliada a outra",
   "organizations.toast.create.success": "Organização criada com sucesso!",
   "organizations.toast.update.success": "Organização editada com sucesso!",
-<<<<<<< HEAD
   "ledger.accounts.button.create.account": "",
   "ledgers.deleteDialog.subtitle": "",
   "ledgers.deleteDialog.title": "",
