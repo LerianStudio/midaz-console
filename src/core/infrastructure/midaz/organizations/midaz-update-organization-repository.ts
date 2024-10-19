@@ -1,7 +1,6 @@
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { UpdateOrganizationRepository } from '@/core/domain/repositories/organizations/update-organization-repository'
 import { handleMidazError } from '../../utils/midaz-error-handler'
-import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 export class MidazUpdateOrganizationRepository
   implements UpdateOrganizationRepository
@@ -11,14 +10,22 @@ export class MidazUpdateOrganizationRepository
     organizationId: string,
     organization: Partial<OrganizationEntity>
   ): Promise<OrganizationEntity> {
-    const url = `${this.baseUrl}/${organizationId}`
-
-    const response = await httpMidazAuthFetch<OrganizationEntity>({
-      url,
-      method: HTTP_METHODS.PATCH,
+    const response = await fetch(`${this.baseUrl}/${organizationId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify(organization)
     })
 
-    return response
+    const midazResponse = await response.json()
+
+    console.log('midazResponse', midazResponse)
+
+    if (!response.ok) {
+      throw await handleMidazError(midazResponse)
+    }
+
+    return midazResponse
   }
 }

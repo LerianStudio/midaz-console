@@ -5,7 +5,7 @@ import { OrySessionEntity } from '@/core/domain/entities/ory-session-entity'
 import {
   HttpException,
   InternalServerErrorException
-} from '@/core/infrastructure/errors/http-exceptions'
+} from '@/core/errors/http-exceptions'
 
 type IOryAuthUseCases = {
   usernamePasswordLogin: (

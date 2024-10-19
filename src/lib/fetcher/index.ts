@@ -2,8 +2,6 @@
  * TODO: Better error handling
  */
 
-import { signOut } from 'next-auth/react'
-
 export const getFetcher = (url: string) => {
   return async () => {
     const response = await fetch(url, {
@@ -13,7 +11,11 @@ export const getFetcher = (url: string) => {
       }
     })
 
-    return fetcherResponseHandler(response)
+    if (!response.ok) {
+      throw new Error('GET Fetcher error')
+    }
+
+    return await response.json()
   }
 }
 
@@ -27,7 +29,11 @@ export const postFetcher = (url: string) => {
       body: JSON.stringify(body)
     })
 
-    return fetcherResponseHandler(response)
+    if (!response.ok) {
+      throw new Error('POST Fetcher error')
+    }
+
+    return await response.json()
   }
 }
 
@@ -41,7 +47,11 @@ export const patchFetcher = (url: string) => {
       body: JSON.stringify(body)
     })
 
-    return fetcherResponseHandler(response)
+    if (!response.ok) {
+      throw new Error('PATCH Fetcher error')
+    }
+
+    return await response.json()
   }
 }
 
@@ -54,20 +64,10 @@ export const deleteFetcher = (url: string) => {
       }
     })
 
-    return fetcherResponseHandler(response)
-  }
-}
-
-const fetcherResponseHandler = async (response: Response) => {
-  console.log('Fetcher Error', response)
-
-  if (!response.ok) {
-    if (response.status === 401) {
-      signOut({ callbackUrl: '/login' })
-      return
+    if (!response.ok) {
+      throw new Error('DELETE Fetcher error')
     }
-    throw new Error('Fetcher Error')
-  }
 
-  return await response.json()
+    return await response.json()
+  }
 }

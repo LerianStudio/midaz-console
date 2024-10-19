@@ -1,7 +1,6 @@
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { UpdateAssetRepository } from '@/core/domain/repositories/assets/update-asset-repository'
 import { handleMidazError } from '../../utils/midaz-error-handler'
-import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 export class MidazUpdateAssetRepository implements UpdateAssetRepository {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
@@ -11,14 +10,24 @@ export class MidazUpdateAssetRepository implements UpdateAssetRepository {
     assetId: string,
     asset: Partial<AssetEntity>
   ): Promise<AssetEntity> {
-    const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`
+    const response = await fetch(
+      `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(asset)
+      }
+    )
 
-    const response = await httpMidazAuthFetch<AssetEntity>({
-      url,
-      method: HTTP_METHODS.PATCH,
-      body: JSON.stringify(asset)
-    })
+    const midazResponse = await response.json()
 
-    return response
+    if (!response.ok) {
+      console.error('MidazUpdateAssetRepository', midazResponse)
+      throw await handleMidazError(midazResponse)
+    }
+
+    return midazResponse
   }
 }

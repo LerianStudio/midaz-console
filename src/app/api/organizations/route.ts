@@ -20,7 +20,6 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const limit = Number(searchParams.get('limit')) || 10
     const page = Number(searchParams.get('page')) || 1
-
     const organizations = await fetchAllOrganizationsUseCase.execute(
       limit,
       page

@@ -101,19 +101,8 @@ export const PortfoliosContent = () => {
 
       <EntityBox.Root>
         <EntityBox.Header
-          title={intl.formatMessage({
-            id: `ledgers.portfolio.title`,
-            defaultMessage: 'Portfolios'
-          })}
-          subtitle={intl.formatMessage(
-            {
-              id: `ledgers.portfolio.subtitle`,
-              defaultMessage: '{portfoliosItemsTotal} portfolios founded'
-            },
-            {
-              portfoliosItemsTotal: `${data?.items.length} `
-            }
-          )}
+          title="Portfolios"
+          subtitle={`${data?.items.length} portfolios encontrados`}
         />
         <EntityBox.Actions>
           <Button variant="secondary" onClick={handleCreate}>
@@ -215,9 +204,9 @@ export const PortfoliosContent = () => {
                               status: {
                                 ...portfolio.original.status,
                                 description:
-                                  portfolio.original.status.description ?? ''
+                                  portfolio.original.status.description || ''
                               }
-                            } as PortfolioResponseDto)
+                            })
                           }
                         >
                           {intl.formatMessage({

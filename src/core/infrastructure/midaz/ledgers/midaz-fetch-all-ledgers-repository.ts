@@ -2,7 +2,6 @@ import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { FetchAllLedgersRepository } from '@/core/domain/repositories/ledgers/fetch-all-ledgers-repository'
 import { handleMidazError } from '../../utils/midaz-error-handler'
-import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 export class MidazFetchAllLedgersRepository
   implements FetchAllLedgersRepository
@@ -14,13 +13,21 @@ export class MidazFetchAllLedgersRepository
     limit: number,
     page: number
   ): Promise<PaginationEntity<LedgerEntity>> {
-    const url = `${this.baseUrl}/organizations/${organizationId}/ledgers?limit=${limit}&page=${page}`
+    const ledgerUrl = `${this.baseUrl}/organizations/${organizationId}/ledgers?limit=${limit}&page=${page}`
 
-    const response = await httpMidazAuthFetch<PaginationEntity<LedgerEntity>>({
-      url,
-      method: HTTP_METHODS.GET
+    const response = await fetch(ledgerUrl, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
 
-    return response
+    const midazResponse = await response.json()
+
+    if (!response.ok) {
+      throw await handleMidazError(midazResponse)
+    }
+
+    return midazResponse
   }
 }

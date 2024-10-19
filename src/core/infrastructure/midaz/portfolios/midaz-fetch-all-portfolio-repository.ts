@@ -4,6 +4,7 @@ import { FetchAllProductsRepository } from '@/core/domain/repositories/products/
 import { handleMidazError } from '../../utils/midaz-error-handler'
 import { FetchAllPortfoliosRepository } from '@/core/domain/repositories/portfolios/fetch-all-portfolio-repository'
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
+import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
 
 export class MidazFetchAllPortfoliosRepository
   implements FetchAllPortfoliosRepository
@@ -16,23 +17,15 @@ export class MidazFetchAllPortfoliosRepository
     limit: number,
     page: number
   ): Promise<PaginationEntity<PortfolioEntity>> {
-    const response = await fetch(
-      `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios?limit=${limit}&page=${page}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    )
+    console.log(organizationId, ledgerId)
+    const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios?limit=${limit}&page=${page}`
 
-    const midazResponse = await response.json()
+    const response = await httpMidazAuthFetch<PaginationEntity<PortfolioEntity>>({
+      url,
+      method: HTTP_METHODS.GET
+    })
 
-    if (!response.ok) {
-      console.error('MidazFetchAllProductsRepository', midazResponse)
-      throw await handleMidazError(midazResponse)
-    }
 
-    return midazResponse
+   return response
   }
 }
