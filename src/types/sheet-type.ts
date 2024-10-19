@@ -52,9 +52,9 @@ export type SheetProps = {
   sheetProps: {
     open?: boolean
     setOpen: (open: boolean) => void
-    sheetInfo: SheetInfo
+    sheetInfo?: SheetInfo
   }
-  formProps: {
+  formProps?: {
     form: UseFormReturn<any>
     fields: FormFieldConfig[]
     isDirty: boolean
@@ -64,7 +64,7 @@ export type SheetProps = {
     append: (value: Partial<MetadataItem>) => void
     remove: (index: number) => void
   }
-  stateProps: {
+  stateProps?: {
     isCreateMode: boolean
     isSwitchOn: boolean
     setSwitchOn: React.Dispatch<React.SetStateAction<boolean>>

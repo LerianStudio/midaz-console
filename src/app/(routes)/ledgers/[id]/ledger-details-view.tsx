@@ -14,6 +14,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useFormState } from '@/context/form-details-context'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { useIntl } from 'react-intl'
+import { AccountsPortfoliosTabContent } from './accounts-and-portfolios/accounts-portfolios-tab-content'
 import { ProductsTabContent } from './products/products-tab-content'
 import { useTabs } from '@/hooks/use-tabs'
 import { getBreadcrumbPaths } from '@/components/breadcrumb/get-breadcrumb-paths'
@@ -106,12 +107,15 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
     }
 
     try {
-      await updateLedger(data.id, dataToSubmit)
-      queryClient.invalidateQueries({ queryKey: ['ledger', data.id] })
-      resetDirty()
-      setIsMetadataDirty(false)
-      setResetMetadataFormTrigger((prev) => !prev)
-      showSuccess('Alterações salvas com sucesso.')
+      if (data?.id) {
+        const dataToSubmit = {
+          ...data,
+          updatedAt: data.updatedAt ? new Date(data.updatedAt) : undefined
+        }
+        await updateLedger(data.id, dataToSubmit)
+        queryClient.invalidateQueries({ queryKey: ['ledger', data.id] })
+        resetDirty()
+      }
     } catch (error) {
       showError('Erro ao salvar alterações.')
     }
@@ -135,6 +139,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
         </div>
 
         <div className="mt-6 flex w-full gap-4">
+          <Skeleton className="h-10 w-24 bg-zinc-200" />
           <Skeleton className="h-10 w-24 bg-zinc-200" />
           <Skeleton className="h-10 w-24 bg-zinc-200" />
         </div>
@@ -169,8 +174,11 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
 
       <PageHeader.Root>
         <div className="flex justify-between border-b">
-          <PageHeader.InfoTitle title={data.name} subtitle={data.id}>
-            <PageHeader.InfoTooltip subtitle={data.id} />
+          <PageHeader.InfoTitle
+            title={data.name ?? ''}
+            subtitle={data.id ?? ''}
+          >
+            <PageHeader.InfoTooltip subtitle={data.id ?? ''} />
           </PageHeader.InfoTitle>
           <PageHeader.ActionButtons>
             <PageHeader.StatusButton />
@@ -196,6 +204,13 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
               defaultMessage: 'Assets'
             })}
           </TabsTrigger>
+
+          <TabsTrigger value="portfolios-and-accounts">
+            {intl.formatMessage({
+              id: 'ledgers.tab.portfolios-and-accounts',
+              defaultMessage: 'Portfolios and Accounts'
+            })}
+          </TabsTrigger>
           <TabsTrigger value="products">
             {intl.formatMessage({
               id: 'ledgers.tab.products',
@@ -213,6 +228,9 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
         </TabsContent>
         <TabsContent value="assets">
           <p>Assets</p>
+        </TabsContent>
+        <TabsContent value="portfolios-and-accounts">
+          <AccountsPortfoliosTabContent />
         </TabsContent>
         <TabsContent value="products">
           <ProductsTabContent />

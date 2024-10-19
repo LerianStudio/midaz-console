@@ -128,13 +128,42 @@ import { MidazFetchAllProductsRepository } from '../midaz/product/midaz-fetch-al
 import { MidazFetchProductByIdRepository } from '../midaz/product/midaz-fetch-product-by-id-repository'
 import { MidazUpdateProductRepository } from '../midaz/product/midaz-update-product-repository'
 import {
+  CreatePortfolio,
+  CreatePortfolioUseCase
+} from '@/core/application/use-cases/portfolios/create-portfolio-use-case'
+import { CreatePortfolioRepository } from '@/core/domain/repositories/portfolios/create-portfolio-repository'
+import { MidazCreatePortfolioRepository } from '../midaz/portfolios/midaz-create-portfolio-repository'
+import { FetchAllPortfoliosRepository } from '@/core/domain/repositories/portfolios/fetch-all-portfolio-repository'
+import { MidazFetchAllPortfoliosRepository } from '../midaz/portfolios/midaz-fetch-all-portfolio-repository'
+import {
+  FetchAllPortfolios,
+  FetchAllPortfoliosUseCase
+} from '@/core/application/use-cases/portfolios/fetch-all-portfolio-use-case'
+
+import { UpdatePortfolioRepository } from '@/core/domain/repositories/portfolios/update-portfolio-repository'
+import { MidazUpdatePortfolioRepository } from '../midaz/portfolios/midaz-update-portfolio-repository'
+import {
+  UpdatePortfolio,
+  UpdatePortfolioUseCase
+} from '@/core/application/use-cases/portfolios/update-portfolio-use-case'
+import { DeletePortfolioRepository } from '@/core/domain/repositories/portfolios/delete-portfolio-repository'
+import { MidazDeletePortfolioRepository } from '../midaz/portfolios/midaz-delete-portfolio-repository'
+import {
+  DeletePortfolio,
+  DeletePortfolioUseCase
+} from '@/core/application/use-cases/portfolios/delete-portfolio-use-case'
+import { FetchPortfolioByIdRepository } from '@/core/domain/repositories/portfolios/fetch-portfolio-by-id-repository'
+import { MidazFetchPortfolioByIdRepository } from '../midaz/portfolios/midaz-fetch-portfolio-by-id-repository'
+import {
+  FetchPortfolioById,
+  FetchPortfolioByIdUseCase
+} from '@/core/application/use-cases/portfolios/fetch-portfolio-by-id-use-case'
+import {
   FetchAllLedgersAssets,
   FetchAllLedgersAssetsUseCase
 } from '@/core/application/use-cases/ledgers-assets/fetch-ledger-assets-use-case'
 
 export const Registry = {
-  // Auth
-
   AuthLoginRepository: Symbol.for('AuthLoginRepository'),
   AuthLoginUseCase: Symbol.for('AuthLoginUseCase'),
 
@@ -189,6 +218,9 @@ export const Registry = {
   UpdateAssetRepository: Symbol.for('UpdateAssetRepository'),
   DeleteAssetRepository: Symbol.for('DeleteAssetRepository'),
 
+  // Portfolio
+  PortfolioUseCases: Symbol.for('PortfolioUseCases'),
+
   // Products
 
   CreateProductUseCase: Symbol.for('CreateProductUseCase'),
@@ -201,7 +233,24 @@ export const Registry = {
   FetchAllProductsRepository: Symbol.for('FetchAllProductsRepository'),
   FetchProductByIdRepository: Symbol.for('FetchProductByIdRepository'),
   UpdateProductRepository: Symbol.for('UpdateProductRepository'),
-  DeleteProductRepository: Symbol.for('DeleteProductRepository')
+  DeleteProductRepository: Symbol.for('DeleteProductRepository'),
+
+  CreatePortfolioSymbolUseCase: Symbol.for('CreatePortfolioSymbolUseCase'),
+  UpdatePortfolioUseCase: Symbol.for('UpdatePortfolioUseCase'),
+  CreatePortfolioUseCase: Symbol.for('CreatePortfolioUseCase'),
+  FetchAllPortfoliosUseCase: Symbol.for('FetchAllPortfoliosUseCase'),
+  DeletePortfolioUseCase: Symbol.for('DeletePortfolioUseCase'),
+
+  CreatePortfolioSymbolRepository: Symbol.for(
+    'CreatePortfolioSymbolRepository'
+  ),
+  CreatePortfolioRepository: Symbol.for('CreatePortfolioRepository'),
+  FetchAllPortfoliosRepository: Symbol.for('FetchAllPortfoliosRepository'),
+  UpdatePortfolioRepository: Symbol.for('UpdatePortfolioRepository'),
+  DeletePortfolioRepository: Symbol.for('DeletePortfolioRepository'),
+
+  FetchPortfolioByIdUseCase: Symbol.for('FetchPortfolioByIdUseCase'),
+  FetchPortfolioByIdRepository: Symbol.for('FetchPortfolioByIdRepository')
 }
 
 export const container = new Container()
@@ -485,5 +534,77 @@ container
   .toDynamicValue((context) => {
     return new FetchProductByIdUseCase(
       context.container.get(Registry.FetchProductByIdRepository)
+    )
+  })
+
+container
+  .bind<CreatePortfolioRepository>(Registry.CreatePortfolioSymbolRepository)
+  .toConstantValue(new MidazCreatePortfolioRepository())
+
+container
+  .bind<CreatePortfolio>(Registry.CreatePortfolioSymbolUseCase)
+  .toDynamicValue((context) => {
+    return new CreatePortfolioUseCase(
+      context.container.get(Registry.CreatePortfolioSymbolRepository)
+    )
+  })
+
+container
+  .bind<CreatePortfolioRepository>(Registry.CreatePortfolioRepository)
+  .toConstantValue(new MidazCreatePortfolioRepository())
+
+container
+  .bind<CreatePortfolio>(Registry.CreatePortfolioUseCase)
+  .toDynamicValue((context) => {
+    return new CreatePortfolioUseCase(
+      context.container.get(Registry.CreatePortfolioRepository)
+    )
+  })
+
+container
+  .bind<FetchAllPortfoliosRepository>(Registry.FetchAllPortfoliosRepository)
+  .toConstantValue(new MidazFetchAllPortfoliosRepository())
+
+container
+  .bind<FetchAllPortfolios>(Registry.FetchAllPortfoliosUseCase)
+  .toDynamicValue((context) => {
+    return new FetchAllPortfoliosUseCase(
+      context.container.get(Registry.FetchAllPortfoliosRepository)
+    )
+  })
+
+container
+  .bind<UpdatePortfolioRepository>(Registry.UpdatePortfolioRepository)
+  .toConstantValue(new MidazUpdatePortfolioRepository())
+
+container
+  .bind<UpdatePortfolio>(Registry.UpdatePortfolioUseCase)
+  .toDynamicValue((context) => {
+    return new UpdatePortfolioUseCase(
+      context.container.get(Registry.UpdatePortfolioRepository)
+    )
+  })
+
+container
+  .bind<DeletePortfolioRepository>(Registry.DeletePortfolioRepository)
+  .toConstantValue(new MidazDeletePortfolioRepository())
+
+container
+  .bind<DeletePortfolio>(Registry.DeletePortfolioUseCase)
+  .toDynamicValue((context) => {
+    return new DeletePortfolioUseCase(
+      context.container.get(Registry.DeletePortfolioRepository)
+    )
+  })
+
+container
+  .bind<FetchPortfolioByIdRepository>(Registry.FetchPortfolioByIdRepository)
+  .toConstantValue(new MidazFetchPortfolioByIdRepository())
+
+container
+  .bind<FetchPortfolioById>(Registry.FetchPortfolioByIdUseCase)
+  .toDynamicValue((context) => {
+    return new FetchPortfolioByIdUseCase(
+      context.container.get(Registry.FetchPortfolioByIdRepository)
     )
   })

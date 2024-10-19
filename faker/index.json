@@ -1,4 +1,29 @@
 {
+  "organizations": [
+    {
+      "id": "cc15194a-6bc9-4ebb-b15d-43411a54ba4b",
+      "parentOrganizationId": null,
+      "legalName": "Empresa Teste Ltda",
+      "doingBusinessAs": "Empresa Teste",
+      "legalDocument": "86820799000188",
+      "address": {
+        "line1": "Rua Botucatu, 10",
+        "line2": "Casa B",
+        "zipCode": "04023060",
+        "city": "São Paulo",
+        "state": "SP",
+        "country": "BR"
+      },
+      "metadata": null,
+      "status": {
+        "code": "ACTIVE",
+        "description": null
+      },
+      "createdAt": "2024-02-08T16:59:31+0300",
+      "updatedAt": "2024-02-08T16:59:31+0300",
+      "deletedAt": null
+    }
+  ],
   "ledgers": [
     {
       "id": "77b0fb8b-1bd9-4810-9c6d-7e80064fab0c",
@@ -102,7 +127,8 @@
           "totalAmount": 2,
           "scale": 0
         }
-      ]
+      ],
+      "id": "fd74"
     },
     {
       "type": "totalTransactions",
@@ -113,7 +139,8 @@
           "metric": "totalTransactions",
           "count": 195
         }
-      ]
+      ],
+      "id": "f1c9"
     },
     {
       "type": "transactionsByStatus",
@@ -132,7 +159,8 @@
           "status": "PRE_APPROVED",
           "count": 30
         }
-      ]
+      ],
+      "id": "dc1b"
     }
   ],
   "portfolios": [
@@ -161,6 +189,32 @@
       "metadata": {
         "anyKey": "anyValue"
       }
+    },
+    {
+      "id": "fec3674b-d519-481e-a8ac-c502be9b4ff9",
+      "name": "123123",
+      "entity_id": "123",
+      "status": {
+        "code": "ACTIVE",
+        "description": null
+      },
+      "metadata": {},
+      "createdAt": "2024-10-08T01:57:58.945Z",
+      "updatedAt": "2024-10-08T01:57:58.945Z",
+      "deletedAt": null
+    },
+    {
+      "id": "0956405c-df31-4156-a8c8-cf2dbbbc1b52",
+      "name": "123123",
+      "entity_id": "123123123",
+      "status": {
+        "code": "ACTIVE",
+        "description": null
+      },
+      "metadata": {},
+      "createdAt": "2024-10-08T02:04:56.987Z",
+      "updatedAt": "2024-10-08T02:04:56.987Z",
+      "deletedAt": null
     }
   ]
 }
