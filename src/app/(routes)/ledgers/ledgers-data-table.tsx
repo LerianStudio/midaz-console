@@ -9,7 +9,6 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
-import { Skeleton } from '@/components/ui/skeleton'
 import { EmptyResource } from '@/components/empty-resource'
 import { Button } from '@/components/ui/button'
 import { Plus, MoreVertical, Minus } from 'lucide-react'
@@ -34,6 +33,7 @@ import useCustomToast from '@/hooks/use-custom-toast'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
+import { LedgersSheet } from './ledgers-sheet'
 
 type LedgersTableProps = {
   ledgers: { items: LedgerEntity[] }
@@ -44,12 +44,12 @@ type LedgersTableProps = {
     }
   }
   handleDialogOpen: (id: string, name: string) => void
+  refetch: () => void
 }
 
 type LedgerRowProps = {
   ledger: { id: string; original: LedgerEntity }
   handleCopyToClipboard: (value: string, message: string) => void
-  handleEdit: (ledger: LedgerEntity) => void
   handleDialogOpen: (id: string, name: string) => void
 }
 
@@ -182,28 +182,17 @@ const LedgerRow: React.FC<LedgerRowProps> = ({
 
 export const LedgersDataTable: React.FC<LedgersTableProps> = ({
   ledgers,
-  isLoading,
   table,
-  handleDialogOpen
+  handleDialogOpen,
+  refetch
 }) => {
   const intl = useIntl()
-  const { handleCreate, handleEdit } = useCreateUpdateSheet<LedgerEntity>()
+  const { handleCreate, sheetProps } = useCreateUpdateSheet<any>()
   const { showInfo } = useCustomToast()
 
   const handleCopyToClipboard = (value: string, message: string) => {
     navigator.clipboard.writeText(value)
     showInfo(message)
-  }
-
-  const getLoadingSkeleton = () => (
-    <React.Fragment>
-      <Skeleton className="h-[84px] w-full bg-zinc-200" />
-      <Skeleton className="mt-6 h-[390px] w-full bg-zinc-200" />
-    </React.Fragment>
-  )
-
-  if (isLoading) {
-    return getLoadingSkeleton()
   }
 
   return (
@@ -214,11 +203,22 @@ export const LedgersDataTable: React.FC<LedgersTableProps> = ({
             id: 'ledgers.emptyResource',
             defaultMessage: "You haven't created any Ledger yet"
           })}
+          extra={intl.formatMessage({
+            id: 'ledgers.emptyResourceExtra',
+            defaultMessage: 'No Ledger found.'
+          })}
         >
-          <Button variant="outline" onClick={handleCreate} icon={<Plus />}>
+          <Button
+            variant="outline"
+            onClick={() => {
+              console.log('handleCreate called')
+              handleCreate()
+            }}
+            icon={<Plus />}
+          >
             {intl.formatMessage({
-              id: 'common.create',
-              defaultMessage: 'Create'
+              id: 'ledgers.emptyResource.createButton',
+              defaultMessage: 'New Ledger'
             })}
           </Button>
         </EmptyResource>
@@ -271,7 +271,6 @@ export const LedgersDataTable: React.FC<LedgersTableProps> = ({
                   key={ledger.id}
                   ledger={ledger}
                   handleCopyToClipboard={handleCopyToClipboard}
-                  handleEdit={handleEdit}
                   handleDialogOpen={handleDialogOpen}
                 />
               ))}
@@ -279,6 +278,8 @@ export const LedgersDataTable: React.FC<LedgersTableProps> = ({
           </Table>
         </TableContainer>
       )}
+
+      <LedgersSheet onSucess={refetch} {...sheetProps} />
     </div>
   )
 }
