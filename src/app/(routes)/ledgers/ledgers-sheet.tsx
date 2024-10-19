@@ -77,14 +77,12 @@ export const LedgersSheet = ({
     form.reset(defaultValues)
   }
 
-  // Resets information if using creation mode
   React.useEffect(() => {
     if (mode === 'create') {
       form.reset(defaultValues)
     }
   }, [mode])
 
-  // Resets information if props change values
   React.useEffect(() => {
     if (!isNil(data)) {
       setMetadataEnabled(Object.entries(data.metadata).length > 0)

@@ -36,8 +36,10 @@ export class FetchAllLedgersAssetsUseCase implements FetchAllLedgersAssets {
       page: ledgersResult.page
     }
 
+    const ledgerItems = ledgersResult.items || []
+
     ledgersAssetResponseDTO.items = await Promise.all(
-      ledgersResult.items.map(async (ledger) => {
+      ledgerItems.map(async (ledger) => {
         const assetsResult: PaginationEntity<AssetEntity> =
           await this.fetchAllAssetsRepository.fetchAll(
             organizationId,

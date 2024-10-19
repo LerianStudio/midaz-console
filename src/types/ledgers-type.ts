@@ -1,18 +1,12 @@
-export type Ledger = {
+import { StatusDto } from '@/core/application/dto/status.dto'
+
+export type ILedgerType = {
   id: string
   organizationId: string
   name: string
-  divisionId: string
-  defaultTimezone: string
-  defaultCurrency: string
-  defaultHolidayList: string
-  assets: []
-  metadata: {
-    value: string
-  }
-  status: string
-  createdAt: string
-  updatedAt: string
-  deletedAt: string
-  divisionName?: string
+  status: StatusDto
+  metadata: Record<string, any>
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date | null
 }
