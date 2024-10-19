@@ -1,6 +1,7 @@
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { FetchPortfolioByIdRepository } from '@/core/domain/repositories/portfolios/fetch-portfolio-by-id-repository'
 import { handleMidazError } from '../../utils/midaz-error-handler'
+import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
 
 export class MidazFetchPortfolioByIdRepository
   implements FetchPortfolioByIdRepository
@@ -12,23 +13,13 @@ export class MidazFetchPortfolioByIdRepository
     ledgerId: string,
     portfolioId: string
   ): Promise<PortfolioEntity> {
-    const response = await fetch(
-      `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    )
+    const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}`
 
-    const midazResponse = await response.json()
+    const response = await httpMidazAuthFetch<PortfolioEntity>({
+      url,
+      method: HTTP_METHODS.GET
+    })
 
-    if (!response.ok) {
-      console.error('MidazFetchPortfolioByIdRepository', midazResponse)
-      throw await handleMidazError(midazResponse)
-    }
-
-    return midazResponse as PortfolioEntity
+    return response
   }
 }

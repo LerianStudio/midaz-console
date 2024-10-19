@@ -1,6 +1,6 @@
 import { UpdatePortfolioRepository } from '@/core/domain/repositories/portfolios/update-portfolio-repository'
-import { handleMidazError } from '../../utils/midaz-error-handler'
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
+import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 export class MidazUpdatePortfolioRepository
   implements UpdatePortfolioRepository
@@ -13,24 +13,14 @@ export class MidazUpdatePortfolioRepository
     portfolioId: string,
     portfolio: Partial<PortfolioEntity>
   ): Promise<PortfolioEntity> {
-    const response = await fetch(
-      `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}`,
-      {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(portfolio)
-      }
-    )
+    const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}`
 
-    const midazResponse = await response.json()
+    const response = await httpMidazAuthFetch<PortfolioEntity>({
+      url,
+      method: HTTP_METHODS.PATCH,
+      body: JSON.stringify(portfolio)
+    })
 
-    if (!response.ok) {
-      console.error('MidazUpdatePortfolioRepository', midazResponse)
-      throw await handleMidazError(midazResponse)
-    }
-
-    return midazResponse
+    return response
   }
 }
