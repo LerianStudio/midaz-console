@@ -4,11 +4,13 @@ export type AccountEntity = {
   id?: string
   ledgerId?: string
   organizationId?: string
+  parentAccountId?: string | null
+  productId?: string | null
+  entityId?: string | null
   name: string
   alias: string
   type: string
   assetCode: string
-  entityId?: string
   status: StatusEntity
   metadata: Record<string, any>
   createdAt?: Date

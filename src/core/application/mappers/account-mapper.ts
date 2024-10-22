@@ -1,5 +1,9 @@
 import { AccountEntity } from '@/core/domain/entities/account-entity'
-import { AccountResponseDto } from '../dto/account-dto'
+import {
+  AccountResponseDto,
+  CreateAccountDto,
+  UpdateAccountDto
+} from '../dto/account-dto'
 
 export function accountEntityToDto(account: AccountEntity): AccountResponseDto {
   console.log('Account entity to dto', account)
@@ -14,27 +18,37 @@ export function accountEntityToDto(account: AccountEntity): AccountResponseDto {
       description: account.status.description ?? ''
     },
     type: account.type,
-    metadata: account.metadata,
+    metadata: account.metadata ?? {},
     createdAt: account.createdAt!,
     updatedAt: account.updatedAt!,
-    deletedAt: account.deletedAt ?? null
+    deletedAt: account.deletedAt ?? null,
+    alias: account.alias,
+    assetCode: account.assetCode,
+    parentAccountId: account.parentAccountId!,
+    productId: account.productId!
   }
 }
 
-// export function accountDtoToEntity(dto: CreateAccountDto): AccountEntity {
-//   return {
-//     entityId: dto.entityId,
-//     ledgerId: dto.ledgerId,
-//     name: dto.name,
-//     type: dto.type,
-//     metadata: dto.metadata ?? {}
-//   }
-// }
+export function accountDtoToEntity(dto: CreateAccountDto): AccountEntity {
+  return {
+    entityId: dto.entityId,
+    alias: dto.alias,
+    name: dto.name,
+    type: dto.type,
+    assetCode: dto.assetCode,
+    status: dto.status,
+    // ledgerId: dto.ledgerId,
+    // organizationId: dto.organizationId,
+    parentAccountId: dto.parentAccountId,
+    productId: dto.productId,
+    metadata: dto.metadata ?? {}
+  }
+}
 
-// export function accountUpdateDtoToEntity(
-//   dto: UpdateAccountDto
-// ): Partial<AccountEntity> {
-//   return {
-//     ...dto
-//   }
-// }
+export function accountUpdateDtoToEntity(
+  dto: UpdateAccountDto
+): Partial<AccountEntity> {
+  return {
+    ...dto
+  }
+}
