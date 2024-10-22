@@ -1,18 +1,23 @@
 import { cn } from '@/lib/utils'
 import { Button } from './ui/button'
 import { useSidebar } from './sidebar/primitive'
+import { useIntl } from 'react-intl'
+import { LoadingButton } from './ui/loading-button'
 
 interface BottomDrawerProps {
   isOpen: boolean
+  isPending: boolean
   handleSubmit: () => void
   handleCancel: () => void
 }
 
 export const BottomDrawer = ({
   isOpen,
+  handleCancel,
   handleSubmit,
-  handleCancel
+  isPending
 }: BottomDrawerProps) => {
+  const intl = useIntl()
   const { isCollapsed } = useSidebar()
 
   return (
@@ -27,9 +32,22 @@ export const BottomDrawer = ({
     >
       <div className="flex w-full justify-center px-16 py-12">
         <div className="flex w-[292px] flex-col gap-2">
-          <Button onClick={handleSubmit}>Salvar alterações</Button>
+          <LoadingButton
+            type="submit"
+            fullWidth
+            loading={isPending}
+            onClick={handleSubmit}
+          >
+            {intl.formatMessage({
+              id: 'common.saveChanges',
+              defaultMessage: 'Save changes'
+            })}
+          </LoadingButton>
           <Button variant="outline" onClick={handleCancel}>
-            Cancelar
+            {intl.formatMessage({
+              id: 'common.cancel',
+              defaultMessage: 'Cancel'
+            })}
           </Button>
         </div>
       </div>

@@ -1,16 +1,12 @@
 'use client'
 
 import { BottomDrawer } from '@/components/bottom-drawer'
-import { Breadcrumb, BreadcrumbPath } from '@/components/breadcrumb'
+import { Breadcrumb } from '@/components/breadcrumb'
 import { PageHeader } from '@/components/page-header'
-import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import useCustomToast from '@/hooks/use-custom-toast'
 import React, { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 import { OverviewTabContent } from './overview-tab-content'
-import { Skeleton } from '@/components/ui/skeleton'
-import { useUpdateLedger } from '@/hooks/ledgers/use-update-ledger'
-import { useQueryClient } from '@tanstack/react-query'
 import { useFormState } from '@/context/form-details-context'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { useIntl } from 'react-intl'
@@ -18,43 +14,50 @@ import { AccountsPortfoliosTabContent } from './accounts-and-portfolios/accounts
 import { ProductsTabContent } from './products/products-tab-content'
 import { useTabs } from '@/hooks/use-tabs'
 import { getBreadcrumbPaths } from '@/components/breadcrumb/get-breadcrumb-paths'
+import { AssetsTabContent } from './assets/assets-tab-content'
+import { useOrganization } from '@/context/organization-provider/organization-provider-client'
+import { ILedgerType } from '@/types/ledgers-type'
+import { useUpdateLedger } from '@/client/ledger-client'
+import { LedgerDetailsSkeleton } from './ledger-details-skeleton'
 
 type LedgerDetailsViewProps = {
-  data: LedgerEntity
+  data: ILedgerType
 }
 
 const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
   const intl = useIntl()
+  const { currentOrganization } = useOrganization()
   const { activeTab, handleTabChange } = useTabs({ initialValue: 'overview' })
-  const { formData, isDirty, resetDirty } = useFormState()
+  const { formData, isDirty, resetForm } = useFormState()
   const { showSuccess, showError } = useCustomToast()
-  const [isSheetOpen, setIsSheetOpen] = useState(false)
-  const [metadata, setMetadata] = useState<{ key: string; value: string }[]>([])
-  const [isMetadataDirty, setIsMetadataDirty] = useState(false)
-  const [resetMetadataFormTrigger, setResetMetadataFormTrigger] =
-    useState(false)
-  const updateLedger = useUpdateLedger()
-  const queryClient = useQueryClient()
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
-  useEffect(() => {
-    if (isDirty || isMetadataDirty) {
-      setIsSheetOpen(true)
-    } else {
-      setIsSheetOpen(false)
-    }
-  }, [isDirty, isMetadataDirty])
-
-  useEffect(() => {
-    if (data && data.metadata) {
-      const metadataArray = Object.entries(data.metadata).map(
-        ([key, value]) => ({
-          key,
-          value
+  const { mutate: updateLedger, isPending: updatePending } = useUpdateLedger({
+    organizationId: currentOrganization!.id!,
+    ledgerId: data?.id!,
+    onSuccess: () => {
+      setIsDrawerOpen(false)
+      resetForm()
+      showSuccess(
+        intl.formatMessage({
+          id: 'ledgers.toast.ledgerUpdated',
+          defaultMessage: 'Ledger changes saved successfully'
         })
       )
-      setMetadata(metadataArray)
+    },
+    onError: () => {
+      showError(
+        intl.formatMessage({
+          id: 'common.toast.error',
+          defaultMessage: 'Error saving changes.'
+        })
+      )
     }
-  }, [data])
+  })
+
+  useEffect(() => {
+    setIsDrawerOpen(isDirty)
+  }, [isDirty])
 
   const breadcrumbPaths = getBreadcrumbPaths([
     {
@@ -62,7 +65,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
         id: `ledgers.title`,
         defaultMessage: 'Ledgers'
       }),
-      href: '#'
+      href: '/ledgers'
     },
     {
       name: intl.formatMessage({
@@ -87,85 +90,21 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
     }
   ])
 
-  const metadataObject =
-    metadata.length > 0
-      ? metadata.reduce((acc, item) => ({ ...acc, [item.key]: item.value }), {})
-      : null
-
   const handleGlobalSubmit = async () => {
-    const currentDateTime = new Date().toISOString()
-
-    const dataToSubmit = {
-      id: data.id,
-      organizationId: 'cc15194a-6bc9-4ebb-b15d-43411a54ba4b',
-      name: formData.name || data.name,
-      metadata: metadataObject,
-      status: data.status,
-      createdAt: data.createdAt,
-      updatedAt: currentDateTime,
-      deletedAt: data.deletedAt
+    const dataToSend = {
+      ...formData
     }
 
-    try {
-      if (data?.id) {
-        const dataToSubmit = {
-          ...data,
-          updatedAt: data.updatedAt ? new Date(data.updatedAt) : undefined
-        }
-        await updateLedger(data.id, dataToSubmit)
-        queryClient.invalidateQueries({ queryKey: ['ledger', data.id] })
-        resetDirty()
-      }
-    } catch (error) {
-      showError('Erro ao salvar alterações.')
-    }
+    updateLedger(dataToSend)
   }
 
   const handleCancel = () => {
-    setIsSheetOpen(false)
-    resetDirty()
-    setIsMetadataDirty(false)
-    setResetMetadataFormTrigger((prev) => !prev)
+    setIsDrawerOpen(false)
+    resetForm()
   }
 
   if (!data) {
-    return (
-      <React.Fragment>
-        <Breadcrumb paths={breadcrumbPaths} />
-
-        <div className="mt-12 flex h-[125px] w-full flex-col gap-4 border-b">
-          <Skeleton className="h-10 w-80 bg-zinc-200" />
-          <Skeleton className="h-5 w-80 bg-zinc-200" />
-        </div>
-
-        <div className="mt-6 flex w-full gap-4">
-          <Skeleton className="h-10 w-24 bg-zinc-200" />
-          <Skeleton className="h-10 w-24 bg-zinc-200" />
-          <Skeleton className="h-10 w-24 bg-zinc-200" />
-        </div>
-
-        <div className="mt-4 flex gap-6">
-          <div className="flex flex-1 flex-col gap-6">
-            <Skeleton className="h-[168px] bg-zinc-200" />
-            <Skeleton className="h-[168px] bg-zinc-200" />
-            <Skeleton className="h-[94px] bg-zinc-200" />
-          </div>
-
-          <div className="flex flex-1 gap-6">
-            <div className="flex flex-1 flex-col gap-6">
-              <Skeleton className="h-[134px] bg-zinc-200" />
-              <Skeleton className="h-[350px] bg-zinc-200" />
-            </div>
-
-            <div className="flex flex-1 flex-col gap-6">
-              <Skeleton className="h-[134px] bg-zinc-200" />
-              <Skeleton className="h-[134px] bg-zinc-200" />
-              <Skeleton className="h-[134px] bg-zinc-200" />
-            </div>
-          </div>
-        </div>
-      </React.Fragment>
-    )
+    return <LedgerDetailsSkeleton />
   }
 
   return (
@@ -219,15 +158,10 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="overview">
-          <OverviewTabContent
-            data={data}
-            onMetadataChange={setMetadata}
-            onMetadataDirtyChange={setIsMetadataDirty}
-            resetMetadataFormTrigger={resetMetadataFormTrigger}
-          />
+          <OverviewTabContent data={data} />
         </TabsContent>
         <TabsContent value="assets">
-          <p>Assets</p>
+          <AssetsTabContent data={data} />
         </TabsContent>
         <TabsContent value="portfolios-and-accounts">
           <AccountsPortfoliosTabContent />
@@ -238,9 +172,10 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
       </Tabs>
 
       <BottomDrawer
-        isOpen={isSheetOpen}
+        isOpen={isDrawerOpen}
         handleSubmit={handleGlobalSubmit}
         handleCancel={handleCancel}
+        isPending={updatePending}
       />
     </div>
   )

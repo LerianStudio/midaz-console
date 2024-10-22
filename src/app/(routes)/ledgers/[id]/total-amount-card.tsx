@@ -28,6 +28,7 @@ export const TotalAmountCard = ({
           icon={Coins}
           className="text-[#52525B]"
         />
+
         <Card.Content
           text={instrument.totalAmount}
           className={index === 0 ? 'text-5xl' : 'text-3xl'}

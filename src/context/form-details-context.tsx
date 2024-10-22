@@ -4,15 +4,15 @@ import React, { ReactNode, createContext, useContext, useState } from 'react'
 
 interface FormData {
   name: string
-  metadata: Record<string, any>
+  metadata: Record<string, string> | null
 }
 
 interface FormStateContextType {
   formData: FormData
   updateFormData: (newData: Partial<FormData>) => void
   isDirty: boolean
-  markAsDirty: () => void
-  resetDirty: () => void
+  setDirty: (dirty: boolean) => void
+  resetForm: () => void
 }
 
 const FormStateContext = createContext<FormStateContextType | undefined>(
@@ -33,21 +33,21 @@ export const FormDetailsProvider: React.FC<{ children: ReactNode }> = ({
   const [formData, setFormData] = useState<FormData>({ name: '', metadata: {} })
   const [isDirty, setIsDirty] = useState(false)
 
-  const markAsDirty = () => {
-    setIsDirty(true)
-  }
-
-  const resetDirty = () => {
-    setIsDirty(false)
-  }
+  const setDirty = (dirty: boolean) => setIsDirty(dirty)
 
   const updateFormData = (newData: Partial<FormData>) => {
     setFormData((prevData) => ({ ...prevData, ...newData }))
+    setDirty(true)
+  }
+
+  const resetForm = () => {
+    setFormData({ name: '', metadata: {} })
+    setDirty(false)
   }
 
   return (
     <FormStateContext.Provider
-      value={{ formData, updateFormData, isDirty, markAsDirty, resetDirty }}
+      value={{ formData, updateFormData, isDirty, setDirty, resetForm }}
     >
       {children}
     </FormStateContext.Provider>

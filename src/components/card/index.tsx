@@ -3,7 +3,7 @@ import { CardMetadata } from './card-metadata'
 import { CustomCardHeader } from './card-header'
 import { CardRoot } from './card-root'
 import { CardResources } from './card-resources'
-import { CardChart } from './card-chart'
+import { ChartCard } from './chart-card'
 
 export const Card = {
   Root: CardRoot,
@@ -11,5 +11,5 @@ export const Card = {
   Content: CustomCardContent,
   Metadata: CardMetadata,
   Resources: CardResources,
-  Chart: CardChart
+  Chart: ChartCard
 }

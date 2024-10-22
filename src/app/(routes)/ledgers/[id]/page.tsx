@@ -2,8 +2,10 @@
 
 import { FormDetailsProvider } from '@/context/form-details-context'
 import LedgerDetailsView from './ledger-details-view'
-import { useLedgerById } from '@/utils/queries'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useOrganization } from '@/context/organization-provider/organization-provider-client'
+import { useLedgerById } from '@/client/ledger-client'
+
 type Params = {
   params: {
     locale: string
@@ -12,13 +14,17 @@ type Params = {
 }
 
 const Page = ({ params }: Params) => {
-  const data = useLedgerById(params.id)
+  const { currentOrganization } = useOrganization()
+  const { data: ledger } = useLedgerById({
+    organizationId: currentOrganization.id!,
+    ledgerId: params.id!
+  })
   const methods = useForm()
 
   return (
     <FormDetailsProvider>
       <FormProvider {...methods}>
-        <LedgerDetailsView data={data.data} />
+        <LedgerDetailsView data={ledger!} />
       </FormProvider>
     </FormDetailsProvider>
   )

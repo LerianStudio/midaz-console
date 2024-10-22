@@ -4,7 +4,7 @@ import React from 'react'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import { Doughnut } from 'react-chartjs-2'
 
-type CardChartProps = {
+type ChartCardProps = {
   data: {
     labels: string[]
     datasets: number[]
@@ -24,7 +24,7 @@ const LegendItem = ({ label, color }: LegendItemsProps) => (
   </div>
 )
 
-const CustomLegend = ({ labels, colors, datasets }: CardChartProps['data']) => {
+const CustomLegend = ({ labels, colors, datasets }: ChartCardProps['data']) => {
   const total = datasets?.reduce((acc, dataset) => acc + dataset, 0) || 0
 
   return (
@@ -54,9 +54,8 @@ const CustomLegend = ({ labels, colors, datasets }: CardChartProps['data']) => {
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
-export const CardChart = ({ data }: CardChartProps) => {
+export const ChartCard = ({ data }: ChartCardProps) => {
   if (!data.datasets) {
-    console.error('CardChart: datasets is undefined')
     return null
   }
 

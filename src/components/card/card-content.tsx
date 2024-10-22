@@ -1,20 +1,22 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import { CardContent } from '../ui/card'
-import { Input } from '../ui/input'
+import { CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useFormState } from '@/context/form-details-context'
-import { Label } from '../ui/label'
+import { Label } from '@/components/ui/label'
+import { useIntl } from 'react-intl'
 
 const formSchema = z.object({
   name: z.string()
 })
 
 export const CustomCardContent = ({ data, text, className }: any) => {
-  const { updateFormData, markAsDirty } = useFormState()
+  const { updateFormData } = useFormState()
+  const intl = useIntl()
 
   const { register } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -23,7 +25,6 @@ export const CustomCardContent = ({ data, text, className }: any) => {
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newName = e.target.value
-    markAsDirty()
     updateFormData({ name: newName })
   }
 
@@ -37,7 +38,12 @@ export const CustomCardContent = ({ data, text, className }: any) => {
 
       {data && (
         <div className="mt-3 flex flex-col gap-4">
-          <Label>Nome do Ledger</Label>
+          <Label>
+            {intl.formatMessage({
+              id: 'entity.ledger.name',
+              defaultMessage: 'Ledger Name'
+            })}
+          </Label>
           <Input {...register('name')} onChange={handleNameChange} />
         </div>
       )}
