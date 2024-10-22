@@ -163,6 +163,13 @@ import {
   FetchAllLedgersAssetsUseCase
 } from '@/core/application/use-cases/ledgers-assets/fetch-ledger-assets-use-case'
 
+import { FetchAllAccountsRepository } from '@/core/domain/repositories/accounts/fetch-all-accounts-repository'
+import { MidazFetchAllAccountsRepository } from '../midaz/accounts/midaz-fetch-all-accounts-repository'
+import {
+  FetchAllAccounts,
+  FetchAllAccountsUseCase
+} from '@/core/application/use-cases/accounts/fetch-all-account-use-case'
+
 export const Registry = {
   AuthLoginRepository: Symbol.for('AuthLoginRepository'),
   AuthLoginUseCase: Symbol.for('AuthLoginUseCase'),
@@ -250,7 +257,15 @@ export const Registry = {
   DeletePortfolioRepository: Symbol.for('DeletePortfolioRepository'),
 
   FetchPortfolioByIdUseCase: Symbol.for('FetchPortfolioByIdUseCase'),
-  FetchPortfolioByIdRepository: Symbol.for('FetchPortfolioByIdRepository')
+  FetchPortfolioByIdRepository: Symbol.for('FetchPortfolioByIdRepository'),
+
+  // Account Symbols
+  FetchAccountSymbolUseCase: Symbol.for('FetchAccountSymbolUseCase'),
+  FetchAccountSymbolRepository: Symbol.for('FetchAccountSymbolRepository'),
+
+  // Accounts
+  FetchAllAccountsUseCase: Symbol.for('FetchAllAccountsUseCase'),
+  FetchAllAccountsRepository: Symbol.for('FetchAllAccountsRepository')
 }
 
 export const container = new Container()
@@ -606,5 +621,19 @@ container
   .toDynamicValue((context) => {
     return new FetchPortfolioByIdUseCase(
       context.container.get(Registry.FetchPortfolioByIdRepository)
+    )
+  })
+
+// Accounts
+
+container
+  .bind<FetchAllAccountsRepository>(Registry.FetchAllAccountsRepository)
+  .toConstantValue(new MidazFetchAllAccountsRepository())
+
+container
+  .bind<FetchAllAccounts>(Registry.FetchAllAccountsUseCase)
+  .toDynamicValue((context) => {
+    return new FetchAllAccountsUseCase(
+      context.container.get(Registry.FetchAllAccountsRepository)
     )
   })
