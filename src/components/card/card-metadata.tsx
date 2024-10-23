@@ -1,31 +1,25 @@
-import React, { useEffect, useState } from 'react'
-import { useForm, useFieldArray, useWatch } from 'react-hook-form'
-import { z } from 'zod'
+import React, { useState } from 'react'
+import { useForm, useFieldArray } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { CardContent } from '../ui/card'
-import { Label } from '../ui/label'
-import { Input } from '../ui/input'
-import { Button } from '../ui/button'
+import { CardContent } from '@/components/ui/card'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 import { Plus, Trash } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useFormState } from '@/context/form-details-context'
+import { ILedgerType } from '@/types/ledgers-type'
+import { metadata } from '@/schema/metadata'
+import { MetadataValues } from '@/types/metadata-type'
+
+type Metadata = Record<string, string>
 
 type CardMetadataProps = {
-  data: any
-  onChange: (metadata: any[]) => void
-  onDirtyChange?: (isDirty: boolean) => void
+  data: ILedgerType
   resetFormTrigger?: boolean
 }
 
-const formSchema = z.object({
-  metadata: z.array(
-    z.object({
-      key: z.string(),
-      value: z.string()
-    })
-  )
-})
-
-const normalizeMetadata = (metadata: any) => {
+const convertToArray = (metadata: Metadata) => {
   return Array.isArray(metadata)
     ? metadata
     : Object.entries(metadata || {}).map(([key, value]) => ({
@@ -34,21 +28,25 @@ const normalizeMetadata = (metadata: any) => {
       }))
 }
 
-export const CardMetadata = ({
-  data,
-  onChange,
-  onDirtyChange,
-  resetFormTrigger
-}: CardMetadataProps) => {
-  const {
-    control,
-    register,
-    reset,
-    formState: { isDirty }
-  } = useForm({
-    resolver: zodResolver(formSchema),
+const convertArrayToObject = (array: { key: string; value: string }[]) => {
+  if (array.length === 0) {
+    return null
+  }
+
+  return array.reduce((acc: Record<string, string>, item) => {
+    if (item.key && item.value) {
+      acc[item.key] = item.value
+    }
+    return acc
+  }, {})
+}
+
+export const CardMetadata = ({ data, resetFormTrigger }: CardMetadataProps) => {
+  const { updateFormData } = useFormState()
+  const { control, register, reset } = useForm({
+    resolver: zodResolver(metadata),
     defaultValues: {
-      metadata: normalizeMetadata(data.metadata)
+      metadata: convertToArray(data.metadata)
     }
   })
 
@@ -57,26 +55,19 @@ export const CardMetadata = ({
     name: 'metadata'
   })
 
-  const metadataValues = useWatch({
-    control,
-    name: 'metadata'
-  })
-
-  useEffect(() => {
-    onChange(metadataValues ?? [])
-  }, [metadataValues, onChange])
-
-  useEffect(() => {
-    onDirtyChange?.(isDirty)
-  }, [isDirty, onDirtyChange])
-
-  useEffect(() => {
-    reset({
-      metadata: normalizeMetadata(data.metadata)
-    })
-  }, [resetFormTrigger, reset])
-
   const [newMetadata, setNewMetadata] = useState({ key: '', value: '' })
+
+  const syncMetadataWithContext = (fieldsArray: MetadataValues) => {
+    const metadataObject = convertArrayToObject(fieldsArray)
+    updateFormData({ metadata: metadataObject })
+  }
+
+  const handleFieldChange =
+    (index: number, field: string) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      fields[index][field] = e.target.value
+      syncMetadataWithContext(fields)
+    }
 
   const handleNewMetadataChange =
     (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,8 +77,21 @@ export const CardMetadata = ({
   const handleAddMetadata = () => {
     if (newMetadata.key && newMetadata.value) {
       append(newMetadata)
+      syncMetadataWithContext([...fields, newMetadata])
       setNewMetadata({ key: '', value: '' })
     }
+  }
+
+  const handleRemoveMetadata = (index: number) => {
+    const updatedFields = fields.filter((_, i) => i !== index)
+    remove(index)
+    syncMetadataWithContext(updatedFields)
+  }
+
+  if (resetFormTrigger) {
+    reset({
+      metadata: convertToArray(data.metadata)
+    })
   }
 
   return (
@@ -100,7 +104,7 @@ export const CardMetadata = ({
               id="key"
               value={newMetadata.key}
               onChange={handleNewMetadataChange('key')}
-              placeholder="Digite..."
+              placeholder="Enter key..."
             />
           </div>
 
@@ -110,7 +114,7 @@ export const CardMetadata = ({
               id="value"
               value={newMetadata.value}
               onChange={handleNewMetadataChange('value')}
-              placeholder="Digite..."
+              placeholder="Enter value..."
             />
           </div>
         </div>
@@ -133,17 +137,21 @@ export const CardMetadata = ({
       {fields.map((item, index) => (
         <div key={item.id} className="mt-3 flex items-center justify-between">
           <div className="flex w-full gap-3">
-            <Input placeholder="Key" {...register(`metadata.${index}.key`)} />
-
+            <Input
+              placeholder="Key"
+              {...register(`metadata.${index}.key`)}
+              onChange={handleFieldChange(index, 'key')}
+              defaultValue={item.key}
+            />
             <Input
               placeholder="Value"
               {...register(`metadata.${index}.value`)}
+              onChange={handleFieldChange(index, 'value')}
+              defaultValue={item.value}
             />
 
             <Button
-              onClick={() => {
-                remove(index)
-              }}
+              onClick={() => handleRemoveMetadata(index)}
               className="group h-9 w-9 rounded-full border border-shadcn-200 bg-white hover:border-none"
             >
               <Trash

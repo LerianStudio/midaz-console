@@ -17,7 +17,7 @@ import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet
 import { useDeleteLedger } from '@/client/ledger-client'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
-import { LedgerSkeleton } from './ledger-skeleton'
+import { LedgersSkeleton } from './ledgers-skeleton'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
 import { LedgerResponseDto } from '@/core/application/dto/ledger-response-dto'
 
@@ -121,10 +121,10 @@ const LedgersView = ({ ledgers, refetch, isLoading }: LedgersViewProps) => {
         />
       </PageHeader.Root>
 
-      <LedgersSheet onSucess={refetch} {...sheetProps} />
+      <LedgersSheet onSuccess={refetch} {...sheetProps} />
 
       <div className="mt-10">
-        {isLoading && <LedgerSkeleton />}
+        {isLoading && <LedgersSkeleton />}
 
         {ledgers && (
           <LedgersDataTable

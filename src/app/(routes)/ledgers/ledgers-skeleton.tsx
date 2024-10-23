@@ -1,7 +1,7 @@
 import { Skeleton } from '@/components/ui/skeleton'
 import React from 'react'
 
-export const LedgerSkeleton = () => {
+export const LedgersSkeleton = () => {
   return (
     <React.Fragment>
       <Skeleton className="h-[84px] w-full bg-zinc-200" />
