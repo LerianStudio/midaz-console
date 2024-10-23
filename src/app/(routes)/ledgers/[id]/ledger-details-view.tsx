@@ -20,6 +20,15 @@ import { ILedgerType } from '@/types/ledgers-type'
 import { useUpdateLedger } from '@/client/ledger-client'
 import { LedgerDetailsSkeleton } from './ledger-details-skeleton'
 
+const TAB_VALUES = {
+  OVERVIEW: 'overview',
+  ASSETS: 'assets',
+  PORTFOLIOS_AND_ACCOUNTS: 'portfolios-and-accounts',
+  PRODUCTS: 'products'
+}
+
+const DEFAULT_TAB_VALUE = TAB_VALUES.OVERVIEW
+
 type LedgerDetailsViewProps = {
   data: ILedgerType
 }
@@ -27,7 +36,9 @@ type LedgerDetailsViewProps = {
 const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
   const intl = useIntl()
   const { currentOrganization } = useOrganization()
-  const { activeTab, handleTabChange } = useTabs({ initialValue: 'overview' })
+  const { activeTab, handleTabChange } = useTabs({
+    initialValue: DEFAULT_TAB_VALUE
+  })
   const { formData, isDirty, resetForm } = useFormState()
   const { showSuccess, showError } = useCustomToast()
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
@@ -72,21 +83,28 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
         id: `ledgers.tab.overview`,
         defaultMessage: 'Overview'
       }),
-      active: () => activeTab === 'overview'
+      active: () => activeTab === TAB_VALUES.OVERVIEW
     },
     {
       name: intl.formatMessage({
         id: `ledgers.tab.assets`,
         defaultMessage: 'Assets'
       }),
-      active: () => activeTab === 'assets'
+      active: () => activeTab === TAB_VALUES.ASSETS
+    },
+    {
+      name: intl.formatMessage({
+        id: `ledgers.tab.portfolios-and-accounts`,
+        defaultMessage: 'Portfolios and Accounts'
+      }),
+      active: () => activeTab === TAB_VALUES.PORTFOLIOS_AND_ACCOUNTS
     },
     {
       name: intl.formatMessage({
         id: `settings.tab.products`,
         defaultMessage: 'Products'
       }),
-      active: () => activeTab === 'products'
+      active: () => activeTab === TAB_VALUES.PRODUCTS
     }
   ])
 
@@ -127,46 +145,52 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
 
       <Tabs
         value={activeTab}
-        defaultValue="overview"
+        defaultValue={DEFAULT_TAB_VALUE}
         onValueChange={handleTabChange}
       >
         <TabsList>
-          <TabsTrigger value="overview">
+          <TabsTrigger value={TAB_VALUES.OVERVIEW}>
             {intl.formatMessage({
               id: 'ledgers.tab.overview',
               defaultMessage: 'Overview'
             })}
           </TabsTrigger>
-          <TabsTrigger value="assets">
+
+          <TabsTrigger value={TAB_VALUES.ASSETS}>
             {intl.formatMessage({
               id: 'ledgers.tab.assets',
               defaultMessage: 'Assets'
             })}
           </TabsTrigger>
 
-          <TabsTrigger value="portfolios-and-accounts">
+          <TabsTrigger value={TAB_VALUES.PORTFOLIOS_AND_ACCOUNTS}>
             {intl.formatMessage({
               id: 'ledgers.tab.portfolios-and-accounts',
               defaultMessage: 'Portfolios and Accounts'
             })}
           </TabsTrigger>
-          <TabsTrigger value="products">
+
+          <TabsTrigger value={TAB_VALUES.PRODUCTS}>
             {intl.formatMessage({
               id: 'ledgers.tab.products',
               defaultMessage: 'Products'
             })}
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="overview">
+
+        <TabsContent value={TAB_VALUES.OVERVIEW}>
           <OverviewTabContent data={data} />
         </TabsContent>
-        <TabsContent value="assets">
+
+        <TabsContent value={TAB_VALUES.ASSETS}>
           <AssetsTabContent data={data} />
         </TabsContent>
-        <TabsContent value="portfolios-and-accounts">
+
+        <TabsContent value={TAB_VALUES.PORTFOLIOS_AND_ACCOUNTS}>
           <AccountsPortfoliosTabContent />
         </TabsContent>
-        <TabsContent value="products">
+
+        <TabsContent value={TAB_VALUES.PRODUCTS}>
           <ProductsTabContent />
         </TabsContent>
       </Tabs>
