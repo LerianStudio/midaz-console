@@ -292,6 +292,7 @@ export const Registry = {
   FetchAllAccountsRepository: Symbol.for('FetchAllAccountsRepository'),
   CreateAccountsRepository: Symbol.for('CreateAccountsRepository'),
   CreateAccountUseCase: Symbol.for('CreateAccountUseCase'),
+  CreateAccountSymbolRepository: Symbol.for('CreateAccountSymbolRepository'),
   FetchAccountByIdRepository: Symbol.for('FetchAccountByIdRepository'),
   FetchAccountByIdUseCase: Symbol.for('FetchAccountByIdUseCase'),
   UpdateAccountRepository: Symbol.for('UpdateAccountRepository'),

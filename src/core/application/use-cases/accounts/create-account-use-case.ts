@@ -26,6 +26,10 @@ export class CreateAccountUseCase implements CreateAccount {
     portfolioId: string,
     account: CreateAccountDto
   ): Promise<AccountResponseDto> {
+    console.log('CreateAccountUseCase', account)
+    console.log('CreateAccountUseCase', organizationId)
+    console.log('CreateAccountUseCase', ledgerId)
+    console.log('CreateAccountUseCase', portfolioId)
     account.status = {
       code: 'ACTIVE',
       description: 'Active Account'

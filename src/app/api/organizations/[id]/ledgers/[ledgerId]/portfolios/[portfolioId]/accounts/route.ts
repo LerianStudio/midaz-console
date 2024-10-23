@@ -11,7 +11,7 @@ import { NextResponse } from 'next/server'
 
 // Update use case references
 const createAccountUseCase: CreateAccount = container.get<CreateAccount>(
-  Registry.CreateAccountsRepository
+  Registry.CreateAccountUseCase
 )
 
 const fetchAllAccountsUseCase: FetchAllAccounts =
@@ -49,7 +49,6 @@ export async function GET(
     return NextResponse.json(accounts)
   } catch (error: any) {
     console.error('Error fetching all accounts', error)
-    // ... existing error handling ...
   }
 }
 
@@ -62,6 +61,10 @@ export async function POST(
     const organizationId = params.id
     const ledgerId = params.ledgerId
     const portfolioId = params.portfolioId
+    console.log('POST route organizationId', organizationId)
+    console.log('POST route ledgerId', ledgerId)
+    console.log('POST route portfolioId', portfolioId)
+    console.log('POST route body', body)
 
     const account = await createAccountUseCase.execute(
       organizationId,
@@ -70,9 +73,11 @@ export async function POST(
       body
     )
 
+    console.log('account testou', account)
+
     return NextResponse.json(account)
   } catch (error: any) {
-    console.error('Error creating portfolio', error)
+    console.error('Error creating accounts', error)
     const { message, status } = await apiErrorHandler(error)
 
     return NextResponse.json({ message }, { status })

@@ -11,6 +11,7 @@ export class MidazCreateAccountRepository implements CreateAccountsRepository {
     portfolioId: string,
     account: AccountEntity
   ): Promise<AccountEntity> {
+    console.log('MidazCreateAccountRepository', account)
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}/accounts`
 
     const response = await httpMidazAuthFetch<AccountEntity>({

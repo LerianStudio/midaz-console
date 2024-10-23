@@ -22,12 +22,19 @@ export class FetchAccountByIdUseCase implements FetchAccountById {
     portfolioId: string,
     accountId: string
   ): Promise<AccountResponseDto> {
+    console.log('FetchAccountByIdUseCase', organizationId)
+    console.log('FetchAccountByIdUseCase', ledgerId)
+    console.log('FetchAccountByIdUseCase', portfolioId)
+    console.log('FetchAccountByIdUseCase', accountId)
+
     const account = await this.fetchAccountByIdRepository.fetchById(
       organizationId,
       ledgerId,
       portfolioId,
       accountId
     )
+
+    console.log('FetchAccountByIdUseCase account', account)
 
     const accountResponseDto: AccountResponseDto = accountEntityToDto(account)
 

@@ -13,7 +13,12 @@ export class MidazFetchAccountByIdRepository
     portfolioId: string,
     accountId: string
   ): Promise<AccountEntity> {
-    const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolio/${portfolioId}/accounts/${accountId}`
+    console.log('MidazFetchAccountByIdRepository', organizationId)
+    console.log('MidazFetchAccountByIdRepository', ledgerId)
+    console.log('MidazFetchAccountByIdRepository', portfolioId)
+    console.log('MidazFetchAccountByIdRepository', accountId)
+
+    const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}/accounts/${accountId}`
 
     const response = await httpMidazAuthFetch<AccountEntity>({
       url,

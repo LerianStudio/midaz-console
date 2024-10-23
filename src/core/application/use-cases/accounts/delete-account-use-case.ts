@@ -20,6 +20,11 @@ export class DeleteAccountUseCase implements DeleteAccount {
     portfolioId: string,
     accountId: string
   ): Promise<void> {
+    console.log('DeleteAccountUseCase', organizationId)
+    console.log('DeleteAccountUseCase', ledgerId)
+    console.log('DeleteAccountUseCase', portfolioId)
+    console.log('DeleteAccountUseCase', accountId)
+
     await this.deleteAccountRepository.delete(
       organizationId,
       ledgerId,
