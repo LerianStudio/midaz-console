@@ -6,7 +6,7 @@ import {
   organizationUpdateDtoToEntity
 } from '../../mappers/organization-mapper'
 
-jest.mock('../../mappers/oganization-mapper')
+jest.mock('../../mappers/organization-mapper')
 
 describe('UpdateOrganizationUseCase', () => {
   let updateOrganizationUseCase: UpdateOrganizationUseCase
