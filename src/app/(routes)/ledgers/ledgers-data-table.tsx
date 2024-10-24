@@ -279,7 +279,7 @@ export const LedgersDataTable: React.FC<LedgersTableProps> = ({
         </TableContainer>
       )}
 
-      <LedgersSheet onSucess={refetch} {...sheetProps} />
+      <LedgersSheet onSuccess={refetch} {...sheetProps} />
     </div>
   )
 }
