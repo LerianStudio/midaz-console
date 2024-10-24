@@ -23,11 +23,13 @@ import { LoadingButton } from '@/components/ui/loading-button'
 import { useCreateLedger } from '@/client/ledger-client'
 import { LedgerResponseDto } from '@/core/application/dto/ledger-response-dto'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
+import useCustomToast from '@/hooks/use-custom-toast'
+import { ILedgerType } from '@/types/ledgers-type'
 
 export type LedgersSheetProps = DialogProps & {
   mode: 'create' | 'edit'
   data?: LedgerResponseDto | null
-  onSucess?: () => void
+  onSuccess?: () => void
 }
 
 const defaultValues = {
@@ -45,18 +47,37 @@ type FormData = z.infer<typeof FormSchema>
 export const LedgersSheet = ({
   mode,
   data,
-  onSucess,
+  onSuccess,
   onOpenChange,
   ...others
 }: LedgersSheetProps) => {
   const intl = useIntl()
   const { currentOrganization } = useOrganization()
+  const { showSuccess, showError } = useCustomToast()
 
   const { mutate: createLedger, isPending: createPending } = useCreateLedger({
     organizationId: currentOrganization.id!,
-    onSuccess: () => {
-      onSucess?.()
+    onSuccess: (data: unknown) => {
+      const formData = data as { ledger: ILedgerType }
+      onSuccess?.()
       onOpenChange?.(false)
+      showSuccess(
+        intl.formatMessage(
+          {
+            id: 'ledgers.toast.ledgerCreated',
+            defaultMessage: 'Ledger {ledgerName} created successfully'
+          },
+          { ledgerName: formData.ledger.name }
+        )
+      )
+    },
+    onError: () => {
+      showError(
+        intl.formatMessage({
+          id: 'common.toast.error',
+          defaultMessage: 'Error saving changes'
+        })
+      )
     }
   })
 
@@ -77,14 +98,12 @@ export const LedgersSheet = ({
     form.reset(defaultValues)
   }
 
-  // Resets information if using creation mode
   React.useEffect(() => {
     if (mode === 'create') {
       form.reset(defaultValues)
     }
   }, [mode])
 
-  // Resets information if props change values
   React.useEffect(() => {
     if (!isNil(data)) {
       setMetadataEnabled(Object.entries(data.metadata).length > 0)

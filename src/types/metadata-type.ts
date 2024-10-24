@@ -6,9 +6,7 @@ export type MetadataItem = {
   value: string
 }
 
-export type MetadataValues = {
-  metadata: MetadataItem[]
-}
+export type MetadataValues = MetadataItem[]
 
 export type MetadataSectionProps = {
   isSwitchOn: boolean

@@ -14,22 +14,23 @@ import {
 import { LedgersDataTable } from './ledgers-data-table'
 import { LedgersSheet } from './ledgers-sheet'
 import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
-import { useDeleteLedger, useListLedgers } from '@/client/ledger-client'
+import { useDeleteLedger } from '@/client/ledger-client'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
+import { LedgersSkeleton } from './ledgers-skeleton'
+import { PaginationDto } from '@/core/application/dto/pagination-dto'
+import { LedgerResponseDto } from '@/core/application/dto/ledger-response-dto'
 
-const LedgersView = () => {
+type LedgersViewProps = {
+  ledgers: PaginationDto<LedgerResponseDto> | undefined
+  refetch: () => void
+  isLoading: boolean
+}
+
+const LedgersView = ({ ledgers, refetch, isLoading }: LedgersViewProps) => {
   const intl = useIntl()
   const { currentOrganization } = useOrganization()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
-
-  const {
-    data: ledgers,
-    refetch,
-    isLoading
-  } = useListLedgers({
-    organizationId: currentOrganization.id!
-  })
 
   const {
     handleDialogOpen,
@@ -91,10 +92,15 @@ const LedgersView = () => {
               })}
             />
             <Button icon={<Plus />} onClick={handleCreate}>
-              {intl.formatMessage({
-                id: 'ledgers.listingTemplate.addButton',
-                defaultMessage: 'New Ledger'
-              })}
+              {!ledgers || ledgers.items.length === 0
+                ? intl.formatMessage({
+                    id: 'ledgers.listingTemplate.newAddButton',
+                    defaultMessage: 'Create your first Ledger'
+                  })
+                : intl.formatMessage({
+                    id: 'ledgers.listingTemplate.addButton',
+                    defaultMessage: 'New Ledger'
+                  })}
             </Button>
           </PageHeader.ActionButtons>
         </PageHeader.Wrapper>
@@ -115,15 +121,18 @@ const LedgersView = () => {
         />
       </PageHeader.Root>
 
-      <LedgersSheet onSucess={refetch} {...sheetProps} />
+      <LedgersSheet onSuccess={refetch} {...sheetProps} />
 
       <div className="mt-10">
+        {isLoading && <LedgersSkeleton />}
+
         {ledgers && (
           <LedgersDataTable
             ledgers={ledgers}
             isLoading={isLoading}
             table={table}
             handleDialogOpen={handleDialogOpen}
+            refetch={refetch}
           />
         )}
       </div>

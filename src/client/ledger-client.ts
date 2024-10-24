@@ -16,6 +16,13 @@ type UseCreateLedgerProps = UseMutationOptions & {
   organizationId: string
 }
 
+type UseListLedgersProps = UseCreateLedgerProps
+
+type UseLedgerByIdProps = UseMutationOptions & {
+  organizationId: string
+  ledgerId: string
+}
+
 type UseUpdateLedgerProps = UseMutationOptions & {
   organizationId: string
   ledgerId: string
@@ -24,8 +31,6 @@ type UseUpdateLedgerProps = UseMutationOptions & {
 type UseDeleteLedgerProps = UseMutationOptions & {
   organizationId: string
 }
-
-type UseListLedgersProps = UseCreateLedgerProps
 
 const useCreateLedger = ({
   organizationId,
@@ -42,9 +47,23 @@ const useListLedgers = ({
   ...options
 }: UseListLedgersProps) => {
   return useQuery<PaginationDto<LedgerResponseDto>>({
-    queryKey: [organizationId],
+    queryKey: ['ledgers', organizationId],
     queryFn: getFetcher(
       `/api/organizations/${organizationId}/ledgers/ledgers-assets`
+    ),
+    ...options
+  })
+}
+
+const useLedgerById = ({
+  organizationId,
+  ledgerId,
+  ...options
+}: UseLedgerByIdProps) => {
+  return useQuery<LedgerResponseDto>({
+    queryKey: ['ledger', organizationId, ledgerId],
+    queryFn: getFetcher(
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}`
     ),
     ...options
   })
@@ -58,7 +77,7 @@ const useUpdateLedger = ({
   return useMutation<any, any, any>({
     mutationKey: [organizationId, ledgerId],
     mutationFn: patchFetcher(
-      `/api/organizations/${organizationId}/ledgers/${ledgerId}}`
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}`
     ),
     ...options
   })
@@ -75,28 +94,10 @@ const useDeleteLedger = ({
   })
 }
 
-const getLedgerById = async (organizationId: string, id: string) => {
-  const response = await fetch(
-    `/api/organizations/${organizationId}/ledgers/${id}`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }
-  )
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch ledger with id ${id}`)
-  }
-
-  return await response.json()
-}
-
 export {
   useCreateLedger,
   useUpdateLedger,
   useDeleteLedger,
   useListLedgers,
-  getLedgerById
+  useLedgerById
 }
