@@ -5,7 +5,7 @@ import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { organizationEntityToDto } from '../../mappers/organization-mapper'
 import { OrganizationResponseDto } from '../../dto/organization-response-dto'
 
-jest.mock('../../mappers/oganization-mapper')
+jest.mock('../../mappers/organization-mapper')
 
 describe('FetchAllOrganizationsUseCase', () => {
   let fetchAllOrganizationsRepository: FetchAllOrganizationsRepository
