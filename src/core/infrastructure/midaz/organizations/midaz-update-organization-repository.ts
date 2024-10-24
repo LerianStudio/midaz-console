@@ -1,6 +1,5 @@
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { UpdateOrganizationRepository } from '@/core/domain/repositories/organizations/update-organization-repository'
-import { handleMidazError } from '../../utils/midaz-error-handler'
 import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 export class MidazUpdateOrganizationRepository

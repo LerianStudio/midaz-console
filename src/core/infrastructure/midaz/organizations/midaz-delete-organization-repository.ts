@@ -1,5 +1,4 @@
 import { DeleteOrganizationRepository } from '@/core/domain/repositories/organizations/delete-organization-repository'
-import { handleMidazError } from '../../utils/midaz-error-handler'
 import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
 
 export class MidazDeleteOrganizationRepository
@@ -14,7 +13,5 @@ export class MidazDeleteOrganizationRepository
       url,
       method: HTTP_METHODS.DELETE
     })
-
-    return
   }
 }
