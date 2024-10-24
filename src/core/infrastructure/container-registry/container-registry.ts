@@ -162,10 +162,18 @@ import {
   FetchAllLedgersAssets,
   FetchAllLedgersAssetsUseCase
 } from '@/core/application/use-cases/ledgers-assets/fetch-ledger-assets-use-case'
+import { AuthPermissionRepository } from '@/core/domain/repositories/auth/auth-permission-repository'
+import { CasdoorAuthPermissionRepository } from '../casdoor/casdoor-auth-permission-repository'
+import {
+  AuthPermission,
+  AuthPermissionUseCase
+} from '@/core/application/use-cases/auth/auth-permission-use-case'
 
 export const Registry = {
   AuthLoginRepository: Symbol.for('AuthLoginRepository'),
   AuthLoginUseCase: Symbol.for('AuthLoginUseCase'),
+  AuthPermissionRepository: Symbol.for('AuthPermissionRepository'),
+  AuthPermissionUseCase: Symbol.for('AuthPermissionUseCase'),
 
   // Organizations
 
@@ -266,6 +274,18 @@ container
   .toDynamicValue((context) => {
     return new AuthLoginUseCase(
       context.container.get(Registry.AuthLoginRepository)
+    )
+  })
+
+container
+  .bind<AuthPermissionRepository>(Registry.AuthPermissionRepository)
+  .toConstantValue(new CasdoorAuthPermissionRepository())
+
+container
+  .bind<AuthPermission>(Registry.AuthPermissionUseCase)
+  .toDynamicValue((context) => {
+    return new AuthPermissionUseCase(
+      context.container.get(Registry.AuthPermissionRepository)
     )
   })
 
