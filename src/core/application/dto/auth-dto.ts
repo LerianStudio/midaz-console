@@ -14,6 +14,12 @@ export interface AuthLoginResponseDto {
   scope: string
 }
 
+export interface AuthPermissionDto {
+  username: string
+}
+
+export type AuthPermissionResponseDto = Record<string, string[]>
+
 export interface AuthSessionDto {
   id: string
   username: string
