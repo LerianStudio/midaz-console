@@ -1,7 +1,6 @@
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { ProductEntity } from '@/core/domain/entities/product-entity'
 import { FetchAllProductsRepository } from '@/core/domain/repositories/products/fetch-all-products-repository'
-import { handleMidazError } from '../../utils/midaz-error-handler'
 import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 export class MidazFetchAllProductsRepository

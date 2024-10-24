@@ -1,8 +1,5 @@
 import { ProductEntity } from '@/core/domain/entities/product-entity'
 import { UpdateProductRepository } from '@/core/domain/repositories/products/update-product-repository'
-import { m } from 'framer-motion'
-import { Update } from 'next/dist/build/swc'
-import { handleMidazError } from '../../utils/midaz-error-handler'
 import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 export class MidazUpdateProductRepository implements UpdateProductRepository {
