@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { MoreVertical, Plus } from 'lucide-react'
+import { ChevronDown, ChevronUp, MoreVertical, Plus } from 'lucide-react'
 import { PortfolioSheet } from './portfolios-sheet'
 import { useParams } from 'next/navigation'
 import { EntityBox } from '@/components/entity-box'
@@ -14,7 +14,7 @@ import {
   getFilteredRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import React from 'react'
+import React, { useState } from 'react'
 
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import {
@@ -38,19 +38,25 @@ import { capitalizeFirstLetter } from '@/helpers'
 import ConfirmationDialog from '@/components/confirmation-dialog'
 import { AccountSheet } from './accounts-sheet'
 import { useListAccounts } from '@/client/accounts'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export const AccountsContent = () => {
   const intl = useIntl()
   const { id: ledgerId } = useParams<{ id: string }>()
   const { currentOrganization } = useOrganization()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
+  const [isTableExpanded, setIsTableExpanded] = useState(false)
 
-  const { data, refetch } = useListPortfolios({
+  const { data, refetch, isLoading } = useListPortfolios({
     organizationId: currentOrganization.id!,
     ledgerId: ledgerId
   })
 
-  const { data: accountsData, refetch: refetchAccounts } = useListAccounts({
+  const {
+    data: accountsData,
+    refetch: refetchAccounts,
+    isLoading: isAccountsLoading
+  } = useListAccounts({
     organizationId: currentOrganization.id!,
     ledgerId: ledgerId,
     portfolioId: '8c31af05-3e56-400f-9d22-21a7e8f15b25'
@@ -91,6 +97,16 @@ export const AccountsContent = () => {
       columnFilters
     }
   })
+
+  const getLoadingSkeleton = () => (
+    <React.Fragment>
+      <Skeleton className="h-[84px] w-full bg-zinc-200" />
+    </React.Fragment>
+  )
+
+  if (isLoading) {
+    return getLoadingSkeleton()
+  }
 
   return (
     <>
@@ -148,10 +164,18 @@ export const AccountsContent = () => {
               </>
             )}
           </Button>
+          {!isNil(data?.items) && data?.items.length > 0 && (
+            <Button
+              variant="white"
+              onClick={() => setIsTableExpanded(!isTableExpanded)}
+            >
+              {isTableExpanded ? <ChevronUp /> : <ChevronDown />}
+            </Button>
+          )}
         </EntityBox.Actions>
       </EntityBox.Root>
 
-      {/* {!isNil(data?.items) && data?.items.length > 0 && (
+      {!isNil(data?.items) && data?.items.length > 0 && (
         <TableContainer>
           <Table>
             <TableHeader>
@@ -270,7 +294,7 @@ export const AccountsContent = () => {
             </TableBody>
           </Table>
         </TableContainer>
-      )} */}
+      )}
     </>
   )
 }

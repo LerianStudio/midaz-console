@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { MoreVertical, Plus } from 'lucide-react'
+import { MoreVertical, Plus, ChevronDown, ChevronUp } from 'lucide-react'
 import { PortfolioSheet } from './portfolios-sheet'
 import { useParams } from 'next/navigation'
 import { EntityBox } from '@/components/entity-box'
@@ -14,7 +14,7 @@ import {
   getFilteredRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import React from 'react'
+import React, { useState } from 'react'
 
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import {
@@ -36,14 +36,16 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { capitalizeFirstLetter } from '@/helpers'
 import ConfirmationDialog from '@/components/confirmation-dialog'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export const PortfoliosContent = () => {
   const intl = useIntl()
   const { id: ledgerId } = useParams<{ id: string }>()
   const { currentOrganization } = useOrganization()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
+  const [isTableExpanded, setIsTableExpanded] = useState(false)
 
-  const { data, refetch } = useListPortfolios({
+  const { data, refetch, isLoading } = useListPortfolios({
     organizationId: currentOrganization.id!,
     ledgerId: ledgerId
   })
@@ -81,6 +83,16 @@ export const PortfoliosContent = () => {
       columnFilters
     }
   })
+
+  const getLoadingSkeleton = () => (
+    <React.Fragment>
+      <Skeleton className="h-[84px] w-full bg-zinc-200" />
+    </React.Fragment>
+  )
+
+  if (isLoading) {
+    return getLoadingSkeleton()
+  }
 
   return (
     <>
@@ -133,10 +145,18 @@ export const PortfoliosContent = () => {
               </>
             )}
           </Button>
+          {!isNil(data?.items) && data?.items.length > 0 && (
+            <Button
+              variant="white"
+              onClick={() => setIsTableExpanded(!isTableExpanded)}
+            >
+              {isTableExpanded ? <ChevronUp /> : <ChevronDown />}
+            </Button>
+          )}
         </EntityBox.Actions>
       </EntityBox.Root>
 
-      {!isNil(data?.items) && data?.items.length > 0 && (
+      {!isNil(data?.items) && data?.items.length > 0 && isTableExpanded && (
         <TableContainer>
           <Table>
             <TableHeader>

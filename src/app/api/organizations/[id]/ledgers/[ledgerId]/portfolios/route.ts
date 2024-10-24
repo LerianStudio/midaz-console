@@ -21,7 +21,7 @@ export async function GET(
 ) {
   try {
     const { searchParams } = new URL(request.url)
-    const limit = Number(searchParams.get('limit')) || 10
+    const limit = Number(searchParams.get('limit')) || 100
     const page = Number(searchParams.get('page')) || 1
     const organizationId = params.id
     const ledgerId = params.ledgerId
