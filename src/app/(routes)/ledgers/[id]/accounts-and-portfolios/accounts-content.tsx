@@ -37,7 +37,7 @@ import { Badge } from '@/components/ui/badge'
 import { capitalizeFirstLetter } from '@/helpers'
 import ConfirmationDialog from '@/components/confirmation-dialog'
 import { AccountSheet } from './accounts-sheet'
-import { useListAccounts } from '@/client/accounts'
+import { useAllPortfoliosAccounts, useListAccounts } from '@/client/accounts'
 import { Skeleton } from '@/components/ui/skeleton'
 
 export const AccountsContent = () => {
@@ -56,10 +56,10 @@ export const AccountsContent = () => {
     data: accountsData,
     refetch: refetchAccounts,
     isLoading: isAccountsLoading
-  } = useListAccounts({
+  } = useAllPortfoliosAccounts({
     organizationId: currentOrganization.id!,
-    ledgerId: ledgerId,
-    portfolioId: '8c31af05-3e56-400f-9d22-21a7e8f15b25'
+    ledgerId: ledgerId
+    // portfolioId: '7698db1d-ce8b-453d-a673-3c4b0e8f4241'
   })
 
   console.log(' accountsData', accountsData)
@@ -128,23 +128,20 @@ export const AccountsContent = () => {
 
       <EntityBox.Root>
         <EntityBox.Header
-          title={intl.formatMessage({
-            id: `ledgers.portfolio.title`,
-            defaultMessage: 'Portfolios'
-          })}
-          subtitle={
-            data?.items?.length !== undefined
-              ? intl.formatMessage(
-                  {
-                    id: `ledgers.portfolio.subtitle`,
-                    defaultMessage: '{portfoliosItemsTotal} portfolios founded'
-                  },
-                  {
-                    portfoliosItemsTotal: data.items.length
-                  }
-                )
-              : undefined
-          }
+          title="Accounts"
+          // subtitle={
+          //   data?.items?.length !== undefined
+          //     ? intl.formatMessage(
+          //         {
+          //           id: `ledgers.portfolio.subtitle`,
+          //           defaultMessage: '{portfoliosItemsTotal} portfolios founded'
+          //         },
+          //         {
+          //           portfoliosItemsTotal: data.items.length
+          //         }
+          //       )
+          //     : undefined
+          // }
         />
         <EntityBox.Actions>
           <Button

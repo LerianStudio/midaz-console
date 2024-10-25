@@ -193,6 +193,10 @@ import {
   DeleteAccount,
   DeleteAccountUseCase
 } from '@/core/application/use-cases/accounts/delete-account-use-case'
+import {
+  FetchAllPortfoliosAccounts,
+  FetchAllPortfoliosAccountsUseCase
+} from '@/core/application/use-cases/portfolios-accounts/fetch-portfolios-accounts-use-case'
 
 export const Registry = {
   AuthLoginRepository: Symbol.for('AuthLoginRepository'),
@@ -298,7 +302,12 @@ export const Registry = {
   UpdateAccountRepository: Symbol.for('UpdateAccountRepository'),
   UpdateAccountUseCase: Symbol.for('UpdateAccountUseCase'),
   DeleteAccountRepository: Symbol.for('DeleteAccountRepository'),
-  DeleteAccountUseCase: Symbol.for('DeleteAccountUseCase')
+  DeleteAccountUseCase: Symbol.for('DeleteAccountUseCase'),
+
+  // Portfolio-Accounts
+  FetchAllPortfoliosAccountsUseCase: Symbol.for(
+    'FetchAllPortfoliosAccountsUseCase'
+  )
 }
 
 export const container = new Container()
@@ -719,5 +728,15 @@ container
   .toDynamicValue((context) => {
     return new DeleteAccountUseCase(
       context.container.get(Registry.DeleteAccountRepository)
+    )
+  })
+
+//Portfolio-Accounts
+container
+  .bind<FetchAllPortfoliosAccounts>(Registry.FetchAllPortfoliosAccountsUseCase)
+  .toDynamicValue((context) => {
+    return new FetchAllPortfoliosAccountsUseCase(
+      context.container.get(Registry.FetchAllPortfoliosRepository),
+      context.container.get(Registry.FetchAllAccountsRepository)
     )
   })
