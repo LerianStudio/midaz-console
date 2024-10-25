@@ -1,8 +1,7 @@
 import { getServerSession } from 'next-auth'
 import { nextAuthCasdoorOptions } from '../next-auth/casdoor/next-auth-casdoor-provider'
 import { handleMidazError } from './midaz-error-handler'
-import { signOut } from 'next-auth/react'
-import { unknown } from 'zod'
+import { isNil } from 'lodash'
 
 export enum HTTP_METHODS {
   GET = 'GET',
@@ -39,7 +38,8 @@ export async function httpMidazAuthFetch<T>(
     }
   })
 
-  const midazResponse = await response.json()
+  // If body is null, we don't want to parse it
+  const midazResponse = !isNil(response.body) ? await response.json() : {}
 
   if (!response.ok) {
     console.error('[ERROR] - httpMidazAuthFetch ', midazResponse)
