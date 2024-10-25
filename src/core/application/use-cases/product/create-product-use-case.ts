@@ -23,13 +23,7 @@ export class CreateProductUseCase implements CreateProduct {
     ledgerId: string,
     product: CreateProductDto
   ): Promise<ProductResponseDto> {
-    console.log('CreateProductUseCase -> execute -> product', product)
     const productEntity: ProductEntity = productDtoToEntity(product)
-
-    console.log(
-      'CreateProductUseCase -> execute -> productEntity',
-      productEntity
-    )
 
     const productCreated = await this.createProductRepository.create(
       organizationId,

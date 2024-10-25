@@ -7,8 +7,11 @@ export function productEntityToDto(product: ProductEntity): ProductResponseDto {
     organizationId: product.organizationId!,
     ledgerId: product.ledgerId!,
     name: product.name,
-    status: product.status,
-    metadata: product.metadata,
+    status: {
+      code: product.status.code,
+      description: product.status.description ?? ''
+    },
+    metadata: product.metadata ?? {},
     createdAt: product.createdAt!,
     updatedAt: product.updatedAt!,
     deletedAt: product.deletedAt!

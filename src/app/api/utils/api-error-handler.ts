@@ -11,8 +11,6 @@ export async function apiErrorHandler(error: any): Promise<ErrorResponse> {
   const intl = await getIntl()
   let errorResponse: ErrorResponse
 
-  console.log('apiErrorHandler - error.constructor', error.constructor)
-
   switch (error.constructor) {
     case MidazError:
       console.log('apiErrorHandler - MidazError', error.message)
