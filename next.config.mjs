@@ -7,8 +7,7 @@ const nextConfig = {
   },
   env: {
     MIDAZ_CONSOLE_BASE_PATH: process.env.MIDAZ_CONSOLE_BASE_PATH,
-    MIDAZ_SERVER_BASE_PATH: process.env.MIDAZ_SERVER_BASE_PATH,
-    ORY_KRATOS_PUBLIC_URL: process.env.ORY_KRATOS_PUBLIC_URL
+    MIDAZ_SERVER_BASE_PATH: process.env.MIDAZ_SERVER_BASE_PATH
   },
   headers: async () => {
     return [
