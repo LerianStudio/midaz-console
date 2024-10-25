@@ -1,26 +1,26 @@
 import { MidazFetchOrganizationByIdRepository } from './midaz-fetch-organization-by-id-repository'
-import { handleMidazError } from '../../utils/midaz-error-handler'
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
+import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
-jest.mock('../../utils/midaz-error-handler')
+jest.mock('../../utils/http-fetch-utils', () => ({
+  httpMidazAuthFetch: jest.fn(),
+  HTTP_METHODS: {
+    GET: 'GET'
+  }
+}))
 
 describe('MidazFetchOrganizationByIdRepository', () => {
-  const originalFetch = global.fetch
-  const baseUrl = process.env.MIDAZ_BASE_PATH + '/organizations'
   let repository: MidazFetchOrganizationByIdRepository
 
   beforeEach(() => {
     repository = new MidazFetchOrganizationByIdRepository()
+    jest.clearAllMocks()
   })
 
-  afterEach(() => {
-    global.fetch = originalFetch
-    jest.resetAllMocks()
-  })
-
-  it('should fetch organization by id successfully', async () => {
-    const mockOrganization: OrganizationEntity = {
-      id: '1',
+  it('should fetch an organization by id successfully', async () => {
+    const organizationId = '1'
+    const response: OrganizationEntity = {
+      id: organizationId,
       legalName: 'Test Org',
       legalDocument: '123456789',
       doingBusinessAs: 'Test Org',
@@ -45,38 +45,31 @@ describe('MidazFetchOrganizationByIdRepository', () => {
       createdAt: new Date(),
       updatedAt: new Date()
     }
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: true,
-      json: jest.fn().mockResolvedValue(mockOrganization)
-    })
 
-    const result = await repository.fetchById('1')
+    ;(httpMidazAuthFetch as jest.Mock).mockResolvedValueOnce(response)
 
-    expect(global.fetch).toHaveBeenCalledWith(`${baseUrl}/1`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
+    const result = await repository.fetchById(organizationId)
+
+    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+      url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}`,
+      method: HTTP_METHODS.GET
     })
-    expect(result).toEqual(mockOrganization)
+    expect(result).toEqual(response)
   })
 
-  it('should throw an error if fetch fails', async () => {
-    const mockErrorResponse = { message: 'Not Found' }
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: false,
-      json: jest.fn().mockResolvedValue(mockErrorResponse)
-    })
-    ;(handleMidazError as jest.Mock).mockResolvedValue(new Error('Not Found'))
+  it('should handle errors when fetching an organization by id', async () => {
+    const organizationId = '1'
+    const error = new Error('Error occurred')
 
-    await expect(repository.fetchById('1')).rejects.toThrow('Not Found')
+    ;(httpMidazAuthFetch as jest.Mock).mockRejectedValueOnce(error)
 
-    expect(global.fetch).toHaveBeenCalledWith(`${baseUrl}/1`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
+    await expect(repository.fetchById(organizationId)).rejects.toThrow(
+      'Error occurred'
+    )
+
+    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+      url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}`,
+      method: HTTP_METHODS.GET
     })
-    expect(handleMidazError).toHaveBeenCalledWith(mockErrorResponse)
   })
 })

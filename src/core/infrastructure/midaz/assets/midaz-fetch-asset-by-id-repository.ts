@@ -1,5 +1,4 @@
 import { FetchAssetByIdRepository } from '@/core/domain/repositories/assets/fetch-asset-by-id-repository'
-import { handleMidazError } from '../../utils/midaz-error-handler'
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 

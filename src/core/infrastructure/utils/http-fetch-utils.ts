@@ -1,8 +1,6 @@
 import { getServerSession } from 'next-auth'
 import { nextAuthCasdoorOptions } from '../next-auth/casdoor/next-auth-casdoor-provider'
 import { handleMidazError } from './midaz-error-handler'
-import { signOut } from 'next-auth/react'
-import { unknown } from 'zod'
 
 export enum HTTP_METHODS {
   GET = 'GET',
@@ -23,7 +21,7 @@ export async function httpMidazAuthFetch<T>(
   httpFetchOptions: HttpFetchOptions
 ): Promise<T> {
   const session = await getServerSession(nextAuthCasdoorOptions)
-  const { access_token } = session?.user as any
+  const { access_token } = session?.user
 
   const headers = {
     'Content-Type': 'application/json',
