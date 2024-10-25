@@ -1,65 +1,49 @@
 import { MidazDeleteLedgerRepository } from './midaz-delete-ledger-repository'
-import { handleMidazError } from '../../utils/midaz-error-handler'
+import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
-jest.mock('../../utils/midaz-error-handler')
+jest.mock('../../utils/http-fetch-utils', () => ({
+  httpMidazAuthFetch: jest.fn(),
+  HTTP_METHODS: {
+    DELETE: 'DELETE'
+  }
+}))
 
 describe('MidazDeleteLedgerRepository', () => {
   let repository: MidazDeleteLedgerRepository
-  const baseUrl = 'http://example.com'
-  const organizationId = 'org123'
-  const ledgerId = 'ledger123'
-  const ledgerUrl = `${baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}`
 
-  beforeAll(() => {
-    process.env.MIDAZ_BASE_PATH = baseUrl
+  beforeEach(() => {
     repository = new MidazDeleteLedgerRepository()
-  })
-
-  afterEach(() => {
     jest.clearAllMocks()
   })
 
-  it('should call fetch with the correct URL and method', async () => {
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: true,
-      json: jest.fn().mockResolvedValue({})
-    })
+  it('should delete a ledger successfully', async () => {
+    const organizationId = '1'
+    const ledgerId = '1'
+
+    ;(httpMidazAuthFetch as jest.Mock).mockResolvedValueOnce(undefined)
 
     await repository.delete(organizationId, ledgerId)
 
-    expect(global.fetch).toHaveBeenCalledWith(ledgerUrl, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      }
+    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+      url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}`,
+      method: HTTP_METHODS.DELETE
     })
   })
 
-  it('should handle errors correctly', async () => {
-    const errorResponse = { message: 'Error' }
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: false,
-      json: jest.fn().mockResolvedValue(errorResponse)
-    })
-    ;(handleMidazError as jest.Mock).mockResolvedValue(
-      new Error('Handled Error')
-    )
+  it('should handle errors when deleting a ledger', async () => {
+    const organizationId = '1'
+    const ledgerId = '1'
+    const error = new Error('Error occurred')
+
+    ;(httpMidazAuthFetch as jest.Mock).mockRejectedValueOnce(error)
 
     await expect(repository.delete(organizationId, ledgerId)).rejects.toThrow(
-      'Handled Error'
+      'Error occurred'
     )
-    expect(handleMidazError).toHaveBeenCalledWith(errorResponse)
-  })
 
-  it('should return the response if successful', async () => {
-    const successResponse = { message: 'Success' }
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: true,
-      json: jest.fn().mockResolvedValue(successResponse)
+    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+      url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}`,
+      method: HTTP_METHODS.DELETE
     })
-
-    const result = await repository.delete(organizationId, ledgerId)
-
-    expect(result).toEqual(successResponse)
   })
 })

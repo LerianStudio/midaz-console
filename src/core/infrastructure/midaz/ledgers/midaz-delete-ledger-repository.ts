@@ -1,5 +1,4 @@
 import { DeleteLedgerRepository } from '@/core/domain/repositories/ledgers/delete-ledger-repository'
-import { handleMidazError } from '../../utils/midaz-error-handler'
 import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 export class MidazDeleteLedgerRepository implements DeleteLedgerRepository {

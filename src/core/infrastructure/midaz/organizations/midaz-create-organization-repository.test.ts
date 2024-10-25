@@ -1,92 +1,102 @@
-import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { MidazCreateOrganizationRepository } from './midaz-create-organization-repository'
-import { handleMidazError } from '../../utils/midaz-error-handler'
+import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
+import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
-jest.mock('../../utils/midaz-error-handler')
+jest.mock('../../utils/http-fetch-utils', () => ({
+  httpMidazAuthFetch: jest.fn(),
+  HTTP_METHODS: {
+    POST: 'POST'
+  }
+}))
 
 describe('MidazCreateOrganizationRepository', () => {
-  const baseUrl = process.env.MIDAZ_BASE_PATH + '/organizations'
   let repository: MidazCreateOrganizationRepository
-  let mockHttpFetch = jest.fn()
 
   beforeEach(() => {
     repository = new MidazCreateOrganizationRepository()
-  })
-
-  afterEach(() => {
     jest.clearAllMocks()
   })
 
   it('should create an organization successfully', async () => {
     const organizationData: OrganizationEntity = {
-      id: '123',
-      legalName: 'Org 1',
+      id: '1',
+      legalName: 'Test Org',
       legalDocument: '123456789',
+      doingBusinessAs: 'Test Org',
+
+      parentOrganizationId: '2',
       address: {
-        line1: 'Street',
-        neighborhood: 'Neighborhood',
-        zipCode: '123456',
-        city: 'City',
-        state: 'State',
-        country: 'Country'
+        line1: 'street',
+        line2: 'city',
+        neighborhood: 'neighborhood',
+        city: 'city',
+        state: 'state',
+        country: 'country',
+        zipCode: 'zipCode'
       },
       status: {
         code: 'active',
-        description: 'Active'
-      }
+        description: 'active'
+      },
+      metadata: {
+        key: 'value'
+      },
+      createdAt: new Date(),
+      updatedAt: new Date()
     }
-    const mockResponse = {
-      ok: true,
-      json: jest.fn().mockResolvedValue(organizationData)
-    }
+    const response: OrganizationEntity = { ...organizationData }
 
-    mockHttpFetch.mockResolvedValue(mockResponse)
+    ;(httpMidazAuthFetch as jest.Mock).mockResolvedValueOnce(response)
 
     const result = await repository.create(organizationData)
 
-    expect(mockHttpFetch).toHaveBeenCalledWith({
-      url: baseUrl,
-      method: 'POST',
+    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+      url: process.env.MIDAZ_BASE_PATH + '/organizations',
+      method: HTTP_METHODS.POST,
       body: JSON.stringify(organizationData)
     })
-    expect(result).toEqual(organizationData)
+    expect(result).toEqual(response)
   })
 
-  it('should throw an error if the response is not ok', async () => {
+  it('should handle errors when creating an organization', async () => {
     const organizationData: OrganizationEntity = {
-      id: '123',
-      legalName: 'Org 1',
+      id: '1',
+      legalName: 'Test Org',
       legalDocument: '123456789',
+      doingBusinessAs: 'Test Org',
+
+      parentOrganizationId: '2',
       address: {
-        line1: 'Street',
-        neighborhood: 'Neighborhood',
-        zipCode: '123456',
-        city: 'City',
-        state: 'State',
-        country: 'Country'
+        line1: 'street',
+        line2: 'city',
+        neighborhood: 'neighborhood',
+        city: 'city',
+        state: 'state',
+        country: 'country',
+        zipCode: 'zipCode'
       },
       status: {
         code: 'active',
-        description: 'Active'
-      }
+        description: 'active'
+      },
+      metadata: {
+        key: 'value'
+      },
+      createdAt: new Date(),
+      updatedAt: new Date()
     }
-    const mockError = new Error('Test Error')
-    const mockResponse = {
-      ok: false,
-      json: jest.fn().mockResolvedValue({ error: 'error' })
-    }
+    const error = new Error('Error occurred')
 
-    ;(mockHttpFetch as jest.Mock)
-      .mockResolvedValue(mockResponse)(handleMidazError as jest.Mock)
-      .mockResolvedValue(mockError)
+    ;(httpMidazAuthFetch as jest.Mock).mockRejectedValueOnce(error)
 
-    await expect(repository.create(organizationData)).rejects.toThrow(mockError)
+    await expect(repository.create(organizationData)).rejects.toThrow(
+      'Error occurred'
+    )
 
-    expect(mockHttpFetch).toHaveBeenCalledWith({
-      url: baseUrl,
-      method: 'POST',
+    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+      url: process.env.MIDAZ_BASE_PATH + '/organizations',
+      method: HTTP_METHODS.POST,
       body: JSON.stringify(organizationData)
     })
-    expect(handleMidazError).toHaveBeenCalledWith({ error: 'error' })
   })
 })

@@ -1,8 +1,6 @@
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { FetchAllAssetsRepository } from '@/core/domain/repositories/assets/fetch-all-assets-repository'
-import { handleMidazError } from '../../utils/midaz-error-handler'
-import { url } from 'inspector'
 import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 export class MidazFetchAllAssetsRepository implements FetchAllAssetsRepository {

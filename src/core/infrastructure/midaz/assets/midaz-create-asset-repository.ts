@@ -1,7 +1,6 @@
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { CreateAssetRepository } from '@/core/domain/repositories/assets/create-asset-repository'
 import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
-import { handleMidazError } from '../../utils/midaz-error-handler'
 
 export class MidazCreateAssetRepository implements CreateAssetRepository {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string

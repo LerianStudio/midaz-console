@@ -1,79 +1,61 @@
 import { MidazFetchAssetByIdRepository } from './midaz-fetch-asset-by-id-repository'
-import { handleMidazError } from '../../utils/midaz-error-handler'
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
+import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
-jest.mock('../../utils/midaz-error-handler')
+jest.mock('../../utils/http-fetch-utils', () => ({
+  httpMidazAuthFetch: jest.fn(),
+  HTTP_METHODS: {
+    GET: 'GET'
+  }
+}))
 
 describe('MidazFetchAssetByIdRepository', () => {
-  const originalFetch = global.fetch
-  const baseUrl = 'http://example.com'
   let repository: MidazFetchAssetByIdRepository
-  process.env.MIDAZ_BASE_PATH = baseUrl
-
-  const organizationId = 'org123'
-  const ledgerId = 'ledger123'
-  const assetId = 'asset123'
-  const assetUrl = `${baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`
 
   beforeEach(() => {
     repository = new MidazFetchAssetByIdRepository()
+    jest.clearAllMocks()
   })
 
-  afterEach(() => {
-    global.fetch = originalFetch
-    jest.resetAllMocks()
-  })
-
-  it('should fetch asset by id successfully', async () => {
-    const mockAsset: AssetEntity = {
-      id: assetId,
-      organizationId: organizationId,
-      ledgerId: ledgerId,
+  it('should fetch an asset by id successfully', async () => {
+    const organizationId = '1'
+    const ledgerId = '1'
+    const assetId = '1'
+    const response: AssetEntity = {
+      id: 'asset123',
       name: 'Asset Name',
       type: 'Asset Type',
       code: 'Asset Code',
       status: { code: 'active', description: 'Active' },
-      metadata: { key: 'value' },
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      deletedAt: null
+      metadata: { key: 'value' }
     }
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: true,
-      json: jest.fn().mockResolvedValue(mockAsset)
-    })
+
+    ;(httpMidazAuthFetch as jest.Mock).mockResolvedValueOnce(response)
 
     const result = await repository.fetchById(organizationId, ledgerId, assetId)
 
-    expect(global.fetch).toHaveBeenCalledWith(assetUrl, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
+    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+      url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`,
+      method: HTTP_METHODS.GET
     })
-    expect(result).toEqual(mockAsset)
+    expect(result).toEqual(response)
   })
 
-  it('should handle error when fetch fails', async () => {
-    const mockErrorResponse = { message: 'Error occurred' }
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: false,
-      json: jest.fn().mockResolvedValue(mockErrorResponse)
-    })
-    ;(handleMidazError as jest.Mock).mockRejectedValue(
-      new Error('Handled Error')
-    )
+  it('should handle errors when fetching an asset by id', async () => {
+    const organizationId = '1'
+    const ledgerId = '1'
+    const assetId = '1'
+    const error = new Error('Error occurred')
+
+    ;(httpMidazAuthFetch as jest.Mock).mockRejectedValueOnce(error)
 
     await expect(
       repository.fetchById(organizationId, ledgerId, assetId)
-    ).rejects.toThrow('Handled Error')
+    ).rejects.toThrow('Error occurred')
 
-    expect(global.fetch).toHaveBeenCalledWith(assetUrl, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
+    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+      url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`,
+      method: HTTP_METHODS.GET
     })
-    expect(handleMidazError).toHaveBeenCalledWith(mockErrorResponse)
   })
 })

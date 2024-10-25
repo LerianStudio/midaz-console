@@ -1,27 +1,29 @@
-import { handleMidazError } from '../../utils/midaz-error-handler'
 import { MidazFetchAllLedgersRepository } from './midaz-fetch-all-ledgers-repository'
+import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
+import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
+import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
-jest.mock('../../utils/midaz-error-handler')
+jest.mock('../../utils/http-fetch-utils', () => ({
+  httpMidazAuthFetch: jest.fn(),
+  HTTP_METHODS: {
+    GET: 'GET'
+  }
+}))
 
 describe('MidazFetchAllLedgersRepository', () => {
-  const baseUrl = 'http://example.com'
   let repository: MidazFetchAllLedgersRepository
 
-  beforeAll(() => {
-    process.env.MIDAZ_BASE_PATH = baseUrl
+  beforeEach(() => {
     repository = new MidazFetchAllLedgersRepository()
-  })
-
-  afterEach(() => {
     jest.clearAllMocks()
   })
 
   it('should fetch all ledgers successfully', async () => {
-    const organizationId = 'org123'
+    const organizationId = '1'
     const limit = 10
     const page = 1
-    const mockResponse = {
-      data: [
+    const response: PaginationEntity<LedgerEntity> = {
+      items: [
         {
           id: 'ledger123',
           organizationId: 'org123',
@@ -40,50 +42,33 @@ describe('MidazFetchAllLedgersRepository', () => {
       limit,
       page
     }
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: true,
-      json: jest.fn().mockResolvedValue(mockResponse)
-    })
+
+    ;(httpMidazAuthFetch as jest.Mock).mockResolvedValueOnce(response)
 
     const result = await repository.fetchAll(organizationId, limit, page)
 
-    expect(global.fetch).toHaveBeenCalledWith(
-      `${baseUrl}/organizations/${organizationId}/ledgers?limit=${limit}&page=${page}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    )
-    expect(result).toEqual(mockResponse)
+    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+      url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers?limit=${limit}&page=${page}`,
+      method: HTTP_METHODS.GET
+    })
+    expect(result).toEqual(response)
   })
 
-  it('should handle errors when fetching ledgers', async () => {
-    const organizationId = 'org123'
+  it('should handle errors when fetching all ledgers', async () => {
+    const organizationId = '1'
     const limit = 10
     const page = 1
-    const mockErrorResponse = { message: 'Error occurred' }
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: false,
-      json: jest.fn().mockResolvedValue(mockErrorResponse)
-    })
-    const mockHandleMidazError = handleMidazError as jest.Mock
-    mockHandleMidazError.mockRejectedValue(new Error('Handled error'))
+    const error = new Error('Error occurred')
+
+    ;(httpMidazAuthFetch as jest.Mock).mockRejectedValueOnce(error)
 
     await expect(
       repository.fetchAll(organizationId, limit, page)
-    ).rejects.toThrow('Handled error')
+    ).rejects.toThrow('Error occurred')
 
-    expect(global.fetch).toHaveBeenCalledWith(
-      `${baseUrl}/organizations/${organizationId}/ledgers?limit=${limit}&page=${page}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    )
-    expect(mockHandleMidazError).toHaveBeenCalledWith(mockErrorResponse)
+    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+      url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers?limit=${limit}&page=${page}`,
+      method: HTTP_METHODS.GET
+    })
   })
 })
