@@ -60,8 +60,12 @@ export const nextAuthCasdoorOptions: NextAuthOptions = {
             password
           }
 
+          console.log('loginEntity', loginEntity)
+
           const authLoginResponse: AuthSessionDto =
             await authLoginUseCase.execute(loginEntity)
+
+          console.log('authLoginResponse', authLoginResponse)
 
           return authLoginResponse
         } catch (error: any) {

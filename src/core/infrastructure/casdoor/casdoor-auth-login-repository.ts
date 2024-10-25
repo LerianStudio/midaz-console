@@ -13,6 +13,10 @@ export class CasdoorAuthLoginRepository implements AuthLoginRepository {
     .NEXTAUTH_CASDOOR_AUTH_URL as string
 
   async login(loginData: AuthEntity): Promise<AuthSessionEntity> {
+    console.log('Casdoor login repository')
+    console.log('casdoorBaseUrl', this.casdoorBaseUrl)
+    console.log('loginData', loginData)
+
     const url = `${this.casdoorBaseUrl}/api/login/oauth/access_token`
     const response = await fetch(url, {
       method: 'POST',

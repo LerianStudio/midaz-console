@@ -14,8 +14,11 @@ export function portfolioEntityToDto(
     ledgerId: portfolio.ledgerId!,
     organizationId: portfolio.organizationId!,
     name: portfolio.name,
-    status: portfolio.status,
-    metadata: portfolio.metadata,
+    status: {
+      code: portfolio.status.code,
+      description: portfolio.status.description ?? ''
+    },
+    metadata: portfolio.metadata ?? {},
     createdAt: portfolio.createdAt!,
     updatedAt: portfolio.updatedAt!,
     deletedAt: portfolio.deletedAt ?? null
