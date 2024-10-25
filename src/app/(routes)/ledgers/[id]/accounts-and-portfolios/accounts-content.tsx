@@ -14,7 +14,7 @@ import {
   getFilteredRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import {
@@ -39,6 +39,31 @@ import ConfirmationDialog from '@/components/confirmation-dialog'
 import { AccountSheet } from './accounts-sheet'
 import { useAllPortfoliosAccounts, useListAccounts } from '@/client/accounts'
 import { Skeleton } from '@/components/ui/skeleton'
+import { AccountsDataTable } from './accounts-data-table'
+
+// interface AccountEntity {
+//   id?: string
+//   ledgerId?: string
+//   organizationId?: string
+//   parentAccountId?: string | null
+//   productId?: string | null
+//   entityId?: string | null
+//   name: string
+//   alias: string
+//   type: string
+//   assetCode: string
+//   status: {
+//     code: string
+//     description: string
+//   }
+//   metadata: Record<string, any>
+//   createdAt?: Date
+//   updatedAt?: Date
+//   deletedAt?: Date | null
+// }
+// interface AccountsContentProps {
+//   accounts: { items: AccountEntity[] }
+// }
 
 export const AccountsContent = () => {
   const intl = useIntl()
@@ -59,10 +84,19 @@ export const AccountsContent = () => {
   } = useAllPortfoliosAccounts({
     organizationId: currentOrganization.id!,
     ledgerId: ledgerId
-    // portfolioId: '7698db1d-ce8b-453d-a673-3c4b0e8f4241'
   })
 
-  console.log(' accountsData', accountsData)
+  const accountsList = useMemo(() => {
+    return {
+      items:
+        accountsData?.items.flatMap((portfolio) =>
+          portfolio.accounts.map((account) => ({
+            ...account,
+            portfolioName: portfolio.name
+          }))
+        ) || []
+    }
+  }, [accountsData])
 
   const { mutate: deletePortfolio, isPending: deletePending } =
     useDeletePortfolio({
@@ -84,11 +118,14 @@ export const AccountsContent = () => {
     useCreateUpdateSheet<PortfolioResponseDto>()
 
   const table = useReactTable({
-    data: data?.items!,
+    data: accountsList?.items!,
     columns: [
-      {
-        accessorKey: 'name'
-      }
+      { accessorKey: 'id' },
+      { accessorKey: 'name' },
+      { accessorKey: 'assets' },
+      { accessorKey: 'metadata' },
+      { accessorKey: 'portfolio' },
+      { accessorKey: 'actions' }
     ],
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -97,6 +134,34 @@ export const AccountsContent = () => {
       columnFilters
     }
   })
+
+  // const table = useReactTable({
+  //   data: accountsData?.items?.flatMap((portfolio) => portfolio.accounts) || [],
+  //   columns: [
+  //     {
+  //       accessorKey: 'id',
+  //       header: 'ID'
+  //     },
+  //     {
+  //       accessorKey: 'name',
+  //       header: 'Name'
+  //     },
+  //     {
+  //       accessorKey: 'type',
+  //       header: 'Type'
+  //     },
+  //     {
+  //       accessorKey: 'status.code',
+  //       header: 'Status'
+  //     }
+  //   ],
+  //   getCoreRowModel: getCoreRowModel(),
+  //   getFilteredRowModel: getFilteredRowModel(),
+  //   onColumnFiltersChange: setColumnFilters,
+  //   state: {
+  //     columnFilters
+  //   }
+  // })
 
   const getLoadingSkeleton = () => (
     <React.Fragment>
@@ -172,125 +237,15 @@ export const AccountsContent = () => {
         </EntityBox.Actions>
       </EntityBox.Root>
 
-      {!isNil(data?.items) && data?.items.length > 0 && (
-        <TableContainer>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>
-                  {intl.formatMessage({
-                    id: 'common.id',
-                    defaultMessage: 'ID'
-                  })}
-                </TableHead>
-                <TableHead>
-                  {intl.formatMessage({
-                    id: 'common.name',
-                    defaultMessage: 'Name'
-                  })}
-                </TableHead>
-                <TableHead>
-                  {intl.formatMessage({
-                    id: 'common.metadata',
-                    defaultMessage: 'Metadata'
-                  })}
-                </TableHead>
-                <TableHead>
-                  {intl.formatMessage({
-                    id: 'common.status',
-                    defaultMessage: 'Status'
-                  })}
-                </TableHead>
-                <TableHead className="w-0">
-                  {intl.formatMessage({
-                    id: 'common.actions',
-                    defaultMessage: 'Actions'
-                  })}
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows.map((portfolio) => (
-                <TableRow key={portfolio.id}>
-                  <TableCell>{portfolio.original.id}</TableCell>
-                  <TableCell>{portfolio.original.name}</TableCell>
-                  <TableCell>
-                    {intl.formatMessage(
-                      {
-                        id: 'common.table.metadata',
-                        defaultMessage:
-                          '{number, plural, =0 {-} one {# record} other {# records}}'
-                      },
-                      {
-                        number: Object.entries(
-                          portfolio.original.metadata || []
-                        ).length
-                      }
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <Badge
-                      variant={
-                        portfolio?.original?.status?.code === 'ACTIVE'
-                          ? 'active'
-                          : 'inactive'
-                      }
-                    >
-                      {capitalizeFirstLetter(portfolio.original.status.code)}
-                    </Badge>
-                  </TableCell>
-
-                  <TableCell className="w-0">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="secondary">
-                          <MoreVertical size={16} onClick={() => {}} />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem
-                          onClick={() =>
-                            handleEdit({
-                              ...portfolio.original,
-                              status: {
-                                ...portfolio.original.status,
-                                description:
-                                  portfolio.original.status.description ?? ''
-                              }
-                            } as PortfolioResponseDto)
-                          }
-                        >
-                          {intl.formatMessage({
-                            id: `common.edit`,
-                            defaultMessage: 'Edit'
-                          })}
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                          {intl.formatMessage({
-                            id: `common.inactivate`,
-                            defaultMessage: 'Inactivate'
-                          })}
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          onClick={() => {
-                            handleDialogOpen(portfolio?.original?.id!)
-                          }}
-                        >
-                          {intl.formatMessage({
-                            id: `common.delete`,
-                            defaultMessage: 'Delete'
-                          })}
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+      {accountsList && (
+        <AccountsDataTable
+          accounts={accountsList as { items: any[] }}
+          isLoading={isAccountsLoading}
+          table={table}
+          handleDialogOpen={handleDialogOpen}
+          refetch={refetch}
+          isTableExpanded={isTableExpanded}
+        />
       )}
     </>
   )
