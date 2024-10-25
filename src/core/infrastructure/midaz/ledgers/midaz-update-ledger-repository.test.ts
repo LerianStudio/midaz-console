@@ -1,27 +1,29 @@
 import { MidazUpdateLedgerRepository } from './midaz-update-ledger-repository'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
-import { handleMidazError } from '../../utils/midaz-error-handler'
+import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
-jest.mock('../../utils/midaz-error-handler')
+jest.mock('../../utils/http-fetch-utils', () => ({
+  httpMidazAuthFetch: jest.fn(),
+  HTTP_METHODS: {
+    PATCH: 'PATCH'
+  }
+}))
 
 describe('MidazUpdateLedgerRepository', () => {
-  const baseUrl = 'http://example.com'
   let repository: MidazUpdateLedgerRepository
 
-  beforeAll(() => {
-    process.env.MIDAZ_BASE_PATH = baseUrl
+  beforeEach(() => {
     repository = new MidazUpdateLedgerRepository()
-  })
-
-  afterEach(() => {
     jest.clearAllMocks()
   })
 
-  it('should update ledger successfully', async () => {
-    const organizationId = 'org123'
-    const ledgerId = 'ledger123'
-    const ledger: Partial<LedgerEntity> = { name: 'Updated Ledger' }
-    const mockResponse = {
+  it('should update a ledger successfully', async () => {
+    const organizationId = '1'
+    const ledgerId = '1'
+    const ledgerData: Partial<LedgerEntity> = {
+      name: 'Updated Ledger'
+    }
+    const response: LedgerEntity = {
       id: ledgerId,
       name: 'Updated Ledger',
       status: { code: 'active', description: 'Active' },
@@ -31,54 +33,36 @@ describe('MidazUpdateLedgerRepository', () => {
       deletedAt: null
     }
 
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: true,
-      json: jest.fn().mockResolvedValue(mockResponse)
+    ;(httpMidazAuthFetch as jest.Mock).mockResolvedValueOnce(response)
+
+    const result = await repository.update(organizationId, ledgerId, ledgerData)
+
+    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+      url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}`,
+      method: HTTP_METHODS.PATCH,
+      body: JSON.stringify(ledgerData)
     })
-
-    const result = await repository.update(organizationId, ledgerId, ledger)
-
-    expect(global.fetch).toHaveBeenCalledWith(
-      `${baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}`,
-      {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(ledger)
-      }
-    )
-    expect(result).toEqual(mockResponse)
+    expect(result).toEqual(response)
   })
 
-  it('should handle error response', async () => {
-    const organizationId = 'org123'
-    const ledgerId = 'ledger123'
-    const ledger: Partial<LedgerEntity> = { name: 'Updated Ledger' }
-    const mockErrorResponse = { message: 'Error occurred' }
+  it('should handle errors when updating a ledger', async () => {
+    const organizationId = '1'
+    const ledgerId = '1'
+    const ledgerData: Partial<LedgerEntity> = {
+      name: 'Updated Ledger'
+    }
+    const error = new Error('Error occurred')
 
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: false,
-      json: jest.fn().mockResolvedValue(mockErrorResponse)
-    })
-    ;(handleMidazError as jest.Mock).mockResolvedValue(
-      new Error('Handled Error')
-    )
+    ;(httpMidazAuthFetch as jest.Mock).mockRejectedValueOnce(error)
 
     await expect(
-      repository.update(organizationId, ledgerId, ledger)
-    ).rejects.toThrow('Handled Error')
+      repository.update(organizationId, ledgerId, ledgerData)
+    ).rejects.toThrow('Error occurred')
 
-    expect(global.fetch).toHaveBeenCalledWith(
-      `${baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}`,
-      {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(ledger)
-      }
-    )
-    expect(handleMidazError).toHaveBeenCalledWith(mockErrorResponse)
+    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+      url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}`,
+      method: HTTP_METHODS.PATCH,
+      body: JSON.stringify(ledgerData)
+    })
   })
 })

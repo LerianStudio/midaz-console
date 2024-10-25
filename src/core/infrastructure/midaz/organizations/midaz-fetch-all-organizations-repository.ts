@@ -1,9 +1,6 @@
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { FetchAllOrganizationsRepository } from '@/core/domain/repositories/organizations/fetch-all-organizations-repository'
-import { handleMidazError } from '../../utils/midaz-error-handler'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
-import { getServerSession } from 'next-auth'
-import { nextAuthCasdoorOptions } from '../../next-auth/casdoor/next-auth-casdoor-provider'
 import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
 
 export class MidazFetchAllOrganizationsRepository

@@ -1,5 +1,5 @@
-import { MidazFetchAllAssetsRepository } from './midaz-fetch-all-assets-repository'
-import { AssetEntity } from '@/core/domain/entities/asset-entity'
+import { MidazFetchAllProductsRepository } from './midaz-fetch-all-products-repository'
+import { ProductEntity } from '@/core/domain/entities/product-entity'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
@@ -10,36 +10,32 @@ jest.mock('../../utils/http-fetch-utils', () => ({
   }
 }))
 
-describe('MidazFetchAllAssetsRepository', () => {
-  let repository: MidazFetchAllAssetsRepository
+describe('MidazFetchAllProductsRepository', () => {
+  let repository: MidazFetchAllProductsRepository
 
   beforeEach(() => {
-    repository = new MidazFetchAllAssetsRepository()
+    repository = new MidazFetchAllProductsRepository()
     jest.clearAllMocks()
   })
 
-  it('should fetch all assets successfully', async () => {
+  it('should fetch all products successfully', async () => {
     const organizationId = '1'
     const ledgerId = '1'
     const limit = 10
     const page = 1
-    const response: PaginationEntity<AssetEntity> = {
+    const response: PaginationEntity<ProductEntity> = {
       items: [
         {
-          id: 'asset123',
-          name: 'Asset Name 1',
-          type: 'Asset Type',
-          code: 'Asset Code',
-          status: { code: 'active', description: 'Active' },
-          metadata: { key: 'value' }
+          id: '1',
+          name: 'Test Product',
+          status: { code: 'ACTIVE', description: '' },
+          metadata: {}
         },
         {
-          id: 'asset1234',
-          name: 'Asset Name 2',
-          type: 'Asset Type',
-          code: 'Asset Code',
-          status: { code: 'active', description: 'Active' },
-          metadata: { key: 'value' }
+          id: '2',
+          name: 'Test Product 2',
+          status: { code: 'ACTIVE', description: '' },
+          metadata: {}
         }
       ],
       limit,
@@ -56,13 +52,13 @@ describe('MidazFetchAllAssetsRepository', () => {
     )
 
     expect(httpMidazAuthFetch).toHaveBeenCalledWith({
-      url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/assets?limit=${limit}&page=${page}&type=&code=`,
+      url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/products?limit=${limit}&page=${page}`,
       method: HTTP_METHODS.GET
     })
     expect(result).toEqual(response)
   })
 
-  it('should handle errors when fetching all assets', async () => {
+  it('should handle errors when fetching all products', async () => {
     const organizationId = '1'
     const ledgerId = '1'
     const limit = 10
@@ -76,7 +72,7 @@ describe('MidazFetchAllAssetsRepository', () => {
     ).rejects.toThrow('Error occurred')
 
     expect(httpMidazAuthFetch).toHaveBeenCalledWith({
-      url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/assets?limit=${limit}&page=${page}&type=&code=`,
+      url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/products?limit=${limit}&page=${page}`,
       method: HTTP_METHODS.GET
     })
   })
