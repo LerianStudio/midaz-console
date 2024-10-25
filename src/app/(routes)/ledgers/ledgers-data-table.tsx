@@ -211,7 +211,6 @@ export const LedgersDataTable: React.FC<LedgersTableProps> = ({
           <Button
             variant="outline"
             onClick={() => {
-              console.log('handleCreate called')
               handleCreate()
             }}
             icon={<Plus />}

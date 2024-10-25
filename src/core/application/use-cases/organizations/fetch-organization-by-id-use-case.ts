@@ -12,12 +12,8 @@ export class FetchOrganizationByIdUseCase implements FetchOrganizationById {
   ) {}
 
   async execute(organizationId: string): Promise<OrganizationResponseDto> {
-    console.log('FetchOrganizationByIdUseCase', organizationId)
-
     const organizationEntity =
       await this.fetchOrganizationByIdRepository.fetchById(organizationId)
-
-    console.log('FetchOrganizationByIdUseCase', organizationEntity)
 
     const organizationResponse: OrganizationResponseDto =
       organizationEntityToDto(organizationEntity)
