@@ -24,8 +24,6 @@ export async function POST(
     const organizationId = params.id
     const ledgerId = params.ledgerId
 
-    console.log('Creating asset', body)
-
     const assetCreated = await createAssetUseCase.execute(
       organizationId,
       ledgerId,

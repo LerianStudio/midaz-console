@@ -15,8 +15,11 @@ export function ledgerEntityToDto(entity: LedgerEntity): LedgerResponseDto {
     id: entity.id!,
     organizationId: entity.organizationId!,
     name: entity.name,
-    status: entity.status,
-    metadata: entity.metadata,
+    status: {
+      code: entity.status.code,
+      description: entity.status.description ?? ''
+    },
+    metadata: entity.metadata ?? {},
     createdAt: entity.createdAt!,
     updatedAt: entity.updatedAt!,
     deletedAt: entity.deletedAt!
