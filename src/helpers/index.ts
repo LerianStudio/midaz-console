@@ -1,4 +1,4 @@
-export const truncateString = (str: any, num: any) => {
+export const truncateString = (str: string, num: number) => {
   if (str.length <= num) {
     return str
   }

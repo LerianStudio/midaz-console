@@ -1,11 +1,43 @@
 import { AssetResponseDto } from '@/core/application/dto/asset-response-dto'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
-import { getFetcher } from '@/lib/fetcher'
-import { UseMutationOptions, useQuery } from '@tanstack/react-query'
+import {
+  deleteFetcher,
+  getFetcher,
+  patchFetcher,
+  postFetcher
+} from '@/lib/fetcher'
+import {
+  useMutation,
+  UseMutationOptions,
+  useQuery
+} from '@tanstack/react-query'
 
-type UseListAssetsProps = UseMutationOptions & {
+type UseCreateAssetProps = UseMutationOptions & {
   organizationId: string
   ledgerId: string
+}
+
+type UseListAssetsProps = UseCreateAssetProps
+
+type UseUpdateAssetProps = UseMutationOptions & {
+  organizationId: string
+  ledgerId: string
+  assetId: string
+}
+
+type UseDeleteAssetProps = UseCreateAssetProps
+
+const useCreateAsset = ({
+  organizationId,
+  ledgerId,
+  ...options
+}: UseCreateAssetProps) => {
+  return useMutation<any, any, any>({
+    mutationFn: postFetcher(
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/assets`
+    ),
+    ...options
+  })
 }
 
 const useListAssets = ({
@@ -22,4 +54,33 @@ const useListAssets = ({
   })
 }
 
-export { useListAssets }
+const useUpdateAsset = ({
+  organizationId,
+  ledgerId,
+  assetId,
+  ...options
+}: UseUpdateAssetProps) => {
+  return useMutation<any, any, any>({
+    mutationKey: [organizationId, ledgerId, assetId],
+    mutationFn: patchFetcher(
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`
+    ),
+    ...options
+  })
+}
+
+const useDeleteAsset = ({
+  organizationId,
+  ledgerId,
+  ...options
+}: UseDeleteAssetProps) => {
+  return useMutation<any, any, any>({
+    mutationKey: [organizationId, ledgerId],
+    mutationFn: deleteFetcher(
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/assets`
+    ),
+    ...options
+  })
+}
+
+export { useCreateAsset, useListAssets, useUpdateAsset, useDeleteAsset }

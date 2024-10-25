@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Plus, Search } from 'lucide-react'
 import { EntityBox } from '@/components/entity-box'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
-import { useListAssets } from '@/client/assets-client'
+import { useDeleteAsset, useListAssets } from '@/client/assets-client'
 import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
 import { AssetsDataTable } from './assets-data-table'
 import {
@@ -17,6 +17,8 @@ import { AssetsSkeleton } from './assets-skeleton'
 import { InputWithIcon } from '@/components/ui/input-with-icon'
 import { AssetsSheet } from './assets-sheet'
 import { useParams } from 'next/navigation'
+import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
+import ConfirmationDialog from '@/components/confirmation-dialog'
 
 type AssetsTabContentProps = {
   data: ILedgerType
@@ -28,7 +30,7 @@ export const AssetsTabContent = ({ data }: AssetsTabContentProps) => {
   const { currentOrganization } = useOrganization()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
 
-  const { handleCreate, sheetProps } = useCreateUpdateSheet<any>()
+  const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>()
 
   const {
     data: assets,
@@ -38,6 +40,21 @@ export const AssetsTabContent = ({ data }: AssetsTabContentProps) => {
     organizationId: currentOrganization.id!,
     ledgerId: data?.id!
   })
+
+  const { mutate: deleteMutate, isPending: deletePending } = useDeleteAsset({
+    organizationId: currentOrganization.id!,
+    ledgerId,
+    onSuccess: () => {
+      handleDialogClose()
+      refetch()
+    }
+  })
+
+  const { handleDialogOpen, dialogProps, handleDialogClose } = useConfirmDialog(
+    {
+      onConfirm: (id: string) => deleteMutate({ id })
+    }
+  )
 
   const table = useReactTable({
     data: assets?.items!,
@@ -56,8 +73,6 @@ export const AssetsTabContent = ({ data }: AssetsTabContentProps) => {
     }
   })
 
-  const handleSubmit = async () => {}
-
   return (
     <div>
       <EntityBox.Root>
@@ -72,7 +87,7 @@ export const AssetsTabContent = ({ data }: AssetsTabContentProps) => {
               'Currency or assets of any nature traded on this Ledger.'
           })}
         />
-        <EntityBox.Actions>
+        <EntityBox.Actions className="gap-4">
           {!assets || assets.items.length === 0 ? (
             <Button variant="outline" onClick={handleCreate} icon={<Plus />}>
               {intl.formatMessage({
@@ -98,9 +113,8 @@ export const AssetsTabContent = ({ data }: AssetsTabContentProps) => {
               />
               <Button
                 variant="secondary"
-                onClick={() => {
-                  console.log('clicked')
-                }}
+                onClick={handleCreate}
+                className="h-9 w-10 p-2"
               >
                 <Plus />
               </Button>
@@ -118,10 +132,25 @@ export const AssetsTabContent = ({ data }: AssetsTabContentProps) => {
           assets={assets}
           isLoading={isLoading}
           table={table}
-          handleDialogOpen={() => {}}
+          handleDialogOpen={handleDialogOpen}
+          handleEdit={handleEdit}
           refetch={refetch}
         />
       )}
+
+      <ConfirmationDialog
+        title={intl.formatMessage({
+          id: 'common.confirmDeletion',
+          defaultMessage: 'Confirm Deletion'
+        })}
+        description={intl.formatMessage({
+          id: 'products.asset.description',
+          defaultMessage:
+            'You are about to permanently delete this asset. This action cannot be undone. Do you wish to continue?'
+        })}
+        loading={deletePending}
+        {...dialogProps}
+      />
     </div>
   )
 }

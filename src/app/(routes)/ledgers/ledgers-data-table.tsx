@@ -34,6 +34,7 @@ import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { LedgersSheet } from './ledgers-sheet'
+import { AssetsSheet } from './[id]/assets/assets-sheet'
 
 type LedgersTableProps = {
   ledgers: { items: LedgerEntity[] }
@@ -51,12 +52,14 @@ type LedgerRowProps = {
   ledger: { id: string; original: LedgerEntity }
   handleCopyToClipboard: (value: string, message: string) => void
   handleDialogOpen: (id: string, name: string) => void
+  refetch: () => void
 }
 
 const LedgerRow: React.FC<LedgerRowProps> = ({
   ledger,
   handleCopyToClipboard,
-  handleDialogOpen
+  handleDialogOpen,
+  refetch
 }) => {
   const intl = useIntl()
   const id = ledger.original.id || ''
@@ -65,118 +68,139 @@ const LedgerRow: React.FC<LedgerRowProps> = ({
   const badgeVariant = status.code === 'ACTIVE' ? 'active' : 'inactive'
   const metadataCount = Object.entries(ledger.original.metadata || []).length
   const assetsItems = ledger.original.assets || []
+  const { handleCreate, sheetProps } = useCreateUpdateSheet<any>()
 
   return (
-    <TableRow key={ledger.id}>
-      <TableCell>
-        <TooltipProvider>
-          <Tooltip delayDuration={300}>
-            <TooltipTrigger
-              onClick={() =>
-                handleCopyToClipboard(
-                  id,
-                  intl.formatMessage({
-                    id: 'ledgers.toast.copyId',
-                    defaultMessage: 'The id has been copied to your clipboard.'
-                  })
-                )
-              }
+    <React.Fragment>
+      <TableRow key={ledger.id}>
+        <TableCell>
+          <TooltipProvider>
+            <Tooltip delayDuration={300}>
+              <TooltipTrigger
+                onClick={() =>
+                  handleCopyToClipboard(
+                    id,
+                    intl.formatMessage({
+                      id: 'ledgers.toast.copyId',
+                      defaultMessage:
+                        'The id has been copied to your clipboard.'
+                    })
+                  )
+                }
+              >
+                <p className="text-shadcn-600 underline">{displayId}</p>
+              </TooltipTrigger>
+              <TooltipContent
+                className="border-none bg-shadcn-600"
+                arrowPadding={0}
+              >
+                <p className="text-shadcn-400">{id}</p>
+                <p className="text-center text-white">
+                  {intl.formatMessage({
+                    id: 'ledgers.columnsTable.tooltipCopyText',
+                    defaultMessage: 'Click to copy'
+                  })}
+                </p>
+                <Arrow height={8} width={15} />
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </TableCell>
+        <TableCell>{ledger.original.name}</TableCell>
+        <TableCell>
+          {assetsItems.length > 0 ? (
+            <p>
+              {truncateString(
+                assetsItems.map((asset) => asset.code).join(', '),
+                13
+              )}
+            </p>
+          ) : (
+            <Button
+              variant="link"
+              className="h-fit px-0 py-0"
+              onClick={handleCreate}
             >
-              <p className="text-shadcn-600 underline">{displayId}</p>
-            </TooltipTrigger>
-            <TooltipContent
-              className="border-none bg-shadcn-600"
-              arrowPadding={0}
-            >
-              <p className="text-shadcn-400">{id}</p>
-              <p className="text-center text-white">
+              <p className="text-shadcn-600 underline">
                 {intl.formatMessage({
-                  id: 'ledgers.columnsTable.tooltipCopyText',
-                  defaultMessage: 'Click to copy'
+                  id: 'common.add',
+                  defaultMessage: 'Add'
                 })}
               </p>
-              <Arrow height={8} width={15} />
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </TableCell>
-      <TableCell>{ledger.original.name}</TableCell>
-      <TableCell>
-        {assetsItems.length > 0 ? (
-          <p>{assetsItems.map((asset: any) => asset.code).join(', ')}</p>
-        ) : (
-          <p className="text-shadcn-600 underline">
-            {intl.formatMessage({
-              id: 'common.add',
-              defaultMessage: 'Add'
-            })}
-          </p>
-        )}
-      </TableCell>
-      <TableCell>
-        {metadataCount === 0 ? (
-          <Minus size={20} />
-        ) : (
-          intl.formatMessage(
-            {
-              id: 'common.table.metadata',
-              defaultMessage:
-                '{number, plural, =0 {-} one {# record} other {# records}}'
-            },
-            {
-              number: metadataCount
-            }
-          )
-        )}
-      </TableCell>
-      <TableCell>
-        <div className="text-center">
-          <Badge variant={badgeVariant}>
-            {capitalizeFirstLetter(status.code)}
-          </Badge>
-        </div>
-      </TableCell>
-      <TableCell className="w-0">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="secondary" className="h-auto w-max p-2">
-              <MoreVertical size={16} onClick={() => {}} />
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <Link href={`/ledgers/${ledger.original.id}`}>
+          )}
+        </TableCell>
+        <TableCell>
+          {metadataCount === 0 ? (
+            <Minus size={20} />
+          ) : (
+            intl.formatMessage(
+              {
+                id: 'common.table.metadata',
+                defaultMessage:
+                  '{number, plural, =0 {-} one {# record} other {# records}}'
+              },
+              {
+                number: metadataCount
+              }
+            )
+          )}
+        </TableCell>
+        <TableCell>
+          <div className="text-center">
+            <Badge variant={badgeVariant}>
+              {capitalizeFirstLetter(status.code)}
+            </Badge>
+          </div>
+        </TableCell>
+        <TableCell className="w-0">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="secondary" className="h-auto w-max p-2">
+                <MoreVertical size={16} onClick={() => {}} />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <Link href={`/ledgers/${ledger.original.id}`}>
+                <DropdownMenuItem>
+                  {intl.formatMessage({
+                    id: `common.edit`,
+                    defaultMessage: 'Edit'
+                  })}
+                </DropdownMenuItem>
+              </Link>
+              <DropdownMenuSeparator />
               <DropdownMenuItem>
                 {intl.formatMessage({
-                  id: `common.edit`,
-                  defaultMessage: 'Edit'
+                  id: `common.inactivate`,
+                  defaultMessage: 'Inactivate'
                 })}
               </DropdownMenuItem>
-            </Link>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              {intl.formatMessage({
-                id: `common.inactivate`,
-                defaultMessage: 'Inactivate'
-              })}
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() =>
-                handleDialogOpen(
-                  ledger.original.id || '',
-                  ledger.original.name || ''
-                )
-              }
-            >
-              {intl.formatMessage({
-                id: `common.delete`,
-                defaultMessage: 'Delete'
-              })}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </TableCell>
-    </TableRow>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() =>
+                  handleDialogOpen(
+                    ledger.original.id || '',
+                    ledger.original.name || ''
+                  )
+                }
+              >
+                {intl.formatMessage({
+                  id: `common.delete`,
+                  defaultMessage: 'Delete'
+                })}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </TableCell>
+      </TableRow>
+
+      <AssetsSheet
+        onSuccess={refetch}
+        ledgerId={ledger.original.id!}
+        {...sheetProps}
+      />
+    </React.Fragment>
   )
 }
 
@@ -208,13 +232,7 @@ export const LedgersDataTable: React.FC<LedgersTableProps> = ({
             defaultMessage: 'No Ledger found.'
           })}
         >
-          <Button
-            variant="outline"
-            onClick={() => {
-              handleCreate()
-            }}
-            icon={<Plus />}
-          >
+          <Button variant="outline" onClick={handleCreate} icon={<Plus />}>
             {intl.formatMessage({
               id: 'ledgers.emptyResource.createButton',
               defaultMessage: 'New Ledger'
@@ -271,6 +289,7 @@ export const LedgersDataTable: React.FC<LedgersTableProps> = ({
                   ledger={ledger}
                   handleCopyToClipboard={handleCopyToClipboard}
                   handleDialogOpen={handleDialogOpen}
+                  refetch={refetch}
                 />
               ))}
             </TableBody>

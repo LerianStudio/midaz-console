@@ -1,4 +1,3 @@
-import { useCreateProduct, useUpdateProduct } from '@/client/products'
 import { InputField, SelectField } from '@/components/form'
 import { MetadataField } from '@/components/form/metadata-field'
 import { Form } from '@/components/ui/form'
@@ -13,7 +12,6 @@ import {
 } from '@/components/ui/sheet'
 import { Switch } from '@/components/ui/switch'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
-import { product } from '@/schema/product'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DialogProps } from '@radix-ui/react-dialog'
 import React from 'react'
@@ -25,6 +23,7 @@ import { LoadingButton } from '@/components/ui/loading-button'
 import { assets } from '@/schema/assets'
 import { SelectItem } from '@/components/ui/select'
 import { currencyObjects } from '@/utils/currency-codes'
+import { useCreateAsset, useUpdateAsset } from '@/client/assets-client'
 
 export type AssetsSheetProps = DialogProps & {
   ledgerId: string
@@ -33,6 +32,20 @@ export type AssetsSheetProps = DialogProps & {
   onSuccess?: () => void
 }
 
+export const selectItems = [
+  { value: 'crypto', label: 'Crypto' },
+  { value: 'commodity', label: 'Commodity' },
+  { value: 'others', label: 'Others' },
+  { value: 'currency', label: 'Currency' }
+]
+
+export const selectItemsPT = [
+  { value: 'crypto', label: 'Criptomoeda' },
+  { value: 'commodity', label: 'Mercadoria' },
+  { value: 'others', label: 'Outros' },
+  { value: 'currency', label: 'Moeda' }
+]
+
 const defaultValues = {
   type: '',
   name: '',
@@ -40,14 +53,19 @@ const defaultValues = {
   metadata: {}
 }
 
-const FormSchema = z.object({
+const createFormSchema = z.object({
   type: assets.type,
   name: assets.name,
   code: assets.code,
   metadata: assets.metadata
 })
 
-type FormData = z.infer<typeof FormSchema>
+const editFormSchema = z.object({
+  type: assets.type.optional(),
+  name: assets.name,
+  code: assets.code.optional(),
+  metadata: assets.metadata
+})
 
 export const AssetsSheet = ({
   ledgerId,
@@ -58,9 +76,14 @@ export const AssetsSheet = ({
   ...others
 }: AssetsSheetProps) => {
   const intl = useIntl()
+  const currentLanguage = intl.locale === 'pt' ? selectItemsPT : selectItems
   const { currentOrganization } = useOrganization()
 
-  const { mutate: createProduct, isPending: createPending } = useCreateProduct({
+  const FormSchema = mode === 'create' ? createFormSchema : editFormSchema
+
+  type FormValues = z.infer<typeof FormSchema>
+
+  const { mutate: createAsset, isPending: createPending } = useCreateAsset({
     organizationId: currentOrganization.id!,
     ledgerId,
     onSuccess: () => {
@@ -69,10 +92,10 @@ export const AssetsSheet = ({
     }
   })
 
-  const { mutate: updateProduct, isPending: updatePending } = useUpdateProduct({
+  const { mutate: updateAsset, isPending: updatePending } = useUpdateAsset({
     organizationId: currentOrganization!.id!,
     ledgerId,
-    productId: data?.id!,
+    assetId: data?.id!,
     onSuccess: () => {
       onSuccess?.()
       onOpenChange?.(false)
@@ -81,7 +104,7 @@ export const AssetsSheet = ({
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
-    defaultValues: Object.assign({}, defaultValues, product)
+    defaultValues: Object.assign({}, defaultValues, assets)
   })
 
   const type = useWatch({
@@ -90,14 +113,21 @@ export const AssetsSheet = ({
   })
 
   const [metadataEnabled, setMetadataEnabled] = React.useState(
-    Object.entries(product?.metadata || {}).length > 0
+    Object.entries(assets?.metadata || {}).length > 0
   )
 
-  const handleSubmit = (data: FormData) => {
+  const handleSubmit = (data: FormValues) => {
+    const payload = { ...data }
+
+    if (mode === 'edit') {
+      delete payload.type
+      delete payload.code
+    }
+
     if (mode === 'create') {
-      createProduct(data)
+      createAsset(payload)
     } else if (mode === 'edit') {
-      updateProduct(data)
+      updateAsset(payload)
     }
 
     form.reset(defaultValues)
@@ -110,13 +140,13 @@ export const AssetsSheet = ({
   }, [mode])
 
   React.useEffect(() => {
-    if (!isNil(data)) {
+    if (mode === 'edit' && !isNil(data)) {
       setMetadataEnabled(Object.entries(data.metadata).length > 0)
       form.reset(data, { keepDefaultValues: true })
     } else {
       setMetadataEnabled(false)
     }
-  }, [data])
+  }, [data, mode])
 
   return (
     <Sheet onOpenChange={onOpenChange} {...others}>
@@ -177,17 +207,14 @@ export const AssetsSheet = ({
                 defaultMessage: 'Select'
               })}
               control={form.control}
+              disabled={mode === 'edit'}
               required
             >
-              <SelectItem value="crypto">Crypto</SelectItem>
-              <SelectItem value="commodity">Commodity</SelectItem>
-              <SelectItem value="others">Others</SelectItem>
-              <SelectItem value="currency">Currency</SelectItem>
-              {/* {currencyObjects.map((currency: any) => (
-                <SelectItem key={currency.code} value={currency.code}>
-                  {currency.code}
+              {currentLanguage.map((item) => (
+                <SelectItem key={item.value} value={item.value}>
+                  {item.label}
                 </SelectItem>
-              ))} */}
+              ))}
             </SelectField>
 
             <InputField
@@ -211,6 +238,7 @@ export const AssetsSheet = ({
                   id: 'common.select',
                   defaultMessage: 'Select'
                 })}
+                disabled={mode === 'edit'}
                 control={form.control}
                 required
               >
@@ -228,6 +256,7 @@ export const AssetsSheet = ({
                   defaultMessage: 'Code'
                 })}
                 control={form.control}
+                disabled={mode === 'edit'}
                 required
               />
             )}

@@ -179,6 +179,7 @@
   "organizations.toast.organizationUpdatedFailed": "Failed to update organization id: {organizationId}",
   "organizations.toast.update.success": "Organization updated successfully!",
   "portfolio.create": "Create first portfolio",
+  "products.asset.description": "You are about to permanently delete this asset. This action cannot be undone. Do you wish to continue?",
   "products.delete.description": "You are about to permanently delete this product. This action cannot be undone. Do you wish to continue?",
   "settings.tab.organizations": "Organizations",
   "settings.tab.otherSettings": "Other Settings",

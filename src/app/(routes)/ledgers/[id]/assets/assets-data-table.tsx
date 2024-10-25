@@ -12,14 +12,7 @@ import {
 import { EmptyResource } from '@/components/empty-resource'
 import { Button } from '@/components/ui/button'
 import { Plus, MoreVertical, Minus } from 'lucide-react'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
-} from '@/components/ui/tooltip'
-import { Arrow } from '@radix-ui/react-tooltip'
-import { capitalizeFirstLetter, truncateString } from '@/helpers'
+import { capitalizeFirstLetter } from '@/helpers'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,13 +23,8 @@ import {
 import { isNil } from 'lodash'
 import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
 import useCustomToast from '@/hooks/use-custom-toast'
-import { Badge } from '@/components/ui/badge'
-import Link from 'next/link'
-import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
-import assert from 'assert'
-import { AssetsSheet } from './assets-sheet'
+import { AssetsSheet, selectItemsPT } from './assets-sheet'
 import { useParams } from 'next/navigation'
-// import { LedgersSheet } from './ledgers-sheet'
 
 type AssetsTableProps = {
   assets: { items: any[] }
@@ -47,6 +35,7 @@ type AssetsTableProps = {
     }
   }
   handleDialogOpen: (id: string, name: string) => void
+  handleEdit: any
   refetch: () => void
 }
 
@@ -54,17 +43,26 @@ type AssetRowProps = {
   asset: { id: string; original: any }
   handleCopyToClipboard: (value: string, message: string) => void
   handleDialogOpen: (id: string, name: string) => void
+  handleEdit: any
 }
 
-const AssetRow: React.FC<AssetRowProps> = ({ asset, handleDialogOpen }) => {
+const AssetRow: React.FC<AssetRowProps> = ({
+  asset,
+  handleDialogOpen,
+  handleEdit
+}) => {
   const intl = useIntl()
   const metadataCount = Object.entries(asset.original.metadata || []).length
-  const assetsItems = asset.original.assets || []
+  const typeLabel =
+    intl.locale === 'pt'
+      ? selectItemsPT.find((item) => item.value === asset.original.type)
+          ?.label || capitalizeFirstLetter(asset.original.type)
+      : capitalizeFirstLetter(asset.original.type)
 
   return (
     <TableRow key={asset.id}>
       <TableCell>{asset.original.name}</TableCell>
-      <TableCell>{asset.original.type}</TableCell>
+      <TableCell>{capitalizeFirstLetter(typeLabel)}</TableCell>
       <TableCell>{asset.original.code}</TableCell>
       <TableCell>
         {metadataCount === 0 ? (
@@ -86,18 +84,16 @@ const AssetRow: React.FC<AssetRowProps> = ({ asset, handleDialogOpen }) => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="secondary" className="h-auto w-max p-2">
-              <MoreVertical size={16} onClick={() => {}} />
+              <MoreVertical size={16} />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <Link href={'#'}>
-              <DropdownMenuItem>
-                {intl.formatMessage({
-                  id: `common.edit`,
-                  defaultMessage: 'Edit'
-                })}
-              </DropdownMenuItem>
-            </Link>
+            <DropdownMenuItem onClick={() => handleEdit(asset.original)}>
+              {intl.formatMessage({
+                id: `common.edit`,
+                defaultMessage: 'Edit'
+              })}
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               {intl.formatMessage({
@@ -130,6 +126,7 @@ export const AssetsDataTable: React.FC<AssetsTableProps> = ({
   assets,
   table,
   handleDialogOpen,
+  handleEdit,
   refetch
 }) => {
   const intl = useIntl()
@@ -149,7 +146,7 @@ export const AssetsDataTable: React.FC<AssetsTableProps> = ({
           message={intl.formatMessage({
             id: 'ledgers.assets.emptyResource',
             defaultMessage:
-              "You haven't added any Instrument within this Ledger yet."
+              "You haven't added any Asset within this Ledger yet."
           })}
           extra={intl.formatMessage({
             id: 'ledgers.assets.emptyResourceExtra',
@@ -176,7 +173,7 @@ export const AssetsDataTable: React.FC<AssetsTableProps> = ({
                 </TableHead>
                 <TableHead>
                   {intl.formatMessage({
-                    id: '"common.type',
+                    id: 'common.type',
                     defaultMessage: 'Type'
                   })}
                 </TableHead>
@@ -208,6 +205,7 @@ export const AssetsDataTable: React.FC<AssetsTableProps> = ({
                     asset={asset}
                     handleCopyToClipboard={handleCopyToClipboard}
                     handleDialogOpen={handleDialogOpen}
+                    handleEdit={handleEdit}
                   />
                 )
               })}
