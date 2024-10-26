@@ -27,8 +27,11 @@ export function organizationEntityToDto(
     doingBusinessAs: entity.doingBusinessAs,
     legalDocument: entity.legalDocument,
     address: entity.address,
-    metadata: entity.metadata,
-    status: entity.status,
+    status: {
+      code: entity.status.code,
+      description: entity.status.description ?? ''
+    },
+    metadata: entity.metadata ?? {},
     createdAt: entity.createdAt!,
     updatedAt: entity.updatedAt!,
     deletedAt: entity.deletedAt

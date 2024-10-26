@@ -16,6 +16,7 @@ export function portfolioEntityToDto(
     name: portfolio.name,
     status: {
       ...portfolio.status,
+      // code: portfolio.status.code,
       description: portfolio.status.description ?? ''
     },
     metadata: portfolio.metadata ?? {},

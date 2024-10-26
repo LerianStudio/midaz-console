@@ -18,6 +18,7 @@ import { ILedgerType } from '@/types/ledgers-type'
 import { useUpdateLedger } from '@/client/ledger-client'
 import { LedgerDetailsSkeleton } from './ledger-details-skeleton'
 import { OverviewTabContent } from './overview/overview-tab-content'
+import { AssetsTabContent } from './assets/assets-tab-content'
 
 const TAB_VALUES = {
   OVERVIEW: 'overview',
@@ -59,7 +60,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
       showError(
         intl.formatMessage({
           id: 'common.toast.error',
-          defaultMessage: 'Error saving changes.'
+          defaultMessage: 'Error saving changes'
         })
       )
     }
@@ -83,6 +84,13 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
         defaultMessage: 'Overview'
       }),
       active: () => activeTab === TAB_VALUES.OVERVIEW
+    },
+    {
+      name: intl.formatMessage({
+        id: `ledgers.tab.assets`,
+        defaultMessage: 'Assets'
+      }),
+      active: () => activeTab === TAB_VALUES.ASSETS
     },
     {
       name: intl.formatMessage({
@@ -148,6 +156,13 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
             })}
           </TabsTrigger>
 
+          <TabsTrigger value={TAB_VALUES.ASSETS}>
+            {intl.formatMessage({
+              id: 'ledgers.tab.assets',
+              defaultMessage: 'Assets'
+            })}
+          </TabsTrigger>
+
           <TabsTrigger value={TAB_VALUES.PORTFOLIOS_AND_ACCOUNTS}>
             {intl.formatMessage({
               id: 'ledgers.tab.portfolios-and-accounts',
@@ -165,6 +180,10 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
 
         <TabsContent value={TAB_VALUES.OVERVIEW}>
           <OverviewTabContent data={data} />
+        </TabsContent>
+
+        <TabsContent value={TAB_VALUES.ASSETS}>
+          <AssetsTabContent data={data} />
         </TabsContent>
 
         <TabsContent value={TAB_VALUES.PORTFOLIOS_AND_ACCOUNTS}>

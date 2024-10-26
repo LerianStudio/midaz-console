@@ -28,6 +28,7 @@ interface FormSelectWithTooltipProps<T extends FieldValues> {
   tooltipText: string
   placeholder: string
   options: Array<{ value: string; label: string }>
+  onChange?: (value: string) => void
 }
 
 export const FormSelectWithTooltip = <T extends FieldValues>({
@@ -36,7 +37,8 @@ export const FormSelectWithTooltip = <T extends FieldValues>({
   label,
   tooltipText,
   placeholder,
-  options
+  options,
+  onChange
 }: FormSelectWithTooltipProps<T>) => {
   return (
     <FormField
@@ -55,7 +57,13 @@ export const FormSelectWithTooltip = <T extends FieldValues>({
               </Tooltip>
             </TooltipProvider>
           </FormLabel>
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <Select
+            onValueChange={(value) => {
+              field.onChange(value)
+              onChange?.(value)
+            }}
+            defaultValue={field.value}
+          >
             <FormControl>
               <SelectTrigger>
                 <SelectValue placeholder={placeholder} />

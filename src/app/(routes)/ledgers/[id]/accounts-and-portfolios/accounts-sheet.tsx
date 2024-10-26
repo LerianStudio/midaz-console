@@ -29,6 +29,8 @@ import { useListProducts } from '@/client/products'
 import { useCreateAccount, useUpdateAccount } from '@/client/accounts'
 import { useListPortfolios } from '@/client/portfolios'
 import { isNil } from 'lodash'
+import { useListAssets } from '@/client/assets-client'
+
 export interface AccountResponse {
   id: string
   ledgerId: string
@@ -84,7 +86,9 @@ export const AccountSheet = ({
     Object.entries(metadata || {}).length > 0
   )
   const [newPortfolioName, setNewPortfolioName] = useState<string>('')
+  const [selectedPortfolioId, setSelectedPortfolioId] = useState<string>('')
 
+  console.log('rocket', data)
   const { data: rawProductListData, refetch } = useListProducts({
     organizationId: currentOrganization.id!,
     ledgerId
@@ -95,8 +99,6 @@ export const AccountSheet = ({
       organizationId: currentOrganization.id!,
       ledgerId
     })
-
-  console.log('asdasdasd', data)
 
   const portfolioListData = useMemo(() => {
     return (
@@ -116,6 +118,20 @@ export const AccountSheet = ({
     )
   }, [rawProductListData])
 
+  const { data: rawAssetListData, refetch: refetchAssets } = useListAssets({
+    organizationId: currentOrganization.id!,
+    ledgerId
+  })
+
+  const assetListData = useMemo(() => {
+    return (
+      rawAssetListData?.items?.map((asset: { code: string; name: string }) => ({
+        value: asset.code,
+        label: `${asset.code} - ${asset.name}`
+      })) || []
+    )
+  }, [rawAssetListData])
+
   const form = useForm<z.infer<typeof formSchemaAccount>>({
     resolver: zodResolver(formSchemaAccount),
     defaultValues: Object.assign(
@@ -128,7 +144,11 @@ export const AccountSheet = ({
   const { mutate: createAccount, isPending: createPending } = useCreateAccount({
     organizationId: currentOrganization.id!,
     ledgerId,
-    portfolioId: data?.portfolioId!
+    portfolioId: selectedPortfolioId,
+    onSuccess: () => {
+      onSucess?.()
+      onOpenChange?.(false)
+    }
   })
 
   const { mutate: updateAccount, isPending: updatePending } = useUpdateAccount({
@@ -148,7 +168,7 @@ export const AccountSheet = ({
       createAccount({
         ...data,
         portfolioId: data.portfolioId,
-        assetCode: 'CLP'
+        assetCode: 'BRL'
       })
     } else if (mode === 'edit') {
       const { portfolioId, assetCode, ...updateData } = data
@@ -249,23 +269,27 @@ export const AccountSheet = ({
                 />
               )}
 
-              {/* <FormSelectWithTooltip
+              <FormSelectWithTooltip
                 control={form.control}
                 name="assetCode"
-                value
-                label="Product"
-                tooltipText="Select the product associated with this account"
-                placeholder="Select a product"
-                options={portfolioListData}
-              /> */}
+                label="Asset"
+                tooltipText="Select the asset associated with this account"
+                placeholder="Select an asset"
+                options={assetListData}
+              />
+
               {mode === 'create' && (
                 <FormSelectWithTooltip
                   control={form.control}
                   name="portfolioId"
-                  label="Product"
-                  tooltipText="Select the product associated with this account"
-                  placeholder="Select a product"
+                  label="Portfolio"
+                  tooltipText="Select the portfolio associated with this account"
+                  placeholder="Select a portfolio"
                   options={portfolioListData}
+                  onChange={(value) => {
+                    console.log('value', value)
+                    setSelectedPortfolioId(value)
+                  }}
                 />
               )}
 
