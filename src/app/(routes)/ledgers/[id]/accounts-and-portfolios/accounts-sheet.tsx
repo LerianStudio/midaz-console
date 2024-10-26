@@ -201,15 +201,15 @@ export const AccountSheet = ({
             <SheetHeader>
               <SheetTitle>
                 {intl.formatMessage({
-                  id: 'ledgers.portfolio.sheet.title',
-                  defaultMessage: 'New Portfolio'
+                  id: 'ledgers.account.sheet.create.title',
+                  defaultMessage: 'New Account'
                 })}
               </SheetTitle>
               <SheetDescription>
                 {intl.formatMessage({
-                  id: 'ledgers.portfolio.sheet.description',
+                  id: 'ledgers.account.sheet.create.description',
                   defaultMessage:
-                    'Fill in the details of the Portfolio you want to create.'
+                    'Fill in the details of the Account you want to create.'
                 })}
               </SheetDescription>
             </SheetHeader>
@@ -220,18 +220,18 @@ export const AccountSheet = ({
               <SheetTitle>
                 {intl.formatMessage(
                   {
-                    id: 'ledgers.portfolio.sheet.edit.title',
-                    defaultMessage: 'Edit {portfolioName}'
+                    id: 'ledgers.account.sheet.edit.title',
+                    defaultMessage: 'Edit {accountName}'
                   },
                   {
-                    portfolioName: data?.name
+                    accountName: data?.name
                   }
                 )}
               </SheetTitle>
               <SheetDescription>
                 {intl.formatMessage({
-                  id: 'ledgers.portfolio.sheet.edit.description',
-                  defaultMessage: 'View and edit product fields.'
+                  id: 'ledgers.account.sheet.edit.description',
+                  defaultMessage: 'View and edit account fields.'
                 })}
               </SheetDescription>
             </SheetHeader>
@@ -245,59 +245,118 @@ export const AccountSheet = ({
               <FormInputWithTooltip
                 control={form.control}
                 name="name"
-                label="Account Name"
-                tooltipText="Enter the name of the account"
-                placeholder="Enter account name"
+                label={intl.formatMessage({
+                  id: 'ledgers.account.field.name',
+                  defaultMessage: 'Account Name'
+                })}
+                tooltipText={intl.formatMessage({
+                  id: 'ledgers.account.field.name.tooltip',
+                  defaultMessage: 'Enter the name of the account'
+                })}
+                placeholder={intl.formatMessage({
+                  id: 'ledgers.account.field.name.placeholder',
+                  defaultMessage: 'Enter account name'
+                })}
               />
 
               <FormInputWithTooltip
                 control={form.control}
                 name="alias"
-                label="Account Name"
-                tooltipText="Enter the name of the account"
-                placeholder="Enter account name"
+                label={intl.formatMessage({
+                  id: 'ledgers.account.field.alias',
+                  defaultMessage: 'Account Alias'
+                })}
+                tooltipText={intl.formatMessage({
+                  id: 'ledgers.account.field.alias.tooltip',
+                  defaultMessage:
+                    'Nickname (@) for identifying the Account holder'
+                })}
+                placeholder={intl.formatMessage({
+                  id: 'ledgers.account.field.alias.placeholder',
+                  defaultMessage: 'Enter account alias'
+                })}
               />
 
               {mode === 'create' && (
                 <FormInputWithTooltip
                   control={form.control}
                   name="entityId"
-                  label="Account Name"
-                  tooltipText="Enter the name of the account"
-                  placeholder="Enter account name"
+                  label={intl.formatMessage({
+                    id: 'ledgers.account.field.entityId',
+                    defaultMessage: 'Entity ID'
+                  })}
+                  tooltipText={intl.formatMessage({
+                    id: 'ledgers.account.field.entityId.tooltip',
+                    defaultMessage:
+                      'Identification number (EntityId) of the Account holder'
+                  })}
+                  placeholder={intl.formatMessage({
+                    id: 'ledgers.account.field.entityId.placeholder',
+                    defaultMessage: 'Enter entity ID'
+                  })}
                 />
               )}
-
-              <FormSelectWithTooltip
-                control={form.control}
-                name="assetCode"
-                label="Asset"
-                tooltipText="Select the asset associated with this account"
-                placeholder="Select an asset"
-                options={assetListData}
-              />
-
               {mode === 'create' && (
-                <FormSelectWithTooltip
-                  control={form.control}
-                  name="portfolioId"
-                  label="Portfolio"
-                  tooltipText="Select the portfolio associated with this account"
-                  placeholder="Select a portfolio"
-                  options={portfolioListData}
-                  onChange={(value) => {
-                    console.log('value', value)
-                    setSelectedPortfolioId(value)
-                  }}
-                />
+                <>
+                  <FormSelectWithTooltip
+                    control={form.control}
+                    name="assetCode"
+                    label={intl.formatMessage({
+                      id: 'ledgers.account.field.asset',
+                      defaultMessage: 'Asset'
+                    })}
+                    tooltipText={intl.formatMessage({
+                      id: 'ledgers.account.field.asset.tooltip',
+                      defaultMessage:
+                        'Asset or currency that will be operated in this Account using balance'
+                    })}
+                    placeholder={intl.formatMessage({
+                      id: 'ledgers.account.field.asset.placeholder',
+                      defaultMessage: 'Select an asset'
+                    })}
+                    options={assetListData}
+                  />
+
+                  <FormSelectWithTooltip
+                    control={form.control}
+                    name="portfolioId"
+                    label={intl.formatMessage({
+                      id: 'ledgers.account.field.portfolio',
+                      defaultMessage: 'Portfolio'
+                    })}
+                    tooltipText={intl.formatMessage({
+                      id: 'ledgers.account.field.portfolio.tooltip',
+                      defaultMessage: 'Portfolio that will receive this account'
+                    })}
+                    placeholder={intl.formatMessage({
+                      id: 'ledgers.account.field.portfolio.placeholder',
+                      defaultMessage: 'Select a portfolio'
+                    })}
+                    options={portfolioListData}
+                    onChange={(value) => {
+                      console.log('value', value)
+                      setSelectedPortfolioId(value)
+                    }}
+                  />
+                </>
               )}
 
               <FormSelectWithTooltip
                 control={form.control}
                 name="productId"
-                label="Product"
-                tooltipText="Select the product associated with this account"
-                placeholder="Select a product"
+                label={intl.formatMessage({
+                  id: 'ledgers.account.field.product',
+                  defaultMessage: 'Product'
+                })}
+                tooltipText={intl.formatMessage({
+                  id: 'ledgers.account.field.product.tooltip',
+                  defaultMessage:
+                    'Category (cluster) of clients with specific characteristics'
+                })}
+                placeholder={intl.formatMessage({
+                  id: 'ledgers.account.field.product.placeholder',
+                  defaultMessage: 'Select a product'
+                })}
                 options={productListData}
               />
 
@@ -352,17 +411,17 @@ export const AccountSheet = ({
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
         title={intl.formatMessage({
-          id: 'ledgers.dialog.title',
-          defaultMessage: 'Your new portfolio is ready'
+          id: 'ledgers.account.dialog.title',
+          defaultMessage: 'Your new account is ready'
         })}
         description={intl.formatMessage(
           {
-            id: 'ledgers.portfolio.dialog.create.description',
+            id: 'ledgers.account.dialog.create.description',
             defaultMessage:
-              'Do you want to add the first account to the {portfolioName} you created? '
+              'The account {accountName} has been created successfully.'
           },
           {
-            portfolioName: newPortfolioName
+            accountName: form.getValues('name')
           }
         )}
         onConfirm={() => {}}
