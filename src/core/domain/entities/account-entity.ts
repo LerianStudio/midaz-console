@@ -6,6 +6,7 @@ export type AccountEntity = {
   organizationId?: string
   parentAccountId?: string | null
   productId?: string | null
+  portfolioId?: string | null
   entityId?: string | null
   name: string
   alias: string

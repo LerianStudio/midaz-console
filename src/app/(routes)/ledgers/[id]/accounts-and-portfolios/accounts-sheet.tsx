@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -11,32 +11,11 @@ import {
   SheetHeader,
   SheetTitle
 } from '@/components/ui/sheet'
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
-} from '@/components/ui/tooltip'
-import { HelpCircle } from 'lucide-react'
+import { Form } from '@/components/ui/form'
 import { useParams } from 'next/navigation'
-import { isNil } from 'lodash'
 import { useIntl } from 'react-intl'
-import {
-  formSchemaAccount,
-  formSchemaPortfolio
-} from './accounts-and-portfolios-form-schema'
-import { useCreatePortfolio, useUpdatePortfolio } from '@/client/portfolios'
+import { formSchemaAccount } from './accounts-and-portfolios-form-schema'
 import { DialogProps } from '@radix-ui/react-dialog'
-import { PortfolioResponseDto } from '@/core/application/dto/portfolios-dto'
 import { LoadingButton } from '@/components/ui/loading-button'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import { Label } from '@/components/ui/label'
@@ -44,31 +23,51 @@ import { MetadataField } from '@/components/form/metadata-field'
 import { Switch } from '@/components/ui/switch'
 import { metadata } from '@/schema/metadata'
 import ConfirmationDialog from '@/components/confirmation-dialog'
-import { InputField, SelectField } from '@/components/form'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
 import { FormSelectWithTooltip } from './form-select-with-tooltip'
 import { FormInputWithTooltip } from './form-input-with-tooltip'
+import { useListProducts } from '@/client/products'
+import { useCreateAccount } from '@/client/accounts'
+import { useListPortfolios } from '@/client/portfolios'
+
+export interface AccountResponse {
+  id: string
+  ledgerId: string
+  assetCode: string
+  organizationId: string
+  name: string
+  alias: string
+  type: string
+  entityId: string
+  parentAccountId: string
+  portfolioId: string
+  productId: string
+  status: {
+    code: string
+    description: string
+  }
+  metadata: Record<string, any>
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date | null
+}
 
 export type PortfolioSheetProps = DialogProps & {
   ledgerId: string
   mode: 'create' | 'edit'
-  data?: PortfolioResponseDto | null
+  data?: AccountResponse | null
   onSucess?: () => void
 }
 
 const defaultValues = {
   name: '',
   entityId: '',
+  productId: '',
+  assetCode: '',
+  alias: '',
   metadata: {}
 }
 
-type FormData = z.infer<typeof formSchemaPortfolio>
+type FormData = z.infer<typeof formSchemaAccount>
 
 export const AccountSheet = ({
   mode,
@@ -86,27 +85,40 @@ export const AccountSheet = ({
   )
   const [newPortfolioName, setNewPortfolioName] = useState<string>('')
 
-  const { mutate: createPortfolio, isPending: createPending } =
-    useCreatePortfolio({
+  const { data: rawProductListData, refetch } = useListProducts({
+    organizationId: currentOrganization.id!,
+    ledgerId
+  })
+
+  const { data: rawPortfolioData, refetch: refetchPortfolio } =
+    useListPortfolios({
       organizationId: currentOrganization.id!,
-      ledgerId: ledgerId,
-      onSuccess: () => {
-        setIsDialogOpen(true)
-        onSucess?.()
-        onOpenChange?.(false)
-      }
+      ledgerId
     })
 
-  const { mutate: updatePortfolio, isPending: updatePending } =
-    useUpdatePortfolio({
-      organizationId: currentOrganization.id!,
-      ledgerId,
-      portfolioId: data?.id!,
-      onSuccess: () => {
-        onSucess?.()
-        onOpenChange?.(false)
-      }
-    })
+  console.log('rawPortfolioData', rawPortfolioData)
+
+  const portfolioListData = useMemo(() => {
+    return (
+      rawPortfolioData?.items?.map((portfolio) => ({
+        value: portfolio.id ?? '',
+        label: portfolio.name
+      })) || []
+    )
+  }, [rawPortfolioData])
+
+  console.log('portfolioListData', portfolioListData)
+
+  const productListData = useMemo(() => {
+    return (
+      rawProductListData?.items?.map((product) => ({
+        value: product.id,
+        label: product.name
+      })) || []
+    )
+  }, [rawProductListData])
+
+  console.log('productListData', productListData)
 
   const form = useForm<z.infer<typeof formSchemaAccount>>({
     resolver: zodResolver(formSchemaAccount),
@@ -117,30 +129,43 @@ export const AccountSheet = ({
     )
   })
 
+  const { mutate: createAccount, isPending: createPending } = useCreateAccount({
+    organizationId: currentOrganization.id!,
+    ledgerId,
+    portfolioId: '4112793c-4425-4c67-82c9-7fd9d96830ae'
+  })
+
   const handleSubmit = (data: FormData) => {
+    console.log('data submitted', data)
     if (mode === 'create') {
-      createPortfolio(data)
-      setNewPortfolioName(data.name)
-    } else if (mode === 'edit') {
-      updatePortfolio(data)
+      createAccount({
+        ...data,
+        portfolioId: data.portfolioId,
+        assetCode: 'brl'
+      })
     }
+    //   // createPortfolio(data)
+    //   setNewPortfolioName(data.name)
+    // } else if (mode === 'edit') {
+    //   updatePortfolio(data)
+    // }
 
     form.reset(defaultValues)
   }
 
-  React.useEffect(() => {
-    if (!isNil(data)) {
-      setMetadataEnabled(Object.entries(data.metadata || {}).length > 0)
-      if (mode === 'edit') {
-        const { entityId, ...dataWithoutEntityId } = data
-        form.reset(dataWithoutEntityId, { keepDefaultValues: true })
-      } else {
-        form.reset(data, { keepDefaultValues: true })
-      }
-    } else {
-      setMetadataEnabled(false)
-    }
-  }, [data])
+  // React.useEffect(() => {
+  //   if (!isNil(data)) {
+  //     setMetadataEnabled(Object.entries(data.metadata || {}).length > 0)
+  //     if (mode === 'edit') {
+  //       const { entityId, ...dataWithoutEntityId } = data
+  //       form.reset(dataWithoutEntityId, { keepDefaultValues: true })
+  //     } else {
+  //       form.reset(data, { keepDefaultValues: true })
+  //     }
+  //   } else {
+  //     setMetadataEnabled(false)
+  //   }
+  // }, [data])
 
   return (
     <>
@@ -215,43 +240,32 @@ export const AccountSheet = ({
                 placeholder="Enter account name"
               />
 
+              {/* <FormSelectWithTooltip
+                control={form.control}
+                name="assetCode"
+                value
+                label="Product"
+                tooltipText="Select the product associated with this account"
+                placeholder="Select a product"
+                options={portfolioListData}
+              /> */}
+
               <FormSelectWithTooltip
                 control={form.control}
-                name="instrument"
-                label="Entity Type"
-                tooltipText="Select the type of entity associated with this portfolio"
-                placeholder="Select an entity type"
-                options={[
-                  { value: 'individual', label: 'Individual' },
-                  { value: 'company', label: 'Company' },
-                  { value: 'trust', label: 'Trust' }
-                ]}
+                name="portfolioId"
+                label="Product"
+                tooltipText="Select the product associated with this account"
+                placeholder="Select a product"
+                options={portfolioListData}
               />
 
               <FormSelectWithTooltip
                 control={form.control}
-                name="product"
-                label="Entity Type"
-                tooltipText="Select the type of entity associated with this portfolio"
-                placeholder="Select an entity type"
-                options={[
-                  { value: 'individual', label: 'Individual' },
-                  { value: 'company', label: 'Company' },
-                  { value: 'trust', label: 'Trust' }
-                ]}
-              />
-
-              <FormSelectWithTooltip
-                control={form.control}
-                name="product"
-                label="Entity Type"
-                tooltipText="Select the type of entity associated with this portfolio"
-                placeholder="Select an entity type"
-                options={[
-                  { value: 'individual', label: 'Individual' },
-                  { value: 'company', label: 'Company' },
-                  { value: 'trust', label: 'Trust' }
-                ]}
+                name="productId"
+                label="Product"
+                tooltipText="Select the product associated with this account"
+                placeholder="Select a product"
+                options={productListData}
               />
 
               <div className="flex flex-col gap-2">
@@ -288,7 +302,7 @@ export const AccountSheet = ({
                   type="submit"
                   disabled={!(form.formState.isDirty && form.formState.isValid)}
                   fullWidth
-                  loading={createPending || updatePending}
+                  // loading={createPending || updatePending}
                 >
                   {intl.formatMessage({
                     id: 'common.save',

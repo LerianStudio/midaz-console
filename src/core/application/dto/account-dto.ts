@@ -25,6 +25,7 @@ export interface AccountResponseDto {
   type: string
   entityId: string
   parentAccountId: string
+  portfolioId: string
   productId: string
   status: StatusDto
   metadata: Record<string, any>

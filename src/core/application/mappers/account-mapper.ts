@@ -25,7 +25,8 @@ export function accountEntityToDto(account: AccountEntity): AccountResponseDto {
     alias: account.alias,
     assetCode: account.assetCode,
     parentAccountId: account.parentAccountId!,
-    productId: account.productId!
+    productId: account.productId!,
+    portfolioId: account.portfolioId!
   }
 }
 

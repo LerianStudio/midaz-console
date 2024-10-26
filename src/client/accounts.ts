@@ -71,3 +71,24 @@ export const useDeleteAccount = ({
     ...options
   })
 }
+
+type UseCreateAccountProps = UseMutationOptions & {
+  organizationId: string
+  ledgerId: string
+  portfolioId: string
+}
+
+export const useCreateAccount = ({
+  organizationId,
+  ledgerId,
+  portfolioId,
+  ...options
+}: UseCreateAccountProps) => {
+  return useMutation<any, any, any>({
+    mutationKey: [organizationId, ledgerId, portfolioId],
+    mutationFn: postFetcher(
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}/accounts`
+    ),
+    ...options
+  })
+}

@@ -45,29 +45,27 @@ import {
 import { Skeleton } from '@/components/ui/skeleton'
 import { AccountEntity, AccountsDataTable } from './accounts-data-table'
 
-// interface AccountEntity {
-//   id?: string
-//   ledgerId?: string
-//   organizationId?: string
-//   parentAccountId?: string | null
-//   productId?: string | null
-//   entityId?: string | null
-//   name: string
-//   alias: string
-//   type: string
-//   assetCode: string
-//   status: {
-//     code: string
-//     description: string
-//   }
-//   metadata: Record<string, any>
-//   createdAt?: Date
-//   updatedAt?: Date
-//   deletedAt?: Date | null
-// }
-// interface AccountsContentProps {
-//   accounts: { items: AccountEntity[] }
-// }
+export interface AccountResponse {
+  id: string
+  ledgerId: string
+  assetCode: string
+  organizationId: string
+  name: string
+  alias: string
+  type: string
+  entityId: string
+  parentAccountId: string
+  portfolioId: string
+  productId: string
+  status: {
+    code: string
+    description: string
+  }
+  metadata: Record<string, any>
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date | null
+}
 
 export const AccountsContent = () => {
   const intl = useIntl()
@@ -155,7 +153,7 @@ export const AccountsContent = () => {
   }
 
   const { handleCreate, handleEdit, sheetProps } =
-    useCreateUpdateSheet<PortfolioResponseDto>()
+    useCreateUpdateSheet<AccountResponse>()
 
   const table = useReactTable({
     data: accountsList?.items!,
