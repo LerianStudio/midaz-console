@@ -1,5 +1,5 @@
 import React from 'react'
-import { IntlShape, useIntl } from 'react-intl'
+import { defineMessages, useIntl } from 'react-intl'
 import {
   Table,
   TableBody,
@@ -54,18 +54,36 @@ const AssetRow: React.FC<AssetRowProps> = ({
   const intl = useIntl()
   const metadataCount = Object.entries(asset.original.metadata || []).length
 
-  const getTypeTranslation = (type: string) => {
-    return intl.formatMessage({
-      id: `assets.sheet.select.${type}`,
-      defaultMessage: capitalizeFirstLetter(type)
-    })
-  }
+  const assetTypesMessages = defineMessages({
+    crypto: {
+      id: 'assets.sheet.select.crypto',
+      defaultMessage: 'Crypto'
+    },
+    commodity: {
+      id: 'assets.sheet.select.commodity',
+      defaultMessage: 'Commodity'
+    },
+    currency: {
+      id: 'assets.sheet.select.currency',
+      defaultMessage: 'Currency'
+    },
+    others: {
+      id: 'assets.sheet.select.others',
+      defaultMessage: 'Others'
+    }
+  })
 
   return (
     <TableRow key={asset.id}>
       <TableCell>{asset.original.name}</TableCell>
       <TableCell>
-        {capitalizeFirstLetter(getTypeTranslation(asset.original.type))}
+        {capitalizeFirstLetter(
+          intl.formatMessage(
+            assetTypesMessages[
+              asset.original.type as keyof typeof assetTypesMessages
+            ]
+          )
+        )}
       </TableCell>
       <TableCell>{asset.original.code}</TableCell>
       <TableCell>
