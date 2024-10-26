@@ -24,6 +24,8 @@ import { assets } from '@/schema/assets'
 import { SelectItem } from '@/components/ui/select'
 import { currencyObjects } from '@/utils/currency-codes'
 import { useCreateAsset, useUpdateAsset } from '@/client/assets-client'
+import useCustomToast from '@/hooks/use-custom-toast'
+import { IAssetType } from '@/types/assets-type'
 
 export type AssetsSheetProps = DialogProps & {
   ledgerId: string
@@ -78,6 +80,7 @@ export const AssetsSheet = ({
   const intl = useIntl()
   const currentLanguage = intl.locale === 'pt' ? selectItemsPT : selectItems
   const { currentOrganization } = useOrganization()
+  const { showSuccess, showError } = useCustomToast()
 
   const FormSchema = mode === 'create' ? createFormSchema : editFormSchema
 
@@ -86,9 +89,28 @@ export const AssetsSheet = ({
   const { mutate: createAsset, isPending: createPending } = useCreateAsset({
     organizationId: currentOrganization.id!,
     ledgerId,
-    onSuccess: () => {
+    onSuccess: (data: unknown) => {
+      const formData = data as IAssetType
+      console.log(formData)
       onSuccess?.()
       onOpenChange?.(false)
+      showSuccess(
+        intl.formatMessage(
+          {
+            id: 'ledgers.toast.assetsCreated',
+            defaultMessage: '{assetName} asset successfully created'
+          },
+          { assetName: formData.name }
+        )
+      )
+    },
+    onError: () => {
+      showError(
+        intl.formatMessage({
+          id: 'common.toast.error',
+          defaultMessage: 'Error saving changes'
+        })
+      )
     }
   })
 
@@ -99,6 +121,20 @@ export const AssetsSheet = ({
     onSuccess: () => {
       onSuccess?.()
       onOpenChange?.(false)
+      showSuccess(
+        intl.formatMessage({
+          id: 'ledgers.toast.assetUpdated',
+          defaultMessage: 'Asset changes saved successfully'
+        })
+      )
+    },
+    onError: () => {
+      showError(
+        intl.formatMessage({
+          id: 'common.toast.error',
+          defaultMessage: 'Error saving changes'
+        })
+      )
     }
   })
 

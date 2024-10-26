@@ -215,5 +215,8 @@
   "ledgers.assets.title": "Ativos",
   "ledgers.portfolio.subtitle": "",
   "ledgers.portfolio.title": "",
-  "products.asset.description": ""
+  "ledgers.toast.assetUpdated": "Alterações no Ativo salvas com sucesso",
+  "ledgers.toast.assetsCreated": "Ativo {assetName} criado com sucesso",
+  "assets.delete.description": "Você está prestes a excluir permanentemente este ativo. Esta ação não poderá ser desfeita. Deseja continuar?",
+  "ledgers.toast.assetsDeleted": "Ativo excluído com sucesso"
 }

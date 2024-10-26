@@ -1,4 +1,5 @@
 {
+  "assets.delete.description": "You are about to permanently delete this asset. This action cannot be undone. Do you wish to continue?",
   "auth.titleLogin": "Welcome again!",
   "common.actions": "Actions",
   "common.active": "Active",
@@ -146,6 +147,9 @@
   "ledgers.tab.portfolios-and-accounts": "Portfolios and Accounts",
   "ledgers.tab.products": "Products",
   "ledgers.title": "Ledgers",
+  "ledgers.toast.assetUpdated": "Asset changes saved successfully",
+  "ledgers.toast.assetsCreated": "{assetName} asset successfully created",
+  "ledgers.toast.assetsDeleted": "Asset successfully deleted",
   "ledgers.toast.copyId": "The id has been copied to your clipboard.",
   "ledgers.toast.ledgerCreated": "Ledger {ledgerName} created successfully",
   "ledgers.toast.ledgerUpdated": "Ledger changes saved successfully",
@@ -179,7 +183,6 @@
   "organizations.toast.organizationUpdatedFailed": "Failed to update organization id: {organizationId}",
   "organizations.toast.update.success": "Organization updated successfully!",
   "portfolio.create": "Create first portfolio",
-  "products.asset.description": "You are about to permanently delete this asset. This action cannot be undone. Do you wish to continue?",
   "products.delete.description": "You are about to permanently delete this product. This action cannot be undone. Do you wish to continue?",
   "settings.tab.organizations": "Organizations",
   "settings.tab.otherSettings": "Other Settings",

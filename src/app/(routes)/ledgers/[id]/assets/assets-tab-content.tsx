@@ -19,6 +19,7 @@ import { AssetsSheet } from './assets-sheet'
 import { useParams } from 'next/navigation'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import ConfirmationDialog from '@/components/confirmation-dialog'
+import useCustomToast from '@/hooks/use-custom-toast'
 
 type AssetsTabContentProps = {
   data: ILedgerType
@@ -29,6 +30,7 @@ export const AssetsTabContent = ({ data }: AssetsTabContentProps) => {
   const { id: ledgerId } = useParams<{ id: string }>()
   const { currentOrganization } = useOrganization()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
+  const { showSuccess, showError } = useCustomToast()
 
   const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>()
 
@@ -47,6 +49,20 @@ export const AssetsTabContent = ({ data }: AssetsTabContentProps) => {
     onSuccess: () => {
       handleDialogClose()
       refetch()
+      showSuccess(
+        intl.formatMessage({
+          id: 'ledgers.toast.assetsDeleted',
+          defaultMessage: 'Asset successfully deleted'
+        })
+      )
+    },
+    onError: () => {
+      showError(
+        intl.formatMessage({
+          id: 'common.toast.error',
+          defaultMessage: 'Error saving changes'
+        })
+      )
     }
   })
 
@@ -144,7 +160,7 @@ export const AssetsTabContent = ({ data }: AssetsTabContentProps) => {
           defaultMessage: 'Confirm Deletion'
         })}
         description={intl.formatMessage({
-          id: 'products.asset.description',
+          id: 'assets.delete.description',
           defaultMessage:
             'You are about to permanently delete this asset. This action cannot be undone. Do you wish to continue?'
         })}
