@@ -65,16 +65,19 @@ type AccountsTableProps = {
   handleDialogOpen: (accountEntity: AccountEntity) => void
   refetch: () => void
   isTableExpanded: boolean
+  handleEdit: (account: AccountEntity) => void
 }
 
 type AccountRowProps = {
   account: { id: string; original: AccountEntity }
+  handleEdit: (account: AccountEntity) => void
   handleCopyToClipboard: (value: string, message: string) => void
   handleDialogOpen: (accountEntity: AccountEntity) => void
 }
 
 const AccountRow: React.FC<AccountRowProps> = ({
   account,
+  handleEdit,
   handleCopyToClipboard,
   handleDialogOpen
 }) => {
@@ -156,19 +159,12 @@ const AccountRow: React.FC<AccountRowProps> = ({
                 //     description: portfolio.original.status.description ?? ''
                 //   }
                 // } as PortfolioResponseDto)
-                console.log('edit')
+                handleEdit(account.original)
               }
             >
               {intl.formatMessage({
                 id: `common.edit`,
                 defaultMessage: 'Edit'
-              })}
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              {intl.formatMessage({
-                id: `common.inactivate`,
-                defaultMessage: 'Inactivate'
               })}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -194,7 +190,8 @@ export const AccountsDataTable: React.FC<AccountsTableProps> = ({
   table,
   handleDialogOpen,
   refetch,
-  isTableExpanded
+  isTableExpanded,
+  handleEdit
 }) => {
   const intl = useIntl()
   const { handleCreate, sheetProps } = useCreateUpdateSheet<any>()
@@ -258,6 +255,7 @@ export const AccountsDataTable: React.FC<AccountsTableProps> = ({
                   <AccountRow
                     key={account.id}
                     account={account}
+                    handleEdit={handleEdit}
                     handleCopyToClipboard={handleCopyToClipboard}
                     handleDialogOpen={handleDialogOpen}
                   />

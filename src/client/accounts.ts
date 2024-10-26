@@ -1,7 +1,12 @@
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
 import { PortfolioViewResponseDTO } from '@/core/application/dto/portfolio-view-dto'
 import { AccountEntity } from '@/core/domain/entities/account-entity'
-import { deleteFetcher, getFetcher, postFetcher } from '@/lib/fetcher'
+import {
+  deleteFetcher,
+  getFetcher,
+  patchFetcher,
+  postFetcher
+} from '@/lib/fetcher'
 import {
   useMutation,
   UseMutationOptions,
@@ -88,6 +93,29 @@ export const useCreateAccount = ({
     mutationKey: [organizationId, ledgerId, portfolioId],
     mutationFn: postFetcher(
       `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}/accounts`
+    ),
+    ...options
+  })
+}
+
+type UseUpdateAccountProps = UseMutationOptions & {
+  organizationId: string
+  ledgerId: string
+  portfolioId: string
+  accountId: string
+}
+
+export const useUpdateAccount = ({
+  organizationId,
+  ledgerId,
+  portfolioId,
+  accountId,
+  ...options
+}: UseUpdateAccountProps) => {
+  return useMutation<any, any, any>({
+    mutationKey: [organizationId, ledgerId, portfolioId, accountId],
+    mutationFn: patchFetcher(
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}/accounts/${accountId}`
     ),
     ...options
   })

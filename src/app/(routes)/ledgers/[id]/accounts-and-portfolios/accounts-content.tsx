@@ -1,10 +1,9 @@
+import React, { useState, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
-import { ChevronDown, ChevronUp, MoreVertical, Plus } from 'lucide-react'
-import { PortfolioSheet } from './portfolios-sheet'
+import { ChevronDown, ChevronUp, Plus } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { EntityBox } from '@/components/entity-box'
 import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
-import { PortfolioResponseDto } from '@/core/application/dto/portfolios-dto'
 import { useDeletePortfolio, useListPortfolios } from '@/client/portfolios'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import { useIntl } from 'react-intl'
@@ -14,34 +13,10 @@ import {
   getFilteredRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import React, { useState, useMemo } from 'react'
-
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table'
-import { Badge } from '@/components/ui/badge'
-import { capitalizeFirstLetter } from '@/helpers'
 import ConfirmationDialog from '@/components/confirmation-dialog'
 import { AccountSheet } from './accounts-sheet'
-import {
-  useAllPortfoliosAccounts,
-  useDeleteAccount,
-  useListAccounts
-} from '@/client/accounts'
+import { useAllPortfoliosAccounts, useDeleteAccount } from '@/client/accounts'
 import { Skeleton } from '@/components/ui/skeleton'
 import { AccountEntity, AccountsDataTable } from './accounts-data-table'
 
@@ -106,16 +81,6 @@ export const AccountsContent = () => {
 
   console.log(accountsList)
 
-  const { mutate: deletePortfolio, isPending: deletePending } =
-    useDeletePortfolio({
-      organizationId: currentOrganization.id!,
-      ledgerId,
-      onSuccess: () => {
-        handleDialogClose()
-        refetch()
-      }
-    })
-
   const { mutate: deleteAccount, isPending: deleteAccountPending } =
     useDeleteAccount({
       organizationId: currentOrganization.id!,
@@ -152,8 +117,15 @@ export const AccountsContent = () => {
     )
   }
 
-  const { handleCreate, handleEdit, sheetProps } =
-    useCreateUpdateSheet<AccountResponse>()
+  const {
+    handleCreate,
+    handleEdit: handleEditOriginal,
+    sheetProps
+  } = useCreateUpdateSheet<AccountResponse>()
+
+  const handleEdit = (account: AccountEntity) => {
+    handleEditOriginal(account as unknown as AccountResponse)
+  }
 
   const table = useReactTable({
     data: accountsList?.items!,
@@ -251,6 +223,7 @@ export const AccountsContent = () => {
           accounts={accountsList as { items: any[] }}
           isLoading={isAccountsLoading}
           table={table}
+          handleEdit={handleEdit}
           handleDialogOpen={handleAccountDialogOpen}
           refetch={refetch}
           isTableExpanded={isTableExpanded}

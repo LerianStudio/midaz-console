@@ -26,9 +26,9 @@ import ConfirmationDialog from '@/components/confirmation-dialog'
 import { FormSelectWithTooltip } from './form-select-with-tooltip'
 import { FormInputWithTooltip } from './form-input-with-tooltip'
 import { useListProducts } from '@/client/products'
-import { useCreateAccount } from '@/client/accounts'
+import { useCreateAccount, useUpdateAccount } from '@/client/accounts'
 import { useListPortfolios } from '@/client/portfolios'
-
+import { isNil } from 'lodash'
 export interface AccountResponse {
   id: string
   ledgerId: string
@@ -96,7 +96,7 @@ export const AccountSheet = ({
       ledgerId
     })
 
-  console.log('rawPortfolioData', rawPortfolioData)
+  console.log('asdasdasd', data)
 
   const portfolioListData = useMemo(() => {
     return (
@@ -107,8 +107,6 @@ export const AccountSheet = ({
     )
   }, [rawPortfolioData])
 
-  console.log('portfolioListData', portfolioListData)
-
   const productListData = useMemo(() => {
     return (
       rawProductListData?.items?.map((product) => ({
@@ -117,8 +115,6 @@ export const AccountSheet = ({
       })) || []
     )
   }, [rawProductListData])
-
-  console.log('productListData', productListData)
 
   const form = useForm<z.infer<typeof formSchemaAccount>>({
     resolver: zodResolver(formSchemaAccount),
@@ -132,7 +128,18 @@ export const AccountSheet = ({
   const { mutate: createAccount, isPending: createPending } = useCreateAccount({
     organizationId: currentOrganization.id!,
     ledgerId,
-    portfolioId: '4112793c-4425-4c67-82c9-7fd9d96830ae'
+    portfolioId: data?.portfolioId!
+  })
+
+  const { mutate: updateAccount, isPending: updatePending } = useUpdateAccount({
+    organizationId: currentOrganization.id!,
+    ledgerId,
+    accountId: data?.id!,
+    portfolioId: data?.portfolioId!,
+    onSuccess: () => {
+      onSucess?.()
+      onOpenChange?.(false)
+    }
   })
 
   const handleSubmit = (data: FormData) => {
@@ -141,31 +148,31 @@ export const AccountSheet = ({
       createAccount({
         ...data,
         portfolioId: data.portfolioId,
-        assetCode: 'brl'
+        assetCode: 'CLP'
+      })
+    } else if (mode === 'edit') {
+      const { portfolioId, assetCode, ...updateData } = data
+      updateAccount({
+        ...updateData
       })
     }
-    //   // createPortfolio(data)
-    //   setNewPortfolioName(data.name)
-    // } else if (mode === 'edit') {
-    //   updatePortfolio(data)
-    // }
 
     form.reset(defaultValues)
   }
 
-  // React.useEffect(() => {
-  //   if (!isNil(data)) {
-  //     setMetadataEnabled(Object.entries(data.metadata || {}).length > 0)
-  //     if (mode === 'edit') {
-  //       const { entityId, ...dataWithoutEntityId } = data
-  //       form.reset(dataWithoutEntityId, { keepDefaultValues: true })
-  //     } else {
-  //       form.reset(data, { keepDefaultValues: true })
-  //     }
-  //   } else {
-  //     setMetadataEnabled(false)
-  //   }
-  // }, [data])
+  React.useEffect(() => {
+    if (!isNil(data)) {
+      setMetadataEnabled(Object.entries(data.metadata || {}).length > 0)
+      if (mode === 'edit') {
+        const { entityId, ...dataWithoutEntityId } = data
+        form.reset(dataWithoutEntityId, { keepDefaultValues: true })
+      } else {
+        form.reset(data, { keepDefaultValues: true })
+      }
+    } else {
+      setMetadataEnabled(false)
+    }
+  }, [data])
 
   return (
     <>
@@ -232,13 +239,15 @@ export const AccountSheet = ({
                 placeholder="Enter account name"
               />
 
-              <FormInputWithTooltip
-                control={form.control}
-                name="entityId"
-                label="Account Name"
-                tooltipText="Enter the name of the account"
-                placeholder="Enter account name"
-              />
+              {mode === 'create' && (
+                <FormInputWithTooltip
+                  control={form.control}
+                  name="entityId"
+                  label="Account Name"
+                  tooltipText="Enter the name of the account"
+                  placeholder="Enter account name"
+                />
+              )}
 
               {/* <FormSelectWithTooltip
                 control={form.control}
@@ -249,15 +258,16 @@ export const AccountSheet = ({
                 placeholder="Select a product"
                 options={portfolioListData}
               /> */}
-
-              <FormSelectWithTooltip
-                control={form.control}
-                name="portfolioId"
-                label="Product"
-                tooltipText="Select the product associated with this account"
-                placeholder="Select a product"
-                options={portfolioListData}
-              />
+              {mode === 'create' && (
+                <FormSelectWithTooltip
+                  control={form.control}
+                  name="portfolioId"
+                  label="Product"
+                  tooltipText="Select the product associated with this account"
+                  placeholder="Select a product"
+                  options={portfolioListData}
+                />
+              )}
 
               <FormSelectWithTooltip
                 control={form.control}
@@ -302,7 +312,7 @@ export const AccountSheet = ({
                   type="submit"
                   disabled={!(form.formState.isDirty && form.formState.isValid)}
                   fullWidth
-                  // loading={createPending || updatePending}
+                  loading={createPending || updatePending}
                 >
                   {intl.formatMessage({
                     id: 'common.save',
