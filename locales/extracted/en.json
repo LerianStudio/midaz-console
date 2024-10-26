@@ -108,6 +108,8 @@
   "ledgers.assets.emptyResource.createButton": "New Asset",
   "ledgers.assets.emptyResourceExtra": "No Asset found.",
   "ledgers.assets.sheet.description": "Fill in the data for the Asset you want to create.",
+  "ledgers.assets.sheet.edit.description": "View and edit asset fields.",
+  "ledgers.assets.sheet.edit.title": "Edit {assetName}",
   "ledgers.assets.sheet.title": "New Asset",
   "ledgers.assets.subtitle": "Currency or assets of any nature traded on this Ledger.",
   "ledgers.assets.title": "Assets",

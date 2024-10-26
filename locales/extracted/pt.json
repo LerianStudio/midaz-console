@@ -218,5 +218,7 @@
   "ledgers.toast.assetUpdated": "Alterações no Ativo salvas com sucesso",
   "ledgers.toast.assetsCreated": "Ativo {assetName} criado com sucesso",
   "assets.delete.description": "Você está prestes a excluir permanentemente este ativo. Esta ação não poderá ser desfeita. Deseja continuar?",
-  "ledgers.toast.assetsDeleted": "Ativo excluído com sucesso"
+  "ledgers.toast.assetsDeleted": "Ativo excluído com sucesso",
+  "ledgers.assets.sheet.edit.description": "Visualize e edite os campos do ativo.",
+  "ledgers.assets.sheet.edit.title": "Editar {assetName}"
 }

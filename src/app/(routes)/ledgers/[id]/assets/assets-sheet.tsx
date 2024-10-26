@@ -210,18 +210,18 @@ export const AssetsSheet = ({
             <SheetTitle>
               {intl.formatMessage(
                 {
-                  id: 'ledgers.products.sheet.edit.title',
-                  defaultMessage: 'Edit {productName}'
+                  id: 'ledgers.assets.sheet.edit.title',
+                  defaultMessage: 'Edit {assetName}'
                 },
                 {
-                  productName: data?.name
+                  assetName: data?.name
                 }
               )}
             </SheetTitle>
             <SheetDescription>
               {intl.formatMessage({
-                id: 'ledgers.products.sheet.edit.description',
-                defaultMessage: 'View and edit product fields.'
+                id: 'ledgers.assets.sheet.edit.description',
+                defaultMessage: 'View and edit asset fields.'
               })}
             </SheetDescription>
           </SheetHeader>
