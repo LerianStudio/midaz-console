@@ -10,10 +10,17 @@ import {
   TableCell,
   TableBody
 } from '@/components/ui/table'
-import { Minus } from 'lucide-react'
+import { Minus, MoreVertical } from 'lucide-react'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
 import { isNil } from 'lodash'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
 import {
   Tooltip,
   TooltipContent,
@@ -22,13 +29,15 @@ import {
 } from '@/components/ui/tooltip'
 import { Arrow } from '@radix-ui/react-tooltip'
 import { truncateString } from '@/helpers'
+import { Button } from '@/components/ui/button'
 
-interface AccountEntity {
+export interface AccountEntity {
   id?: string
   ledgerId?: string
   organizationId?: string
   parentAccountId?: string | null
   portfolioName?: string | null
+  portfolioId?: string | null
   productId?: string | null
   entityId?: string | null
   name: string
@@ -53,7 +62,7 @@ type AccountsTableProps = {
       rows: { id: string; original: AccountEntity }[]
     }
   }
-  handleDialogOpen: (id: string, name: string) => void
+  handleDialogOpen: (accountEntity: AccountEntity) => void
   refetch: () => void
   isTableExpanded: boolean
 }
@@ -61,7 +70,7 @@ type AccountsTableProps = {
 type AccountRowProps = {
   account: { id: string; original: AccountEntity }
   handleCopyToClipboard: (value: string, message: string) => void
-  handleDialogOpen: (id: string, name: string) => void
+  handleDialogOpen: (accountEntity: AccountEntity) => void
 }
 
 const AccountRow: React.FC<AccountRowProps> = ({
@@ -75,8 +84,6 @@ const AccountRow: React.FC<AccountRowProps> = ({
     account.original.id && account.original.id.length > 8
       ? `${truncateString(account.original.id, 8)}`
       : account.original.id
-  const status = account.original.status
-  const badgeVariant = status.code === 'ACTIVE' ? 'active' : 'inactive'
   const metadataCount = Object.entries(account.original.metadata || []).length
 
   return (
@@ -133,7 +140,50 @@ const AccountRow: React.FC<AccountRowProps> = ({
       </TableCell>
       <TableCell>{account.original.portfolioName}</TableCell>
       <TableCell className="w-0">
-        {/* ... DropdownMenu (similar to LedgerRow) ... */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="secondary">
+              <MoreVertical size={16} onClick={() => {}} />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem
+              onClick={() =>
+                // handleEdit({
+                //   ...portfolio.original,
+                //   status: {
+                //     ...portfolio.original.status,
+                //     description: portfolio.original.status.description ?? ''
+                //   }
+                // } as PortfolioResponseDto)
+                console.log('edit')
+              }
+            >
+              {intl.formatMessage({
+                id: `common.edit`,
+                defaultMessage: 'Edit'
+              })}
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              {intl.formatMessage({
+                id: `common.inactivate`,
+                defaultMessage: 'Inactivate'
+              })}
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => {
+                handleDialogOpen(account.original)
+              }}
+            >
+              {intl.formatMessage({
+                id: `common.delete`,
+                defaultMessage: 'Delete'
+              })}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </TableCell>
     </TableRow>
   )

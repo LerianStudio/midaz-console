@@ -37,9 +37,13 @@ import { Badge } from '@/components/ui/badge'
 import { capitalizeFirstLetter } from '@/helpers'
 import ConfirmationDialog from '@/components/confirmation-dialog'
 import { AccountSheet } from './accounts-sheet'
-import { useAllPortfoliosAccounts, useListAccounts } from '@/client/accounts'
+import {
+  useAllPortfoliosAccounts,
+  useDeleteAccount,
+  useListAccounts
+} from '@/client/accounts'
 import { Skeleton } from '@/components/ui/skeleton'
-import { AccountsDataTable } from './accounts-data-table'
+import { AccountEntity, AccountsDataTable } from './accounts-data-table'
 
 // interface AccountEntity {
 //   id?: string
@@ -71,6 +75,9 @@ export const AccountsContent = () => {
   const { currentOrganization } = useOrganization()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
   const [isTableExpanded, setIsTableExpanded] = useState(false)
+  const [selectedAccount, setSelectedAccount] = useState<AccountEntity | null>(
+    null
+  )
 
   const { data, refetch, isLoading } = useListPortfolios({
     organizationId: currentOrganization.id!,
@@ -92,11 +99,14 @@ export const AccountsContent = () => {
         accountsData?.items.flatMap((portfolio) =>
           portfolio.accounts.map((account) => ({
             ...account,
-            portfolioName: portfolio.name
+            portfolioName: portfolio.name,
+            portfolioId: portfolio.id
           }))
         ) || []
     }
   }, [accountsData])
+
+  console.log(accountsList)
 
   const { mutate: deletePortfolio, isPending: deletePending } =
     useDeletePortfolio({
@@ -108,11 +118,41 @@ export const AccountsContent = () => {
       }
     })
 
-  const { handleDialogOpen, dialogProps, handleDialogClose } = useConfirmDialog(
-    {
-      onConfirm: (id: string) => deletePortfolio({ id })
+  const { mutate: deleteAccount, isPending: deleteAccountPending } =
+    useDeleteAccount({
+      organizationId: currentOrganization.id!,
+      ledgerId,
+      accountId: selectedAccount?.id || '',
+      portfolioId: selectedAccount?.portfolioId || '',
+      onSuccess: () => {
+        handleDialogClose()
+        refetchAccounts()
+      }
+    })
+
+  const {
+    handleDialogOpen: originalHandleDialogOpen,
+    dialogProps,
+    handleDialogClose
+  } = useConfirmDialog({
+    onConfirm: (account) => {
+      console.log(account)
+      if (selectedAccount) {
+        console.log(selectedAccount)
+        deleteAccount(selectedAccount)
+      }
     }
-  )
+  })
+
+  const handleAccountDialogOpen = (accountEntity: AccountEntity) => {
+    setSelectedAccount(accountEntity)
+    originalHandleDialogOpen(
+      intl.formatMessage({
+        id: 'ledgers.account.deleteDialog.title',
+        defaultMessage: 'Are you sure?'
+      })
+    )
+  }
 
   const { handleCreate, handleEdit, sheetProps } =
     useCreateUpdateSheet<PortfolioResponseDto>()
@@ -135,34 +175,6 @@ export const AccountsContent = () => {
     }
   })
 
-  // const table = useReactTable({
-  //   data: accountsData?.items?.flatMap((portfolio) => portfolio.accounts) || [],
-  //   columns: [
-  //     {
-  //       accessorKey: 'id',
-  //       header: 'ID'
-  //     },
-  //     {
-  //       accessorKey: 'name',
-  //       header: 'Name'
-  //     },
-  //     {
-  //       accessorKey: 'type',
-  //       header: 'Type'
-  //     },
-  //     {
-  //       accessorKey: 'status.code',
-  //       header: 'Status'
-  //     }
-  //   ],
-  //   getCoreRowModel: getCoreRowModel(),
-  //   getFilteredRowModel: getFilteredRowModel(),
-  //   onColumnFiltersChange: setColumnFilters,
-  //   state: {
-  //     columnFilters
-  //   }
-  // })
-
   const getLoadingSkeleton = () => (
     <React.Fragment>
       <Skeleton className="h-[84px] w-full bg-zinc-200" />
@@ -175,21 +187,20 @@ export const AccountsContent = () => {
 
   return (
     <>
-      {/* <ConfirmationDialog
+      <ConfirmationDialog
         title={intl.formatMessage({
-          id: 'ledgers.portfolio.deleteDialog.title',
+          id: 'ledgers.account.deleteDialog.title',
           defaultMessage: 'Are you sure?'
         })}
         description={intl.formatMessage({
-          id: 'ledgers.portfolio.deleteDialog.description',
-          defaultMessage: 'You will delete a portfolio'
+          id: 'ledgers.account.deleteDialog.description',
+          defaultMessage: 'You will delete an account'
         })}
-        loading={deletePending}
+        loading={deleteAccountPending}
         {...dialogProps}
-      /> */}
+      />
 
       <AccountSheet ledgerId={ledgerId} onSucess={refetch} {...sheetProps} />
-      {/* <PortfolioSheet ledgerId={ledgerId} onSucess={refetch} {...sheetProps} /> */}
 
       <EntityBox.Root>
         <EntityBox.Header
@@ -242,7 +253,7 @@ export const AccountsContent = () => {
           accounts={accountsList as { items: any[] }}
           isLoading={isAccountsLoading}
           table={table}
-          handleDialogOpen={handleDialogOpen}
+          handleDialogOpen={handleAccountDialogOpen}
           refetch={refetch}
           isTableExpanded={isTableExpanded}
         />

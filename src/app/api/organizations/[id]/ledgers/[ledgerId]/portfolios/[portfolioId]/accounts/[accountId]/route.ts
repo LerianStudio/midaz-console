@@ -105,12 +105,10 @@ export async function DELETE(
   }
 ) {
   try {
-    const { id: organizationId, ledgerId, portfolioId, accountId } = params
-
-    console.log('DELETE route organizationId', organizationId)
-    console.log('DELETE route ledgerId', ledgerId)
-    console.log('DELETE route portfolioId', portfolioId)
-    console.log('DELETE route accountId', accountId)
+    const organizationId = params.id!
+    const ledgerId = params.ledgerId
+    const portfolioId = params.portfolioId
+    const accountId = params.accountId
 
     await deleteAccountUseCase.execute(
       organizationId,
@@ -119,7 +117,7 @@ export async function DELETE(
       accountId
     )
 
-    return NextResponse.json({}, { status: 204 })
+    return NextResponse.json({}, { status: 200 })
   } catch (error: any) {
     console.error('Error deleting account', error)
     const { message, status } = await apiErrorHandler(error)
@@ -127,3 +125,40 @@ export async function DELETE(
     return NextResponse.json({ message }, { status })
   }
 }
+
+// export async function DELETE(
+//   request: Request,
+//   {
+//     params
+//   }: {
+//     params: {
+//       id: string
+//       ledgerId: string
+//       portfolioId: string
+//       accountId: string
+//     }
+//   }
+// ) {
+//   try {
+//     const { id: organizationId, ledgerId, portfolioId, accountId } = params
+
+//     console.log('DELETE route organizationId', organizationId)
+//     console.log('DELETE route ledgerId', ledgerId)
+//     console.log('DELETE route portfolioId', portfolioId)
+//     console.log('DELETE route accountId', accountId)
+
+//     await deleteAccountUseCase.execute(
+//       organizationId,
+//       ledgerId,
+//       portfolioId,
+//       accountId
+//     )
+
+//     return NextResponse.json({}, { status: 204 })
+//   } catch (error: any) {
+//     console.error('Error deleting account', error)
+//     const { message, status } = await apiErrorHandler(error)
+
+//     return NextResponse.json({ message }, { status })
+//   }
+// }
