@@ -167,8 +167,7 @@ export const AccountSheet = ({
     if (mode === 'create') {
       createAccount({
         ...data,
-        portfolioId: data.portfolioId,
-        assetCode: 'BRL'
+        portfolioId: data.portfolioId
       })
     } else if (mode === 'edit') {
       const { portfolioId, assetCode, ...updateData } = data
