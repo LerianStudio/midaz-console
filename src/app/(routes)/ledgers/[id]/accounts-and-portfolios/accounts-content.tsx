@@ -170,7 +170,11 @@ export const AccountsContent = () => {
         {...dialogProps}
       />
 
-      <AccountSheet ledgerId={ledgerId} onSucess={refetch} {...sheetProps} />
+      <AccountSheet
+        ledgerId={ledgerId}
+        onSucess={refetchAccounts}
+        {...sheetProps}
+      />
 
       <EntityBox.Root>
         <EntityBox.Header
