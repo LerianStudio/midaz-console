@@ -23,7 +23,7 @@ import {
 import { isNil } from 'lodash'
 import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
 import useCustomToast from '@/hooks/use-custom-toast'
-import { AssetsSheet, selectItemsPT } from './assets-sheet'
+import { AssetsSheet } from './assets-sheet'
 import { useParams } from 'next/navigation'
 
 type AssetsTableProps = {
@@ -53,16 +53,20 @@ const AssetRow: React.FC<AssetRowProps> = ({
 }) => {
   const intl = useIntl()
   const metadataCount = Object.entries(asset.original.metadata || []).length
-  const typeLabel =
-    intl.locale === 'pt'
-      ? selectItemsPT.find((item) => item.value === asset.original.type)
-          ?.label || capitalizeFirstLetter(asset.original.type)
-      : capitalizeFirstLetter(asset.original.type)
+
+  const getTypeTranslation = (type: string) => {
+    return intl.formatMessage({
+      id: `assets.sheet.select.${type}`,
+      defaultMessage: capitalizeFirstLetter(type)
+    })
+  }
 
   return (
     <TableRow key={asset.id}>
       <TableCell>{asset.original.name}</TableCell>
-      <TableCell>{capitalizeFirstLetter(typeLabel)}</TableCell>
+      <TableCell>
+        {capitalizeFirstLetter(getTypeTranslation(asset.original.type))}
+      </TableCell>
       <TableCell>{asset.original.code}</TableCell>
       <TableCell>
         {metadataCount === 0 ? (

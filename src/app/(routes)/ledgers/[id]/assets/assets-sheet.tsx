@@ -34,20 +34,6 @@ export type AssetsSheetProps = DialogProps & {
   onSuccess?: () => void
 }
 
-export const selectItems = [
-  { value: 'crypto', label: 'Crypto' },
-  { value: 'commodity', label: 'Commodity' },
-  { value: 'others', label: 'Others' },
-  { value: 'currency', label: 'Currency' }
-]
-
-export const selectItemsPT = [
-  { value: 'crypto', label: 'Criptomoeda' },
-  { value: 'commodity', label: 'Mercadoria' },
-  { value: 'others', label: 'Outros' },
-  { value: 'currency', label: 'Moeda' }
-]
-
 const defaultValues = {
   type: '',
   name: '',
@@ -78,7 +64,6 @@ export const AssetsSheet = ({
   ...others
 }: AssetsSheetProps) => {
   const intl = useIntl()
-  const currentLanguage = intl.locale === 'pt' ? selectItemsPT : selectItems
   const { currentOrganization } = useOrganization()
   const { showSuccess, showError } = useCustomToast()
 
@@ -246,11 +231,30 @@ export const AssetsSheet = ({
               disabled={mode === 'edit'}
               required
             >
-              {currentLanguage.map((item) => (
-                <SelectItem key={item.value} value={item.value}>
-                  {item.label}
-                </SelectItem>
-              ))}
+              <SelectItem value="crypto">
+                {intl.formatMessage({
+                  id: 'assets.sheet.select.crypto',
+                  defaultMessage: 'Crypto'
+                })}
+              </SelectItem>
+              <SelectItem value="commodity">
+                {intl.formatMessage({
+                  id: 'assets.sheet.select.commodity',
+                  defaultMessage: 'Commodity'
+                })}
+              </SelectItem>
+              <SelectItem value="currency">
+                {intl.formatMessage({
+                  id: 'assets.sheet.select.currency',
+                  defaultMessage: 'Currency'
+                })}
+              </SelectItem>
+              <SelectItem value="others">
+                {intl.formatMessage({
+                  id: 'assets.sheet.select.others',
+                  defaultMessage: 'Others'
+                })}
+              </SelectItem>
             </SelectField>
 
             <InputField

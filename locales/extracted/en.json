@@ -1,5 +1,9 @@
 {
   "assets.delete.description": "You are about to permanently delete this asset. This action cannot be undone. Do you wish to continue?",
+  "assets.sheet.select.commodity": "Commodity",
+  "assets.sheet.select.crypto": "Crypto",
+  "assets.sheet.select.currency": "Currency",
+  "assets.sheet.select.others": "Others",
   "auth.titleLogin": "Welcome again!",
   "common.actions": "Actions",
   "common.active": "Active",
