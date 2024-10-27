@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { ChevronDown, ChevronUp, Plus } from 'lucide-react'
 import { useParams } from 'next/navigation'
@@ -19,6 +19,7 @@ import { AccountSheet } from './accounts-sheet'
 import { useAllPortfoliosAccounts, useDeleteAccount } from '@/client/accounts'
 import { Skeleton } from '@/components/ui/skeleton'
 import { AccountEntity, AccountsDataTable } from './accounts-data-table'
+import useCustomToast from '@/hooks/use-custom-toast'
 
 export interface AccountResponse {
   id: string
@@ -66,8 +67,8 @@ export const AccountsContent = () => {
     ledgerId: ledgerId
   })
 
-  const accountsList = useMemo(() => {
-    return {
+  const accountsList = useMemo(
+    () => ({
       items:
         accountsData?.items.flatMap((portfolio) =>
           portfolio.accounts.map((account) => ({
@@ -76,10 +77,11 @@ export const AccountsContent = () => {
             portfolioId: portfolio.id
           }))
         ) || []
-    }
-  }, [accountsData])
+    }),
+    [accountsData]
+  )
 
-  console.log(accountsList)
+  const { showSuccess, showError } = useCustomToast()
 
   const { mutate: deleteAccount, isPending: deleteAccountPending } =
     useDeleteAccount({
@@ -90,32 +92,52 @@ export const AccountsContent = () => {
       onSuccess: () => {
         handleDialogClose()
         refetchAccounts()
+        showSuccess(
+          intl.formatMessage(
+            {
+              id: 'ledgers.toast.accountDeleted',
+              defaultMessage: '{accountName} account successfully deleted'
+            },
+            { accountName: (selectedAccount as AccountResponse)?.name! }
+          )
+        )
+      },
+      onError: () => {
+        showError(
+          intl.formatMessage({
+            id: 'common.toast.error',
+            defaultMessage: 'Error deleting account'
+          })
+        )
       }
     })
+
+  const handleDeleteAccount = useCallback(() => {
+    if (selectedAccount) {
+      deleteAccount(selectedAccount)
+    }
+  }, [deleteAccount, selectedAccount])
 
   const {
     handleDialogOpen: originalHandleDialogOpen,
     dialogProps,
     handleDialogClose
   } = useConfirmDialog({
-    onConfirm: (account) => {
-      console.log(account)
-      if (selectedAccount) {
-        console.log(selectedAccount)
-        deleteAccount(selectedAccount)
-      }
-    }
+    onConfirm: handleDeleteAccount
   })
 
-  const handleAccountDialogOpen = (accountEntity: AccountEntity) => {
-    setSelectedAccount(accountEntity)
-    originalHandleDialogOpen(
-      intl.formatMessage({
-        id: 'ledgers.account.deleteDialog.title',
-        defaultMessage: 'Are you sure?'
-      })
-    )
-  }
+  const handleAccountDialogOpen = useCallback(
+    (accountEntity: AccountEntity) => {
+      setSelectedAccount(accountEntity)
+      originalHandleDialogOpen(
+        intl.formatMessage({
+          id: 'ledgers.account.deleteDialog.title',
+          defaultMessage: 'Are you sure?'
+        })
+      )
+    },
+    [originalHandleDialogOpen, intl, setSelectedAccount]
+  )
 
   const {
     handleCreate,
@@ -155,6 +177,7 @@ export const AccountsContent = () => {
     return getLoadingSkeleton()
   }
 
+  console.log(data)
   return (
     <>
       <ConfirmationDialog
@@ -202,7 +225,7 @@ export const AccountsContent = () => {
             onClick={handleCreate}
             disabled={isNil(data?.items) || data?.items?.length === 0}
           >
-            {data?.items?.length ? (
+            {accountsList && accountsList.items.length > 0 ? (
               <Plus />
             ) : (
               <>
@@ -214,7 +237,7 @@ export const AccountsContent = () => {
               </>
             )}
           </Button>
-          {!isNil(data?.items) && data?.items.length > 0 && (
+          {!isNil(accountsList?.items) && accountsList?.items?.length > 0 && (
             <Button
               variant="white"
               onClick={() => setIsTableExpanded(!isTableExpanded)}
