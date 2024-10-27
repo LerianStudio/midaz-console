@@ -178,20 +178,23 @@ export const AccountsContent = () => {
 
       <EntityBox.Root>
         <EntityBox.Header
-          title="Accounts"
-          // subtitle={
-          //   data?.items?.length !== undefined
-          //     ? intl.formatMessage(
-          //         {
-          //           id: `ledgers.portfolio.subtitle`,
-          //           defaultMessage: '{portfoliosItemsTotal} portfolios founded'
-          //         },
-          //         {
-          //           portfoliosItemsTotal: data.items.length
-          //         }
-          //       )
-          //     : undefined
-          // }
+          title={intl.formatMessage({
+            id: 'ledgers.accounts.title',
+            defaultMessage: 'Accounts'
+          })}
+          subtitle={
+            accountsList?.items?.length !== undefined
+              ? intl.formatMessage(
+                  {
+                    id: 'ledgers.accounts.subtitle',
+                    defaultMessage: '{accountsTotal} accounts found'
+                  },
+                  {
+                    accountsTotal: accountsList.items.length
+                  }
+                )
+              : undefined
+          }
         />
         <EntityBox.Actions>
           <Button
@@ -204,8 +207,8 @@ export const AccountsContent = () => {
             ) : (
               <>
                 {intl.formatMessage({
-                  id: `portfolio.create`,
-                  defaultMessage: 'Create first portfolio'
+                  id: 'ledgers.accounts.createFirst',
+                  defaultMessage: 'Create first account'
                 })}
                 <Plus />
               </>

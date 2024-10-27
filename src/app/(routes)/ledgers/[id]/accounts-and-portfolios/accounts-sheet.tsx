@@ -30,6 +30,7 @@ import { useCreateAccount, useUpdateAccount } from '@/client/accounts'
 import { useListPortfolios } from '@/client/portfolios'
 import { isNil } from 'lodash'
 import { useListAssets } from '@/client/assets-client'
+import useCustomToast from '@/hooks/use-custom-toast'
 
 export interface AccountResponse {
   id: string
@@ -53,7 +54,7 @@ export interface AccountResponse {
   deletedAt: Date | null
 }
 
-export type PortfolioSheetProps = DialogProps & {
+export type AccountSheetProps = DialogProps & {
   ledgerId: string
   mode: 'create' | 'edit'
   data?: AccountResponse | null
@@ -77,7 +78,7 @@ export const AccountSheet = ({
   onSucess,
   onOpenChange,
   ...others
-}: PortfolioSheetProps) => {
+}: AccountSheetProps) => {
   const intl = useIntl()
   const { id: ledgerId } = useParams<{ id: string }>()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -145,9 +146,26 @@ export const AccountSheet = ({
     organizationId: currentOrganization.id!,
     ledgerId,
     portfolioId: selectedPortfolioId,
-    onSuccess: () => {
+    onSuccess: (data) => {
       onSucess?.()
       onOpenChange?.(false)
+      showSuccess(
+        intl.formatMessage(
+          {
+            id: 'ledgers.toast.accountCreated',
+            defaultMessage: '{accountName} account successfully created'
+          },
+          { accountName: (data as AccountResponse)?.name! }
+        )
+      )
+    },
+    onError: () => {
+      showError(
+        intl.formatMessage({
+          id: 'common.toast.error',
+          defaultMessage: 'Error creating account'
+        })
+      )
     }
   })
 
@@ -156,11 +174,30 @@ export const AccountSheet = ({
     ledgerId,
     accountId: data?.id!,
     portfolioId: data?.portfolioId!,
-    onSuccess: () => {
+    onSuccess: (data) => {
       onSucess?.()
       onOpenChange?.(false)
+      showSuccess(
+        intl.formatMessage(
+          {
+            id: 'ledgers.toast.accountUpdated',
+            defaultMessage: '{accountName} account successfully updated'
+          },
+          { accountName: (data as AccountResponse)?.name! }
+        )
+      )
+    },
+    onError: () => {
+      showError(
+        intl.formatMessage({
+          id: 'common.toast.error',
+          defaultMessage: 'Error updating account'
+        })
+      )
     }
   })
+
+  const { showSuccess, showError } = useCustomToast()
 
   const handleSubmit = (data: FormData) => {
     console.log('data submitted', data)
