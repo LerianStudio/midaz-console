@@ -27,14 +27,6 @@ export class FetchAllAccountsUseCase implements FetchAllAccounts {
     limit: number,
     page: number
   ): Promise<PaginationDto<AccountResponseDto>> {
-    console.log(
-      'Fetching all accounts',
-      organizationId,
-      ledgerId,
-      portfolioId,
-      page,
-      limit
-    )
     const accountsResult: PaginationEntity<AccountEntity> =
       await this.fetchAllAccountsRepository.fetchAll(
         organizationId,
@@ -54,8 +46,6 @@ export class FetchAllAccountsUseCase implements FetchAllAccounts {
       limit: accountsResult.limit,
       page: accountsResult.page
     }
-
-    console.log('Accounts response', accountsResponse)
 
     return accountsResponse
   }

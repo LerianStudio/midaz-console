@@ -22,25 +22,12 @@ export async function GET(
     const page = Number(searchParams.get('page')) || 1
     const organizationId = params.id
 
-    console.log(
-      'fetching portfolios accounts',
-      organizationId,
-      'params.ledgerId',
-      params.ledgerId,
-      'limit',
-      limit,
-      'page',
-      page
-    )
-
     const ledgers = await fetchAllPortfoliosAccountsUseCases.execute(
       organizationId,
       params.ledgerId,
       limit,
       page
     )
-
-    console.log('ledgers fetched', ledgers)
 
     return NextResponse.json(ledgers)
   } catch (error: any) {

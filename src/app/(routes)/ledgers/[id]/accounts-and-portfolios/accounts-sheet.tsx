@@ -86,10 +86,8 @@ export const AccountSheet = ({
   const [metadataEnabled, setMetadataEnabled] = React.useState(
     Object.entries(metadata || {}).length > 0
   )
-  const [newPortfolioName, setNewPortfolioName] = useState<string>('')
   const [selectedPortfolioId, setSelectedPortfolioId] = useState<string>('')
 
-  console.log('rocket', data)
   const { data: rawProductListData, refetch } = useListProducts({
     organizationId: currentOrganization.id!,
     ledgerId
@@ -200,7 +198,6 @@ export const AccountSheet = ({
   const { showSuccess, showError } = useCustomToast()
 
   const handleSubmit = (data: FormData) => {
-    console.log('data submitted', data)
     if (mode === 'create') {
       createAccount({
         ...data,
@@ -371,7 +368,6 @@ export const AccountSheet = ({
                     })}
                     options={portfolioListData}
                     onChange={(value) => {
-                      console.log('value', value)
                       setSelectedPortfolioId(value)
                     }}
                   />

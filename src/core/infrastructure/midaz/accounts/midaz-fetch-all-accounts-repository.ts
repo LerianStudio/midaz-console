@@ -15,16 +15,6 @@ export class MidazFetchAllAccountsRepository
     limit: number,
     page: number
   ): Promise<PaginationEntity<AccountEntity>> {
-    console.log(
-      'Fetching all accounts, respository',
-      organizationId,
-      ledgerId,
-      portfolioId,
-      'limit',
-      limit,
-      'page',
-      page
-    )
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}/accounts?limit=${limit}&page=${page}`
 
     const response = await httpMidazAuthFetch<PaginationEntity<AccountEntity>>({

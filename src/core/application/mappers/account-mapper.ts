@@ -6,7 +6,6 @@ import {
 } from '../dto/account-dto'
 
 export function accountEntityToDto(account: AccountEntity): AccountResponseDto {
-  // console.log('Account entity to dto', account)
   return {
     id: account.id!,
     entityId: account.entityId!,
@@ -38,8 +37,6 @@ export function accountDtoToEntity(dto: CreateAccountDto): AccountEntity {
     type: dto.type,
     assetCode: dto.assetCode,
     status: dto.status,
-    // ledgerId: dto.ledgerId,
-    // organizationId: dto.organizationId,
     parentAccountId: dto.parentAccountId,
     productId: dto.productId,
     metadata: dto.metadata ?? {}

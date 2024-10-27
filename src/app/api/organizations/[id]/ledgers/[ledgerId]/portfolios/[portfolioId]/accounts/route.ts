@@ -61,10 +61,6 @@ export async function POST(
     const organizationId = params.id
     const ledgerId = params.ledgerId
     const portfolioId = params.portfolioId
-    console.log('POST route organizationId', organizationId)
-    console.log('POST route ledgerId', ledgerId)
-    console.log('POST route portfolioId', portfolioId)
-    console.log('POST route body', body)
 
     const account = await createAccountUseCase.execute(
       organizationId,
@@ -72,8 +68,6 @@ export async function POST(
       portfolioId,
       body
     )
-
-    console.log('account testou', account)
 
     return NextResponse.json(account)
   } catch (error: any) {

@@ -38,8 +38,6 @@ export class FetchAllPortfoliosAccountsUseCase
         page
       )
 
-    console.log('portfoliosResult', portfoliosResult)
-
     let portfoliosAccountResponseDTO: PaginationDto<PortfolioViewResponseDTO> =
       {
         items: [],
@@ -47,11 +45,7 @@ export class FetchAllPortfoliosAccountsUseCase
         page: portfoliosResult.page
       }
 
-    console.log('portfoliosAccountResponseDTO', portfoliosAccountResponseDTO)
-
     const portfolioItems = portfoliosResult.items || []
-
-    console.log('portfolioItems', portfolioItems)
 
     portfoliosAccountResponseDTO.items = await Promise.all(
       portfolioItems.map(async (portfolio) => {
@@ -85,8 +79,6 @@ export class FetchAllPortfoliosAccountsUseCase
         return portfolioAccounts
       })
     )
-
-    console.log('portfoliosAccountResponseDTO', portfoliosAccountResponseDTO)
 
     return portfoliosAccountResponseDTO
   }
