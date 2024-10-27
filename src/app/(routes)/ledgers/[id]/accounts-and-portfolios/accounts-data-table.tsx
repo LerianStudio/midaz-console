@@ -150,18 +150,7 @@ const AccountRow: React.FC<AccountRowProps> = ({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              onClick={() =>
-                // handleEdit({
-                //   ...portfolio.original,
-                //   status: {
-                //     ...portfolio.original.status,
-                //     description: portfolio.original.status.description ?? ''
-                //   }
-                // } as PortfolioResponseDto)
-                handleEdit(account.original)
-              }
-            >
+            <DropdownMenuItem onClick={() => handleEdit(account.original)}>
               {intl.formatMessage({
                 id: `common.edit`,
                 defaultMessage: 'Edit'

@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
   SheetFooter,
@@ -40,7 +39,6 @@ import { Label } from '@/components/ui/label'
 import { MetadataField } from '@/components/form/metadata-field'
 import { Switch } from '@/components/ui/switch'
 import { metadata } from '@/schema/metadata'
-import ConfirmationDialog from '@/components/confirmation-dialog'
 import { InputField } from '@/components/form'
 
 export type PortfolioSheetProps = DialogProps & {
@@ -67,19 +65,16 @@ export const PortfolioSheet = ({
 }: PortfolioSheetProps) => {
   const intl = useIntl()
   const { id: ledgerId } = useParams<{ id: string }>()
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
   const { currentOrganization } = useOrganization()
   const [metadataEnabled, setMetadataEnabled] = React.useState(
     Object.entries(metadata || {}).length > 0
   )
-  const [newPortfolioName, setNewPortfolioName] = useState<string>('')
 
   const { mutate: createPortfolio, isPending: createPending } =
     useCreatePortfolio({
       organizationId: currentOrganization.id!,
       ledgerId: ledgerId,
       onSuccess: () => {
-        setIsDialogOpen(true)
         onSucess?.()
         onOpenChange?.(false)
       }
@@ -108,7 +103,6 @@ export const PortfolioSheet = ({
   const handleSubmit = (data: FormData) => {
     if (mode === 'create') {
       createPortfolio(data)
-      setNewPortfolioName(data.name)
     } else if (mode === 'edit') {
       updatePortfolio(data)
     }
@@ -270,27 +264,6 @@ export const PortfolioSheet = ({
           </Form>
         </SheetContent>
       </Sheet>
-
-      <ConfirmationDialog
-        open={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
-        title={intl.formatMessage({
-          id: 'ledgers.dialog.title',
-          defaultMessage: 'Your new portfolio is ready'
-        })}
-        description={intl.formatMessage(
-          {
-            id: 'ledgers.portfolio.dialog.create.description',
-            defaultMessage:
-              'Do you want to add the first account to the {portfolioName} you created? '
-          },
-          {
-            portfolioName: newPortfolioName
-          }
-        )}
-        onConfirm={() => {}}
-        onCancel={() => setIsDialogOpen(false)}
-      />
     </>
   )
 }

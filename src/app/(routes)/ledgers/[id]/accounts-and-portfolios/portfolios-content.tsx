@@ -37,6 +37,7 @@ import { Badge } from '@/components/ui/badge'
 import { capitalizeFirstLetter } from '@/helpers'
 import ConfirmationDialog from '@/components/confirmation-dialog'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useAllPortfoliosAccounts } from '@/client/accounts'
 
 export const PortfoliosContent = () => {
   const intl = useIntl()
@@ -50,6 +51,15 @@ export const PortfoliosContent = () => {
     ledgerId: ledgerId
   })
 
+  const {
+    data: portfoliosData,
+    refetch: refetchAccounts,
+    isLoading: isAccountsLoading
+  } = useAllPortfoliosAccounts({
+    organizationId: currentOrganization.id!,
+    ledgerId: ledgerId
+  })
+
   const { mutate: deletePortfolio, isPending: deletePending } =
     useDeletePortfolio({
       organizationId: currentOrganization.id!,
@@ -57,6 +67,7 @@ export const PortfoliosContent = () => {
       onSuccess: () => {
         handleDialogClose()
         refetch()
+        refetchAccounts()
       }
     })
 
@@ -70,7 +81,7 @@ export const PortfoliosContent = () => {
     useCreateUpdateSheet<PortfolioResponseDto>()
 
   const table = useReactTable({
-    data: data?.items!,
+    data: portfoliosData?.items!,
     columns: [
       {
         accessorKey: 'name'
@@ -118,14 +129,14 @@ export const PortfoliosContent = () => {
             defaultMessage: 'Portfolios'
           })}
           subtitle={
-            data?.items?.length !== undefined
+            portfoliosData?.items?.length !== undefined
               ? intl.formatMessage(
                   {
                     id: `ledgers.portfolio.subtitle`,
                     defaultMessage: '{portfoliosItemsTotal} portfolios founded'
                   },
                   {
-                    portfoliosItemsTotal: data.items.length
+                    portfoliosItemsTotal: portfoliosData.items.length
                   }
                 )
               : undefined
@@ -133,7 +144,7 @@ export const PortfoliosContent = () => {
         />
         <EntityBox.Actions>
           <Button variant="secondary" onClick={handleCreate}>
-            {data?.items?.length ? (
+            {portfoliosData?.items?.length ? (
               <Plus />
             ) : (
               <>
@@ -145,137 +156,141 @@ export const PortfoliosContent = () => {
               </>
             )}
           </Button>
-          {!isNil(data?.items) && data?.items.length > 0 && (
-            <Button
-              variant="white"
-              onClick={() => setIsTableExpanded(!isTableExpanded)}
-            >
-              {isTableExpanded ? <ChevronUp /> : <ChevronDown />}
-            </Button>
-          )}
+          {!isNil(portfoliosData?.items) &&
+            portfoliosData?.items.length > 0 && (
+              <Button
+                variant="white"
+                onClick={() => setIsTableExpanded(!isTableExpanded)}
+              >
+                {isTableExpanded ? <ChevronUp /> : <ChevronDown />}
+              </Button>
+            )}
         </EntityBox.Actions>
       </EntityBox.Root>
 
-      {!isNil(data?.items) && data?.items.length > 0 && isTableExpanded && (
-        <TableContainer>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>
-                  {intl.formatMessage({
-                    id: 'common.id',
-                    defaultMessage: 'ID'
-                  })}
-                </TableHead>
-                <TableHead>
-                  {intl.formatMessage({
-                    id: 'common.name',
-                    defaultMessage: 'Name'
-                  })}
-                </TableHead>
-                <TableHead>
-                  {intl.formatMessage({
-                    id: 'common.metadata',
-                    defaultMessage: 'Metadata'
-                  })}
-                </TableHead>
-                <TableHead>
-                  {intl.formatMessage({
-                    id: 'common.status',
-                    defaultMessage: 'Status'
-                  })}
-                </TableHead>
-                <TableHead className="w-0">
-                  {intl.formatMessage({
-                    id: 'common.actions',
-                    defaultMessage: 'Actions'
-                  })}
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows.map((portfolio) => (
-                <TableRow key={portfolio.id}>
-                  <TableCell>{portfolio.original.id}</TableCell>
-                  <TableCell>{portfolio.original.name}</TableCell>
-                  <TableCell>
-                    {intl.formatMessage(
-                      {
-                        id: 'common.table.metadata',
-                        defaultMessage:
-                          '{number, plural, =0 {-} one {# record} other {# records}}'
-                      },
-                      {
-                        number: Object.entries(
-                          portfolio.original.metadata || []
-                        ).length
-                      }
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <Badge
-                      variant={
-                        portfolio?.original?.status?.code === 'ACTIVE'
-                          ? 'active'
-                          : 'inactive'
-                      }
-                    >
-                      {capitalizeFirstLetter(portfolio.original.status.code)}
-                    </Badge>
-                  </TableCell>
-
-                  <TableCell className="w-0">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="secondary">
-                          <MoreVertical size={16} onClick={() => {}} />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem
-                          onClick={() =>
-                            handleEdit({
-                              ...portfolio.original,
-                              status: {
-                                ...portfolio.original.status,
-                                description:
-                                  portfolio.original.status.description ?? ''
-                              }
-                            } as PortfolioResponseDto)
-                          }
-                        >
-                          {intl.formatMessage({
-                            id: `common.edit`,
-                            defaultMessage: 'Edit'
-                          })}
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                          {intl.formatMessage({
-                            id: `common.inactivate`,
-                            defaultMessage: 'Inactivate'
-                          })}
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          onClick={() => {
-                            handleDialogOpen(portfolio?.original?.id!)
-                          }}
-                        >
-                          {intl.formatMessage({
-                            id: `common.delete`,
-                            defaultMessage: 'Delete'
-                          })}
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
+      {!isNil(portfoliosData?.items) &&
+        portfoliosData?.items.length > 0 &&
+        isTableExpanded && (
+          <TableContainer>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>
+                    {intl.formatMessage({
+                      id: 'common.id',
+                      defaultMessage: 'ID'
+                    })}
+                  </TableHead>
+                  <TableHead>
+                    {intl.formatMessage({
+                      id: 'common.name',
+                      defaultMessage: 'Name'
+                    })}
+                  </TableHead>
+                  <TableHead>
+                    {intl.formatMessage({
+                      id: 'common.metadata',
+                      defaultMessage: 'Metadata'
+                    })}
+                  </TableHead>
+                  <TableHead>
+                    {intl.formatMessage({
+                      id: 'common.accounts',
+                      defaultMessage: 'Accounts'
+                    })}
+                  </TableHead>
+                  <TableHead className="w-0">
+                    {intl.formatMessage({
+                      id: 'common.actions',
+                      defaultMessage: 'Actions'
+                    })}
+                  </TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows.map((portfolio) => (
+                  <TableRow key={portfolio.id}>
+                    <TableCell>{portfolio.original.id}</TableCell>
+                    <TableCell>{portfolio.original.name}</TableCell>
+                    <TableCell>
+                      {intl.formatMessage(
+                        {
+                          id: 'common.table.metadata',
+                          defaultMessage:
+                            '{number, plural, =0 {-} one {# record} other {# records}}'
+                        },
+                        {
+                          number: Object.entries(
+                            portfolio.original.metadata || []
+                          ).length
+                        }
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {intl.formatMessage(
+                        {
+                          id: 'common.table.accounts',
+                          defaultMessage:
+                            '{number, plural, =0 {No accounts} one {# account} other {# accounts}}'
+                        },
+                        {
+                          number: portfolio.original.accounts?.length || 0
+                        }
+                      )}
+                    </TableCell>
+                    <TableCell className="w-0">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="secondary">
+                            <MoreVertical size={16} onClick={() => {}} />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem
+                            onClick={() =>
+                              handleEdit({
+                                ...portfolio.original,
+                                entityId: portfolio.original.id,
+                                status: {
+                                  ...portfolio.original.status,
+                                  description:
+                                    portfolio.original.status.description ?? ''
+                                }
+                              } as PortfolioResponseDto)
+                            }
+                          >
+                            {intl.formatMessage({
+                              id: `common.edit`,
+                              defaultMessage: 'Edit'
+                            })}
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem>
+                            {intl.formatMessage({
+                              id: `common.inactivate`,
+                              defaultMessage: 'Inactivate'
+                            })}
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            onClick={() => {
+                              handleDialogOpen(portfolio?.original?.id!)
+                            }}
+                          >
+                            {intl.formatMessage({
+                              id: `common.delete`,
+                              defaultMessage: 'Delete'
+                            })}
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
     </>
   )
 }
