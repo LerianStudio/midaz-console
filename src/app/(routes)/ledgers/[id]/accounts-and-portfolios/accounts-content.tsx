@@ -177,7 +177,6 @@ export const AccountsContent = () => {
     return getLoadingSkeleton()
   }
 
-  console.log(data)
   return (
     <>
       <ConfirmationDialog

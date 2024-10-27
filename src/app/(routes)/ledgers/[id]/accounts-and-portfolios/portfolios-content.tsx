@@ -34,10 +34,18 @@ import {
   TableRow
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import { capitalizeFirstLetter } from '@/helpers'
+import { capitalizeFirstLetter, truncateString } from '@/helpers'
 import ConfirmationDialog from '@/components/confirmation-dialog'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useAllPortfoliosAccounts } from '@/client/accounts'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from '@/components/ui/tooltip'
+import useCustomToast from '@/hooks/use-custom-toast'
+import { Arrow } from '@radix-ui/react-tooltip'
 
 export const PortfoliosContent = () => {
   const intl = useIntl()
@@ -45,7 +53,7 @@ export const PortfoliosContent = () => {
   const { currentOrganization } = useOrganization()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
   const [isTableExpanded, setIsTableExpanded] = useState(false)
-
+  const { showInfo } = useCustomToast()
   const { data, refetch, isLoading } = useListPortfolios({
     organizationId: currentOrganization.id!,
     ledgerId: ledgerId
@@ -103,6 +111,11 @@ export const PortfoliosContent = () => {
 
   if (isLoading) {
     return getLoadingSkeleton()
+  }
+
+  const handleCopyToClipboard = (value: string, message: string) => {
+    navigator.clipboard.writeText(value)
+    showInfo(message)
   }
 
   return (
@@ -208,85 +221,129 @@ export const PortfoliosContent = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {table.getRowModel().rows.map((portfolio) => (
-                  <TableRow key={portfolio.id}>
-                    <TableCell>{portfolio.original.id}</TableCell>
-                    <TableCell>{portfolio.original.name}</TableCell>
-                    <TableCell>
-                      {intl.formatMessage(
-                        {
-                          id: 'common.table.metadata',
-                          defaultMessage:
-                            '{number, plural, =0 {-} one {# record} other {# records}}'
-                        },
-                        {
-                          number: Object.entries(
-                            portfolio.original.metadata || []
-                          ).length
-                        }
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      {intl.formatMessage(
-                        {
-                          id: 'common.table.accounts',
-                          defaultMessage:
-                            '{number, plural, =0 {No accounts} one {# account} other {# accounts}}'
-                        },
-                        {
-                          number: portfolio.original.accounts?.length || 0
-                        }
-                      )}
-                    </TableCell>
-                    <TableCell className="w-0">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="secondary">
-                            <MoreVertical size={16} onClick={() => {}} />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem
-                            onClick={() =>
-                              handleEdit({
-                                ...portfolio.original,
-                                entityId: portfolio.original.id,
-                                status: {
-                                  ...portfolio.original.status,
-                                  description:
-                                    portfolio.original.status.description ?? ''
-                                }
-                              } as PortfolioResponseDto)
-                            }
-                          >
-                            {intl.formatMessage({
-                              id: `common.edit`,
-                              defaultMessage: 'Edit'
-                            })}
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem>
-                            {intl.formatMessage({
-                              id: `common.inactivate`,
-                              defaultMessage: 'Inactivate'
-                            })}
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem
-                            onClick={() => {
-                              handleDialogOpen(portfolio?.original?.id!)
-                            }}
-                          >
-                            {intl.formatMessage({
-                              id: `common.delete`,
-                              defaultMessage: 'Delete'
-                            })}
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {table.getRowModel().rows.map((portfolio) => {
+                  const displayId =
+                    portfolio.original.id && portfolio.original.id.length > 8
+                      ? `${truncateString(portfolio.original.id, 8)}`
+                      : portfolio.original.id
+
+                  return (
+                    <TableRow key={portfolio.id}>
+                      <TableCell>
+                        <TooltipProvider>
+                          <Tooltip delayDuration={300}>
+                            <TooltipTrigger
+                              onClick={() =>
+                                handleCopyToClipboard(
+                                  portfolio.original.id,
+                                  intl.formatMessage({
+                                    id: 'ledgers.toast.copyId',
+                                    defaultMessage:
+                                      'The id has been copied to your clipboard.'
+                                  })
+                                )
+                              }
+                            >
+                              <p className="text-shadcn-600 underline">
+                                {displayId}
+                              </p>
+                            </TooltipTrigger>
+                            <TooltipContent
+                              className="border-none bg-shadcn-600"
+                              arrowPadding={0}
+                            >
+                              <p className="text-shadcn-400">
+                                {portfolio.original.id}
+                              </p>
+                              <p className="text-center text-white">
+                                {intl.formatMessage({
+                                  id: 'ledgers.columnsTable.tooltipCopyText',
+                                  defaultMessage: 'Click to copy'
+                                })}
+                              </p>
+                              <Arrow height={8} width={15} />
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </TableCell>
+                      <TableCell>{portfolio.original.name}</TableCell>
+                      <TableCell>
+                        {intl.formatMessage(
+                          {
+                            id: 'common.table.metadata',
+                            defaultMessage:
+                              '{number, plural, =0 {-} one {# record} other {# records}}'
+                          },
+                          {
+                            number: Object.entries(
+                              portfolio.original.metadata || []
+                            ).length
+                          }
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {intl.formatMessage(
+                          {
+                            id: 'common.table.accounts',
+                            defaultMessage:
+                              '{number, plural, =0 {No accounts} one {# account} other {# accounts}}'
+                          },
+                          {
+                            number: portfolio.original.accounts?.length || 0
+                          }
+                        )}
+                      </TableCell>
+                      <TableCell className="w-0">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="secondary">
+                              <MoreVertical size={16} onClick={() => {}} />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem
+                              onClick={() =>
+                                handleEdit({
+                                  ...portfolio.original,
+                                  entityId: portfolio.original.id,
+                                  status: {
+                                    ...portfolio.original.status,
+                                    description:
+                                      portfolio.original.status.description ??
+                                      ''
+                                  }
+                                } as PortfolioResponseDto)
+                              }
+                            >
+                              {intl.formatMessage({
+                                id: `common.edit`,
+                                defaultMessage: 'Edit'
+                              })}
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>
+                              {intl.formatMessage({
+                                id: `common.inactivate`,
+                                defaultMessage: 'Inactivate'
+                              })}
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                              onClick={() => {
+                                handleDialogOpen(portfolio?.original?.id!)
+                              }}
+                            >
+                              {intl.formatMessage({
+                                id: `common.delete`,
+                                defaultMessage: 'Delete'
+                              })}
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
               </TableBody>
             </Table>
           </TableContainer>
