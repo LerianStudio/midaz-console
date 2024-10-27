@@ -75,7 +75,6 @@ export const PortfoliosContent = () => {
       onSuccess: () => {
         handleDialogClose()
         refetch()
-        refetchAccounts()
       }
     })
 
@@ -133,7 +132,11 @@ export const PortfoliosContent = () => {
         {...dialogProps}
       />
 
-      <PortfolioSheet ledgerId={ledgerId} onSucess={refetch} {...sheetProps} />
+      <PortfolioSheet
+        ledgerId={ledgerId}
+        onSucess={refetchAccounts}
+        {...sheetProps}
+      />
 
       <EntityBox.Root>
         <EntityBox.Header
