@@ -5,7 +5,10 @@ import { ControllerRenderProps } from 'react-hook-form'
 import { Metadata } from '@/types/metadata-type'
 import { isNil } from 'lodash'
 
-export type MetadataPreviewProps = ControllerRenderProps<Metadata> & {
+export type MetadataPreviewProps = Omit<
+  ControllerRenderProps<Metadata>,
+  'ref'
+> & {
   value: Metadata
   onRemoveMetadata?: (key: string) => void
 }
