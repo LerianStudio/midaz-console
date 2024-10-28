@@ -29,7 +29,7 @@ export const OrganizationSwitcher = () => {
     setOpen(false)
   }
 
-  if (isPending) {
+  if (isPending && !data) {
     return <Skeleton className="h-10 w-10" />
   }
 
@@ -43,7 +43,7 @@ export const OrganizationSwitcher = () => {
           id: 'common.logoAlt',
           defaultMessage: 'Your organization logo'
         })}
-        disabled={data.items.length <= 1}
+        disabled={!data || data.items.length <= 1}
         collapsed={isCollapsed}
       />
       <OrganizationSwitcherContent
@@ -54,7 +54,7 @@ export const OrganizationSwitcher = () => {
           defaultMessage: 'Your organization logo'
         })}
         image={logoUrl || MidazLogo}
-        data={data.items}
+        data={data?.items || []}
         onChange={handleChange}
         onClose={() => setOpen(false)}
       />

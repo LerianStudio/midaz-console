@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Expose the port the app runs on
-EXPOSE 3000
+EXPOSE 8081
 
-# Command to run the application
-ENTRYPOINT npm start
+# Command to run the applications
+ENTRYPOINT ["npm", "start"]

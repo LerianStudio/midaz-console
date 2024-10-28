@@ -29,8 +29,9 @@ const nextConfig = {
       }
     ]
   },
+
   images: {
-    domains: ['localhost']
+    domains: [process.env.MIDAZ_CONSOLE_SERVICE_HOST]
   }
 }
 

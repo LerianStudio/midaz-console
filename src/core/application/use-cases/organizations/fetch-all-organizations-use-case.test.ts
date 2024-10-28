@@ -72,7 +72,10 @@ describe('FetchAllOrganizationsUseCase', () => {
           parentOrganizationId: org.parentOrganizationId,
           address: org.address,
           metadata: org.metadata,
-          status: org.status,
+          status: {
+            code: 'active',
+            description: 'Active'
+          },
           createdAt: org.createdAt!,
           updatedAt: org.updatedAt!
         }
