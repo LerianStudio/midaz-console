@@ -12,7 +12,6 @@ import {
 } from '@/components/ui/table'
 import { Minus, MoreVertical } from 'lucide-react'
 import useCustomToast from '@/hooks/use-custom-toast'
-import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
 import { isNil } from 'lodash'
 import {
   DropdownMenu,
@@ -30,56 +29,34 @@ import {
 import { Arrow } from '@radix-ui/react-tooltip'
 import { truncateString } from '@/helpers'
 import { Button } from '@/components/ui/button'
-
-export interface AccountEntity {
-  id?: string
-  ledgerId?: string
-  organizationId?: string
-  parentAccountId?: string | null
-  portfolioName?: string | null
-  portfolioId?: string | null
-  productId?: string | null
-  entityId?: string | null
-  name: string
-  alias: string
-  type: string
-  assetCode: string
-  status: {
-    code: string
-    description: string
-  }
-  metadata: Record<string, any>
-  createdAt?: Date
-  updatedAt?: Date
-  deletedAt?: Date | null
-}
+import { AccountType } from '@/types/accounts-type'
 
 type AccountsTableProps = {
-  accounts: { items: AccountEntity[] }
+  accounts: { items: AccountType[] }
   isLoading: boolean
   table: {
     getRowModel: () => {
-      rows: { id: string; original: AccountEntity }[]
+      rows: { id: string; original: AccountType }[]
     }
   }
-  handleDialogOpen: (accountEntity: AccountEntity) => void
+  onDelete: (id: string, account: AccountType) => void
   refetch: () => void
   isTableExpanded: boolean
-  handleEdit: (account: AccountEntity) => void
+  handleEdit: (account: AccountType) => void
 }
 
 type AccountRowProps = {
-  account: { id: string; original: AccountEntity }
-  handleEdit: (account: AccountEntity) => void
+  account: { id: string; original: AccountType }
+  handleEdit: (account: AccountType) => void
   handleCopyToClipboard: (value: string, message: string) => void
-  handleDialogOpen: (accountEntity: AccountEntity) => void
+  onDelete: (id: string, account: AccountType) => void
 }
 
 const AccountRow: React.FC<AccountRowProps> = ({
   account,
   handleEdit,
   handleCopyToClipboard,
-  handleDialogOpen
+  onDelete
 }) => {
   const intl = useIntl()
   const id = account.original.id || ''
@@ -88,7 +65,7 @@ const AccountRow: React.FC<AccountRowProps> = ({
       ? `${truncateString(account.original.id, 8)}`
       : account.original.id
   const metadataCount = Object.entries(account.original.metadata || []).length
-  console.log('handleDialogOpen', handleDialogOpen)
+
   return (
     <TableRow key={account.id}>
       <TableCell>
@@ -159,7 +136,7 @@ const AccountRow: React.FC<AccountRowProps> = ({
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {
-                handleDialogOpen(account.original)
+                onDelete(account.original.id!, account.original)
               }}
             >
               {intl.formatMessage({
@@ -177,13 +154,11 @@ const AccountRow: React.FC<AccountRowProps> = ({
 export const AccountsDataTable: React.FC<AccountsTableProps> = ({
   accounts,
   table,
-  handleDialogOpen,
-  refetch,
+  onDelete,
   isTableExpanded,
   handleEdit
 }) => {
   const intl = useIntl()
-  const { handleCreate, sheetProps } = useCreateUpdateSheet<any>()
   const { showInfo } = useCustomToast()
 
   const handleCopyToClipboard = (value: string, message: string) => {
@@ -192,7 +167,7 @@ export const AccountsDataTable: React.FC<AccountsTableProps> = ({
   }
 
   return (
-    <div>
+    <>
       {!isNil(accounts?.items) &&
         accounts?.items.length > 0 &&
         isTableExpanded && (
@@ -245,13 +220,13 @@ export const AccountsDataTable: React.FC<AccountsTableProps> = ({
                     account={account}
                     handleEdit={handleEdit}
                     handleCopyToClipboard={handleCopyToClipboard}
-                    handleDialogOpen={handleDialogOpen}
+                    onDelete={onDelete}
                   />
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
         )}
-    </div>
+    </>
   )
 }

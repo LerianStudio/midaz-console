@@ -29,12 +29,12 @@ import { isNil } from 'lodash'
 import { useListAssets } from '@/client/assets-client'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { accountSchema } from '@/schema/account'
-import { AccountResponse } from '@/types/accounts-type'
+import { AccountType } from '@/types/accounts-type'
 
 export type AccountSheetProps = DialogProps & {
   ledgerId: string
   mode: 'create' | 'edit'
-  data?: AccountResponse | null
+  data?: AccountType | null
   onSucess?: () => void
 }
 
@@ -129,7 +129,7 @@ export const AccountSheet = ({
             id: 'ledgers.toast.accountCreated',
             defaultMessage: '{accountName} account successfully created'
           },
-          { accountName: (data as AccountResponse)?.name! }
+          { accountName: (data as AccountType)?.name! }
         )
       )
     },
@@ -157,7 +157,7 @@ export const AccountSheet = ({
             id: 'ledgers.toast.accountUpdated',
             defaultMessage: '{accountName} account successfully updated'
           },
-          { accountName: (data as AccountResponse)?.name! }
+          { accountName: (data as AccountType)?.name! }
         )
       )
     },
@@ -263,10 +263,6 @@ export const AccountSheet = ({
                   id: 'ledgers.account.field.name.tooltip',
                   defaultMessage: 'Enter the name of the account'
                 })}
-                placeholder={intl.formatMessage({
-                  id: 'ledgers.account.field.name.placeholder',
-                  defaultMessage: 'Enter account name'
-                })}
               />
 
               <FormInputWithTooltip
@@ -280,10 +276,6 @@ export const AccountSheet = ({
                   id: 'ledgers.account.field.alias.tooltip',
                   defaultMessage:
                     'Nickname (@) for identifying the Account holder'
-                })}
-                placeholder={intl.formatMessage({
-                  id: 'ledgers.account.field.alias.placeholder',
-                  defaultMessage: 'Enter account alias'
                 })}
               />
 
@@ -299,10 +291,6 @@ export const AccountSheet = ({
                     id: 'ledgers.account.field.entityId.tooltip',
                     defaultMessage:
                       'Identification number (EntityId) of the Account holder'
-                  })}
-                  placeholder={intl.formatMessage({
-                    id: 'ledgers.account.field.entityId.placeholder',
-                    defaultMessage: 'Enter entity ID'
                   })}
                 />
               )}
@@ -320,10 +308,6 @@ export const AccountSheet = ({
                       defaultMessage:
                         'Asset or currency that will be operated in this Account using balance'
                     })}
-                    placeholder={intl.formatMessage({
-                      id: 'ledgers.account.field.asset.placeholder',
-                      defaultMessage: 'Select an asset'
-                    })}
                     options={assetListData}
                   />
 
@@ -337,10 +321,6 @@ export const AccountSheet = ({
                     tooltipText={intl.formatMessage({
                       id: 'ledgers.account.field.portfolio.tooltip',
                       defaultMessage: 'Portfolio that will receive this account'
-                    })}
-                    placeholder={intl.formatMessage({
-                      id: 'ledgers.account.field.portfolio.placeholder',
-                      defaultMessage: 'Select a portfolio'
                     })}
                     options={portfolioListData}
                     onChange={(value) => {
@@ -361,10 +341,6 @@ export const AccountSheet = ({
                   id: 'ledgers.account.field.product.tooltip',
                   defaultMessage:
                     'Category (cluster) of clients with specific characteristics'
-                })}
-                placeholder={intl.formatMessage({
-                  id: 'ledgers.account.field.product.placeholder',
-                  defaultMessage: 'Select a product'
                 })}
                 options={productListData}
               />

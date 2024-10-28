@@ -24,9 +24,9 @@ import { Control, FieldValues, Path } from 'react-hook-form'
 interface FormSelectWithTooltipProps<T extends FieldValues> {
   control: Control<T>
   name: Path<T>
-  label: string
-  tooltipText: string
-  placeholder: string
+  label?: string
+  tooltipText?: string
+  placeholder?: string
   options: Array<{ value: string; label: string }>
   onChange?: (value: string) => void
 }
