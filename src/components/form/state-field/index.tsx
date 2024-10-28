@@ -19,7 +19,7 @@ import {
 import { SelectProps } from '@radix-ui/react-select'
 
 type StateSelectProps = SelectProps &
-  ControllerRenderProps & {
+  Omit<ControllerRenderProps, 'ref'> & {
     countryName: string
     placeholder?: string
   }
