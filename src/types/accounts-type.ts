@@ -1,4 +1,4 @@
-export interface AccountResponse {
+export type AccountType = {
   id: string
   ledgerId: string
   assetCode: string
@@ -9,6 +9,7 @@ export interface AccountResponse {
   entityId: string
   parentAccountId: string
   portfolioId: string
+  portfolioName?: string
   productId: string
   status: {
     code: string

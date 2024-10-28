@@ -15,12 +15,12 @@ import {
 } from '@tanstack/react-table'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import ConfirmationDialog from '@/components/confirmation-dialog'
-import { AccountSheet } from './accounts-sheet'
 import { useAllPortfoliosAccounts, useDeleteAccount } from '@/client/accounts'
 import { Skeleton } from '@/components/ui/skeleton'
-import { AccountEntity, AccountsDataTable } from './accounts-data-table'
 import useCustomToast from '@/hooks/use-custom-toast'
-import { AccountResponse } from '@/types/accounts-type'
+import { AccountType } from '@/types/accounts-type'
+import { AccountSheet } from './accounts-sheet'
+import { AccountsDataTable } from './accounts-data-table'
 
 export const AccountsContent = () => {
   const intl = useIntl()
@@ -28,9 +28,6 @@ export const AccountsContent = () => {
   const { currentOrganization } = useOrganization()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
   const [isTableExpanded, setIsTableExpanded] = useState(false)
-  const [selectedAccount, setSelectedAccount] = useState<AccountEntity | null>(
-    null
-  )
 
   const { data, refetch, isLoading } = useListPortfolios({
     organizationId: currentOrganization.id!,
@@ -62,6 +59,15 @@ export const AccountsContent = () => {
 
   const { showSuccess, showError } = useCustomToast()
 
+  const {
+    handleDialogOpen,
+    dialogProps,
+    handleDialogClose,
+    data: selectedAccount
+  } = useConfirmDialog<AccountType>({
+    onConfirm: () => deleteAccount(selectedAccount)
+  })
+
   const { mutate: deleteAccount, isPending: deleteAccountPending } =
     useDeleteAccount({
       organizationId: currentOrganization.id!,
@@ -77,7 +83,7 @@ export const AccountsContent = () => {
               id: 'ledgers.toast.accountDeleted',
               defaultMessage: '{accountName} account successfully deleted'
             },
-            { accountName: (selectedAccount as AccountResponse)?.name! }
+            { accountName: (selectedAccount as AccountType)?.name! }
           )
         )
       },
@@ -91,34 +97,14 @@ export const AccountsContent = () => {
       }
     })
 
-  const handleDeleteAccount = useCallback(() => {
-    if (selectedAccount) {
-      deleteAccount(selectedAccount)
-    }
-  }, [deleteAccount, selectedAccount])
-
-  const { handleDialogOpen, dialogProps, handleDialogClose } = useConfirmDialog(
-    {
-      onConfirm: handleDeleteAccount
-    }
-  )
-
-  const handleAccountDialogOpen = useCallback(
-    (accountEntity: AccountEntity) => {
-      setSelectedAccount(accountEntity)
-      handleDialogOpen(accountEntity.id!)
-    },
-    [handleDialogOpen, setSelectedAccount]
-  )
-
   const {
     handleCreate,
     handleEdit: handleEditOriginal,
     sheetProps
-  } = useCreateUpdateSheet<AccountResponse>()
+  } = useCreateUpdateSheet<AccountType>()
 
-  const handleEdit = (account: AccountEntity) => {
-    handleEditOriginal(account as unknown as AccountResponse)
+  const handleEdit = (account: AccountType) => {
+    handleEditOriginal(account as unknown as AccountType)
   }
 
   const table = useReactTable({
@@ -219,7 +205,7 @@ export const AccountsContent = () => {
           isLoading={isAccountsLoading}
           table={table}
           handleEdit={handleEdit}
-          handleDialogOpen={handleAccountDialogOpen}
+          onDelete={handleDialogOpen}
           refetch={refetch}
           isTableExpanded={isTableExpanded}
         />
