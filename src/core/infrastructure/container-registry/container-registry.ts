@@ -163,6 +163,41 @@ import {
   FetchAllLedgersAssetsUseCase
 } from '@/core/application/use-cases/ledgers-assets/fetch-ledger-assets-use-case'
 
+import { FetchAllAccountsRepository } from '@/core/domain/repositories/accounts/fetch-all-accounts-repository'
+import { MidazFetchAllAccountsRepository } from '../midaz/accounts/midaz-fetch-all-accounts-repository'
+import {
+  FetchAllAccounts,
+  FetchAllAccountsUseCase
+} from '@/core/application/use-cases/accounts/fetch-all-account-use-case'
+import { CreateAccountsRepository } from '@/core/domain/repositories/accounts/create-accounts-repository'
+import {
+  CreateAccount,
+  CreateAccountUseCase
+} from '@/core/application/use-cases/accounts/create-account-use-case'
+import { MidazCreateAccountRepository } from '../midaz/accounts/midaz-create-accounts-repository'
+import { FetchAccountByIdRepository } from '@/core/domain/repositories/accounts/fetch-account-by-id-repository'
+import { MidazFetchAccountByIdRepository } from '../midaz/accounts/midaz-fetch-account-by-id-repository'
+import {
+  FetchAccountById,
+  FetchAccountByIdUseCase
+} from '@/core/application/use-cases/accounts/fetch-account-by-id-use-case'
+import { UpdateAccountsRepository } from '@/core/domain/repositories/accounts/update-accounts-repository'
+import { MidazUpdateAccountsRepository } from '../midaz/accounts/midaz-update-accounts-repository'
+import {
+  UpdateAccount,
+  UpdateAccountUseCase
+} from '@/core/application/use-cases/accounts/update-account-use-case'
+import { DeleteAccountsRepository } from '@/core/domain/repositories/accounts/delete-accounts-repository'
+import { MidazDeleteAccountsRepository } from '../midaz/accounts/midaz-delete-accounts-repository'
+import {
+  DeleteAccount,
+  DeleteAccountUseCase
+} from '@/core/application/use-cases/accounts/delete-account-use-case'
+import {
+  FetchAllPortfoliosAccounts,
+  FetchAllPortfoliosAccountsUseCase
+} from '@/core/application/use-cases/portfolios-accounts/fetch-portfolios-accounts-use-case'
+
 export const Registry = {
   AuthLoginRepository: Symbol.for('AuthLoginRepository'),
   AuthLoginUseCase: Symbol.for('AuthLoginUseCase'),
@@ -250,7 +285,29 @@ export const Registry = {
   DeletePortfolioRepository: Symbol.for('DeletePortfolioRepository'),
 
   FetchPortfolioByIdUseCase: Symbol.for('FetchPortfolioByIdUseCase'),
-  FetchPortfolioByIdRepository: Symbol.for('FetchPortfolioByIdRepository')
+  FetchPortfolioByIdRepository: Symbol.for('FetchPortfolioByIdRepository'),
+
+  // Account Symbols
+  FetchAccountSymbolUseCase: Symbol.for('FetchAccountSymbolUseCase'),
+  FetchAccountSymbolRepository: Symbol.for('FetchAccountSymbolRepository'),
+
+  // Accounts
+  FetchAllAccountsUseCase: Symbol.for('FetchAllAccountsUseCase'),
+  FetchAllAccountsRepository: Symbol.for('FetchAllAccountsRepository'),
+  CreateAccountsRepository: Symbol.for('CreateAccountsRepository'),
+  CreateAccountUseCase: Symbol.for('CreateAccountUseCase'),
+  CreateAccountSymbolRepository: Symbol.for('CreateAccountSymbolRepository'),
+  FetchAccountByIdRepository: Symbol.for('FetchAccountByIdRepository'),
+  FetchAccountByIdUseCase: Symbol.for('FetchAccountByIdUseCase'),
+  UpdateAccountRepository: Symbol.for('UpdateAccountRepository'),
+  UpdateAccountUseCase: Symbol.for('UpdateAccountUseCase'),
+  DeleteAccountRepository: Symbol.for('DeleteAccountRepository'),
+  DeleteAccountUseCase: Symbol.for('DeleteAccountUseCase'),
+
+  // Portfolio-Accounts
+  FetchAllPortfoliosAccountsUseCase: Symbol.for(
+    'FetchAllPortfoliosAccountsUseCase'
+  )
 }
 
 export const container = new Container()
@@ -606,5 +663,80 @@ container
   .toDynamicValue((context) => {
     return new FetchPortfolioByIdUseCase(
       context.container.get(Registry.FetchPortfolioByIdRepository)
+    )
+  })
+
+// Accounts
+
+container
+  .bind<FetchAllAccountsRepository>(Registry.FetchAllAccountsRepository)
+  .toConstantValue(new MidazFetchAllAccountsRepository())
+
+container
+  .bind<FetchAllAccounts>(Registry.FetchAllAccountsUseCase)
+  .toDynamicValue((context) => {
+    return new FetchAllAccountsUseCase(
+      context.container.get(Registry.FetchAllAccountsRepository)
+    )
+  })
+
+container
+  .bind<CreateAccountsRepository>(Registry.CreateAccountsRepository)
+  .toConstantValue(new MidazCreateAccountRepository())
+
+container
+  .bind<CreateAccount>(Registry.CreateAccountUseCase)
+  .toDynamicValue((context) => {
+    return new CreateAccountUseCase(
+      context.container.get(Registry.CreateAccountsRepository)
+    )
+  })
+
+// Fetch Account By Id
+container
+  .bind<FetchAccountByIdRepository>(Registry.FetchAccountByIdRepository)
+  .toConstantValue(new MidazFetchAccountByIdRepository())
+
+container
+  .bind<FetchAccountById>(Registry.FetchAccountByIdUseCase)
+  .toDynamicValue((context) => {
+    return new FetchAccountByIdUseCase(
+      context.container.get(Registry.FetchAccountByIdRepository)
+    )
+  })
+
+// Update Account
+container
+  .bind<UpdateAccountsRepository>(Registry.UpdateAccountRepository)
+  .toConstantValue(new MidazUpdateAccountsRepository())
+
+container
+  .bind<UpdateAccount>(Registry.UpdateAccountUseCase)
+  .toDynamicValue((context) => {
+    return new UpdateAccountUseCase(
+      context.container.get(Registry.UpdateAccountRepository)
+    )
+  })
+
+// Delete Account
+container
+  .bind<DeleteAccountsRepository>(Registry.DeleteAccountRepository)
+  .toConstantValue(new MidazDeleteAccountsRepository())
+
+container
+  .bind<DeleteAccount>(Registry.DeleteAccountUseCase)
+  .toDynamicValue((context) => {
+    return new DeleteAccountUseCase(
+      context.container.get(Registry.DeleteAccountRepository)
+    )
+  })
+
+//Portfolio-Accounts
+container
+  .bind<FetchAllPortfoliosAccounts>(Registry.FetchAllPortfoliosAccountsUseCase)
+  .toDynamicValue((context) => {
+    return new FetchAllPortfoliosAccountsUseCase(
+      context.container.get(Registry.FetchAllPortfoliosRepository),
+      context.container.get(Registry.FetchAllAccountsRepository)
     )
   })

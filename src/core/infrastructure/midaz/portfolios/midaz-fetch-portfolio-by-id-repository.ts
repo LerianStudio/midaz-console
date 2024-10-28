@@ -1,6 +1,5 @@
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { FetchPortfolioByIdRepository } from '@/core/domain/repositories/portfolios/fetch-portfolio-by-id-repository'
-import { handleMidazError } from '../../utils/midaz-error-handler'
 import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
 
 export class MidazFetchPortfolioByIdRepository
