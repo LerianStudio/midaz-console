@@ -11,12 +11,14 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
+import { cn } from '@/lib/utils'
 import { Control } from 'react-hook-form'
 
 export type SelectFieldProps = React.PropsWithChildren & {
   name: string
   label?: string
   placeholder?: string
+  disabled?: boolean
   control: Control<any>
   required?: boolean
 }
@@ -25,6 +27,7 @@ export const SelectField = ({
   label,
   required,
   placeholder,
+  disabled,
   children,
   ...others
 }: SelectFieldProps) => {
@@ -36,7 +39,10 @@ export const SelectField = ({
           {label && <FormLabel>{label}</FormLabel>}
           <Select onValueChange={onChange} {...fieldOthers}>
             <FormControl>
-              <SelectTrigger>
+              <SelectTrigger
+                disabled={disabled}
+                className={cn(disabled && 'bg-shadcn-100')}
+              >
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>

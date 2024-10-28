@@ -6,7 +6,6 @@ import { PageHeader } from '@/components/page-header'
 import useCustomToast from '@/hooks/use-custom-toast'
 import React, { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
-import { OverviewTabContent } from './overview-tab-content'
 import { useFormState } from '@/context/form-details-context'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { useIntl } from 'react-intl'
@@ -14,11 +13,12 @@ import { AccountsPortfoliosTabContent } from './accounts-and-portfolios/accounts
 import { ProductsTabContent } from './products/products-tab-content'
 import { useTabs } from '@/hooks/use-tabs'
 import { getBreadcrumbPaths } from '@/components/breadcrumb/get-breadcrumb-paths'
-import { AssetsTabContent } from './assets/assets-tab-content'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import { ILedgerType } from '@/types/ledgers-type'
 import { useUpdateLedger } from '@/client/ledger-client'
 import { LedgerDetailsSkeleton } from './ledger-details-skeleton'
+import { OverviewTabContent } from './overview/overview-tab-content'
+import { AssetsTabContent } from './assets/assets-tab-content'
 
 const TAB_VALUES = {
   OVERVIEW: 'overview',
@@ -60,7 +60,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
       showError(
         intl.formatMessage({
           id: 'common.toast.error',
-          defaultMessage: 'Error saving changes.'
+          defaultMessage: 'Error saving changes'
         })
       )
     }
@@ -137,9 +137,6 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
           >
             <PageHeader.InfoTooltip subtitle={data.id ?? ''} />
           </PageHeader.InfoTitle>
-          <PageHeader.ActionButtons>
-            <PageHeader.StatusButton />
-          </PageHeader.ActionButtons>
         </div>
       </PageHeader.Root>
 
