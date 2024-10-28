@@ -210,13 +210,6 @@ export const ProductsTabContent = () => {
                           })}
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                          {intl.formatMessage({
-                            id: `common.inactivate`,
-                            defaultMessage: 'Inactivate'
-                          })}
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
                         <DropdownMenuItem
                           onClick={() => handleDialogOpen(product.original.id)}
                         >

@@ -202,13 +202,6 @@ export const OrganizationsTabContent = () => {
                           })}
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                          {intl.formatMessage({
-                            id: `common.inactivate`,
-                            defaultMessage: 'Inactivate'
-                          })}
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
                         <DropdownMenuItem
                           onClick={() => handleDialogOpen(organization.id!)}
                         >
