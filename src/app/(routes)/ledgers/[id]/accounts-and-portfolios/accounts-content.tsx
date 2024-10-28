@@ -90,7 +90,7 @@ export const AccountsContent = () => {
       onError: () => {
         showError(
           intl.formatMessage({
-            id: 'common.toast.error',
+            id: 'accounts.toast.delete.error',
             defaultMessage: 'Error deleting account'
           })
         )

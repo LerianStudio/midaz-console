@@ -9,7 +9,7 @@ import { ControllerRenderProps } from 'react-hook-form'
 
 const defaultValues = { key: '', value: '' }
 
-export type MetadataInputProps = ControllerRenderProps & {
+export type MetadataInputProps = Omit<ControllerRenderProps, 'ref'> & {
   onAddMetadata?: (metadata: { key: string; value: string }) => void
 }
 

@@ -15,7 +15,7 @@ import { Control, ControllerRenderProps } from 'react-hook-form'
 import { useIntl } from 'react-intl'
 import { isNil } from 'lodash'
 
-type AvatarFieldProps = ControllerRenderProps
+type AvatarFieldProps = Omit<ControllerRenderProps, 'ref'>
 
 export const AvatarField = React.forwardRef<unknown, AvatarFieldProps>(
   ({ name, value, onChange }: AvatarFieldProps, ref) => {

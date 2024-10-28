@@ -6,10 +6,12 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { HTMLInputTypeAttribute } from 'react'
 import { Control } from 'react-hook-form'
 
 export type InputFieldProps = {
   name: string
+  type?: HTMLInputTypeAttribute
   label?: string
   placeholder?: string
   control: Control<any>
@@ -18,6 +20,7 @@ export type InputFieldProps = {
 }
 
 export const InputField = ({
+  type,
   label,
   placeholder,
   required,
@@ -30,7 +33,7 @@ export const InputField = ({
         <FormItem required={required}>
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
-            <Input placeholder={placeholder} {...field} />
+            <Input type={type} placeholder={placeholder} {...field} />
           </FormControl>
           <FormMessage />
         </FormItem>
