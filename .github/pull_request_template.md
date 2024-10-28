@@ -1,18 +1,31 @@
-#### What's this PR do?
+# Midaz Console Pull Request Checklist
 
-#### Where should the reviewer start?
+## Pull Request Type
 
-#### How should this be manually tested?
+[//]: # 'Check the appropriate box for the type of pull request.'
 
-#### Any background context you want to provide?
+- [ ] UI
+- [ ] Core (Business Lógic)
+- [ ] Security
+- [ ] internationalization
+- [ ] Pipeline
+- [ ] Documentation
 
-#### What are the relevant Jira tickets?
+## Checklist
 
-#### Screenshots (if appropriate)
+Please check each item after it's completed.
 
-#### Definition of Done:
+- [ ] I have tested these changes locally.
+- [ ] I have updated the documentation accordingly.
+- [ ] I have added necessary comments to the code, especially in complex areas.
+- [ ] I have ensured that my changes adhere to the project's coding standards.
+- [ ] I have checked for any potential security issues.
+- [ ] I have ensured that all tests pass.
+- [ ] I have updated the version appropriately (if applicable).
+- [ ] I have confirmed this code is ready for review.
 
-- [ ] Is there appropriate test coverage?
-- [ ] Will this feature require a new piece of infrastructure be implemented?
-- [ ] Does this PR require a validation from the infrastructure team?
-- [ ] Is there appropriate logging included?
+## Additional Notes
+
+[//]: # 'Add any additional notes, context, or explanation that could be helpful for reviewers.'
+
+## Obs: Please, always remember to target your PR to develop branch instead of main.

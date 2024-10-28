@@ -1,3 +1,5 @@
+import { hostname } from 'os'
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   logging: {
@@ -31,7 +33,13 @@ const nextConfig = {
   },
 
   images: {
-    domains: [process.env.MIDAZ_CONSOLE_SERVICE_HOST]
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: process.env.MIDAZ_CONSOLE_SERVICE_HOST,
+        pathname: '**'
+      }
+    ]
   }
 }
 
