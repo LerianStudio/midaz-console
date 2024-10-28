@@ -51,12 +51,8 @@ Open [http://localhost:8081](http://localhost:8081) with your browser to confirm
 Execute npm script to prepare and deploy application on docker
 
 ```bash
-npm run docker-compose;
+npm run docker-compose
 ```
-
-## Run Storybook
-
-Comming soon...
 
 ## Community & Support
 
