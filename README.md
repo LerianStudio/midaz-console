@@ -2,10 +2,8 @@
 
 <div align="center">
 
-[![Latest Release](https://img.shields.io/github/v/release/LerianStudio/midaz?include_prereleases)](https://github.com/LerianStudio/midaz/releases)
-
-[![ESLint Report](https://img.shields.io/badge/eslint%20report-%E2%9C%85-brightgreen?logo=eslint)](https://github.com/LerianStudio/midaz/releases)
-
+[![Latest Release](https://img.shields.io/github/v/release/LerianStudio/midaz?include_prereleases)](https://github.com/LerianStudio/midaz-console/releases)
+[![ESLint Report](https://img.shields.io/badge/eslint%20report-%E2%9C%85-brightgreen?logo=eslint)](https://github.com/LerianStudio/midaz-console/blob/ESLintReport)
 [![Discord](https://img.shields.io/badge/Discord-Lerian%20Studio-%237289da.svg?logo=discord)](https://discord.gg/DnhqKwkGv3)
 
 </div>
@@ -32,6 +30,12 @@ To begin using Midaz console, you need to had a Midaz Open-Source Ledger running
 ## Steps to run the application locally
 
 :warning: Before proceeding, please ensure that the [Midaz Open-Source Ledger](https://github.com/LerianStudio/midaz) environment is active and available.
+
+Clone midaz console repository
+
+```bash
+git clone https://github.com/LerianStudio/midaz-console.git
+```
 
 Run the commands below to configure and start the local console stack.
 
