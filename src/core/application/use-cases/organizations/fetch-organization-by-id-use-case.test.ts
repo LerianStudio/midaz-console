@@ -3,7 +3,7 @@ import { FetchOrganizationByIdRepository } from '@/core/domain/repositories/orga
 import { OrganizationResponseDto } from '../../dto/organization-response-dto'
 import { organizationEntityToDto } from '../../mappers/organization-mapper'
 
-jest.mock('../../mappers/oganization-mapper')
+jest.mock('../../mappers/organization-mapper')
 
 describe('FetchOrganizationByIdUseCase', () => {
   let fetchOrganizationByIdRepository: FetchOrganizationByIdRepository

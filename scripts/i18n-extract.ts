@@ -84,7 +84,7 @@ async function extractLocale(locale: string, data: string) {
 
 async function main() {
   // Get the list of files
-  const paths = await glob('./src/**/*.{js,ts,tsx}')
+  const paths = await glob('./src/**/!(*.d).{js,ts,tsx}')
 
   // Creates output path in case it doesn't exists
   await mkdir(outputPath, { recursive: true })

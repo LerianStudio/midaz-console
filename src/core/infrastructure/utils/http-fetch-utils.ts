@@ -22,7 +22,7 @@ export async function httpMidazAuthFetch<T>(
   httpFetchOptions: HttpFetchOptions
 ): Promise<T> {
   const session = await getServerSession(nextAuthCasdoorOptions)
-  const { access_token } = session?.user as any
+  const { access_token } = session?.user
 
   const headers = {
     'Content-Type': 'application/json',

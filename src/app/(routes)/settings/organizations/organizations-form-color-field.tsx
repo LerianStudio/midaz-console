@@ -6,10 +6,10 @@ import { FormDescription, FormField, FormItem } from '@/components/ui/form'
 import { isNil } from 'lodash'
 import { InputWithIcon } from '@/components/ui/input-with-icon'
 
-type ColorInputProps = ControllerRenderProps
+type ColorInputProps = Omit<ControllerRenderProps, 'ref'>
 
-const ColorInput = React.forwardRef<unknown, ColorInputProps>(
-  ({ name, value, onChange }: ColorInputProps, ref) => {
+const ColorInput = React.forwardRef<HTMLInputElement, ColorInputProps>(
+  ({ name, value, onChange, ...others }: ColorInputProps, ref) => {
     const [open, setOpen] = React.useState(false)
 
     const handleInputChange = (event: any) => {
@@ -39,6 +39,7 @@ const ColorInput = React.forwardRef<unknown, ColorInputProps>(
             value={value?.replace('#', '')}
             onChange={handleInputChange}
             disabled
+            {...others}
           />
         </div>
 
