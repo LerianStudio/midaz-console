@@ -88,7 +88,7 @@ const AccountRow: React.FC<AccountRowProps> = ({
       ? `${truncateString(account.original.id, 8)}`
       : account.original.id
   const metadataCount = Object.entries(account.original.metadata || []).length
-
+  console.log('handleDialogOpen', handleDialogOpen)
   return (
     <TableRow key={account.id}>
       <TableCell>
@@ -225,11 +225,10 @@ export const AccountsDataTable: React.FC<AccountsTableProps> = ({
                     })}
                   </TableHead>
                   <TableHead>
-                    {/* {intl.formatMessage({
-                    id: 'common.metadata',
-                    defaultMessage: 'Portfolio'
-                  })} */}
-                    Portfolio
+                    {intl.formatMessage({
+                      id: 'common.portfolio',
+                      defaultMessage: 'Portfolio'
+                    })}
                   </TableHead>
                   <TableHead className="w-0">
                     {intl.formatMessage({
@@ -253,8 +252,6 @@ export const AccountsDataTable: React.FC<AccountsTableProps> = ({
             </Table>
           </TableContainer>
         )}
-
-      {/* <AccountsSheet onSuccess={refetch} {...sheetProps} /> */}
     </div>
   )
 }

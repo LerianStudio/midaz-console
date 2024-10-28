@@ -15,7 +15,6 @@ import {
   useReactTable
 } from '@tanstack/react-table'
 import React, { useState } from 'react'
-
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import {
   DropdownMenu,
@@ -33,8 +32,7 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
-import { Badge } from '@/components/ui/badge'
-import { capitalizeFirstLetter, truncateString } from '@/helpers'
+import { truncateString } from '@/helpers'
 import ConfirmationDialog from '@/components/confirmation-dialog'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useAllPortfoliosAccounts } from '@/client/accounts'
@@ -54,15 +52,11 @@ export const PortfoliosContent = () => {
   const [columnFilters, setColumnFilters] = React.useState<any>([])
   const [isTableExpanded, setIsTableExpanded] = useState(false)
   const { showInfo } = useCustomToast()
-  const { data, refetch, isLoading } = useListPortfolios({
-    organizationId: currentOrganization.id!,
-    ledgerId: ledgerId
-  })
 
   const {
     data: portfoliosData,
-    refetch: refetchAccounts,
-    isLoading: isAccountsLoading
+    refetch,
+    isLoading
   } = useAllPortfoliosAccounts({
     organizationId: currentOrganization.id!,
     ledgerId: ledgerId
@@ -102,16 +96,9 @@ export const PortfoliosContent = () => {
     }
   })
 
-  const getLoadingSkeleton = () => (
-    <React.Fragment>
-      <Skeleton className="h-[84px] w-full bg-zinc-200" />
-    </React.Fragment>
-  )
-
   if (isLoading) {
-    return getLoadingSkeleton()
+    return <Skeleton className="h-[84px] w-full bg-zinc-200" />
   }
-
   const handleCopyToClipboard = (value: string, message: string) => {
     navigator.clipboard.writeText(value)
     showInfo(message)
@@ -132,11 +119,7 @@ export const PortfoliosContent = () => {
         {...dialogProps}
       />
 
-      <PortfolioSheet
-        ledgerId={ledgerId}
-        onSucess={refetchAccounts}
-        {...sheetProps}
-      />
+      <PortfolioSheet ledgerId={ledgerId} onSucess={refetch} {...sheetProps} />
 
       <EntityBox.Root>
         <EntityBox.Header
@@ -273,6 +256,18 @@ export const PortfoliosContent = () => {
                       <TableCell>
                         {intl.formatMessage(
                           {
+                            id: 'common.table.accounts',
+                            defaultMessage:
+                              '{number, plural, =0 {No accounts} one {# account} other {# accounts}}'
+                          },
+                          {
+                            number: portfolio.original.accounts?.length || 0
+                          }
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {intl.formatMessage(
+                          {
                             id: 'common.table.metadata',
                             defaultMessage:
                               '{number, plural, =0 {-} one {# record} other {# records}}'
@@ -284,18 +279,7 @@ export const PortfoliosContent = () => {
                           }
                         )}
                       </TableCell>
-                      <TableCell>
-                        {intl.formatMessage(
-                          {
-                            id: 'common.table.accounts',
-                            defaultMessage:
-                              '{number, plural, =0 {No accounts} one {# account} other {# accounts}}'
-                          },
-                          {
-                            number: portfolio.original.accounts?.length || 0
-                          }
-                        )}
-                      </TableCell>
+
                       <TableCell className="w-0">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
@@ -321,13 +305,6 @@ export const PortfoliosContent = () => {
                               {intl.formatMessage({
                                 id: `common.edit`,
                                 defaultMessage: 'Edit'
-                              })}
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem>
-                              {intl.formatMessage({
-                                id: `common.inactivate`,
-                                defaultMessage: 'Inactivate'
                               })}
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />

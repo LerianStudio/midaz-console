@@ -4,7 +4,7 @@ import { ChevronDown, ChevronUp, Plus } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { EntityBox } from '@/components/entity-box'
 import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
-import { useDeletePortfolio, useListPortfolios } from '@/client/portfolios'
+import { useListPortfolios } from '@/client/portfolios'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import { useIntl } from 'react-intl'
 import { isNil } from 'lodash'
@@ -20,28 +20,7 @@ import { useAllPortfoliosAccounts, useDeleteAccount } from '@/client/accounts'
 import { Skeleton } from '@/components/ui/skeleton'
 import { AccountEntity, AccountsDataTable } from './accounts-data-table'
 import useCustomToast from '@/hooks/use-custom-toast'
-
-export interface AccountResponse {
-  id: string
-  ledgerId: string
-  assetCode: string
-  organizationId: string
-  name: string
-  alias: string
-  type: string
-  entityId: string
-  parentAccountId: string
-  portfolioId: string
-  productId: string
-  status: {
-    code: string
-    description: string
-  }
-  metadata: Record<string, any>
-  createdAt: Date
-  updatedAt: Date
-  deletedAt: Date | null
-}
+import { AccountResponse } from '@/types/accounts-type'
 
 export const AccountsContent = () => {
   const intl = useIntl()
@@ -118,25 +97,18 @@ export const AccountsContent = () => {
     }
   }, [deleteAccount, selectedAccount])
 
-  const {
-    handleDialogOpen: originalHandleDialogOpen,
-    dialogProps,
-    handleDialogClose
-  } = useConfirmDialog({
-    onConfirm: handleDeleteAccount
-  })
+  const { handleDialogOpen, dialogProps, handleDialogClose } = useConfirmDialog(
+    {
+      onConfirm: handleDeleteAccount
+    }
+  )
 
   const handleAccountDialogOpen = useCallback(
     (accountEntity: AccountEntity) => {
       setSelectedAccount(accountEntity)
-      originalHandleDialogOpen(
-        intl.formatMessage({
-          id: 'ledgers.account.deleteDialog.title',
-          defaultMessage: 'Are you sure?'
-        })
-      )
+      handleDialogOpen(accountEntity.id!)
     },
-    [originalHandleDialogOpen, intl, setSelectedAccount]
+    [handleDialogOpen, setSelectedAccount]
   )
 
   const {
@@ -167,14 +139,8 @@ export const AccountsContent = () => {
     }
   })
 
-  const getLoadingSkeleton = () => (
-    <React.Fragment>
-      <Skeleton className="h-[84px] w-full bg-zinc-200" />
-    </React.Fragment>
-  )
-
   if (isLoading) {
-    return getLoadingSkeleton()
+    return <Skeleton className="h-[84px] w-full bg-zinc-200" />
   }
 
   return (

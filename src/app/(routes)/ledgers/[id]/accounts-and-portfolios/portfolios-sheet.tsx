@@ -29,7 +29,6 @@ import { HelpCircle } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { isNil } from 'lodash'
 import { useIntl } from 'react-intl'
-import { formSchemaPortfolio } from './accounts-and-portfolios-form-schema'
 import { useCreatePortfolio, useUpdatePortfolio } from '@/client/portfolios'
 import { DialogProps } from '@radix-ui/react-dialog'
 import { PortfolioResponseDto } from '@/core/application/dto/portfolios-dto'
@@ -40,6 +39,7 @@ import { MetadataField } from '@/components/form/metadata-field'
 import { Switch } from '@/components/ui/switch'
 import { metadata } from '@/schema/metadata'
 import { InputField } from '@/components/form'
+import { portfolioSchema } from '@/schema/portfolio'
 
 export type PortfolioSheetProps = DialogProps & {
   ledgerId: string
@@ -54,7 +54,7 @@ const defaultValues = {
   metadata: {}
 }
 
-type FormData = z.infer<typeof formSchemaPortfolio>
+type FormData = z.infer<typeof portfolioSchema>
 
 export const PortfolioSheet = ({
   mode,
@@ -91,8 +91,8 @@ export const PortfolioSheet = ({
       }
     })
 
-  const form = useForm<z.infer<typeof formSchemaPortfolio>>({
-    resolver: zodResolver(formSchemaPortfolio),
+  const form = useForm<z.infer<typeof portfolioSchema>>({
+    resolver: zodResolver(portfolioSchema),
     defaultValues: Object.assign(
       {},
       defaultValues,

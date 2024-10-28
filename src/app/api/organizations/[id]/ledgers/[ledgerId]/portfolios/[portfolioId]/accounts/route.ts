@@ -49,6 +49,10 @@ export async function GET(
     return NextResponse.json(accounts)
   } catch (error: any) {
     console.error('Error fetching all accounts', error)
+
+    const { message, status } = await apiErrorHandler(error)
+
+    return NextResponse.json({ message }, { status })
   }
 }
 

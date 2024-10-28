@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
   SheetFooter,
@@ -14,7 +13,6 @@ import {
 import { Form } from '@/components/ui/form'
 import { useParams } from 'next/navigation'
 import { useIntl } from 'react-intl'
-import { formSchemaAccount } from './accounts-and-portfolios-form-schema'
 import { DialogProps } from '@radix-ui/react-dialog'
 import { LoadingButton } from '@/components/ui/loading-button'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
@@ -22,7 +20,6 @@ import { Label } from '@/components/ui/label'
 import { MetadataField } from '@/components/form/metadata-field'
 import { Switch } from '@/components/ui/switch'
 import { metadata } from '@/schema/metadata'
-import ConfirmationDialog from '@/components/confirmation-dialog'
 import { FormSelectWithTooltip } from './form-select-with-tooltip'
 import { FormInputWithTooltip } from './form-input-with-tooltip'
 import { useListProducts } from '@/client/products'
@@ -31,28 +28,8 @@ import { useListPortfolios } from '@/client/portfolios'
 import { isNil } from 'lodash'
 import { useListAssets } from '@/client/assets-client'
 import useCustomToast from '@/hooks/use-custom-toast'
-
-export interface AccountResponse {
-  id: string
-  ledgerId: string
-  assetCode: string
-  organizationId: string
-  name: string
-  alias: string
-  type: string
-  entityId: string
-  parentAccountId: string
-  portfolioId: string
-  productId: string
-  status: {
-    code: string
-    description: string
-  }
-  metadata: Record<string, any>
-  createdAt: Date
-  updatedAt: Date
-  deletedAt: Date | null
-}
+import { accountSchema } from '@/schema/account'
+import { AccountResponse } from '@/types/accounts-type'
 
 export type AccountSheetProps = DialogProps & {
   ledgerId: string
@@ -70,7 +47,7 @@ const defaultValues = {
   metadata: {}
 }
 
-type FormData = z.infer<typeof formSchemaAccount>
+type FormData = z.infer<typeof accountSchema>
 
 export const AccountSheet = ({
   mode,
@@ -81,7 +58,6 @@ export const AccountSheet = ({
 }: AccountSheetProps) => {
   const intl = useIntl()
   const { id: ledgerId } = useParams<{ id: string }>()
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
   const { currentOrganization } = useOrganization()
   const [metadataEnabled, setMetadataEnabled] = React.useState(
     Object.entries(metadata || {}).length > 0
@@ -131,8 +107,8 @@ export const AccountSheet = ({
     )
   }, [rawAssetListData])
 
-  const form = useForm<z.infer<typeof formSchemaAccount>>({
-    resolver: zodResolver(formSchemaAccount),
+  const form = useForm<z.infer<typeof accountSchema>>({
+    resolver: zodResolver(accountSchema),
     defaultValues: Object.assign(
       {},
       defaultValues,
@@ -439,27 +415,6 @@ export const AccountSheet = ({
           </Form>
         </SheetContent>
       </Sheet>
-
-      <ConfirmationDialog
-        open={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
-        title={intl.formatMessage({
-          id: 'ledgers.account.dialog.title',
-          defaultMessage: 'Your new account is ready'
-        })}
-        description={intl.formatMessage(
-          {
-            id: 'ledgers.account.dialog.create.description',
-            defaultMessage:
-              'The account {accountName} has been created successfully.'
-          },
-          {
-            accountName: form.getValues('name')
-          }
-        )}
-        onConfirm={() => {}}
-        onCancel={() => setIsDialogOpen(false)}
-      />
     </>
   )
 }
