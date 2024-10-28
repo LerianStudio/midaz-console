@@ -1,70 +1,58 @@
 import { MidazFetchLedgerByIdRepository } from './midaz-fetch-ledger-by-id-repository'
-import { handleMidazError } from '../../utils/midaz-error-handler'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
+import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
-jest.mock('../../utils/midaz-error-handler')
-global.fetch = jest.fn()
+jest.mock('../../utils/http-fetch-utils', () => ({
+  httpMidazAuthFetch: jest.fn(),
+  HTTP_METHODS: {
+    GET: 'GET'
+  }
+}))
 
 describe('MidazFetchLedgerByIdRepository', () => {
-  const baseUrl = 'http://example.com'
-  const organizationId = 'org123'
-  const ledgerId = 'ledger123'
-  const ledgerUrl = `${baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}`
   let repository: MidazFetchLedgerByIdRepository
 
   beforeEach(() => {
-    process.env.MIDAZ_BASE_PATH = baseUrl
     repository = new MidazFetchLedgerByIdRepository()
-  })
-
-  afterEach(() => {
     jest.clearAllMocks()
   })
 
-  it('should fetch ledger by id successfully', async () => {
-    const mockLedger: LedgerEntity = {
-      id: 'ledger123',
+  it('should fetch a ledger by id successfully', async () => {
+    const organizationId = '1'
+    const ledgerId = '1'
+    const response: LedgerEntity = {
+      id: ledgerId,
       organizationId: 'org123',
       name: 'Test Ledger',
       metadata: {},
       status: { code: 'active', description: 'Active' }
     }
-    ;(global.fetch as jest.Mock).mockResolvedValueOnce({
-      ok: true,
-      json: jest.fn().mockResolvedValueOnce(mockLedger)
-    })
+
+    ;(httpMidazAuthFetch as jest.Mock).mockResolvedValueOnce(response)
 
     const result = await repository.fetchById(organizationId, ledgerId)
 
-    expect(global.fetch).toHaveBeenCalledWith(ledgerUrl, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
+    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+      url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}`,
+      method: HTTP_METHODS.GET
     })
-    expect(result).toEqual(mockLedger)
+    expect(result).toEqual(response)
   })
 
-  it('should throw an error if fetch fails', async () => {
-    const mockErrorResponse = { message: 'Error occurred' }
-    ;(global.fetch as jest.Mock).mockResolvedValueOnce({
-      ok: false,
-      json: jest.fn().mockResolvedValueOnce(mockErrorResponse)
-    })
-    ;(handleMidazError as jest.Mock).mockRejectedValueOnce(
-      new Error('Fetch error')
-    )
+  it('should handle errors when fetching a ledger by id', async () => {
+    const organizationId = '1'
+    const ledgerId = '1'
+    const error = new Error('Error occurred')
+
+    ;(httpMidazAuthFetch as jest.Mock).mockRejectedValueOnce(error)
 
     await expect(
       repository.fetchById(organizationId, ledgerId)
-    ).rejects.toThrow('Fetch error')
+    ).rejects.toThrow('Error occurred')
 
-    expect(global.fetch).toHaveBeenCalledWith(ledgerUrl, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
+    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+      url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}`,
+      method: HTTP_METHODS.GET
     })
-    expect(handleMidazError).toHaveBeenCalledWith(mockErrorResponse)
   })
 })

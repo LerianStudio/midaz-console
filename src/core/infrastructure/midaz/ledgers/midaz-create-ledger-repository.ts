@@ -1,6 +1,5 @@
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { CreateLedgerRepository } from '@/core/domain/repositories/ledgers/create-ledger-repository'
-import { handleMidazError } from '../../utils/midaz-error-handler'
 import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 export class MidazCreateLedgerRepository implements CreateLedgerRepository {

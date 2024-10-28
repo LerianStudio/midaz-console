@@ -1,31 +1,25 @@
 import { MidazCreateAssetRepository } from './midaz-create-asset-repository'
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
-import { handleMidazError } from '../../utils/midaz-error-handler'
+import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
-jest.mock('../../utils/midaz-error-handler')
+jest.mock('../../utils/http-fetch-utils', () => ({
+  httpMidazAuthFetch: jest.fn(),
+  HTTP_METHODS: {
+    POST: 'POST'
+  }
+}))
 
 describe('MidazCreateAssetRepository', () => {
-  const baseUrl = 'http://example.com'
   let repository: MidazCreateAssetRepository
-  let fetchMock: jest.Mock
-
-  beforeAll(() => {
-    process.env.MIDAZ_BASE_PATH = baseUrl
-  })
 
   beforeEach(() => {
     repository = new MidazCreateAssetRepository()
-    fetchMock = jest.fn()
-    global.fetch = fetchMock
-  })
-
-  afterEach(() => {
     jest.clearAllMocks()
   })
 
   it('should create an asset successfully', async () => {
-    const organizationId = 'org123'
-    const ledgerId = 'ledger123'
+    const organizationId = '1'
+    const ledgerId = '1'
     const asset: AssetEntity = {
       id: 'asset123',
       name: 'Asset Name',
@@ -34,28 +28,23 @@ describe('MidazCreateAssetRepository', () => {
       status: { code: 'active', description: 'Active' },
       metadata: { key: 'value' }
     }
-    const response = { ok: true, json: jest.fn().mockResolvedValue(asset) }
+    const response: AssetEntity = { ...asset }
 
-    fetchMock.mockResolvedValue(response)
+    ;(httpMidazAuthFetch as jest.Mock).mockResolvedValueOnce(response)
 
     const result = await repository.create(organizationId, ledgerId, asset)
 
-    expect(fetchMock).toHaveBeenCalledWith(
-      `${baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(asset)
-      }
-    )
-    expect(result).toEqual(asset)
+    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+      url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/assets`,
+      method: HTTP_METHODS.POST,
+      body: JSON.stringify(asset)
+    })
+    expect(result).toEqual(response)
   })
 
-  it('should handle error response', async () => {
-    const organizationId = 'org123'
-    const ledgerId = 'ledger123'
+  it('should handle errors when creating an asset', async () => {
+    const organizationId = '1'
+    const ledgerId = '1'
     const asset: AssetEntity = {
       id: 'asset123',
       name: 'Asset Name',
@@ -64,30 +53,18 @@ describe('MidazCreateAssetRepository', () => {
       status: { code: 'active', description: 'Active' },
       metadata: { key: 'value' }
     }
-    const errorResponse = {
-      ok: false,
-      json: jest.fn().mockResolvedValue({ error: 'Error' })
-    }
+    const error = new Error('Error occurred')
 
-    fetchMock.mockResolvedValue(errorResponse)
-    ;(handleMidazError as jest.Mock).mockResolvedValue(
-      new Error('Handled Error')
-    )
+    ;(httpMidazAuthFetch as jest.Mock).mockRejectedValueOnce(error)
 
     await expect(
       repository.create(organizationId, ledgerId, asset)
-    ).rejects.toThrow('Handled Error')
+    ).rejects.toThrow('Error occurred')
 
-    expect(fetchMock).toHaveBeenCalledWith(
-      `${baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(asset)
-      }
-    )
-    expect(handleMidazError).toHaveBeenCalledWith({ error: 'Error' })
+    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+      url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/assets`,
+      method: HTTP_METHODS.POST,
+      body: JSON.stringify(asset)
+    })
   })
 })

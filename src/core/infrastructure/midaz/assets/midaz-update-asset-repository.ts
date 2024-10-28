@@ -1,6 +1,5 @@
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { UpdateAssetRepository } from '@/core/domain/repositories/assets/update-asset-repository'
-import { handleMidazError } from '../../utils/midaz-error-handler'
 import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 export class MidazUpdateAssetRepository implements UpdateAssetRepository {
