@@ -77,9 +77,6 @@ const Page = ({ params }: { params: { id: string } }) => {
           >
             <PageHeader.InfoTooltip subtitle={data.id} />
           </PageHeader.InfoTitle>
-          <PageHeader.ActionButtons>
-            <PageHeader.StatusButton />
-          </PageHeader.ActionButtons>
         </PageHeader.Wrapper>
       </PageHeader.Root>
 

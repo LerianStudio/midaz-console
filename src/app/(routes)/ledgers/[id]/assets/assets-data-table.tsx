@@ -117,13 +117,6 @@ const AssetRow: React.FC<AssetRowProps> = ({
               })}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              {intl.formatMessage({
-                id: `common.inactivate`,
-                defaultMessage: 'Inactivate'
-              })}
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() =>
                 handleDialogOpen(

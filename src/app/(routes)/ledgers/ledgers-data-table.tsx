@@ -170,13 +170,6 @@ const LedgerRow: React.FC<LedgerRowProps> = ({
                 </DropdownMenuItem>
               </Link>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                {intl.formatMessage({
-                  id: `common.inactivate`,
-                  defaultMessage: 'Inactivate'
-                })}
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() =>
                   handleDialogOpen(
