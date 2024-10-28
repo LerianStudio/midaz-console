@@ -136,7 +136,7 @@ export const AccountSheet = ({
     onError: () => {
       showError(
         intl.formatMessage({
-          id: 'common.toast.error',
+          id: 'accounts.toast.create.error',
           defaultMessage: 'Error creating account'
         })
       )
@@ -164,7 +164,7 @@ export const AccountSheet = ({
     onError: () => {
       showError(
         intl.formatMessage({
-          id: 'common.toast.error',
+          id: 'accounts.toast.update.error',
           defaultMessage: 'Error updating account'
         })
       )

@@ -75,7 +75,7 @@ export const LedgersSheet = ({
       showError(
         intl.formatMessage({
           id: 'common.toast.error',
-          defaultMessage: 'Error saving changes.'
+          defaultMessage: 'Error saving changes'
         })
       )
     }
