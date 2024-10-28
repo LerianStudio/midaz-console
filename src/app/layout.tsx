@@ -1,7 +1,6 @@
 import React from 'react'
 import { Inter } from 'next/font/google'
 import NextAuthSessionProvider from '@/providers/next-auth-session-provider'
-import { ThemeProvider } from '@/components/theme-provider'
 import { Metadata } from 'next'
 import { getMetadata } from '../../services/configs/application-config'
 import App from './app'

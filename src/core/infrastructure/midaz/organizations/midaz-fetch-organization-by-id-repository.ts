@@ -1,6 +1,5 @@
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { FetchOrganizationByIdRepository } from '@/core/domain/repositories/organizations/fetch-organization-by-id-repository'
-import { handleMidazError } from '../../utils/midaz-error-handler'
 import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 export class MidazFetchOrganizationByIdRepository
