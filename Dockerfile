@@ -10,6 +10,9 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
+# Copiar o arquivo .env.example para o diretório de trabalho
+COPY .env.example .env.example
+
 # Run the command to set environment variables
 RUN npm run set-env
 
