@@ -31,7 +31,6 @@ const nextConfig = {
       }
     ]
   },
-
   images: {
     remotePatterns: [
       {
