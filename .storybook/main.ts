@@ -1,7 +1,11 @@
 import type { StorybookConfig } from '@storybook/nextjs'
 
 const config: StorybookConfig = {
-  stories: ['../app/**/*.mdx', '../app/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+  stories: [
+    '../src/components/**/*.mdx',
+    '../src/components/**/*.stories.@(js|jsx|mjs|ts|tsx)'
+  ],
+  staticDirs: ['../public'],
   addons: [
     '@storybook/addon-onboarding',
     '@storybook/addon-links',
@@ -41,6 +45,9 @@ const config: StorybookConfig = {
   framework: {
     name: '@storybook/nextjs',
     options: {}
+  },
+  typescript: {
+    reactDocgen: 'react-docgen-typescript'
   },
   docs: {
     autodocs: 'tag'

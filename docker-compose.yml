@@ -1,23 +1,40 @@
-version: '3.9'
-
 services:
   midaz-console:
+    container_name: console
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: 'midaz-console'
     restart: always
     ports:
-      - '3000:3000'
+      - '${MIDAZ_CONSOLE_PORT}:8081'
     env_file:
       - .env
+    healthcheck:
+      test:
+        ['CMD', 'curl', '-f', 'http://localhost:8081/api/admin/health/ready']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - console_network
+      - transaction_network
+      - auth_network
+      - infra_network
+      - ledger_network
 
-  midaz-server-mock:
-    build:
-      context: .
-      dockerfile: Dockerfile-json-server
-    container_name: 'midaz-server-mock'
-    restart: always
-    depends_on:
-      - midaz-console
-    network_mode: 'service:midaz-console'
+networks:
+  console_network:
+    name: console_network
+    driver: bridge
+  transaction_network:
+    name: transaction_network
+    driver: bridge
+  ledger_network:
+    name: ledger_network
+    driver: bridge
+  auth_network:
+    name: auth_network
+    driver: bridge
+  infra_network:
+    name: infra_network
+    driver: bridge
