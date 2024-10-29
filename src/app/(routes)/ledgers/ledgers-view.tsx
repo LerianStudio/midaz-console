@@ -20,6 +20,7 @@ import { useOrganization } from '@/context/organization-provider/organization-pr
 import { LedgersSkeleton } from './ledgers-skeleton'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
 import { LedgerResponseDto } from '@/core/application/dto/ledger-response-dto'
+import useCustomToast from '@/hooks/use-custom-toast'
 
 type LedgersViewProps = {
   ledgers: PaginationDto<LedgerResponseDto> | undefined
@@ -30,6 +31,7 @@ type LedgersViewProps = {
 const LedgersView = ({ ledgers, refetch, isLoading }: LedgersViewProps) => {
   const intl = useIntl()
   const { currentOrganization } = useOrganization()
+  const { showSuccess, showError } = useCustomToast()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
 
   const {
@@ -46,6 +48,21 @@ const LedgersView = ({ ledgers, refetch, isLoading }: LedgersViewProps) => {
     onSuccess: () => {
       handleDialogClose()
       refetch()
+      showSuccess(
+        intl.formatMessage({
+          id: 'ledgers.toast.delete.success',
+          defaultMessage: 'Ledger successfully deleted'
+        })
+      )
+    },
+    onError: () => {
+      handleDialogClose()
+      showError(
+        intl.formatMessage({
+          id: 'ledgers.toast.delete.error',
+          defaultMessage: 'Error deleting Ledger'
+        })
+      )
     }
   })
 

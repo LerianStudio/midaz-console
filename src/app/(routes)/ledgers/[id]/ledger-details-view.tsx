@@ -51,7 +51,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
       resetForm()
       showSuccess(
         intl.formatMessage({
-          id: 'ledgers.toast.ledgerUpdated',
+          id: 'ledgers.toast.update.success',
           defaultMessage: 'Ledger changes saved successfully'
         })
       )
@@ -59,8 +59,8 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
     onError: () => {
       showError(
         intl.formatMessage({
-          id: 'common.toast.error',
-          defaultMessage: 'Error saving changes'
+          id: 'ledgers.toast.update.error',
+          defaultMessage: 'Error updating Ledger'
         })
       )
     }

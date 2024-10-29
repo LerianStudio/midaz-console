@@ -51,16 +51,17 @@ export const AssetsTabContent = ({ data }: AssetsTabContentProps) => {
       refetch()
       showSuccess(
         intl.formatMessage({
-          id: 'ledgers.toast.assetsDeleted',
+          id: 'assets.toast.delete.success',
           defaultMessage: 'Asset successfully deleted'
         })
       )
     },
     onError: () => {
+      handleDialogClose()
       showError(
         intl.formatMessage({
-          id: 'common.toast.error',
-          defaultMessage: 'Error saving changes'
+          id: 'assets.toast.delete.error',
+          defaultMessage: 'Error deleting Asset'
         })
       )
     }

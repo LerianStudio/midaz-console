@@ -76,13 +76,12 @@ export const AssetsSheet = ({
     ledgerId,
     onSuccess: (data: unknown) => {
       const formData = data as IAssetType
-      console.log(formData)
       onSuccess?.()
       onOpenChange?.(false)
       showSuccess(
         intl.formatMessage(
           {
-            id: 'ledgers.toast.assetsCreated',
+            id: 'assets.toast.create.success',
             defaultMessage: '{assetName} asset successfully created'
           },
           { assetName: formData.name }
@@ -90,10 +89,11 @@ export const AssetsSheet = ({
       )
     },
     onError: () => {
+      onOpenChange?.(false)
       showError(
         intl.formatMessage({
-          id: 'common.toast.error',
-          defaultMessage: 'Error saving changes'
+          id: 'assets.toast.create.error',
+          defaultMessage: 'Error creating Asset'
         })
       )
     }
@@ -108,16 +108,17 @@ export const AssetsSheet = ({
       onOpenChange?.(false)
       showSuccess(
         intl.formatMessage({
-          id: 'ledgers.toast.assetUpdated',
+          id: 'assets.toast.update.success',
           defaultMessage: 'Asset changes saved successfully'
         })
       )
     },
     onError: () => {
+      onOpenChange?.(false)
       showError(
         intl.formatMessage({
-          id: 'common.toast.error',
-          defaultMessage: 'Error saving changes'
+          id: 'assets.toast.update.error',
+          defaultMessage: 'Error updating Asset'
         })
       )
     }
