@@ -7,7 +7,7 @@ const customToast = (message: string, icon: JSX.Element, bgColor: string) => {
     (t) => (
       <div
         className={cn(
-          'pointer-events-auto flex w-full max-w-[330px] rounded-lg bg-white px-4 py-5 shadow-lg transition-opacity duration-100 ease-in-out',
+          'pointer-events-auto flex w-full max-w-[330px] rounded-lg bg-white px-4 py-5 shadow-2xl transition-opacity duration-100 ease-in-out',
           t.visible ? 'opacity-100' : 'opacity-0'
         )}
       >

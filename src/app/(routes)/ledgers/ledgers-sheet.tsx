@@ -64,7 +64,7 @@ export const LedgersSheet = ({
       showSuccess(
         intl.formatMessage(
           {
-            id: 'ledgers.toast.ledgerCreated',
+            id: 'ledgers.toast.create.success',
             defaultMessage: 'Ledger {ledgerName} created successfully'
           },
           { ledgerName: formData.ledger.name }
@@ -72,10 +72,11 @@ export const LedgersSheet = ({
       )
     },
     onError: () => {
+      onOpenChange?.(false)
       showError(
         intl.formatMessage({
-          id: 'common.toast.error',
-          defaultMessage: 'Error saving changes'
+          id: 'ledgers.toast.create.error',
+          defaultMessage: 'Error creating Ledger'
         })
       )
     }
