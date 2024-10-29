@@ -10,6 +10,9 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
+# Run the command to set environment variables
+RUN npm run set-env
+
 # Copy the rest of the application code
 COPY . .
 
