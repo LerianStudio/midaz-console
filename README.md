@@ -8,48 +8,50 @@
 
 </div>
 
-## Midaz Console: Easy Management your Next-Gen Open-Source Ledger
+## Midaz Console: Simplify Management of Your Next-Gen Open-Source Ledger
 
-Midaz console is a solution built to manage your midaz open-source ledger, with midaz console, you will be able to manage your entire operation related to Midaz in a simple and intuitive way.
+Midaz Console is a comprehensive solution for managing your Midaz open-source ledger. With the Console, you can efficiently oversee and handle all operations related to Midaz through an intuitive interface.
 
-Midaz Open-Source Ledger allows you to manage using API's, GRCP, CLI. The Midaz Console was designed for the operation of its users, facilitating all the work to be carried out on Midaz on a daily basis.
+The Midaz Open-Source Ledger offers flexible management options via APIs, gRPC, and CLI. Midaz Console is purpose-built to simplify user operations and streamline routine tasks on the Midaz platform.
 
-## Getting Start
 
-To begin using Midaz console, you need to had a Midaz Open-Source Ledger running. Please follow our [Getting Started Guide](https://docs.midaz.io/getting-started) of [Midaz Open-Source Ledger](https://github.com/LerianStudio/midaz) <img src="https://github.com/favicon.ico" width="20" height="20" color="white" alt="GitHub Logo">. For comprehensive documentation on Midaz features, API references, and best practices, visit our [Official Documentation](https://docs.midaz.io).
+## Getting Started
+
+To start using Midaz Console, you’ll need a running instance of the Midaz Open-Source Ledger. Please follow our [Getting Started Guide](https://docs.midaz.io/getting-started) for the [Midaz Open-Source Ledger](https://github.com/LerianStudio/midaz) <img src="https://github.com/favicon.ico" width="20" height="20" alt="GitHub Logo">. For a complete overview of Midaz features, API references, and best practices, visit our [Official Documentation](https://docs.midaz.io).
 
 ### Prerequisites
 
-- [Midaz Open-Source Ledger](https://github.com/LerianStudio/midaz) <img src="https://github.com/favicon.ico" width="20" height="20" color="white" alt="GitHub Logo">
+- [Midaz Open-Source Ledger](https://github.com/LerianStudio/midaz) <img src="https://github.com/favicon.ico" width="20" height="20" alt="GitHub Logo">
 - Node.js (Version: >=18.x)
-- NPM
+- npm
 - Docker: [Docker Installation](https://docs.docker.com/get-docker/)
-
 - Docker Compose: [Docker Compose Installation](https://docs.docker.com/compose/install/)
 
-## Steps to run the application locally
 
-:warning: Before proceeding, please ensure that the [Midaz Open-Source Ledger](https://github.com/LerianStudio/midaz) environment is active and available.
+## Running the Application Locally
 
-Clone midaz console repository
+:warning: **Note:** Ensure that the [Midaz Open-Source Ledger](https://github.com/LerianStudio/midaz) environment is active and accessible, then follow these steps:
 
+
+1. Clone the Midaz Console repository:
 ```bash
 git clone https://github.com/LerianStudio/midaz-console.git
 ```
 
-Run the commands below to configure and start the local console stack.
+2. Run the following commands to configure and start the local console stack:
 
 ```bash
+npm install
 npm run set-local-env
 npm run dev
 ```
 
-Open [http://localhost:8081](http://localhost:8081) with your browser to confirm that Midaz Console is up
+3. Open http://localhost:8081 in your browser to verify that Midaz Console is running.
 
-## Deploy on Docker
 
-Execute npm script to prepare and deploy application on docker
+## Deploying with Docker
 
+To deploy Midaz Console in a Docker environment, execute the following npm script:
 ```bash
 npm run docker-compose
 ```
@@ -58,13 +60,15 @@ npm run docker-compose
 
 - Join our [Discord community](https://discord.gg/DnhqKwkGv3) for discussions, support, and updates.
 - For bug reports and feature requests, please use our [GitHub Issues](https://github.com/LerianStudio/midaz-console/issues).
-- If you want to raise anything to the attention of the community, open a Discussion in our [GitHub](https://github.com/LerianStudio/midaz-console/discussions).
-- Follow us on [Twitter](https://twitter.com/LerianStudio) for the latest news and announcements.
+- To share ideas or discuss topics with the community, start a Discussion on our [GitHub](https://github.com/LerianStudio/midaz-console/discussions).
+- Follow us on [Twitter](https://twitter.com/LerianStudio) for news and announcements.
 
 ## Contributing & License
 
-We welcome contributions from the community! Please read our [Contributing Guidelines](CONTRIBUTING.md) to get started. Midaz is released under the Apache License 2.0. See [LICENSE](LICENSE.md) for more information. In a nutshell, this means you can use, modify, and distribute Midaz as you see fit, as long as you include the original copyright and license notice.
+We welcome contributions from the community! Please read our [Contributing Guidelines](CONTRIBUTING.md) to get started. 
+
+Midaz is released under the Apache License 2.0. See the [LICENSE](LICENSE.md) for more details. This license allows you to use, modify, and distribute Midaz, provided you include the original copyright and license.
 
 ## About Lerian
 
-Midaz is developed by Lerian, a tech company founded in 2023, led by a team with a track record in developing ledger and core banking solutions. For any inquiries or support, please reach out to us at [contact@lerian.io](mailto:contact@lerian.io) or simply open a Discussion in our [GitHub repository](https://github.com/LerianStudio/midaz-console/discussions).
+Midaz is developed by Lerian, a technology company founded in 2023 by a team with extensive experience in ledger and core banking solutions. For inquiries or support, contact us at [contact@lerian.io](mailto:contact@lerian.io) or start a Discussion in our [GitHub repository](https://github.com/LerianStudio/midaz-console/discussions).

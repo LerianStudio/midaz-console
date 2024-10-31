@@ -39,9 +39,11 @@ next-env.d.ts
 
 # IDE's
 .idea
+.vscode
 *storybook.log
 
 # Storybook
+.storybook
 /storybook-static/
 
 # Playwright
