@@ -1,0 +1,36 @@
+name: "ESLint"
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: read
+
+jobs:
+  ESLint:
+    runs-on: ubuntu-latest
+    name: Run ESLint for Next.js
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-node@v3
+      with:
+        node-version: '16' # ou a versão necessária para o seu projeto
+
+    - name: Install dependencies
+      run: |
+        npm install
+# Certificar de que o script 'lint' esteja definido no seu package.json
+    - name: Run ESLint
+      run: |
+        npm run lint 

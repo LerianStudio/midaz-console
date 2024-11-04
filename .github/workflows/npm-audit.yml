@@ -1,0 +1,36 @@
+name: "Npm Audit"
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: read
+
+jobs:
+  NpmAudit:
+    runs-on: ubuntu-latest
+    name: Run Npm Audit for Next.js
+    steps:
+    - uses: actions/checkout@v4
+    # Verificar se é mesmo essa versão de Node
+    - uses: actions/setup-node@v3
+      with:
+        node-version: '16' 
+
+    - name: Install dependencies
+      run: |
+        npm install
+
+    - name: Run npm audit
+      run: |
+        npm audit --audit-level=high
