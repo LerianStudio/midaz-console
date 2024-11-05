@@ -1,9 +1,6 @@
 import { ProductEntity } from '@/core/domain/entities/product-entity'
 import { CreateProductDto, ProductResponseDto } from '../../dto/product-dto'
-import {
-  productDtoToEntity,
-  productEntityToDto
-} from '../../mappers/product-mapper'
+import { ProductMapper } from '../../mappers/product-mapper'
 import { CreateProductRepository } from '@/core/domain/repositories/products/create-product-repository'
 
 export interface CreateProduct {
@@ -23,7 +20,7 @@ export class CreateProductUseCase implements CreateProduct {
     ledgerId: string,
     product: CreateProductDto
   ): Promise<ProductResponseDto> {
-    const productEntity: ProductEntity = productDtoToEntity(product)
+    const productEntity: ProductEntity = ProductMapper.toDomain(product)
 
     const productCreated = await this.createProductRepository.create(
       organizationId,
@@ -32,7 +29,7 @@ export class CreateProductUseCase implements CreateProduct {
     )
 
     const productResponseDto: ProductResponseDto =
-      productEntityToDto(productCreated)
+      ProductMapper.toResponseDto(productCreated)
 
     return productResponseDto
   }

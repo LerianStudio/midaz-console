@@ -1,6 +1,6 @@
 import { FetchProductByIdRepository } from '@/core/domain/repositories/products/fetch-product-by-id-repository'
 import { ProductResponseDto } from '../../dto/product-dto'
-import { productEntityToDto } from '../../mappers/product-mapper'
+import { ProductMapper } from '../../mappers/product-mapper'
 
 export interface FetchProductById {
   execute: (
@@ -26,8 +26,6 @@ export class FetchProductByIdUseCase implements FetchProductById {
       productId
     )
 
-    const productResponseDto: ProductResponseDto = productEntityToDto(product)
-
-    return productResponseDto
+    return ProductMapper.toResponseDto(product)
   }
 }
