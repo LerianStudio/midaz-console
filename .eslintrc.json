@@ -6,8 +6,11 @@
     "plugin:storybook/recommended"
   ],
   "rules": {
-    "prettier/prettier": "error",
+    "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "react-hooks/rules-of-hooks": "off",
     "react-hooks/exhaustive-deps": "off"
+  },
+  "linterOptions": {
+    "reportUnusedDisableDirectives": true
   }
 }

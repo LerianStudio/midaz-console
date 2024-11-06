@@ -31,9 +31,10 @@ jobs:
       run: |
         cp .env.example .env # Copia .env.example para .env para uso local, se necessário
 
-    - name: Install dependencies
+    - name: Install dependencies and update ESLint packages
       run: |
-        npm install
+          npm install
+          npm install eslint@latest eslint-config-next@latest eslint-plugin-prettier@latest eslint-plugin-react-hooks@latest
 
     - name: Run ESLint
       run: |
