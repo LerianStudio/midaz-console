@@ -44,6 +44,8 @@ jobs:
         build-mode: ${{ matrix.build-mode }}
 
     - name: Install dependencies
+      env:
+        MIDAZ_CONSOLE_SERVICE_HOST: 'localhost'
       run: |
         npm install
         npm run build # Construa a aplicação, se necessário
