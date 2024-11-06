@@ -1,10 +1,7 @@
 import { CreateAccountsRepository } from '@/core/domain/repositories/accounts/create-accounts-repository'
 import { CreateAccountDto, AccountResponseDto } from '../../dto/account-dto'
 import { AccountEntity } from '@/core/domain/entities/account-entity'
-import {
-  accountDtoToEntity,
-  accountEntityToDto
-} from '../../mappers/account-mapper'
+import { AccountMapper } from '../../mappers/account-mapper'
 
 export interface CreateAccount {
   execute: (
@@ -30,7 +27,7 @@ export class CreateAccountUseCase implements CreateAccount {
       code: 'ACTIVE',
       description: 'Active Account'
     }
-    const accountEntity: AccountEntity = accountDtoToEntity(account)
+    const accountEntity: AccountEntity = AccountMapper.toDomain(account)
     const accountCreated = await this.createAccountRepository.create(
       organizationId,
       ledgerId,
@@ -38,9 +35,6 @@ export class CreateAccountUseCase implements CreateAccount {
       accountEntity
     )
 
-    const accountResponseDto: AccountResponseDto =
-      accountEntityToDto(accountCreated)
-
-    return accountResponseDto
+    return AccountMapper.toDto(accountCreated)
   }
 }

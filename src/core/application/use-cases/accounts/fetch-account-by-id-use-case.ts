@@ -1,6 +1,6 @@
 import { FetchAccountByIdRepository } from '@/core/domain/repositories/accounts/fetch-account-by-id-repository'
 import { AccountResponseDto } from '../../dto/account-dto'
-import { accountEntityToDto } from '../../mappers/account-mapper'
+import { AccountMapper } from '../../mappers/account-mapper'
 
 export interface FetchAccountById {
   execute: (
@@ -29,8 +29,6 @@ export class FetchAccountByIdUseCase implements FetchAccountById {
       accountId
     )
 
-    const accountResponseDto: AccountResponseDto = accountEntityToDto(account)
-
-    return accountResponseDto
+    return AccountMapper.toDto(account)
   }
 }
