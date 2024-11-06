@@ -25,12 +25,16 @@ jobs:
 
     - uses: actions/setup-node@v3
       with:
-        node-version: '16' # ou a versão necessária para o seu projeto
+        node-version: '22'
+
+    - name: Set up .env file
+      run: |
+        cp .env.example .env # Copia .env.example para .env para uso local, se necessário
 
     - name: Install dependencies
       run: |
         npm install
-# Certificar de que o script 'lint' esteja definido no seu package.json
+
     - name: Run ESLint
       run: |
-        npm run lint 
+        npm run lint
