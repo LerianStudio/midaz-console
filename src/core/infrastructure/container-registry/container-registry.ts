@@ -1,30 +1,30 @@
-import { Container } from 'inversify'
-
-import {
-  FetchAllLedgersAssets,
-  FetchAllLedgersAssetsUseCase
-} from '@/core/application/use-cases/ledgers-assets/fetch-ledger-assets-use-case'
-
+import 'reflect-metadata'
 import {
   FetchAllPortfoliosAccounts,
   FetchAllPortfoliosAccountsUseCase
 } from '@/core/application/use-cases/portfolios-accounts/fetch-portfolios-accounts-use-case'
 import { AuthModule, AuthRegistry } from './auth-module'
-import { OrganizationModule, OrganizationRegistry } from './organization-module'
 import { LedgerModule, LedgerRegistry } from './ledger-module'
 import { PortfolioModule, PortfolioRegistry } from './portfolio-module'
 import { AccountModule, AccountRegistry } from './account-module'
 import { AssetModule, AssetRegistry } from './asset-module'
 import { ProductRegistry, ProductModule } from './product-module'
+import { OrganizationUseCaseModule } from './use-cases/organization-module'
+import { Container } from '../utils/di/container'
+import { MidazModule } from '../midaz/module/midaz-module'
+
+import {
+  FetchAllLedgersAssets,
+  FetchAllLedgersAssetsUseCase
+} from '@/core/application/use-cases/ledgers-assets/fetch-ledger-assets-use-case'
+import { MidazFetchAllLedgersRepository } from '../midaz/ledgers/midaz-fetch-all-ledgers-repository'
+import { MidazFetchAllAssetsRepository } from '../midaz/assets/midaz-fetch-all-assets-repository'
+import { MidazFetchAllPortfoliosRepository } from '../midaz/portfolios/midaz-fetch-all-portfolio-repository'
+import { MidazFetchAllAccountsRepository } from '../midaz/accounts/midaz-fetch-all-accounts-repository'
 
 export const Registry = {
   ...AuthRegistry,
-  ...OrganizationRegistry,
   ...LedgerRegistry,
-
-  // Ledgers-Assets
-  FetchAllLedgersAssetsUseCase: Symbol.for('FetchAllLedgersAssetsUseCase'),
-
   ...PortfolioRegistry,
   ...AccountRegistry,
   ...AssetRegistry,
@@ -33,36 +33,37 @@ export const Registry = {
   // Portfolio-Accounts
   FetchAllPortfoliosAccountsUseCase: Symbol.for(
     'FetchAllPortfoliosAccountsUseCase'
-  )
+  ),
+  FetchAllLedgersAssetsUseCase: Symbol.for('FetchAllLedgersAssetsUseCase')
 }
 
 export const container = new Container()
 
-container.load(AuthModule)
-container.load(OrganizationModule)
-container.load(LedgerModule)
-container.load(PortfolioModule)
-container.load(AccountModule)
-container.load(AssetModule)
+container.load(MidazModule)
+container.load(OrganizationUseCaseModule)
 
-//Ledgers-Assets
+container.container.load(AuthModule)
+container.container.load(LedgerModule)
+container.container.load(PortfolioModule)
+container.container.load(AccountModule)
+container.container.load(AssetModule)
+container.container.load(ProductModule)
+
 container
   .bind<FetchAllLedgersAssets>(Registry.FetchAllLedgersAssetsUseCase)
   .toDynamicValue((context) => {
     return new FetchAllLedgersAssetsUseCase(
-      context.container.get(Registry.FetchAllLedgersRepository),
-      context.container.get(Registry.FetchAllAssetsRepository)
+      new MidazFetchAllLedgersRepository(),
+      new MidazFetchAllAssetsRepository()
     )
   })
-
-container.load(ProductModule)
 
 //Portfolio-Accounts
 container
   .bind<FetchAllPortfoliosAccounts>(Registry.FetchAllPortfoliosAccountsUseCase)
   .toDynamicValue((context) => {
     return new FetchAllPortfoliosAccountsUseCase(
-      context.container.get(Registry.FetchAllPortfoliosRepository),
-      context.container.get(Registry.FetchAllAccountsRepository)
+      new MidazFetchAllPortfoliosRepository(),
+      new MidazFetchAllAccountsRepository()
     )
   })
