@@ -1,6 +1,8 @@
 import { DeleteOrganizationRepository } from '@/core/domain/repositories/organizations/delete-organization-repository'
 import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
+import { injectable } from 'inversify'
 
+@injectable()
 export class MidazDeleteOrganizationRepository
   implements DeleteOrganizationRepository
 {

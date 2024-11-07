@@ -2,7 +2,9 @@ import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { FetchAllOrganizationsRepository } from '@/core/domain/repositories/organizations/fetch-all-organizations-repository'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
+import { injectable } from 'inversify'
 
+@injectable()
 export class MidazFetchAllOrganizationsRepository
   implements FetchAllOrganizationsRepository
 {

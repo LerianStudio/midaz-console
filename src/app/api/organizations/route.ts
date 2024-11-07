@@ -1,18 +1,21 @@
-import { CreateOrganization } from '@/core/application/use-cases/organizations/create-organization-use-case'
-import { FetchAllOrganizations } from '@/core/application/use-cases/organizations/fetch-all-organizations-use-case'
+import {
+  CreateOrganization,
+  CreateOrganizationUseCase
+} from '@/core/application/use-cases/organizations/create-organization-use-case'
+import {
+  FetchAllOrganizations,
+  FetchAllOrganizationsUseCase
+} from '@/core/application/use-cases/organizations/fetch-all-organizations-use-case'
 import { NextResponse } from 'next/server'
 import { apiErrorHandler } from '../utils/api-error-handler'
-import {
-  container,
-  Registry
-} from '@/core/infrastructure/container-registry/container-registry'
+import { container } from '@/core/infrastructure/container-registry/container-registry'
 
 const createOrganizationUseCase = container.get<CreateOrganization>(
-  Registry.CreateOrganizationUseCase
+  CreateOrganizationUseCase
 )
 
 const fetchAllOrganizationsUseCase = container.get<FetchAllOrganizations>(
-  Registry.FetchAllOrganizationsUseCase
+  FetchAllOrganizationsUseCase
 )
 
 export async function GET(request: Request) {

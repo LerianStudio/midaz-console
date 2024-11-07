@@ -1,11 +1,11 @@
 import { FetchAllAccountsRepository } from '@/core/domain/repositories/accounts/fetch-all-accounts-repository'
 import { PaginationDto } from '../../dto/pagination-dto'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
-import { accountEntityToDto } from '../../mappers/account-mapper'
 import { FetchAllPortfoliosRepository } from '@/core/domain/repositories/portfolios/fetch-all-portfolio-repository'
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { AccountEntity } from '@/core/domain/entities/account-entity'
 import { PortfolioViewResponseDTO } from '../../dto/portfolio-view-dto'
+import { AccountMapper } from '../../mappers/account-mapper'
 
 export interface FetchAllPortfoliosAccounts {
   execute: (
@@ -72,7 +72,7 @@ export class FetchAllPortfoliosAccountsUseCase
           updatedAt: portfolio.updatedAt!,
           deletedAt: portfolio.deletedAt!,
           accounts: accountsResult.items
-            ? accountsResult.items.map(accountEntityToDto)
+            ? accountsResult.items.map(AccountMapper.toDto)
             : []
         }
 

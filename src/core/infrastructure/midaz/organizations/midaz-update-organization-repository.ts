@@ -1,7 +1,9 @@
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { UpdateOrganizationRepository } from '@/core/domain/repositories/organizations/update-organization-repository'
 import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { injectable } from 'inversify'
 
+@injectable()
 export class MidazUpdateOrganizationRepository
   implements UpdateOrganizationRepository
 {

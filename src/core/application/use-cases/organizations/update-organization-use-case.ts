@@ -6,6 +6,7 @@ import {
   organizationUpdateDtoToEntity
 } from '../../mappers/organization-mapper'
 import { UpdateOrganizationRepository } from '@/core/domain/repositories/organizations/update-organization-repository'
+import { inject, injectable } from 'inversify'
 
 export interface UpdateOrganization {
   execute: (
@@ -14,8 +15,10 @@ export interface UpdateOrganization {
   ) => Promise<OrganizationResponseDto>
 }
 
+@injectable()
 export class UpdateOrganizationUseCase implements UpdateOrganization {
   constructor(
+    @inject(UpdateOrganizationRepository)
     private readonly updateOrganizationRepository: UpdateOrganizationRepository
   ) {}
 
