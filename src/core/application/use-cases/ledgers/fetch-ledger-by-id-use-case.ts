@@ -1,6 +1,7 @@
 import { FetchLedgerByIdRepository } from '@/core/domain/repositories/ledgers/fetch-ledger-by-id-repository'
 import { LedgerResponseDto } from '../../dto/ledger-response-dto'
 import { ledgerEntityToDto } from '../../mappers/ledger-mapper'
+import { inject, injectable } from 'inversify'
 
 export interface FetchLedgerById {
   execute: (
@@ -9,8 +10,10 @@ export interface FetchLedgerById {
   ) => Promise<LedgerResponseDto>
 }
 
+@injectable()
 export class FetchLedgerByIdUseCase implements FetchLedgerById {
   constructor(
+    @inject(FetchLedgerByIdRepository)
     private readonly fetchLedgerByIdRepository: FetchLedgerByIdRepository
   ) {}
 

@@ -4,14 +4,15 @@ import {
   FetchAllPortfoliosAccountsUseCase
 } from '@/core/application/use-cases/portfolios-accounts/fetch-portfolios-accounts-use-case'
 import { AuthModule, AuthRegistry } from './auth-module'
-import { LedgerModule, LedgerRegistry } from './ledger-module'
 import { PortfolioModule, PortfolioRegistry } from './portfolio-module'
 import { AccountModule, AccountRegistry } from './account-module'
 import { AssetModule, AssetRegistry } from './asset-module'
 import { ProductRegistry, ProductModule } from './product-module'
-import { OrganizationUseCaseModule } from './use-cases/organization-module'
+
 import { Container } from '../utils/di/container'
 import { MidazModule } from '../midaz/module/midaz-module'
+import { OrganizationUseCaseModule } from './use-cases/organization-module'
+import { LedgerUseCaseModule } from './use-cases/ledger-module'
 
 import {
   FetchAllLedgersAssets,
@@ -24,7 +25,6 @@ import { MidazFetchAllAccountsRepository } from '../midaz/accounts/midaz-fetch-a
 
 export const Registry = {
   ...AuthRegistry,
-  ...LedgerRegistry,
   ...PortfolioRegistry,
   ...AccountRegistry,
   ...AssetRegistry,
@@ -41,9 +41,9 @@ export const container = new Container()
 
 container.load(MidazModule)
 container.load(OrganizationUseCaseModule)
+container.load(LedgerUseCaseModule)
 
 container.container.load(AuthModule)
-container.container.load(LedgerModule)
 container.container.load(PortfolioModule)
 container.container.load(AccountModule)
 container.container.load(AssetModule)

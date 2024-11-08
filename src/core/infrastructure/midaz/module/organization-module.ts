@@ -12,7 +12,7 @@ import { MidazFetchAllOrganizationsRepository } from '../organizations/midaz-fet
 import { MidazFetchOrganizationByIdRepository } from '../organizations/midaz-fetch-organization-by-id-repository'
 import { MidazUpdateOrganizationRepository } from '../organizations/midaz-update-organization-repository'
 
-export const OrganizationModule = new ContainerModule(
+export const MidazOrganizationModule = new ContainerModule(
   (container: Container) => {
     container
       .bind<CreateOrganizationRepository>(CreateOrganizationRepository)

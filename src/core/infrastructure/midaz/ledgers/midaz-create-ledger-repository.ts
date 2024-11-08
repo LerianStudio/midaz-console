@@ -1,7 +1,9 @@
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { CreateLedgerRepository } from '@/core/domain/repositories/ledgers/create-ledger-repository'
 import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { injectable } from 'inversify'
 
+@injectable()
 export class MidazCreateLedgerRepository implements CreateLedgerRepository {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
 
