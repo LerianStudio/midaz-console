@@ -89,7 +89,7 @@
     "@types/react-color": "^3.0.12",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.4.20",
-    "eslint": "^9",
+    "eslint": "^8",
     "eslint-config-next": "15.0.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-formatter-html": "^2.7.2",
