@@ -1,3 +1,4 @@
+import { container } from '@/core/infrastructure/container-registry/container-registry'
 import {
   CreateOrganization,
   CreateOrganizationUseCase
@@ -8,7 +9,6 @@ import {
 } from '@/core/application/use-cases/organizations/fetch-all-organizations-use-case'
 import { NextResponse } from 'next/server'
 import { apiErrorHandler } from '../utils/api-error-handler'
-import { container } from '@/core/infrastructure/container-registry/container-registry'
 
 const createOrganizationUseCase = container.get<CreateOrganization>(
   CreateOrganizationUseCase

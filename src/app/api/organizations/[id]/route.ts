@@ -1,3 +1,4 @@
+import { container } from '@/core/infrastructure/container-registry/container-registry'
 import {
   DeleteOrganization,
   DeleteOrganizationUseCase
@@ -10,7 +11,6 @@ import {
   UpdateOrganization,
   UpdateOrganizationUseCase
 } from '@/core/application/use-cases/organizations/update-organization-use-case'
-import { container } from '@/core/infrastructure/container-registry/container-registry'
 import { NextResponse } from 'next/server'
 import { apiErrorHandler } from '../../utils/api-error-handler'
 

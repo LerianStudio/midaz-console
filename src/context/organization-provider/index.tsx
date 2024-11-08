@@ -1,11 +1,11 @@
 'use server'
 
 import React from 'react'
+import { container } from '@/core/infrastructure/container-registry/container-registry'
 import {
   FetchAllOrganizations,
   FetchAllOrganizationsUseCase
 } from '@/core/application/use-cases/organizations/fetch-all-organizations-use-case'
-import { container } from '@/core/infrastructure/container-registry/container-registry'
 import { OrganizationProviderClient } from './organization-provider-client'
 
 const fetchAllOrganizationsUseCase = container.get<FetchAllOrganizations>(
