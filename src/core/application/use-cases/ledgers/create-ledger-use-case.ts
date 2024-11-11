@@ -6,6 +6,7 @@ import {
   ledgerEntityToDto
 } from '../../mappers/ledger-mapper'
 import { LedgerResponseDto } from '../../dto/ledger-response-dto'
+import { inject, injectable } from 'inversify'
 
 export interface CreateLedger {
   execute: (
@@ -14,8 +15,10 @@ export interface CreateLedger {
   ) => Promise<LedgerResponseDto>
 }
 
+@injectable()
 export class CreateLedgerUseCase implements CreateLedger {
   constructor(
+    @inject(CreateLedgerRepository)
     private readonly createLedgerRepository: CreateLedgerRepository
   ) {}
 

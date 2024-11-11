@@ -1,25 +1,26 @@
+import { container } from '@/core/infrastructure/container-registry/container-registry'
 import { apiErrorHandler } from '@/app/api/utils/api-error-handler'
-import { DeleteLedger } from '@/core/application/use-cases/ledgers/delete-ledger-use-case'
-import { FetchLedgerById } from '@/core/application/use-cases/ledgers/fetch-ledger-by-id-use-case'
-import { UpdateLedger } from '@/core/application/use-cases/ledgers/update-ledger-use-case'
-import { FetchOrganizationById } from '@/core/application/use-cases/organizations/fetch-organization-by-id-use-case'
 import {
-  container,
-  Registry
-} from '@/core/infrastructure/container-registry/container-registry'
+  DeleteLedger,
+  DeleteLedgerUseCase
+} from '@/core/application/use-cases/ledgers/delete-ledger-use-case'
+import {
+  FetchLedgerById,
+  FetchLedgerByIdUseCase
+} from '@/core/application/use-cases/ledgers/fetch-ledger-by-id-use-case'
+import {
+  UpdateLedger,
+  UpdateLedgerUseCase
+} from '@/core/application/use-cases/ledgers/update-ledger-use-case'
 import { NextResponse } from 'next/server'
 
 const fetchLedgerByIdUseCase = container.get<FetchLedgerById>(
-  Registry.FetchLedgerByIdUseCase
+  FetchLedgerByIdUseCase
 )
 
-const updateLedgerUseCase = container.get<UpdateLedger>(
-  Registry.UpdateLedgerUseCase
-)
+const updateLedgerUseCase = container.get<UpdateLedger>(UpdateLedgerUseCase)
 
-const deleteLedgerUseCase = container.get<DeleteLedger>(
-  Registry.DeleteLedgerUseCase
-)
+const deleteLedgerUseCase = container.get<DeleteLedger>(DeleteLedgerUseCase)
 
 export async function GET(
   request: Request,

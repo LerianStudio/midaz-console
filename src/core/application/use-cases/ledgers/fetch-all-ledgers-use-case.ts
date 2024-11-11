@@ -4,6 +4,7 @@ import { FetchAllLedgersRepository } from '@/core/domain/repositories/ledgers/fe
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { ledgerEntityToDto } from '../../mappers/ledger-mapper'
 import { PaginationDto } from '../../dto/pagination-dto'
+import { inject, injectable } from 'inversify'
 
 export interface FetchAllLedgers {
   execute: (
@@ -13,8 +14,10 @@ export interface FetchAllLedgers {
   ) => Promise<PaginationEntity<LedgerResponseDto>>
 }
 
+@injectable()
 export class FetchAllLedgersUseCase implements FetchAllLedgers {
   constructor(
+    @inject(FetchAllLedgersRepository)
     private readonly fetchAllLedgersRepository: FetchAllLedgersRepository
   ) {}
 
