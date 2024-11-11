@@ -163,7 +163,7 @@ export const AssetsSheet = ({
 
   React.useEffect(() => {
     if (mode === 'edit' && !isNil(data)) {
-      setMetadataEnabled(Object.entries(data.metadata).length > 0)
+      setMetadataEnabled(Object.entries(data.metadata ?? {}).length > 0)
       form.reset(data, { keepDefaultValues: true })
     } else {
       setMetadataEnabled(false)
