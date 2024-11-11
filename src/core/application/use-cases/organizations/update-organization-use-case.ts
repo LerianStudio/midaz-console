@@ -1,12 +1,10 @@
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { OrganizationResponseDto } from '../../dto/organization-response-dto'
 import { UpdateOrganizationDto } from '../../dto/update-organization-dto'
-import {
-  organizationEntityToDto,
-  organizationUpdateDtoToEntity
-} from '../../mappers/organization-mapper'
+import { OrganizationMapper } from '../../mappers/organization-mapper'
 import { UpdateOrganizationRepository } from '@/core/domain/repositories/organizations/update-organization-repository'
 import { inject, injectable } from 'inversify'
+import { CreateOrganizationDto } from '../../dto/create-organization-dto'
 
 export interface UpdateOrganization {
   execute: (
@@ -27,7 +25,7 @@ export class UpdateOrganizationUseCase implements UpdateOrganization {
     organization: Partial<UpdateOrganizationDto>
   ): Promise<OrganizationResponseDto> {
     const organizationEntity: Partial<OrganizationEntity> =
-      organizationUpdateDtoToEntity(organization)
+      OrganizationMapper.toDomain(organization as CreateOrganizationDto)
 
     const updatedOrganizationEntity =
       await this.updateOrganizationRepository.updateOrganization(
@@ -35,9 +33,6 @@ export class UpdateOrganizationUseCase implements UpdateOrganization {
         organizationEntity
       )
 
-    const organizationResponseDto: OrganizationResponseDto =
-      organizationEntityToDto(updatedOrganizationEntity)
-
-    return organizationResponseDto
+    return OrganizationMapper.toResponseDto(updatedOrganizationEntity)
   }
 }
