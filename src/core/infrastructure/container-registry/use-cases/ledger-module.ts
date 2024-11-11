@@ -1,3 +1,7 @@
+import {
+  FetchAllLedgersAssets,
+  FetchAllLedgersAssetsUseCase
+} from '@/core/application/use-cases/ledgers-assets/fetch-ledger-assets-use-case'
 import { Container, ContainerModule } from '../../utils/di/container'
 import {
   CreateLedger,
@@ -27,5 +31,7 @@ export const LedgerUseCaseModule = new ContainerModule(
     container.bind<FetchLedgerById>(FetchLedgerByIdUseCase).toSelf()
     container.bind<UpdateLedger>(UpdateLedgerUseCase).toSelf()
     container.bind<DeleteLedger>(DeleteLedgerUseCase).toSelf()
+
+    container.bind<FetchAllLedgersAssets>(FetchAllLedgersAssetsUseCase).toSelf()
   }
 )

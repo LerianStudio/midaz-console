@@ -6,6 +6,7 @@ import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { AccountEntity } from '@/core/domain/entities/account-entity'
 import { PortfolioViewResponseDTO } from '../../dto/portfolio-view-dto'
 import { AccountMapper } from '../../mappers/account-mapper'
+import { inject, injectable } from 'inversify'
 
 export interface FetchAllPortfoliosAccounts {
   execute: (
@@ -16,11 +17,14 @@ export interface FetchAllPortfoliosAccounts {
   ) => Promise<PaginationDto<PortfolioViewResponseDTO>>
 }
 
+@injectable()
 export class FetchAllPortfoliosAccountsUseCase
   implements FetchAllPortfoliosAccounts
 {
   constructor(
+    @inject(FetchAllPortfoliosRepository)
     private readonly fetchAllPortfoliosRepository: FetchAllPortfoliosRepository,
+    @inject(FetchAllAccountsRepository)
     private readonly fetchAllAccountsRepository: FetchAllAccountsRepository
   ) {}
 
