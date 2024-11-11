@@ -3,7 +3,6 @@ import {
   FetchAllPortfoliosAccounts,
   FetchAllPortfoliosAccountsUseCase
 } from '@/core/application/use-cases/portfolios-accounts/fetch-portfolios-accounts-use-case'
-import { AuthModule, AuthRegistry } from './auth-module'
 
 import { Container } from '../utils/di/container'
 import { MidazModule } from '../midaz/module/midaz-module'
@@ -22,10 +21,10 @@ import { PortfolioUseCaseModule } from './use-cases/portfolios-module'
 import { AccountUseCaseModule } from './use-cases/account-module'
 import { AssetUseCaseModule } from './use-cases/asset-module'
 import { ProductUseCaseModule } from './use-cases/product-module'
+import { CasdoorModule } from '../casdoor/module/casdoor-module'
+import { AuthUseCaseModule } from './use-cases/auth-module'
 
 export const Registry = {
-  ...AuthRegistry,
-
   // Portfolio-Accounts
   FetchAllPortfoliosAccountsUseCase: Symbol.for(
     'FetchAllPortfoliosAccountsUseCase'
@@ -35,6 +34,9 @@ export const Registry = {
 
 export const container = new Container()
 
+container.load(CasdoorModule)
+container.load(AuthUseCaseModule)
+
 container.load(MidazModule)
 container.load(OrganizationUseCaseModule)
 container.load(LedgerUseCaseModule)
@@ -42,8 +44,6 @@ container.load(PortfolioUseCaseModule)
 container.load(AccountUseCaseModule)
 container.load(AssetUseCaseModule)
 container.load(ProductUseCaseModule)
-
-container.container.load(AuthModule)
 
 container
   .bind<FetchAllLedgersAssets>(Registry.FetchAllLedgersAssetsUseCase)

@@ -1,12 +1,12 @@
+import { container } from '../../container-registry/container-registry'
 import { AuthSessionDto } from '@/core/application/dto/auth-dto'
-import { AuthLogin } from '@/core/application/use-cases/auth/auth-login-use-case'
+import {
+  AuthLogin,
+  AuthLoginUseCase
+} from '@/core/application/use-cases/auth/auth-login-use-case'
 import { AuthEntity } from '@/core/domain/entities/auth-entity'
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import {
-  container,
-  Registry
-} from '../../container-registry/container-registry'
 
 export const nextAuthCasdoorOptions: NextAuthOptions = {
   session: {
@@ -41,9 +41,8 @@ export const nextAuthCasdoorOptions: NextAuthOptions = {
 
       async authorize(credentials, req) {
         try {
-          const authLoginUseCase: AuthLogin = container.get<AuthLogin>(
-            Registry.AuthLoginUseCase
-          )
+          const authLoginUseCase: AuthLogin =
+            container.get<AuthLogin>(AuthLoginUseCase)
           const username = credentials?.username
           const password = credentials?.password
 
