@@ -1,4 +1,5 @@
 import { DeletePortfolioRepository } from '@/core/domain/repositories/portfolios/delete-portfolio-repository'
+import { inject, injectable } from 'inversify'
 
 export interface DeletePortfolio {
   execute: (
@@ -8,8 +9,10 @@ export interface DeletePortfolio {
   ) => Promise<void>
 }
 
+@injectable()
 export class DeletePortfolioUseCase implements DeletePortfolio {
   constructor(
+    @inject(DeletePortfolioRepository)
     private readonly deletePortfolioRepository: DeletePortfolioRepository
   ) {}
 

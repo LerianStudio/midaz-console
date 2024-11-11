@@ -8,6 +8,7 @@ import {
   UpdatePortfolioDto
 } from '../../dto/portfolios-dto'
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
+import { inject, injectable } from 'inversify'
 
 export interface UpdatePortfolio {
   execute: (
@@ -18,8 +19,10 @@ export interface UpdatePortfolio {
   ) => Promise<PortfolioResponseDto>
 }
 
+@injectable()
 export class UpdatePortfolioUseCase implements UpdatePortfolio {
   constructor(
+    @inject(UpdatePortfolioRepository)
     private readonly updatePortfolioRepository: UpdatePortfolioRepository
   ) {}
 

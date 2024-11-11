@@ -1,22 +1,28 @@
+import { container } from '@/core/infrastructure/container-registry/container-registry'
 import { apiErrorHandler } from '@/app/api/utils/api-error-handler'
-import { DeletePortfolio } from '@/core/application/use-cases/portfolios/delete-portfolio-use-case'
-import { FetchPortfolioById } from '@/core/application/use-cases/portfolios/fetch-portfolio-by-id-use-case'
-import { UpdatePortfolio } from '@/core/application/use-cases/portfolios/update-portfolio-use-case'
 import {
-  container,
-  Registry
-} from '@/core/infrastructure/container-registry/container-registry'
+  DeletePortfolio,
+  DeletePortfolioUseCase
+} from '@/core/application/use-cases/portfolios/delete-portfolio-use-case'
+import {
+  FetchPortfolioById,
+  FetchPortfolioByIdUseCase
+} from '@/core/application/use-cases/portfolios/fetch-portfolio-by-id-use-case'
+import {
+  UpdatePortfolio,
+  UpdatePortfolioUseCase
+} from '@/core/application/use-cases/portfolios/update-portfolio-use-case'
 import { NextResponse } from 'next/server'
 
 const updatePortfolioUseCase: UpdatePortfolio = container.get<UpdatePortfolio>(
-  Registry.UpdatePortfolioUseCase
+  UpdatePortfolioUseCase
 )
 
 const deletePortfolioUseCase: DeletePortfolio = container.get<DeletePortfolio>(
-  Registry.DeletePortfolioUseCase
+  DeletePortfolioUseCase
 )
 const getPortfolioByIdUseCase: FetchPortfolioById =
-  container.get<FetchPortfolioById>(Registry.FetchPortfolioByIdUseCase)
+  container.get<FetchPortfolioById>(FetchPortfolioByIdUseCase)
 
 export async function DELETE(
   request: Request,
