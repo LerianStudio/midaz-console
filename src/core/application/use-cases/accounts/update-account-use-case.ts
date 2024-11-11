@@ -2,6 +2,7 @@ import { UpdateAccountsRepository } from '@/core/domain/repositories/accounts/up
 import { AccountResponseDto, UpdateAccountDto } from '../../dto/account-dto'
 import { AccountMapper } from '../../mappers/account-mapper'
 import { AccountEntity } from '@/core/domain/entities/account-entity'
+import { inject, injectable } from 'inversify'
 
 export interface UpdateAccount {
   execute: (
@@ -13,8 +14,10 @@ export interface UpdateAccount {
   ) => Promise<AccountResponseDto>
 }
 
+@injectable()
 export class UpdateAccountUseCase implements UpdateAccount {
   constructor(
+    @inject(UpdateAccountsRepository)
     private readonly updateAccountRepository: UpdateAccountsRepository
   ) {}
 

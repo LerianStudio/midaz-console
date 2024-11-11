@@ -1,21 +1,22 @@
+import { container } from '@/core/infrastructure/container-registry/container-registry'
 import { apiErrorHandler } from '@/app/api/utils/api-error-handler'
-import { CreateAccount } from '@/core/application/use-cases/accounts/create-account-use-case'
-import { FetchAllAccounts } from '@/core/application/use-cases/accounts/fetch-all-account-use-case'
-// Update import statements
-
 import {
-  container,
-  Registry
-} from '@/core/infrastructure/container-registry/container-registry'
+  CreateAccount,
+  CreateAccountUseCase
+} from '@/core/application/use-cases/accounts/create-account-use-case'
+import {
+  FetchAllAccounts,
+  FetchAllAccountsUseCase
+} from '@/core/application/use-cases/accounts/fetch-all-account-use-case'
+
 import { NextResponse } from 'next/server'
 
 // Update use case references
-const createAccountUseCase: CreateAccount = container.get<CreateAccount>(
-  Registry.CreateAccountUseCase
-)
+const createAccountUseCase: CreateAccount =
+  container.get<CreateAccount>(CreateAccountUseCase)
 
 const fetchAllAccountsUseCase: FetchAllAccounts =
-  container.get<FetchAllAccounts>(Registry.FetchAllAccountsUseCase)
+  container.get<FetchAllAccounts>(FetchAllAccountsUseCase)
 
 export async function GET(
   request: Request,

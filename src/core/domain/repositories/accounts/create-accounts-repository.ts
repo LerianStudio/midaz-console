@@ -1,8 +1,7 @@
-import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { AccountEntity } from '../../entities/account-entity'
 
-export interface CreateAccountsRepository {
-  create: (
+export abstract class CreateAccountsRepository {
+  abstract create: (
     organizationId: string,
     ledgerId: string,
     portfolioId: string,

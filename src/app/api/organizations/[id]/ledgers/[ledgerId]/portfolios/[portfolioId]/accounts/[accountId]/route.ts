@@ -1,23 +1,27 @@
+import { container } from '@/core/infrastructure/container-registry/container-registry'
 import { apiErrorHandler } from '@/app/api/utils/api-error-handler'
-import { DeleteAccount } from '@/core/application/use-cases/accounts/delete-account-use-case'
-import { FetchAccountById } from '@/core/application/use-cases/accounts/fetch-account-by-id-use-case'
-import { UpdateAccount } from '@/core/application/use-cases/accounts/update-account-use-case'
 import {
-  container,
-  Registry
-} from '@/core/infrastructure/container-registry/container-registry'
+  DeleteAccount,
+  DeleteAccountUseCase
+} from '@/core/application/use-cases/accounts/delete-account-use-case'
+import {
+  FetchAccountById,
+  FetchAccountByIdUseCase
+} from '@/core/application/use-cases/accounts/fetch-account-by-id-use-case'
+import {
+  UpdateAccount,
+  UpdateAccountUseCase
+} from '@/core/application/use-cases/accounts/update-account-use-case'
 import { NextResponse } from 'next/server'
 
-const updateAccountUseCase: UpdateAccount = container.get<UpdateAccount>(
-  Registry.UpdateAccountUseCase
-)
+const updateAccountUseCase: UpdateAccount =
+  container.get<UpdateAccount>(UpdateAccountUseCase)
 
-const deleteAccountUseCase: DeleteAccount = container.get<DeleteAccount>(
-  Registry.DeleteAccountUseCase
-)
+const deleteAccountUseCase: DeleteAccount =
+  container.get<DeleteAccount>(DeleteAccountUseCase)
 
 const getAccountByIdUseCase: FetchAccountById = container.get<FetchAccountById>(
-  Registry.FetchAccountByIdUseCase
+  FetchAccountByIdUseCase
 )
 
 export async function GET(

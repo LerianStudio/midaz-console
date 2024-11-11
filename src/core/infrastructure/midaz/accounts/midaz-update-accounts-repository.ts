@@ -1,7 +1,9 @@
 import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 import { UpdateAccountsRepository } from '@/core/domain/repositories/accounts/update-accounts-repository'
 import { AccountEntity } from '@/core/domain/entities/account-entity'
+import { injectable } from 'inversify'
 
+@injectable()
 export class MidazUpdateAccountsRepository implements UpdateAccountsRepository {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
 

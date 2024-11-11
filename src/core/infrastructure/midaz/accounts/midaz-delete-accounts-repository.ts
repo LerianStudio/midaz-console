@@ -1,6 +1,8 @@
+import { injectable } from 'inversify'
 import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
 import { DeleteAccountsRepository } from '@/core/domain/repositories/accounts/delete-accounts-repository'
 
+@injectable()
 export class MidazDeleteAccountsRepository implements DeleteAccountsRepository {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
 

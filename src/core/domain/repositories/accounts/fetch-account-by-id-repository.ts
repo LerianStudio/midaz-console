@@ -1,7 +1,7 @@
 import { AccountEntity } from '../../entities/account-entity'
 
-export interface FetchAccountByIdRepository {
-  fetchById: (
+export abstract class FetchAccountByIdRepository {
+  abstract fetchById: (
     organizationId: string,
     ledgerId: string,
     portfolioId: string,
