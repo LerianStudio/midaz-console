@@ -1,10 +1,7 @@
 import { UpdateOrganizationUseCase } from './update-organization-use-case'
 import { OrganizationResponseDto } from '../../dto/organization-response-dto'
 import { UpdateOrganizationDto } from '../../dto/update-organization-dto'
-import {
-  organizationEntityToDto,
-  organizationUpdateDtoToEntity
-} from '../../mappers/organization-mapper'
+import { OrganizationMapper } from '../../mappers/organization-mapper'
 
 jest.mock('../../mappers/organization-mapper')
 
@@ -50,13 +47,13 @@ describe('UpdateOrganizationUseCase', () => {
       updatedAt: new Date()
     }
 
-    ;(organizationUpdateDtoToEntity as jest.Mock).mockReturnValue(
+    ;(OrganizationMapper.toDomain as jest.Mock).mockReturnValue(
       organizationEntity
     )
     updateOrganizationRepository.updateOrganization.mockResolvedValue(
       updatedOrganizationEntity
     )
-    ;(organizationEntityToDto as jest.Mock).mockReturnValue(
+    ;(OrganizationMapper.toResponseDto as jest.Mock).mockReturnValue(
       organizationResponseDto
     )
 
@@ -65,13 +62,13 @@ describe('UpdateOrganizationUseCase', () => {
       updateOrganizationDto
     )
 
-    expect(organizationUpdateDtoToEntity).toHaveBeenCalledWith(
+    expect(OrganizationMapper.toDomain).toHaveBeenCalledWith(
       updateOrganizationDto
     )
     expect(
       updateOrganizationRepository.updateOrganization
     ).toHaveBeenCalledWith(organizationId, organizationEntity)
-    expect(organizationEntityToDto).toHaveBeenCalledWith(
+    expect(OrganizationMapper.toResponseDto).toHaveBeenCalledWith(
       updatedOrganizationEntity
     )
     expect(result).toEqual(organizationResponseDto)
@@ -84,7 +81,7 @@ describe('UpdateOrganizationUseCase', () => {
     }
     const organizationEntity = { name: 'New Name' }
 
-    ;(organizationUpdateDtoToEntity as jest.Mock).mockReturnValue(
+    ;(OrganizationMapper.toDomain as jest.Mock).mockReturnValue(
       organizationEntity
     )
     updateOrganizationRepository.updateOrganization.mockRejectedValue(
@@ -94,7 +91,7 @@ describe('UpdateOrganizationUseCase', () => {
     await expect(
       updateOrganizationUseCase.execute(organizationId, updateOrganizationDto)
     ).rejects.toThrow('Update failed')
-    expect(organizationUpdateDtoToEntity).toHaveBeenCalledWith(
+    expect(OrganizationMapper.toDomain).toHaveBeenCalledWith(
       updateOrganizationDto
     )
     expect(
