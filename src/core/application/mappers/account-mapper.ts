@@ -5,6 +5,7 @@ import {
   UpdateAccountDto
 } from '../dto/account-dto'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
+import { PaginationMapper } from './pagination-mapper'
 
 export class AccountMapper {
   public static toDto(account: AccountEntity): AccountResponseDto {
@@ -50,15 +51,6 @@ export class AccountMapper {
   static toPaginationResponseDto(
     result: PaginationEntity<AccountEntity>
   ): PaginationEntity<AccountResponseDto> {
-    const entityDto =
-      result.items && result.items !== null
-        ? result.items.map(AccountMapper.toDto)
-        : []
-
-    return {
-      items: entityDto,
-      limit: result.limit,
-      page: result.page
-    }
+    return PaginationMapper.toResponseDto(result, AccountMapper.toDto)
   }
 }
