@@ -5,7 +5,7 @@
 [//]: # 'Check the appropriate box for the type of pull request.'
 
 - [ ] UI
-- [ ] Core (Business Lógic)
+- [ ] Core (Business Logic)
 - [ ] Security
 - [ ] internationalization
 - [ ] Pipeline
