@@ -1,8 +1,8 @@
 import { DeleteProductRepository } from '@/core/domain/repositories/products/delete-product-repository'
-import { handleMidazError } from '../../utils/midaz-error-handler'
-import { product } from '@/schema/product'
 import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { injectable } from 'inversify'
 
+@injectable()
 export class MidazDeleteProductRepository implements DeleteProductRepository {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
 

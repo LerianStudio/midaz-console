@@ -2,6 +2,7 @@ import { FetchAllProductsRepository } from '@/core/domain/repositories/products/
 import { PaginationDto } from '../../dto/pagination-dto'
 import { ProductResponseDto } from '../../dto/product-dto'
 import { ProductMapper } from '../../mappers/product-mapper'
+import { inject, injectable } from 'inversify'
 
 export interface FetchAllProducts {
   execute: (
@@ -12,8 +13,10 @@ export interface FetchAllProducts {
   ) => Promise<PaginationDto<ProductResponseDto>>
 }
 
+@injectable()
 export class FetchAllProductsUseCase implements FetchAllProducts {
   constructor(
+    @inject(FetchAllProductsRepository)
     private readonly fetchAllProductsRepository: FetchAllProductsRepository
   ) {}
 
