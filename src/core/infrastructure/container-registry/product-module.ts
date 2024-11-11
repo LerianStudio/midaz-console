@@ -44,7 +44,7 @@ export const ProductRegistry = {
   DeleteProductRepository: Symbol.for('DeleteProductRepository')
 }
 
-export const ProductsModule = new ContainerModule((bind: interfaces.Bind) => {
+export const ProductModule = new ContainerModule((bind: interfaces.Bind) => {
   bind<CreateProductRepository>(
     ProductRegistry.CreateProductRepository
   ).toConstantValue(new MidazCreateProductRepository())

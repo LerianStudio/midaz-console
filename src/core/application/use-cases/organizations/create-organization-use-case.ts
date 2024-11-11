@@ -7,6 +7,7 @@ import {
   organizationEntityToDto
 } from '../../mappers/organization-mapper'
 import { MidazError } from '@/core/infrastructure/errors/midaz-error'
+import { inject, injectable } from 'inversify'
 
 export interface CreateOrganization {
   execute: (
@@ -14,8 +15,10 @@ export interface CreateOrganization {
   ) => Promise<OrganizationResponseDto>
 }
 
+@injectable()
 export class CreateOrganizationUseCase implements CreateOrganization {
   constructor(
+    @inject(CreateOrganizationRepository)
     private readonly createOrganizationRepository: CreateOrganizationRepository
   ) {}
 

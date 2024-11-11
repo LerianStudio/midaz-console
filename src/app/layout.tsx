@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import React from 'react'
 import { Inter } from 'next/font/google'
 import NextAuthSessionProvider from '@/providers/next-auth-session-provider'

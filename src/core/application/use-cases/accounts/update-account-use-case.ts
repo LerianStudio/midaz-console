@@ -1,9 +1,6 @@
 import { UpdateAccountsRepository } from '@/core/domain/repositories/accounts/update-accounts-repository'
 import { AccountResponseDto, UpdateAccountDto } from '../../dto/account-dto'
-import {
-  accountEntityToDto,
-  accountUpdateDtoToEntity
-} from '../../mappers/account-mapper'
+import { AccountMapper } from '../../mappers/account-mapper'
 import { AccountEntity } from '@/core/domain/entities/account-entity'
 
 export interface UpdateAccount {
@@ -34,7 +31,7 @@ export class UpdateAccountUseCase implements UpdateAccount {
       description: 'Active Account'
     }
     const accountEntity: Partial<AccountEntity> =
-      accountUpdateDtoToEntity(account)
+      AccountMapper.toDomain(account)
 
     const updatedAccount: AccountEntity =
       await this.updateAccountRepository.update(
@@ -45,9 +42,6 @@ export class UpdateAccountUseCase implements UpdateAccount {
         accountEntity
       )
 
-    const accountResponseDto: AccountResponseDto =
-      accountEntityToDto(updatedAccount)
-
-    return accountResponseDto
+    return AccountMapper.toDto(updatedAccount)
   }
 }

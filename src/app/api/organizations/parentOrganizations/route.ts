@@ -1,12 +1,12 @@
-import { FetchParentOrganizations } from '@/core/application/use-cases/organizations/fetch-parent-organizations-use-case'
+import { container } from '@/core/infrastructure/container-registry/container-registry'
 import {
-  container,
-  Registry
-} from '@/core/infrastructure/container-registry/container-registry'
+  FetchParentOrganizations,
+  FetchParentOrganizationsUseCase
+} from '@/core/application/use-cases/organizations/fetch-parent-organizations-use-case'
 import { NextResponse } from 'next/server'
 
 const fetchParentOrganizations = container.get<FetchParentOrganizations>(
-  Registry.FetchParentOrganizationsUseCase
+  FetchParentOrganizationsUseCase
 )
 
 export async function GET(request: Request) {

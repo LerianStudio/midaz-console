@@ -4,6 +4,7 @@ import { organizationEntityToDto } from '../../mappers/organization-mapper'
 import { FetchAllOrganizationsRepository } from '@/core/domain/repositories/organizations/fetch-all-organizations-repository'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { PaginationDto } from '../../dto/pagination-dto'
+import { inject, injectable } from 'inversify'
 
 export interface FetchAllOrganizations {
   execute: (
@@ -12,9 +13,11 @@ export interface FetchAllOrganizations {
   ) => Promise<PaginationDto<OrganizationResponseDto>>
 }
 
+@injectable()
 export class FetchAllOrganizationsUseCase implements FetchAllOrganizations {
   constructor(
-    private readonly fetchAllOrganizationsRepository: FetchAllOrganizationsRepository
+    @inject(FetchAllOrganizationsRepository)
+    private fetchAllOrganizationsRepository: FetchAllOrganizationsRepository
   ) {}
 
   async execute(

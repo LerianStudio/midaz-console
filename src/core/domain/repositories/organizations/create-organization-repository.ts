@@ -1,5 +1,7 @@
 import { OrganizationEntity } from '../../entities/organization-entity'
 
-export interface CreateOrganizationRepository {
-  create: (organization: OrganizationEntity) => Promise<OrganizationEntity>
+export abstract class CreateOrganizationRepository {
+  abstract create: (
+    organization: OrganizationEntity
+  ) => Promise<OrganizationEntity>
 }

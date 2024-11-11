@@ -1,15 +1,15 @@
 'use server'
 
 import React from 'react'
-import { FetchAllOrganizations } from '@/core/application/use-cases/organizations/fetch-all-organizations-use-case'
+import { container } from '@/core/infrastructure/container-registry/container-registry'
 import {
-  container,
-  Registry
-} from '@/core/infrastructure/container-registry/container-registry'
+  FetchAllOrganizations,
+  FetchAllOrganizationsUseCase
+} from '@/core/application/use-cases/organizations/fetch-all-organizations-use-case'
 import { OrganizationProviderClient } from './organization-provider-client'
 
 const fetchAllOrganizationsUseCase = container.get<FetchAllOrganizations>(
-  Registry.FetchAllOrganizationsUseCase
+  FetchAllOrganizationsUseCase
 )
 
 export const OrganizationProvider = async ({
