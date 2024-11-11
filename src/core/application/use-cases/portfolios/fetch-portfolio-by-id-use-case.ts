@@ -1,5 +1,5 @@
 import { FetchPortfolioByIdRepository } from '@/core/domain/repositories/portfolios/fetch-portfolio-by-id-repository'
-import { portfolioEntityToDto } from '../../mappers/portfolio-mapper'
+import { PortfolioMapper } from '../../mappers/portfolio-mapper'
 import { PortfolioResponseDto } from '../../dto/portfolios-dto'
 import { inject, injectable } from 'inversify'
 
@@ -29,9 +29,6 @@ export class FetchPortfolioByIdUseCase implements FetchPortfolioById {
       portfolioId
     )
 
-    const portfolioResponseDto: PortfolioResponseDto =
-      portfolioEntityToDto(portfolio)
-
-    return portfolioResponseDto
+    return PortfolioMapper.toResponseDto(portfolio)
   }
 }
