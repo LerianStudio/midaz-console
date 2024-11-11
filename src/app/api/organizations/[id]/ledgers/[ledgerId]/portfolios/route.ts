@@ -1,19 +1,22 @@
+import { container } from '@/core/infrastructure/container-registry/container-registry'
 import { apiErrorHandler } from '@/app/api/utils/api-error-handler'
-import { CreatePortfolio } from '@/core/application/use-cases/portfolios/create-portfolio-use-case'
-import { FetchAllPortfolios } from '@/core/application/use-cases/portfolios/fetch-all-portfolio-use-case'
-
 import {
-  container,
-  Registry
-} from '@/core/infrastructure/container-registry/container-registry'
+  CreatePortfolio,
+  CreatePortfolioUseCase
+} from '@/core/application/use-cases/portfolios/create-portfolio-use-case'
+import {
+  FetchAllPortfolios,
+  FetchAllPortfoliosUseCase
+} from '@/core/application/use-cases/portfolios/fetch-all-portfolio-use-case'
+
 import { NextResponse } from 'next/server'
 
 const createPortfolioUseCase: CreatePortfolio = container.get<CreatePortfolio>(
-  Registry.CreatePortfolioSymbolUseCase
+  CreatePortfolioUseCase
 )
 
 const fetchAllPortfoliosUseCase: FetchAllPortfolios =
-  container.get<FetchAllPortfolios>(Registry.FetchAllPortfoliosUseCase)
+  container.get<FetchAllPortfolios>(FetchAllPortfoliosUseCase)
 
 export async function GET(
   request: Request,

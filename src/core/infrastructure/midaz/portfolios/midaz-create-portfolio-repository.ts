@@ -1,9 +1,9 @@
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
-import { handleMidazError } from '../../utils/midaz-error-handler'
 import { CreatePortfolioRepository } from '@/core/domain/repositories/portfolios/create-portfolio-repository'
-import { PortfolioResponseDto } from '@/core/application/dto/portfolios-dto'
 import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
+import { injectable } from 'inversify'
 
+@injectable()
 export class MidazCreatePortfolioRepository
   implements CreatePortfolioRepository
 {
