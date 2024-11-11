@@ -3,10 +3,7 @@ import { UpdateLedgerRepository } from '@/core/domain/repositories/ledgers/updat
 import { LedgerResponseDto } from '../../dto/ledger-response-dto'
 import { UpdateLedgerDto } from '../../dto/update-ledger-dto'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
-import {
-  ledgerEntityToDto,
-  ledgerUpdateDtoToEntity
-} from '../../mappers/ledger-mapper'
+import { LedgerMapper } from '../../mappers/ledger-mapper'
 
 jest.mock('../../mappers/ledger-mapper')
 
@@ -47,9 +44,11 @@ describe('UpdateLedgerUseCase', () => {
       deletedAt: null
     }
 
-    ;(ledgerUpdateDtoToEntity as jest.Mock).mockReturnValue(ledgerEntity)
+    ;(LedgerMapper.toDomain as jest.Mock).mockReturnValue(ledgerEntity)
     updateLedgerRepository.update.mockResolvedValue(updatedLedgerEntity)
-    ;(ledgerEntityToDto as jest.Mock).mockReturnValue(ledgerResponseDto)
+    ;(LedgerMapper.toResponseDto as jest.Mock).mockReturnValue(
+      ledgerResponseDto
+    )
 
     const result = await updateLedgerUseCase.execute(
       organizationId,
@@ -57,13 +56,13 @@ describe('UpdateLedgerUseCase', () => {
       updateLedgerDto
     )
 
-    expect(ledgerUpdateDtoToEntity).toHaveBeenCalledWith(updateLedgerDto)
+    expect(LedgerMapper.toDomain).toHaveBeenCalledWith(updateLedgerDto)
     expect(updateLedgerRepository.update).toHaveBeenCalledWith(
       organizationId,
       ledgerId,
       ledgerEntity
     )
-    expect(ledgerEntityToDto).toHaveBeenCalledWith(updatedLedgerEntity)
+    expect(LedgerMapper.toResponseDto).toHaveBeenCalledWith(updatedLedgerEntity)
     expect(result).toEqual(ledgerResponseDto)
   })
 
@@ -73,7 +72,7 @@ describe('UpdateLedgerUseCase', () => {
     const updateLedgerDto: Partial<UpdateLedgerDto> = { name: 'Updated Ledger' }
     const ledgerEntity: Partial<LedgerEntity> = { name: 'Updated Ledger' }
 
-    ;(ledgerUpdateDtoToEntity as jest.Mock).mockReturnValue(ledgerEntity)
+    ;(LedgerMapper.toDomain as jest.Mock).mockReturnValue(ledgerEntity)
     updateLedgerRepository.update.mockRejectedValue(new Error('Update failed'))
 
     await expect(
