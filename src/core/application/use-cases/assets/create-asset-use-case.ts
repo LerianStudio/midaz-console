@@ -1,9 +1,9 @@
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { AssetResponseDto } from '../../dto/asset-response-dto'
 import { CreateAssetRepository } from '@/core/domain/repositories/assets/create-asset-repository'
-import { assetDtoToEntity, assetEntityToDto } from '../../mappers/asset-mapper'
 import { CreateAssetDto } from '../../dto/create-asset-dto'
 import { inject, injectable } from 'inversify'
+import { AssetMapper } from '../../mappers/asset-mapper'
 
 export interface CreateAsset {
   execute: (
@@ -25,7 +25,7 @@ export class CreateAssetUseCase implements CreateAsset {
     ledgerId: string,
     asset: CreateAssetDto
   ): Promise<AssetResponseDto> {
-    const assetEntity: AssetEntity = assetDtoToEntity(asset)
+    const assetEntity: AssetEntity = AssetMapper.toDomain(asset)
 
     const assetCreated = await this.createAssetRepository.create(
       organizationId,
@@ -33,8 +33,6 @@ export class CreateAssetUseCase implements CreateAsset {
       assetEntity
     )
 
-    const assetResponseDto = assetEntityToDto(assetCreated)
-
-    return assetResponseDto
+    return AssetMapper.toResponseDto(assetCreated)
   }
 }

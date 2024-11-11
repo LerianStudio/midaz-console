@@ -1,6 +1,6 @@
 import { FetchAssetByIdRepository } from '@/core/domain/repositories/assets/fetch-asset-by-id-repository'
 import { AssetResponseDto } from '../../dto/asset-response-dto'
-import { assetEntityToDto } from '../../mappers/asset-mapper'
+import { AssetMapper } from '../../mappers/asset-mapper'
 import { inject, injectable } from 'inversify'
 
 export interface FetchAssetById {
@@ -29,8 +29,6 @@ export class FetchAssetByIdUseCase implements FetchAssetById {
       assetId
     )
 
-    const assetDto: AssetResponseDto = assetEntityToDto(assetEntity)
-
-    return assetDto
+    return AssetMapper.toResponseDto(assetEntity)
   }
 }
