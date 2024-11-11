@@ -1,8 +1,8 @@
 import { AssetEntity } from '../../entities/asset-entity'
 import { PaginationEntity } from '../../entities/pagination-entity'
 
-export interface FetchAllAssetsRepository {
-  fetchAll: (
+export abstract class FetchAllAssetsRepository {
+  abstract fetchAll: (
     organizationId: string,
     ledgerId: string,
     limit: number,

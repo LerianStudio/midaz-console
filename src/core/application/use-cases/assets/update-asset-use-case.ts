@@ -6,6 +6,7 @@ import {
   assetEntityToDto,
   assetUpdateDtoToEntity
 } from '../../mappers/asset-mapper'
+import { inject, injectable } from 'inversify'
 
 export interface UpdateAsset {
   execute: (
@@ -16,8 +17,12 @@ export interface UpdateAsset {
   ) => Promise<AssetResponseDto>
 }
 
+@injectable()
 export class UpdateAssetUseCase implements UpdateAsset {
-  constructor(private readonly updateAssetRepository: UpdateAssetRepository) {}
+  constructor(
+    @inject(UpdateAssetRepository)
+    private readonly updateAssetRepository: UpdateAssetRepository
+  ) {}
   async execute(
     organizationId: string,
     ledgerId: string,

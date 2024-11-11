@@ -1,7 +1,7 @@
 import { AssetEntity } from '../../entities/asset-entity'
 
-export interface FetchAssetByIdRepository {
-  fetchById: (
+export abstract class FetchAssetByIdRepository {
+  abstract fetchById: (
     organizationId: string,
     ledgerId: string,
     assetId: string

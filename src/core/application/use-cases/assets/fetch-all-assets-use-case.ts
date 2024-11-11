@@ -4,6 +4,7 @@ import { PaginationDto } from '../../dto/pagination-dto'
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { assetEntityToDto } from '../../mappers/asset-mapper'
+import { inject, injectable } from 'inversify'
 
 export interface FetchAllAssets {
   execute: (
@@ -17,8 +18,10 @@ export interface FetchAllAssets {
   ) => Promise<PaginationDto<AssetResponseDto>>
 }
 
+@injectable()
 export class FetchAllAssetsUseCase implements FetchAllAssets {
   constructor(
+    @inject(FetchAllAssetsRepository)
     private readonly fetchAllAssetsRepository: FetchAllAssetsRepository
   ) {}
 
