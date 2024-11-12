@@ -4,7 +4,6 @@ import {
   FetchAllPortfoliosAccountsUseCase
 } from '@/core/application/use-cases/portfolios-accounts/fetch-portfolios-accounts-use-case'
 import { AuthModule, AuthRegistry } from './auth-module'
-import { ProductRegistry, ProductModule } from './product-module'
 
 import { Container } from '../utils/di/container'
 import { MidazModule } from '../midaz/module/midaz-module'
@@ -22,10 +21,10 @@ import { MidazFetchAllAccountsRepository } from '../midaz/accounts/midaz-fetch-a
 import { PortfolioUseCaseModule } from './use-cases/portfolios-module'
 import { AccountUseCaseModule } from './use-cases/account-module'
 import { AssetUseCaseModule } from './use-cases/asset-module'
+import { ProductUseCaseModule } from './use-cases/product-module'
 
 export const Registry = {
   ...AuthRegistry,
-  ...ProductRegistry,
 
   // Portfolio-Accounts
   FetchAllPortfoliosAccountsUseCase: Symbol.for(
@@ -42,9 +41,9 @@ container.load(LedgerUseCaseModule)
 container.load(PortfolioUseCaseModule)
 container.load(AccountUseCaseModule)
 container.load(AssetUseCaseModule)
+container.load(ProductUseCaseModule)
 
 container.container.load(AuthModule)
-container.container.load(ProductModule)
 
 container
   .bind<FetchAllLedgersAssets>(Registry.FetchAllLedgersAssetsUseCase)

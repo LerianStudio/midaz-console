@@ -1,7 +1,7 @@
 import { ProductEntity } from '../../entities/product-entity'
 
-export interface CreateProductRepository {
-  create: (
+export abstract class CreateProductRepository {
+  abstract create: (
     organizationId: string,
     ledgerId: string,
     product: ProductEntity

@@ -2,6 +2,7 @@ import { ProductEntity } from '@/core/domain/entities/product-entity'
 import { CreateProductDto, ProductResponseDto } from '../../dto/product-dto'
 import { ProductMapper } from '../../mappers/product-mapper'
 import { CreateProductRepository } from '@/core/domain/repositories/products/create-product-repository'
+import { inject, injectable } from 'inversify'
 
 export interface CreateProduct {
   execute: (
@@ -11,8 +12,10 @@ export interface CreateProduct {
   ) => Promise<ProductResponseDto>
 }
 
+@injectable()
 export class CreateProductUseCase implements CreateProduct {
   constructor(
+    @inject(CreateProductRepository)
     private readonly createProductRepository: CreateProductRepository
   ) {}
   async execute(

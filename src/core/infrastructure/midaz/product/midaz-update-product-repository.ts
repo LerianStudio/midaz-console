@@ -1,7 +1,9 @@
 import { ProductEntity } from '@/core/domain/entities/product-entity'
 import { UpdateProductRepository } from '@/core/domain/repositories/products/update-product-repository'
 import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { injectable } from 'inversify'
 
+@injectable()
 export class MidazUpdateProductRepository implements UpdateProductRepository {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
 
