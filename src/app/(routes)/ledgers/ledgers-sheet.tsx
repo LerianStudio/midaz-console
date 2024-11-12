@@ -116,7 +116,7 @@ export const LedgersSheet = ({
 
   return (
     <Sheet onOpenChange={onOpenChange} {...others}>
-      <SheetContent>
+      <SheetContent data-testid="ledgers-sheet">
         {mode === 'create' && (
           <SheetHeader>
             <SheetTitle>

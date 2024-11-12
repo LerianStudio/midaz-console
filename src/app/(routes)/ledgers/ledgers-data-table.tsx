@@ -156,7 +156,11 @@ const LedgerRow: React.FC<LedgerRowProps> = ({
         <TableCell className="w-0">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="secondary" className="h-auto w-max p-2">
+              <Button
+                variant="secondary"
+                className="h-auto w-max p-2"
+                data-testid="actions"
+              >
                 <MoreVertical size={16} onClick={() => {}} />
               </Button>
             </DropdownMenuTrigger>
@@ -171,6 +175,7 @@ const LedgerRow: React.FC<LedgerRowProps> = ({
               </Link>
               <DropdownMenuSeparator />
               <DropdownMenuItem
+                data-testid="delete"
                 onClick={() =>
                   handleDialogOpen(
                     ledger.original.id || '',

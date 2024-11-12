@@ -28,6 +28,7 @@ yarn-error.log*
 # local env files
 .env
 .env*.local
+.env.playwright
 
 # vercel
 .vercel
@@ -54,3 +55,5 @@ next-env.d.ts
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+/tests/storage/
+node_modules/
