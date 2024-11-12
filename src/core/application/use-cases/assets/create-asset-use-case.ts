@@ -3,6 +3,7 @@ import { AssetResponseDto } from '../../dto/asset-response-dto'
 import { CreateAssetRepository } from '@/core/domain/repositories/assets/create-asset-repository'
 import { assetDtoToEntity, assetEntityToDto } from '../../mappers/asset-mapper'
 import { CreateAssetDto } from '../../dto/create-asset-dto'
+import { inject, injectable } from 'inversify'
 
 export interface CreateAsset {
   execute: (
@@ -12,8 +13,12 @@ export interface CreateAsset {
   ) => Promise<AssetResponseDto>
 }
 
+@injectable()
 export class CreateAssetUseCase implements CreateAsset {
-  constructor(private readonly createAssetRepository: CreateAssetRepository) {}
+  constructor(
+    @inject(CreateAssetRepository)
+    private readonly createAssetRepository: CreateAssetRepository
+  ) {}
 
   async execute(
     organizationId: string,

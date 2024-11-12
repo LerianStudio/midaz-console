@@ -1,18 +1,20 @@
+import { container } from '@/core/infrastructure/container-registry/container-registry'
 import { apiErrorHandler } from '@/app/api/utils/api-error-handler'
-import { CreateAsset } from '@/core/application/use-cases/assets/create-asset-use-case'
-import { FetchAllAssets } from '@/core/application/use-cases/assets/fetch-all-assets-use-case'
 import {
-  container,
-  Registry
-} from '@/core/infrastructure/container-registry/container-registry'
+  CreateAsset,
+  CreateAssetUseCase
+} from '@/core/application/use-cases/assets/create-asset-use-case'
+import {
+  FetchAllAssets,
+  FetchAllAssetsUseCase
+} from '@/core/application/use-cases/assets/fetch-all-assets-use-case'
 import { NextResponse } from 'next/server'
 
-const createAssetUseCase: CreateAsset = container.get<CreateAsset>(
-  Registry.CreateAssetUseCase
-)
+const createAssetUseCase: CreateAsset =
+  container.get<CreateAsset>(CreateAssetUseCase)
 
 const fetchAllAssetsUseCase: FetchAllAssets = container.get<FetchAllAssets>(
-  Registry.FetchAllAssetsUseCase
+  FetchAllAssetsUseCase
 )
 
 export async function POST(

@@ -1,7 +1,9 @@
 import { FetchAssetByIdRepository } from '@/core/domain/repositories/assets/fetch-asset-by-id-repository'
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { injectable } from 'inversify'
 
+@injectable()
 export class MidazFetchAssetByIdRepository implements FetchAssetByIdRepository {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
 

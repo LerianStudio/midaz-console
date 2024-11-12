@@ -1,7 +1,9 @@
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { CreateAssetRepository } from '@/core/domain/repositories/assets/create-asset-repository'
 import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
+import { injectable } from 'inversify'
 
+@injectable()
 export class MidazCreateAssetRepository implements CreateAssetRepository {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
   async create(

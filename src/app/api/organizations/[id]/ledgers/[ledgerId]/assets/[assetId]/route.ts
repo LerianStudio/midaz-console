@@ -1,24 +1,26 @@
+import { container } from '@/core/infrastructure/container-registry/container-registry'
 import { apiErrorHandler } from '@/app/api/utils/api-error-handler'
-import { DeleteAsset } from '@/core/application/use-cases/assets/delete-asset-use-case'
-import { FetchAssetById } from '@/core/application/use-cases/assets/fetch-asset-by-id-use-case'
-import { UpdateAsset } from '@/core/application/use-cases/assets/update-asset-use-case'
 import {
-  container,
-  Registry
-} from '@/core/infrastructure/container-registry/container-registry'
+  DeleteAsset,
+  DeleteAssetUseCase
+} from '@/core/application/use-cases/assets/delete-asset-use-case'
+import {
+  FetchAssetById,
+  FetchAssetByIdUseCase
+} from '@/core/application/use-cases/assets/fetch-asset-by-id-use-case'
+import {
+  UpdateAsset,
+  UpdateAssetUseCase
+} from '@/core/application/use-cases/assets/update-asset-use-case'
 import { NextResponse } from 'next/server'
 
 const fetchAssetByIdUseCase: FetchAssetById = container.get<FetchAssetById>(
-  Registry.FetchAssetByIdUseCase
+  FetchAssetByIdUseCase
 )
 
-const updateAssetUseCase = container.get<UpdateAsset>(
-  Registry.UpdateAssetUseCase
-)
+const updateAssetUseCase = container.get<UpdateAsset>(UpdateAssetUseCase)
 
-const deleteAssetUseCase = container.get<DeleteAsset>(
-  Registry.DeleteAssetUseCase
-)
+const deleteAssetUseCase = container.get<DeleteAsset>(DeleteAssetUseCase)
 
 export async function GET(
   request: Request,

@@ -1,7 +1,7 @@
 import { AssetEntity } from '../../entities/asset-entity'
 
-export interface UpdateAssetRepository {
-  update: (
+export abstract class UpdateAssetRepository {
+  abstract update: (
     organizationId: string,
     ledgerId: string,
     assetId: string,

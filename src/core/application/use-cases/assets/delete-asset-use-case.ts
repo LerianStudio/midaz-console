@@ -1,4 +1,5 @@
 import { DeleteAssetRepository } from '@/core/domain/repositories/assets/delete-asset-repository'
+import { inject, injectable } from 'inversify'
 
 export interface DeleteAsset {
   execute: (
@@ -8,8 +9,12 @@ export interface DeleteAsset {
   ) => Promise<void>
 }
 
+@injectable()
 export class DeleteAssetUseCase implements DeleteAsset {
-  constructor(private readonly deleteAssetRepository: DeleteAssetRepository) {}
+  constructor(
+    @inject(DeleteAssetRepository)
+    private readonly deleteAssetRepository: DeleteAssetRepository
+  ) {}
 
   async execute(
     organizationId: string,
