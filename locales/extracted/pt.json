@@ -60,15 +60,6 @@
   "header.userDropdown.support": "Suporte",
   "settingsDialog.description": "Faça as alterações desejadas e clique em “Salvar” quando finalizar.",
   "settingsDialog.title": "Configurações",
-  "sheetCreate.button": "",
-  "sheetCreate.description": "",
-  "sheetCreate.title": "",
-  "sheetEdit.button": "",
-  "sheetEdit.description": "",
-  "sheetEdit.title": "",
-  "sheetView.button": "",
-  "sheetView.description": "",
-  "sheetView.title": "",
   "sideBar.accountHolders.accounts": "Contas",
   "sideBar.accountHolders.portfolios": "Portfólios",
   "sideBar.accountHolders.products": "Produtos",
@@ -264,5 +255,7 @@
   "ledgers.toast.create.error": "Erro ao criar o Ledger",
   "ledgers.toast.create.success": "Ledger {ledgerName} criado com sucesso",
   "ledgers.toast.update.error": "Erro ao atualizar o Ledger",
-  "ledgers.toast.update.success": "Alterações do Ledger salvas com sucesso"
+  "ledgers.toast.update.success": "Alterações do Ledger salvas com sucesso",
+  "ledgers.toast.delete.error": "Erro ao excluir o ledger",
+  "ledgers.toast.delete.success": "Ledger excluido com sucesso"
 }
