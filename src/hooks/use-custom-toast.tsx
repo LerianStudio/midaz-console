@@ -2,10 +2,16 @@ import { toast } from 'react-hot-toast'
 import { Check, X, AlertTriangle, Info, XCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-const customToast = (message: string, icon: JSX.Element, bgColor: string) => {
+const customToast = (
+  message: string,
+  icon: JSX.Element,
+  bgColor: string,
+  dataTestId?: string
+) => {
   toast.custom(
     (t) => (
       <div
+        data-testid={dataTestId}
         className={cn(
           'pointer-events-auto flex w-full max-w-[330px] rounded-lg bg-white px-4 py-5 shadow-2xl transition-opacity duration-100 ease-in-out',
           t.visible ? 'opacity-100' : 'opacity-0'
@@ -18,7 +24,11 @@ const customToast = (message: string, icon: JSX.Element, bgColor: string) => {
               <p className="text-sm font-medium text-shadcn-500">{message}</p>
             </div>
           </div>
-          <button onClick={() => toast.dismiss(t.id)} className="flex">
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="flex"
+            data-testid="dismiss-toast"
+          >
             <X className="text-[#9CA3AF]" size={20} />
           </button>
         </div>
@@ -33,7 +43,8 @@ const useCustomToast = () => {
     customToast(
       message,
       <Check size={16} className="text-[#009F6F]" />,
-      'bg-[#D1FAE5]'
+      'bg-[#D1FAE5]',
+      'success-toast'
     )
   }
 
@@ -41,7 +52,8 @@ const useCustomToast = () => {
     customToast(
       message,
       <XCircle size={16} className="text-[#EF4444]" />,
-      'bg-[#FEE2E2]'
+      'bg-[#FEE2E2]',
+      'error-toast'
     )
   }
 
@@ -49,7 +61,8 @@ const useCustomToast = () => {
     customToast(
       message,
       <Info size={16} className="text-[#2563EB]" />,
-      'bg-white'
+      'bg-white',
+      'info-toast'
     )
   }
 
@@ -57,7 +70,8 @@ const useCustomToast = () => {
     customToast(
       message,
       <AlertTriangle size={16} className="text-[#FBBF24]" />,
-      'bg-yellow-100'
+      'bg-yellow-100',
+      'warning-toast'
     )
   }
 

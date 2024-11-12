@@ -44,7 +44,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent data-testid="dialog">
         <DialogHeader>
           <div className="flex items-center gap-2">
             {icon && <span>{icon}</span>}
@@ -65,6 +65,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
             loading={loading}
             onClick={onConfirm}
             variant="default"
+            data-testid="confirm"
           >
             {confirmLabel ??
               intl.formatMessage({

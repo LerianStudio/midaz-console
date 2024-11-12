@@ -108,7 +108,11 @@ const LedgersView = ({ ledgers, refetch, isLoading }: LedgersViewProps) => {
                 defaultMessage: 'What is a Ledger?'
               })}
             />
-            <Button icon={<Plus />} onClick={handleCreate}>
+            <Button
+              icon={<Plus />}
+              onClick={handleCreate}
+              data-testid="new-ledger"
+            >
               {!ledgers || ledgers.items.length === 0
                 ? intl.formatMessage({
                     id: 'ledgers.listingTemplate.newAddButton',
