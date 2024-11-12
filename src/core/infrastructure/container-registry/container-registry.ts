@@ -5,7 +5,6 @@ import {
 } from '@/core/application/use-cases/portfolios-accounts/fetch-portfolios-accounts-use-case'
 import { AuthModule, AuthRegistry } from './auth-module'
 
-import { AccountModule, AccountRegistry } from './account-module'
 import { AssetModule, AssetRegistry } from './asset-module'
 import { ProductRegistry, ProductModule } from './product-module'
 
@@ -23,10 +22,10 @@ import { MidazFetchAllAssetsRepository } from '../midaz/assets/midaz-fetch-all-a
 import { MidazFetchAllPortfoliosRepository } from '../midaz/portfolios/midaz-fetch-all-portfolio-repository'
 import { MidazFetchAllAccountsRepository } from '../midaz/accounts/midaz-fetch-all-accounts-repository'
 import { PortfolioUseCaseModule } from './use-cases/portfolios-module'
+import { AccountUseCaseModule } from './use-cases/account-module'
 
 export const Registry = {
   ...AuthRegistry,
-  ...AccountRegistry,
   ...AssetRegistry,
   ...ProductRegistry,
 
@@ -43,9 +42,9 @@ container.load(MidazModule)
 container.load(OrganizationUseCaseModule)
 container.load(LedgerUseCaseModule)
 container.load(PortfolioUseCaseModule)
+container.load(AccountUseCaseModule)
 
 container.container.load(AuthModule)
-container.container.load(AccountModule)
 container.container.load(AssetModule)
 container.container.load(ProductModule)
 

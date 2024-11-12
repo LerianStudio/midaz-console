@@ -2,6 +2,7 @@ import { CreateAccountsRepository } from '@/core/domain/repositories/accounts/cr
 import { CreateAccountDto, AccountResponseDto } from '../../dto/account-dto'
 import { AccountEntity } from '@/core/domain/entities/account-entity'
 import { AccountMapper } from '../../mappers/account-mapper'
+import { inject, injectable } from 'inversify'
 
 export interface CreateAccount {
   execute: (
@@ -12,8 +13,10 @@ export interface CreateAccount {
   ) => Promise<AccountResponseDto>
 }
 
+@injectable()
 export class CreateAccountUseCase implements CreateAccount {
   constructor(
+    @inject(CreateAccountsRepository)
     private readonly createAccountRepository: CreateAccountsRepository
   ) {}
 

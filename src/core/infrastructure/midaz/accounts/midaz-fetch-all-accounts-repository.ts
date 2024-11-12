@@ -2,7 +2,9 @@ import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
 import { FetchAllAccountsRepository } from '@/core/domain/repositories/accounts/fetch-all-accounts-repository'
 import { AccountEntity } from '@/core/domain/entities/account-entity'
+import { injectable } from 'inversify'
 
+@injectable()
 export class MidazFetchAllAccountsRepository
   implements FetchAllAccountsRepository
 {
