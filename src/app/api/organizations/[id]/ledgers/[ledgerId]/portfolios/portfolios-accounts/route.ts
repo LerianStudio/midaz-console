@@ -1,16 +1,13 @@
+import { container } from '@/core/infrastructure/container-registry/container-registry'
 import { apiErrorHandler } from '@/app/api/utils/api-error-handler'
-import { FetchAllLedgersAssets } from '@/core/application/use-cases/ledgers-assets/fetch-ledger-assets-use-case'
-import { FetchAllPortfoliosAccounts } from '@/core/application/use-cases/portfolios-accounts/fetch-portfolios-accounts-use-case'
 import {
-  container,
-  Registry
-} from '@/core/infrastructure/container-registry/container-registry'
+  FetchAllPortfoliosAccounts,
+  FetchAllPortfoliosAccountsUseCase
+} from '@/core/application/use-cases/portfolios-accounts/fetch-portfolios-accounts-use-case'
 import { NextResponse } from 'next/server'
 
 const fetchAllPortfoliosAccountsUseCases =
-  container.get<FetchAllPortfoliosAccounts>(
-    Registry.FetchAllPortfoliosAccountsUseCase
-  )
+  container.get<FetchAllPortfoliosAccounts>(FetchAllPortfoliosAccountsUseCase)
 
 export async function GET(
   request: Request,

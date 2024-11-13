@@ -8,13 +8,18 @@ import {
   authSessionEntityToDto,
   dtoToAuthEntity
 } from '../../mappers/auth-mapper'
+import { inject, injectable } from 'inversify'
 
 export interface AuthLogin {
   execute: (loginData: AuthLoginDto) => Promise<AuthSessionDto>
 }
 
+@injectable()
 export class AuthLoginUseCase implements AuthLogin {
-  constructor(private readonly authLoginRepository: AuthLoginRepository) {}
+  constructor(
+    @inject(AuthLoginRepository)
+    private readonly authLoginRepository: AuthLoginRepository
+  ) {}
   async execute(loginData: AuthLoginDto): Promise<AuthSessionDto> {
     const authLoginEntity: AuthEntity = dtoToAuthEntity(loginData)
 
