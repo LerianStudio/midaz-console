@@ -1,0 +1,55 @@
+name: "CodeQL"
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: read
+  actions: read
+  security-events: write
+
+jobs:
+  CodeQL:
+    runs-on: ubuntu-latest
+    name: Run CodeQL for Next.js
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - language: javascript
+          build-mode: none
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-node@v3
+      with:
+        node-version: '22'
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+        build-mode: ${{ matrix.build-mode }}
+
+    - name: Install dependencies
+      env:
+        MIDAZ_CONSOLE_SERVICE_HOST: 'localhost'
+      run: |
+        npm install
+        npm run build 
+        
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:${{ matrix.language }}"
