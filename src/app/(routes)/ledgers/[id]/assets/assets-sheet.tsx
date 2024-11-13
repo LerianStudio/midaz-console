@@ -23,7 +23,7 @@ import { LoadingButton } from '@/components/ui/loading-button'
 import { assets } from '@/schema/assets'
 import { SelectItem } from '@/components/ui/select'
 import { currencyObjects } from '@/utils/currency-codes'
-import { useCreateAsset, useUpdateAsset } from '@/client/assets-client'
+import { useCreateAsset, useUpdateAsset } from '@/client/assets'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { IAssetType } from '@/types/assets-type'
 

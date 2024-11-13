@@ -4,7 +4,7 @@ import { FormDetailsProvider } from '@/context/form-details-context'
 import LedgerDetailsView from './ledger-details-view'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
-import { useLedgerById } from '@/client/ledger-client'
+import { useLedgerById } from '@/client/ledgers'
 
 type Params = {
   params: {
