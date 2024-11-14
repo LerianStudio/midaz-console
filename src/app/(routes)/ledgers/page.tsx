@@ -1,7 +1,7 @@
 'use client'
 
 import LedgersView from '@/app/(routes)/ledgers/ledgers-view'
-import { useListLedgers } from '@/client/ledger-client'
+import { useListLedgers } from '@/client/ledgers'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 
 const Page = () => {
