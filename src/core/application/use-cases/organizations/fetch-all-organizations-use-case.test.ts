@@ -2,8 +2,7 @@ import { FetchAllOrganizationsUseCase } from './fetch-all-organizations-use-case
 import { FetchAllOrganizationsRepository } from '@/core/domain/repositories/organizations/fetch-all-organizations-repository'
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
-import { organizationEntityToDto } from '../../mappers/organization-mapper'
-import { OrganizationResponseDto } from '../../dto/organization-response-dto'
+import { OrganizationMapper } from '../../mappers/organization-mapper'
 
 jest.mock('../../mappers/organization-mapper')
 
@@ -62,26 +61,9 @@ describe('FetchAllOrganizationsUseCase', () => {
     ;(fetchAllOrganizationsRepository.fetchAll as jest.Mock).mockResolvedValue(
       paginationEntity
     )
-    ;(organizationEntityToDto as jest.Mock).mockImplementation(
-      (org: OrganizationEntity) => {
-        const ortaniztionDto: OrganizationResponseDto = {
-          id: org.id!,
-          legalName: org.legalName,
-          legalDocument: org.legalDocument,
-          doingBusinessAs: org.doingBusinessAs,
-          parentOrganizationId: org.parentOrganizationId,
-          address: org.address,
-          metadata: org.metadata,
-          status: {
-            code: 'active',
-            description: 'Active'
-          },
-          createdAt: org.createdAt!,
-          updatedAt: org.updatedAt!
-        }
-        return ortaniztionDto
-      }
-    )
+    ;(
+      OrganizationMapper.toPaginationResponseDto as jest.Mock
+    ).mockResolvedValue(paginationEntity)
 
     const result = await fetchAllOrganizationsUseCase.execute(limit, page)
 
@@ -106,6 +88,9 @@ describe('FetchAllOrganizationsUseCase', () => {
     ;(fetchAllOrganizationsRepository.fetchAll as jest.Mock).mockResolvedValue(
       paginationEntity
     )
+    ;(
+      OrganizationMapper.toPaginationResponseDto as jest.Mock
+    ).mockResolvedValue(paginationEntity)
 
     const result = await fetchAllOrganizationsUseCase.execute(limit, page)
 

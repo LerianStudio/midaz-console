@@ -1,6 +1,6 @@
 import { FetchLedgerByIdRepository } from '@/core/domain/repositories/ledgers/fetch-ledger-by-id-repository'
 import { LedgerResponseDto } from '../../dto/ledger-response-dto'
-import { ledgerEntityToDto } from '../../mappers/ledger-mapper'
+import { LedgerMapper } from '../../mappers/ledger-mapper'
 import { inject, injectable } from 'inversify'
 
 export interface FetchLedgerById {
@@ -26,8 +26,6 @@ export class FetchLedgerByIdUseCase implements FetchLedgerById {
       ledgerId
     )
 
-    const ledgerResponseDto: LedgerResponseDto = ledgerEntityToDto(ledgerEntity)
-
-    return ledgerResponseDto
+    return LedgerMapper.toResponseDto(ledgerEntity)
   }
 }

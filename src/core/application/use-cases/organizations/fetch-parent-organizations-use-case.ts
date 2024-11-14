@@ -1,6 +1,6 @@
 import { FetchAllOrganizationsRepository } from '@/core/domain/repositories/organizations/fetch-all-organizations-repository'
 import { OrganizationResponseDto } from '../../dto/organization-response-dto'
-import { organizationEntityToDto } from '../../mappers/organization-mapper'
+import { OrganizationMapper } from '../../mappers/organization-mapper'
 import { inject, injectable } from 'inversify'
 
 export interface FetchParentOrganizations {
@@ -27,7 +27,7 @@ export class FetchParentOrganizationsUseCase
     )
 
     const parentOrganizations: OrganizationResponseDto[] =
-      parentOrganizationsFiltered.map(organizationEntityToDto)
+      parentOrganizationsFiltered.map(OrganizationMapper.toResponseDto)
 
     return parentOrganizations
   }

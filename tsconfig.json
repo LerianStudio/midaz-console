@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["reflect-metadata"],
+    "types": ["reflect-metadata", "jest"],
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,

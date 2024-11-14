@@ -2,7 +2,7 @@ import { FetchAllAssetsUseCase } from './fetch-all-assets-use-case'
 import { FetchAllAssetsRepository } from '@/core/domain/repositories/assets/fetch-all-assets-repository'
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
-import { assetEntityToDto } from '../../mappers/asset-mapper'
+import { AssetMapper } from '../../mappers/asset-mapper'
 import { PaginationDto } from '../../dto/pagination-dto'
 import { AssetResponseDto } from '../../dto/asset-response-dto'
 
@@ -63,23 +63,8 @@ describe('FetchAllAssetsUseCase', () => {
     }
 
     fetchAllAssetsRepository.fetchAll.mockResolvedValue(paginationEntity)
-    ;(assetEntityToDto as jest.Mock).mockImplementation(
-      (asset: AssetEntity) => {
-        const assetResponseDto: AssetResponseDto = {
-          id: asset.id!,
-          organizationId: asset.organizationId!,
-          ledgerId: asset.ledgerId!,
-          name: asset.name,
-          type: asset.type,
-          code: asset.code,
-          status: asset.status,
-          metadata: asset.metadata,
-          createdAt: asset.createdAt!,
-          updatedAt: asset.updatedAt!,
-          deletedAt: asset.deletedAt!
-        }
-        return assetResponseDto
-      }
+    ;(AssetMapper.toPaginationResponseDto as jest.Mock).mockReturnValue(
+      paginationEntity
     )
 
     const result: PaginationDto<AssetResponseDto> =
@@ -120,6 +105,9 @@ describe('FetchAllAssetsUseCase', () => {
     }
 
     fetchAllAssetsRepository.fetchAll.mockResolvedValue(paginationEntity)
+    ;(AssetMapper.toPaginationResponseDto as jest.Mock).mockReturnValue(
+      paginationEntity
+    )
 
     const result: PaginationDto<AssetResponseDto> =
       await fetchAllAssetsUseCase.execute(organizationId, ledgerId, limit, page)

@@ -5,6 +5,7 @@ import {
   UpdateProductDto
 } from '../dto/product-dto'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
+import { PaginationMapper } from './pagination-mapper'
 
 export class ProductMapper {
   static toDomain(dto: CreateProductDto | UpdateProductDto): ProductEntity {
@@ -35,15 +36,6 @@ export class ProductMapper {
   static toPaginationResponseDto(
     result: PaginationEntity<ProductEntity>
   ): PaginationEntity<ProductResponseDto> {
-    const productDto =
-      result.items && result.items !== null
-        ? result.items.map(ProductMapper.toResponseDto)
-        : []
-
-    return {
-      items: productDto,
-      limit: result.limit,
-      page: result.page
-    }
+    return PaginationMapper.toResponseDto(result, ProductMapper.toResponseDto)
   }
 }
