@@ -45,6 +45,18 @@ const nextConfig = {
       process.env.NODE_ENV === 'production'
         ? { properties: ['^data-testid$'] }
         : false
+  },
+  webpack: (config, { isServer }) => {
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      worker_threads: false,
+      pino: false
+    }
+
+    return config
+  },
+  experimental: {
+    serverComponentsExternalPackages: ['pino']
   }
 }
 
