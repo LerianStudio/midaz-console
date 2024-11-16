@@ -13,6 +13,7 @@ import {
   UpdatePortfolioUseCase
 } from '@/core/application/use-cases/portfolios/update-portfolio-use-case'
 import { NextResponse } from 'next/server'
+import { PinoLogger } from '@/lib/logger/pino-logger'
 
 const updatePortfolioUseCase: UpdatePortfolio = container.get<UpdatePortfolio>(
   UpdatePortfolioUseCase
@@ -23,7 +24,7 @@ const deletePortfolioUseCase: DeletePortfolio = container.get<DeletePortfolio>(
 )
 const getPortfolioByIdUseCase: FetchPortfolioById =
   container.get<FetchPortfolioById>(FetchPortfolioByIdUseCase)
-
+const logger = new PinoLogger()
 export async function DELETE(
   request: Request,
   { params }: { params: { id: string; ledgerId: string; portfolioId: string } }
@@ -34,7 +35,11 @@ export async function DELETE(
     const portfolioId = params.portfolioId
 
     await deletePortfolioUseCase.execute(organizationId, ledgerId, portfolioId)
-
+    logger.audit('Portfolio deleted', {
+      organizationId,
+      ledgerId,
+      portfolioId
+    })
     return NextResponse.json({}, { status: 200 })
   } catch (error: any) {
     console.error('Error deleting portfolio', error)
