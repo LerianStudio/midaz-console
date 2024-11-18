@@ -18,10 +18,6 @@
   "organizations.organizationView.newOrganization.title": "Nova Organização",
   "organizations.subtitle": "Visualize e gerencie as Organizações.",
   "organizations.title": "Configurações",
-  "organizations.toast.organizationCreateFailed": "Falha ao criar organização",
-  "organizations.toast.organizationDeletedFailed": "Erro ao excluir organização: id: {organizationId}",
-  "organizations.toast.organizationNotFound": "Nenhuma organização encontrada",
-  "organizations.toast.organizationUpdatedFailed": "Falha ao atualizar organização: id: {organizationId}",
   "common.add": "Adicionar",
   "common.delete": "Deletar",
   "common.edit": "Editar",
@@ -257,5 +253,12 @@
   "ledgers.toast.update.error": "Erro ao atualizar o Ledger",
   "ledgers.toast.update.success": "Alterações do Ledger salvas com sucesso",
   "ledgers.toast.delete.error": "Erro ao excluir o ledger",
-  "ledgers.toast.delete.success": "Ledger excluido com sucesso"
+  "ledgers.toast.delete.success": "Ledger excluido com sucesso",
+  "account.sheet.type.creditCard": "Cartão de Crédito",
+  "account.sheet.type.deposit": "Depósito",
+  "account.sheet.type.external": "Externo",
+  "account.sheet.type.loans": "Empréstimos",
+  "account.sheet.type.marketplace": "Mercado",
+  "account.sheet.type.savings": "Poupança",
+  "ledgers.account.field.type.tooltip": "O tipo de conta"
 }

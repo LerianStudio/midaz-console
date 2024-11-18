@@ -30,6 +30,7 @@ import { useListAssets } from '@/client/assets'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { accountSchema } from '@/schema/account'
 import { AccountType } from '@/types/accounts-type'
+import { SelectItem } from '@/components/ui/select'
 
 export type AccountSheetProps = DialogProps & {
   ledgerId: string
@@ -44,6 +45,7 @@ const defaultValues = {
   productId: '',
   assetCode: '',
   alias: '',
+  type: '',
   metadata: {}
 }
 
@@ -278,6 +280,61 @@ export const AccountSheet = ({
                     'Nickname (@) for identifying the Account holder'
                 })}
               />
+
+              <FormSelectWithTooltip
+                control={form.control}
+                name="type"
+                label={intl.formatMessage({
+                  id: 'common.type',
+                  defaultMessage: 'Type'
+                })}
+                tooltipText={intl.formatMessage({
+                  id: 'ledgers.account.field.type.tooltip',
+                  defaultMessage: 'The type of account'
+                })}
+              >
+                <SelectItem value="deposit">
+                  {intl.formatMessage({
+                    id: 'account.sheet.type.deposit',
+                    defaultMessage: 'Deposit'
+                  })}
+                </SelectItem>
+
+                <SelectItem value="savings">
+                  {intl.formatMessage({
+                    id: 'account.sheet.type.savings',
+                    defaultMessage: 'Savings'
+                  })}
+                </SelectItem>
+
+                <SelectItem value="loans">
+                  {intl.formatMessage({
+                    id: 'account.sheet.type.loans',
+                    defaultMessage: 'Loans'
+                  })}
+                </SelectItem>
+
+                <SelectItem value="marketplace">
+                  {intl.formatMessage({
+                    id: 'account.sheet.type.marketplace',
+                    defaultMessage: 'Marketplace'
+                  })}
+                </SelectItem>
+
+                <SelectItem value="creditCard">
+                  {intl.formatMessage({
+                    id: 'account.sheet.type.creditCard',
+                    defaultMessage: 'CreditCard'
+                  })}
+                </SelectItem>
+
+                <SelectItem value="external">
+                  {intl.formatMessage({
+                    id: 'account.sheet.type.external',
+                    defaultMessage: 'External'
+                  })}
+                </SelectItem>
+              </FormSelectWithTooltip>
 
               {mode === 'create' && (
                 <FormInputWithTooltip
