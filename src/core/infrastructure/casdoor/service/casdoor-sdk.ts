@@ -3,6 +3,14 @@ import { CasbinRequest, EnforceSDK } from './sdk/enforce'
 import { PermissionSdk, type Permission } from './sdk/permission'
 import Request from './sdk/request'
 
+/**
+ * Casdoor SDK.
+ * This is a custom implementation of Casdoor SDK,
+ * as at 11/2024, the original library has a security vulnerability with Axios.
+ * This custom implementation uses the Request with native fetch API.
+ *
+ * References: https://github.com/casdoor/casdoor-nodejs-sdk
+ */
 export class CasdoorSdk {
   protected readonly config: Config
   protected readonly request: Request
