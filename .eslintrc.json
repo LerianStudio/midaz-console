@@ -5,6 +5,16 @@
     "plugin:prettier/recommended",
     "plugin:storybook/recommended"
   ],
+  "overrides": [
+    {
+      "files": ["*.js", "*.jsx", "*.ts", "*.tsx"],
+      "overrideConfig": {
+        "linterOptions": {
+          "reportUnusedDisableDirectives": true
+        }
+      }
+    }
+  ],
   "rules": {
     "prettier/prettier": "error",
     "react-hooks/rules-of-hooks": "off",
