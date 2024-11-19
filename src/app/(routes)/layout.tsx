@@ -7,6 +7,7 @@ import { SidebarProvider } from '@/components/sidebar/primitive'
 import { OrganizationProvider } from '@/context/organization-provider'
 import { getServerSession } from 'next-auth'
 import { nextAuthCasdoorOptions } from '@/core/infrastructure/next-auth/casdoor/next-auth-casdoor-provider'
+import { PermissionProvider } from '@/context/permission-provider'
 
 export default async function RootLayout({
   children
@@ -21,16 +22,18 @@ export default async function RootLayout({
 
   return (
     <OrganizationProvider>
-      <SidebarProvider>
-        <div className="flex min-h-screen w-full bg-background text-foreground">
-          <Sidebar />
-          <div className="flex min-h-full w-full flex-col bg-shadcn-100">
-            <Header />
+      <PermissionProvider>
+        <SidebarProvider>
+          <div className="flex min-h-screen w-full bg-background text-foreground">
+            <Sidebar />
+            <div className="flex min-h-full w-full flex-col bg-shadcn-100">
+              <Header />
 
-            <div className="h-full w-full px-16 pb-16 pt-6">{children}</div>
+              <div className="h-full w-full px-16 pb-16 pt-6">{children}</div>
+            </div>
           </div>
-        </div>
-      </SidebarProvider>
+        </SidebarProvider>
+      </PermissionProvider>
     </OrganizationProvider>
   )
 }
