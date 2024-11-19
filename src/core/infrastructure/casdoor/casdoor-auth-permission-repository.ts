@@ -39,9 +39,7 @@ export class CasdoorAuthPermissionRepository
     )
 
     // Parses these permissions to return to the client
-    const result = BatchEnforceMapper.toResponseDto(batchEnforceFiltered)
-
-    return result
+    return BatchEnforceMapper.toResponseDto(batchEnforceFiltered)
   }
 
   private filterBatchEnforceResponse(
