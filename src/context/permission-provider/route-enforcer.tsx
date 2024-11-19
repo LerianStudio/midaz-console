@@ -13,7 +13,6 @@ export const RouteEnforcer = ({
 }: RouteEnforcerProps) => {
   const { validate } = usePermissions()
 
-  // TODO: Maybe set a proper Unauthorized page
   if (!validate(resource, action)) {
     redirect('/')
   }
