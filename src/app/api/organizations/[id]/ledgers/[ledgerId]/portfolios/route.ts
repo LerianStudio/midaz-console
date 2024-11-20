@@ -31,13 +31,26 @@ export async function GET(
   const organizationId = params.id
   const ledgerId = params.ledgerId
 
-  logger.info('Fetching portfolios', {
-    organizationId,
-    ledgerId,
-    page,
-    limit,
-    method: 'GET'
-  })
+  const context = {
+    component: 'PortfoliosAPI',
+    action: 'fetchPortfolios',
+    layer: 'api' as const,
+    operation: 'GET'
+  }
+
+  logger.info(
+    'Fetching portfolios',
+    {
+      organizationId,
+      ledgerId,
+      page,
+      limit,
+      method: 'GET'
+    },
+    {
+      ...context
+    }
+  )
 
   try {
     const portfolios = await fetchAllPortfoliosUseCase.execute(
@@ -47,23 +60,35 @@ export async function GET(
       limit
     )
 
-    logger.info('Successfully fetched portfolios', {
-      organizationId,
-      ledgerId,
-      count: portfolios.items.length,
-      method: 'GET'
-      // data: portfolios
-    })
+    logger.info(
+      'Successfully fetched portfolios',
+      {
+        organizationId,
+        ledgerId,
+        count: portfolios.items.length,
+        method: 'GET'
+      },
+      context
+    )
 
     return NextResponse.json(portfolios)
   } catch (error: any) {
-    logger.error('Failed to fetch portfolios', {
-      message: error.message,
-      name: error.name,
-      stack: error.stack
-    })
+    logger.error(
+      'Failed to fetch portfolios',
+      {
+        organizationId,
+        ledgerId,
+        error: {
+          message: error.message,
+          name: error.name,
+          stack: error.stack
+        }
+      },
+      {
+        ...context
+      }
+    )
     const { message, status } = await apiErrorHandler(error)
-
     return NextResponse.json({ message }, { status })
   }
 }
@@ -75,11 +100,24 @@ export async function POST(
   const organizationId = params.id
   const ledgerId = params.ledgerId
 
-  logger.info('Creating portfolio', {
-    organizationId,
-    ledgerId,
-    method: 'POST'
-  })
+  const context = {
+    component: 'PortfoliosAPI',
+    action: 'createPortfolio',
+    layer: 'api' as const,
+    operation: 'POST'
+  }
+
+  logger.info(
+    'Creating portfolio',
+    {
+      organizationId,
+      ledgerId,
+      method: 'POST'
+    },
+    {
+      ...context
+    }
+  )
 
   try {
     const body = await request.json()
@@ -89,21 +127,37 @@ export async function POST(
       body
     )
 
-    logger.info('Successfully created portfolio', {
-      organizationId,
-      ledgerId,
-      portfolioId: portfolio.id
-    })
+    logger.info(
+      'Successfully created portfolio',
+      {
+        organizationId,
+        ledgerId,
+        portfolioId: portfolio.id,
+        method: 'POST'
+      },
+      {
+        ...context
+      }
+    )
 
     return NextResponse.json(portfolio)
   } catch (error: any) {
-    logger.error('Failed to create portfolio', {
-      message: error.message,
-      name: error.name,
-      stack: error.stack
-    })
+    logger.error(
+      'Failed to create portfolio',
+      {
+        organizationId,
+        ledgerId,
+        error: {
+          message: error.message,
+          name: error.name,
+          stack: error.stack
+        }
+      },
+      {
+        ...context
+      }
+    )
     const { message, status } = await apiErrorHandler(error)
-
     return NextResponse.json({ message }, { status })
   }
 }

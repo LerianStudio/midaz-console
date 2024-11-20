@@ -32,6 +32,18 @@ export async function apiLoggerMiddleware(
     //   duration
     // })
 
+    logger.info(
+      'API request completed',
+      {
+        duration,
+        status: response.status
+      },
+      {
+        layer: 'api',
+        operation: 'request_end'
+      }
+    )
+
     response.headers.set('X-Request-Id', requestId)
     return response
   } catch (error) {
@@ -39,10 +51,21 @@ export async function apiLoggerMiddleware(
 
     logger.error(
       'API request failed',
-      error instanceof Error ? error : new Error('Unknown error'),
       {
+        error:
+          error instanceof Error
+            ? {
+                message: error.message,
+                name: error.name,
+                stack: error.stack
+              }
+            : error,
         ...requestMetadata,
         duration
+      },
+      {
+        layer: 'api',
+        operation: 'request_error'
       }
     )
 

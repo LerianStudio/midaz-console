@@ -8,6 +8,7 @@ export interface LogContext {
   layer: 'api' | 'application' | 'infrastructure' | 'domain'
   operation: string
   params?: Record<string, any>
+  component?: string
 }
 
 export interface LogEntry {
