@@ -35,11 +35,23 @@ export async function DELETE(
     const portfolioId = params.portfolioId
 
     await deletePortfolioUseCase.execute(organizationId, ledgerId, portfolioId)
-    logger.audit('Portfolio deleted', {
-      organizationId,
-      ledgerId,
-      portfolioId
-    })
+
+    logger.audit(
+      'Portfolio deleted',
+      {
+        organizationId,
+        ledgerId
+      },
+      {
+        layer: 'api',
+        operation: 'delete_portfolio',
+        params: {
+          ledgerId,
+          portfolioId
+        }
+      }
+    )
+
     return NextResponse.json({}, { status: 200 })
   } catch (error: any) {
     console.error('Error deleting portfolio', error)

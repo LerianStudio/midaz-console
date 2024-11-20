@@ -1,18 +1,22 @@
 import pino from 'pino'
-import { ILogger } from '@/core/domain/logger/logger.interface'
+import { LogContext, LogEntry, LogMetadata } from './types'
+import { randomUUID } from 'crypto'
 
-export class PinoLogger implements ILogger {
+export class PinoLogger {
   private logger: pino.Logger
 
   constructor() {
     this.logger = pino({
-      level: process.env.LOG_LEVEL || 'info',
+      formatters: {
+        level: (label) => ({ level: label.toUpperCase() })
+      },
+      timestamp: () => `,"timestamp":${Date.now()}`,
       transport: {
         target: 'pino-pretty',
         options: {
           colorize: true,
-          translateTime: 'UTC:yyyy-mm-dd HH:MM:ss.l o',
-          ignore: 'pid,hostname'
+          ignore: 'pid,hostname',
+          translateTime: 'SYS:yyyy-mm-dd HH:MM:ss.l'
         }
       },
       base: {
@@ -22,41 +26,44 @@ export class PinoLogger implements ILogger {
     })
   }
 
-  private enrichMetadata(metadata?: Record<string, any>): Record<string, any> {
+  private createLogEntry(
+    level: LogEntry['level'],
+    message: string,
+    metadata: LogMetadata,
+    context: LogContext
+  ): LogEntry {
     return {
-      timestamp: new Date().toISOString(),
-      ...metadata
+      level,
+      message,
+      timestamp: Date.now(),
+      traceId: randomUUID(),
+      metadata,
+      context
     }
   }
 
-  debug(message: string, metadata?: Record<string, any>): void {
-    this.logger.debug(this.enrichMetadata(metadata), message)
+  info(message: string, metadata: LogMetadata, context: LogContext) {
+    const logEntry = this.createLogEntry('INFO', message, metadata, context)
+    this.logger.info(logEntry)
   }
 
-  info(message: string, metadata?: Record<string, any>): void {
-    this.logger.info(this.enrichMetadata(metadata), message)
+  error(message: string, metadata: LogMetadata, context: LogContext) {
+    const logEntry = this.createLogEntry('ERROR', message, metadata, context)
+    this.logger.error(logEntry)
   }
 
-  warn(message: string, metadata?: Record<string, any>): void {
-    this.logger.warn(this.enrichMetadata(metadata), message)
+  warn(message: string, metadata: LogMetadata, context: LogContext) {
+    const logEntry = this.createLogEntry('WARN', message, metadata, context)
+    this.logger.warn(logEntry)
   }
 
-  error(message: string, error?: Error, metadata?: Record<string, any>): void {
-    this.logger.error(
-      this.enrichMetadata({
-        ...metadata,
-        error: error
-          ? { message: error.message, stack: error.stack }
-          : undefined
-      }),
-      message
-    )
+  debug(message: string, metadata: LogMetadata, context: LogContext) {
+    const logEntry = this.createLogEntry('DEBUG', message, metadata, context)
+    this.logger.debug(logEntry)
   }
 
-  audit(message: string, metadata?: Record<string, any>): void {
-    this.logger.info(
-      this.enrichMetadata({ ...metadata, type: 'AUDIT' }),
-      message
-    )
+  audit(message: string, metadata: LogMetadata, context: LogContext) {
+    const logEntry = this.createLogEntry('AUDIT', message, metadata, context)
+    this.logger.info(logEntry)
   }
 }
