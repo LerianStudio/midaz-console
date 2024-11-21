@@ -27,35 +27,25 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - language: javascript
-          build-mode: none  # Se 'none' for realmente necessário, senão altere para o modo correto.
-          
+          - language: javascript
+            build-mode: none
     steps:
-    - uses: actions/checkout@v4
-
-    - uses: actions/setup-node@v3
-      with:
-        node-version: '22'
-
-    - name: Install dependencies
-      run: |
-        npm install
-
-    # - name: Run ESLint (opcional, mas recomendável)
-    #   run: |
-    #     npm run lint  # Se você tem um script lint configurado no seu package.json
-    
-    - name: Build the project
-      run: |
-        npm run build  
-
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
-      with:
-        languages: ${{ matrix.language }}
-        build-mode: ${{ matrix.build-mode }}
-
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
-      with:
-        category: "/language:${{ matrix.language }}"
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: |
+          npm install
+      - name: Build the project
+        run: |
+          npm run build
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"
