@@ -1,41 +1,41 @@
-name: "ESLint"
+# # name: "ESLint"
 
-on:
-  pull_request:
-    branches:
-      - develop
-      - main
-    types:
-      - opened
-      - edited
-      - synchronize
-      - reopened
+# on:
+#   pull_request:
+#     branches:
+#       - develop
+#       - main
+#     types:
+#       - opened
+#       - edited
+#       - synchronize
+#       - reopened
 
-permissions:
-  id-token: write
-  contents: read
-  pull-requests: read
+# permissions:
+#   id-token: write
+#   contents: read
+#   pull-requests: read
 
-jobs:
-  ESLint:
-    runs-on: ubuntu-latest
-    name: Run ESLint for Next.js
-    steps:
-    - uses: actions/checkout@v4
+# jobs:
+#   ESLint:
+#     runs-on: ubuntu-latest
+#     name: Run ESLint for Next.js
+#     steps:
+#     - uses: actions/checkout@v4
 
-    - uses: actions/setup-node@v3
-      with:
-        node-version: '22'
+#     - uses: actions/setup-node@v3
+#       with:
+#         node-version: '22'
 
-    - name: Set up .env file
-      run: |
-        cp .env.example .env # Copia .env.example para .env para uso local, se necessário
+#     - name: Set up .env file
+#       run: |
+#         cp .env.example .env # Copia .env.example para .env para uso local, se necessário
 
-    - name: Install dependencies and update ESLint packages
-      run: |
-          npm install
-          npm install eslint@latest eslint-config-next@latest eslint-plugin-prettier@latest eslint-plugin-react-hooks@latest
+#     - name: Install dependencies and update ESLint packages
+#       run: |
+#           npm install
+#           npm install eslint@latest eslint-config-next@latest eslint-plugin-prettier@latest eslint-plugin-react-hooks@latest
 
-    - name: Run ESLint
-      run: |
-        npm run lint
+#     - name: Run ESLint
+#       run: |
+#         npm run lint
