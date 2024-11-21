@@ -260,5 +260,6 @@
   "account.sheet.type.loans": "Empréstimos",
   "account.sheet.type.marketplace": "Mercado",
   "account.sheet.type.savings": "Poupança",
-  "ledgers.account.field.type.tooltip": "O tipo de conta"
+  "ledgers.account.field.type.tooltip": "O tipo de conta",
+  "errors.custom.uppercase_required": "O campo deve estar em maiúsculas e conter apenas letras"
 }

@@ -108,6 +108,7 @@
   "errors.custom.one_uppercase_letter": "Field must contain at least 1 uppercase letter",
   "errors.custom.only_numbers": "Field must contain only numbers",
   "errors.custom.special_characters": "Field must not contain special characters",
+  "errors.custom.uppercase_required": "Field must be in uppercase and consist of letters only",
   "errors.invalid_type": "",
   "errors.invalid_type_received_undefined": "Required field",
   "errors.too_big.date.exact": "Date must be exactly {maximum}",
