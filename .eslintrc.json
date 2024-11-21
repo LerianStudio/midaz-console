@@ -8,10 +8,8 @@
   "overrides": [
     {
       "files": ["*.js", "*.jsx", "*.ts", "*.tsx"],
-      "overrideConfig": {
-        "linterOptions": {
-          "reportUnusedDisableDirectives": true
-        }
+      "rules": {
+        "linterOptions/reportUnusedDisableDirectives": ["error"]
       }
     }
   ],

@@ -1,4 +1,4 @@
-name: "CodeQL & Npm Audit"
+name: "Code Quality and Security Checks"
 
 on:
   pull_request:
@@ -19,6 +19,30 @@ permissions:
   security-events: write
 
 jobs:
+  # Job para rodar a análise ESLint
+  ESLint:
+    runs-on: ubuntu-latest
+    name: Run ESLint for Next.js
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Set up .env file
+        run: |
+          cp .env.example .env  # Copia .env.example para .env para uso local, se necessário
+
+      - name: Install dependencies and update ESLint packages
+        run: |
+          npm install
+          npm install eslint@latest eslint-config-next@latest eslint-plugin-prettier@latest eslint-plugin-react-hooks@latest
+
+      - name: Run ESLint
+        run: |
+          npm run lint
+
   # Job para rodar a análise CodeQL
   CodeQL:
     runs-on: ubuntu-latest
@@ -32,20 +56,25 @@ jobs:
             build-mode: none
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v3
         with:
           node-version: '22'
+
       - name: Install dependencies
         run: |
           npm install
+
       - name: Build the project
         run: |
           npm run build
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
           build-mode: ${{ matrix.build-mode }}
+
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
@@ -58,13 +87,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '22'
+
       - name: Install dependencies
         run: npm install
+
       - name: Run npm audit
         run: npm audit --omit=dev
+
       - name: Fix vulnerabilities
         run: npm audit fix  # Fix the vulnerabilities
