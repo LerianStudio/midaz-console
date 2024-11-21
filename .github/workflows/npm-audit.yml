@@ -22,10 +22,13 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '22' ## se atentar a versão do NodeJS
+        node-version: '22' ## Look the NodeJS Version
 
     - name: Install dependencies
       run: npm install
 
     - name: Run npm audit
       run: npm audit --omit=dev
+    
+    - name: Fix vulnerabilities
+      run: npm audit fix  # Fix the vulnerabilities
