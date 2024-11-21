@@ -11,26 +11,21 @@ on:
       - synchronize
       - reopened
 
-permissions:
-  id-token: write
-  contents: read
-  pull-requests: read
-
 jobs:
-  NpmAudit:
+  npm-audit:
     runs-on: ubuntu-latest
-    name: Run Npm Audit for Next.js
+
     steps:
-    - uses: actions/checkout@v4
-    # Verificar se é mesmo essa versão de Node
-    - uses: actions/setup-node@v3
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
       with:
-        node-version: '22' 
+        node-version: '16'  # Ou a versão que você está utilizando
 
     - name: Install dependencies
-      run: |
-        npm install
+      run: npm install
 
     - name: Run npm audit
-      run: |
-        npm audit --audit-level=high
+      run: npm audit --production
