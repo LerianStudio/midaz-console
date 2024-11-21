@@ -4,8 +4,6 @@ on:
   push:
     tags:
       - '**'  # Isso garante que o workflow seja acionado para qualquer tag
-  release:
-    types: [published]  # Isso garante que o workflow seja acionado quando um release for publicado
 
 permissions:
   id-token: write
