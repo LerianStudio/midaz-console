@@ -1,0 +1,87 @@
+name: "Build Pipeline"
+
+on:
+  push:
+    tags:
+      - '**'
+  release:
+    types: [published]
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  build_and_publish:
+    runs-on: ubuntu-latest
+    env:
+      APP_NAME: midaz-console
+      DOCKERHUB_ORG: lerianstudio
+    name: Build And Publish Docker Image to Midaz
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: "${{ secrets.DOCKER_USERNAME }}"
+        password: "${{ secrets.DOCKER_PASSWORD }}"
+
+    - name: Docker metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}
+        tags: |
+          type=semver,pattern={{version}}
+          type=ref,event=branch,suffix=-${{ github.sha }}
+
+    - name: Build Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .  
+        file: ./Dockerfile
+        load: true
+        tags: ${{ steps.meta.outputs.tags }}
+
+    - name: Extract tag name
+      shell: bash
+      run: echo "tag=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+      id: extract_tag
+
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: '${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}:${{ steps.extract_tag.outputs.tag }}'
+        format: 'table'
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'CRITICAL,HIGH'
+        exit-code: '1'
+
+    - name: Push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .  # Diretório de contexto
+        file: ./Dockerfile  # Caminho para o Dockerfile
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+
+  github-releases-to-discord:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Github Releases To Discord
+        uses: SethCohen/github-releases-to-discord@v1.13.1
+        if: '!github.event.prerelease'
+        with:
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          color: "2105893"
+          username: "Release Changelog"
+          content: "||@everyone||"
+          footer_title: "Changelog"
+          footer_timestamp: true
