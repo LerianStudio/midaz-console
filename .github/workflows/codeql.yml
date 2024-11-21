@@ -28,7 +28,8 @@ jobs:
       matrix:
         include:
         - language: javascript
-          build-mode: none
+          build-mode: none  # Se 'none' for realmente necessário, senão altere para o modo correto.
+          
     steps:
     - uses: actions/checkout@v4
 
@@ -36,19 +37,24 @@ jobs:
       with:
         node-version: '22'
 
+    - name: Install dependencies
+      run: |
+        npm install
+
+    # - name: Run ESLint (opcional, mas recomendável)
+    #   run: |
+    #     npm run lint  # Se você tem um script lint configurado no seu package.json
+    
+    - name: Build the project
+      run: |
+        npm run build  
+
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
 
-    - name: Install dependencies
-      env:
-        MIDAZ_CONSOLE_SERVICE_HOST: 'localhost'
-      run: |
-        npm install
-        npm run build 
-        
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
       with:
