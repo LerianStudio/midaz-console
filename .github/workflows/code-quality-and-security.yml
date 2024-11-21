@@ -1,4 +1,4 @@
-name: "CodeQL"
+name: "CodeQL & Npm Audit"
 
 on:
   pull_request:
@@ -19,6 +19,7 @@ permissions:
   security-events: write
 
 jobs:
+  # Job para rodar a análise CodeQL
   CodeQL:
     runs-on: ubuntu-latest
     name: Run CodeQL for Next.js
@@ -49,3 +50,21 @@ jobs:
         uses: github/codeql-action/analyze@v3
         with:
           category: "/language:${{ matrix.language }}"
+
+  # Job para rodar o Npm Audit
+  npm-audit:
+    runs-on: ubuntu-latest
+    name: Run npm audit and fix vulnerabilities
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm install
+      - name: Run npm audit
+        run: npm audit --omit=dev
+      - name: Fix vulnerabilities
+        run: npm audit fix  # Fix the vulnerabilities
