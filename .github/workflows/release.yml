@@ -3,9 +3,9 @@ name: "Build Pipeline"
 on:
   push:
     tags:
-      - '**'
+      - '**'  # Isso garante que o workflow seja acionado para qualquer tag
   release:
-    types: [published]
+    types: [published]  # Isso garante que o workflow seja acionado quando um release for publicado
 
 permissions:
   id-token: write
@@ -41,8 +41,8 @@ jobs:
     - name: Build Docker image
       uses: docker/build-push-action@v5
       with:
-        context: .  
-        file: ./Dockerfile
+        context: .  # Diretório de contexto (onde o Dockerfile está)
+        file: ./Dockerfile  # Caminho para o Dockerfile na raiz
         load: true
         tags: ${{ steps.meta.outputs.tags }}
 
