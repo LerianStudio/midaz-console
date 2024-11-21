@@ -335,7 +335,6 @@ export const AssetsSheet = ({
               <LoadingButton
                 size="lg"
                 type="submit"
-                disabled={!(form.formState.isDirty && form.formState.isValid)}
                 fullWidth
                 loading={createPending || updatePending}
               >
