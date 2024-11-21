@@ -29,9 +29,7 @@ jobs:
           argo-cd-sync: false
           aws-region: 'us-east-2'
           dockerfile-name: 'Dockerfile'
-          k8s-manifest-repo-name: 'midaz-kubernetes-manifests'
-          k8s-manifest-repo-url: 'github.com/LerianStudio/midaz-kubernetes-manifests.git'
           role-session-name: 'GITHUB-OIDC-ECR-SESSION'
           role-to-assume: ${{ secrets.AWS_GH_OICD_TERRAFORM_ROLE }}
-          service-github-token: ${{ secrets.SERVICE_USER_TOKEN }}
+          service-github-token: ${{ secrets.MANAGE_TOKEN }}
           slack-webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
