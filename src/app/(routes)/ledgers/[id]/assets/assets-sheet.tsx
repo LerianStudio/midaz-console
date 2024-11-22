@@ -1,6 +1,6 @@
 import { InputField, SelectField } from '@/components/form'
 import { MetadataField } from '@/components/form/metadata-field'
-import { Form } from '@/components/ui/form'
+import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form'
 import { Label } from '@/components/ui/label'
 import {
   Sheet,
@@ -26,6 +26,22 @@ import { currencyObjects } from '@/utils/currency-codes'
 import { useCreateAsset, useUpdateAsset } from '@/client/assets'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { IAssetType } from '@/types/assets-type'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from '@/components/ui/popover'
+import { Button } from '@/components/ui/button'
+import { Check, ChevronsUpDown } from 'lucide-react'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList
+} from '@/components/ui/command'
+import { cn } from '@/lib/utils'
 
 export type AssetsSheetProps = DialogProps & {
   ledgerId: string
@@ -34,7 +50,7 @@ export type AssetsSheetProps = DialogProps & {
   onSuccess?: () => void
 }
 
-const defaultValues = {
+const initialValues = {
   type: '',
   name: '',
   code: '',
@@ -64,6 +80,7 @@ export const AssetsSheet = ({
   ...others
 }: AssetsSheetProps) => {
   const intl = useIntl()
+  const [open, setOpen] = React.useState(false)
   const { currentOrganization } = useOrganization()
   const { showSuccess, showError } = useCustomToast()
 
@@ -126,7 +143,7 @@ export const AssetsSheet = ({
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
-    defaultValues: Object.assign({}, defaultValues, assets)
+    defaultValues: initialValues
   })
 
   const type = useWatch({
@@ -152,12 +169,12 @@ export const AssetsSheet = ({
       updateAsset(payload)
     }
 
-    form.reset(defaultValues)
+    form.reset(initialValues)
   }
 
   React.useEffect(() => {
     if (mode === 'create') {
-      form.reset(defaultValues)
+      form.reset(initialValues)
     }
   }, [mode])
 
@@ -269,26 +286,83 @@ export const AssetsSheet = ({
             />
 
             {type === 'currency' ? (
-              <SelectField
-                name="code"
-                label={intl.formatMessage({
-                  id: 'common.code',
-                  defaultMessage: 'Code'
-                })}
-                placeholder={intl.formatMessage({
-                  id: 'common.select',
-                  defaultMessage: 'Select'
-                })}
-                disabled={mode === 'edit'}
+              <FormField
                 control={form.control}
-                required
-              >
-                {currencyObjects.map((currency) => (
-                  <SelectItem key={currency.code} value={currency.code}>
-                    {currency.code}
-                  </SelectItem>
-                ))}
-              </SelectField>
+                name="code"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>
+                      {intl.formatMessage({
+                        id: 'common.code',
+                        defaultMessage: 'Code'
+                      })}
+                    </FormLabel>
+                    <Popover open={open} onOpenChange={setOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={open}
+                          className={cn(
+                            'w-full justify-between',
+                            !field.value && 'text-muted-foreground'
+                          )}
+                        >
+                          {field.value
+                            ? currencyObjects.find(
+                                (currency) => currency.code === field.value
+                              )?.code
+                            : intl.formatMessage({
+                                id: 'common.select',
+                                defaultMessage: 'Select'
+                              })}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">
+                        <Command>
+                          <CommandInput
+                            placeholder={intl.formatMessage({
+                              id: 'common.search',
+                              defaultMessage: 'Search...'
+                            })}
+                          />
+                          <CommandList>
+                            <CommandEmpty>
+                              {intl.formatMessage({
+                                id: 'common.noOptions',
+                                defaultMessage: 'No options found.'
+                              })}
+                            </CommandEmpty>
+                            <CommandGroup>
+                              {currencyObjects.map((currency) => (
+                                <CommandItem
+                                  value={currency.code}
+                                  key={currency.code}
+                                  onSelect={() => {
+                                    form.setValue('code', currency.code)
+                                    setOpen(false)
+                                  }}
+                                >
+                                  {currency.code}
+                                  <Check
+                                    className={cn(
+                                      'ml-auto h-4 w-4',
+                                      currency.code === field.value
+                                        ? 'opacity-100'
+                                        : 'opacity-0'
+                                    )}
+                                  />
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                  </FormItem>
+                )}
+              />
             ) : (
               <InputField
                 name="code"
