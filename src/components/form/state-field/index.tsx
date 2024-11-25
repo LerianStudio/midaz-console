@@ -1,30 +1,40 @@
 import React from 'react'
 import { SelectFieldProps } from '../select-field'
-import { getStateCountry, StateType } from '@/utils/country-utils'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
+import { getStateCountry } from '@/utils/country-utils'
 import { ControllerRenderProps, useFormContext } from 'react-hook-form'
 import {
-  FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage
 } from '@/components/ui/form'
 import { SelectProps } from '@radix-ui/react-select'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent
+} from '@/components/ui/popover'
+import { ChevronsUpDown } from 'lucide-react'
+import { useIntl } from 'react-intl'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList
+} from '@/components/ui/command'
 
 type StateSelectProps = SelectProps &
   Omit<ControllerRenderProps, 'ref'> & {
     countryName: string
     placeholder?: string
+    emptyMessage?: string
   }
 
-const StateSelect = React.forwardRef<unknown, StateSelectProps>(
+const StateComboBox = React.forwardRef<unknown, StateSelectProps>(
   (
     {
       name,
@@ -32,57 +42,111 @@ const StateSelect = React.forwardRef<unknown, StateSelectProps>(
       placeholder,
       onChange,
       countryName,
+      emptyMessage,
       ...others
     }: StateSelectProps,
     ref
   ) => {
+    const intl = useIntl()
+    const [open, setOpen] = React.useState(false)
+
     const form = useFormContext()
     const country = form.watch<string>(countryName)
 
-    const [states, setStates] = React.useState<StateType[]>(
-      getStateCountry(country)
-    )
+    const options = React.useMemo(() => {
+      const states = getStateCountry(country)?.map((state) => ({
+        value: state.code,
+        label: state.name
+      }))
 
-    React.useEffect(() => {
-      setStates(getStateCountry(country))
-
-      const stateByCountry = getStateCountry(country).find(
-        (state) => state.code === value
-      )
-
-      if (!stateByCountry) {
-        onChange({ target: { name, value: '' } })
+      if (!states) {
+        onChange?.('')
       }
+
+      return states ?? []
     }, [country])
 
+    // Gets the display value of the selected option based on the value
+    const getDisplayValue = React.useCallback(
+      (value: string) => {
+        return options.find((option) => option.value === value)?.label ?? null
+      },
+      [options]
+    )
+
     return (
-      <Select name={name} value={value} onValueChange={onChange} {...others}>
-        <FormControl>
-          <SelectTrigger>
-            <SelectValue placeholder={placeholder} />
-          </SelectTrigger>
-        </FormControl>
-        <SelectContent>
-          {states.map((state) => (
-            <SelectItem key={state.code} value={state.code}>
-              {state.name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className={cn(
+              'w-full justify-between',
+              !value && 'text-muted-foreground'
+            )}
+          >
+            {getDisplayValue(value) ??
+              intl.formatMessage({
+                id: 'common.selectPlaceholder',
+                defaultMessage: 'Select...'
+              })}
+            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">
+          <Command>
+            <CommandInput
+              placeholder={
+                placeholder ??
+                intl.formatMessage({
+                  id: 'common.search',
+                  defaultMessage: 'Search...'
+                })
+              }
+            />
+            <CommandList>
+              <CommandEmpty>
+                {emptyMessage ??
+                  intl.formatMessage({
+                    id: 'common.noOptions',
+                    defaultMessage: 'No options found.'
+                  })}
+              </CommandEmpty>
+              <CommandGroup>
+                {options.map((option) => (
+                  <CommandItem
+                    key={option.value}
+                    value={option.value}
+                    keywords={[option.label]}
+                    onSelect={(currentValue: string) => {
+                      onChange?.(value !== currentValue ? currentValue : '')
+                      setOpen(false)
+                    }}
+                  >
+                    {option.label}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
     )
   }
 )
-StateSelect.displayName = 'Select'
+StateComboBox.displayName = 'Select'
 
 export type StateFieldProps = Omit<SelectFieldProps, 'children'> & {
   countryName?: string
+  emptyMessage?: string
 }
 
 export const StateField = ({
   countryName = 'address.country',
   label,
   placeholder,
+  emptyMessage,
   required,
   ...others
 }: StateFieldProps) => {
@@ -92,9 +156,10 @@ export const StateField = ({
       render={({ field }) => (
         <FormItem required={required}>
           {label && <FormLabel>{label}</FormLabel>}
-          <StateSelect
+          <StateComboBox
             countryName={countryName}
             placeholder={placeholder}
+            emptyMessage={emptyMessage}
             {...field}
           />
           <FormMessage />
