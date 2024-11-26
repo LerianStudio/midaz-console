@@ -1,6 +1,6 @@
 import { InputField, SelectField } from '@/components/form'
 import { MetadataField } from '@/components/form/metadata-field'
-import { Form, FormField, FormItem, FormLabel } from '@/components/ui/form'
+import { Form } from '@/components/ui/form'
 import { Label } from '@/components/ui/label'
 import {
   Sheet,
@@ -26,22 +26,8 @@ import { currencyObjects } from '@/utils/currency-codes'
 import { useCreateAsset, useUpdateAsset } from '@/client/assets'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { IAssetType } from '@/types/assets-type'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger
-} from '@/components/ui/popover'
-import { Button } from '@/components/ui/button'
-import { Check, ChevronsUpDown } from 'lucide-react'
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList
-} from '@/components/ui/command'
-import { cn } from '@/lib/utils'
+import { CommandItem } from '@/components/ui/command'
+import { ComboBoxField } from '@/components/form/combo-box-field'
 
 export type AssetsSheetProps = DialogProps & {
   ledgerId: string
@@ -286,83 +272,21 @@ export const AssetsSheet = ({
             />
 
             {type === 'currency' ? (
-              <FormField
-                control={form.control}
+              <ComboBoxField
                 name="code"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>
-                      {intl.formatMessage({
-                        id: 'common.code',
-                        defaultMessage: 'Code'
-                      })}
-                    </FormLabel>
-                    <Popover open={open} onOpenChange={setOpen}>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          role="combobox"
-                          aria-expanded={open}
-                          className={cn(
-                            'w-full justify-between',
-                            !field.value && 'text-muted-foreground'
-                          )}
-                        >
-                          {field.value
-                            ? currencyObjects.find(
-                                (currency) => currency.code === field.value
-                              )?.code
-                            : intl.formatMessage({
-                                id: 'common.select',
-                                defaultMessage: 'Select'
-                              })}
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0">
-                        <Command>
-                          <CommandInput
-                            placeholder={intl.formatMessage({
-                              id: 'common.search',
-                              defaultMessage: 'Search...'
-                            })}
-                          />
-                          <CommandList>
-                            <CommandEmpty>
-                              {intl.formatMessage({
-                                id: 'common.noOptions',
-                                defaultMessage: 'No options found.'
-                              })}
-                            </CommandEmpty>
-                            <CommandGroup>
-                              {currencyObjects.map((currency) => (
-                                <CommandItem
-                                  value={currency.code}
-                                  key={currency.code}
-                                  onSelect={() => {
-                                    form.setValue('code', currency.code)
-                                    setOpen(false)
-                                  }}
-                                >
-                                  {currency.code}
-                                  <Check
-                                    className={cn(
-                                      'ml-auto h-4 w-4',
-                                      currency.code === field.value
-                                        ? 'opacity-100'
-                                        : 'opacity-0'
-                                    )}
-                                  />
-                                </CommandItem>
-                              ))}
-                            </CommandGroup>
-                          </CommandList>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
-                  </FormItem>
-                )}
-              />
+                label={intl.formatMessage({
+                  id: 'common.code',
+                  defaultMessage: 'Code'
+                })}
+                control={form.control}
+                required
+              >
+                {currencyObjects.map((currency) => (
+                  <CommandItem value={currency.code} key={currency.code}>
+                    {currency.code}
+                  </CommandItem>
+                ))}
+              </ComboBoxField>
             ) : (
               <InputField
                 name="code"

@@ -16,6 +16,7 @@ export type InputFieldProps = {
   placeholder?: string
   control: Control<any>
   disabled?: boolean
+  readOnly?: boolean
   required?: boolean
 }
 
@@ -24,6 +25,7 @@ export const InputField = ({
   label,
   placeholder,
   required,
+  readOnly,
   ...others
 }: InputFieldProps) => {
   return (
@@ -33,7 +35,12 @@ export const InputField = ({
         <FormItem required={required}>
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
-            <Input type={type} placeholder={placeholder} {...field} />
+            <Input
+              type={type}
+              placeholder={placeholder}
+              readOnly={readOnly}
+              {...field}
+            />
           </FormControl>
           <FormMessage />
         </FormItem>

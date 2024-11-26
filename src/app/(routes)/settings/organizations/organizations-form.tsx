@@ -163,7 +163,7 @@ export const OrganizationsForm = ({
                       defaultMessage: 'Type...'
                     })}
                     control={form.control}
-                    disabled
+                    readOnly
                   />
                 )}
 
@@ -204,7 +204,7 @@ export const OrganizationsForm = ({
                     defaultMessage: 'Type...'
                   })}
                   control={form.control}
-                  disabled={!isNewOrganization}
+                  readOnly={!isNewOrganization}
                 />
               </CardContent>
 
