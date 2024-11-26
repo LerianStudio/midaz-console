@@ -66,7 +66,6 @@ const StateComboBox = React.forwardRef<unknown, StateSelectProps>(
       return states ?? []
     }, [country])
 
-    // Gets the display value of the selected option based on the value
     const getDisplayValue = React.useCallback(
       (value: string) => {
         return options.find((option) => option.value === value)?.label ?? null
