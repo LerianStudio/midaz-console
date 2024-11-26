@@ -16,7 +16,10 @@ type UseCreateLedgerProps = UseMutationOptions & {
   organizationId: string
 }
 
-type UseListLedgersProps = UseCreateLedgerProps
+type UseListLedgersProps = {
+  organizationId: string
+  enabled?: boolean
+}
 
 type UseLedgerByIdProps = UseMutationOptions & {
   organizationId: string
