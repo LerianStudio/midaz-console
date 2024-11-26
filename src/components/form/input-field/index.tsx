@@ -6,13 +6,13 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { HTMLInputTypeAttribute } from 'react'
+import { HTMLInputTypeAttribute, ReactNode } from 'react'
 import { Control } from 'react-hook-form'
 
 export type InputFieldProps = {
   name: string
   type?: HTMLInputTypeAttribute
-  label?: string
+  label?: ReactNode
   placeholder?: string
   control: Control<any>
   disabled?: boolean

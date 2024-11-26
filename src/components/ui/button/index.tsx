@@ -29,7 +29,8 @@ const buttonVariants = cva(
         sm: 'h-8 rounded-md px-3 py-2',
         lg: 'h-12 rounded-md px-8',
         icon: 'h-10 w-10',
-        link: 'p-0 w-auto h-auto'
+        link: 'p-0 w-auto h-auto',
+        xl: 'h-14 p-4'
       }
     },
     defaultVariants: {
@@ -44,25 +45,41 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
   icon?: JSX.Element
+  iconPlacement?: 'end'
   fullWidth?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    { className, variant, size, asChild = false, icon, fullWidth, ...props },
+    {
+      className,
+      variant,
+      size,
+      asChild = false,
+      icon,
+      iconPlacement,
+      fullWidth,
+      ...props
+    },
     ref
   ) => {
     const Comp = asChild ? Slot : 'button'
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }), {
-          'w-full': fullWidth
+          'w-full': fullWidth,
+          'relative flex': true
         })}
         ref={ref}
         {...props}
       >
         {props.children}
-        {icon && <span className="ml-2">{icon}</span>}
+        {icon && iconPlacement !== 'end' && (
+          <span className="ml-2">{icon}</span>
+        )}
+        {icon && iconPlacement === 'end' && (
+          <span className="absolute right-4">{icon}</span>
+        )}
       </Comp>
     )
   }

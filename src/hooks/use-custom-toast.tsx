@@ -1,5 +1,5 @@
 import { toast } from 'react-hot-toast'
-import { Check, X, AlertTriangle, Info, XCircle } from 'lucide-react'
+import { Check, X, AlertTriangle, Info, Ban } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const customToast = (
@@ -19,7 +19,14 @@ const customToast = (
       >
         <div className="flex flex-1">
           <div className="flex items-center gap-[10px]">
-            <div className={cn('rounded-md p-2', bgColor)}>{icon}</div>
+            <div
+              className={cn(
+                'flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg',
+                bgColor
+              )}
+            >
+              {icon}
+            </div>
             <div className="w-full min-w-[234px] text-wrap">
               <p className="text-sm font-medium text-shadcn-500">{message}</p>
             </div>
@@ -51,7 +58,7 @@ const useCustomToast = () => {
   const showError = (message: string) => {
     customToast(
       message,
-      <XCircle size={16} className="text-[#EF4444]" />,
+      <Ban size={20} className="text-[#EF4444]" />,
       'bg-[#FEE2E2]',
       'error-toast'
     )
