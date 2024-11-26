@@ -101,7 +101,7 @@ const Page = () => {
               >
                 {intl.formatMessage({
                   id: 'homePage.dialog.footer.createOrganizationButton',
-                  defaultMessage: 'Create organization'
+                  defaultMessage: 'Create Organization'
                 })}
               </Button>
             </DialogFooter>
@@ -145,10 +145,15 @@ const Page = () => {
       {hasOrganizations && (
         <PageHeader.Root>
           <PageHeader.InfoTitle
-            title={intl.formatMessage({
-              id: 'homePage.welcomeBack.title',
-              defaultMessage: 'Welcome again!'
-            })}
+            title={intl.formatMessage(
+              {
+                id: 'homePage.welcome.title',
+                defaultMessage: 'Welcome, {user}!'
+              },
+              {
+                user: (session?.user?.name as string) || 'Guest'
+              }
+            )}
           />
         </PageHeader.Root>
       )}

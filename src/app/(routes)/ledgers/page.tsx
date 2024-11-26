@@ -22,15 +22,15 @@ const Page = () => {
           <div>
             <AlertTitle>
               {intl.formatMessage({
-                id: 'homePage.alert.title',
-                defaultMessage: 'Attention'
+                id: 'ledgersPage.alert.title',
+                defaultMessage: 'Organization Required'
               })}
             </AlertTitle>
             <AlertDescription>
               {intl.formatMessage({
-                id: 'homePage.alert.description',
+                id: 'ledgersPage.alert.description',
                 defaultMessage:
-                  "You don't have an organization, please create one."
+                  'To use ledger features, you need to create an organization.'
               })}
             </AlertDescription>
             <Button

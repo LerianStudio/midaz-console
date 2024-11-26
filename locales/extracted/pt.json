@@ -271,7 +271,9 @@
   "homePage.dialog.footer.createOrganizationButton": "Criar Organização",
   "homePage.dialog.footer.laterButton": "Agora não",
   "homePage.greetings.title": "Saudações,",
-  "homePage.welcomeBack.title": "Olá novamente!",
   "organization": "Organização",
-  "tooltip.passwordInfo": "Contacte o admin do sistema"
+  "tooltip.passwordInfo": "Contacte o admin do sistema",
+  "homePage.welcome.title": "Seja bem-vindo, {user}!",
+  "ledgersPage.alert.description": "Para usar os recursos de ledger, você precisa criar uma organização.",
+  "ledgersPage.alert.title": "Organização Necessária"
 }
