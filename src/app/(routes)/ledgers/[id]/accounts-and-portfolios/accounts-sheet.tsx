@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -16,10 +16,7 @@ import { useIntl } from 'react-intl'
 import { DialogProps } from '@radix-ui/react-dialog'
 import { LoadingButton } from '@/components/ui/loading-button'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
-import { Label } from '@/components/ui/label'
 import { MetadataField } from '@/components/form/metadata-field'
-import { Switch } from '@/components/ui/switch'
-import { metadata } from '@/schema/metadata'
 import { useListProducts } from '@/client/products'
 import { useCreateAccount, useUpdateAccount } from '@/client/accounts'
 import { useListPortfolios } from '@/client/portfolios'
@@ -30,6 +27,8 @@ import { accountSchema } from '@/schema/account'
 import { AccountType } from '@/types/accounts-type'
 import { SelectItem } from '@/components/ui/select'
 import { InputField, SelectField } from '@/components/form'
+import { TabsContent } from '@radix-ui/react-tabs'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 export type AccountSheetProps = DialogProps & {
   ledgerId: string
@@ -60,9 +59,6 @@ export const AccountSheet = ({
   const intl = useIntl()
   const { id: ledgerId } = useParams<{ id: string }>()
   const { currentOrganization } = useOrganization()
-  const [metadataEnabled, setMetadataEnabled] = React.useState(
-    Object.entries(metadata || {}).length > 0
-  )
 
   const { data: rawProductListData } = useListProducts({
     organizationId: currentOrganization.id!,
@@ -192,15 +188,12 @@ export const AccountSheet = ({
 
   React.useEffect(() => {
     if (!isNil(data)) {
-      setMetadataEnabled(Object.entries(data.metadata || {}).length > 0)
       if (mode === 'edit') {
         const { entityId, ...dataWithoutEntityId } = data
         form.reset(dataWithoutEntityId, { keepDefaultValues: true })
       } else {
         form.reset(data, { keepDefaultValues: true })
       }
-    } else {
-      setMetadataEnabled(false)
     }
   }, [data])
 
@@ -251,196 +244,202 @@ export const AccountSheet = ({
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(handleSubmit)}
-              className="flex flex-grow flex-col gap-4"
+              className="flex flex-grow flex-col"
             >
-              <InputField
-                control={form.control}
-                name="name"
-                label={intl.formatMessage({
-                  id: 'ledgers.account.field.name',
-                  defaultMessage: 'Account Name'
-                })}
-                tooltip={intl.formatMessage({
-                  id: 'ledgers.account.field.name.tooltip',
-                  defaultMessage: 'Enter the name of the account'
-                })}
-              />
-
-              <InputField
-                control={form.control}
-                name="alias"
-                label={intl.formatMessage({
-                  id: 'ledgers.account.field.alias',
-                  defaultMessage: 'Account Alias'
-                })}
-                tooltip={intl.formatMessage({
-                  id: 'ledgers.account.field.alias.tooltip',
-                  defaultMessage:
-                    'Nickname (@) for identifying the Account holder'
-                })}
-              />
-
-              <SelectField
-                control={form.control}
-                name="type"
-                label={intl.formatMessage({
-                  id: 'common.type',
-                  defaultMessage: 'Type'
-                })}
-                tooltip={intl.formatMessage({
-                  id: 'ledgers.account.field.type.tooltip',
-                  defaultMessage: 'The type of account'
-                })}
-              >
-                <SelectItem value="deposit">
-                  {intl.formatMessage({
-                    id: 'account.sheet.type.deposit',
-                    defaultMessage: 'Deposit'
-                  })}
-                </SelectItem>
-
-                <SelectItem value="savings">
-                  {intl.formatMessage({
-                    id: 'account.sheet.type.savings',
-                    defaultMessage: 'Savings'
-                  })}
-                </SelectItem>
-
-                <SelectItem value="loans">
-                  {intl.formatMessage({
-                    id: 'account.sheet.type.loans',
-                    defaultMessage: 'Loans'
-                  })}
-                </SelectItem>
-
-                <SelectItem value="marketplace">
-                  {intl.formatMessage({
-                    id: 'account.sheet.type.marketplace',
-                    defaultMessage: 'Marketplace'
-                  })}
-                </SelectItem>
-
-                <SelectItem value="creditCard">
-                  {intl.formatMessage({
-                    id: 'account.sheet.type.creditCard',
-                    defaultMessage: 'CreditCard'
-                  })}
-                </SelectItem>
-
-                <SelectItem value="external">
-                  {intl.formatMessage({
-                    id: 'account.sheet.type.external',
-                    defaultMessage: 'External'
-                  })}
-                </SelectItem>
-              </SelectField>
-
-              {mode === 'create' && (
-                <InputField
-                  control={form.control}
-                  name="entityId"
-                  label={intl.formatMessage({
-                    id: 'ledgers.account.field.entityId',
-                    defaultMessage: 'Entity ID'
-                  })}
-                  tooltip={intl.formatMessage({
-                    id: 'ledgers.account.field.entityId.tooltip',
-                    defaultMessage:
-                      'Identification number (EntityId) of the Account holder'
-                  })}
-                />
-              )}
-              {mode === 'create' && (
-                <>
-                  <SelectField
-                    control={form.control}
-                    name="assetCode"
-                    label={intl.formatMessage({
-                      id: 'ledgers.account.field.asset',
-                      defaultMessage: 'Asset'
+              <Tabs defaultValue="details" className="mt-0">
+                <TabsList className="mb-8 px-0">
+                  <TabsTrigger value="details">
+                    {intl.formatMessage({
+                      id: 'ledgers.account.sheet.tabs.details',
+                      defaultMessage: 'Account Details'
                     })}
-                    tooltip={intl.formatMessage({
-                      id: 'ledgers.account.field.asset.tooltip',
-                      defaultMessage:
-                        'Asset or currency that will be operated in this Account using balance'
-                    })}
-                  >
-                    {assetListData?.map((asset) => (
-                      <SelectItem key={asset.value} value={asset.value}>
-                        {asset.label}
-                      </SelectItem>
-                    ))}
-                  </SelectField>
-
-                  <SelectField
-                    control={form.control}
-                    name="portfolioId"
-                    label={intl.formatMessage({
-                      id: 'ledgers.account.field.portfolio',
-                      defaultMessage: 'Portfolio'
-                    })}
-                    tooltip={intl.formatMessage({
-                      id: 'ledgers.account.field.portfolio.tooltip',
-                      defaultMessage: 'Portfolio that will receive this account'
-                    })}
-                  >
-                    {portfolioListData?.map((portfolio) => (
-                      <SelectItem key={portfolio.value} value={portfolio.value}>
-                        {portfolio.label}
-                      </SelectItem>
-                    ))}
-                  </SelectField>
-                </>
-              )}
-
-              <SelectField
-                control={form.control}
-                name="productId"
-                label={intl.formatMessage({
-                  id: 'ledgers.account.field.product',
-                  defaultMessage: 'Product'
-                })}
-                tooltip={intl.formatMessage({
-                  id: 'ledgers.account.field.product.tooltip',
-                  defaultMessage:
-                    'Category (cluster) of clients with specific characteristics'
-                })}
-              >
-                {productListData?.map((product) => (
-                  <SelectItem key={product.value} value={product.value}>
-                    {product.label}
-                  </SelectItem>
-                ))}
-              </SelectField>
-
-              <div className="flex flex-col gap-2">
-                <div className="gap- flex flex-col gap-4">
-                  <Label htmlFor="metadata">
+                  </TabsTrigger>
+                  <TabsTrigger value="metadata">
                     {intl.formatMessage({
                       id: 'common.metadata',
                       defaultMessage: 'Metadata'
                     })}
-                  </Label>
-                  <Switch
-                    id="metadata"
-                    checked={metadataEnabled}
-                    onCheckedChange={() => setMetadataEnabled(!metadataEnabled)}
-                  />
-                </div>
-              </div>
+                  </TabsTrigger>
+                </TabsList>
+                <TabsContent value="details">
+                  <div className="flex flex-grow flex-col gap-4">
+                    <InputField
+                      control={form.control}
+                      name="name"
+                      label={intl.formatMessage({
+                        id: 'ledgers.account.field.name',
+                        defaultMessage: 'Account Name'
+                      })}
+                      tooltip={intl.formatMessage({
+                        id: 'ledgers.account.field.name.tooltip',
+                        defaultMessage: 'Enter the name of the account'
+                      })}
+                    />
 
-              {metadataEnabled && (
-                <div>
+                    <InputField
+                      control={form.control}
+                      name="alias"
+                      label={intl.formatMessage({
+                        id: 'ledgers.account.field.alias',
+                        defaultMessage: 'Account Alias'
+                      })}
+                      tooltip={intl.formatMessage({
+                        id: 'ledgers.account.field.alias.tooltip',
+                        defaultMessage:
+                          'Nickname (@) for identifying the Account holder'
+                      })}
+                    />
+
+                    <SelectField
+                      control={form.control}
+                      name="type"
+                      label={intl.formatMessage({
+                        id: 'common.type',
+                        defaultMessage: 'Type'
+                      })}
+                      tooltip={intl.formatMessage({
+                        id: 'ledgers.account.field.type.tooltip',
+                        defaultMessage: 'The type of account'
+                      })}
+                    >
+                      <SelectItem value="deposit">
+                        {intl.formatMessage({
+                          id: 'account.sheet.type.deposit',
+                          defaultMessage: 'Deposit'
+                        })}
+                      </SelectItem>
+
+                      <SelectItem value="savings">
+                        {intl.formatMessage({
+                          id: 'account.sheet.type.savings',
+                          defaultMessage: 'Savings'
+                        })}
+                      </SelectItem>
+
+                      <SelectItem value="loans">
+                        {intl.formatMessage({
+                          id: 'account.sheet.type.loans',
+                          defaultMessage: 'Loans'
+                        })}
+                      </SelectItem>
+
+                      <SelectItem value="marketplace">
+                        {intl.formatMessage({
+                          id: 'account.sheet.type.marketplace',
+                          defaultMessage: 'Marketplace'
+                        })}
+                      </SelectItem>
+
+                      <SelectItem value="creditCard">
+                        {intl.formatMessage({
+                          id: 'account.sheet.type.creditCard',
+                          defaultMessage: 'CreditCard'
+                        })}
+                      </SelectItem>
+
+                      <SelectItem value="external">
+                        {intl.formatMessage({
+                          id: 'account.sheet.type.external',
+                          defaultMessage: 'External'
+                        })}
+                      </SelectItem>
+                    </SelectField>
+
+                    {mode === 'create' && (
+                      <InputField
+                        control={form.control}
+                        name="entityId"
+                        label={intl.formatMessage({
+                          id: 'ledgers.account.field.entityId',
+                          defaultMessage: 'Entity ID'
+                        })}
+                        tooltip={intl.formatMessage({
+                          id: 'ledgers.account.field.entityId.tooltip',
+                          defaultMessage:
+                            'Identification number (EntityId) of the Account holder'
+                        })}
+                      />
+                    )}
+                    {mode === 'create' && (
+                      <>
+                        <SelectField
+                          control={form.control}
+                          name="assetCode"
+                          label={intl.formatMessage({
+                            id: 'ledgers.account.field.asset',
+                            defaultMessage: 'Asset'
+                          })}
+                          tooltip={intl.formatMessage({
+                            id: 'ledgers.account.field.asset.tooltip',
+                            defaultMessage:
+                              'Asset or currency that will be operated in this Account using balance'
+                          })}
+                        >
+                          {assetListData?.map((asset) => (
+                            <SelectItem key={asset.value} value={asset.value}>
+                              {asset.label}
+                            </SelectItem>
+                          ))}
+                        </SelectField>
+
+                        <SelectField
+                          control={form.control}
+                          name="portfolioId"
+                          label={intl.formatMessage({
+                            id: 'ledgers.account.field.portfolio',
+                            defaultMessage: 'Portfolio'
+                          })}
+                          tooltip={intl.formatMessage({
+                            id: 'ledgers.account.field.portfolio.tooltip',
+                            defaultMessage:
+                              'Portfolio that will receive this account'
+                          })}
+                        >
+                          {portfolioListData?.map((portfolio) => (
+                            <SelectItem
+                              key={portfolio.value}
+                              value={portfolio.value}
+                            >
+                              {portfolio.label}
+                            </SelectItem>
+                          ))}
+                        </SelectField>
+                      </>
+                    )}
+
+                    <SelectField
+                      control={form.control}
+                      name="productId"
+                      label={intl.formatMessage({
+                        id: 'ledgers.account.field.product',
+                        defaultMessage: 'Product'
+                      })}
+                      tooltip={intl.formatMessage({
+                        id: 'ledgers.account.field.product.tooltip',
+                        defaultMessage:
+                          'Category (cluster) of clients with specific characteristics'
+                      })}
+                    >
+                      {productListData?.map((product) => (
+                        <SelectItem key={product.value} value={product.value}>
+                          {product.label}
+                        </SelectItem>
+                      ))}
+                    </SelectField>
+
+                    <p className="text-xs font-normal italic text-shadcn-400">
+                      {intl.formatMessage({
+                        id: 'common.requiredFields',
+                        defaultMessage: '(*) required fields.'
+                      })}
+                    </p>
+                  </div>
+                </TabsContent>
+                <TabsContent value="metadata">
                   <MetadataField name="metadata" control={form.control} />
-                </div>
-              )}
+                </TabsContent>
+              </Tabs>
 
-              <p className="text-xs font-normal italic text-shadcn-400">
-                {intl.formatMessage({
-                  id: 'common.requiredFields',
-                  defaultMessage: '(*) required fields.'
-                })}
-              </p>
               <SheetFooter className="sticky bottom-0 mt-auto bg-white py-4">
                 <LoadingButton
                   size="lg"

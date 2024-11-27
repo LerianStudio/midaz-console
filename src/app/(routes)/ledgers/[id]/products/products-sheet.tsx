@@ -163,7 +163,7 @@ export const ProductsSheet = ({
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="details">
-                <div className="flex flex-grow flex-col gap-8">
+                <div className="flex flex-grow flex-col gap-4">
                   <InputField
                     name="name"
                     label={intl.formatMessage({
