@@ -20,8 +20,6 @@ import { Label } from '@/components/ui/label'
 import { MetadataField } from '@/components/form/metadata-field'
 import { Switch } from '@/components/ui/switch'
 import { metadata } from '@/schema/metadata'
-import { FormSelectWithTooltip } from './form-select-with-tooltip'
-import { FormInputWithTooltip } from './form-input-with-tooltip'
 import { useListProducts } from '@/client/products'
 import { useCreateAccount, useUpdateAccount } from '@/client/accounts'
 import { useListPortfolios } from '@/client/portfolios'
@@ -31,6 +29,7 @@ import useCustomToast from '@/hooks/use-custom-toast'
 import { accountSchema } from '@/schema/account'
 import { AccountType } from '@/types/accounts-type'
 import { SelectItem } from '@/components/ui/select'
+import { InputField, SelectField } from '@/components/form'
 
 export type AccountSheetProps = DialogProps & {
   ledgerId: string
@@ -66,16 +65,15 @@ export const AccountSheet = ({
   )
   const [selectedPortfolioId, setSelectedPortfolioId] = useState<string>('')
 
-  const { data: rawProductListData, refetch } = useListProducts({
+  const { data: rawProductListData } = useListProducts({
     organizationId: currentOrganization.id!,
     ledgerId
   })
 
-  const { data: rawPortfolioData, refetch: refetchPortfolio } =
-    useListPortfolios({
-      organizationId: currentOrganization.id!,
-      ledgerId
-    })
+  const { data: rawPortfolioData } = useListPortfolios({
+    organizationId: currentOrganization.id!,
+    ledgerId
+  })
 
   const portfolioListData = useMemo(() => {
     return (
@@ -95,7 +93,7 @@ export const AccountSheet = ({
     )
   }, [rawProductListData])
 
-  const { data: rawAssetListData, refetch: refetchAssets } = useListAssets({
+  const { data: rawAssetListData } = useListAssets({
     organizationId: currentOrganization.id!,
     ledgerId
   })
@@ -254,41 +252,41 @@ export const AccountSheet = ({
               onSubmit={form.handleSubmit(handleSubmit)}
               className="flex flex-grow flex-col gap-4"
             >
-              <FormInputWithTooltip
+              <InputField
                 control={form.control}
                 name="name"
                 label={intl.formatMessage({
                   id: 'ledgers.account.field.name',
                   defaultMessage: 'Account Name'
                 })}
-                tooltipText={intl.formatMessage({
+                tooltip={intl.formatMessage({
                   id: 'ledgers.account.field.name.tooltip',
                   defaultMessage: 'Enter the name of the account'
                 })}
               />
 
-              <FormInputWithTooltip
+              <InputField
                 control={form.control}
                 name="alias"
                 label={intl.formatMessage({
                   id: 'ledgers.account.field.alias',
                   defaultMessage: 'Account Alias'
                 })}
-                tooltipText={intl.formatMessage({
+                tooltip={intl.formatMessage({
                   id: 'ledgers.account.field.alias.tooltip',
                   defaultMessage:
                     'Nickname (@) for identifying the Account holder'
                 })}
               />
 
-              <FormSelectWithTooltip
+              <SelectField
                 control={form.control}
                 name="type"
                 label={intl.formatMessage({
                   id: 'common.type',
                   defaultMessage: 'Type'
                 })}
-                tooltipText={intl.formatMessage({
+                tooltip={intl.formatMessage({
                   id: 'ledgers.account.field.type.tooltip',
                   defaultMessage: 'The type of account'
                 })}
@@ -334,17 +332,17 @@ export const AccountSheet = ({
                     defaultMessage: 'External'
                   })}
                 </SelectItem>
-              </FormSelectWithTooltip>
+              </SelectField>
 
               {mode === 'create' && (
-                <FormInputWithTooltip
+                <InputField
                   control={form.control}
                   name="entityId"
                   label={intl.formatMessage({
                     id: 'ledgers.account.field.entityId',
                     defaultMessage: 'Entity ID'
                   })}
-                  tooltipText={intl.formatMessage({
+                  tooltip={intl.formatMessage({
                     id: 'ledgers.account.field.entityId.tooltip',
                     defaultMessage:
                       'Identification number (EntityId) of the Account holder'
@@ -353,54 +351,66 @@ export const AccountSheet = ({
               )}
               {mode === 'create' && (
                 <>
-                  <FormSelectWithTooltip
+                  <SelectField
                     control={form.control}
                     name="assetCode"
                     label={intl.formatMessage({
                       id: 'ledgers.account.field.asset',
                       defaultMessage: 'Asset'
                     })}
-                    tooltipText={intl.formatMessage({
+                    tooltip={intl.formatMessage({
                       id: 'ledgers.account.field.asset.tooltip',
                       defaultMessage:
                         'Asset or currency that will be operated in this Account using balance'
                     })}
-                    options={assetListData}
-                  />
+                  >
+                    {assetListData?.map((asset) => (
+                      <SelectItem key={asset.value} value={asset.value}>
+                        {asset.label}
+                      </SelectItem>
+                    ))}
+                  </SelectField>
 
-                  <FormSelectWithTooltip
+                  <SelectField
                     control={form.control}
                     name="portfolioId"
                     label={intl.formatMessage({
                       id: 'ledgers.account.field.portfolio',
                       defaultMessage: 'Portfolio'
                     })}
-                    tooltipText={intl.formatMessage({
+                    tooltip={intl.formatMessage({
                       id: 'ledgers.account.field.portfolio.tooltip',
                       defaultMessage: 'Portfolio that will receive this account'
                     })}
-                    options={portfolioListData}
-                    onChange={(value) => {
-                      setSelectedPortfolioId(value)
-                    }}
-                  />
+                  >
+                    {portfolioListData?.map((portfolio) => (
+                      <SelectItem key={portfolio.value} value={portfolio.value}>
+                        {portfolio.label}
+                      </SelectItem>
+                    ))}
+                  </SelectField>
                 </>
               )}
 
-              <FormSelectWithTooltip
+              <SelectField
                 control={form.control}
                 name="productId"
                 label={intl.formatMessage({
                   id: 'ledgers.account.field.product',
                   defaultMessage: 'Product'
                 })}
-                tooltipText={intl.formatMessage({
+                tooltip={intl.formatMessage({
                   id: 'ledgers.account.field.product.tooltip',
                   defaultMessage:
                     'Category (cluster) of clients with specific characteristics'
                 })}
-                options={productListData}
-              />
+              >
+                {productListData?.map((product) => (
+                  <SelectItem key={product.value} value={product.value}>
+                    {product.label}
+                  </SelectItem>
+                ))}
+              </SelectField>
 
               <div className="flex flex-col gap-2">
                 <div className="gap- flex flex-col gap-4">
