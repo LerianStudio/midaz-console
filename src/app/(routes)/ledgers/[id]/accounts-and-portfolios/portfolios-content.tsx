@@ -132,10 +132,11 @@ export const PortfoliosContent = () => {
               ? intl.formatMessage(
                   {
                     id: `ledgers.portfolio.subtitle`,
-                    defaultMessage: '{portfoliosItemsTotal} portfolios founded'
+                    defaultMessage:
+                      '{count} {count, plural, =0 {portfolios found} one {portfolio found} other {portfolios found}}'
                   },
                   {
-                    portfoliosItemsTotal: portfoliosData.items.length
+                    count: portfoliosData.items.length
                   }
                 )
               : undefined
