@@ -275,5 +275,9 @@
   "tooltip.passwordInfo": "Contacte o admin do sistema",
   "homePage.welcome.title": "Seja bem-vindo, {user}!",
   "ledgersPage.alert.description": "Para usar os recursos de ledger, você precisa criar uma organização.",
-  "ledgersPage.alert.title": "Organização Necessária"
+  "ledgersPage.alert.title": "Organização Necessária",
+  "ledgers.account.sheet.tabs.details": "Detalhes da Conta",
+  "ledgers.assets.sheet.tabs.details": "Detalhes do Ativo",
+  "ledgers.portfolio.sheet.tabs.details": "Detalhes do Portfólio",
+  "ledgers.products.sheet.tabs.details": "Detalhes do Produto"
 }
