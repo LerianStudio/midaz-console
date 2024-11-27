@@ -3,7 +3,8 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
+  FormTooltip
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { HTMLInputTypeAttribute, ReactNode } from 'react'
@@ -13,6 +14,8 @@ export type InputFieldProps = {
   name: string
   type?: HTMLInputTypeAttribute
   label?: ReactNode
+  tooltip?: string
+  labelExtra?: ReactNode
   placeholder?: string
   control: Control<any>
   disabled?: boolean
@@ -23,6 +26,8 @@ export type InputFieldProps = {
 export const InputField = ({
   type,
   label,
+  tooltip,
+  labelExtra,
   placeholder,
   required,
   readOnly,
@@ -33,7 +38,15 @@ export const InputField = ({
       {...others}
       render={({ field }) => (
         <FormItem required={required}>
-          {label && <FormLabel>{label}</FormLabel>}
+          {label && (
+            <FormLabel
+              extra={
+                tooltip ? <FormTooltip>{tooltip}</FormTooltip> : labelExtra
+              }
+            >
+              {label}
+            </FormLabel>
+          )}
           <FormControl>
             <Input
               type={type}
