@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -10,22 +10,7 @@ import {
   SheetHeader,
   SheetTitle
 } from '@/components/ui/sheet'
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
-} from '@/components/ui/tooltip'
-import { HelpCircle } from 'lucide-react'
+import { Form } from '@/components/ui/form'
 import { useParams } from 'next/navigation'
 import { isNil } from 'lodash'
 import { useIntl } from 'react-intl'
@@ -184,37 +169,18 @@ export const PortfolioSheet = ({
               />
 
               {mode === 'create' && (
-                <FormField
-                  control={form.control}
+                <InputField
                   name="entityId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="flex justify-between">
-                        {intl.formatMessage({
-                          id: 'entity.portfolio.entityId',
-                          defaultMessage: 'Entity Id'
-                        })}
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <HelpCircle className="ml-2 h-4 w-4 text-gray-400" />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              {intl.formatMessage({
-                                id: 'entity.portfolio.description',
-                                defaultMessage:
-                                  'Enter the unique identifier for the entity associated with this portfolio'
-                              })}
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      </FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  label={intl.formatMessage({
+                    id: 'entity.portfolio.entityId',
+                    defaultMessage: 'Entity Id'
+                  })}
+                  tooltip={intl.formatMessage({
+                    id: 'entity.portfolio.description',
+                    defaultMessage:
+                      'Enter the unique identifier for the entity associated with this portfolio'
+                  })}
+                  control={form.control}
                 />
               )}
 

@@ -13,6 +13,16 @@ import {
 import { cn } from '@/lib/utils'
 import { Label } from '@/components/ui/label'
 
+import * as TooltipPrimitive from '@radix-ui/react-tooltip'
+import { TooltipProviderProps } from '@radix-ui/react-tooltip'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from './tooltip'
+import { HelpCircle } from 'lucide-react'
+
 const Form = FormProvider
 
 type FormFieldContextValue<
@@ -89,29 +99,55 @@ const FormItem = React.forwardRef<HTMLDivElement, FormItemProps>(
 )
 FormItem.displayName = 'FormItem'
 
+export type FormLabelProps = React.ComponentPropsWithoutRef<
+  typeof LabelPrimitive.Root
+> & {
+  extra?: React.ReactNode
+}
+
 const FormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
->(({ className, children, ...props }, ref) => {
+  FormLabelProps
+>(({ className, extra, children, ...props }, ref) => {
   const { required, error, formItemId } = useFormField()
 
   return (
     <Label
       ref={ref}
       className={cn(
-        'text-sm font-semibold text-[#52525b]',
+        'flex justify-between text-sm font-semibold text-[#52525b]',
         error && 'text-destructive',
         className
       )}
       htmlFor={formItemId}
       {...props}
     >
-      {children}
-      {required ? ' *' : ''}
+      <span>
+        {children}
+        {required ? ' *' : ''}
+      </span>
+      {extra}
     </Label>
   )
 })
 FormLabel.displayName = 'FormLabel'
+
+export const FormTooltip = React.forwardRef<
+  React.ElementRef<typeof TooltipPrimitive.Provider>,
+  TooltipProviderProps
+>(({ children, ...others }, ref) => {
+  return (
+    <TooltipProvider {...others}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <HelpCircle className="ml-2 h-4 w-4 text-gray-400" />
+        </TooltipTrigger>
+        <TooltipContent>{children}</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  )
+})
+FormTooltip.displayName = 'FormTooltip'
 
 const FormControl = React.forwardRef<
   React.ElementRef<typeof Slot>,
