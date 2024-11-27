@@ -1,7 +1,6 @@
 import { InputField, SelectField } from '@/components/form'
 import { MetadataField } from '@/components/form/metadata-field'
 import { Form } from '@/components/ui/form'
-import { Label } from '@/components/ui/label'
 import {
   Sheet,
   SheetContent,
@@ -10,7 +9,6 @@ import {
   SheetHeader,
   SheetTitle
 } from '@/components/ui/sheet'
-import { Switch } from '@/components/ui/switch'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DialogProps } from '@radix-ui/react-dialog'
@@ -28,6 +26,8 @@ import useCustomToast from '@/hooks/use-custom-toast'
 import { IAssetType } from '@/types/assets-type'
 import { CommandItem } from '@/components/ui/command'
 import { ComboBoxField } from '@/components/form'
+import { TabsContent } from '@radix-ui/react-tabs'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 export type AssetsSheetProps = DialogProps & {
   ledgerId: string
@@ -66,7 +66,6 @@ export const AssetsSheet = ({
   ...others
 }: AssetsSheetProps) => {
   const intl = useIntl()
-  const [open, setOpen] = React.useState(false)
   const { currentOrganization } = useOrganization()
   const { showSuccess, showError } = useCustomToast()
 
@@ -137,10 +136,6 @@ export const AssetsSheet = ({
     name: 'type'
   })
 
-  const [metadataEnabled, setMetadataEnabled] = React.useState(
-    Object.entries(assets?.metadata || {}).length > 0
-  )
-
   const handleSubmit = (data: FormValues) => {
     const payload = { ...data }
 
@@ -166,10 +161,7 @@ export const AssetsSheet = ({
 
   React.useEffect(() => {
     if (mode === 'edit' && !isNil(data)) {
-      setMetadataEnabled(Object.entries(data.metadata ?? {}).length > 0)
       form.reset(data, { keepDefaultValues: true })
-    } else {
-      setMetadataEnabled(false)
     }
   }, [data, mode])
 
@@ -221,113 +213,114 @@ export const AssetsSheet = ({
             className="flex flex-grow flex-col gap-8"
             onSubmit={form.handleSubmit(handleSubmit)}
           >
-            <SelectField
-              name="type"
-              label={intl.formatMessage({
-                id: 'common.type',
-                defaultMessage: 'Type'
-              })}
-              placeholder={intl.formatMessage({
-                id: 'common.select',
-                defaultMessage: 'Select'
-              })}
-              control={form.control}
-              disabled={mode === 'edit'}
-              required
-            >
-              <SelectItem value="crypto">
-                {intl.formatMessage({
-                  id: 'assets.sheet.select.crypto',
-                  defaultMessage: 'Crypto'
-                })}
-              </SelectItem>
-              <SelectItem value="commodity">
-                {intl.formatMessage({
-                  id: 'assets.sheet.select.commodity',
-                  defaultMessage: 'Commodity'
-                })}
-              </SelectItem>
-              <SelectItem value="currency">
-                {intl.formatMessage({
-                  id: 'assets.sheet.select.currency',
-                  defaultMessage: 'Currency'
-                })}
-              </SelectItem>
-              <SelectItem value="others">
-                {intl.formatMessage({
-                  id: 'assets.sheet.select.others',
-                  defaultMessage: 'Others'
-                })}
-              </SelectItem>
-            </SelectField>
-
-            <InputField
-              name="name"
-              label={intl.formatMessage({
-                id: 'entity.assets.name',
-                defaultMessage: 'Asset Name'
-              })}
-              control={form.control}
-              required
-            />
-
-            {type === 'currency' ? (
-              <ComboBoxField
-                name="code"
-                label={intl.formatMessage({
-                  id: 'common.code',
-                  defaultMessage: 'Code'
-                })}
-                control={form.control}
-                required
-              >
-                {currencyObjects.map((currency) => (
-                  <CommandItem value={currency.code} key={currency.code}>
-                    {currency.code}
-                  </CommandItem>
-                ))}
-              </ComboBoxField>
-            ) : (
-              <InputField
-                name="code"
-                label={intl.formatMessage({
-                  id: 'common.code',
-                  defaultMessage: 'Code'
-                })}
-                control={form.control}
-                disabled={mode === 'edit'}
-                required
-              />
-            )}
-
-            <div className="flex flex-col gap-2">
-              <div className="gap- flex flex-col gap-4">
-                <Label htmlFor="metadata">
+            <Tabs defaultValue="details" className="mt-0">
+              <TabsList className="mb-8 px-0">
+                <TabsTrigger value="details">
+                  {intl.formatMessage({
+                    id: 'ledgers.assets.sheet.tabs.details',
+                    defaultMessage: 'Assets Details'
+                  })}
+                </TabsTrigger>
+                <TabsTrigger value="metadata">
                   {intl.formatMessage({
                     id: 'common.metadata',
                     defaultMessage: 'Metadata'
                   })}
-                </Label>
-                <Switch
-                  id="metadata"
-                  checked={metadataEnabled}
-                  onCheckedChange={() => setMetadataEnabled(!metadataEnabled)}
-                />
-              </div>
-            </div>
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="details">
+                <div className="flex flex-grow flex-col gap-8">
+                  <SelectField
+                    name="type"
+                    label={intl.formatMessage({
+                      id: 'common.type',
+                      defaultMessage: 'Type'
+                    })}
+                    placeholder={intl.formatMessage({
+                      id: 'common.select',
+                      defaultMessage: 'Select'
+                    })}
+                    control={form.control}
+                    disabled={mode === 'edit'}
+                    required
+                  >
+                    <SelectItem value="crypto">
+                      {intl.formatMessage({
+                        id: 'assets.sheet.select.crypto',
+                        defaultMessage: 'Crypto'
+                      })}
+                    </SelectItem>
+                    <SelectItem value="commodity">
+                      {intl.formatMessage({
+                        id: 'assets.sheet.select.commodity',
+                        defaultMessage: 'Commodity'
+                      })}
+                    </SelectItem>
+                    <SelectItem value="currency">
+                      {intl.formatMessage({
+                        id: 'assets.sheet.select.currency',
+                        defaultMessage: 'Currency'
+                      })}
+                    </SelectItem>
+                    <SelectItem value="others">
+                      {intl.formatMessage({
+                        id: 'assets.sheet.select.others',
+                        defaultMessage: 'Others'
+                      })}
+                    </SelectItem>
+                  </SelectField>
 
-            {metadataEnabled && (
-              <div>
+                  <InputField
+                    name="name"
+                    label={intl.formatMessage({
+                      id: 'entity.assets.name',
+                      defaultMessage: 'Asset Name'
+                    })}
+                    control={form.control}
+                    required
+                  />
+
+                  {type === 'currency' ? (
+                    <ComboBoxField
+                      name="code"
+                      label={intl.formatMessage({
+                        id: 'common.code',
+                        defaultMessage: 'Code'
+                      })}
+                      control={form.control}
+                      required
+                    >
+                      {currencyObjects.map((currency) => (
+                        <CommandItem value={currency.code} key={currency.code}>
+                          {currency.code}
+                        </CommandItem>
+                      ))}
+                    </ComboBoxField>
+                  ) : (
+                    <InputField
+                      name="code"
+                      label={intl.formatMessage({
+                        id: 'common.code',
+                        defaultMessage: 'Code'
+                      })}
+                      control={form.control}
+                      disabled={mode === 'edit'}
+                      required
+                    />
+                  )}
+
+                  <p className="text-xs font-normal italic text-shadcn-400">
+                    {intl.formatMessage({
+                      id: 'common.requiredFields',
+                      defaultMessage: '(*) required fields.'
+                    })}
+                  </p>
+                </div>
+              </TabsContent>
+              <TabsContent value="metadata">
                 <MetadataField name="metadata" control={form.control} />
-              </div>
-            )}
-
-            <p className="text-xs font-normal italic text-shadcn-400">
-              {intl.formatMessage({
-                id: 'common.requiredFields',
-                defaultMessage: '(*) required fields.'
-              })}
-            </p>
+              </TabsContent>
+            </Tabs>
 
             <SheetFooter>
               <LoadingButton
