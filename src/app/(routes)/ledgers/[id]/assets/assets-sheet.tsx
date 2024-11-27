@@ -27,7 +27,7 @@ import { useCreateAsset, useUpdateAsset } from '@/client/assets'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { IAssetType } from '@/types/assets-type'
 import { CommandItem } from '@/components/ui/command'
-import { ComboBoxField } from '@/components/form/combo-box-field'
+import { ComboBoxField } from '@/components/form'
 
 export type AssetsSheetProps = DialogProps & {
   ledgerId: string
