@@ -63,7 +63,6 @@ export const AccountSheet = ({
   const [metadataEnabled, setMetadataEnabled] = React.useState(
     Object.entries(metadata || {}).length > 0
   )
-  const [selectedPortfolioId, setSelectedPortfolioId] = useState<string>('')
 
   const { data: rawProductListData } = useListProducts({
     organizationId: currentOrganization.id!,
@@ -115,6 +114,8 @@ export const AccountSheet = ({
       mode === 'create' ? { entityId: '' } : {}
     )
   })
+
+  const selectedPortfolioId = form.watch('portfolioId')
 
   const { mutate: createAccount, isPending: createPending } = useCreateAccount({
     organizationId: currentOrganization.id!,
