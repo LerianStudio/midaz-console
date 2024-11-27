@@ -172,7 +172,7 @@ const SignInPage = () => {
         </div>
       </div>
 
-      <div className="bg-login-wallpaper relative flex w-3/6 items-center justify-center bg-cover">
+      <div className="relative flex w-3/6 items-center justify-center bg-login-wallpaper bg-cover">
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
         <div className="relative z-10">
           <Image alt="Midaz Logo" src={MidazLogo} width={150} height={150} />
