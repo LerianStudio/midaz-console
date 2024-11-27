@@ -114,48 +114,43 @@ const SignInPage = () => {
                 />
 
                 <InputField
-                  type="password"
                   control={form.control}
                   name="password"
-                  label={
-                    <div className="flex justify-between space-x-2">
-                      <span>
-                        {intl.formatMessage({
-                          id: 'entity.auth.password',
-                          defaultMessage: 'Password'
-                        })}
-                      </span>
-                      <TooltipProvider>
-                        <Tooltip delayDuration={300}>
-                          <TooltipTrigger>
-                            <span className="cursor-pointer text-sm font-medium text-slate-900 underline">
-                              {intl.formatMessage({
-                                id: 'entity.auth.reset.password',
-                                defaultMessage: 'I forgot the password'
-                              })}
-                            </span>
-                          </TooltipTrigger>
-                          <TooltipContent
-                            className="border-none bg-shadcn-600"
-                            arrowPadding={0}
-                          >
-                            <p className="text-shadcn-400">
-                              {intl.formatMessage({
-                                id: 'tooltip.passwordInfo',
-                                defaultMessage:
-                                  'Contact the system administrator'
-                              })}
-                            </p>
-                            <Arrow height={8} width={15} />
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </div>
-                  }
+                  label={intl.formatMessage({
+                    id: 'entity.auth.password',
+                    defaultMessage: 'Password'
+                  })}
+                  type="password"
                   placeholder={intl.formatMessage({
                     id: 'signIn.placeholderPassword',
                     defaultMessage: '******'
                   })}
+                  labelExtra={
+                    <TooltipProvider>
+                      <Tooltip delayDuration={300}>
+                        <TooltipTrigger>
+                          <span className="cursor-pointer text-sm font-medium text-slate-900 underline">
+                            {intl.formatMessage({
+                              id: 'entity.auth.reset.password',
+                              defaultMessage: 'I forgot the password'
+                            })}
+                          </span>
+                        </TooltipTrigger>
+                        <TooltipContent
+                          className="border-none bg-shadcn-600"
+                          arrowPadding={0}
+                        >
+                          <p className="text-shadcn-400">
+                            {intl.formatMessage({
+                              id: 'tooltip.passwordInfo',
+                              defaultMessage: 'Contact the system administrator'
+                            })}
+                          </p>
+                          <Arrow height={8} width={15} />
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  }
                 />
 
                 <LoadingButton
@@ -177,7 +172,7 @@ const SignInPage = () => {
         </div>
       </div>
 
-      <div className="relative flex w-3/6 items-center justify-center bg-login-wallpaper bg-cover">
+      <div className="bg-login-wallpaper relative flex w-3/6 items-center justify-center bg-cover">
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
         <div className="relative z-10">
           <Image alt="Midaz Logo" src={MidazLogo} width={150} height={150} />
