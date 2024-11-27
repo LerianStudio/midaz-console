@@ -1,6 +1,8 @@
+'use client'
+
 import React from 'react'
-import Lottie from 'lottie-react'
 import midazLoading from '@/animations/midaz-loading.json'
+import { Lottie } from '@/lib/lottie'
 
 type LoadingScreenProps = {
   onComplete?: () => void
