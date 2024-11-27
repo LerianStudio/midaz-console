@@ -2,7 +2,6 @@ import { useCreateProduct, useUpdateProduct } from '@/client/products'
 import { InputField } from '@/components/form'
 import { MetadataField } from '@/components/form/metadata-field'
 import { Form } from '@/components/ui/form'
-import { Label } from '@/components/ui/label'
 import {
   Sheet,
   SheetContent,
@@ -11,7 +10,6 @@ import {
   SheetHeader,
   SheetTitle
 } from '@/components/ui/sheet'
-import { Switch } from '@/components/ui/switch'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import { ProductResponseDto } from '@/core/application/dto/product-dto'
 import { product } from '@/schema/product'
@@ -23,6 +21,7 @@ import { useIntl } from 'react-intl'
 import { z } from 'zod'
 import { isNil } from 'lodash'
 import { LoadingButton } from '@/components/ui/loading-button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 export type ProductsSheetProps = DialogProps & {
   ledgerId: string
@@ -76,10 +75,6 @@ export const ProductsSheet = ({
     defaultValues: Object.assign({}, defaultValues, product)
   })
 
-  const [metadataEnabled, setMetadataEnabled] = React.useState(
-    Object.entries(product?.metadata || {}).length > 0
-  )
-
   const handleSubmit = (data: FormData) => {
     if (mode === 'create') {
       createProduct(data)
@@ -100,10 +95,7 @@ export const ProductsSheet = ({
   // Resets information if props change values
   React.useEffect(() => {
     if (!isNil(data)) {
-      setMetadataEnabled(Object.entries(data.metadata).length > 0)
       form.reset(data, { keepDefaultValues: true })
-    } else {
-      setMetadataEnabled(false)
     }
   }, [data])
 
@@ -152,47 +144,48 @@ export const ProductsSheet = ({
 
         <Form {...form}>
           <form
-            className="flex flex-grow flex-col gap-8"
+            className="flex flex-grow flex-col"
             onSubmit={form.handleSubmit(handleSubmit)}
           >
-            <InputField
-              name="name"
-              label={intl.formatMessage({
-                id: 'entity.product.name',
-                defaultMessage: 'Product Name'
-              })}
-              control={form.control}
-              required
-            />
-
-            <div className="flex flex-col gap-2">
-              <div className="gap- flex flex-col gap-4">
-                <Label htmlFor="metadata">
+            <Tabs defaultValue="details" className="mt-0">
+              <TabsList className="mb-8 px-0">
+                <TabsTrigger value="details">
+                  {intl.formatMessage({
+                    id: 'ledgers.products.sheet.tabs.details',
+                    defaultMessage: 'Product Details'
+                  })}
+                </TabsTrigger>
+                <TabsTrigger value="metadata">
                   {intl.formatMessage({
                     id: 'common.metadata',
                     defaultMessage: 'Metadata'
                   })}
-                </Label>
-                <Switch
-                  id="metadata"
-                  checked={metadataEnabled}
-                  onCheckedChange={() => setMetadataEnabled(!metadataEnabled)}
-                />
-              </div>
-            </div>
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="details">
+                <div className="flex flex-grow flex-col gap-8">
+                  <InputField
+                    name="name"
+                    label={intl.formatMessage({
+                      id: 'entity.product.name',
+                      defaultMessage: 'Product Name'
+                    })}
+                    control={form.control}
+                    required
+                  />
 
-            {metadataEnabled && (
-              <div>
+                  <p className="text-xs font-normal italic text-shadcn-400">
+                    {intl.formatMessage({
+                      id: 'common.requiredFields',
+                      defaultMessage: '(*) required fields.'
+                    })}
+                  </p>
+                </div>
+              </TabsContent>
+              <TabsContent value="metadata">
                 <MetadataField name="metadata" control={form.control} />
-              </div>
-            )}
-
-            <p className="text-xs font-normal italic text-shadcn-400">
-              {intl.formatMessage({
-                id: 'common.requiredFields',
-                defaultMessage: '(*) required fields.'
-              })}
-            </p>
+              </TabsContent>
+            </Tabs>
 
             <SheetFooter>
               <LoadingButton
