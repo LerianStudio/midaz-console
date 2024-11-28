@@ -161,10 +161,11 @@ export const AccountsContent = () => {
               ? intl.formatMessage(
                   {
                     id: 'ledgers.accounts.subtitle',
-                    defaultMessage: '{accountsTotal} accounts found'
+                    defaultMessage:
+                      '{count} {count, plural, =0 {accounts found} one {acount found} other {accounts found}}'
                   },
                   {
-                    accountsTotal: accountsList.items.length
+                    count: accountsList.items.length
                   }
                 )
               : undefined
