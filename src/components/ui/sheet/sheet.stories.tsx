@@ -53,7 +53,7 @@ export const SheetSide: StoryObj = {
               <SheetHeader>
                 <SheetTitle>Edit profile</SheetTitle>
                 <SheetDescription>
-                  Make changes to your profile here. Click save when you're
+                  Make changes to your profile here. Click save when you are
                   done.
                 </SheetDescription>
               </SheetHeader>
