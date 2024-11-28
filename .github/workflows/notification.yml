@@ -16,7 +16,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  github-releases-to-discord:
+  github-releases-notification:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/create-github-app-token@v1
