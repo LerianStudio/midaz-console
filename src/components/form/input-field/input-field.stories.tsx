@@ -47,7 +47,7 @@ export const WithTooltip: StoryObj<InputFieldProps> = {
   render: (args) => BaseComponent(args)
 }
 
-export const WithExtralabel: StoryObj<InputFieldProps> = {
+export const WithExtraLabel: StoryObj<InputFieldProps> = {
   args: {
     labelExtra: <span>Extra Label</span>
   },
