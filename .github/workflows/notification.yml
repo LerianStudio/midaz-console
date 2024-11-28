@@ -1,4 +1,4 @@
-name: send slack message versions
+name: Notification
 
 on:
   pull_request:
