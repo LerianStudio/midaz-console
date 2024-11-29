@@ -41,7 +41,6 @@ type AccountsTableProps = {
   }
   onDelete: (id: string, account: AccountType) => void
   refetch: () => void
-  isTableExpanded: boolean
   handleEdit: (account: AccountType) => void
 }
 
@@ -65,6 +64,12 @@ const AccountRow: React.FC<AccountRowProps> = ({
       ? `${truncateString(account.original.id, 8)}`
       : account.original.id
   const metadataCount = Object.entries(account.original.metadata || []).length
+
+  const portfolioName = account.original.portfolio?.name ? (
+    account.original.portfolio.name
+  ) : (
+    <Minus size={20} />
+  )
 
   return (
     <TableRow key={account.id}>
@@ -118,11 +123,11 @@ const AccountRow: React.FC<AccountRowProps> = ({
           )
         )}
       </TableCell>
-      <TableCell>{account.original.portfolioName}</TableCell>
+      <TableCell>{portfolioName}</TableCell>
       <TableCell className="w-0">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="secondary">
+            <Button variant="secondary" className="h-auto w-max p-2">
               <MoreVertical size={16} onClick={() => {}} />
             </Button>
           </DropdownMenuTrigger>
@@ -155,7 +160,6 @@ export const AccountsDataTable: React.FC<AccountsTableProps> = ({
   accounts,
   table,
   onDelete,
-  isTableExpanded,
   handleEdit
 }) => {
   const intl = useIntl()
@@ -167,66 +171,64 @@ export const AccountsDataTable: React.FC<AccountsTableProps> = ({
   }
 
   return (
-    <>
-      {!isNil(accounts?.items) &&
-        accounts?.items.length > 0 &&
-        isTableExpanded && (
-          <TableContainer>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>
-                    {intl.formatMessage({
-                      id: 'common.id',
-                      defaultMessage: 'ID'
-                    })}
-                  </TableHead>
-                  <TableHead>
-                    {intl.formatMessage({
-                      id: 'entity.account.name',
-                      defaultMessage: 'Account Name'
-                    })}
-                  </TableHead>
-                  <TableHead>
-                    {intl.formatMessage({
-                      id: 'entity.account.currency',
-                      defaultMessage: 'Assets'
-                    })}
-                  </TableHead>
-                  <TableHead>
-                    {intl.formatMessage({
-                      id: 'common.metadata',
-                      defaultMessage: 'Metadata'
-                    })}
-                  </TableHead>
-                  <TableHead>
-                    {intl.formatMessage({
-                      id: 'common.portfolio',
-                      defaultMessage: 'Portfolio'
-                    })}
-                  </TableHead>
-                  <TableHead className="w-0">
-                    {intl.formatMessage({
-                      id: 'common.actions',
-                      defaultMessage: 'Actions'
-                    })}
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {table.getRowModel().rows.map((account) => (
-                  <AccountRow
-                    key={account.id}
-                    account={account}
-                    handleEdit={handleEdit}
-                    handleCopyToClipboard={handleCopyToClipboard}
-                    onDelete={onDelete}
-                  />
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        )}
-    </>
+    <React.Fragment>
+      {!isNil(accounts?.items) && accounts?.items.length > 0 && (
+        <TableContainer>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>
+                  {intl.formatMessage({
+                    id: 'common.id',
+                    defaultMessage: 'ID'
+                  })}
+                </TableHead>
+                <TableHead>
+                  {intl.formatMessage({
+                    id: 'entity.account.name',
+                    defaultMessage: 'Account Name'
+                  })}
+                </TableHead>
+                <TableHead>
+                  {intl.formatMessage({
+                    id: 'entity.account.currency',
+                    defaultMessage: 'Assets'
+                  })}
+                </TableHead>
+                <TableHead>
+                  {intl.formatMessage({
+                    id: 'common.metadata',
+                    defaultMessage: 'Metadata'
+                  })}
+                </TableHead>
+                <TableHead>
+                  {intl.formatMessage({
+                    id: 'common.portfolio',
+                    defaultMessage: 'Portfolio'
+                  })}
+                </TableHead>
+                <TableHead className="w-0">
+                  {intl.formatMessage({
+                    id: 'common.actions',
+                    defaultMessage: 'Actions'
+                  })}
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows.map((account) => (
+                <AccountRow
+                  key={account.id}
+                  account={account}
+                  handleEdit={handleEdit}
+                  handleCopyToClipboard={handleCopyToClipboard}
+                  onDelete={onDelete}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
+    </React.Fragment>
   )
 }

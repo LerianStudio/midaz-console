@@ -8,7 +8,6 @@ export interface UpdateAccount {
   execute: (
     organizationId: string,
     ledgerId: string,
-    portfolioId: string,
     accountId: string,
     account: Partial<UpdateAccountDto>
   ) => Promise<AccountResponseDto>
@@ -24,7 +23,6 @@ export class UpdateAccountUseCase implements UpdateAccount {
   async execute(
     organizationId: string,
     ledgerId: string,
-    portfolioId: string,
     accountId: string,
     account: Partial<UpdateAccountDto>
   ): Promise<AccountResponseDto> {
@@ -40,7 +38,6 @@ export class UpdateAccountUseCase implements UpdateAccount {
       await this.updateAccountRepository.update(
         organizationId,
         ledgerId,
-        portfolioId,
         accountId,
         accountEntity
       )

@@ -1,13 +1,15 @@
 import { container } from '@/core/infrastructure/container-registry/container-registry'
 import { apiErrorHandler } from '@/app/api/utils/api-error-handler'
-import {
-  FetchAllPortfoliosAccounts,
-  FetchAllPortfoliosAccountsUseCase
-} from '@/core/application/use-cases/portfolios-accounts/fetch-portfolios-accounts-use-case'
 import { NextResponse } from 'next/server'
+import {
+  FetchAllAccountsWithPortfolios,
+  FetchAllAccountsWithPortfoliosUseCase
+} from '@/core/application/use-cases/accounts-with-portfolios/fetch-accounts-with-portfolios-use-case'
 
 const fetchAllPortfoliosAccountsUseCases =
-  container.get<FetchAllPortfoliosAccounts>(FetchAllPortfoliosAccountsUseCase)
+  container.get<FetchAllAccountsWithPortfolios>(
+    FetchAllAccountsWithPortfoliosUseCase
+  )
 
 export async function GET(
   request: Request,
@@ -15,20 +17,21 @@ export async function GET(
 ) {
   try {
     const { searchParams } = new URL(request.url)
-    const limit = Number(searchParams.get('limit')) || 10
+    const limit = Number(searchParams.get('limit')) || 100
     const page = Number(searchParams.get('page')) || 1
     const organizationId = params.id
 
-    const ledgers = await fetchAllPortfoliosAccountsUseCases.execute(
-      organizationId,
-      params.ledgerId,
-      limit,
-      page
-    )
+    const portfoliosAndAccounts =
+      await fetchAllPortfoliosAccountsUseCases.execute(
+        organizationId,
+        params.ledgerId,
+        limit,
+        page
+      )
 
-    return NextResponse.json(ledgers)
+    return NextResponse.json(portfoliosAndAccounts)
   } catch (error: any) {
-    console.error('Error fetching all ledgers', error)
+    console.error('Error fetching all portfolios and accounts', error)
 
     const { message, status } = await apiErrorHandler(error)
 

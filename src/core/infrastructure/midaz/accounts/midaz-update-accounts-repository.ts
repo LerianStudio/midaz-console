@@ -10,11 +10,10 @@ export class MidazUpdateAccountsRepository implements UpdateAccountsRepository {
   async update(
     organizationId: string,
     ledgerId: string,
-    portfolioId: string,
     accountId: string,
     account: Partial<AccountEntity>
   ): Promise<AccountEntity> {
-    const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}/accounts/${accountId}`
+    const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/accounts/${accountId}`
 
     const response = await httpMidazAuthFetch<AccountEntity>({
       url,

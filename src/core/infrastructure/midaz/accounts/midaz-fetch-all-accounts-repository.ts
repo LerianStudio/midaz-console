@@ -13,11 +13,10 @@ export class MidazFetchAllAccountsRepository
   async fetchAll(
     organizationId: string,
     ledgerId: string,
-    portfolioId: string,
     limit: number,
     page: number
   ): Promise<PaginationEntity<AccountEntity>> {
-    const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}/accounts?limit=${limit}&page=${page}`
+    const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/accounts?limit=${limit}&page=${page}`
 
     const response = await httpMidazAuthFetch<PaginationEntity<AccountEntity>>({
       url,

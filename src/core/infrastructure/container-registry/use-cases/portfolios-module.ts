@@ -21,9 +21,9 @@ import {
   FetchPortfolioByIdUseCase
 } from '@/core/application/use-cases/portfolios/fetch-portfolio-by-id-use-case'
 import {
-  FetchAllPortfoliosAccounts,
-  FetchAllPortfoliosAccountsUseCase
-} from '@/core/application/use-cases/portfolios-accounts/fetch-portfolios-accounts-use-case'
+  FetchAllAccountsWithPortfolios,
+  FetchAllAccountsWithPortfoliosUseCase
+} from '@/core/application/use-cases/accounts-with-portfolios/fetch-accounts-with-portfolios-use-case'
 
 export const PortfolioUseCaseModule = new ContainerModule(
   (container: Container) => {
@@ -34,7 +34,9 @@ export const PortfolioUseCaseModule = new ContainerModule(
     container.bind<FetchPortfolioById>(FetchPortfolioByIdUseCase).toSelf()
 
     container
-      .bind<FetchAllPortfoliosAccounts>(FetchAllPortfoliosAccountsUseCase)
+      .bind<FetchAllAccountsWithPortfolios>(
+        FetchAllAccountsWithPortfoliosUseCase
+      )
       .toSelf()
   }
 )
