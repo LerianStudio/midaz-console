@@ -22,14 +22,16 @@ const NotFoundPage = () => {
             defaultMessage: 'Try accessing another page.'
           })}
         </h1>
-        <Link href="/">
-          <Button>
-            {intl.formatMessage({
-              id: 'notFound.backToHome',
-              defaultMessage: 'Back to Home'
-            })}
-          </Button>
-        </Link>
+        <div className="flex justify-center">
+          <Link href="/">
+            <Button>
+              {intl.formatMessage({
+                id: 'notFound.backToHome',
+                defaultMessage: 'Back to Home'
+              })}
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   )

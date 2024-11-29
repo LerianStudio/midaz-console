@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { address } from './address'
 import { onlyNumbers, regex } from './regex'
+import { metadata } from './metadata'
 
 const id = z.string().optional()
 
@@ -17,8 +18,6 @@ const legalDocument = z
   .refine(regex(onlyNumbers), {
     params: { id: 'custom_only_numbers' }
   })
-
-const metadata = z.record(z.string(), z.any()).optional()
 
 const accentColor = z.string().optional()
 

@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Plus, Search } from 'lucide-react'
 import { EntityBox } from '@/components/entity-box'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
-import { useDeleteAsset, useListAssets } from '@/client/assets-client'
+import { useDeleteAsset, useListAssets } from '@/client/assets'
 import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
 import { AssetsDataTable } from './assets-data-table'
 import {

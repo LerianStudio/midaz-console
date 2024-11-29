@@ -1,0 +1,92 @@
+name: "Pre-Release"
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: read
+  actions: read
+  security-events: write
+
+jobs:
+  # Job to execute CodeQL
+  CodeQL:
+    runs-on: ubuntu-latest
+    name: Run CodeQL for Next.js
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: javascript
+            build-mode: none
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: |
+          npm install
+      - name: Build the project
+        run: |
+          npm run build
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"
+
+  # Job to execute Npm Audit
+  npm-audit:
+    runs-on: ubuntu-latest
+    name: Run npm audit and fix vulnerabilities
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install dependencies
+        run: npm install
+      - name: Run npm audit
+        run: npm audit --omit=dev
+      - name: Fix vulnerabilities
+        run: npm audit fix
+
+  # Job to execute Unit Tests
+  unit-tests:
+    runs-on: ubuntu-latest
+    name: Run Unit Tests for Midaz
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm install
+      - name: Run Unit Tests
+        run: npm test

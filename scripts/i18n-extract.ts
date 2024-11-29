@@ -1,7 +1,7 @@
 import { extract } from '@formatjs/cli-lib'
 import { glob } from 'glob'
 import { intlConfig } from '../intl.config'
-import { mkdir, readFile, writeFile } from 'fs/promises'
+import { mkdir, open, readFile, writeFile } from 'fs/promises'
 import path from 'path'
 import { existsSync } from 'fs'
 import { omit, mapValues } from 'lodash'
@@ -79,7 +79,13 @@ async function extractLocale(locale: string, data: string) {
   }
 
   // Output into a file
-  await writeFile(localePath, output, 'utf-8')
+  try {
+    const fd = await open(localePath, 'w')
+
+    await writeFile(fd, output, 'utf-8')
+  } catch (e) {
+    console.error(`Error writing file ${localePath}: ${(e as Error).message}`)
+  }
 }
 
 async function main() {

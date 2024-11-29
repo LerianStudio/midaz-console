@@ -3,10 +3,7 @@ import { UpdateAssetRepository } from '@/core/domain/repositories/assets/update-
 import { AssetResponseDto } from '../../dto/asset-response-dto'
 import { UpdateAssetDto } from '../../dto/update-asset-dto'
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
-import {
-  assetEntityToDto,
-  assetUpdateDtoToEntity
-} from '../../mappers/asset-mapper'
+import { AssetMapper } from '../../mappers/asset-mapper'
 
 jest.mock('../../mappers/asset-mapper')
 
@@ -36,9 +33,9 @@ describe('UpdateAssetUseCase', () => {
       name: 'Updated Asset'
     } as AssetResponseDto
 
-    ;(assetUpdateDtoToEntity as jest.Mock).mockReturnValue(updateAssetEntity)
+    ;(AssetMapper.toDomain as jest.Mock).mockReturnValue(updateAssetEntity)
     updateAssetRepository.update.mockResolvedValue(updatedAssetEntity)
-    ;(assetEntityToDto as jest.Mock).mockReturnValue(assetResponseDto)
+    ;(AssetMapper.toResponseDto as jest.Mock).mockReturnValue(assetResponseDto)
 
     const result = await updateAssetUseCase.execute(
       organizationId,
@@ -47,14 +44,14 @@ describe('UpdateAssetUseCase', () => {
       updateAssetDto
     )
 
-    expect(assetUpdateDtoToEntity).toHaveBeenCalledWith(updateAssetDto)
+    expect(AssetMapper.toDomain).toHaveBeenCalledWith(updateAssetDto)
     expect(updateAssetRepository.update).toHaveBeenCalledWith(
       organizationId,
       ledgerId,
       assetId,
       updateAssetEntity
     )
-    expect(assetEntityToDto).toHaveBeenCalledWith(updatedAssetEntity)
+    expect(AssetMapper.toResponseDto).toHaveBeenCalledWith(updatedAssetEntity)
     expect(result).toEqual(assetResponseDto)
   })
 
@@ -65,7 +62,7 @@ describe('UpdateAssetUseCase', () => {
     const updateAssetDto: Partial<UpdateAssetDto> = { name: 'Updated Asset' }
     const updateAssetEntity: Partial<AssetEntity> = { name: 'Updated Asset' }
 
-    ;(assetUpdateDtoToEntity as jest.Mock).mockReturnValue(updateAssetEntity)
+    ;(AssetMapper.toDomain as jest.Mock).mockReturnValue(updateAssetEntity)
     updateAssetRepository.update.mockRejectedValue(new Error('Update failed'))
 
     await expect(

@@ -2,11 +2,8 @@ import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { CreateLedgerRepository } from '@/core/domain/repositories/ledgers/create-ledger-repository'
 import { CreateLedgerDto } from '../../dto/create-ledger-dto'
 import { LedgerResponseDto } from '../../dto/ledger-response-dto'
-import {
-  ledgerDtoToEntity,
-  ledgerEntityToDto
-} from '../../mappers/ledger-mapper'
 import { CreateLedgerUseCase } from './create-ledger-use-case'
+import { LedgerMapper } from '../../mappers/ledger-mapper'
 
 jest.mock('../../mappers/ledger-mapper')
 
@@ -47,21 +44,23 @@ describe('CreateLedgerUseCase', () => {
       deletedAt: null
     }
 
-    ;(ledgerDtoToEntity as jest.Mock).mockReturnValue(ledgerEntity)
+    ;(LedgerMapper.toDomain as jest.Mock).mockReturnValue(ledgerEntity)
     createLedgerRepository.create.mockResolvedValue(ledgerEntity)
-    ;(ledgerEntityToDto as jest.Mock).mockReturnValue(ledgerResponseDto)
+    ;(LedgerMapper.toResponseDto as jest.Mock).mockReturnValue(
+      ledgerResponseDto
+    )
 
     const result = await createLedgerUseCase.execute(
       organizationId,
       createLedgerDto
     )
 
-    expect(ledgerDtoToEntity).toHaveBeenCalledWith(createLedgerDto)
+    expect(LedgerMapper.toDomain).toHaveBeenCalledWith(createLedgerDto)
     expect(createLedgerRepository.create).toHaveBeenCalledWith(
       organizationId,
       ledgerEntity
     )
-    expect(ledgerEntityToDto).toHaveBeenCalledWith(ledgerEntity)
+    expect(LedgerMapper.toResponseDto).toHaveBeenCalledWith(ledgerEntity)
     expect(result).toEqual(ledgerResponseDto)
   })
 
@@ -79,7 +78,7 @@ describe('CreateLedgerUseCase', () => {
       metadata: {}
     }
 
-    ;(ledgerDtoToEntity as jest.Mock).mockReturnValue(ledgerEntity)
+    ;(LedgerMapper.toDomain as jest.Mock).mockReturnValue(ledgerEntity)
     createLedgerRepository.create.mockRejectedValue(
       new Error('Repository create failed')
     )

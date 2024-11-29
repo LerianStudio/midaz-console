@@ -1,7 +1,6 @@
 import { FetchParentOrganizationsUseCase } from './fetch-parent-organizations-use-case'
 import { FetchAllOrganizationsRepository } from '@/core/domain/repositories/organizations/fetch-all-organizations-repository'
-import { OrganizationResponseDto } from '../../dto/organization-response-dto'
-import { organizationEntityToDto } from '../../mappers/organization-mapper'
+import { OrganizationMapper } from '../../mappers/organization-mapper'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 
@@ -97,7 +96,7 @@ describe('FetchParentOrganizationsUseCase', () => {
     )
     const expectedOrganizations = mockOrganizations.items
       .filter((org) => org.id !== '1')
-      .map(organizationEntityToDto)
+      .map(OrganizationMapper.toResponseDto)
     expect(result).toEqual(expectedOrganizations)
   })
 
@@ -178,7 +177,9 @@ describe('FetchParentOrganizationsUseCase', () => {
       100,
       1
     )
-    expect(result).toEqual(mockOrganizations.items.map(organizationEntityToDto))
+    expect(result).toEqual(
+      mockOrganizations.items.map(OrganizationMapper.toResponseDto)
+    )
   })
 
   it('should return an empty array if no organizations are found', async () => {

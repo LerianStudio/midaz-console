@@ -2,10 +2,7 @@ import { CreateOrganizationRepository } from '@/core/domain/repositories/organiz
 import { CreateOrganizationDto } from '../../dto/create-organization-dto'
 import { OrganizationResponseDto } from '../../dto/organization-response-dto'
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
-import {
-  organizationDtoToEntity,
-  organizationEntityToDto
-} from '../../mappers/organization-mapper'
+import { OrganizationMapper } from '../../mappers/organization-mapper'
 import { MidazError } from '@/core/infrastructure/errors/midaz-error'
 import { inject, injectable } from 'inversify'
 
@@ -27,12 +24,12 @@ export class CreateOrganizationUseCase implements CreateOrganization {
   ): Promise<OrganizationResponseDto> {
     try {
       const organizationEntity: OrganizationEntity =
-        organizationDtoToEntity(organizationData)
+        OrganizationMapper.toDomain(organizationData)
 
       const organizationCreated =
         await this.createOrganizationRepository.create(organizationEntity)
 
-      return organizationEntityToDto(organizationCreated)
+      return OrganizationMapper.toResponseDto(organizationCreated)
     } catch (error: unknown) {
       if (error instanceof MidazError) {
         throw error

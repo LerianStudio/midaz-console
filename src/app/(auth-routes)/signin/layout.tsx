@@ -20,7 +20,8 @@ const AuthRoutes = async ({
   if (session?.user) {
     redirect(`/`, RedirectType.replace)
   }
-  return <>{children}</>
+
+  return <React.Fragment>{children}</React.Fragment>
 }
 
 export default AuthRoutes

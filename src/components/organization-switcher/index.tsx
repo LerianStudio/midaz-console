@@ -32,20 +32,6 @@ export const OrganizationSwitcher = () => {
     setOpen(false)
   }
 
-  // TODO: Remove this eventually
-  React.useEffect(() => {
-    // If the user doesn't have any organization, we should trigger an onboarding flow
-    // Since we don't have that yet, we'll just show an error message signaling what went wrong
-    // Apparently react-hot-toast has a problem with SSR, so we'll use setTimeout to delay the error message
-    // This is also why not using intl here.
-    // Reference: https://github.com/shadcn-ui/ui/issues/1674
-    if (isNil(currentOrganization)) {
-      setTimeout(() => {
-        showError('Organization not found')
-      }, 100)
-    }
-  }, [])
-
   if ((isPending && !data) || !currentOrganization) {
     return <Skeleton className="h-10 w-10" />
   }

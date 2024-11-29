@@ -5,8 +5,8 @@ import { PaginationDto } from '../../dto/pagination-dto'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
-import { assetEntityToDto } from '../../mappers/asset-mapper'
 import { inject, injectable } from 'inversify'
+import { AssetMapper } from '../../mappers/asset-mapper'
 
 export interface FetchAllLedgersAssets {
   execute: (
@@ -64,7 +64,7 @@ export class FetchAllLedgersAssetsUseCase implements FetchAllLedgersAssets {
           updatedAt: ledger.updatedAt!,
           deletedAt: ledger.deletedAt!,
           assets: assetsResult.items
-            ? assetsResult.items.map(assetEntityToDto)
+            ? assetsResult.items.map(AssetMapper.toResponseDto)
             : []
         }
 

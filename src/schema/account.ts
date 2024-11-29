@@ -13,6 +13,8 @@ const portfolioId = z.string()
 
 const productId = z.string()
 
+const type = z.string()
+
 export const accountSchema = z.object({
   name,
   alias,
@@ -20,5 +22,6 @@ export const accountSchema = z.object({
   assetCode,
   portfolioId,
   productId,
-  metadata
+  metadata,
+  type
 })

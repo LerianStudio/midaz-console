@@ -3,7 +3,8 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
+  FormTooltip
 } from '@/components/ui/form'
 import {
   Select,
@@ -16,7 +17,9 @@ import { Control } from 'react-hook-form'
 
 export type SelectFieldProps = React.PropsWithChildren & {
   name: string
-  label?: string
+  label?: React.ReactNode
+  tooltip?: string
+  labelExtra?: React.ReactNode
   placeholder?: string
   disabled?: boolean
   control: Control<any>
@@ -25,6 +28,8 @@ export type SelectFieldProps = React.PropsWithChildren & {
 
 export const SelectField = ({
   label,
+  tooltip,
+  labelExtra,
   required,
   placeholder,
   disabled,
@@ -36,7 +41,15 @@ export const SelectField = ({
       {...others}
       render={({ field: { ref, onChange, ...fieldOthers } }) => (
         <FormItem ref={ref} required={required}>
-          {label && <FormLabel>{label}</FormLabel>}
+          {label && (
+            <FormLabel
+              extra={
+                tooltip ? <FormTooltip>{tooltip}</FormTooltip> : labelExtra
+              }
+            >
+              {label}
+            </FormLabel>
+          )}
           <Select onValueChange={onChange} {...fieldOthers}>
             <FormControl>
               <SelectTrigger
