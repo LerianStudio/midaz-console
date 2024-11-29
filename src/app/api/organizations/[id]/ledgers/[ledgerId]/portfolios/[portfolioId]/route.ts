@@ -12,8 +12,9 @@ import {
   UpdatePortfolio,
   UpdatePortfolioUseCase
 } from '@/core/application/use-cases/portfolios/update-portfolio-use-case'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { PinoLogger } from '@/lib/logger/pino-logger'
+import { RequestContextManager } from '@/lib/logger/request-context'
 
 const updatePortfolioUseCase: UpdatePortfolio = container.get<UpdatePortfolio>(
   UpdatePortfolioUseCase
@@ -24,45 +25,43 @@ const deletePortfolioUseCase: DeletePortfolio = container.get<DeletePortfolio>(
 )
 const getPortfolioByIdUseCase: FetchPortfolioById =
   container.get<FetchPortfolioById>(FetchPortfolioByIdUseCase)
-const logger = new PinoLogger()
+
+const logger = PinoLogger.getInstance()
+
 export async function DELETE(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { id: string; ledgerId: string; portfolioId: string } }
 ) {
-  try {
-    const organizationId = params.id
-    const ledgerId = params.ledgerId
-    const portfolioId = params.portfolioId
-
-    await deletePortfolioUseCase.execute(organizationId, ledgerId, portfolioId)
-
-    logger.audit(
-      'Portfolio deleted',
-      {
-        organizationId,
-        ledgerId
-      },
-      {
-        layer: 'api',
-        operation: 'delete_portfolio',
-        params: {
+  const { id: organizationId, ledgerId, portfolioId } = params
+  return RequestContextManager.runWithContext(
+    request.url,
+    request.method,
+    {
+      organizationId,
+      ledgerId,
+      portfolioId,
+      deletedAt: new Date().toISOString()
+    },
+    async () => {
+      try {
+        await deletePortfolioUseCase.execute(
+          organizationId,
           ledgerId,
           portfolioId
-        }
+        )
+        return NextResponse.json({}, { status: 200 })
+      } catch (error: any) {
+        console.error('Error deleting portfolio', error)
+        const { message, status } = await apiErrorHandler(error)
+
+        return NextResponse.json({ message }, { status })
       }
-    )
-
-    return NextResponse.json({}, { status: 200 })
-  } catch (error: any) {
-    console.error('Error deleting portfolio', error)
-    const { message, status } = await apiErrorHandler(error)
-
-    return NextResponse.json({ message }, { status })
-  }
+    }
+  )
 }
 
 export async function PATCH(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { id: string; ledgerId: string; portfolioId: string } }
 ) {
   try {

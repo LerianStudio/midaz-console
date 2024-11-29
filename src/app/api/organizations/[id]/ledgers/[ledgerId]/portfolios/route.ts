@@ -9,8 +9,9 @@ import {
   FetchAllPortfoliosUseCase
 } from '@/core/application/use-cases/portfolios/fetch-all-portfolio-use-case'
 
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { PinoLogger } from '@/lib/logger/pino-logger'
+import { RequestContextManager } from '@/lib/logger/request-context'
 
 const createPortfolioUseCase: CreatePortfolio = container.get<CreatePortfolio>(
   CreatePortfolioUseCase
@@ -19,7 +20,7 @@ const createPortfolioUseCase: CreatePortfolio = container.get<CreatePortfolio>(
 const fetchAllPortfoliosUseCase: FetchAllPortfolios =
   container.get<FetchAllPortfolios>(FetchAllPortfoliosUseCase)
 
-const logger = new PinoLogger()
+const logger = PinoLogger.getInstance()
 
 export async function GET(
   request: Request,
@@ -94,70 +95,28 @@ export async function GET(
 }
 
 export async function POST(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { id: string; ledgerId: string } }
 ) {
-  const organizationId = params.id
-  const ledgerId = params.ledgerId
+  const { id: organizationId, ledgerId } = params
 
-  const context = {
-    component: 'PortfoliosAPI',
-    action: 'createPortfolio',
-    layer: 'api' as const,
-    operation: 'POST'
-  }
-
-  logger.info(
-    'Creating portfolio',
-    {
-      organizationId,
-      ledgerId,
-      method: 'POST'
-    },
-    {
-      ...context
+  return RequestContextManager.runWithContext(
+    request.url,
+    request.method,
+    { organizationId, ledgerId },
+    async () => {
+      try {
+        const body = await request.json()
+        const portfolio = await createPortfolioUseCase.execute(
+          organizationId,
+          ledgerId,
+          body
+        )
+        return NextResponse.json(portfolio)
+      } catch (error) {
+        const { message, status } = await apiErrorHandler(error)
+        return NextResponse.json({ message }, { status })
+      }
     }
   )
-
-  try {
-    const body = await request.json()
-    const portfolio = await createPortfolioUseCase.execute(
-      organizationId,
-      ledgerId,
-      body
-    )
-
-    logger.info(
-      'Successfully created portfolio',
-      {
-        organizationId,
-        ledgerId,
-        portfolioId: portfolio.id,
-        method: 'POST'
-      },
-      {
-        ...context
-      }
-    )
-
-    return NextResponse.json(portfolio)
-  } catch (error: any) {
-    logger.error(
-      'Failed to create portfolio',
-      {
-        organizationId,
-        ledgerId,
-        error: {
-          message: error.message,
-          name: error.name,
-          stack: error.stack
-        }
-      },
-      {
-        ...context
-      }
-    )
-    const { message, status } = await apiErrorHandler(error)
-    return NextResponse.json({ message }, { status })
-  }
 }

@@ -4,6 +4,7 @@ import {
   PortfolioResponseDto,
   UpdatePortfolioDto
 } from '../dto/portfolios-dto'
+import { RequestContextManager } from '@/lib/logger/request-context'
 
 export function portfolioEntityToDto(
   portfolio: PortfolioEntity
@@ -26,6 +27,13 @@ export function portfolioEntityToDto(
 }
 
 export function portfolioDtoToEntity(dto: CreatePortfolioDto): PortfolioEntity {
+  RequestContextManager.addEvent({
+    layer: 'application',
+    operation: 'portfolio_dto_to_entity',
+    level: 'debug',
+    message: 'Mapping portfolio dto to entity',
+    metadata: { dto }
+  })
   return {
     entityId: dto.entityId,
     name: dto.name,

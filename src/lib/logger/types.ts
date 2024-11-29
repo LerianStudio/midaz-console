@@ -14,7 +14,7 @@ export interface LogContext {
 export interface LogEntry {
   level: 'INFO' | 'ERROR' | 'WARN' | 'DEBUG' | 'AUDIT'
   message: string
-  timestamp: number
+  timestamp: string
   traceId: string
   metadata: LogMetadata
   context: LogContext

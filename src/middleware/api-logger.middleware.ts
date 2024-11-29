@@ -1,8 +1,6 @@
+import { RequestContextManager } from '@/lib/logger/request-context'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { PinoLogger } from '@/lib/logger/pino-logger'
-
-const logger = new PinoLogger()
 
 export async function apiLoggerMiddleware(
   request: NextRequest,
@@ -20,54 +18,38 @@ export async function apiLoggerMiddleware(
     referer: request.headers.get('referer')
   }
 
-  // logger.info('Incoming API request', requestMetadata)
-
   try {
     const response = await next()
     const duration = Date.now() - startTime
 
-    // logger.info('API request completed', {
-    //   ...requestMetadata,
-    //   status: response.status,
-    //   duration
-    // })
-
-    logger.info(
-      'API request completed',
-      {
+    RequestContextManager.addEvent({
+      level: 'info',
+      message: 'API request completed',
+      layer: 'api',
+      operation: 'request_end',
+      metadata: {
         duration,
-        status: response.status
-      },
-      {
-        layer: 'api',
-        operation: 'request_end'
+        status: response.status,
+        ...requestMetadata
       }
-    )
+    })
 
     response.headers.set('X-Request-Id', requestId)
     return response
   } catch (error) {
     const duration = Date.now() - startTime
 
-    logger.error(
-      'API request failed',
-      {
-        error:
-          error instanceof Error
-            ? {
-                message: error.message,
-                name: error.name,
-                stack: error.stack
-              }
-            : error,
-        ...requestMetadata,
-        duration
-      },
-      {
-        layer: 'api',
-        operation: 'request_error'
+    RequestContextManager.addEvent({
+      layer: 'api',
+      operation: 'request_error',
+      level: 'error',
+      message: 'Request failed',
+      error: error as Error,
+      metadata: {
+        duration,
+        ...requestMetadata
       }
-    )
+    })
 
     return NextResponse.json(
       { error: 'Internal Server Error' },
