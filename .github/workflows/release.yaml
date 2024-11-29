@@ -8,13 +8,12 @@ on:
       - hotfix/v*
     paths-ignore:
       - '.gitignore'
-      - '**/*.env'   # Ignorar todos os arquivos .env
-      - '*.env'      # Ignorar arquivos .env na raiz
-      - '**/*.md'    # Ignorar todos os arquivos .md
-      - '*.md'       # Ignorar arquivos .md na raiz
-      - '**/*.txt'   # Ignorar todos os arquivos .txt
-      - '*.txt'      # Ignorar arquivos .txt na raiz
-    tags-ignore: ['**']
+      - '**/*.env'
+      - '*.env'
+      - '**/*.md'
+      - '*.md'
+      - '**/*.txt'
+      - '*.txt'
 
 permissions:
   id-token: write
@@ -43,12 +42,13 @@ jobs:
           node-version: '22'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run Unit and Integration Tests
         run: npm run test
 
   publish_release:
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/hotfix/')
     runs-on: ubuntu-latest
     needs: integration_tests
     environment:
@@ -86,7 +86,7 @@ jobs:
           node-version: '22'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run Semantic Release
         run: npx semantic-release
