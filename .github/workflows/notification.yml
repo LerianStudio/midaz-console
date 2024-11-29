@@ -52,3 +52,31 @@ jobs:
           SLACK_TITLE: "Midaz-Console New Release: ${{ steps.latest_release.outputs.tag }}"
           SLACK_MESSAGE: "🎉 *Nova Release Publicada!* \n \n <https://github.com/${{ github.repository }}/releases/tag/${{ steps.latest_release.outputs.tag }} | *Clique aqui para detalhes*>"
           SLACK_WEBHOOK: ${{ secrets.RELEASE_WEBHOOK_NOTIFICATION_URL }} # Webhook Release Notification
+      - name: Send Email using SendGrid
+        env:
+            SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          run: |
+            curl -X POST https://api.sendgrid.com/v3/mail/send \
+            -H "Authorization: Bearer $SENDGRID_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "personalizations": [
+                {
+                  "to": [
+                    {
+                      "email": "releases@lerian.studio"
+                    }
+                  ],
+                  "subject": "Test Email from GitHub Actions"
+                }
+              ],
+              "from": {
+                "email": "lf@lerian.studio"
+              },
+              "content": [
+                {
+                  "type": "text/plain",
+                  "value": "This is a test email sent via SendGrid from GitHub Actions!"
+                }
+              ]
+            }'
