@@ -70,14 +70,21 @@ export const WithIcon: StoryObj<ButtonProps> = {
   args: {
     children: 'Button'
   },
-  render: (args) => <Button icon={<Users />} {...args} />
-}
-
-export const WithIconEnd: StoryObj<ButtonProps> = {
-  args: {
-    fullWidth: true,
-    iconPlacement: 'end',
-    children: 'Button'
-  },
-  render: (args) => <Button icon={<Users />} {...args} />
+  render: (args) => (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-row gap-4">
+        <Button startIcon={<Users />} {...args} />
+        <Button endIcon={<Users />} {...args} />
+      </div>
+      <div className="flex flex-row gap-4">
+        <Button fullWidth startIcon={<Users />} {...args} />
+        <Button
+          fullWidth
+          endIconPlacement="end"
+          endIcon={<Users />}
+          {...args}
+        />
+      </div>
+    </div>
+  )
 }
