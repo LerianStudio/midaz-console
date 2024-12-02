@@ -20,6 +20,7 @@ import { useParams } from 'next/navigation'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import ConfirmationDialog from '@/components/confirmation-dialog'
 import useCustomToast from '@/hooks/use-custom-toast'
+import { EntityDataTable } from '@/components/entity-data-table'
 
 type AssetsTabContentProps = {
   data: ILedgerType
@@ -142,18 +143,38 @@ export const AssetsTabContent = ({ data }: AssetsTabContentProps) => {
 
       <AssetsSheet ledgerId={ledgerId} onSuccess={refetch} {...sheetProps} />
 
-      {isLoading && <AssetsSkeleton />}
+      <EntityDataTable.Root>
+        {isLoading && <AssetsSkeleton />}
 
-      {assets && (
-        <AssetsDataTable
-          assets={assets}
-          isLoading={isLoading}
-          table={table}
-          handleDialogOpen={handleDialogOpen}
-          handleEdit={handleEdit}
-          refetch={refetch}
-        />
-      )}
+        {assets && (
+          <AssetsDataTable
+            assets={assets}
+            isLoading={isLoading}
+            table={table}
+            handleDialogOpen={handleDialogOpen}
+            handleEdit={handleEdit}
+            refetch={refetch}
+          />
+        )}
+
+        <EntityDataTable.Footer>
+          <EntityDataTable.FooterText>
+            {intl.formatMessage(
+              {
+                id: 'ledgers.assets.showing',
+                defaultMessage:
+                  'Showing {count} {number, plural, =0 {assets} one {asset} other {assets}}.'
+              },
+              {
+                number: assets?.items?.length,
+                count: (
+                  <span className="font-bold">{assets?.items?.length}</span>
+                )
+              }
+            )}
+          </EntityDataTable.FooterText>
+        </EntityDataTable.Footer>
+      </EntityDataTable.Root>
 
       <ConfirmationDialog
         title={intl.formatMessage({

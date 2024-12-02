@@ -35,6 +35,7 @@ import {
 } from '@tanstack/react-table'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import { useParams } from 'next/navigation'
+import { EntityDataTable } from '@/components/entity-data-table'
 
 export const ProductsTabContent = () => {
   const intl = useIntl()
@@ -127,106 +128,127 @@ export const ProductsTabContent = () => {
         </EntityBox.Actions>
       </EntityBox.Root>
 
-      {isNil(data?.items) ||
-        (data?.items.length === 0 && (
-          <EmptyResource
-            message={intl.formatMessage({
-              id: 'ledgers.products.emptyResource',
-              defaultMessage: "You haven't created any Products yet"
-            })}
-          >
-            <Button variant="outline" onClick={handleCreate} icon={<Plus />}>
-              {intl.formatMessage({
-                id: 'common.create',
-                defaultMessage: 'Create'
+      <EntityDataTable.Root>
+        {isNil(data?.items) ||
+          (data?.items.length === 0 && (
+            <EmptyResource
+              message={intl.formatMessage({
+                id: 'ledgers.products.emptyResource',
+                defaultMessage: "You haven't created any Products yet"
               })}
-            </Button>
-          </EmptyResource>
-        ))}
+            >
+              <Button variant="outline" onClick={handleCreate} icon={<Plus />}>
+                {intl.formatMessage({
+                  id: 'common.create',
+                  defaultMessage: 'Create'
+                })}
+              </Button>
+            </EmptyResource>
+          ))}
 
-      {!isNil(data?.items) && data?.items.length > 0 && (
-        <TableContainer>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>
-                  {intl.formatMessage({
-                    id: 'common.id',
-                    defaultMessage: 'ID'
-                  })}
-                </TableHead>
-                <TableHead>
-                  {intl.formatMessage({
-                    id: 'common.name',
-                    defaultMessage: 'Name'
-                  })}
-                </TableHead>
-                <TableHead>
-                  {intl.formatMessage({
-                    id: 'common.metadata',
-                    defaultMessage: 'Metadata'
-                  })}
-                </TableHead>
-                <TableHead className="w-0">
-                  {intl.formatMessage({
-                    id: 'common.actions',
-                    defaultMessage: 'Actions'
-                  })}
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows.map((product) => (
-                <TableRow key={product.id}>
-                  <TableCell>{product.original.id}</TableCell>
-                  <TableCell>{product.original.name}</TableCell>
-                  <TableCell>
-                    {intl.formatMessage(
-                      {
-                        id: 'common.table.metadata',
-                        defaultMessage:
-                          '{number, plural, =0 {-} one {# record} other {# records}}'
-                      },
-                      {
-                        number: Object.entries(product.original.metadata || [])
-                          .length
-                      }
-                    )}
-                  </TableCell>
-                  <TableCell className="w-0">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="secondary">
-                          <MoreVertical size={16} onClick={() => {}} />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem
-                          onClick={() => handleEdit(product.original)}
-                        >
-                          {intl.formatMessage({
-                            id: `common.edit`,
-                            defaultMessage: 'Edit'
-                          })}
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          onClick={() => handleDialogOpen(product.original.id)}
-                        >
-                          {intl.formatMessage({
-                            id: `common.delete`,
-                            defaultMessage: 'Delete'
-                          })}
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
+        {!isNil(data?.items) && data?.items.length > 0 && (
+          <TableContainer>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>
+                    {intl.formatMessage({
+                      id: 'common.id',
+                      defaultMessage: 'ID'
+                    })}
+                  </TableHead>
+                  <TableHead>
+                    {intl.formatMessage({
+                      id: 'common.name',
+                      defaultMessage: 'Name'
+                    })}
+                  </TableHead>
+                  <TableHead>
+                    {intl.formatMessage({
+                      id: 'common.metadata',
+                      defaultMessage: 'Metadata'
+                    })}
+                  </TableHead>
+                  <TableHead className="w-0">
+                    {intl.formatMessage({
+                      id: 'common.actions',
+                      defaultMessage: 'Actions'
+                    })}
+                  </TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows.map((product) => (
+                  <TableRow key={product.id}>
+                    <TableCell>{product.original.id}</TableCell>
+                    <TableCell>{product.original.name}</TableCell>
+                    <TableCell>
+                      {intl.formatMessage(
+                        {
+                          id: 'common.table.metadata',
+                          defaultMessage:
+                            '{number, plural, =0 {-} one {# record} other {# records}}'
+                        },
+                        {
+                          number: Object.entries(
+                            product.original.metadata || []
+                          ).length
+                        }
+                      )}
+                    </TableCell>
+                    <TableCell className="w-0">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="secondary">
+                            <MoreVertical size={16} onClick={() => {}} />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem
+                            onClick={() => handleEdit(product.original)}
+                          >
+                            {intl.formatMessage({
+                              id: `common.edit`,
+                              defaultMessage: 'Edit'
+                            })}
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            onClick={() =>
+                              handleDialogOpen(product.original.id)
+                            }
+                          >
+                            {intl.formatMessage({
+                              id: `common.delete`,
+                              defaultMessage: 'Delete'
+                            })}
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+
+        <EntityDataTable.Footer>
+          <EntityDataTable.FooterText>
+            {intl.formatMessage(
+              {
+                id: 'ledgers.products.showing',
+                defaultMessage:
+                  'Showing {count} {number, plural, =0 {products} one {product} other {products}}.'
+              },
+              {
+                number: data?.items?.length,
+                count: <span className="font-bold">{data?.items?.length}</span>
+              }
+            )}
+          </EntityDataTable.FooterText>
+        </EntityDataTable.Footer>
+      </EntityDataTable.Root>
     </>
   )
 }

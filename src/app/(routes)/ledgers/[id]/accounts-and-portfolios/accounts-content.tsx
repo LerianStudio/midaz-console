@@ -21,6 +21,7 @@ import useCustomToast from '@/hooks/use-custom-toast'
 import { AccountType } from '@/types/accounts-type'
 import { AccountSheet } from './accounts-sheet'
 import { AccountsDataTable } from './accounts-data-table'
+import { EntityDataTable } from '@/components/entity-data-table'
 
 export const AccountsContent = () => {
   const intl = useIntl()
@@ -201,15 +202,17 @@ export const AccountsContent = () => {
       </EntityBox.Root>
 
       {accountsList && (
-        <AccountsDataTable
-          accounts={accountsList as { items: any[] }}
-          isLoading={isAccountsLoading}
-          table={table}
-          handleEdit={handleEdit}
-          onDelete={handleDialogOpen}
-          refetch={refetch}
-          isTableExpanded={isTableExpanded}
-        />
+        <EntityDataTable.Root>
+          <AccountsDataTable
+            accounts={accountsList as { items: any[] }}
+            isLoading={isAccountsLoading}
+            table={table}
+            handleEdit={handleEdit}
+            onDelete={handleDialogOpen}
+            refetch={refetch}
+            isTableExpanded={isTableExpanded}
+          />
+        </EntityDataTable.Root>
       )}
     </>
   )

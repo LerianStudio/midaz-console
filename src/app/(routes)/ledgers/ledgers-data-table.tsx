@@ -1,5 +1,5 @@
 import React from 'react'
-import { IntlShape, useIntl } from 'react-intl'
+import { useIntl } from 'react-intl'
 import {
   Table,
   TableBody,
@@ -35,6 +35,7 @@ import Link from 'next/link'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { LedgersSheet } from './ledgers-sheet'
 import { AssetsSheet } from './[id]/assets/assets-sheet'
+import { EntityDataTable } from '@/components/entity-data-table'
 
 type LedgersTableProps = {
   ledgers: { items: LedgerEntity[] }
@@ -218,7 +219,7 @@ export const LedgersDataTable: React.FC<LedgersTableProps> = ({
   }
 
   return (
-    <div>
+    <EntityDataTable.Root>
       {isNil(ledgers?.items) || ledgers.items.length === 0 ? (
         <EmptyResource
           message={intl.formatMessage({
@@ -295,7 +296,23 @@ export const LedgersDataTable: React.FC<LedgersTableProps> = ({
         </TableContainer>
       )}
 
+      <EntityDataTable.Footer>
+        <EntityDataTable.FooterText>
+          {intl.formatMessage(
+            {
+              id: 'ledgers.showing',
+              defaultMessage:
+                'Showing {count} {number, plural, =0 {ledgers} one {ledger} other {ledgers}}.'
+            },
+            {
+              number: ledgers?.items?.length,
+              count: <span className="font-bold">{ledgers?.items?.length}</span>
+            }
+          )}
+        </EntityDataTable.FooterText>
+      </EntityDataTable.Footer>
+
       <LedgersSheet onSuccess={refetch} {...sheetProps} />
-    </div>
+    </EntityDataTable.Root>
   )
 }
