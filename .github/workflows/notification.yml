@@ -19,20 +19,24 @@ jobs:
   github-releases-notification:
     runs-on: ubuntu-latest
     steps:
+      # Obter token do GitHub App
       - uses: actions/create-github-app-token@v1
         id: app-token
         with:
           app-id: ${{ secrets.LERIAN_STUDIO_MIDAZ_PUSH_BOT_APP_ID }}
           private-key: ${{ secrets.LERIAN_STUDIO_MIDAZ_PUSH_BOT_PRIVATE_KEY }}
 
+      # Fazer checkout do código
       - name: Checkout
         uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
 
+      # Instalar CLI do GitHub
       - name: Install GitHub CLI
         run: sudo apt-get install -y gh
 
+      # Obter última release do repositório
       - name: Fetch Latest Release
         id: latest_release
         env:
@@ -40,43 +44,47 @@ jobs:
         run: |
           RAW_RELEASE=$(gh release list --repo $GITHUB_REPOSITORY --limit 1 --json tagName --jq '.[0].tagName')
           echo "Raw release: $RAW_RELEASE"
-          echo "::set-output name=tag::$RAW_RELEASE"
+          echo "tag=${RAW_RELEASE}" >> $GITHUB_ENV
 
+      # Notificar o Slack sobre nova release
       - name: Notify Slack of New Release
         uses: rtCamp/action-slack-notify@v2
-        if: '!github.event.prerelease'
+        if: always() # Sempre notificar (ou ajuste conforme necessário)
         env:
-          SLACK_CHANNEL: "Marvin" # Channel of Slack
+          SLACK_CHANNEL: "Marvin" # Canal no Slack
           SLACK_COLOR: "#36a64f"
           SLACK_ICON_EMOJI: ":rocket"
-          SLACK_TITLE: "Midaz-Console New Release: ${{ steps.latest_release.outputs.tag }}"
-          SLACK_MESSAGE: "🎉 *Nova Release Publicada!* \n \n <https://github.com/${{ github.repository }}/releases/tag/${{ steps.latest_release.outputs.tag }} | *Clique aqui para detalhes*>"
-          SLACK_WEBHOOK: ${{ secrets.RELEASE_WEBHOOK_NOTIFICATION_URL }} # Webhook Release Notification
+          SLACK_TITLE: "Midaz-Console New Release: ${{ env.tag }}"
+          SLACK_MESSAGE: "🎉 *Nova Release Publicada!* \n \n <https://github.com/${{ github.repository }}/releases/tag/${{ env.tag }} | *Clique aqui para detalhes*>"
+          SLACK_WEBHOOK: ${{ secrets.RELEASE_WEBHOOK_NOTIFICATION_URL }}
+
+      # Enviar e-mail usando SendGrid
       - name: Send Email using SendGrid
         env:
-            SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
-          run: |
-            curl -X POST https://api.sendgrid.com/v3/mail/send \
-            -H "Authorization: Bearer $SENDGRID_API_KEY" \
-            -H "Content-Type: application/json" \
-            -d '{
-              "personalizations": [
-                {
-                  "to": [
-                    {
-                      "email": "releases@lerian.studio"
-                    }
-                  ],
-                  "subject": "Test Email from GitHub Actions"
-                }
-              ],
-              "from": {
-                "email": "lf@lerian.studio"
-              },
-              "content": [
-                {
-                  "type": "text/plain",
-                  "value": "This is a test email sent via SendGrid from GitHub Actions!"
-                }
-              ]
-            }'
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+        run: |
+          curl -X POST https://api.sendgrid.com/v3/mail/send \
+          -H "Authorization: Bearer $SENDGRID_API_KEY" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "personalizations": [
+              {
+                "to": [
+                  {
+                    "email": "releases@lerian.studio"
+                  }
+                ],
+                "subject": "Nova Release Publicada: ${{ env.tag }}"
+              }
+            ],
+            "from": {
+              "email": "lf@lerian.studio",
+              "name": "Lerian Studio Notifications"
+            },
+            "content": [
+              {
+                "type": "text/plain",
+                "value": "Confira os detalhes da nova release aqui: https://github.com/${{ github.repository }}/releases/tag/${{ env.tag }}"
+              }
+            ]
+          }'
