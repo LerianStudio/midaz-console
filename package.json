@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start -p 8081",
     "lint": "next lint --fix",
-    "storybook": "storybook dev -p 6006",
+    "storybook": "storybook dev -p 6007",
     "build-storybook": "storybook build",
     "extract:i18n": "tsx ./scripts/i18n-extract.ts",
     "compile:i18n": "formatjs compile-folder \"./locales/extracted\" --format simple \"./locales/compiled\"",
