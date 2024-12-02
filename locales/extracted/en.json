@@ -199,6 +199,7 @@
   "ledgers.products.sheet.title": "New Product",
   "ledgers.products.subtitle": "Clustering or allocation of customers at different levels.",
   "ledgers.products.title": "Products",
+  "ledgers.sheet.tabs.details": "Ledger Details",
   "ledgers.sheetCreate.description": "Fill in the data of the Ledger you wish to create.",
   "ledgers.sheetCreate.title": "New Ledger",
   "ledgers.subtitle": "Visualize and edit the Ledgers of your Organization.",
