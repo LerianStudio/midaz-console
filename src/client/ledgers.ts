@@ -9,7 +9,8 @@ import {
 import {
   useMutation,
   UseMutationOptions,
-  useQuery
+  useQuery,
+  useQueryClient
 } from '@tanstack/react-query'
 
 type UseCreateLedgerProps = UseMutationOptions & {
@@ -75,13 +76,22 @@ const useLedgerById = ({
 const useUpdateLedger = ({
   organizationId,
   ledgerId,
+  onSuccess,
   ...options
 }: UseUpdateLedgerProps) => {
+  const queryClient = useQueryClient()
+
   return useMutation<any, any, any>({
     mutationKey: [organizationId, ledgerId],
     mutationFn: patchFetcher(
       `/api/organizations/${organizationId}/ledgers/${ledgerId}`
     ),
+    onSuccess: (...args) => {
+      queryClient.invalidateQueries({
+        queryKey: ['ledger', organizationId, ledgerId]
+      })
+      onSuccess?.(...args)
+    },
     ...options
   })
 }
