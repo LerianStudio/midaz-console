@@ -1,8 +1,17 @@
 name: "Build"
 
+#Habilitar isso após os testes
+# on:
+#   push:
+#     tags:
+#       - '**'
+
 on:
   push:
-    tags:
+    branches:
+      - '**'  
+  pull_request:
+    branches:
       - '**'
 
 permissions:
@@ -55,6 +64,7 @@ jobs:
       with:
         image-ref: '${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}:${{ steps.extract_tag.outputs.tag }}'
         format: 'table'
+        ignorefile: 'trivy-ignore.yaml'
         ignore-unfixed: true
         vuln-type: 'os,library'
         severity: 'CRITICAL,HIGH'
