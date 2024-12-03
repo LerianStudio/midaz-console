@@ -5,14 +5,6 @@ on:
     tags:
       - '**'
 
-# on:
-#   push:
-#     branches:
-#       - '**'  
-#   pull_request:
-#     branches:
-#       - '**'
-
 permissions:
   id-token: write
   contents: read
@@ -26,9 +18,17 @@ jobs:
       DOCKERHUB_ORG: lerianstudio
     name: Build And Publish Docker Image to Midaz
     steps:
+    - name: Set up GitHub token
+      id: app-token
+      uses: actions/create-github-app-token@v1
+      with:
+        app-id: ${{ secrets.LERIAN_STUDIO_MIDAZ_PUSH_BOT_APP_ID }}
+        private-key: ${{ secrets.LERIAN_STUDIO_MIDAZ_PUSH_BOT_PRIVATE_KEY }}
+
     - name: Checkout repository
       uses: actions/checkout@v4
-
+      with:
+        token: ${{ steps.app-token.outputs.token }}
     - name: Log in to Docker Hub
       uses: docker/login-action@v3
       with:
@@ -43,7 +43,6 @@ jobs:
         tags: |
           type=semver,pattern={{version}}
           type=ref,event=branch,suffix=-${{ github.sha }}
-
     - name: Build Docker image
       uses: docker/build-push-action@v5
       with:
@@ -52,7 +51,8 @@ jobs:
         load: true
         tags: ${{ steps.meta.outputs.tags }}
         cache-from: type=registry,ref=${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}:latest
-
+        build-args: |
+            GITHUB_TOKEN=${{ steps.app-token.outputs.token }}
     - name: Extract tag name
       shell: bash
       run: echo "tag=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
@@ -63,7 +63,6 @@ jobs:
       with:
         image-ref: '${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}:${{ steps.extract_tag.outputs.tag }}'
         format: 'table'
-        ignorefile: 'trivy-ignore.yaml'
         ignore-unfixed: true
         vuln-type: 'os,library'
         severity: 'CRITICAL,HIGH'
@@ -75,4 +74,3 @@ jobs:
         context: .  
         file: ./Dockerfile 
         push: true
-        tags: ${{ steps.meta.outputs.tags }}
