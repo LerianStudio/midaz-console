@@ -160,7 +160,7 @@ const SignInPage = () => {
                   loading={form.formState.isSubmitting}
                   size="xl"
                   icon={<ArrowRight />}
-                  iconPlacement="end"
+                  iconPlacement="far-end"
                 >
                   {intl.formatMessage({
                     id: 'signIn.buttonSignIn',
