@@ -73,17 +73,12 @@ export const WithIcon: StoryObj<ButtonProps> = {
   render: (args) => (
     <div className="flex flex-col gap-4">
       <div className="flex flex-row gap-4">
-        <Button startIcon={<Users />} {...args} />
-        <Button endIcon={<Users />} {...args} />
+        <Button icon={<Users />} {...args} />
+        <Button icon={<Users />} {...args} />
       </div>
       <div className="flex flex-row gap-4">
-        <Button fullWidth startIcon={<Users />} {...args} />
-        <Button
-          fullWidth
-          endIconPlacement="end"
-          endIcon={<Users />}
-          {...args}
-        />
+        <Button fullWidth icon={<Users />} {...args} />
+        <Button fullWidth iconPlacement="far-end" icon={<Users />} {...args} />
       </div>
     </div>
   )
