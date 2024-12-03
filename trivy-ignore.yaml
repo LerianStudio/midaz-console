@@ -1,0 +1,6 @@
+ignoring:
+  - vulnerability: "CVE-2024-34156"
+    package: "stdlib"
+    severity: "HIGH"
+    reason: "Devinvulnerable in dev dependencies and doesn't affect production"
+    state: "ignored"
