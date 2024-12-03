@@ -1,11 +1,14 @@
 import { Button } from '@/components/ui/button'
-import { MoreVertical, Plus, ChevronDown, ChevronUp } from 'lucide-react'
+import { MoreVertical, Plus, ChevronDown, ChevronUp, Minus } from 'lucide-react'
 import { PortfolioSheet } from './portfolios-sheet'
 import { useParams } from 'next/navigation'
 import { EntityBox } from '@/components/entity-box'
 import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
 import { PortfolioResponseDto } from '@/core/application/dto/portfolios-dto'
-import { useDeletePortfolio } from '@/client/portfolios'
+import {
+  useDeletePortfolio,
+  usePortfoliosWithAccounts
+} from '@/client/portfolios'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import { useIntl } from 'react-intl'
 import { isNil } from 'lodash'
@@ -14,7 +17,7 @@ import {
   getFilteredRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import React, { useState } from 'react'
+import React from 'react'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import {
   DropdownMenu,
@@ -35,7 +38,6 @@ import {
 import { truncateString } from '@/helpers'
 import ConfirmationDialog from '@/components/confirmation-dialog'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useAllPortfoliosAccounts } from '@/client/accounts'
 import {
   Tooltip,
   TooltipContent,
@@ -56,7 +58,7 @@ export const PortfoliosContent = () => {
     data: portfoliosData,
     refetch,
     isLoading
-  } = useAllPortfoliosAccounts({
+  } = usePortfoliosWithAccounts({
     organizationId: currentOrganization.id!,
     ledgerId: ledgerId
   })
@@ -201,6 +203,9 @@ export const PortfoliosContent = () => {
             </TableHeader>
             <TableBody>
               {table.getRowModel().rows.map((portfolio) => {
+                const metadataCount = Object.entries(
+                  portfolio.original.metadata || []
+                ).length
                 const displayId =
                   portfolio.original.id && portfolio.original.id.length > 8
                     ? `${truncateString(portfolio.original.id, 8)}`
@@ -247,6 +252,22 @@ export const PortfoliosContent = () => {
                     </TableCell>
                     <TableCell>{portfolio.original.name}</TableCell>
                     <TableCell>
+                      {metadataCount === 0 ? (
+                        <Minus size={20} />
+                      ) : (
+                        intl.formatMessage(
+                          {
+                            id: 'common.table.metadata',
+                            defaultMessage:
+                              '{number, plural, =0 {-} one {# record} other {# records}}'
+                          },
+                          {
+                            number: metadataCount
+                          }
+                        )
+                      )}
+                    </TableCell>
+                    <TableCell>
                       {intl.formatMessage(
                         {
                           id: 'common.table.accounts',
@@ -255,20 +276,6 @@ export const PortfoliosContent = () => {
                         },
                         {
                           number: portfolio.original.accounts?.length || 0
-                        }
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      {intl.formatMessage(
-                        {
-                          id: 'common.table.metadata',
-                          defaultMessage:
-                            '{number, plural, =0 {-} one {# record} other {# records}}'
-                        },
-                        {
-                          number: Object.entries(
-                            portfolio.original.metadata || []
-                          ).length
                         }
                       )}
                     </TableCell>

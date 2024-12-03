@@ -20,6 +20,10 @@ import {
   DeleteAccount,
   DeleteAccountUseCase
 } from '@/core/application/use-cases/accounts/delete-account-use-case'
+import {
+  FetchAccountsWithPortfolios,
+  FetchAccountsWithPortfoliosUseCase
+} from '@/core/application/use-cases/accounts-with-portfolios/fetch-accounts-with-portfolios-use-case'
 
 export const AccountUseCaseModule = new ContainerModule(
   (container: Container) => {
@@ -28,5 +32,8 @@ export const AccountUseCaseModule = new ContainerModule(
     container.bind<FetchAccountById>(FetchAccountByIdUseCase).toSelf()
     container.bind<UpdateAccount>(UpdateAccountUseCase).toSelf()
     container.bind<DeleteAccount>(DeleteAccountUseCase).toSelf()
+    container
+      .bind<FetchAccountsWithPortfolios>(FetchAccountsWithPortfoliosUseCase)
+      .toSelf()
   }
 )

@@ -8,7 +8,7 @@ import { PortfolioViewResponseDTO } from '../../dto/portfolio-view-dto'
 import { AccountMapper } from '../../mappers/account-mapper'
 import { inject, injectable } from 'inversify'
 
-export interface FetchAllAccountsWithPortfolios {
+export interface FetchAccountsWithPortfolios {
   execute: (
     organizationId: string,
     ledgerId: string,
@@ -18,8 +18,8 @@ export interface FetchAllAccountsWithPortfolios {
 }
 
 @injectable()
-export class FetchAllAccountsWithPortfoliosUseCase
-  implements FetchAllAccountsWithPortfolios
+export class FetchAccountsWithPortfoliosUseCase
+  implements FetchAccountsWithPortfolios
 {
   constructor(
     @inject(FetchAllPortfoliosRepository)
@@ -34,7 +34,6 @@ export class FetchAllAccountsWithPortfoliosUseCase
     limit: number,
     page: number
   ): Promise<PaginationDto<PortfolioViewResponseDTO>> {
-    // Fetch all accounts
     const accountsResult: PaginationEntity<AccountEntity> =
       await this.fetchAllAccountsRepository.fetchAll(
         organizationId,
@@ -43,7 +42,6 @@ export class FetchAllAccountsWithPortfoliosUseCase
         page
       )
 
-    // Fetch all portfolios
     const portfoliosResult: PaginationEntity<PortfolioEntity> =
       await this.fetchAllPortfoliosRepository.fetchAll(
         organizationId,
@@ -52,7 +50,6 @@ export class FetchAllAccountsWithPortfoliosUseCase
         page
       )
 
-    // Create a map of portfolio IDs to PortfolioEntity
     const portfolioMap = new Map<string, PortfolioEntity>()
     portfoliosResult.items.forEach((portfolio) => {
       if (portfolio.id) {
@@ -60,7 +57,6 @@ export class FetchAllAccountsWithPortfoliosUseCase
       }
     })
 
-    // Map accounts to include portfolio information
     const accountsWithPortfolio: any[] = accountsResult.items.map((account) => {
       const portfolio = account.portfolioId
         ? portfolioMap.get(account.portfolioId)
@@ -77,7 +73,6 @@ export class FetchAllAccountsWithPortfoliosUseCase
       }
     })
 
-    // Prepare the response DTO
     const responseDTO: PaginationDto<any> = {
       items: accountsWithPortfolio,
       limit: accountsResult.limit,

@@ -13,10 +13,7 @@ import {
 } from '@tanstack/react-table'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import ConfirmationDialog from '@/components/confirmation-dialog'
-import {
-  useAllAccountsWithPortfolios,
-  useDeleteAccount
-} from '@/client/accounts'
+import { useAccountsWithPortfolios, useDeleteAccount } from '@/client/accounts'
 import { Skeleton } from '@/components/ui/skeleton'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { AccountType } from '@/types/accounts-type'
@@ -33,7 +30,7 @@ export const AccountsContent = () => {
     data: accountsData,
     refetch: refetchAccounts,
     isLoading: isAccountsLoading
-  } = useAllAccountsWithPortfolios({
+  } = useAccountsWithPortfolios({
     organizationId: currentOrganization.id!,
     ledgerId: ledgerId
   })

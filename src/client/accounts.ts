@@ -1,5 +1,5 @@
+import { AccountResponseDto } from '@/core/application/dto/account-dto'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
-import { PortfolioViewResponseDTO } from '@/core/application/dto/portfolio-view-dto'
 import { AccountEntity } from '@/core/domain/entities/account-entity'
 import {
   deleteFetcher,
@@ -10,8 +10,7 @@ import {
 import {
   useMutation,
   UseMutationOptions,
-  useQuery,
-  UseQueryOptions
+  useQuery
 } from '@tanstack/react-query'
 
 type UseListAccountsProps = {
@@ -33,17 +32,17 @@ export const useListAccounts = ({
   })
 }
 
-type UseAllPortfoliosAccountsProps = {
+type UseAccountsWithPortfoliosProps = {
   organizationId: string
   ledgerId: string
 }
 
-export const useAllAccountsWithPortfolios = ({
+export const useAccountsWithPortfolios = ({
   organizationId,
   ledgerId,
   ...options
-}: UseAllPortfoliosAccountsProps) => {
-  return useQuery<PaginationDto<PortfolioViewResponseDTO>>({
+}: UseAccountsWithPortfoliosProps) => {
+  return useQuery<PaginationDto<AccountResponseDto>>({
     queryKey: [organizationId, ledgerId, 'accounts-with-portfolios'],
     queryFn: getFetcher(
       `/api/organizations/${organizationId}/ledgers/${ledgerId}/accounts-portfolios`
