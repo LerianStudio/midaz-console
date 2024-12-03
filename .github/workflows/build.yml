@@ -1,18 +1,17 @@
 name: "Build"
 
-#Habilitar isso após os testes
-# on:
-#   push:
-#     tags:
-#       - '**'
-
 on:
   push:
-    branches:
-      - '**'  
-  pull_request:
-    branches:
+    tags:
       - '**'
+
+# on:
+#   push:
+#     branches:
+#       - '**'  
+#   pull_request:
+#     branches:
+#       - '**'
 
 permissions:
   id-token: write
