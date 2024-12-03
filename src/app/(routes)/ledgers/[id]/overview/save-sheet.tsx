@@ -1,49 +1,47 @@
+import { Button } from '@/components/ui/button'
+import { LoadingButton } from '@/components/ui/loading-button'
 import { cn } from '@/lib/utils'
-import { Button } from './ui/button'
-import { useSidebar } from './sidebar/primitive'
 import { useIntl } from 'react-intl'
-import { LoadingButton } from './ui/loading-button'
 
-interface BottomDrawerProps {
-  isOpen: boolean
-  isPending: boolean
-  handleSubmit: () => void
-  handleCancel: () => void
+export type SaveSheetProps = {
+  open?: boolean
+  loading?: boolean
+  onSubmit?: () => void
+  onCancel?: () => void
 }
 
-export const BottomDrawer = ({
-  isOpen,
-  handleCancel,
-  handleSubmit,
-  isPending
-}: BottomDrawerProps) => {
+export const SaveSheet = ({
+  open = true,
+  loading,
+  onSubmit,
+  onCancel
+}: SaveSheetProps) => {
   const intl = useIntl()
-  const { isCollapsed } = useSidebar()
 
   return (
     <div
       className={cn(
         'fixed inset-x-0 bottom-0 z-50 ml-[136px] mr-16 transform rounded-t-2xl bg-white shadow-drawer transition-transform',
-        isOpen ? 'translate-y-0' : 'translate-y-full',
-        !isCollapsed && 'ml-[315px]',
+        open ? 'translate-y-0' : 'translate-y-full',
+        !true && 'ml-[315px]',
         'duration-300 ease-in-out'
       )}
-      aria-hidden={!isOpen}
+      aria-hidden={!open}
     >
       <div className="flex w-full justify-center px-16 py-12">
         <div className="flex w-[292px] flex-col gap-2">
           <LoadingButton
             type="submit"
             fullWidth
-            loading={isPending}
-            onClick={handleSubmit}
+            loading={loading}
+            onClick={onSubmit}
           >
             {intl.formatMessage({
               id: 'common.saveChanges',
               defaultMessage: 'Save changes'
             })}
           </LoadingButton>
-          <Button variant="outline" onClick={handleCancel}>
+          <Button variant="outline" onClick={onCancel}>
             {intl.formatMessage({
               id: 'common.cancel',
               defaultMessage: 'Cancel'
