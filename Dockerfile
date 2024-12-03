@@ -14,7 +14,8 @@ COPY package*.json ./
 
 # Configure npm to use GitHub token temporarily
 RUN echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" > ~/.npmrc && \
-    npm install && \
+    npm install || cat /root/.npm/_logs/*.log && \
+    npm cache clean --force && \
     rm -f ~/.npmrc
 
 # Copy package.json and package-lock.json to the working directory
