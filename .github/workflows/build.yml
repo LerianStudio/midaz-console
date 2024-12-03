@@ -82,7 +82,7 @@ jobs:
       with:
         image-ref: '${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}:${{ steps.extract_tag.outputs.tag }}'
         format: 'table'
-        trivyignores: './.trivyignore'
+        trivyignores: '.trivyignore'
         ignore-unfixed: true
         vuln-type: 'os,library'
         severity: 'CRITICAL,HIGH'
