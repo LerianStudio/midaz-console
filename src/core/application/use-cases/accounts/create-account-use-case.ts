@@ -29,7 +29,6 @@ export class CreateAccountUseCase implements CreateAccount {
       description: 'Active Account'
     }
     const accountEntity: AccountEntity = AccountMapper.toDomain(account)
-    console.log('accountEntity', accountEntity)
     const accountCreated = await this.createAccountRepository.create(
       organizationId,
       ledgerId,
