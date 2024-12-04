@@ -9,10 +9,9 @@ export class MidazCreateAccountRepository implements CreateAccountsRepository {
   async create(
     organizationId: string,
     ledgerId: string,
-    portfolioId: string,
     account: AccountEntity
   ): Promise<AccountEntity> {
-    const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}/accounts`
+    const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/accounts`
 
     const response = await httpMidazAuthFetch<AccountEntity>({
       url,

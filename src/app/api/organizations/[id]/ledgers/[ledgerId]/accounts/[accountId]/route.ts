@@ -32,18 +32,16 @@ export async function GET(
     params: {
       id: string
       ledgerId: string
-      portfolioId: string
       accountId: string
     }
   }
 ) {
   try {
-    const { id: organizationId, ledgerId, portfolioId, accountId } = params
+    const { id: organizationId, ledgerId, accountId } = params
 
     const account = await getAccountByIdUseCase.execute(
       organizationId,
       ledgerId,
-      portfolioId,
       accountId
     )
 
@@ -64,19 +62,17 @@ export async function PATCH(
     params: {
       id: string
       ledgerId: string
-      portfolioId: string
       accountId: string
     }
   }
 ) {
   try {
     const body = await request.json()
-    const { id: organizationId, ledgerId, portfolioId, accountId } = params
+    const { id: organizationId, ledgerId, accountId } = params
 
     const accountUpdated = await updateAccountUseCase.execute(
       organizationId,
       ledgerId,
-      portfolioId,
       accountId,
       body
     )
@@ -98,7 +94,6 @@ export async function DELETE(
     params: {
       id: string
       ledgerId: string
-      portfolioId: string
       accountId: string
     }
   }
@@ -106,15 +101,9 @@ export async function DELETE(
   try {
     const organizationId = params.id!
     const ledgerId = params.ledgerId
-    const portfolioId = params.portfolioId
     const accountId = params.accountId
 
-    await deleteAccountUseCase.execute(
-      organizationId,
-      ledgerId,
-      portfolioId,
-      accountId
-    )
+    await deleteAccountUseCase.execute(organizationId, ledgerId, accountId)
 
     return NextResponse.json({}, { status: 200 })
   } catch (error: any) {

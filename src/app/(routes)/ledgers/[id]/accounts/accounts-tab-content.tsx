@@ -1,13 +1,11 @@
-import React, { useState, useMemo, useCallback } from 'react'
+import React, { useMemo } from 'react'
 import { Button } from '@/components/ui/button'
-import { ChevronDown, ChevronUp, Plus } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { EntityBox } from '@/components/entity-box'
 import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
-import { useListPortfolios } from '@/client/portfolios'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import { useIntl } from 'react-intl'
-import { isNil } from 'lodash'
 import {
   getCoreRowModel,
   getFilteredRowModel,
@@ -15,7 +13,7 @@ import {
 } from '@tanstack/react-table'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import ConfirmationDialog from '@/components/confirmation-dialog'
-import { useAllPortfoliosAccounts, useDeleteAccount } from '@/client/accounts'
+import { useAccountsWithPortfolios, useDeleteAccount } from '@/client/accounts'
 import { Skeleton } from '@/components/ui/skeleton'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { AccountType } from '@/types/accounts-type'
@@ -23,40 +21,34 @@ import { AccountSheet } from './accounts-sheet'
 import { AccountsDataTable } from './accounts-data-table'
 import { EntityDataTable } from '@/components/entity-data-table'
 
-export const AccountsContent = () => {
+export const AccountsTabContent = () => {
   const intl = useIntl()
   const { id: ledgerId } = useParams<{ id: string }>()
   const { currentOrganization } = useOrganization()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
-  const [isTableExpanded, setIsTableExpanded] = useState(false)
-
-  const { data, refetch, isLoading } = useListPortfolios({
-    organizationId: currentOrganization.id!,
-    ledgerId: ledgerId
-  })
 
   const {
     data: accountsData,
     refetch: refetchAccounts,
     isLoading: isAccountsLoading
-  } = useAllPortfoliosAccounts({
+  } = useAccountsWithPortfolios({
     organizationId: currentOrganization.id!,
     ledgerId: ledgerId
   })
 
-  const accountsList = useMemo(
-    () => ({
-      items:
-        accountsData?.items.flatMap((portfolio) =>
-          portfolio.accounts.map((account) => ({
-            ...account,
-            portfolioName: portfolio.name,
-            portfolioId: portfolio.id
-          }))
-        ) || []
-    }),
-    [accountsData]
-  )
+  const accountsList: AccountType[] = useMemo(() => {
+    return (
+      accountsData?.items.map((account: any) => ({
+        ...account,
+        assetCode: account.assetCode,
+        parentAccountId: account.parentAccountId,
+        productId: account.productId,
+        metadata: account.metadata,
+        portfolioId: account.portfolio?.id,
+        portfolioName: account.portfolio?.name
+      })) || []
+    )
+  }, [accountsData])
 
   const { showSuccess, showError } = useCustomToast()
 
@@ -74,7 +66,6 @@ export const AccountsContent = () => {
       organizationId: currentOrganization.id!,
       ledgerId,
       accountId: selectedAccount?.id || '',
-      portfolioId: selectedAccount?.portfolioId || '',
       onSuccess: () => {
         handleDialogClose()
         refetchAccounts()
@@ -84,7 +75,7 @@ export const AccountsContent = () => {
               id: 'ledgers.toast.accountDeleted',
               defaultMessage: '{accountName} account successfully deleted'
             },
-            { accountName: (selectedAccount as AccountType)?.name! }
+            { accountName: selectedAccount?.name! }
           )
         )
       },
@@ -105,18 +96,58 @@ export const AccountsContent = () => {
   } = useCreateUpdateSheet<AccountType>()
 
   const handleEdit = (account: AccountType) => {
-    handleEditOriginal(account as unknown as AccountType)
+    handleEditOriginal(account)
   }
 
   const table = useReactTable({
-    data: accountsList?.items!,
+    data: accountsList,
     columns: [
-      { accessorKey: 'id' },
-      { accessorKey: 'name' },
-      { accessorKey: 'assets' },
-      { accessorKey: 'metadata' },
-      { accessorKey: 'portfolio' },
-      { accessorKey: 'actions' }
+      { accessorKey: 'id', header: 'ID' },
+      {
+        accessorKey: 'name',
+        header: intl.formatMessage({
+          id: 'entity.account.name',
+          defaultMessage: 'Account Name'
+        })
+      },
+      {
+        accessorKey: 'assetCode',
+        header: intl.formatMessage({
+          id: 'entity.account.currency',
+          defaultMessage: 'Assets'
+        }),
+        cell: (info) => info.getValue() || '-'
+      },
+      {
+        accessorKey: 'metadata',
+        header: intl.formatMessage({
+          id: 'common.metadata',
+          defaultMessage: 'Metadata'
+        }),
+        cell: (info) => {
+          const metadata = info.getValue() || {}
+          const count = Object.keys(metadata).length
+          return count > 0
+            ? `${count} ${intl.formatMessage({ id: 'common.records', defaultMessage: 'records' })}`
+            : '-'
+        }
+      },
+      {
+        accessorKey: 'portfolio.name',
+        header: intl.formatMessage({
+          id: 'common.portfolio',
+          defaultMessage: 'Portfolio'
+        }),
+        cell: (info) => info.getValue() || '-'
+      },
+      {
+        accessorKey: 'actions',
+        header: intl.formatMessage({
+          id: 'common.actions',
+          defaultMessage: 'Actions'
+        }),
+        cell: () => null
+      }
     ],
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -126,12 +157,12 @@ export const AccountsContent = () => {
     }
   })
 
-  if (isLoading) {
+  if (isAccountsLoading) {
     return <Skeleton className="h-[84px] w-full bg-zinc-200" />
   }
 
   return (
-    <>
+    <React.Fragment>
       <ConfirmationDialog
         title={intl.formatMessage({
           id: 'ledgers.account.deleteDialog.title',
@@ -147,7 +178,7 @@ export const AccountsContent = () => {
 
       <AccountSheet
         ledgerId={ledgerId}
-        onSucess={refetchAccounts}
+        onSuccess={refetchAccounts}
         {...sheetProps}
       />
 
@@ -158,15 +189,15 @@ export const AccountsContent = () => {
             defaultMessage: 'Accounts'
           })}
           subtitle={
-            accountsList?.items?.length !== undefined
+            accountsList.length !== undefined
               ? intl.formatMessage(
                   {
                     id: 'ledgers.accounts.subtitle',
                     defaultMessage:
-                      '{count} {count, plural, =0 {accounts found} one {acount found} other {accounts found}}'
+                      '{count} {count, plural, =0 {accounts found} one {account found} other {accounts found}}'
                   },
                   {
-                    count: accountsList.items.length
+                    count: accountsList.length
                   }
                 )
               : undefined
@@ -176,9 +207,9 @@ export const AccountsContent = () => {
           <Button
             variant="secondary"
             onClick={handleCreate}
-            disabled={isNil(data?.items) || data?.items?.length === 0}
+            className="h-9 p-2"
           >
-            {accountsList && accountsList.items.length > 0 ? (
+            {accountsList && accountsList.length > 0 ? (
               <Plus />
             ) : (
               <>
@@ -190,30 +221,19 @@ export const AccountsContent = () => {
               </>
             )}
           </Button>
-          {!isNil(accountsList?.items) && accountsList?.items?.length > 0 && (
-            <Button
-              variant="white"
-              onClick={() => setIsTableExpanded(!isTableExpanded)}
-            >
-              {isTableExpanded ? <ChevronUp /> : <ChevronDown />}
-            </Button>
-          )}
         </EntityBox.Actions>
       </EntityBox.Root>
 
       {accountsList && (
-        <EntityDataTable.Root>
-          <AccountsDataTable
-            accounts={accountsList as { items: any[] }}
-            isLoading={isAccountsLoading}
-            table={table}
-            handleEdit={handleEdit}
-            onDelete={handleDialogOpen}
-            refetch={refetch}
-            isTableExpanded={isTableExpanded}
-          />
-        </EntityDataTable.Root>
+        <AccountsDataTable
+          accounts={{ items: accountsList }}
+          isLoading={isAccountsLoading}
+          table={table}
+          handleEdit={handleEdit}
+          onDelete={handleDialogOpen}
+          refetch={refetchAccounts}
+        />
       )}
-    </>
+    </React.Fragment>
   )
 }

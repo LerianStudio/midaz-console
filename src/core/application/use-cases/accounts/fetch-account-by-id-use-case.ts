@@ -7,7 +7,6 @@ export interface FetchAccountById {
   execute: (
     organizationId: string,
     ledgerId: string,
-    portfolioId: string,
     accountId: string
   ) => Promise<AccountResponseDto>
 }
@@ -22,13 +21,11 @@ export class FetchAccountByIdUseCase implements FetchAccountById {
   async execute(
     organizationId: string,
     ledgerId: string,
-    portfolioId: string,
     accountId: string
   ): Promise<AccountResponseDto> {
     const account = await this.fetchAccountByIdRepository.fetchById(
       organizationId,
       ledgerId,
-      portfolioId,
       accountId
     )
 

@@ -5,7 +5,6 @@ export interface DeleteAccount {
   execute: (
     organizationId: string,
     ledgerId: string,
-    portfolioId: string,
     accountId: string
   ) => Promise<void>
 }
@@ -20,13 +19,11 @@ export class DeleteAccountUseCase implements DeleteAccount {
   async execute(
     organizationId: string,
     ledgerId: string,
-    portfolioId: string,
     accountId: string
   ): Promise<void> {
     await this.deleteAccountRepository.delete(
       organizationId,
       ledgerId,
-      portfolioId,
       accountId
     )
   }
