@@ -247,6 +247,7 @@
   "organizations.organizationView.breadcrumbs.settings": "Settings",
   "organizations.organizationView.newOrganization.title": "New Organization",
   "organizations.organizationView.notFound": "Organization not found.",
+  "organizations.showing": "Showing {count} {number, plural, =0 {organizations} one {organization} other {organizations}}.",
   "organizations.subtitle": "View and manage Organizations.",
   "organizations.title": "Settings",
   "organizations.toast.create.success": "Organization created!",

@@ -31,6 +31,7 @@ import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-d
 import ConfirmationDialog from '@/components/confirmation-dialog'
 import { Badge } from '@/components/ui/badge'
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
+import { EntityDataTable } from '@/components/entity-data-table'
 
 export const OrganizationsTabContent = () => {
   const intl = useIntl()
@@ -115,110 +116,127 @@ export const OrganizationsTabContent = () => {
           </Button>
         </EmptyResource>
       )}
-
-      {data?.items && data.items.length > 0 && (
-        <TableContainer>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>
-                  {intl.formatMessage({
-                    id: 'common.id',
-                    defaultMessage: 'ID'
-                  })}
-                </TableHead>
-                <TableHead>
-                  {intl.formatMessage({
-                    id: `entity.organization.legalName`,
-                    defaultMessage: 'Legal Name'
-                  })}
-                </TableHead>
-                <TableHead>
-                  {intl.formatMessage({
-                    id: `entity.organization.doingBusinessAs`,
-                    defaultMessage: 'Trade Name'
-                  })}
-                </TableHead>
-                <TableHead>
-                  {intl.formatMessage({
-                    id: `entity.organization.legalDocument`,
-                    defaultMessage: 'Document'
-                  })}
-                </TableHead>
-                <TableHead>
-                  {intl.formatMessage({
-                    id: `entity.organization.status`,
-                    defaultMessage: 'Status'
-                  })}
-                </TableHead>
-                <TableHead>
-                  {intl.formatMessage({
-                    id: 'common.actions',
-                    defaultMessage: 'Actions'
-                  })}
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {data.items.map((organization) => (
-                <TableRow key={organization.id}>
-                  <TableCell>{organization.id}</TableCell>
-                  <TableCell>{organization.legalName}</TableCell>
-                  <TableCell>{organization.doingBusinessAs}</TableCell>
-                  <TableCell>{organization.legalDocument}</TableCell>
-                  <TableCell>
-                    <Badge
-                      variant={
-                        organization.status.code === 'ACTIVE'
-                          ? 'active'
-                          : 'inactive'
-                      }
-                    >
-                      {organization.status.code === 'ACTIVE'
-                        ? intl.formatMessage({
-                            id: 'common.active',
-                            defaultMessage: 'Active'
-                          })
-                        : intl.formatMessage({
-                            id: 'common.inactive',
-                            defaultMessage: 'Inactive'
-                          })}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="secondary">
-                          <MoreVertical size={16} onClick={() => {}} />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem
-                          onClick={() => handleEdit(organization)}
-                        >
-                          {intl.formatMessage({
-                            id: `common.edit`,
-                            defaultMessage: 'Edit'
-                          })}
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          onClick={() => handleDialogOpen(organization.id!)}
-                        >
-                          {intl.formatMessage({
-                            id: `common.delete`,
-                            defaultMessage: 'Delete'
-                          })}
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
+      <EntityDataTable.Root>
+        {data?.items && data.items.length > 0 && (
+          <TableContainer>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>
+                    {intl.formatMessage({
+                      id: 'common.id',
+                      defaultMessage: 'ID'
+                    })}
+                  </TableHead>
+                  <TableHead>
+                    {intl.formatMessage({
+                      id: `entity.organization.legalName`,
+                      defaultMessage: 'Legal Name'
+                    })}
+                  </TableHead>
+                  <TableHead>
+                    {intl.formatMessage({
+                      id: `entity.organization.doingBusinessAs`,
+                      defaultMessage: 'Trade Name'
+                    })}
+                  </TableHead>
+                  <TableHead>
+                    {intl.formatMessage({
+                      id: `entity.organization.legalDocument`,
+                      defaultMessage: 'Document'
+                    })}
+                  </TableHead>
+                  <TableHead>
+                    {intl.formatMessage({
+                      id: `entity.organization.status`,
+                      defaultMessage: 'Status'
+                    })}
+                  </TableHead>
+                  <TableHead>
+                    {intl.formatMessage({
+                      id: 'common.actions',
+                      defaultMessage: 'Actions'
+                    })}
+                  </TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
+              </TableHeader>
+              <TableBody>
+                {data.items.map((organization) => (
+                  <TableRow key={organization.id}>
+                    <TableCell>{organization.id}</TableCell>
+                    <TableCell>{organization.legalName}</TableCell>
+                    <TableCell>{organization.doingBusinessAs}</TableCell>
+                    <TableCell>{organization.legalDocument}</TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={
+                          organization.status.code === 'ACTIVE'
+                            ? 'active'
+                            : 'inactive'
+                        }
+                      >
+                        {organization.status.code === 'ACTIVE'
+                          ? intl.formatMessage({
+                              id: 'common.active',
+                              defaultMessage: 'Active'
+                            })
+                          : intl.formatMessage({
+                              id: 'common.inactive',
+                              defaultMessage: 'Inactive'
+                            })}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="secondary">
+                            <MoreVertical size={16} onClick={() => {}} />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem
+                            onClick={() => handleEdit(organization)}
+                          >
+                            {intl.formatMessage({
+                              id: `common.edit`,
+                              defaultMessage: 'Edit'
+                            })}
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            onClick={() => handleDialogOpen(organization.id!)}
+                          >
+                            {intl.formatMessage({
+                              id: `common.delete`,
+                              defaultMessage: 'Delete'
+                            })}
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+
+        <EntityDataTable.Footer>
+          <EntityDataTable.FooterText>
+            {intl.formatMessage(
+              {
+                id: 'organizations.showing',
+                defaultMessage:
+                  'Showing {count} {number, plural, =0 {organizations} one {organization} other {organizations}}.'
+              },
+              {
+                number: data?.items?.length,
+                count: <span className="font-bold">{data?.items?.length}</span>
+              }
+            )}
+          </EntityDataTable.FooterText>
+        </EntityDataTable.Footer>
+      </EntityDataTable.Root>
     </div>
   )
 }

@@ -286,5 +286,6 @@
   "ledgers.products.showing": "Mostrando {count} {number, plural, =0 {produtos} one {produto} other {produtos}}.",
   "ledgers.showing": "Mostrando {count} {number, plural, =0 {ledgers} one {ledger} other {ledgers}}.",
   "ledgers.accounts.showing": "Mostrando {count} {number, plural, =0 {contas} one {conta} other {contas}}.",
-  "ledgers.portfolios.showing": "Mostrando {count} {number, plural, =0 {portfólios} one {portfólio} other {portfólios}}."
+  "ledgers.portfolios.showing": "Mostrando {count} {number, plural, =0 {portfólios} one {portfólio} other {portfólios}}.",
+  "organizations.showing": "Mostrando {count} {number, plural, =0 {organizações} one {organização} other {organizações}}."
 }
