@@ -9,10 +9,9 @@ export class MidazDeleteAccountsRepository implements DeleteAccountsRepository {
   async delete(
     organizationId: string,
     ledgerId: string,
-    portfolioId: string,
     accountId: string
   ): Promise<void> {
-    const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}/accounts/${accountId}`
+    const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/accounts/${accountId}`
     await httpMidazAuthFetch<void>({
       url,
       method: HTTP_METHODS.DELETE

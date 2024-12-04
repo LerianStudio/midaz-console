@@ -4,7 +4,6 @@ export abstract class UpdateAccountsRepository {
   abstract update: (
     organizationId: string,
     ledgerId: string,
-    portfolioId: string,
     accountId: string,
     account: Partial<AccountEntity>
   ) => Promise<AccountEntity>
