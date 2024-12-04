@@ -1,3 +1,5 @@
+import { PortfolioType } from './portfolio-type'
+
 export type AccountType = {
   id: string
   ledgerId: string
@@ -9,9 +11,7 @@ export type AccountType = {
   entityId?: string
   parentAccountId: string
   portfolioId?: string | null
-  portfolio: {
-    name: string
-  }
+  portfolio: Pick<PortfolioType, 'name'>
   portfolioName?: string
   productId: string
   status: {

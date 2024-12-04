@@ -4,6 +4,7 @@ import { PaginationDto } from '../../dto/pagination-dto'
 import { AccountMapper } from '../../mappers/account-mapper'
 import { inject, injectable } from 'inversify'
 import { groupBy } from 'lodash'
+import { PortfolioMapper } from '../../mappers/portfolio-mapper'
 
 export interface FetchPortfoliosWithAccounts {
   execute: (
@@ -50,25 +51,12 @@ export class FetchPortfoliosWithAccountsUseCase
       (account) => account.portfolioId || 'no_portfolio'
     )
 
-    const portfoliosWithAccounts = portfoliosResult.items.map((portfolio) => {
-      const accounts = accountsGrouped[portfolio.id!] || []
-
-      return {
-        id: portfolio.id!,
-        ledgerId: portfolio.ledgerId!,
-        organizationId: portfolio.organizationId!,
-        name: portfolio.name!,
-        status: {
-          code: portfolio.status!.code!,
-          description: portfolio.status!.description!
-        },
-        metadata: portfolio.metadata!,
-        createdAt: portfolio.createdAt!,
-        updatedAt: portfolio.updatedAt!,
-        deletedAt: portfolio.deletedAt!,
-        accounts: accounts.map(AccountMapper.toDto)
-      }
-    })
+    const portfoliosWithAccounts = portfoliosResult.items.map((portfolio) =>
+      PortfolioMapper.toDtoWithAccounts(
+        portfolio,
+        (accountsGrouped[portfolio.id!] || []).map(AccountMapper.toDto)
+      )
+    )
 
     const responseDTO: PaginationDto<any> = {
       items: portfoliosWithAccounts,

@@ -65,12 +65,6 @@ const AccountRow: React.FC<AccountRowProps> = ({
       : account.original.id
   const metadataCount = Object.entries(account.original.metadata || []).length
 
-  const portfolioName = account.original.portfolio?.name ? (
-    account.original.portfolio.name
-  ) : (
-    <Minus size={20} />
-  )
-
   return (
     <TableRow key={account.id}>
       <TableCell>
@@ -123,7 +117,9 @@ const AccountRow: React.FC<AccountRowProps> = ({
           )
         )}
       </TableCell>
-      <TableCell>{portfolioName}</TableCell>
+      <TableCell>
+        {account.original.portfolio?.name ?? <Minus size={20} />}
+      </TableCell>
       <TableCell className="w-0">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

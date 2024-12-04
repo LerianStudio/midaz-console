@@ -20,7 +20,7 @@ import { MetadataField } from '@/components/form/metadata-field'
 import { useListProducts } from '@/client/products'
 import { useCreateAccount, useUpdateAccount } from '@/client/accounts'
 import { useListPortfolios } from '@/client/portfolios'
-import { isNil } from 'lodash'
+import { isNil, omitBy } from 'lodash'
 import { useListAssets } from '@/client/assets'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { accountSchema } from '@/schema/account'
@@ -164,11 +164,7 @@ export const AccountSheet = ({
   const { showSuccess, showError } = useCustomToast()
 
   const handleSubmit = (data: FormData) => {
-    const cleanedData = JSON.parse(
-      JSON.stringify(data, (key, value) => {
-        return value === '' || value === null ? undefined : value
-      })
-    )
+    const cleanedData = omitBy(data, (value) => value === '' || isNil(value))
 
     if (mode === 'create') {
       createAccount({
