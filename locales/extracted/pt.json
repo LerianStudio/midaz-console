@@ -168,7 +168,6 @@
   "ledgers.portfolio.sheet.edit.description": "Visualize e edite os campos do portfólio.",
   "ledgers.portfolio.sheet.edit.title": "Editar {portfolioName}",
   "ledgers.portfolio.sheet.title": "Novo Portfólio",
-  "ledgers.tab.portfolios-and-accounts": "Portfólios e Contas",
   "portfolio.create": "Criar primeiro portfólio",
   "entity.portfolio.description": "Insira o identificador único da entidade associado a este portfólio",
   "entity.portfolio.entityId": "ID da Entidade",
@@ -280,5 +279,9 @@
   "ledgers.portfolio.sheet.tabs.details": "Detalhes do Portfólio",
   "ledgers.products.sheet.tabs.details": "Detalhes do Produto",
   "notFound.backToHome": "Voltar para Home",
-  "ledgers.sheet.tabs.details": "Detalhes do Ledger"
+  "ledgers.sheet.tabs.details": "Detalhes do Ledger",
+  "common.records": "registros",
+  "ledgers.tab.accounts": "Contas",
+  "ledgers.tab.portfolios": "Portfólios",
+  "settings.tab.portfolios": "Portfólios"
 }

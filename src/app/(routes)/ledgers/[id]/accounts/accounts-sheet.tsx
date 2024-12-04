@@ -20,7 +20,7 @@ import { MetadataField } from '@/components/form/metadata-field'
 import { useListProducts } from '@/client/products'
 import { useCreateAccount, useUpdateAccount } from '@/client/accounts'
 import { useListPortfolios } from '@/client/portfolios'
-import { isNil } from 'lodash'
+import { isNil, omitBy } from 'lodash'
 import { useListAssets } from '@/client/assets'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { accountSchema } from '@/schema/account'
@@ -34,12 +34,13 @@ export type AccountSheetProps = DialogProps & {
   ledgerId: string
   mode: 'create' | 'edit'
   data?: AccountType | null
-  onSucess?: () => void
+  onSuccess?: () => void
 }
 
-const defaultValues = {
+const initialValues = {
   name: '',
   entityId: '',
+  portfolioId: '',
   productId: '',
   assetCode: '',
   alias: '',
@@ -52,7 +53,7 @@ type FormData = z.infer<typeof accountSchema>
 export const AccountSheet = ({
   mode,
   data,
-  onSucess,
+  onSuccess,
   onOpenChange,
   ...others
 }: AccountSheetProps) => {
@@ -104,21 +105,14 @@ export const AccountSheet = ({
 
   const form = useForm<z.infer<typeof accountSchema>>({
     resolver: zodResolver(accountSchema),
-    defaultValues: Object.assign(
-      {},
-      defaultValues,
-      mode === 'create' ? { entityId: '' } : {}
-    )
+    defaultValues: initialValues
   })
-
-  const selectedPortfolioId = form.watch('portfolioId')
 
   const { mutate: createAccount, isPending: createPending } = useCreateAccount({
     organizationId: currentOrganization.id!,
     ledgerId,
-    portfolioId: selectedPortfolioId,
     onSuccess: (data) => {
-      onSucess?.()
+      onSuccess?.()
       onOpenChange?.(false)
       showSuccess(
         intl.formatMessage(
@@ -144,9 +138,8 @@ export const AccountSheet = ({
     organizationId: currentOrganization.id!,
     ledgerId,
     accountId: data?.id!,
-    portfolioId: data?.portfolioId!,
     onSuccess: (data) => {
-      onSucess?.()
+      onSuccess?.()
       onOpenChange?.(false)
       showSuccess(
         intl.formatMessage(
@@ -171,19 +164,21 @@ export const AccountSheet = ({
   const { showSuccess, showError } = useCustomToast()
 
   const handleSubmit = (data: FormData) => {
+    const cleanedData = omitBy(data, (value) => value === '' || isNil(value))
+
     if (mode === 'create') {
       createAccount({
-        ...data,
-        portfolioId: data.portfolioId
+        ...cleanedData,
+        portfolioId: cleanedData.portfolioId
       })
     } else if (mode === 'edit') {
-      const { portfolioId, assetCode, ...updateData } = data
+      const { type, portfolioId, assetCode, ...updateData } = cleanedData
       updateAccount({
         ...updateData
       })
     }
 
-    form.reset(defaultValues)
+    form.reset(initialValues)
   }
 
   React.useEffect(() => {
@@ -198,7 +193,7 @@ export const AccountSheet = ({
   }, [data])
 
   return (
-    <>
+    <React.Fragment>
       <Sheet onOpenChange={onOpenChange} {...others}>
         <SheetContent onOpenAutoFocus={(e) => e.preventDefault()}>
           {mode === 'create' && (
@@ -290,78 +285,76 @@ export const AccountSheet = ({
                       })}
                     />
 
-                    <SelectField
-                      control={form.control}
-                      name="type"
-                      label={intl.formatMessage({
-                        id: 'common.type',
-                        defaultMessage: 'Type'
-                      })}
-                      tooltip={intl.formatMessage({
-                        id: 'ledgers.account.field.type.tooltip',
-                        defaultMessage: 'The type of account'
-                      })}
-                    >
-                      <SelectItem value="deposit">
-                        {intl.formatMessage({
-                          id: 'account.sheet.type.deposit',
-                          defaultMessage: 'Deposit'
-                        })}
-                      </SelectItem>
-
-                      <SelectItem value="savings">
-                        {intl.formatMessage({
-                          id: 'account.sheet.type.savings',
-                          defaultMessage: 'Savings'
-                        })}
-                      </SelectItem>
-
-                      <SelectItem value="loans">
-                        {intl.formatMessage({
-                          id: 'account.sheet.type.loans',
-                          defaultMessage: 'Loans'
-                        })}
-                      </SelectItem>
-
-                      <SelectItem value="marketplace">
-                        {intl.formatMessage({
-                          id: 'account.sheet.type.marketplace',
-                          defaultMessage: 'Marketplace'
-                        })}
-                      </SelectItem>
-
-                      <SelectItem value="creditCard">
-                        {intl.formatMessage({
-                          id: 'account.sheet.type.creditCard',
-                          defaultMessage: 'CreditCard'
-                        })}
-                      </SelectItem>
-
-                      <SelectItem value="external">
-                        {intl.formatMessage({
-                          id: 'account.sheet.type.external',
-                          defaultMessage: 'External'
-                        })}
-                      </SelectItem>
-                    </SelectField>
-
                     {mode === 'create' && (
-                      <InputField
-                        control={form.control}
-                        name="entityId"
-                        label={intl.formatMessage({
-                          id: 'ledgers.account.field.entityId',
-                          defaultMessage: 'Entity ID'
-                        })}
-                        tooltip={intl.formatMessage({
-                          id: 'ledgers.account.field.entityId.tooltip',
-                          defaultMessage:
-                            'Identification number (EntityId) of the Account holder'
-                        })}
-                      />
-                    )}
-                    {mode === 'create' && (
-                      <>
+                      <React.Fragment>
+                        <SelectField
+                          control={form.control}
+                          name="type"
+                          label={intl.formatMessage({
+                            id: 'common.type',
+                            defaultMessage: 'Type'
+                          })}
+                          tooltip={intl.formatMessage({
+                            id: 'ledgers.account.field.type.tooltip',
+                            defaultMessage: 'The type of account'
+                          })}
+                        >
+                          <SelectItem value="deposit">
+                            {intl.formatMessage({
+                              id: 'account.sheet.type.deposit',
+                              defaultMessage: 'Deposit'
+                            })}
+                          </SelectItem>
+
+                          <SelectItem value="savings">
+                            {intl.formatMessage({
+                              id: 'account.sheet.type.savings',
+                              defaultMessage: 'Savings'
+                            })}
+                          </SelectItem>
+
+                          <SelectItem value="loans">
+                            {intl.formatMessage({
+                              id: 'account.sheet.type.loans',
+                              defaultMessage: 'Loans'
+                            })}
+                          </SelectItem>
+
+                          <SelectItem value="marketplace">
+                            {intl.formatMessage({
+                              id: 'account.sheet.type.marketplace',
+                              defaultMessage: 'Marketplace'
+                            })}
+                          </SelectItem>
+
+                          <SelectItem value="creditCard">
+                            {intl.formatMessage({
+                              id: 'account.sheet.type.creditCard',
+                              defaultMessage: 'CreditCard'
+                            })}
+                          </SelectItem>
+
+                          <SelectItem value="external">
+                            {intl.formatMessage({
+                              id: 'account.sheet.type.external',
+                              defaultMessage: 'External'
+                            })}
+                          </SelectItem>
+                        </SelectField>
+
+                        <InputField
+                          control={form.control}
+                          name="entityId"
+                          label={intl.formatMessage({
+                            id: 'ledgers.account.field.entityId',
+                            defaultMessage: 'Entity ID'
+                          })}
+                          tooltip={intl.formatMessage({
+                            id: 'ledgers.account.field.entityId.tooltip',
+                            defaultMessage:
+                              'Identification number (EntityId) of the Account holder'
+                          })}
+                        />
                         <SelectField
                           control={form.control}
                           name="assetCode"
@@ -404,7 +397,7 @@ export const AccountSheet = ({
                             </SelectItem>
                           ))}
                         </SelectField>
-                      </>
+                      </React.Fragment>
                     )}
 
                     <SelectField
@@ -444,7 +437,6 @@ export const AccountSheet = ({
                 <LoadingButton
                   size="lg"
                   type="submit"
-                  disabled={!(form.formState.isDirty && form.formState.isValid)}
                   fullWidth
                   loading={createPending || updatePending}
                 >
@@ -458,6 +450,6 @@ export const AccountSheet = ({
           </Form>
         </SheetContent>
       </Sheet>
-    </>
+    </React.Fragment>
   )
 }

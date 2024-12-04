@@ -28,7 +28,7 @@ export class AccountMapper {
       assetCode: account.assetCode,
       parentAccountId: account.parentAccountId!,
       productId: account.productId!,
-      portfolioId: account.portfolioId!
+      portfolioId: account.portfolioId
     }
   }
 
@@ -44,6 +44,7 @@ export class AccountMapper {
       status: dto.status!,
       parentAccountId: dto.parentAccountId,
       productId: dto.productId,
+      portfolioId: dto.portfolioId,
       metadata: dto.metadata ?? {}
     }
   }

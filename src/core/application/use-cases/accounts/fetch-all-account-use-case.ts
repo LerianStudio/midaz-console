@@ -10,7 +10,6 @@ export interface FetchAllAccounts {
   execute: (
     organizationId: string,
     ledgerId: string,
-    portfolioId: string,
     limit: number,
     page: number
   ) => Promise<PaginationDto<AccountResponseDto>>
@@ -26,7 +25,6 @@ export class FetchAllAccountsUseCase implements FetchAllAccounts {
   async execute(
     organizationId: string,
     ledgerId: string,
-    portfolioId: string,
     limit: number,
     page: number
   ): Promise<PaginationDto<AccountResponseDto>> {
@@ -34,7 +32,6 @@ export class FetchAllAccountsUseCase implements FetchAllAccounts {
       await this.fetchAllAccountsRepository.fetchAll(
         organizationId,
         ledgerId,
-        portfolioId,
         page,
         limit
       )

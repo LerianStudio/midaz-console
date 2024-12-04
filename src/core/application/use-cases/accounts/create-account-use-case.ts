@@ -8,7 +8,6 @@ export interface CreateAccount {
   execute: (
     organizationId: string,
     ledgerId: string,
-    portfolioId: string,
     account: CreateAccountDto
   ) => Promise<AccountResponseDto>
 }
@@ -23,7 +22,6 @@ export class CreateAccountUseCase implements CreateAccount {
   async execute(
     organizationId: string,
     ledgerId: string,
-    portfolioId: string,
     account: CreateAccountDto
   ): Promise<AccountResponseDto> {
     account.status = {
@@ -34,7 +32,6 @@ export class CreateAccountUseCase implements CreateAccount {
     const accountCreated = await this.createAccountRepository.create(
       organizationId,
       ledgerId,
-      portfolioId,
       accountEntity
     )
 

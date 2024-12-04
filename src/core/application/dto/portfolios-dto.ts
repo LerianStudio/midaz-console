@@ -1,3 +1,4 @@
+import { AccountResponseDto } from './account-dto'
 import { StatusDto } from './status.dto'
 
 export interface CreatePortfolioDto {
@@ -20,6 +21,7 @@ export interface PortfolioResponseDto {
   createdAt: Date
   updatedAt: Date
   deletedAt: Date | null
+  accounts?: AccountResponseDto[]
 }
 
 export interface UpdatePortfolioDto {

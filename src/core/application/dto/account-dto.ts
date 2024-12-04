@@ -7,6 +7,7 @@ export interface CreateAccountDto {
   type: string
   entityId?: string | null
   parentAccountId?: string | null
+  portfolioId?: string | null
   productId?: string
   status: {
     code: string
@@ -25,7 +26,7 @@ export interface AccountResponseDto {
   type: string
   entityId: string
   parentAccountId: string
-  portfolioId: string
+  portfolioId?: string | null
   productId: string
   status: StatusDto
   metadata: Record<string, any>
@@ -42,6 +43,7 @@ export interface UpdateAccountDto {
   entityId?: string
   parentAccountId?: string
   productId?: string
+  portfolioId?: string
   status?: StatusDto
   metadata?: Record<string, any>
 }

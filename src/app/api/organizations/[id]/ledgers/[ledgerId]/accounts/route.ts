@@ -11,7 +11,6 @@ import {
 
 import { NextResponse } from 'next/server'
 
-// Update use case references
 const createAccountUseCase: CreateAccount =
   container.get<CreateAccount>(CreateAccountUseCase)
 
@@ -26,23 +25,25 @@ export async function GET(
     params: {
       id: string
       ledgerId: string
-      organizationId: string
-      portfolioId: string
     }
   }
 ) {
   try {
     const { searchParams } = new URL(request.url)
+    const { id: organizationId, ledgerId } = params
     const limit = Number(searchParams.get('limit')) || 10
     const page = Number(searchParams.get('page')) || 1
-    const organizationId = params.id
-    const ledgerId = params.ledgerId
-    const portfolioId = params.portfolioId
+
+    if (!organizationId || !ledgerId) {
+      return NextResponse.json(
+        { message: 'Missing required parameters' },
+        { status: 400 }
+      )
+    }
 
     const accounts = await fetchAllAccountsUseCase.execute(
       organizationId,
       ledgerId,
-      portfolioId,
       page,
       limit
     )
@@ -59,18 +60,17 @@ export async function GET(
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string; ledgerId: string; portfolioId: string } }
+  { params }: { params: { id: string; ledgerId: string } }
 ) {
   try {
     const body = await request.json()
+    console.log(body)
     const organizationId = params.id
     const ledgerId = params.ledgerId
-    const portfolioId = params.portfolioId
 
     const account = await createAccountUseCase.execute(
       organizationId,
       ledgerId,
-      portfolioId,
       body
     )
 
