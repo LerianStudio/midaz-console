@@ -279,5 +279,6 @@
   "ledgers.assets.sheet.tabs.details": "Detalhes do Ativo",
   "ledgers.portfolio.sheet.tabs.details": "Detalhes do Portfólio",
   "ledgers.products.sheet.tabs.details": "Detalhes do Produto",
-  "notFound.backToHome": "Voltar para Home"
+  "notFound.backToHome": "Voltar para Home",
+  "ledgers.sheet.tabs.details": "Detalhes do Ledger"
 }
