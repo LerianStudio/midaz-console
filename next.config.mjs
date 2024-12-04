@@ -56,7 +56,7 @@ const nextConfig = {
     return config
   },
   experimental: {
-    serverComponentsExternalPackages: ['pino']
+    serverComponentsExternalPackages: ['pino', 'pino-pretty']
   }
 }
 

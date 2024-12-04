@@ -38,6 +38,7 @@ export class RequestContextManager {
     initialMetadata: Record<string, any>,
     fn: () => Promise<T>
   ): Promise<T> {
+    console.log('initialMetadata', initialMetadata)
     const context: RequestContext = {
       requestId: crypto.randomUUID(),
       startTime: Date.now(),

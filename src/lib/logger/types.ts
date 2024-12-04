@@ -15,7 +15,7 @@ export interface LogEntry {
   level: 'INFO' | 'ERROR' | 'WARN' | 'DEBUG' | 'AUDIT'
   message: string
   timestamp: string
-  traceId: string
+  midazId?: string
   metadata: LogMetadata
   context: LogContext
 }

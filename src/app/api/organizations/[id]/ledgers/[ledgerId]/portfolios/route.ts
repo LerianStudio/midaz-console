@@ -99,13 +99,15 @@ export async function POST(
   { params }: { params: { id: string; ledgerId: string } }
 ) {
   const { id: organizationId, ledgerId } = params
-
+  const midazId = request.headers.get('X-Midaz-Id')
   return RequestContextManager.runWithContext(
     request.url,
     request.method,
-    { organizationId, ledgerId },
+    { organizationId, ledgerId, midazId },
     async () => {
       try {
+        console.log('midazId post', midazId)
+        console.log('request readers', request.headers)
         const body = await request.json()
         const portfolio = await createPortfolioUseCase.execute(
           organizationId,

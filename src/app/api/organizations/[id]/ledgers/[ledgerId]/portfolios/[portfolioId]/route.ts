@@ -33,6 +33,7 @@ export async function DELETE(
   { params }: { params: { id: string; ledgerId: string; portfolioId: string } }
 ) {
   const { id: organizationId, ledgerId, portfolioId } = params
+  const midazId = request.headers.get('X-Midaz-Id')
   return RequestContextManager.runWithContext(
     request.url,
     request.method,
@@ -40,9 +41,12 @@ export async function DELETE(
       organizationId,
       ledgerId,
       portfolioId,
-      deletedAt: new Date().toISOString()
+      deletedAt: new Date().toISOString(),
+      midazId
     },
     async () => {
+      console.log('midazId delete', midazId)
+
       try {
         await deletePortfolioUseCase.execute(
           organizationId,

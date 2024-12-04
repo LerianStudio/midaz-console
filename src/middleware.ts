@@ -1,7 +1,6 @@
-import { apiLoggerMiddleware } from './api-logger.middleware'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-
+import { apiLoggerMiddleware } from './middleware/api-logger.middleware'
 export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith('/api')) {
     return apiLoggerMiddleware(request, () =>
@@ -13,5 +12,8 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|public/).*)']
+  matcher: [
+    '/api/:path*',
+    '/((?!_next/static|_next/image|favicon.ico|public/.*).*)'
+  ]
 }

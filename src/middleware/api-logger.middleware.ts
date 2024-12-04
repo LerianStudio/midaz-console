@@ -33,8 +33,8 @@ export async function apiLoggerMiddleware(
         ...requestMetadata
       }
     })
-
-    response.headers.set('X-Request-Id', requestId)
+    console.log('reponse api-logger middleware', response)
+    response.headers.set('X-Midaz-Id', requestId)
     return response
   } catch (error) {
     const duration = Date.now() - startTime
