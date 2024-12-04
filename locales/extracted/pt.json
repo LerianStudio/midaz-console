@@ -284,5 +284,7 @@
   "notFound.backToHome": "Voltar para Home",
   "ledgers.assets.showing": "Mostrando {count} {number, plural, =0 {ativos} one {ativo} other {ativos}}.",
   "ledgers.products.showing": "Mostrando {count} {number, plural, =0 {produtos} one {produto} other {produtos}}.",
-  "ledgers.showing": "Mostrando {count} {number, plural, =0 {ledgers} one {ledger} other {ledgers}}."
+  "ledgers.showing": "Mostrando {count} {number, plural, =0 {ledgers} one {ledger} other {ledgers}}.",
+  "ledgers.accounts.showing": "Mostrando {count} {number, plural, =0 {contas} one {conta} other {contas}}.",
+  "ledgers.portfolios.showing": "Mostrando {count} {number, plural, =0 {portfólios} one {portfólio} other {portfólios}}."
 }

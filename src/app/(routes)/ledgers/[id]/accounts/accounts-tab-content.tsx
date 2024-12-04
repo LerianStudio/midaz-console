@@ -224,16 +224,33 @@ export const AccountsTabContent = () => {
         </EntityBox.Actions>
       </EntityBox.Root>
 
-      {accountsList && (
-        <AccountsDataTable
-          accounts={{ items: accountsList }}
-          isLoading={isAccountsLoading}
-          table={table}
-          handleEdit={handleEdit}
-          onDelete={handleDialogOpen}
-          refetch={refetchAccounts}
-        />
-      )}
+      <EntityDataTable.Root>
+        {accountsList && (
+          <AccountsDataTable
+            accounts={{ items: accountsList }}
+            isLoading={isAccountsLoading}
+            table={table}
+            handleEdit={handleEdit}
+            onDelete={handleDialogOpen}
+            refetch={refetchAccounts}
+          />
+        )}
+        <EntityDataTable.Footer>
+          <EntityDataTable.FooterText>
+            {intl.formatMessage(
+              {
+                id: 'ledgers.accounts.showing',
+                defaultMessage:
+                  'Showing {count} {number, plural, =0 {accounts} one {account} other {accounts}}.'
+              },
+              {
+                number: accountsList?.length,
+                count: <span className="font-bold">{accountsList?.length}</span>
+              }
+            )}
+          </EntityDataTable.FooterText>
+        </EntityDataTable.Footer>
+      </EntityDataTable.Root>
     </React.Fragment>
   )
 }
