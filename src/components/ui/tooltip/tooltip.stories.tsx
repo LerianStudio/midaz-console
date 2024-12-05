@@ -16,11 +16,11 @@ export const Primary: StoryObj<TooltipProps> = {
     <TooltipProvider>
       <Tooltip {...args}>
         <TooltipTrigger asChild>
-          <Button variant="outline">Hover</Button>
+          <Button className="mt-6" variant="outline">
+            Hover
+          </Button>
         </TooltipTrigger>
-        <TooltipContent>
-          <p>Add to library</p>
-        </TooltipContent>
+        <TooltipContent>Add to library</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   )
@@ -34,7 +34,9 @@ export const WithoutDelay: StoryObj<TooltipProps> = {
     <TooltipProvider>
       <Tooltip {...args}>
         <TooltipTrigger asChild>
-          <Button variant="outline">Hover</Button>
+          <Button className="mt-6" variant="outline">
+            Hover
+          </Button>
         </TooltipTrigger>
         <TooltipContent>
           <p>Add to library</p>
@@ -46,7 +48,7 @@ export const WithoutDelay: StoryObj<TooltipProps> = {
 
 export const WithSides: StoryObj<TooltipProps> = {
   render: (args) => (
-    <div className="flex flex-row gap-12">
+    <div className="m-6 flex flex-row gap-12">
       <TooltipProvider>
         <Tooltip {...args}>
           <TooltipTrigger asChild>
