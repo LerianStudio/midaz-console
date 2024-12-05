@@ -2,7 +2,7 @@
 
 import React from 'react'
 import Image from 'next/image'
-import LoadingImage from '@/images/loading-wallpaper.jpg'
+import LoadingImage from '@/images/loading-wallpaper.webp'
 import midazLoading from '@/animations/midaz-loading.json'
 import { Lottie } from '@/lib/lottie'
 
