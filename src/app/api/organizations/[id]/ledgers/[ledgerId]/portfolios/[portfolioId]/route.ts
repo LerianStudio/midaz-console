@@ -27,7 +27,6 @@ const getPortfolioByIdUseCase: FetchPortfolioById =
   container.get<FetchPortfolioById>(FetchPortfolioByIdUseCase)
 
 const logger = PinoLogger.getInstance()
-
 export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string; ledgerId: string; portfolioId: string } }
@@ -45,7 +44,17 @@ export async function DELETE(
       midazId
     },
     async () => {
-      console.log('midazId delete', midazId)
+      RequestContextManager.addEvent({
+        layer: 'application',
+        operation: 'delete_portfolio',
+        level: 'audit',
+        message: 'Deleting portfolio',
+        metadata: {
+          organizationId,
+          ledgerId,
+          portfolioId
+        }
+      })
 
       try {
         await deletePortfolioUseCase.execute(

@@ -13,6 +13,7 @@ export interface CreatePortfolioDto {
 export interface PortfolioResponseDto {
   id: string
   ledgerId: string
+  midazId: string
   organizationId: string
   entityId: string
   name: string

@@ -39,20 +39,6 @@ export async function GET(
     operation: 'GET'
   }
 
-  logger.info(
-    'Fetching portfolios',
-    {
-      organizationId,
-      ledgerId,
-      page,
-      limit,
-      method: 'GET'
-    },
-    {
-      ...context
-    }
-  )
-
   try {
     const portfolios = await fetchAllPortfoliosUseCase.execute(
       organizationId,
@@ -99,7 +85,7 @@ export async function POST(
   { params }: { params: { id: string; ledgerId: string } }
 ) {
   const { id: organizationId, ledgerId } = params
-  const midazId = request.headers.get('X-Midaz-Id')
+  const midazId: any = request.headers.get('X-Midaz-Id')
   return RequestContextManager.runWithContext(
     request.url,
     request.method,
@@ -112,6 +98,7 @@ export async function POST(
         const portfolio = await createPortfolioUseCase.execute(
           organizationId,
           ledgerId,
+          midazId,
           body
         )
         return NextResponse.json(portfolio)

@@ -33,7 +33,6 @@ export async function apiLoggerMiddleware(
         ...requestMetadata
       }
     })
-    console.log('reponse api-logger middleware', response)
     response.headers.set('X-Midaz-Id', requestId)
     return response
   } catch (error) {

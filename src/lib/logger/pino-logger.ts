@@ -1,9 +1,9 @@
 // PinoLogger.ts
 
-import pino, { Logger, LoggerOptions } from 'pino'
-import { randomUUID } from 'crypto'
+import pino, { DestinationStream, Logger, LoggerOptions } from 'pino'
 import { LogContext, LogEntry, LogMetadata } from './types'
 import { NextRequest } from 'next/server'
+import { EventEmitter } from 'events'
 
 export class PinoLogger {
   private static instance: PinoLogger
@@ -11,7 +11,7 @@ export class PinoLogger {
 
   private constructor() {
     const isDebugEnabled = process.env.ENABLE_DEBUG === 'true'
-
+    EventEmitter.defaultMaxListeners = 20
     const loggerOptions: LoggerOptions = {
       level: isDebugEnabled ? 'debug' : 'info',
       formatters: {

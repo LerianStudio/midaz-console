@@ -2,8 +2,9 @@ import { UnauthorizedException } from '@/core/infrastructure/errors/http-excepti
 import { MidazError } from '@/core/infrastructure/errors/midaz-error'
 import { getIntl } from '@/lib/intl'
 import { PinoLogger } from '@/lib/logger/pino-logger'
+import { RequestContextManager } from '@/lib/logger/request-context'
 
-const logger = new PinoLogger()
+const logger = PinoLogger.getInstance()
 
 export interface ErrorResponse {
   message: string
@@ -21,15 +22,33 @@ export async function apiErrorHandler(error: any): Promise<ErrorResponse> {
 
   switch (error.constructor) {
     case MidazError:
-      logger.error('Business logic error occurred', error, errorMetadata)
+      RequestContextManager.addEvent({
+        layer: 'api',
+        operation: 'api_error_handler',
+        level: 'error',
+        message: error.message,
+        metadata: errorMetadata
+      })
       errorResponse = { message: error.message, status: 400 }
       break
     case UnauthorizedException:
-      logger.error('Authentication error occurred', error, errorMetadata)
+      RequestContextManager.addEvent({
+        layer: 'api',
+        operation: 'api_error_handler',
+        level: 'error',
+        message: error.message,
+        metadata: errorMetadata
+      })
       errorResponse = { message: error.message, status: 401 }
       break
     default:
-      logger.error('Unexpected error occurred', error, errorMetadata)
+      RequestContextManager.addEvent({
+        layer: 'api',
+        operation: 'api_error_handler',
+        level: 'error',
+        message: error.message,
+        metadata: errorMetadata
+      })
       errorResponse = {
         message: intl.formatMessage({
           id: 'error.midaz.unknowError',
