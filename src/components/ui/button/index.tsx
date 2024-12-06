@@ -43,12 +43,21 @@ const buttonVariants = cva(
 const iconVariants = cva('', {
   variants: {
     position: {
-      default: 'ml-2',
-      end: 'absolute right-4'
+      start: 'mr-2',
+      end: 'ml-2',
+      'far-end': 'absolute right-4'
+    },
+    size: {
+      default: 'h-10',
+      sm: 'h-8',
+      lg: 'h-12',
+      icon: 'h-10',
+      link: 'h-6',
+      xl: 'h-14'
     }
   },
   defaultVariants: {
-    position: 'default'
+    position: 'start'
   }
 })
 
@@ -56,8 +65,8 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
-  icon?: JSX.Element
-  iconPlacement?: 'end'
+  icon?: React.ReactNode
+  iconPlacement?: 'start' | 'end' | 'far-end'
   fullWidth?: boolean
 }
 
@@ -69,13 +78,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       size,
       asChild = false,
       icon,
-      iconPlacement,
+      iconPlacement = 'start',
       fullWidth,
       ...props
     },
     ref
   ) => {
     const Comp = asChild ? Slot : 'button'
+
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }), {
@@ -84,8 +94,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         {...props}
       >
+        {icon && iconPlacement === 'start' && (
+          <span className={cn(iconVariants({ position: iconPlacement }))}>
+            {icon}
+          </span>
+        )}
         {props.children}
-        {icon && (
+        {icon && iconPlacement !== 'start' && (
           <span className={cn(iconVariants({ position: iconPlacement }))}>
             {icon}
           </span>
