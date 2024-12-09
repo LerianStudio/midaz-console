@@ -1,39 +1,33 @@
 module.exports = {
-    branches: [
-      "main",           // Para o branch principal
-      "develop",        // Para o branch de desenvolvimento
-      "hotfix/*",       // Para branches de hotfix, como hotfix/1.0.0
-      "next",           // Para o branch "next" (pré-lançamento)
-      "next-major",     // Para o branch "next-major" (para versões maiores)
-      { 
-        name: "beta",   // Para o branch beta
-        prerelease: true 
-      },
-      { 
-        name: "alpha",  // Para o branch alpha
-        prerelease: true 
+  branches: [
+    "main",
+    "develop",
+    "hotfix/*",
+    "next",
+    "next-major",
+    { name: "beta", prerelease: true },
+    { name: "alpha", prerelease: true },
+    { name: "feature/*", prerelease: true } // Adicionado para testes em branches feature
+  ],
+  plugins: [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/changelog",
+    [
+      "@semantic-release/github",
+      {
+        assets: [
+          { path: "dist/*.js", label: "JavaScript distribution" },
+          { path: "dist/*.map", label: "Source map" }
+        ]
       }
     ],
-    plugins: [
-      "@semantic-release/commit-analyzer",       // Análise de commits
-      "@semantic-release/release-notes-generator", // Geração de notas de release
-      "@semantic-release/changelog",             // Atualização de changelog
-      [
-        "@semantic-release/github",              // Publicação no GitHub
-        {
-          assets: [
-            { path: "dist/*.js", label: "JavaScript distribution" },
-            { path: "dist/*.map", label: "Source map" }
-          ]
-        }
-      ],
-      [
-        "@semantic-release/git",                 // Commit das mudanças no Git
-        {
-          assets: ["package.json", "CHANGELOG.md"],
-          message: "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-        }
-      ]
+    [
+      "@semantic-release/git",
+      {
+        assets: ["package.json", "CHANGELOG.md"],
+        message: "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      }
     ]
-  };
-  
+  ]
+};

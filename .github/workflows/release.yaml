@@ -6,6 +6,7 @@ on:
       - develop
       - main
       - hotfix/v*
+      - feature/*
     paths-ignore:
       - '.gitignore'
       - '**/*.env'
