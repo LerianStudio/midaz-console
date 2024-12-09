@@ -7,7 +7,11 @@ module.exports = {
     "next-major",
     { name: "beta", prerelease: "beta" },
     { name: "alpha", prerelease: "alpha" },
-    { name: "feature/*", prerelease: "feature" } // Definindo um identificador para branches feature
+    { name: "feature/authorization", prerelease: "feature-authorization" },
+    { name: "feature/implement-githooks", prerelease: "feature-implement-githooks" },
+    { name: "feature/input-with-tooltip", prerelease: "feature-input-with-tooltip" },
+    { name: "feature/logger", prerelease: "feature-logger" },
+    { name: "feature/organize-diagrams", prerelease: "feature-organize-diagrams" }
   ],
   plugins: [
     "@semantic-release/commit-analyzer",
