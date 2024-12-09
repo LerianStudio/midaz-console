@@ -13,7 +13,6 @@ import {
   UpdatePortfolioUseCase
 } from '@/core/application/use-cases/portfolios/update-portfolio-use-case'
 import { NextRequest, NextResponse } from 'next/server'
-import { PinoLogger } from '@/lib/logger/pino-logger'
 import { RequestContextManager } from '@/lib/logger/request-context'
 
 const updatePortfolioUseCase: UpdatePortfolio = container.get<UpdatePortfolio>(
@@ -26,13 +25,18 @@ const deletePortfolioUseCase: DeletePortfolio = container.get<DeletePortfolio>(
 const getPortfolioByIdUseCase: FetchPortfolioById =
   container.get<FetchPortfolioById>(FetchPortfolioByIdUseCase)
 
-const logger = PinoLogger.getInstance()
 export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string; ledgerId: string; portfolioId: string } }
 ) {
   const { id: organizationId, ledgerId, portfolioId } = params
   const midazId = request.headers.get('X-Midaz-Id')
+  if (!midazId) {
+    return NextResponse.json(
+      { message: 'X-Midaz-Id header is required' },
+      { status: 400 }
+    )
+  }
   return RequestContextManager.runWithContext(
     request.url,
     request.method,
@@ -45,7 +49,7 @@ export async function DELETE(
     },
     async () => {
       RequestContextManager.addEvent({
-        layer: 'application',
+        layer: 'api',
         operation: 'delete_portfolio',
         level: 'audit',
         message: 'Deleting portfolio',
@@ -60,6 +64,7 @@ export async function DELETE(
         await deletePortfolioUseCase.execute(
           organizationId,
           ledgerId,
+          midazId,
           portfolioId
         )
         return NextResponse.json({}, { status: 200 })
@@ -77,48 +82,64 @@ export async function PATCH(
   request: NextRequest,
   { params }: { params: { id: string; ledgerId: string; portfolioId: string } }
 ) {
-  try {
-    const body = await request.json()
-    const organizationId = params.id
-    const ledgerId = params.ledgerId
-    const portfolioId = params.portfolioId
+  const { id: organizationId, ledgerId, portfolioId } = params
+  return RequestContextManager.runWithContext(
+    request.url,
+    request.method,
+    { organizationId, ledgerId, portfolioId },
+    async () => {
+      try {
+        const body = await request.json()
+        const organizationId = params.id
+        const ledgerId = params.ledgerId
+        const portfolioId = params.portfolioId
 
-    const portfolioUpdated = await updatePortfolioUseCase.execute(
-      organizationId,
-      ledgerId,
-      portfolioId,
-      body
-    )
+        const portfolioUpdated = await updatePortfolioUseCase.execute(
+          organizationId,
+          ledgerId,
+          portfolioId,
+          body
+        )
 
-    return NextResponse.json(portfolioUpdated)
-  } catch (error: any) {
-    console.error('Error updating portfolio', error)
-    const { message, status } = await apiErrorHandler(error)
+        return NextResponse.json(portfolioUpdated)
+      } catch (error: any) {
+        console.error('Error updating portfolio', error)
+        const { message, status } = await apiErrorHandler(error)
 
-    return NextResponse.json({ message }, { status })
-  }
+        return NextResponse.json({ message }, { status })
+      }
+    }
+  )
 }
 
 export async function GET(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { id: string; ledgerId: string; portfolioId: string } }
 ) {
-  try {
-    const organizationId = params.id
-    const ledgerId = params.ledgerId
-    const portfolioId = params.portfolioId
+  const { id: organizationId, ledgerId, portfolioId } = params
+  return RequestContextManager.runWithContext(
+    request.url,
+    request.method,
+    { organizationId, ledgerId, portfolioId },
+    async () => {
+      try {
+        const organizationId = params.id
+        const ledgerId = params.ledgerId
+        const portfolioId = params.portfolioId
 
-    const portfolio = await getPortfolioByIdUseCase.execute(
-      organizationId,
-      ledgerId,
-      portfolioId
-    )
+        const portfolio = await getPortfolioByIdUseCase.execute(
+          organizationId,
+          ledgerId,
+          portfolioId
+        )
 
-    return NextResponse.json(portfolio)
-  } catch (error: any) {
-    console.error('Error getting portfolio', error)
-    const { message, status } = await apiErrorHandler(error)
+        return NextResponse.json(portfolio)
+      } catch (error: any) {
+        console.error('Error getting portfolio', error)
+        const { message, status } = await apiErrorHandler(error)
 
-    return NextResponse.json({ message }, { status })
-  }
+        return NextResponse.json({ message }, { status })
+      }
+    }
+  )
 }

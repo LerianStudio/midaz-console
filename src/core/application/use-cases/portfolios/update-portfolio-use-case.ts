@@ -7,6 +7,7 @@ import {
 } from '../../dto/portfolios-dto'
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { inject, injectable } from 'inversify'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface UpdatePortfolio {
   execute: (
@@ -24,6 +25,10 @@ export class UpdatePortfolioUseCase implements UpdatePortfolio {
     private readonly updatePortfolioRepository: UpdatePortfolioRepository
   ) {}
 
+  @LogOperation({
+    layer: 'application',
+    operation: 'update_portfolio'
+  })
   async execute(
     organizationId: string,
     ledgerId: string,

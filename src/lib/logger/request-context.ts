@@ -5,7 +5,7 @@ import { PinoLogger } from './pino-logger'
 type Layer = 'api' | 'application' | 'infrastructure' | 'domain'
 type Level = 'info' | 'error' | 'warn' | 'debug' | 'audit'
 
-interface Event {
+interface LogEvent {
   timestamp: number
   layer: Layer
   operation: string
@@ -21,7 +21,7 @@ interface RequestContext {
   path: string
   method: string
   metadata: Record<string, any>
-  events: Event[]
+  events: LogEvent[]
 }
 
 export class RequestContextManager {
@@ -38,7 +38,6 @@ export class RequestContextManager {
     initialMetadata: Record<string, any>,
     fn: () => Promise<T>
   ): Promise<T> {
-    console.log('initialMetadata', initialMetadata)
     const context: RequestContext = {
       requestId: crypto.randomUUID(),
       startTime: Date.now(),
@@ -51,6 +50,7 @@ export class RequestContextManager {
     return this.storage.run(context, async () => {
       try {
         const result = await fn()
+
         this.finalizeContext()
         return result
       } catch (error) {
@@ -71,30 +71,27 @@ export class RequestContextManager {
     const context = this.getContext()
     if (context) {
       const duration = Date.now() - context.startTime
-      console.log(
-        'ENABLE_REQUEST_TIMELINE',
-        process.env.ENABLE_REQUEST_TIMELINE
+
+      // if (process.env.ENABLE_REQUEST_TIMELINE === 'true') {
+      this.logger.info(
+        'Request Timeline',
+        {
+          requestId: context.requestId,
+          path: context.path,
+          method: context.method,
+          duration,
+          metadata: context.metadata,
+          events: context.events.map((event) => ({
+            ...event,
+            timestamp: new Date(event.timestamp).toISOString()
+          }))
+        },
+        {
+          layer: 'api',
+          operation: 'request_timeline'
+        }
       )
-      if (process.env.ENABLE_REQUEST_TIMELINE === 'true') {
-        this.logger.info(
-          'Request Timeline',
-          {
-            requestId: context.requestId,
-            path: context.path,
-            method: context.method,
-            duration,
-            metadata: context.metadata,
-            events: context.events.map((event) => ({
-              ...event,
-              timestamp: new Date(event.timestamp).toISOString()
-            }))
-          },
-          {
-            layer: 'api',
-            operation: 'request_timeline'
-          }
-        )
-      }
+      // }
     }
   }
 
@@ -102,59 +99,59 @@ export class RequestContextManager {
     return this.storage.getStore()
   }
 
-  static addEvent(event: Omit<Event, 'timestamp'>) {
+  static addEvent(event: Omit<LogEvent, 'timestamp'>) {
     const context = this.getContext()
     if (context) {
       if (event.level === 'debug' && !this.shouldLogDebug()) {
         return
       }
 
-      const fullEvent: Event = {
+      const fullEvent: LogEvent = {
         timestamp: Date.now(),
         ...event
       }
 
-      switch (event.level) {
-        case 'debug':
-          this.logger.debug(
-            event.message,
-            { eventData: fullEvent, requestId: context.requestId },
-            { layer: event.layer, operation: event.operation }
-          )
-          break
-        case 'info':
-          this.logger.info(
-            event.message,
-            { eventData: fullEvent, requestId: context.requestId },
-            { layer: event.layer, operation: event.operation }
-          )
-          break
-        case 'error':
-          this.logger.error(
-            event.message,
-            {
-              eventData: fullEvent,
-              requestId: context.requestId,
-              error: event.error
-            },
-            { layer: event.layer, operation: event.operation }
-          )
-          break
-        case 'warn':
-          this.logger.warn(
-            event.message,
-            { eventData: fullEvent, requestId: context.requestId },
-            { layer: event.layer, operation: event.operation }
-          )
-          break
-        case 'audit':
-          this.logger.audit(
-            event.message,
-            { eventData: fullEvent, requestId: context.requestId },
-            { layer: event.layer, operation: event.operation }
-          )
-          break
-      }
+      // switch (event.level) {
+      //   case 'debug':
+      //     this.logger.debug(
+      //       event.message,
+      //       { eventData: fullEvent, requestId: context.requestId },
+      //       { layer: event.layer, operation: event.operation }
+      //     )
+      //     break
+      //   case 'info':
+      //     this.logger.info(
+      //       event.message,
+      //       { eventData: fullEvent, requestId: context.requestId },
+      //       { layer: event.layer, operation: event.operation }
+      //     )
+      //     break
+      //   case 'error':
+      //     this.logger.error(
+      //       event.message,
+      //       {
+      //         eventData: fullEvent,
+      //         requestId: context.requestId,
+      //         error: event.error
+      //       },
+      //       { layer: event.layer, operation: event.operation }
+      //     )
+      //     break
+      //   case 'warn':
+      //     this.logger.warn(
+      //       event.message,
+      //       { eventData: fullEvent, requestId: context.requestId },
+      //       { layer: event.layer, operation: event.operation }
+      //     )
+      //     break
+      //   case 'audit':
+      //     this.logger.audit(
+      //       event.message,
+      //       { eventData: fullEvent, requestId: context.requestId },
+      //       { layer: event.layer, operation: event.operation }
+      //     )
+      //     break
+      // }
 
       context.events.push(fullEvent)
     }

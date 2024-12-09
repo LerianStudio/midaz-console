@@ -8,9 +8,7 @@ import {
   FetchAllPortfolios,
   FetchAllPortfoliosUseCase
 } from '@/core/application/use-cases/portfolios/fetch-all-portfolio-use-case'
-
 import { NextRequest, NextResponse } from 'next/server'
-import { PinoLogger } from '@/lib/logger/pino-logger'
 import { RequestContextManager } from '@/lib/logger/request-context'
 
 const createPortfolioUseCase: CreatePortfolio = container.get<CreatePortfolio>(
@@ -19,8 +17,6 @@ const createPortfolioUseCase: CreatePortfolio = container.get<CreatePortfolio>(
 
 const fetchAllPortfoliosUseCase: FetchAllPortfolios =
   container.get<FetchAllPortfolios>(FetchAllPortfoliosUseCase)
-
-const logger = PinoLogger.getInstance()
 
 export async function GET(
   request: Request,
@@ -31,53 +27,26 @@ export async function GET(
   const page = Number(searchParams.get('page')) || 1
   const organizationId = params.id
   const ledgerId = params.ledgerId
+  return RequestContextManager.runWithContext(
+    request.url,
+    request.method,
+    { organizationId, ledgerId },
+    async () => {
+      try {
+        const portfolios = await fetchAllPortfoliosUseCase.execute(
+          organizationId,
+          ledgerId,
+          page,
+          limit
+        )
 
-  const context = {
-    component: 'PortfoliosAPI',
-    action: 'fetchPortfolios',
-    layer: 'api' as const,
-    operation: 'GET'
-  }
-
-  try {
-    const portfolios = await fetchAllPortfoliosUseCase.execute(
-      organizationId,
-      ledgerId,
-      page,
-      limit
-    )
-
-    logger.info(
-      'Successfully fetched portfolios',
-      {
-        organizationId,
-        ledgerId,
-        count: portfolios.items.length,
-        method: 'GET'
-      },
-      context
-    )
-
-    return NextResponse.json(portfolios)
-  } catch (error: any) {
-    logger.error(
-      'Failed to fetch portfolios',
-      {
-        organizationId,
-        ledgerId,
-        error: {
-          message: error.message,
-          name: error.name,
-          stack: error.stack
-        }
-      },
-      {
-        ...context
+        return NextResponse.json(portfolios)
+      } catch (error: any) {
+        const { message, status } = await apiErrorHandler(error)
+        return NextResponse.json({ message }, { status })
       }
-    )
-    const { message, status } = await apiErrorHandler(error)
-    return NextResponse.json({ message }, { status })
-  }
+    }
+  )
 }
 
 export async function POST(
@@ -85,15 +54,19 @@ export async function POST(
   { params }: { params: { id: string; ledgerId: string } }
 ) {
   const { id: organizationId, ledgerId } = params
-  const midazId: any = request.headers.get('X-Midaz-Id')
+  const midazId = request.headers.get('X-Midaz-Id')
   return RequestContextManager.runWithContext(
     request.url,
     request.method,
     { organizationId, ledgerId, midazId },
     async () => {
       try {
-        console.log('midazId post', midazId)
-        console.log('request readers', request.headers)
+        if (!midazId) {
+          return NextResponse.json(
+            { message: 'X-Midaz-Id header is required' },
+            { status: 400 }
+          )
+        }
         const body = await request.json()
         const portfolio = await createPortfolioUseCase.execute(
           organizationId,

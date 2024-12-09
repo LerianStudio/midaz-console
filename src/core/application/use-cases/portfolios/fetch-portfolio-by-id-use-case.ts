@@ -2,6 +2,7 @@ import { FetchPortfolioByIdRepository } from '@/core/domain/repositories/portfol
 import { PortfolioMapper } from '../../mappers/portfolio-mapper'
 import { PortfolioResponseDto } from '../../dto/portfolios-dto'
 import { inject, injectable } from 'inversify'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface FetchPortfolioById {
   execute: (
@@ -18,6 +19,10 @@ export class FetchPortfolioByIdUseCase implements FetchPortfolioById {
     private readonly fetchPortfolioByIdRepository: FetchPortfolioByIdRepository
   ) {}
 
+  @LogOperation({
+    layer: 'application',
+    operation: 'fetch_portfolio_by_id'
+  })
   async execute(
     organizationId: string,
     ledgerId: string,

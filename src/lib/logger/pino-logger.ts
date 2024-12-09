@@ -1,9 +1,5 @@
-// PinoLogger.ts
-
-import pino, { DestinationStream, Logger, LoggerOptions } from 'pino'
+import pino, { Logger, LoggerOptions } from 'pino'
 import { LogContext, LogEntry, LogMetadata } from './types'
-import { NextRequest } from 'next/server'
-import { EventEmitter } from 'events'
 
 export class PinoLogger {
   private static instance: PinoLogger
@@ -11,7 +7,7 @@ export class PinoLogger {
 
   private constructor() {
     const isDebugEnabled = process.env.ENABLE_DEBUG === 'true'
-    EventEmitter.defaultMaxListeners = 20
+    // EventEmitter.defaultMaxListeners = 20
     const loggerOptions: LoggerOptions = {
       level: isDebugEnabled ? 'debug' : 'info',
       formatters: {
@@ -49,8 +45,7 @@ export class PinoLogger {
     level: LogEntry['level'],
     message: string,
     metadata: LogMetadata,
-    context: LogContext,
-    request?: NextRequest
+    context: LogContext
   ): LogEntry {
     return {
       level,
@@ -61,83 +56,28 @@ export class PinoLogger {
     }
   }
 
-  info(
-    message: string,
-    metadata: LogMetadata = {},
-    context: LogContext,
-    request?: NextRequest
-  ) {
-    const logEntry = this.createLogEntry(
-      'INFO',
-      message,
-      metadata,
-      context,
-      request
-    )
+  info(message: string, metadata: LogMetadata = {}, context: LogContext) {
+    const logEntry = this.createLogEntry('INFO', message, metadata, context)
     this.logger.info(logEntry)
   }
 
-  error(
-    message: string,
-    metadata: LogMetadata = {},
-    context: LogContext,
-    request?: NextRequest
-  ) {
-    const logEntry = this.createLogEntry(
-      'ERROR',
-      message,
-      metadata,
-      context,
-      request
-    )
+  error(message: string, metadata: LogMetadata = {}, context: LogContext) {
+    const logEntry = this.createLogEntry('ERROR', message, metadata, context)
     this.logger.error(logEntry)
   }
 
-  warn(
-    message: string,
-    metadata: LogMetadata = {},
-    context: LogContext,
-    request?: NextRequest
-  ) {
-    const logEntry = this.createLogEntry(
-      'WARN',
-      message,
-      metadata,
-      context,
-      request
-    )
+  warn(message: string, metadata: LogMetadata = {}, context: LogContext) {
+    const logEntry = this.createLogEntry('WARN', message, metadata, context)
     this.logger.warn(logEntry)
   }
 
-  debug(
-    message: string,
-    metadata: LogMetadata = {},
-    context: LogContext,
-    request?: NextRequest
-  ) {
-    const logEntry = this.createLogEntry(
-      'DEBUG',
-      message,
-      metadata,
-      context,
-      request
-    )
+  debug(message: string, metadata: LogMetadata = {}, context: LogContext) {
+    const logEntry = this.createLogEntry('DEBUG', message, metadata, context)
     this.logger.debug(logEntry)
   }
 
-  audit(
-    message: string,
-    metadata: LogMetadata = {},
-    context: LogContext,
-    request?: NextRequest
-  ) {
-    const logEntry = this.createLogEntry(
-      'AUDIT',
-      message,
-      metadata,
-      context,
-      request
-    )
+  audit(message: string, metadata: LogMetadata = {}, context: LogContext) {
+    const logEntry = this.createLogEntry('AUDIT', message, metadata, context)
     this.logger.info(logEntry)
   }
 }
