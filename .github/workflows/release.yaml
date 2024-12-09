@@ -49,7 +49,7 @@ jobs:
   #       run: npm run test
 
   publish_release:
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/hotfix/') || startsWith(github.ref, 'refs/heads/feature/')
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/hotfix/')
     runs-on: ubuntu-latest
     #needs: integration_tests
     environment:
@@ -90,7 +90,8 @@ jobs:
         run: npm ci
 
       - name: Run Semantic Release
-        run: npx semantic-release
+        #run: npx semantic-release
+        run: npx semantic-release --force  # force execution, remove after
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
