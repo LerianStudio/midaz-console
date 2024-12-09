@@ -11,7 +11,8 @@ module.exports = {
     { name: "feature/implement-githooks", prerelease: "feature-implement-githooks" },
     { name: "feature/input-with-tooltip", prerelease: "feature-input-with-tooltip" },
     { name: "feature/logger", prerelease: "feature-logger" },
-    { name: "feature/organize-diagrams", prerelease: "feature-organize-diagrams" }
+    { name: "feature/organize-diagrams", prerelease: "feature-organize-diagrams" },
+    { name: "feature/set-email-notification", prerelease: "feature-set-email-notification" }
   ],
   plugins: [
     "@semantic-release/commit-analyzer",
