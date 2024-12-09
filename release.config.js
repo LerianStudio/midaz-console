@@ -5,9 +5,9 @@ module.exports = {
     "hotfix/*",
     "next",
     "next-major",
-    { name: "beta", prerelease: true },
-    { name: "alpha", prerelease: true },
-    { name: "feature/*", prerelease: true } // Adicionado para testes em branches feature
+    { name: "beta", prerelease: "beta" },
+    { name: "alpha", prerelease: "alpha" },
+    { name: "feature/*", prerelease: "feature" } // Definindo um identificador para branches feature
   ],
   plugins: [
     "@semantic-release/commit-analyzer",
