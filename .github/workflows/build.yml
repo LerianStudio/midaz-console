@@ -1,9 +1,10 @@
 name: "Build"
 
 on:
-  push:
-    tags:
-      - '**'
+  workflow_run:
+    workflows: ["Release"]  # Nome do fluxo de trabalho de release
+    types:
+      - completed  # Garantir que o build seja executado quando o fluxo de release for concluído
 
 permissions:
   id-token: write
@@ -80,18 +81,4 @@ jobs:
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
       with:
-        image-ref: '${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}:${{ steps.extract_tag.outputs.tag }}'
-        format: 'table'
-        trivyignores: '.trivyignore'
-        ignore-unfixed: true
-        vuln-type: 'os,library'
-        severity: 'CRITICAL,HIGH'
-        exit-code: '1'
-
-    - name: Push Docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        file: ./Dockerfile
-        push: true
-        tags: ${{ steps.meta.outputs.tags }}
+      
