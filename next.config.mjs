@@ -45,6 +45,10 @@ const nextConfig = {
       process.env.NODE_ENV === 'production'
         ? { properties: ['^data-testid$'] }
         : false
+  },
+  experimental: {
+    instrumentationHook: true,
+    serverComponentsExternalPackages: ['@opentelemetry/instrumentation']
   }
 }
 
