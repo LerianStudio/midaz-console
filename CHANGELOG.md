@@ -1,3 +1,11 @@
+## [1.0.8-feature-set-email-notification.3](https://github.com/LerianStudio/midaz-console/compare/v1.0.8-feature-set-email-notification.2...v1.0.8-feature-set-email-notification.3) (2024-12-10)
+
+
+### Bug Fixes
+
+* merge build and release ([94a5eb3](https://github.com/LerianStudio/midaz-console/commit/94a5eb3f9f77e2b4016d4d3e69eff50f896c8e0b))
+* merge build and release and the same workflow ([5f285fa](https://github.com/LerianStudio/midaz-console/commit/5f285faaed76fee4f717fa96f3aa03669004328f))
+
 ## [1.0.8-feature-set-email-notification.2](https://github.com/LerianStudio/midaz-console/compare/v1.0.8-feature-set-email-notification.1...v1.0.8-feature-set-email-notification.2) (2024-12-09)
 
 
