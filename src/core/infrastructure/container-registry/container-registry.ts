@@ -10,9 +10,6 @@ import { AssetUseCaseModule } from './use-cases/asset-module'
 import { ProductUseCaseModule } from './use-cases/product-module'
 import { CasdoorModule } from '../casdoor/module/casdoor-module'
 import { AuthUseCaseModule } from './use-cases/auth-module'
-import { ILogger } from '@/core/domain/logger/logger.interface'
-import { PinoLogger } from '@/lib/logger/pino-logger'
-import { TYPES } from '@/core/types'
 
 export const container = new Container()
 
@@ -26,5 +23,3 @@ container.load(PortfolioUseCaseModule)
 container.load(AccountUseCaseModule)
 container.load(AssetUseCaseModule)
 container.load(ProductUseCaseModule)
-
-container.bind<ILogger>(TYPES.ILogger).to(PinoLogger).inSingletonScope()

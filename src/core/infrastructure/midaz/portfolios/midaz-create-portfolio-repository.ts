@@ -16,7 +16,6 @@ export class MidazCreatePortfolioRepository
   ): Promise<PortfolioEntity> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios`
 
-    console.log('midazId', midazId)
     const response = await httpMidazAuthFetch<PortfolioEntity>({
       url,
       method: HTTP_METHODS.POST,

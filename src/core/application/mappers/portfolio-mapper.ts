@@ -9,13 +9,6 @@ import { AccountResponseDto } from '../dto/account-dto'
 
 export class PortfolioMapper {
   public static toDomain(dto: CreatePortfolioDto): PortfolioEntity {
-    RequestContextManager.addEvent({
-      layer: 'application',
-      operation: 'portfolio_dto_to_entity',
-      level: 'debug',
-      message: 'Mapping portfolio dto to entity',
-      metadata: { dto }
-    })
     return {
       entityId: dto.entityId,
       name: dto.name,

@@ -31,12 +31,6 @@ export async function DELETE(
 ) {
   const { id: organizationId, ledgerId, portfolioId } = params
   const midazId = request.headers.get('X-Midaz-Id')
-  if (!midazId) {
-    return NextResponse.json(
-      { message: 'X-Midaz-Id header is required' },
-      { status: 400 }
-    )
-  }
   return RequestContextManager.runWithContext(
     request.url,
     request.method,
@@ -64,7 +58,7 @@ export async function DELETE(
         await deletePortfolioUseCase.execute(
           organizationId,
           ledgerId,
-          midazId,
+          midazId!,
           portfolioId
         )
         return NextResponse.json({}, { status: 200 })
@@ -83,21 +77,20 @@ export async function PATCH(
   { params }: { params: { id: string; ledgerId: string; portfolioId: string } }
 ) {
   const { id: organizationId, ledgerId, portfolioId } = params
+  const midazId = request.headers.get('X-Midaz-Id')
   return RequestContextManager.runWithContext(
     request.url,
     request.method,
-    { organizationId, ledgerId, portfolioId },
+    { organizationId, ledgerId, portfolioId, midazId },
     async () => {
       try {
         const body = await request.json()
-        const organizationId = params.id
-        const ledgerId = params.ledgerId
-        const portfolioId = params.portfolioId
 
         const portfolioUpdated = await updatePortfolioUseCase.execute(
           organizationId,
           ledgerId,
           portfolioId,
+          midazId!,
           body
         )
 

@@ -7,7 +7,6 @@ export class PinoLogger {
 
   private constructor() {
     const isDebugEnabled = process.env.ENABLE_DEBUG === 'true'
-    // EventEmitter.defaultMaxListeners = 20
     const loggerOptions: LoggerOptions = {
       level: isDebugEnabled ? 'debug' : 'info',
       formatters: {
