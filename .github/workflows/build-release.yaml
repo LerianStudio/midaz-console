@@ -60,8 +60,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run Semantic Release
-        run: npx semantic-release --no-ci
+      - name: Run Semantic Release and Capture Tag
+        id: semantic_release
+        run: |
+          TAG=$(npx semantic-release --no-ci | grep 'The next release version is' | awk '{print $NF}')
+          echo "semantic_tag=$TAG" >> $GITHUB_ENV
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
@@ -72,7 +75,7 @@ jobs:
 
   build_and_publish:
     name: Build and Publish Docker Image
-    needs: release  # Só executa após o job de release
+    needs: release
     runs-on: ubuntu-latest
     env:
       APP_NAME: midaz-console
@@ -89,7 +92,7 @@ jobs:
 
       - name: Generate Valid Docker Tag
         id: valid_tag
-        run: echo "tag=$(echo '${{ github.ref }}' | sed 's|refs/heads/||; s|refs/tags/||; s|/|-|g')" >> $GITHUB_OUTPUT
+        run: echo "tag=${{ env.semantic_tag }}" >> $GITHUB_OUTPUT
 
       - name: Docker metadata
         id: meta
@@ -97,8 +100,7 @@ jobs:
         with:
           images: ${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}
           tags: |
-            type=semver,pattern={{version}}
-            type=ref,event=branch,suffix=-${{ steps.valid_tag.outputs.tag }}
+            ${{ env.semantic_tag }}
 
       - name: Build Docker image
         uses: docker/build-push-action@v5
@@ -112,7 +114,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: '${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}:${{ steps.valid_tag.outputs.tag }}'
+          image-ref: '${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}:${{ env.semantic_tag }}'
           format: 'table'
           ignore-unfixed: true
           vuln-type: 'os,library'
