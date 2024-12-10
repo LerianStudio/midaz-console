@@ -1,0 +1,32 @@
+name: Commit Labeling
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - hotfix/v*
+      - feature/*
+    paths-ignore:
+      - '.gitignore'
+      - '**/*.md'
+
+jobs:
+  commit_labeling:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Check Commit Messages for "fix" or "release"
+        run: |
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          if [[ "$COMMIT_MESSAGE" =~ ^fix ]]; then
+            echo "Commit is a FIX. Proceed with color labeling!"
+            # Exemplo de execução de um script que altera cores ou sinais.
+          elif [[ "$COMMIT_MESSAGE" =~ ^release ]]; then
+            echo "Commit is a RELEASE. Proceed with color labeling!"
+            # Exemplo de execução de um script que altera cores ou sinais.
+          else
+            echo "Commit does not match 'fix' or 'release'. No action."
+          fi
