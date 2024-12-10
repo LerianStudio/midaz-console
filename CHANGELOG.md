@@ -1,3 +1,10 @@
+# [1.1.0-feature-set-email-notification.1](https://github.com/LerianStudio/midaz-console/compare/v1.0.8-feature-set-email-notification.5...v1.1.0-feature-set-email-notification.1) (2024-12-10)
+
+
+### Features
+
+* enable commit labelling ([6846271](https://github.com/LerianStudio/midaz-console/commit/6846271f17c5300a98ee8b1172d69f82fe578879))
+
 ## [1.0.8-feature-set-email-notification.5](https://github.com/LerianStudio/midaz-console/compare/v1.0.8-feature-set-email-notification.4...v1.0.8-feature-set-email-notification.5) (2024-12-10)
 
 
