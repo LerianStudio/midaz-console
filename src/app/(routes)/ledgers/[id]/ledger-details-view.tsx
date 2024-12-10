@@ -1,20 +1,15 @@
 'use client'
 
-import { BottomDrawer } from '@/components/bottom-drawer'
 import { Breadcrumb } from '@/components/breadcrumb'
 import { PageHeader } from '@/components/page-header'
-import useCustomToast from '@/hooks/use-custom-toast'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { cn } from '@/lib/utils'
-import { useFormState } from '@/context/form-details-context'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { useIntl } from 'react-intl'
 import { ProductsTabContent } from './products/products-tab-content'
 import { useTabs } from '@/hooks/use-tabs'
 import { getBreadcrumbPaths } from '@/components/breadcrumb/get-breadcrumb-paths'
-import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import { ILedgerType } from '@/types/ledgers-type'
-import { useUpdateLedger } from '@/client/ledgers'
 import { LedgerDetailsSkeleton } from './ledger-details-skeleton'
 import { OverviewTabContent } from './overview/overview-tab-content'
 import { AssetsTabContent } from './assets/assets-tab-content'
@@ -37,40 +32,10 @@ type LedgerDetailsViewProps = {
 
 const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
   const intl = useIntl()
-  const { currentOrganization } = useOrganization()
+
   const { activeTab, handleTabChange } = useTabs({
     initialValue: DEFAULT_TAB_VALUE
   })
-  const { formData, isDirty, resetForm } = useFormState()
-  const { showSuccess, showError } = useCustomToast()
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
-
-  const { mutate: updateLedger, isPending: updatePending } = useUpdateLedger({
-    organizationId: currentOrganization!.id!,
-    ledgerId: data?.id!,
-    onSuccess: () => {
-      setIsDrawerOpen(false)
-      resetForm()
-      showSuccess(
-        intl.formatMessage({
-          id: 'ledgers.toast.update.success',
-          defaultMessage: 'Ledger changes saved successfully'
-        })
-      )
-    },
-    onError: () => {
-      showError(
-        intl.formatMessage({
-          id: 'ledgers.toast.update.error',
-          defaultMessage: 'Error updating Ledger'
-        })
-      )
-    }
-  })
-
-  useEffect(() => {
-    setIsDrawerOpen(isDirty)
-  }, [isDirty])
 
   const breadcrumbPaths = getBreadcrumbPaths([
     {
@@ -117,25 +82,12 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
     }
   ])
 
-  const handleGlobalSubmit = async () => {
-    const dataToSend = {
-      ...formData
-    }
-
-    updateLedger(dataToSend)
-  }
-
-  const handleCancel = () => {
-    setIsDrawerOpen(false)
-    resetForm()
-  }
-
   if (!data) {
     return <LedgerDetailsSkeleton />
   }
 
   return (
-    <div className={cn(isDirty && 'pb-40')}>
+    <div>
       <Breadcrumb paths={breadcrumbPaths} />
 
       <PageHeader.Root>
@@ -211,13 +163,6 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
           <AccountsTabContent />
         </TabsContent>
       </Tabs>
-
-      <BottomDrawer
-        isOpen={isDrawerOpen}
-        handleSubmit={handleGlobalSubmit}
-        handleCancel={handleCancel}
-        isPending={updatePending}
-      />
     </div>
   )
 }

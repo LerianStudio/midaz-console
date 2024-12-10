@@ -15,8 +15,8 @@ import { LoadingButton } from '@/components/ui/loading-button'
 import { ArrowRight } from 'lucide-react'
 import React from 'react'
 import LoadingScreen from '@/components/loading-screen'
-import MidazLogo from '@/images/midaz-login-screen.png'
-import BackgroundImage from '@/images/login-wallpaper.jpg'
+import MidazLogo from '@/images/midaz-login-screen.webp'
+import BackgroundImage from '@/images/login-wallpaper.webp'
 import {
   Tooltip,
   TooltipContent,
@@ -137,17 +137,13 @@ const SignInPage = () => {
                             })}
                           </span>
                         </TooltipTrigger>
-                        <TooltipContent
-                          className="border-none bg-shadcn-600"
-                          arrowPadding={0}
-                        >
-                          <p className="text-shadcn-400">
+                        <TooltipContent>
+                          <p>
                             {intl.formatMessage({
                               id: 'tooltip.passwordInfo',
                               defaultMessage: 'Contact the system administrator'
                             })}
                           </p>
-                          <Arrow height={8} width={15} />
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
@@ -160,7 +156,7 @@ const SignInPage = () => {
                   loading={form.formState.isSubmitting}
                   size="xl"
                   icon={<ArrowRight />}
-                  iconPlacement="end"
+                  iconPlacement="far-end"
                 >
                   {intl.formatMessage({
                     id: 'signIn.buttonSignIn',
@@ -179,6 +175,7 @@ const SignInPage = () => {
           src={BackgroundImage}
           fill
           sizes="50vw, 100vh"
+          className="object-cover"
         />
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
         <div className="relative z-10">

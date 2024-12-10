@@ -56,7 +56,12 @@ const nextConfig = {
     return config
   },
   experimental: {
-    serverComponentsExternalPackages: ['pino', 'pino-pretty']
+    serverComponentsExternalPackages: [
+      'pino',
+      'pino-pretty',
+      '@opentelemetry/instrumentation'
+    ],
+    instrumentationHook: true
   }
 }
 
