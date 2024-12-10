@@ -18,15 +18,22 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Check Commit Messages for "fix" or "release"
+      - name: Check Commit Messages for "fix", "feat", "chore", or "release"
         run: |
           COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          
           if [[ "$COMMIT_MESSAGE" =~ ^fix ]]; then
             echo "Commit is a FIX. Proceed with color labeling!"
-            # Exemplo de execução de um script que altera cores ou sinais.
+            echo "![Fix Badge](https://img.shields.io/badge/Fix-%23FF5733)"
+          elif [[ "$COMMIT_MESSAGE" =~ ^feat ]]; then
+            echo "Commit is a FEATURE. Proceed with color labeling!"
+            echo "![Feature Badge](https://img.shields.io/badge/Feature-%234CAF50)"
+          elif [[ "$COMMIT_MESSAGE" =~ ^chore ]]; then
+            echo "Commit is a CHORE. Proceed with color labeling!"
+            echo "![Chore Badge](https://img.shields.io/badge/Chore-%23FF9800)"
           elif [[ "$COMMIT_MESSAGE" =~ ^release ]]; then
             echo "Commit is a RELEASE. Proceed with color labeling!"
-            # Exemplo de execução de um script que altera cores ou sinais.
+            echo "![Release Badge](https://img.shields.io/badge/Release-%237E57C2)"
           else
-            echo "Commit does not match 'fix' or 'release'. No action."
+            echo "Commit does not match 'fix', 'feat', 'chore', or 'release'. No action."
           fi
