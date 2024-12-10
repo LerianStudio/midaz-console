@@ -129,7 +129,7 @@ export const Sidebar = () => {
               defaultMessage: 'Resume'
             })}
             icon={<ArrowLeftRight />}
-            href="/resume"
+            href="/transactions"
           />
         </SidebarGroup>
 
