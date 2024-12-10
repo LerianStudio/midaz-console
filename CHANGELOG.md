@@ -1,3 +1,10 @@
+# [1.1.0-feature-set-email-notification.2](https://github.com/LerianStudio/midaz-console/compare/v1.1.0-feature-set-email-notification.1...v1.1.0-feature-set-email-notification.2) (2024-12-10)
+
+
+### Bug Fixes
+
+* insert badges and icons on commits ([61b570e](https://github.com/LerianStudio/midaz-console/commit/61b570ea188b61649c2606cf4f76b8f50928d0eb))
+
 # [1.1.0-feature-set-email-notification.1](https://github.com/LerianStudio/midaz-console/compare/v1.0.8-feature-set-email-notification.5...v1.1.0-feature-set-email-notification.1) (2024-12-10)
 
 
