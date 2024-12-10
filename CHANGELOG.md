@@ -1,3 +1,10 @@
+## [1.0.8-feature-set-email-notification.5](https://github.com/LerianStudio/midaz-console/compare/v1.0.8-feature-set-email-notification.4...v1.0.8-feature-set-email-notification.5) (2024-12-10)
+
+
+### Bug Fixes
+
+* set process to generate tag ([553eeb5](https://github.com/LerianStudio/midaz-console/commit/553eeb5373d993d470b85cd51cd950e39518b969))
+
 ## [1.0.8-feature-set-email-notification.4](https://github.com/LerianStudio/midaz-console/compare/v1.0.8-feature-set-email-notification.3...v1.0.8-feature-set-email-notification.4) (2024-12-10)
 
 
