@@ -1,5 +1,6 @@
 import {
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -17,6 +18,7 @@ export type InputFieldProps = {
   tooltip?: string
   labelExtra?: ReactNode
   placeholder?: string
+  description?: ReactNode
   control: Control<any>
   disabled?: boolean
   readOnly?: boolean
@@ -29,6 +31,7 @@ export const InputField = ({
   tooltip,
   labelExtra,
   placeholder,
+  description,
   required,
   readOnly,
   ...others
@@ -56,6 +59,7 @@ export const InputField = ({
             />
           </FormControl>
           <FormMessage />
+          {description && <FormDescription>{description}</FormDescription>}
         </FormItem>
       )}
     />
