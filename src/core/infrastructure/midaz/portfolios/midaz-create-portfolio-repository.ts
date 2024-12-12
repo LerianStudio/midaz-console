@@ -19,7 +19,10 @@ export class MidazCreatePortfolioRepository
     const response = await httpMidazAuthFetch<PortfolioEntity>({
       url,
       method: HTTP_METHODS.POST,
-      body: JSON.stringify(portfolio)
+      body: JSON.stringify(portfolio),
+      headers: {
+        'Midaz-Id': midazId
+      }
     })
 
     return response

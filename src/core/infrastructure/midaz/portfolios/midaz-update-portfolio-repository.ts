@@ -23,7 +23,7 @@ export class MidazUpdatePortfolioRepository
       method: HTTP_METHODS.PATCH,
       body: JSON.stringify(portfolio),
       headers: {
-        'X-Midaz-Id': midazId
+        'Midaz-Id': midazId
       }
     })
 

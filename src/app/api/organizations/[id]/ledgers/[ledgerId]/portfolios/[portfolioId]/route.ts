@@ -63,7 +63,6 @@ export async function DELETE(
         )
         return NextResponse.json({}, { status: 200 })
       } catch (error: any) {
-        console.error('Error deleting portfolio', error)
         const { message, status } = await apiErrorHandler(error)
 
         return NextResponse.json({ message }, { status })
@@ -96,7 +95,6 @@ export async function PATCH(
 
         return NextResponse.json(portfolioUpdated)
       } catch (error: any) {
-        console.error('Error updating portfolio', error)
         const { message, status } = await apiErrorHandler(error)
 
         return NextResponse.json({ message }, { status })
@@ -128,7 +126,6 @@ export async function GET(
 
         return NextResponse.json(portfolio)
       } catch (error: any) {
-        console.error('Error getting portfolio', error)
         const { message, status } = await apiErrorHandler(error)
 
         return NextResponse.json({ message }, { status })

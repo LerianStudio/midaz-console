@@ -72,7 +72,6 @@ export class RequestContextManager {
     if (context) {
       const duration = Date.now() - context.startTime
 
-      // if (process.env.ENABLE_REQUEST_TIMELINE === 'true') {
       this.logger.info(
         'Request Timeline',
         {
@@ -91,7 +90,6 @@ export class RequestContextManager {
           operation: 'request_timeline'
         }
       )
-      // }
     }
   }
 
@@ -110,48 +108,6 @@ export class RequestContextManager {
         timestamp: Date.now(),
         ...event
       }
-
-      // switch (event.level) {
-      //   case 'debug':
-      //     this.logger.debug(
-      //       event.message,
-      //       { eventData: fullEvent, requestId: context.requestId },
-      //       { layer: event.layer, operation: event.operation }
-      //     )
-      //     break
-      //   case 'info':
-      //     this.logger.info(
-      //       event.message,
-      //       { eventData: fullEvent, requestId: context.requestId },
-      //       { layer: event.layer, operation: event.operation }
-      //     )
-      //     break
-      //   case 'error':
-      //     this.logger.error(
-      //       event.message,
-      //       {
-      //         eventData: fullEvent,
-      //         requestId: context.requestId,
-      //         error: event.error
-      //       },
-      //       { layer: event.layer, operation: event.operation }
-      //     )
-      //     break
-      //   case 'warn':
-      //     this.logger.warn(
-      //       event.message,
-      //       { eventData: fullEvent, requestId: context.requestId },
-      //       { layer: event.layer, operation: event.operation }
-      //     )
-      //     break
-      //   case 'audit':
-      //     this.logger.audit(
-      //       event.message,
-      //       { eventData: fullEvent, requestId: context.requestId },
-      //       { layer: event.layer, operation: event.operation }
-      //     )
-      //     break
-      // }
 
       context.events.push(fullEvent)
     }
