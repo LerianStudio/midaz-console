@@ -4,6 +4,7 @@ export type PortfolioEntity = {
   id?: string
   ledgerId?: string
   organizationId?: string
+  midazId?: string
   name: string
   entityId: string
   status: StatusEntity

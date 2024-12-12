@@ -64,7 +64,6 @@ export async function POST(
 ) {
   try {
     const body = await request.json()
-    console.log(body)
     const organizationId = params.id
     const ledgerId = params.ledgerId
 

@@ -5,6 +5,7 @@ export abstract class UpdatePortfolioRepository {
     organizationId: string,
     ledgerId: string,
     portfolioId: string,
+    midazId: string,
     portfolio: Partial<PortfolioEntity>
   ) => Promise<PortfolioEntity>
 }
