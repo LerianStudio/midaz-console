@@ -7,6 +7,7 @@ on:
       - main
       - hotfix/v*
       - feature/*
+ 
     paths-ignore:
       - '.gitignore'
       - '**/*.env'
@@ -63,7 +64,7 @@ jobs:
       - name: Run Semantic Release and Capture Tag
         id: semantic_release
         run: |
-          TAG=$(npx semantic-release --no-ci | grep 'The next release version is' | awk '{print $NF}')
+          TAG=$(npx semantic-release | grep 'The next release version is' | awk '{print $NF}')
           echo "semantic_tag=$TAG" >> $GITHUB_ENV
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
