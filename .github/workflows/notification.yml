@@ -58,35 +58,35 @@ jobs:
           SLACK_MESSAGE: "🎉 *Nova Release Publicada!* \n \n <https://github.com/${{ github.repository }}/releases/tag/${{ env.tag }} | *Clique aqui para detalhes*>"
           SLACK_WEBHOOK: ${{ secrets.RELEASE_WEBHOOK_NOTIFICATION_URL }}
 
-      # Enviar e-mail usando SendGrid
-      - name: Send Email using SendGrid
-        env:
-          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
-          TAG: ${{ env.tag }}
-          REPOSITORY: ${{ github.repository }}
-        run: |
-          curl -X POST https://api.sendgrid.com/v3/mail/send \
-            -H "Authorization: Bearer $SENDGRID_API_KEY" \
-            -H "Content-Type: application/json" \
-            -d '{
-            "personalizations": [
-              {
-                "to": [
-                  {
-                    "email": "releases@lerian.studio"
-                  }
-                ],
-                "subject": "🎉 Nova Release Disponível: v${TAG}"
-              }
-            ],
-            "from": {
-              "email": "noreply@lerian.studio",
-              "name": "Lerian Studio Notifications"
-            },
-            "content": [
-              {
-                "type": "text/html",
-                "value": "<!DOCTYPE html>\n<html>\n<head>\n  <style>\n    body {\n      font-family: Arial, sans-serif;\n      line-height: 1.6;\n    }\n    h1 {\n      color: #36a64f;\n      text-align: center;\n    }\n    p {\n      margin: 15px 0;\n    }\n    a {\n      color: #007bff;\n      text-decoration: none;\n      font-weight: bold;\n    }\n  </style>\n</head>\n<body>\n  <h1>🚀 Nova Release Publicada!</h1>\n  <p>Estamos felizes em anunciar que uma nova release foi publicada para o projeto.</p>\n  <p>Confira os detalhes e as melhorias diretamente no nosso repositório:</p>\n  <p><a href=\"https://github.com/${REPOSITORY}/releases/tag/${TAG}\">Clique aqui para acessar a release v${TAG}</a></p>\n  <p>Obrigado por acompanhar nosso trabalho! 💡</p>\n  <p>Atenciosamente,</p>\n  <p><strong>Lerian Studio Team</strong></p>\n</body>\n</html>"
-              }
-            ]
-          }'
+      # # Enviar e-mail usando SendGrid
+      # - name: Send Email using SendGrid
+      #   env:
+      #     SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+      #     TAG: ${{ env.tag }}
+      #     REPOSITORY: ${{ github.repository }}
+      #   run: |
+      #     curl -X POST https://api.sendgrid.com/v3/mail/send \
+      #       -H "Authorization: Bearer $SENDGRID_API_KEY" \
+      #       -H "Content-Type: application/json" \
+      #       -d '{
+      #       "personalizations": [
+      #         {
+      #           "to": [
+      #             {
+      #               "email": "releases@lerian.studio"
+      #             }
+      #           ],
+      #           "subject": "🎉 Nova Release Disponível: v${TAG}"
+      #         }
+      #       ],
+      #       "from": {
+      #         "email": "noreply@lerian.studio",
+      #         "name": "Lerian Studio Notifications"
+      #       },
+      #       "content": [
+      #         {
+      #           "type": "text/html",
+      #           "value": "<!DOCTYPE html>\n<html>\n<head>\n  <style>\n    body {\n      font-family: Arial, sans-serif;\n      line-height: 1.6;\n    }\n    h1 {\n      color: #36a64f;\n      text-align: center;\n    }\n    p {\n      margin: 15px 0;\n    }\n    a {\n      color: #007bff;\n      text-decoration: none;\n      font-weight: bold;\n    }\n  </style>\n</head>\n<body>\n  <h1>🚀 Nova Release Publicada!</h1>\n  <p>Estamos felizes em anunciar que uma nova release foi publicada para o projeto.</p>\n  <p>Confira os detalhes e as melhorias diretamente no nosso repositório:</p>\n  <p><a href=\"https://github.com/${REPOSITORY}/releases/tag/${TAG}\">Clique aqui para acessar a release v${TAG}</a></p>\n  <p>Obrigado por acompanhar nosso trabalho! 💡</p>\n  <p>Atenciosamente,</p>\n  <p><strong>Lerian Studio Team</strong></p>\n</body>\n</html>"
+      #         }
+      #       ]
+      #     }'
