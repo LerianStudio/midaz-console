@@ -58,8 +58,25 @@ export const Outline: StoryObj<ButtonProps> = {
   }
 }
 
+export const FullWidth: StoryObj<ButtonProps> = {
+  args: {
+    fullWidth: true,
+    children: 'Button'
+  },
+  render: (args) => <Button {...args} />
+}
+
 export const WithIcon: StoryObj<ButtonProps> = {
   args: {
+    children: 'Button'
+  },
+  render: (args) => <Button icon={<Users />} {...args} />
+}
+
+export const WithIconEnd: StoryObj<ButtonProps> = {
+  args: {
+    fullWidth: true,
+    iconPlacement: 'end',
     children: 'Button'
   },
   render: (args) => <Button icon={<Users />} {...args} />

@@ -15,7 +15,8 @@ import { LoadingButton } from '@/components/ui/loading-button'
 import { ArrowRight } from 'lucide-react'
 import React from 'react'
 import LoadingScreen from '@/components/loading-screen'
-import MidazLogo from '@/images/midaz-login-screen.png'
+import MidazLogo from '@/images/midaz-login-screen.webp'
+import BackgroundImage from '@/images/login-wallpaper.webp'
 import {
   Tooltip,
   TooltipContent,
@@ -172,7 +173,14 @@ const SignInPage = () => {
         </div>
       </div>
 
-      <div className="relative flex w-3/6 items-center justify-center bg-login-wallpaper bg-cover">
+      <div className="relative flex w-3/6 items-center justify-center">
+        <Image
+          alt="Login background image"
+          src={BackgroundImage}
+          fill
+          sizes="50vw, 100vh"
+          className="object-cover"
+        />
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
         <div className="relative z-10">
           <Image alt="Midaz Logo" src={MidazLogo} width={150} height={150} />
