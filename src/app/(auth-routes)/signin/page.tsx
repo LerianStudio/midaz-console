@@ -137,17 +137,13 @@ const SignInPage = () => {
                             })}
                           </span>
                         </TooltipTrigger>
-                        <TooltipContent
-                          className="border-none bg-shadcn-600"
-                          arrowPadding={0}
-                        >
-                          <p className="text-shadcn-400">
+                        <TooltipContent>
+                          <p>
                             {intl.formatMessage({
                               id: 'tooltip.passwordInfo',
                               defaultMessage: 'Contact the system administrator'
                             })}
                           </p>
-                          <Arrow height={8} width={15} />
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
@@ -160,7 +156,7 @@ const SignInPage = () => {
                   loading={form.formState.isSubmitting}
                   size="xl"
                   icon={<ArrowRight />}
-                  iconPlacement="end"
+                  iconPlacement="far-end"
                 >
                   {intl.formatMessage({
                     id: 'signIn.buttonSignIn',
