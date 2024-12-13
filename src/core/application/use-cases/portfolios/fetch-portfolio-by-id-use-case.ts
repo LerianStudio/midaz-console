@@ -19,10 +19,6 @@ export class FetchPortfolioByIdUseCase implements FetchPortfolioById {
     private readonly fetchPortfolioByIdRepository: FetchPortfolioByIdRepository
   ) {}
 
-  @LogOperation({
-    layer: 'application',
-    operation: 'fetch_portfolio_by_id'
-  })
   async execute(
     organizationId: string,
     ledgerId: string,

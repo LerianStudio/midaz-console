@@ -9,12 +9,15 @@ import {
   FetchAllProductsUseCase
 } from '@/core/application/use-cases/product/fetch-all-products-use-case'
 import { NextResponse } from 'next/server'
+import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
 
 const createProductUseCase: CreateProduct =
   container.get<CreateProduct>(CreateProductUseCase)
 
 const fetchAllProductsUseCase: FetchAllProducts =
   container.get<FetchAllProducts>(FetchAllProductsUseCase)
+
+const loggerAggregator = container.get<LoggerAggregator>(LoggerAggregator)
 
 export async function POST(
   request: Request,
@@ -25,13 +28,23 @@ export async function POST(
     const organizationId = params.id
     const ledgerId = params.ledgerId
 
-    const productCreated = await createProductUseCase.execute(
-      organizationId,
-      ledgerId,
-      body
-    )
+    loggerAggregator.runWithContext(
+      'createProduct',
+      'POST',
+      {
+        useCase: 'CreateProductUseCase',
+        action: 'execute'
+      },
+      async () => {
+        const productCreated = await createProductUseCase.execute(
+          organizationId,
+          ledgerId,
+          body
+        )
 
-    return NextResponse.json(productCreated)
+        return NextResponse.json(productCreated)
+      }
+    )
   } catch (error: any) {
     console.error('Error creating product', error)
     const { message, status } = await apiErrorHandler(error)

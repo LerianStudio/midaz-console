@@ -24,10 +24,6 @@ export class CreatePortfolioUseCase implements CreatePortfolio {
     private readonly createPortfolioRepository: CreatePortfolioRepository
   ) {}
 
-  @LogOperation({
-    layer: 'application',
-    operation: 'create_portfolio'
-  })
   async execute(
     organizationId: string,
     ledgerId: string,

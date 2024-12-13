@@ -10,16 +10,20 @@ import { AssetUseCaseModule } from './use-cases/asset-module'
 import { ProductUseCaseModule } from './use-cases/product-module'
 import { CasdoorModule } from '../casdoor/module/casdoor-module'
 import { AuthUseCaseModule } from './use-cases/auth-module'
+import { LoggerModule } from '../logger/module/logger-module'
+import { LoggerApplicationModule } from './logger-application-module'
 
 export const container = new Container()
 
 container.load(CasdoorModule)
 container.load(AuthUseCaseModule)
-
+container.load(LoggerModule)
 container.load(MidazModule)
+
 container.load(OrganizationUseCaseModule)
 container.load(LedgerUseCaseModule)
 container.load(PortfolioUseCaseModule)
 container.load(AccountUseCaseModule)
 container.load(AssetUseCaseModule)
 container.load(ProductUseCaseModule)
+container.load(LoggerApplicationModule)

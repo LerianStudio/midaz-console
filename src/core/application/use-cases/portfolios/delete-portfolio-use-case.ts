@@ -17,10 +17,7 @@ export class DeletePortfolioUseCase implements DeletePortfolio {
     @inject(DeletePortfolioRepository)
     private readonly deletePortfolioRepository: DeletePortfolioRepository
   ) {}
-  @LogOperation({
-    layer: 'application',
-    operation: 'delete_portfolio'
-  })
+
   async execute(
     organizationId: string,
     ledgerId: string,

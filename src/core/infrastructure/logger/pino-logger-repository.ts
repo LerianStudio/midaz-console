@@ -1,11 +1,22 @@
 import pino, { Logger, LoggerOptions } from 'pino'
-import { LogContext, LogEntry, LogMetadata } from './types'
-import 'pino-pretty'
-export class PinoLogger {
-  private static instance: PinoLogger
+import { injectable } from 'inversify'
+import {
+  LogContext,
+  LogMetadata,
+  LogEntry
+} from '@/core/domain/entities/log-entities'
+import { LoggerRepository } from '@/core/domain/repositories/logger/logger-repository'
+import pretty from 'pino-pretty'
+
+@injectable()
+export class PinoLoggerRepository implements LoggerRepository {
   private logger: Logger
 
-  private constructor() {
+  constructor() {
+    this.logger = this.initializeLogger()
+  }
+
+  private initializeLogger(): Logger {
     const isDebugEnabled = process.env.ENABLE_DEBUG === 'true'
     const loggerOptions: LoggerOptions = {
       level: isDebugEnabled ? 'debug' : 'info',
@@ -19,64 +30,66 @@ export class PinoLogger {
       }
     }
 
-    if (process.env.NODE_ENV === 'production') {
-      console.log('será que entrou aqui?')
-      loggerOptions.transport = {
-        target: 'pino-pretty',
-        options: {
+    if (process.env.NODE_ENV === 'development') {
+      return pino(
+        loggerOptions,
+        pretty({
           colorize: true,
           ignore: 'pid,hostname',
           translateTime: 'SYS:yyyy-mm-dd HH:MM:ss.l'
-        }
-      }
+        })
+      )
+      // loggerOptions.transport = {
+      //   target: 'pino-pretty',
+      //   options: {
+      //     colorize: true,
+      //     ignore: 'pid,hostname',
+      //     translateTime: 'SYS:yyyy-mm-dd HH:MM:ss.l'
+      //   }
+      // }
     }
 
-    this.logger = pino(loggerOptions)
-  }
+    console.log('logger pino repository', loggerOptions)
 
-  static getInstance(): PinoLogger {
-    if (!PinoLogger.instance) {
-      PinoLogger.instance = new PinoLogger()
-    }
-    return PinoLogger.instance
+    return pino(loggerOptions)
   }
 
   private createLogEntry(
     level: LogEntry['level'],
     message: string,
-    metadata: LogMetadata,
+    metadata: LogMetadata | undefined,
     context: LogContext
   ): LogEntry {
     return {
       level,
       message,
       timestamp: new Date().toISOString(),
-      metadata,
+      metadata: metadata || {},
       context
     }
   }
 
-  info(message: string, metadata: LogMetadata = {}, context: LogContext) {
+  info(message: string, context: LogContext, metadata?: LogMetadata): void {
     const logEntry = this.createLogEntry('INFO', message, metadata, context)
     this.logger.info(logEntry)
   }
 
-  error(message: string, metadata: LogMetadata = {}, context: LogContext) {
+  error(message: string, context: LogContext, metadata?: LogMetadata): void {
     const logEntry = this.createLogEntry('ERROR', message, metadata, context)
     this.logger.error(logEntry)
   }
 
-  warn(message: string, metadata: LogMetadata = {}, context: LogContext) {
+  warn(message: string, context: LogContext, metadata?: LogMetadata): void {
     const logEntry = this.createLogEntry('WARN', message, metadata, context)
     this.logger.warn(logEntry)
   }
 
-  debug(message: string, metadata: LogMetadata = {}, context: LogContext) {
+  debug(message: string, context: LogContext, metadata?: LogMetadata): void {
     const logEntry = this.createLogEntry('DEBUG', message, metadata, context)
     this.logger.debug(logEntry)
   }
 
-  audit(message: string, metadata: LogMetadata = {}, context: LogContext) {
+  audit(message: string, context: LogContext, metadata?: LogMetadata): void {
     const logEntry = this.createLogEntry('AUDIT', message, metadata, context)
     this.logger.info(logEntry)
   }

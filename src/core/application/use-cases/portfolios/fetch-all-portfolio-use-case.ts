@@ -23,10 +23,6 @@ export class FetchAllPortfoliosUseCase implements FetchAllPortfolios {
     private readonly fetchAllPortfoliosRepository: FetchAllPortfoliosRepository
   ) {}
 
-  @LogOperation({
-    layer: 'application',
-    operation: 'fetch_all_portfolios'
-  })
   async execute(
     organizationId: string,
     ledgerId: string,

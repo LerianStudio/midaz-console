@@ -1,9 +1,12 @@
-import { RequestContextManager } from '@/lib/logger/request-context'
+import { LoggerAggregator } from '../logger/logger-aggregator'
+import { container } from '@/core/infrastructure/container-registry/container-registry'
 
 export function LogOperation(options: {
   layer: 'application' | 'infrastructure' | 'domain'
   operation: string
 }) {
+  const loggerAggregator = container.get<LoggerAggregator>(LoggerAggregator)
+
   return function (
     target: any,
     propertyKey: string,
@@ -13,7 +16,7 @@ export function LogOperation(options: {
 
     descriptor.value = async function (...args: any[]) {
       try {
-        RequestContextManager.addEvent({
+        loggerAggregator.addEvent({
           layer: options.layer,
           operation: `${options.operation}_start`,
           level: 'info',
@@ -23,7 +26,7 @@ export function LogOperation(options: {
 
         const result = await originalMethod.apply(this, args)
 
-        RequestContextManager.addEvent({
+        loggerAggregator.addEvent({
           layer: options.layer,
           operation: `${options.operation}_success`,
           level: 'info',
@@ -33,7 +36,7 @@ export function LogOperation(options: {
 
         return result
       } catch (error) {
-        RequestContextManager.addEvent({
+        loggerAggregator.addEvent({
           layer: options.layer,
           operation: `${options.operation}_error`,
           level: 'error',

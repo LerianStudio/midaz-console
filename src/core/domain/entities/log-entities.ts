@@ -6,11 +6,7 @@ export interface LogMetadata {
 
 export interface LogContext {
   layer: 'api' | 'application' | 'infrastructure' | 'domain'
-  path: string
-  method: string
-  duration: number
   operation: string
-  metadata: LogMetadata
   params?: Record<string, any>
   component?: string
 }

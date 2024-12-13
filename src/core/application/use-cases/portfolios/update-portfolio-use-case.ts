@@ -26,10 +26,6 @@ export class UpdatePortfolioUseCase implements UpdatePortfolio {
     private readonly updatePortfolioRepository: UpdatePortfolioRepository
   ) {}
 
-  @LogOperation({
-    layer: 'application',
-    operation: 'update_portfolio'
-  })
   async execute(
     organizationId: string,
     ledgerId: string,
