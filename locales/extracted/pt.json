@@ -22,12 +22,10 @@
   "common.edit": "Editar",
   "entity.ledger.asset": "Ativos",
   "entity.ledger.name": "Nome do Ledger",
-  "entity.ledger.status": "Status",
   "ledgers.columnsTable.tooltipCopyText": "Toque para copiar",
   "ledgers.helperTrigger.answer": "Livro com o registro de todas as transações e operações da Organização.",
   "ledgers.helperTrigger.question": "O que é um Ledger?",
   "ledgers.helperTrigger.seeMore": "Leia a documentação",
-  "ledgers.listingTemplate.newAddButton": "Criar o primeiro Ledger",
   "ledgers.listingTemplate.addButton": "Novo Ledger",
   "ledgers.subtitle": "Visualize e edite os Ledgers da sua Organização.",
   "ledgers.title": "Ledgers",
@@ -92,7 +90,7 @@
   "ledgers.assets.emptyResource": "Você ainda não criou nenhum Ativo para este Ledger.",
   "ledgers.assets.emptyResourceExtra": "Nenhum Ativo encontrado.",
   "ledgers.emptyResource": "Você ainda não criou nenhum Ledger",
-  "ledgers.emptyResource.createButton": "Criar Ledger",
+  "ledgers.emptyResource.createButton": "Novo Ledger",
   "ledgers.emptyResourceExtra": "Nenhum Ledger encontrado.",
   "organizations.emptyResource": "Você ainda não criou nenhuma Organização",
   "settings.tab.organizations": "Organização",
@@ -287,5 +285,10 @@
   "ledgers.showing": "Mostrando {count} {number, plural, =0 {ledgers} one {ledger} other {ledgers}}.",
   "ledgers.accounts.showing": "Mostrando {count} {number, plural, =0 {contas} one {conta} other {contas}}.",
   "ledgers.portfolios.showing": "Mostrando {count} {number, plural, =0 {portfólios} one {portfólio} other {portfólios}}.",
-  "organizations.showing": "Mostrando {count} {number, plural, =0 {organizações} one {organização} other {organizações}}."
+  "organizations.showing": "Mostrando {count} {number, plural, =0 {organizações} one {organização} other {organizações}}.",
+  "common.itemsPerPage": "Itens por página",
+  "common.support": "Suporte",
+  "ledgers.assets.count": "{count} ativos",
+  "table.pagination.next": "Próxima página",
+  "table.pagination.previous": "Página anterior"
 }
