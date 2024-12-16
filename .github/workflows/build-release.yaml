@@ -121,33 +121,34 @@ jobs:
       - name: Generate Valid Docker Tag
         id: valid_tag
         run: echo "tag=${{ env.semantic_tag }}" >> $GITHUB_OUTPUT
-
+        
       - name: Docker metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}
-          tags: |
-            ${{ env.semantic_tag }}
-
+            images: ${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}
+            tags: |
+              ${{ env.semantic_tag }}
+              ${{ github.ref == 'refs/heads/main' && 'latest' || github.ref == 'refs/heads/develop' && 'next' || startsWith(github.ref, 'refs/heads/feature/') && 'feat' || '' }}
+        
       - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
-          context: .
-          file: ./Dockerfile
-          load: true
-          tags: ${{ steps.meta.outputs.tags }}
-          cache-from: type=registry,ref=${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}:latest
+            context: .
+            file: ./Dockerfile
+            load: true
+            tags: ${{ steps.meta.outputs.tags }}
+            cache-from: type=registry,ref=${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}:latest
 
-      # - name: Run Trivy vulnerability scanner
-      #   uses: aquasecurity/trivy-action@master
-      #   with:
-      #     image-ref: '${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}:${{ env.semantic_tag }}'
-      #     format: 'table'
-      #     ignore-unfixed: true
-      #     vuln-type: 'os,library'
-      #     severity: 'CRITICAL,HIGH'
-      #     exit-code: '1'
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: '${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}:${{ env.semantic_tag }}'
+          format: 'table'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1'
 
       - name: Push Docker image
         uses: docker/build-push-action@v5
