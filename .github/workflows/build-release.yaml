@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'fix/*'
+      - 'feature/*''
     paths-ignore:
       - '.gitignore'
       - '**/*.env'
@@ -39,7 +40,7 @@ jobs:
   release:
     name: Create Release for Node.js Project
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/fix/')
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/feature/')
     permissions:
       contents: write
       pull-requests: write
