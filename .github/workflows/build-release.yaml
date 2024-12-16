@@ -1,13 +1,23 @@
 name: Release and Build
 
 on:
+  push:
+    branches:
+      - 'fix/*'
+    paths-ignore:
+      - '.gitignore'
+      - '**/*.env'
+      - '*.env'
+      - '**/*.md'
+      - '*.md'
+      - '**/*.txt'
+      - '*.txt'
   pull_request:
     branches:
       - develop
       - main
     types:
       - closed
-
     paths-ignore:
       - '.gitignore'
       - '**/*.env'
@@ -29,7 +39,7 @@ jobs:
   release:
     name: Create Release for Node.js Project
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/fix/')
     permissions:
       contents: write
       pull-requests: write
