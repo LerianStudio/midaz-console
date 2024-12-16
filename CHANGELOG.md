@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/LerianStudio/midaz-console/compare/v1.0.2...v1.0.3) (2024-12-16)
+
+
+### Bug Fixes
+
+* debug structure of tag ([6e594b2](https://github.com/LerianStudio/midaz-console/commit/6e594b23c86fdfa517105ae098eff62cfd8e5dc8))
+
 ## [1.0.2](https://github.com/LerianStudio/midaz-console/compare/v1.0.1...v1.0.2) (2024-12-16)
 
 
