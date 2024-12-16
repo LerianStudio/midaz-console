@@ -122,7 +122,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Debug: semantic_tag
+      - name: Debug semantic_tag
         run: echo "semantic_tag=${{ needs.release.outputs.semantic_tag }}"
 
       - name: Docker metadata
