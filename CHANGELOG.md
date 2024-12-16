@@ -1,3 +1,11 @@
+## [1.0.4](https://github.com/LerianStudio/midaz-console/compare/v1.0.3...v1.0.4) (2024-12-16)
+
+
+### Bug Fixes
+
+* insert output variable structure of tag ([bf0b757](https://github.com/LerianStudio/midaz-console/commit/bf0b757f5da440c8333e63aec3cd679b4b10fb8c))
+* insert output variable structure of tag ([dde51cb](https://github.com/LerianStudio/midaz-console/commit/dde51cbded93ba801ca710ac4be3e5ada5dee732))
+
 ## [1.0.3](https://github.com/LerianStudio/midaz-console/compare/v1.0.2...v1.0.3) (2024-12-16)
 
 
