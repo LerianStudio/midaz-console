@@ -1,3 +1,11 @@
+## [1.0.1](https://github.com/LerianStudio/midaz-console/compare/v1.0.0...v1.0.1) (2024-12-16)
+
+
+### Bug Fixes
+
+* insert url of git on package.json ([a746f30](https://github.com/LerianStudio/midaz-console/commit/a746f300fc10a3aa95bdc30c2f745d7a4c0be215))
+* insert url of repo to detect on release config ([f8d0bce](https://github.com/LerianStudio/midaz-console/commit/f8d0bce8f5069f655f5adf25001512e9790f436a))
+
 # 1.0.0 (2024-12-16)
 
 
