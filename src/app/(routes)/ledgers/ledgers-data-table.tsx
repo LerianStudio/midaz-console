@@ -199,7 +199,7 @@ const LedgerRow: React.FC<LedgerRowProps> = ({
                   className="h-auto w-max p-2"
                   data-testid="actions"
                 >
-                  <MoreVertical size={16} onClick={() => {}} />
+                  <MoreVertical size={16} />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">

@@ -6,6 +6,7 @@ import {
   patchFetcher,
   postFetcher
 } from '@/lib/fetcher'
+import { PaginationRequest } from '@/types/pagination-request-type'
 import {
   useMutation,
   UseMutationOptions,
@@ -51,7 +52,7 @@ const useListLedgers = ({
   enabled = true,
   limit = 10,
   page = 1
-}: UseListLedgersProps & { limit?: number; page?: number }) => {
+}: UseListLedgersProps & PaginationRequest) => {
   return useQuery<PaginationDto<LedgerResponseDto>>({
     queryKey: ['ledgers', organizationId, { limit, page }],
     queryFn: getFetcher(
