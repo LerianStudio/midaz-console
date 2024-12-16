@@ -7,7 +7,6 @@ on:
       - main
     types:
       - closed
-
     paths-ignore:
       - '.gitignore'
       - '**/*.env'
@@ -33,6 +32,8 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+    outputs:
+      semantic_tag: ${{ steps.semantic_release.outputs.semantic_tag }}
     steps:
       - name: Create GitHub App Token
         uses: actions/create-github-app-token@v1
@@ -79,7 +80,9 @@ jobs:
         id: semantic_release
         run: |
           TAG=$(npx semantic-release | grep 'The next release version is' | awk '{print $NF}')
-          echo "semantic_tag=$TAG" >> $GITHUB_ENV
+          echo "Generated tag: $TAG"
+          echo "::set-output name=semantic_tag::$TAG"
+        
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
@@ -107,31 +110,31 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Generate Valid Docker Tag
-        id: valid_tag
-        run: echo "tag=${{ env.semantic_tag }}" >> $GITHUB_OUTPUT
+      - name: Debug semantic_tag
+        run: echo "semantic_tag=${{ needs.release.outputs.semantic_tag }}"
 
       - name: Docker metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}
-          tags: |
-            ${{ env.semantic_tag }}
-
+            images: ${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}
+            tags: |
+              ${{ needs.release.outputs.semantic_tag }}
+              ${{ github.ref == 'refs/heads/main' && 'latest' || github.ref == 'refs/heads/develop' && 'next' || '' }}
+        
       - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
-          context: .
-          file: ./Dockerfile
-          load: true
-          tags: ${{ steps.meta.outputs.tags }}
-          cache-from: type=registry,ref=${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}:latest
+            context: .
+            file: ./Dockerfile
+            load: true
+            tags: ${{ steps.meta.outputs.tags }}
+            cache-from: type=registry,ref=${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}:latest
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: '${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}:${{ env.semantic_tag }}'
+          image-ref: '${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}:${{ needs.release.outputs.semantic_tag }}'
           format: 'table'
           ignore-unfixed: true
           vuln-type: 'os,library'

@@ -1,7 +1,11 @@
-{
-  "name": "midaz-console",
-  "version": "0.1.0",
-  "private": true,
+  {
+    "name": "midaz-console",
+    "version": "0.1.0",
+    "private": true,
+    "repository": {
+    "type": "git",
+     "url": "git+https://github.com/LerianStudio/midaz-console.git"
+    },
   "scripts": {
     "dev": "next dev -p 8081",
     "build": "next build",
