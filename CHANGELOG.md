@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/LerianStudio/midaz-console/compare/v1.0.1...v1.0.2) (2024-12-16)
+
+
+### Bug Fixes
+
+* validate structure of tag ([36c09f2](https://github.com/LerianStudio/midaz-console/commit/36c09f2bf4c8e407127074ac4524ff0f7071d475))
+
 ## [1.0.1](https://github.com/LerianStudio/midaz-console/compare/v1.0.0...v1.0.1) (2024-12-16)
 
 
