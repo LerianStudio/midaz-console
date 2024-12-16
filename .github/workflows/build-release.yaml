@@ -1,12 +1,11 @@
 name: Release and Build
 
 on:
-  pull_request:
+  push:
     branches:
       - develop
       - main
-    types:
-      - closed
+      - 'feature/*'
     paths-ignore:
       - '.gitignore'
       - '**/*.env'
@@ -28,7 +27,7 @@ jobs:
   release:
     name: Create Release for Node.js Project
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || startsWith(github.ref,'refs/heads/feature/')
     permissions:
       contents: write
       pull-requests: write
@@ -79,7 +78,7 @@ jobs:
       - name: Run Semantic Release and Capture Tag
         id: semantic_release
         run: |
-          TAG=$(npx semantic-release | grep 'The next release version is' | awk '{print $NF}')
+          TAG=$(npx semantic-release --no-ci | grep 'The next release version is' | awk '{print $NF}')
           echo "Generated tag: $TAG"
           echo "::set-output name=semantic_tag::$TAG"
         
