@@ -121,8 +121,15 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Generate Valid Docker Tag
-        id: valid_tag
-        run: echo "tag=${{ env.semantic_tag }}" >> $GITHUB_OUTPUT
+        id: generate_tag
+        run: |
+            TAG=$(npx semantic-release | grep 'The next release version is' | awk '{print $NF}')
+            echo "Generated tag: $TAG"
+            echo "semantic_tag=$TAG" >> $GITHUB_ENV
+      
+      - name: Debug semantic_tag
+        run: echo "semantic_tag=${{ env.semantic_tag }}"
+
         
       - name: Docker metadata
         id: meta
