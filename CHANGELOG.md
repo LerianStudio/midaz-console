@@ -1,3 +1,11 @@
+## [1.0.5](https://github.com/LerianStudio/midaz-console/compare/v1.0.4...v1.0.5) (2024-12-16)
+
+
+### Bug Fixes
+
+* generate flow using noci parameter ([8bbedc8](https://github.com/LerianStudio/midaz-console/commit/8bbedc80f863becb9a310a40bb019de5e77f79b7))
+* persist the value of build tag on entire flow ([3510e8d](https://github.com/LerianStudio/midaz-console/commit/3510e8da5ee40a4ad61bb9a57c527928dc64701c))
+
 ## [1.0.4](https://github.com/LerianStudio/midaz-console/compare/v1.0.3...v1.0.4) (2024-12-16)
 
 
