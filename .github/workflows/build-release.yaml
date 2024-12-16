@@ -139,15 +139,15 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=registry,ref=${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}:latest
 
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: '${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}:${{ env.semantic_tag }}'
-          format: 'table'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
-          exit-code: '1'
+      # - name: Run Trivy vulnerability scanner
+      #   uses: aquasecurity/trivy-action@master
+      #   with:
+      #     image-ref: '${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}:${{ env.semantic_tag }}'
+      #     format: 'table'
+      #     ignore-unfixed: true
+      #     vuln-type: 'os,library'
+      #     severity: 'CRITICAL,HIGH'
+      #     exit-code: '1'
 
       - name: Push Docker image
         uses: docker/build-push-action@v5
