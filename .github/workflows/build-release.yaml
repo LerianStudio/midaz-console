@@ -44,6 +44,8 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+    outputs:
+      semantic_tag: ${{ steps.semantic_release.outputs.semantic_tag }}
     steps:
       - name: Create GitHub App Token
         uses: actions/create-github-app-token@v1
@@ -91,8 +93,8 @@ jobs:
         run: |
           TAG=$(npx semantic-release | grep 'The next release version is' | awk '{print $NF}')
           echo "Generated tag: $TAG"
-          echo "semantic_tag=$TAG" >> $GITHUB_ENV
-
+          echo "::set-output name=semantic_tag::$TAG"
+        
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
@@ -120,24 +122,16 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Generate Valid Docker Tag
-        id: generate_tag
-        run: |
-            TAG=$(npx semantic-release | grep 'The next release version is' | awk '{print $NF}')
-            echo "Generated tag: $TAG"
-            echo "semantic_tag=$TAG" >> $GITHUB_ENV
-      
-      - name: Debug semantic_tag
-        run: echo "semantic_tag=${{ env.semantic_tag }}"
+      - name: Debug: semantic_tag
+        run: echo "semantic_tag=${{ needs.release.outputs.semantic_tag }}"
 
-        
       - name: Docker metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
             images: ${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}
             tags: |
-              ${{ env.semantic_tag }}
+              ${{ needs.release.outputs.semantic_tag }}
               ${{ github.ref == 'refs/heads/main' && 'latest' || github.ref == 'refs/heads/develop' && 'next' || startsWith(github.ref, 'refs/heads/feature/') && 'feat' || '' }}
         
       - name: Build Docker image
@@ -152,7 +146,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: '${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}:${{ env.semantic_tag }}'
+          image-ref: '${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}:${{ needs.release.outputs.semantic_tag }}'
           format: 'table'
           ignore-unfixed: true
           vuln-type: 'os,library'
