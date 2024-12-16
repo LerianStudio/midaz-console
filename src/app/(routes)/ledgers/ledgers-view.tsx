@@ -26,9 +26,19 @@ type LedgersViewProps = {
   ledgers: PaginationDto<LedgerResponseDto> | undefined
   refetch: () => void
   isLoading: boolean
+  pageSizeOptions?: number[]
+  defaultPageSize?: number
+  defaultPage?: number
 }
 
-const LedgersView = ({ ledgers, refetch, isLoading }: LedgersViewProps) => {
+const LedgersView = ({
+  ledgers,
+  refetch,
+  isLoading,
+  pageSizeOptions = [10, 50, 100],
+  defaultPageSize = 10,
+  defaultPage = 1
+}: LedgersViewProps) => {
   const intl = useIntl()
   const { currentOrganization } = useOrganization()
   const { showSuccess, showError } = useCustomToast()
@@ -108,20 +118,11 @@ const LedgersView = ({ ledgers, refetch, isLoading }: LedgersViewProps) => {
                 defaultMessage: 'What is a Ledger?'
               })}
             />
-            <Button
-              icon={<Plus />}
-              onClick={handleCreate}
-              data-testid="new-ledger"
-            >
-              {!ledgers || ledgers.items.length === 0
-                ? intl.formatMessage({
-                    id: 'ledgers.listingTemplate.newAddButton',
-                    defaultMessage: 'Create your first Ledger'
-                  })
-                : intl.formatMessage({
-                    id: 'ledgers.listingTemplate.addButton',
-                    defaultMessage: 'New Ledger'
-                  })}
+            <Button onClick={handleCreate} data-testid="new-ledger">
+              {intl.formatMessage({
+                id: 'ledgers.listingTemplate.addButton',
+                defaultMessage: 'New Ledger'
+              })}
             </Button>
           </PageHeader.ActionButtons>
         </PageHeader.Wrapper>
@@ -153,6 +154,9 @@ const LedgersView = ({ ledgers, refetch, isLoading }: LedgersViewProps) => {
             isLoading={isLoading}
             table={table}
             handleDialogOpen={handleDialogOpen}
+            pageSizeOptions={pageSizeOptions}
+            currentPageSize={defaultPageSize}
+            currentPage={defaultPage}
             refetch={refetch}
           />
         )}
