@@ -1,18 +1,6 @@
 name: Release and Build
 
 on:
-  push:
-    branches:
-      - 'fix/*'
-      - 'feature/*'
-    paths-ignore:
-      - '.gitignore'
-      - '**/*.env'
-      - '*.env'
-      - '**/*.md'
-      - '*.md'
-      - '**/*.txt'
-      - '*.txt'
   pull_request:
     branches:
       - develop
@@ -40,7 +28,7 @@ jobs:
   release:
     name: Create Release for Node.js Project
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/feature/')
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
     permissions:
       contents: write
       pull-requests: write
@@ -132,7 +120,7 @@ jobs:
             images: ${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}
             tags: |
               ${{ needs.release.outputs.semantic_tag }}
-              ${{ github.ref == 'refs/heads/main' && 'latest' || github.ref == 'refs/heads/develop' && 'next' || startsWith(github.ref, 'refs/heads/feature/') && 'feat' || '' }}
+              ${{ github.ref == 'refs/heads/main' && 'latest' || github.ref == 'refs/heads/develop' && 'next' || '' }}
         
       - name: Build Docker image
         uses: docker/build-push-action@v5
