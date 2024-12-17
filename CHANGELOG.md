@@ -4,6 +4,15 @@
 ### Bug Fixes
 
 * changing the trigger to execute github action WF ([d0be6c4](https://github.com/LerianStudio/midaz-console/commit/d0be6c493b2e3343eeb5bc843bfdd90e8b48e948))
+* improve steps to control the github actions workflow ([b23314a](https://github.com/LerianStudio/midaz-console/commit/b23314a2db5b9d35af9fd39d1780e9b89c2a338b))
+* persist the value of build tag on entire flow ([3510e8d](https://github.com/LerianStudio/midaz-console/commit/3510e8da5ee40a4ad61bb9a57c527928dc64701c))
+
+## [1.0.5](https://github.com/LerianStudio/midaz-console/compare/v1.0.4...v1.0.5) (2024-12-17)
+
+
+### Bug Fixes
+
+* changing the trigger to execute github action WF ([d0be6c4](https://github.com/LerianStudio/midaz-console/commit/d0be6c493b2e3343eeb5bc843bfdd90e8b48e948))
 * persist the value of build tag on entire flow ([3510e8d](https://github.com/LerianStudio/midaz-console/commit/3510e8da5ee40a4ad61bb9a57c527928dc64701c))
 
 ## [1.0.4](https://github.com/LerianStudio/midaz-console/compare/v1.0.3...v1.0.4) (2024-12-16)
