@@ -1,3 +1,18 @@
+# [1.1.0](https://github.com/LerianStudio/midaz-console/compare/v1.0.4...v1.1.0) (2024-12-17)
+
+
+### Bug Fixes
+
+* changing the trigger to execute github action WF ([d0be6c4](https://github.com/LerianStudio/midaz-console/commit/d0be6c493b2e3343eeb5bc843bfdd90e8b48e948))
+* improve steps to control the github actions workflow ([b23314a](https://github.com/LerianStudio/midaz-console/commit/b23314a2db5b9d35af9fd39d1780e9b89c2a338b))
+* persist the value of build tag on entire flow ([3510e8d](https://github.com/LerianStudio/midaz-console/commit/3510e8da5ee40a4ad61bb9a57c527928dc64701c))
+* set gitattributes to untrack LFS files ([692dd3d](https://github.com/LerianStudio/midaz-console/commit/692dd3d55b3fa5e742a892b8b19b18ff78ec7fb5))
+
+
+### Features
+
+* improve the flow to notificate a new releases ([7995ee7](https://github.com/LerianStudio/midaz-console/commit/7995ee70f60460121a6298124a279661ea23baa5))
+
 ## [1.0.5](https://github.com/LerianStudio/midaz-console/compare/v1.0.4...v1.0.5) (2024-12-17)
 
 
