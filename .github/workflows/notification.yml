@@ -1,14 +1,10 @@
 name: Notification
 
 on:
-  pull_request:
-    #branches:
-      #- develop
-    types:
-      - opened
-      - edited
-      - synchronize
-      - reopened
+  push:
+    branches:
+      - develop
+      - main
 
 permissions:
   id-token: write
@@ -45,6 +41,17 @@ jobs:
           RAW_RELEASE=$(gh release list --repo $GITHUB_REPOSITORY --limit 1 --json tagName --jq '.[0].tagName')
           echo "Raw release: $RAW_RELEASE"
           echo "tag=${RAW_RELEASE}" >> $GITHUB_ENV
+      
+      # Definir a mensagem com base na branch
+      - name: Set Message for Slack Notification
+        id: set_message
+        run: |
+          if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
+            echo "message=🎉 *Nova Release na branch main* \n \n <https://github.com/${{ github.repository }}/releases/tag/${{ env.tag }} | *Clique aqui para detalhes*>" >> $GITHUB_ENV
+          elif [[ "${GITHUB_REF}" == "refs/heads/develop" ]]; then
+            echo "message=🚀 *Nova Release na branch develop* \n \n <https://github.com/${{ github.repository }}/releases/tag/${{ env.tag }} | *Clique aqui para detalhes*>" >> $GITHUB_ENV
+          fi
+
 
       # Notificar o Slack sobre nova release
       - name: Notify Slack of New Release
