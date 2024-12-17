@@ -1,5 +1,4 @@
-import { LogContext, LogEntry } from '@/lib/logger/types'
-import { LogMetadata } from '@/lib/logger/types'
+import { LogContext, LogMetadata } from '@/core/domain/entities/log-entities'
 
 export abstract class LoggerRepository {
   abstract info(

@@ -28,7 +28,7 @@ export async function POST(
     const organizationId = params.id
     const ledgerId = params.ledgerId
 
-    loggerAggregator.runWithContext(
+    return loggerAggregator.runWithContext(
       'createProduct',
       'POST',
       {
@@ -36,6 +36,13 @@ export async function POST(
         action: 'execute'
       },
       async () => {
+        loggerAggregator.addEvent({
+          message: 'Creating product',
+          metadata: { organizationId, ledgerId, product: body },
+          layer: 'application',
+          operation: 'createProduct',
+          level: 'info'
+        })
         const productCreated = await createProductUseCase.execute(
           organizationId,
           ledgerId,

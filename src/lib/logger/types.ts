@@ -1,3 +1,5 @@
+import { LogEvent } from 'pino'
+// DEPRECATED
 export interface LogMetadata {
   userId?: string
   organizationId?: string
@@ -13,6 +15,7 @@ export interface LogContext {
   metadata: LogMetadata
   params?: Record<string, any>
   component?: string
+  events?: Record<string, any>
 }
 
 export interface LogEntry {

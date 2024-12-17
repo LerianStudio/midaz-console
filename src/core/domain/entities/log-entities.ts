@@ -5,10 +5,15 @@ export interface LogMetadata {
 }
 
 export interface LogContext {
-  layer: 'api' | 'application' | 'infrastructure' | 'domain'
-  operation: string
-  params?: Record<string, any>
-  component?: string
+  // layer: 'api' | 'application' | 'infrastructure' | 'domain'
+  // path: string
+  // method: string
+  // duration: number
+  // operation: string
+  // metadata: LogMetadata
+  // params?: Record<string, any>
+  // component?: string
+  events?: Record<string, any>
 }
 
 export interface LogEntry {

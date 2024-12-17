@@ -75,17 +75,12 @@ export class LoggerAggregator {
   finalizeContext() {
     const context = this.getContext()
 
-    console.log('context finalize context', context)
     if (context) {
-      const duration = Date.now() - context.startTime
+      const duration = (Date.now() - context.startTime) / 1000
 
       this.loggerRepository.info(
         'Request Timeline',
         {
-          path: context.path,
-          method: context.method,
-          duration,
-          metadata: context.metadata,
           events: context.events.map((event) => ({
             ...event,
             timestamp: new Date(event.timestamp).toISOString()
@@ -93,20 +88,22 @@ export class LoggerAggregator {
         },
         {
           layer: 'api',
-          operation: 'request_timeline'
+          operation: 'request_timeline',
+          path: context.path,
+          method: context.method,
+          duration,
+          metadata: context.metadata
         }
       )
     }
   }
 
   private getContext(): RequestContext | undefined {
-    console.log('getContext iiniciou', this.storage.getStore())
     return this.storage.getStore()
   }
 
   addEvent(event: Omit<LogEvent, 'timestamp'>) {
     const context = this.getContext()
-    console.log('context add event', context)
     if (context) {
       if (event.level === 'debug' && !this.shouldLogDebug()) {
         return
@@ -118,16 +115,6 @@ export class LoggerAggregator {
       }
 
       context.events.push(fullEvent)
-    }
-  }
-
-  private updateMetadata(metadata: Partial<RequestContext['metadata']>) {
-    const context = this.getContext()
-    if (context) {
-      context.metadata = {
-        ...context.metadata,
-        ...metadata
-      }
     }
   }
 }

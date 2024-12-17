@@ -6,7 +6,7 @@ export function LogOperation(options: {
   operation: string
 }) {
   const loggerAggregator = container.get<LoggerAggregator>(LoggerAggregator)
-
+  console.log(loggerAggregator)
   return function (
     target: any,
     propertyKey: string,

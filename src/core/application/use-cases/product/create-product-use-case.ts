@@ -4,6 +4,7 @@ import { ProductMapper } from '../../mappers/product-mapper'
 import { CreateProductRepository } from '@/core/domain/repositories/products/create-product-repository'
 import { inject, injectable } from 'inversify'
 import { LoggerAggregator } from '../../logger/logger-aggregator'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface CreateProduct {
   execute: (
