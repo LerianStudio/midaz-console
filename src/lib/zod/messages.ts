@@ -26,6 +26,10 @@ const messages = defineMessages({
     defaultMessage:
       'Field must contain over {minimum} {minimum, plural, =0 {characters} one {character} other {characters}}'
   },
+  too_small_number_not_inclusive: {
+    id: 'errors.too_small.number.not_inclusive',
+    defaultMessage: 'Field must be greater than {minimum}'
+  },
   too_small_date_exact: {
     id: 'errors.too_small.date.exact',
     defaultMessage: 'Date must be exactly {minimum}'
@@ -54,6 +58,10 @@ const messages = defineMessages({
     id: 'errors.too_big.string.not_inclusive',
     defaultMessage:
       'Field must contain under {maximum} {maximum, plural, =0 {characters} one {character} other {characters}}'
+  },
+  too_big_number_inclusive: {
+    id: 'errors.too_big.number.inclusive',
+    defaultMessage: 'Field must be less than or equal to {maximum}'
   },
   too_big_date_exact: {
     id: 'errors.too_big.date.exact',
