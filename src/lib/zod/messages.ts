@@ -92,6 +92,10 @@ const messages = defineMessages({
   custom_date_invalid: {
     id: 'errors.custom.date.invalid',
     defaultMessage: 'Invalid date'
+  },
+  custom_uppercase_required: {
+    id: 'errors.custom.uppercase_required',
+    defaultMessage: 'Field must be in uppercase and consist of letters only'
   }
 })
 

@@ -1,7 +1,7 @@
 import { PortfolioEntity } from '../../entities/portfolios-entity'
 
-export interface UpdatePortfolioRepository {
-  update: (
+export abstract class UpdatePortfolioRepository {
+  abstract update: (
     organizationId: string,
     ledgerId: string,
     portfolioId: string,

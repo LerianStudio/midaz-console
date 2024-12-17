@@ -3,7 +3,7 @@ import { CreateAssetRepository } from '@/core/domain/repositories/assets/create-
 import { CreateAssetDto } from '../../dto/create-asset-dto'
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { AssetResponseDto } from '../../dto/asset-response-dto'
-import { assetDtoToEntity, assetEntityToDto } from '../../mappers/asset-mapper'
+import { AssetMapper } from '../../mappers/asset-mapper'
 
 jest.mock('../../mappers/asset-mapper')
 
@@ -55,9 +55,9 @@ describe('CreateAssetUseCase', () => {
       deletedAt: null
     }
 
-    ;(assetDtoToEntity as jest.Mock).mockReturnValue(assetEntity)
+    ;(AssetMapper.toDomain as jest.Mock).mockReturnValue(assetEntity)
     createAssetRepository.create.mockResolvedValue(assetEntity)
-    ;(assetEntityToDto as jest.Mock).mockReturnValue(assetResponseDto)
+    ;(AssetMapper.toResponseDto as jest.Mock).mockReturnValue(assetResponseDto)
 
     const result = await createAssetUseCase.execute(
       organizationId,
@@ -65,13 +65,13 @@ describe('CreateAssetUseCase', () => {
       createAssetDto
     )
 
-    expect(assetDtoToEntity).toHaveBeenCalledWith(createAssetDto)
+    expect(AssetMapper.toDomain).toHaveBeenCalledWith(createAssetDto)
     expect(createAssetRepository.create).toHaveBeenCalledWith(
       organizationId,
       ledgerId,
       assetEntity
     )
-    expect(assetEntityToDto).toHaveBeenCalledWith(assetEntity)
+    expect(AssetMapper.toResponseDto).toHaveBeenCalledWith(assetEntity)
     expect(result).toEqual(assetResponseDto)
   })
 
@@ -99,7 +99,7 @@ describe('CreateAssetUseCase', () => {
       deletedAt: null
     }
 
-    ;(assetDtoToEntity as jest.Mock).mockReturnValue(assetEntity)
+    ;(AssetMapper.toDomain as jest.Mock).mockReturnValue(assetEntity)
     createAssetRepository.create.mockRejectedValue(
       new Error('Repository create failed')
     )

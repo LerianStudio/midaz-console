@@ -1,13 +1,11 @@
 import { CreatePortfolioRepository } from '@/core/domain/repositories/portfolios/create-portfolio-repository'
-import {
-  portfolioDtoToEntity,
-  portfolioEntityToDto
-} from '../../mappers/portfolio-mapper'
+import { PortfolioMapper } from '../../mappers/portfolio-mapper'
 import {
   CreatePortfolioDto,
   PortfolioResponseDto
 } from '../../dto/portfolios-dto'
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
+import { inject, injectable } from 'inversify'
 
 export interface CreatePortfolio {
   execute: (
@@ -17,8 +15,10 @@ export interface CreatePortfolio {
   ) => Promise<PortfolioResponseDto>
 }
 
+@injectable()
 export class CreatePortfolioUseCase implements CreatePortfolio {
   constructor(
+    @inject(CreatePortfolioRepository)
     private readonly createPortfolioRepository: CreatePortfolioRepository
   ) {}
 
@@ -31,16 +31,13 @@ export class CreatePortfolioUseCase implements CreatePortfolio {
       code: 'ACTIVE',
       description: 'Teste Portfolio'
     }
-    const portfolioEntity: PortfolioEntity = portfolioDtoToEntity(portfolio)
+    const portfolioEntity: PortfolioEntity = PortfolioMapper.toDomain(portfolio)
     const portfolioCreated = await this.createPortfolioRepository.create(
       organizationId,
       ledgerId,
       portfolioEntity
     )
 
-    const portfolioResponseDto: PortfolioResponseDto =
-      portfolioEntityToDto(portfolioCreated)
-
-    return portfolioResponseDto
+    return PortfolioMapper.toResponseDto(portfolioCreated)
   }
 }

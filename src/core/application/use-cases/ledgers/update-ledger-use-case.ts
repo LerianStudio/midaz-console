@@ -2,10 +2,8 @@ import { UpdateLedgerRepository } from '@/core/domain/repositories/ledgers/updat
 import { LedgerResponseDto } from '../../dto/ledger-response-dto'
 import { UpdateLedgerDto } from '../../dto/update-ledger-dto'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
-import {
-  ledgerEntityToDto,
-  ledgerUpdateDtoToEntity
-} from '../../mappers/ledger-mapper'
+import { inject, injectable } from 'inversify'
+import { LedgerMapper } from '../../mappers/ledger-mapper'
 
 export interface UpdateLedger {
   execute: (
@@ -15,8 +13,10 @@ export interface UpdateLedger {
   ) => Promise<LedgerResponseDto>
 }
 
+@injectable()
 export class UpdateLedgerUseCase implements UpdateLedger {
   constructor(
+    @inject(UpdateLedgerRepository)
     private readonly updateLedgerRepository: UpdateLedgerRepository
   ) {}
 
@@ -25,7 +25,7 @@ export class UpdateLedgerUseCase implements UpdateLedger {
     ledgerId: string,
     ledger: Partial<UpdateLedgerDto>
   ): Promise<LedgerResponseDto> {
-    const ledgerEntity: Partial<LedgerEntity> = ledgerUpdateDtoToEntity(ledger)
+    const ledgerEntity: Partial<LedgerEntity> = LedgerMapper.toDomain(ledger)
 
     const updatedLedgerEntity = await this.updateLedgerRepository.update(
       organizationId,
@@ -33,9 +33,6 @@ export class UpdateLedgerUseCase implements UpdateLedger {
       ledgerEntity
     )
 
-    const ledgerResponseDto: LedgerResponseDto =
-      ledgerEntityToDto(updatedLedgerEntity)
-
-    return ledgerResponseDto
+    return LedgerMapper.toResponseDto(updatedLedgerEntity)
   }
 }

@@ -5,9 +5,11 @@ import {
 } from '@/core/domain/entities/auth-entity'
 import { AuthLoginRepository } from '@/core/domain/repositories/auth/auth-login-repository'
 import { UnauthorizedException } from '@/core/infrastructure/errors/http-exceptions'
+import { injectable } from 'inversify'
 import * as jwt from 'jsonwebtoken'
 import { JwtPayload } from 'jsonwebtoken'
 
+@injectable()
 export class CasdoorAuthLoginRepository implements AuthLoginRepository {
   private readonly casdoorBaseUrl: string = process.env
     .NEXTAUTH_CASDOOR_AUTH_URL as string

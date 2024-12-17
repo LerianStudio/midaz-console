@@ -1,9 +1,10 @@
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { FetchAllLedgersRepository } from '@/core/domain/repositories/ledgers/fetch-all-ledgers-repository'
-import { handleMidazError } from '../../utils/midaz-error-handler'
 import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { injectable } from 'inversify'
 
+@injectable()
 export class MidazFetchAllLedgersRepository
   implements FetchAllLedgersRepository
 {

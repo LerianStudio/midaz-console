@@ -1,6 +1,7 @@
 import { FetchProductByIdRepository } from '@/core/domain/repositories/products/fetch-product-by-id-repository'
 import { ProductResponseDto } from '../../dto/product-dto'
-import { productEntityToDto } from '../../mappers/product-mapper'
+import { ProductMapper } from '../../mappers/product-mapper'
+import { inject, injectable } from 'inversify'
 
 export interface FetchProductById {
   execute: (
@@ -10,8 +11,10 @@ export interface FetchProductById {
   ) => Promise<ProductResponseDto>
 }
 
+@injectable()
 export class FetchProductByIdUseCase implements FetchProductById {
   constructor(
+    @inject(FetchProductByIdRepository)
     private readonly fetchProductByIdRepository: FetchProductByIdRepository
   ) {}
 
@@ -26,8 +29,6 @@ export class FetchProductByIdUseCase implements FetchProductById {
       productId
     )
 
-    const productResponseDto: ProductResponseDto = productEntityToDto(product)
-
-    return productResponseDto
+    return ProductMapper.toResponseDto(product)
   }
 }

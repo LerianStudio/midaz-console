@@ -2,7 +2,9 @@ import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
 import { FetchAllAccountsRepository } from '@/core/domain/repositories/accounts/fetch-all-accounts-repository'
 import { AccountEntity } from '@/core/domain/entities/account-entity'
+import { injectable } from 'inversify'
 
+@injectable()
 export class MidazFetchAllAccountsRepository
   implements FetchAllAccountsRepository
 {
@@ -11,11 +13,10 @@ export class MidazFetchAllAccountsRepository
   async fetchAll(
     organizationId: string,
     ledgerId: string,
-    portfolioId: string,
     limit: number,
     page: number
   ): Promise<PaginationEntity<AccountEntity>> {
-    const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}/accounts?limit=${limit}&page=${page}`
+    const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/accounts?limit=${limit}&page=${page}`
 
     const response = await httpMidazAuthFetch<PaginationEntity<AccountEntity>>({
       url,

@@ -1,5 +1,5 @@
+import { AccountResponseDto } from '@/core/application/dto/account-dto'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
-import { PortfolioViewResponseDTO } from '@/core/application/dto/portfolio-view-dto'
 import { AccountEntity } from '@/core/domain/entities/account-entity'
 import {
   deleteFetcher,
@@ -10,45 +10,42 @@ import {
 import {
   useMutation,
   UseMutationOptions,
-  useQuery,
-  UseQueryOptions
+  useQuery
 } from '@tanstack/react-query'
 
 type UseListAccountsProps = {
   organizationId: string
   ledgerId: string
-  portfolioId: string
 }
 
 export const useListAccounts = ({
   organizationId,
   ledgerId,
-  portfolioId,
   ...options
 }: UseListAccountsProps) => {
   return useQuery<PaginationDto<AccountEntity>>({
-    queryKey: [organizationId, ledgerId, portfolioId, 'accounts'],
+    queryKey: [organizationId, ledgerId, 'accounts'],
     queryFn: getFetcher(
-      `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}/accounts`
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/accounts`
     ),
     ...options
   })
 }
 
-type UseAllPortfoliosAccountsProps = {
+type UseAccountsWithPortfoliosProps = {
   organizationId: string
   ledgerId: string
 }
 
-export const useAllPortfoliosAccounts = ({
+export const useAccountsWithPortfolios = ({
   organizationId,
   ledgerId,
   ...options
-}: UseAllPortfoliosAccountsProps) => {
-  return useQuery<PaginationDto<PortfolioViewResponseDTO>>({
-    queryKey: [organizationId, ledgerId, 'portfolios-accounts'],
+}: UseAccountsWithPortfoliosProps) => {
+  return useQuery<PaginationDto<AccountResponseDto>>({
+    queryKey: [organizationId, ledgerId, 'accounts-with-portfolios'],
     queryFn: getFetcher(
-      `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/portfolios-accounts`
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/accounts-portfolios`
     ),
     ...options
   })
@@ -57,21 +54,19 @@ export const useAllPortfoliosAccounts = ({
 type UseDeleteAccountProps = UseMutationOptions & {
   organizationId: string
   ledgerId: string
-  portfolioId: string
   accountId: string
 }
 
 export const useDeleteAccount = ({
   organizationId,
   ledgerId,
-  portfolioId,
   accountId,
   ...options
 }: UseDeleteAccountProps) => {
   return useMutation<any, any, any>({
-    mutationKey: [organizationId, ledgerId, portfolioId, accountId],
+    mutationKey: [organizationId, ledgerId, accountId],
     mutationFn: deleteFetcher(
-      `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}/accounts`
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/accounts`
     ),
     ...options
   })
@@ -80,19 +75,17 @@ export const useDeleteAccount = ({
 type UseCreateAccountProps = UseMutationOptions & {
   organizationId: string
   ledgerId: string
-  portfolioId: string
 }
 
 export const useCreateAccount = ({
   organizationId,
   ledgerId,
-  portfolioId,
   ...options
 }: UseCreateAccountProps) => {
   return useMutation<any, any, any>({
-    mutationKey: [organizationId, ledgerId, portfolioId],
+    mutationKey: [organizationId, ledgerId],
     mutationFn: postFetcher(
-      `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}/accounts`
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/accounts`
     ),
     ...options
   })
@@ -101,21 +94,19 @@ export const useCreateAccount = ({
 type UseUpdateAccountProps = UseMutationOptions & {
   organizationId: string
   ledgerId: string
-  portfolioId: string
   accountId: string
 }
 
 export const useUpdateAccount = ({
   organizationId,
   ledgerId,
-  portfolioId,
   accountId,
   ...options
 }: UseUpdateAccountProps) => {
   return useMutation<any, any, any>({
-    mutationKey: [organizationId, ledgerId, portfolioId, accountId],
+    mutationKey: [organizationId, ledgerId, accountId],
     mutationFn: patchFetcher(
-      `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}/accounts/${accountId}`
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/accounts/${accountId}`
     ),
     ...options
   })

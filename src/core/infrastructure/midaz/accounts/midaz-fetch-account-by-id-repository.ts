@@ -1,7 +1,9 @@
 import { AccountEntity } from '@/core/domain/entities/account-entity'
 import { FetchAccountByIdRepository } from '@/core/domain/repositories/accounts/fetch-account-by-id-repository'
 import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
+import { injectable } from 'inversify'
 
+@injectable()
 export class MidazFetchAccountByIdRepository
   implements FetchAccountByIdRepository
 {
@@ -10,10 +12,9 @@ export class MidazFetchAccountByIdRepository
   async fetchById(
     organizationId: string,
     ledgerId: string,
-    portfolioId: string,
     accountId: string
   ): Promise<AccountEntity> {
-    const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}/accounts/${accountId}`
+    const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/accounts/${accountId}`
 
     const response = await httpMidazAuthFetch<AccountEntity>({
       url,

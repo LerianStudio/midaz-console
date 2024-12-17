@@ -1,7 +1,7 @@
 import { FetchOrganizationByIdUseCase } from './fetch-organization-by-id-use-case'
 import { FetchOrganizationByIdRepository } from '@/core/domain/repositories/organizations/fetch-organization-by-id-repository'
 import { OrganizationResponseDto } from '../../dto/organization-response-dto'
-import { organizationEntityToDto } from '../../mappers/organization-mapper'
+import { OrganizationMapper } from '../../mappers/organization-mapper'
 
 jest.mock('../../mappers/organization-mapper')
 
@@ -49,7 +49,7 @@ describe('FetchOrganizationByIdUseCase', () => {
     ;(fetchOrganizationByIdRepository.fetchById as jest.Mock).mockResolvedValue(
       organizationEntity
     )
-    ;(organizationEntityToDto as jest.Mock).mockReturnValue(
+    ;(OrganizationMapper.toResponseDto as jest.Mock).mockReturnValue(
       organizationResponseDto
     )
 
@@ -58,7 +58,9 @@ describe('FetchOrganizationByIdUseCase', () => {
     expect(fetchOrganizationByIdRepository.fetchById).toHaveBeenCalledWith(
       organizationId
     )
-    expect(organizationEntityToDto).toHaveBeenCalledWith(organizationEntity)
+    expect(OrganizationMapper.toResponseDto).toHaveBeenCalledWith(
+      organizationEntity
+    )
     expect(result).toEqual(organizationResponseDto)
   })
 

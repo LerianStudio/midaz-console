@@ -2,11 +2,11 @@ import { FetchAllAssetsRepository } from '@/core/domain/repositories/assets/fetc
 import { FetchAllLedgersRepository } from '@/core/domain/repositories/ledgers/fetch-all-ledgers-repository'
 import { LedgersViewResponseDTO } from '../../dto/ledgers-view-dto'
 import { PaginationDto } from '../../dto/pagination-dto'
-import { AssetResponseDto } from '../../dto/asset-response-dto'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
-import { assetEntityToDto } from '../../mappers/asset-mapper'
+import { inject, injectable } from 'inversify'
+import { AssetMapper } from '../../mappers/asset-mapper'
 
 export interface FetchAllLedgersAssets {
   execute: (
@@ -16,9 +16,12 @@ export interface FetchAllLedgersAssets {
   ) => Promise<PaginationDto<LedgersViewResponseDTO>>
 }
 
+@injectable()
 export class FetchAllLedgersAssetsUseCase implements FetchAllLedgersAssets {
   constructor(
+    @inject(FetchAllLedgersRepository)
     private readonly fetchAllLedgersRepository: FetchAllLedgersRepository,
+    @inject(FetchAllAssetsRepository)
     private readonly fetchAllAssetsRepository: FetchAllAssetsRepository
   ) {}
 
@@ -61,7 +64,7 @@ export class FetchAllLedgersAssetsUseCase implements FetchAllLedgersAssets {
           updatedAt: ledger.updatedAt!,
           deletedAt: ledger.deletedAt!,
           assets: assetsResult.items
-            ? assetsResult.items.map(assetEntityToDto)
+            ? assetsResult.items.map(AssetMapper.toResponseDto)
             : []
         }
 

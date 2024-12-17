@@ -83,7 +83,7 @@ describe('httpMidazAuthFetch', () => {
       method: options.method,
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer mock_access_token`
+        Authorization: `Bearer ${mockSession.user.access_token}`
       },
       body: options.body
     })
@@ -113,7 +113,7 @@ describe('httpMidazAuthFetch', () => {
       method: options.method,
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer mock_access_token`,
+        Authorization: `Bearer ${mockSession.user.access_token}`,
         'Custom-Header': 'CustomValue'
       },
       body: undefined

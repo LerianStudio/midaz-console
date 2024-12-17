@@ -1,15 +1,20 @@
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { PaginationDto } from '../dto/pagination-dto'
 
-// export async function paginationEntityToDto<T>(
-//   paginationEntity: PaginationEntity<T>,
-//   mapperItem = (item: T) => Promise<T>
-// ): Promise<PaginationDto<T>> {
+export class PaginationMapper {
+  static toResponseDto<T, R = T>(
+    paginationEntity: PaginationEntity<T>,
+    mapper = (item: T) => item as unknown as R
+  ): PaginationDto<R> {
+    const items =
+      paginationEntity.items && paginationEntity.items !== null
+        ? paginationEntity.items.map(mapper)
+        : []
 
-//   const items = paginationEntity.items.map(mapperItem)
-//   return {
-//     items: items,
-//     limit: paginationEntity.limit,
-//     page: paginationEntity.page
-//   }
-// }
+    return {
+      items: items,
+      limit: paginationEntity.limit,
+      page: paginationEntity.page
+    }
+  }
+}

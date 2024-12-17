@@ -1,35 +1,40 @@
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { CreateLedgerDto } from '../dto/create-ledger-dto'
 import { LedgerResponseDto } from '../dto/ledger-response-dto'
+import { UpdateProductDto } from '../dto/product-dto'
+import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
+import { PaginationMapper } from './pagination-mapper'
 
-export function ledgerDtoToEntity(dto: CreateLedgerDto): LedgerEntity {
-  return {
-    name: dto.name,
-    status: dto.status,
-    metadata: dto.metadata
+export class LedgerMapper {
+  public static toDomain(
+    dto: CreateLedgerDto | UpdateProductDto
+  ): LedgerEntity {
+    return {
+      name: dto.name!,
+      status: dto.status!,
+      metadata: dto.metadata!
+    }
   }
-}
 
-export function ledgerEntityToDto(entity: LedgerEntity): LedgerResponseDto {
-  return {
-    id: entity.id!,
-    organizationId: entity.organizationId!,
-    name: entity.name,
-    status: {
-      code: entity.status.code,
-      description: entity.status.description ?? ''
-    },
-    metadata: entity.metadata ?? {},
-    createdAt: entity.createdAt!,
-    updatedAt: entity.updatedAt!,
-    deletedAt: entity.deletedAt!
+  public static toResponseDto(ledger: LedgerEntity): LedgerResponseDto {
+    return {
+      id: ledger.id!,
+      organizationId: ledger.organizationId!,
+      name: ledger.name,
+      status: {
+        code: ledger.status.code,
+        description: ledger.status.description ?? ''
+      },
+      metadata: ledger.metadata ?? {},
+      createdAt: ledger.createdAt!,
+      updatedAt: ledger.updatedAt!,
+      deletedAt: ledger.deletedAt!
+    }
   }
-}
 
-export function ledgerUpdateDtoToEntity(
-  dto: Partial<CreateLedgerDto>
-): Partial<LedgerEntity> {
-  return {
-    ...dto
+  public static toPaginationResponseDto(
+    result: PaginationEntity<LedgerEntity>
+  ): PaginationEntity<LedgerResponseDto> {
+    return PaginationMapper.toResponseDto(result, LedgerMapper.toResponseDto)
   }
 }

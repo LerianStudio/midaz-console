@@ -1,7 +1,7 @@
 import { FetchLedgerByIdUseCase } from './fetch-ledger-by-id-use-case'
 import { FetchLedgerByIdRepository } from '@/core/domain/repositories/ledgers/fetch-ledger-by-id-repository'
 import { LedgerResponseDto } from '../../dto/ledger-response-dto'
-import { ledgerEntityToDto } from '../../mappers/ledger-mapper'
+import { LedgerMapper } from '../../mappers/ledger-mapper'
 
 jest.mock('../../mappers/ledger-mapper')
 
@@ -36,7 +36,9 @@ describe('FetchLedgerByIdUseCase', () => {
     ;(fetchLedgerByIdRepository.fetchById as jest.Mock).mockResolvedValue(
       ledgerEntity
     )
-    ;(ledgerEntityToDto as jest.Mock).mockReturnValue(ledgerResponseDto)
+    ;(LedgerMapper.toResponseDto as jest.Mock).mockReturnValue(
+      ledgerResponseDto
+    )
 
     const result = await fetchLedgerByIdUseCase.execute(
       organizationId,
@@ -47,7 +49,7 @@ describe('FetchLedgerByIdUseCase', () => {
       organizationId,
       ledgerId
     )
-    expect(ledgerEntityToDto).toHaveBeenCalledWith(ledgerEntity)
+    expect(LedgerMapper.toResponseDto).toHaveBeenCalledWith(ledgerEntity)
     expect(result).toEqual(ledgerResponseDto)
   })
 

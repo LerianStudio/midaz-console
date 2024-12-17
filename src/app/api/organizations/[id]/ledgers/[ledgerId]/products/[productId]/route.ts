@@ -1,24 +1,28 @@
+import { container } from '@/core/infrastructure/container-registry/container-registry'
 import { apiErrorHandler } from '@/app/api/utils/api-error-handler'
-import { DeleteProduct } from '@/core/application/use-cases/product/delete-product-use-case'
-import { FetchProductById } from '@/core/application/use-cases/product/fetch-product-by-id-use-case'
-import { UpdateProduct } from '@/core/application/use-cases/product/update-product-use-case'
 import {
-  container,
-  Registry
-} from '@/core/infrastructure/container-registry/container-registry'
+  DeleteProduct,
+  DeleteProductUseCase
+} from '@/core/application/use-cases/product/delete-product-use-case'
+import {
+  FetchProductById,
+  FetchProductByIdUseCase
+} from '@/core/application/use-cases/product/fetch-product-by-id-use-case'
+import {
+  UpdateProduct,
+  UpdateProductUseCase
+} from '@/core/application/use-cases/product/update-product-use-case'
 import { NextResponse } from 'next/server'
 
 const fetchProductById: FetchProductById = container.get<FetchProductById>(
-  Registry.FetchProductByIdUseCase
+  FetchProductByIdUseCase
 )
 
-const deleteProductUseCase: DeleteProduct = container.get<DeleteProduct>(
-  Registry.DeleteProductUseCase
-)
+const deleteProductUseCase: DeleteProduct =
+  container.get<DeleteProduct>(DeleteProductUseCase)
 
-const updateProductUseCase: UpdateProduct = container.get<UpdateProduct>(
-  Registry.UpdateProductUseCase
-)
+const updateProductUseCase: UpdateProduct =
+  container.get<UpdateProduct>(UpdateProductUseCase)
 
 export async function GET(
   request: Request,

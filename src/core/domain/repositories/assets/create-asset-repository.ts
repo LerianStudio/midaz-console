@@ -1,7 +1,7 @@
 import { AssetEntity } from '../../entities/asset-entity'
 
-export interface CreateAssetRepository {
-  create: (
+export abstract class CreateAssetRepository {
+  abstract create: (
     organizationId: string,
     ledgerId: string,
     asset: AssetEntity

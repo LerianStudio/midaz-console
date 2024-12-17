@@ -1,7 +1,7 @@
 import { FetchAssetByIdUseCase } from './fetch-asset-by-id-use-case'
 import { FetchAssetByIdRepository } from '@/core/domain/repositories/assets/fetch-asset-by-id-repository'
 import { AssetResponseDto } from '../../dto/asset-response-dto'
-import { assetEntityToDto } from '../../mappers/asset-mapper'
+import { AssetMapper } from '../../mappers/asset-mapper'
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
 
 jest.mock('../../mappers/asset-mapper')
@@ -49,7 +49,7 @@ describe('FetchAssetByIdUseCase', () => {
     }
 
     fetchAssetByIdRepository.fetchById.mockResolvedValue(assetEntity)
-    ;(assetEntityToDto as jest.Mock).mockReturnValue(assetDto)
+    ;(AssetMapper.toResponseDto as jest.Mock).mockReturnValue(assetDto)
 
     const result = await fetchAssetByIdUseCase.execute(
       organizationId,
@@ -62,7 +62,7 @@ describe('FetchAssetByIdUseCase', () => {
       ledgerId,
       assetId
     )
-    expect(assetEntityToDto).toHaveBeenCalledWith(assetEntity)
+    expect(AssetMapper.toResponseDto).toHaveBeenCalledWith(assetEntity)
     expect(result).toEqual(assetDto)
   })
 

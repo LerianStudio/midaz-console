@@ -2,9 +2,9 @@ import { FetchAllLedgersUseCase } from './fetch-all-ledgers-use-case'
 import { FetchAllLedgersRepository } from '@/core/domain/repositories/ledgers/fetch-all-ledgers-repository'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
-import { ledgerEntityToDto } from '../../mappers/ledger-mapper'
 import { LedgerResponseDto } from '../../dto/ledger-response-dto'
 import { PaginationDto } from '../../dto/pagination-dto'
+import { LedgerMapper } from '../../mappers/ledger-mapper'
 
 jest.mock('../../mappers/ledger-mapper')
 
@@ -53,21 +53,8 @@ describe('FetchAllLedgersUseCase', () => {
       page
     }
     fetchAllLedgersRepository.fetchAll.mockResolvedValue(mockPaginationEntity)
-    ;(ledgerEntityToDto as jest.Mock).mockImplementation(
-      (ledger: LedgerEntity) => {
-        const ledgerDto: LedgerResponseDto = {
-          id: ledger.id!,
-          organizationId: ledger.organizationId!,
-          name: ledger.name,
-          metadata: ledger.metadata,
-          status: ledger.status,
-          createdAt: ledger.createdAt!,
-          updatedAt: ledger.updatedAt!,
-          deletedAt: null
-        }
-
-        return ledgerDto
-      }
+    ;(LedgerMapper.toPaginationResponseDto as jest.Mock).mockReturnValue(
+      mockPaginationEntity
     )
 
     const result: PaginationEntity<LedgerResponseDto> =
@@ -93,6 +80,9 @@ describe('FetchAllLedgersUseCase', () => {
       page
     }
     fetchAllLedgersRepository.fetchAll.mockResolvedValue(mockPaginationEntity)
+    ;(LedgerMapper.toPaginationResponseDto as jest.Mock).mockReturnValue(
+      mockPaginationEntity
+    )
 
     const result: PaginationDto<LedgerResponseDto> =
       await fetchAllLedgersUseCase.execute(organizationId, limit, page)

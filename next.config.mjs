@@ -35,10 +35,20 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'http',
-        hostname: process.env.MIDAZ_CONSOLE_SERVICE_HOST,
+        hostname: process.env.MIDAZ_CONSOLE_SERVICE_HOST || 'localhost',
         pathname: '**'
       }
     ]
+  },
+  compiler: {
+    reactRemoveProperties:
+      process.env.NODE_ENV === 'production'
+        ? { properties: ['^data-testid$'] }
+        : false
+  },
+  experimental: {
+    instrumentationHook: true,
+    serverComponentsExternalPackages: ['@opentelemetry/instrumentation']
   }
 }
 

@@ -1,22 +1,20 @@
+import { container } from '@/core/infrastructure/container-registry/container-registry'
 import { apiErrorHandler } from '@/app/api/utils/api-error-handler'
 import {
-  CreateProductDto,
-  ProductResponseDto
-} from '@/core/application/dto/product-dto'
-import { CreateProduct } from '@/core/application/use-cases/product/create-product-use-case'
-import { FetchAllProducts } from '@/core/application/use-cases/product/fetch-all-products-use-case'
+  CreateProduct,
+  CreateProductUseCase
+} from '@/core/application/use-cases/product/create-product-use-case'
 import {
-  container,
-  Registry
-} from '@/core/infrastructure/container-registry/container-registry'
+  FetchAllProducts,
+  FetchAllProductsUseCase
+} from '@/core/application/use-cases/product/fetch-all-products-use-case'
 import { NextResponse } from 'next/server'
 
-const createProductUseCase: CreateProduct = container.get<CreateProduct>(
-  Registry.CreateProductUseCase
-)
+const createProductUseCase: CreateProduct =
+  container.get<CreateProduct>(CreateProductUseCase)
 
 const fetchAllProductsUseCase: FetchAllProducts =
-  container.get<FetchAllProducts>(Registry.FetchAllProductsUseCase)
+  container.get<FetchAllProducts>(FetchAllProductsUseCase)
 
 export async function POST(
   request: Request,

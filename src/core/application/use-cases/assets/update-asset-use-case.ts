@@ -2,10 +2,9 @@ import { UpdateAssetRepository } from '@/core/domain/repositories/assets/update-
 import { AssetResponseDto } from '../../dto/asset-response-dto'
 import { UpdateAssetDto } from '../../dto/update-asset-dto'
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
-import {
-  assetEntityToDto,
-  assetUpdateDtoToEntity
-} from '../../mappers/asset-mapper'
+import { AssetMapper } from '../../mappers/asset-mapper'
+import { inject, injectable } from 'inversify'
+import { CreateAssetDto } from '../../dto/create-asset-dto'
 
 export interface UpdateAsset {
   execute: (
@@ -16,16 +15,21 @@ export interface UpdateAsset {
   ) => Promise<AssetResponseDto>
 }
 
+@injectable()
 export class UpdateAssetUseCase implements UpdateAsset {
-  constructor(private readonly updateAssetRepository: UpdateAssetRepository) {}
+  constructor(
+    @inject(UpdateAssetRepository)
+    private readonly updateAssetRepository: UpdateAssetRepository
+  ) {}
   async execute(
     organizationId: string,
     ledgerId: string,
     assetId: string,
     asset: Partial<UpdateAssetDto>
   ): Promise<AssetResponseDto> {
-    const updateAssetEntity: Partial<AssetEntity> =
-      assetUpdateDtoToEntity(asset)
+    const updateAssetEntity: Partial<AssetEntity> = AssetMapper.toDomain(
+      asset as CreateAssetDto
+    )
 
     const updatedAssetEntity = await this.updateAssetRepository.update(
       organizationId,
@@ -34,9 +38,6 @@ export class UpdateAssetUseCase implements UpdateAsset {
       updateAssetEntity
     )
 
-    const assetResponseDto: AssetResponseDto =
-      assetEntityToDto(updatedAssetEntity)
-
-    return assetResponseDto
+    return AssetMapper.toResponseDto(updatedAssetEntity)
   }
 }

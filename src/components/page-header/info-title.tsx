@@ -16,7 +16,10 @@ export const InfoTitle = ({
   children
 }: InfoTitleProps) => (
   <div className="mb-12 flex flex-col gap-4">
-    <h1 className={cn('text-4xl font-bold text-[#3f3f46]', className)}>
+    <h1
+      className={cn('text-4xl font-bold text-[#3f3f46]', className)}
+      data-testid="title"
+    >
       {title}
     </h1>
 

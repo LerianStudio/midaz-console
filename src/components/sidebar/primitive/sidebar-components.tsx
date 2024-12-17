@@ -51,7 +51,7 @@ const SidebarGroup = React.forwardRef<HTMLElement, SidebarGroupProps>(
       ref={ref}
       className={cn(
         'grid gap-1',
-        'group-data[collapsed=true]/sidebar:justify-center ',
+        'group-data[collapsed=true]/sidebar:justify-center',
         className
       )}
       {...props}

@@ -163,7 +163,7 @@ export const OrganizationsForm = ({
                       defaultMessage: 'Type...'
                     })}
                     control={form.control}
-                    disabled
+                    readOnly
                   />
                 )}
 
@@ -204,7 +204,7 @@ export const OrganizationsForm = ({
                     defaultMessage: 'Type...'
                   })}
                   control={form.control}
-                  disabled={!isNewOrganization}
+                  readOnly={!isNewOrganization}
                 />
               </CardContent>
 
@@ -347,7 +347,7 @@ export const OrganizationsForm = ({
                       className="content-end justify-end"
                       asChild
                     >
-                      <button className="inline-flex h-[25px] w-[25px] items-center justify-center rounded-full border-none ">
+                      <button className="inline-flex h-[25px] w-[25px] items-center justify-center rounded-full border-none">
                         {showMetadataCollapse ? <ChevronUp /> : <ChevronDown />}
                       </button>
                     </CollapsibleTrigger>
@@ -414,7 +414,7 @@ export const OrganizationsForm = ({
           </div>
         </div>
 
-        <div className="relative h-10 ">
+        <div className="relative h-10">
           <CardFooter className="absolute inset-x-0 mb-20 inline-flex items-center justify-end gap-6 self-baseline rounded-none bg-white p-8 shadow">
             <div className="mr-10 flex items-center justify-end gap-6">
               <Button

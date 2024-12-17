@@ -1,7 +1,8 @@
 import { FetchAllProductsRepository } from '@/core/domain/repositories/products/fetch-all-products-repository'
 import { PaginationDto } from '../../dto/pagination-dto'
 import { ProductResponseDto } from '../../dto/product-dto'
-import { productEntityToDto } from '../../mappers/product-mapper'
+import { ProductMapper } from '../../mappers/product-mapper'
+import { inject, injectable } from 'inversify'
 
 export interface FetchAllProducts {
   execute: (
@@ -12,8 +13,10 @@ export interface FetchAllProducts {
   ) => Promise<PaginationDto<ProductResponseDto>>
 }
 
+@injectable()
 export class FetchAllProductsUseCase implements FetchAllProducts {
   constructor(
+    @inject(FetchAllProductsRepository)
     private readonly fetchAllProductsRepository: FetchAllProductsRepository
   ) {}
 
@@ -30,17 +33,6 @@ export class FetchAllProductsUseCase implements FetchAllProducts {
       page
     )
 
-    const { items } = productsResult
-
-    const productDto =
-      items && items !== null ? items.map(productEntityToDto) : []
-
-    const productsResponse: PaginationDto<ProductResponseDto> = {
-      items: productDto,
-      limit: productsResult.limit,
-      page: productsResult.page
-    }
-
-    return productsResponse
+    return ProductMapper.toPaginationResponseDto(productsResult)
   }
 }

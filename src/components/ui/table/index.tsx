@@ -6,10 +6,7 @@ const TableContainer = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div
-    className={cn('mt-4 rounded-lg bg-white shadow-dataTable', className)}
-    {...props}
-  />
+  <div className={cn('mt-4', className)} {...props} />
 ))
 TableContainer.displayName = 'TableContainer'
 

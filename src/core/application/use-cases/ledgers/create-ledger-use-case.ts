@@ -1,11 +1,9 @@
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { CreateLedgerDto } from '../../dto/create-ledger-dto'
 import { CreateLedgerRepository } from '@/core/domain/repositories/ledgers/create-ledger-repository'
-import {
-  ledgerDtoToEntity,
-  ledgerEntityToDto
-} from '../../mappers/ledger-mapper'
 import { LedgerResponseDto } from '../../dto/ledger-response-dto'
+import { inject, injectable } from 'inversify'
+import { LedgerMapper } from '../../mappers/ledger-mapper'
 
 export interface CreateLedger {
   execute: (
@@ -14,8 +12,10 @@ export interface CreateLedger {
   ) => Promise<LedgerResponseDto>
 }
 
+@injectable()
 export class CreateLedgerUseCase implements CreateLedger {
   constructor(
+    @inject(CreateLedgerRepository)
     private readonly createLedgerRepository: CreateLedgerRepository
   ) {}
 
@@ -23,15 +23,12 @@ export class CreateLedgerUseCase implements CreateLedger {
     organizationId: string,
     ledger: CreateLedgerDto
   ): Promise<LedgerResponseDto> {
-    const ledgerEntity: LedgerEntity = ledgerDtoToEntity(ledger)
+    const ledgerEntity: LedgerEntity = LedgerMapper.toDomain(ledger)
     const ledgerCreated = await this.createLedgerRepository.create(
       organizationId,
       ledgerEntity
     )
 
-    const ledgerResponseDto: LedgerResponseDto =
-      ledgerEntityToDto(ledgerCreated)
-
-    return ledgerResponseDto
+    return LedgerMapper.toResponseDto(ledgerCreated)
   }
 }

@@ -1,7 +1,7 @@
 import { ProductEntity } from '../../entities/product-entity'
 
-export interface UpdateProductRepository {
-  update: (
+export abstract class UpdateProductRepository {
+  abstract update: (
     organizationId: string,
     ledgerId: string,
     productId: string,

@@ -1,11 +1,10 @@
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
-import { ProductEntity } from '@/core/domain/entities/product-entity'
-import { FetchAllProductsRepository } from '@/core/domain/repositories/products/fetch-all-products-repository'
-import { handleMidazError } from '../../utils/midaz-error-handler'
 import { FetchAllPortfoliosRepository } from '@/core/domain/repositories/portfolios/fetch-all-portfolio-repository'
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
+import { injectable } from 'inversify'
 
+@injectable()
 export class MidazFetchAllPortfoliosRepository
   implements FetchAllPortfoliosRepository
 {

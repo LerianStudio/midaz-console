@@ -1,9 +1,5 @@
-import {
-  AuthEntity,
-  AuthResponseEntity,
-  AuthSessionEntity
-} from '../../entities/auth-entity'
+import { AuthEntity, AuthSessionEntity } from '../../entities/auth-entity'
 
-export interface AuthLoginRepository {
-  login: (loginData: AuthEntity) => Promise<AuthSessionEntity>
+export abstract class AuthLoginRepository {
+  abstract login: (loginData: AuthEntity) => Promise<AuthSessionEntity>
 }

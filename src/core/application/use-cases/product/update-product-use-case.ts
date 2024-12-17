@@ -1,10 +1,8 @@
 import { UpdateProductRepository } from '@/core/domain/repositories/products/update-product-repository'
 import { ProductResponseDto, UpdateProductDto } from '../../dto/product-dto'
 import { ProductEntity } from '@/core/domain/entities/product-entity'
-import {
-  productEntityToDto,
-  productUpdateDtoToEntity
-} from '../../mappers/product-mapper'
+import { ProductMapper } from '../../mappers/product-mapper'
+import { inject, injectable } from 'inversify'
 
 export interface UpdateProduct {
   execute: (
@@ -15,8 +13,10 @@ export interface UpdateProduct {
   ) => Promise<ProductResponseDto>
 }
 
+@injectable()
 export class UpdateProductUseCase implements UpdateProduct {
   constructor(
+    @inject(UpdateProductRepository)
     private readonly updateProductRepository: UpdateProductRepository
   ) {}
 
@@ -27,7 +27,7 @@ export class UpdateProductUseCase implements UpdateProduct {
     product: Partial<UpdateProductDto>
   ): Promise<ProductResponseDto> {
     const productEntity: Partial<ProductEntity> =
-      productUpdateDtoToEntity(product)
+      ProductMapper.toDomain(product)
 
     const updatedProduct: ProductEntity =
       await this.updateProductRepository.update(
@@ -37,9 +37,6 @@ export class UpdateProductUseCase implements UpdateProduct {
         productEntity
       )
 
-    const productResponseDto: ProductResponseDto =
-      productEntityToDto(updatedProduct)
-
-    return productResponseDto
+    return ProductMapper.toResponseDto(updatedProduct)
   }
 }

@@ -1,6 +1,8 @@
 import { DeleteLedgerRepository } from '@/core/domain/repositories/ledgers/delete-ledger-repository'
 import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { injectable } from 'inversify'
 
+@injectable()
 export class MidazDeleteLedgerRepository implements DeleteLedgerRepository {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
   async delete(organizationId: string, ledgerId: string): Promise<void> {

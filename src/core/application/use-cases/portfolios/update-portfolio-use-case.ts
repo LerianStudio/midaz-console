@@ -1,13 +1,12 @@
 import { UpdatePortfolioRepository } from '@/core/domain/repositories/portfolios/update-portfolio-repository'
+import { PortfolioMapper } from '../../mappers/portfolio-mapper'
 import {
-  portfolioEntityToDto,
-  portfolioUpdateDtoToEntity
-} from '../../mappers/portfolio-mapper'
-import {
+  CreatePortfolioDto,
   PortfolioResponseDto,
   UpdatePortfolioDto
 } from '../../dto/portfolios-dto'
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
+import { inject, injectable } from 'inversify'
 
 export interface UpdatePortfolio {
   execute: (
@@ -18,8 +17,10 @@ export interface UpdatePortfolio {
   ) => Promise<PortfolioResponseDto>
 }
 
+@injectable()
 export class UpdatePortfolioUseCase implements UpdatePortfolio {
   constructor(
+    @inject(UpdatePortfolioRepository)
     private readonly updatePortfolioRepository: UpdatePortfolioRepository
   ) {}
 
@@ -33,8 +34,9 @@ export class UpdatePortfolioUseCase implements UpdatePortfolio {
       code: 'ACTIVE',
       description: 'Teste Portfolio'
     }
-    const portfolioEntity: Partial<PortfolioEntity> =
-      portfolioUpdateDtoToEntity(portfolio)
+    const portfolioEntity: Partial<PortfolioEntity> = PortfolioMapper.toDomain(
+      portfolio as CreatePortfolioDto
+    )
     const updatedPortfolio: PortfolioEntity =
       await this.updatePortfolioRepository.update(
         organizationId,
@@ -43,9 +45,6 @@ export class UpdatePortfolioUseCase implements UpdatePortfolio {
         portfolioEntity
       )
 
-    const portfolioResponseDto: PortfolioResponseDto =
-      portfolioEntityToDto(updatedPortfolio)
-
-    return portfolioResponseDto
+    return PortfolioMapper.toResponseDto(updatedPortfolio)
   }
 }

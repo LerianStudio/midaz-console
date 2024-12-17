@@ -3,27 +3,34 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
+  FormTooltip
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { HTMLInputTypeAttribute } from 'react'
+import { HTMLInputTypeAttribute, ReactNode } from 'react'
 import { Control } from 'react-hook-form'
 
 export type InputFieldProps = {
   name: string
   type?: HTMLInputTypeAttribute
-  label?: string
+  label?: ReactNode
+  tooltip?: string
+  labelExtra?: ReactNode
   placeholder?: string
   control: Control<any>
   disabled?: boolean
+  readOnly?: boolean
   required?: boolean
 }
 
 export const InputField = ({
   type,
   label,
+  tooltip,
+  labelExtra,
   placeholder,
   required,
+  readOnly,
   ...others
 }: InputFieldProps) => {
   return (
@@ -31,9 +38,22 @@ export const InputField = ({
       {...others}
       render={({ field }) => (
         <FormItem required={required}>
-          {label && <FormLabel>{label}</FormLabel>}
+          {label && (
+            <FormLabel
+              extra={
+                tooltip ? <FormTooltip>{tooltip}</FormTooltip> : labelExtra
+              }
+            >
+              {label}
+            </FormLabel>
+          )}
           <FormControl>
-            <Input type={type} placeholder={placeholder} {...field} />
+            <Input
+              type={type}
+              placeholder={placeholder}
+              readOnly={readOnly}
+              {...field}
+            />
           </FormControl>
           <FormMessage />
         </FormItem>

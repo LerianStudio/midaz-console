@@ -5,7 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50',
+  'relative flex inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
@@ -29,7 +29,8 @@ const buttonVariants = cva(
         sm: 'h-8 rounded-md px-3 py-2',
         lg: 'h-12 rounded-md px-8',
         icon: 'h-10 w-10',
-        link: 'p-0 w-auto h-auto'
+        link: 'p-0 w-auto h-auto',
+        xl: 'h-14 p-4'
       }
     },
     defaultVariants: {
@@ -39,20 +40,52 @@ const buttonVariants = cva(
   }
 )
 
+const iconVariants = cva('', {
+  variants: {
+    position: {
+      start: 'mr-2',
+      end: 'ml-2',
+      'far-end': 'absolute right-4'
+    },
+    size: {
+      default: 'h-10',
+      sm: 'h-8',
+      lg: 'h-12',
+      icon: 'h-10',
+      link: 'h-6',
+      xl: 'h-14'
+    }
+  },
+  defaultVariants: {
+    position: 'start'
+  }
+})
+
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
-  icon?: JSX.Element
+  icon?: React.ReactNode
+  iconPlacement?: 'start' | 'end' | 'far-end'
   fullWidth?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    { className, variant, size, asChild = false, icon, fullWidth, ...props },
+    {
+      className,
+      variant,
+      size,
+      asChild = false,
+      icon,
+      iconPlacement = 'start',
+      fullWidth,
+      ...props
+    },
     ref
   ) => {
     const Comp = asChild ? Slot : 'button'
+
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }), {
@@ -61,8 +94,17 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         {...props}
       >
+        {icon && iconPlacement === 'start' && (
+          <span className={cn(iconVariants({ position: iconPlacement }))}>
+            {icon}
+          </span>
+        )}
         {props.children}
-        {icon && <span className="ml-2">{icon}</span>}
+        {icon && iconPlacement !== 'start' && (
+          <span className={cn(iconVariants({ position: iconPlacement }))}>
+            {icon}
+          </span>
+        )}
       </Comp>
     )
   }

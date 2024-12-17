@@ -1,5 +1,5 @@
-export interface DeleteAssetRepository {
-  delete: (
+export abstract class DeleteAssetRepository {
+  abstract delete: (
     organizationId: string,
     ledgerId: string,
     assetId: string

@@ -1,7 +1,9 @@
 import { FetchProductByIdRepository } from '@/core/domain/repositories/products/fetch-product-by-id-repository'
 import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
 import { ProductEntity } from '@/core/domain/entities/product-entity'
+import { injectable } from 'inversify'
 
+@injectable()
 export class MidazFetchProductByIdRepository
   implements FetchProductByIdRepository
 {

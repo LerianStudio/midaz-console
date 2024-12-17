@@ -1,14 +1,6 @@
 'use client'
 
 import Image from 'next/image'
-import GeometricShape from '@/../public/images/geometric-shape.svg'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card'
 import { Form } from '@/components/ui/form'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
@@ -20,6 +12,18 @@ import { auth } from '@/schema/auth'
 import { useIntl } from 'react-intl'
 import { InputField } from '@/components/form'
 import { LoadingButton } from '@/components/ui/loading-button'
+import { ArrowRight } from 'lucide-react'
+import React from 'react'
+import LoadingScreen from '@/components/loading-screen'
+import MidazLogo from '@/images/midaz-login-screen.webp'
+import BackgroundImage from '@/images/login-wallpaper.webp'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from '@/components/ui/tooltip'
+import { Arrow } from '@radix-ui/react-tooltip'
 
 const FormSchema = z.object({
   username: auth.username,
@@ -42,8 +46,12 @@ const SignInPage = () => {
   })
 
   const { showError } = useCustomToast()
+  const [isLoading, setIsLoading] = React.useState(false)
+  const [isSubmitting, setIsSubmitting] = React.useState(false)
 
   const onSubmit = async (values: FormData) => {
+    setIsSubmitting(true)
+
     const result = await signIn('credentials', {
       ...values,
       redirect: false
@@ -57,81 +65,121 @@ const SignInPage = () => {
           defaultMessage: 'Invalid credentials.'
         })
       )
+      setIsSubmitting(false)
       return
     }
 
-    route.replace('/')
+    setIsSubmitting(false)
+    setIsLoading(true)
+  }
+
+  if (isLoading) {
+    return <LoadingScreen onComplete={() => route.replace('/')} />
   }
 
   return (
-    <div className="flex h-screen w-screen flex-col bg-[#faf9f9]">
-      <div className="absolute flex h-screen w-full items-center justify-center">
-        <div className="w-full">
-          <Image src={GeometricShape} alt="Rectangle" />
-        </div>
+    <div className="flex h-screen w-screen">
+      <div className="flex h-screen w-3/6 items-center justify-center p-8">
+        <div className="w-full max-w-[440px] border-none px-8 shadow-none">
+          <h1 className="text-4xl font-bold">
+            {intl.formatMessage({
+              id: 'signIn.titleLogin',
+              defaultMessage: 'Welcome back!'
+            })}
+          </h1>
 
-        <div className="absolute">
-          <Card className="w-full min-w-[430px] border-none px-8 shadow-none">
-            <CardHeader className="px-0 pt-[72px]">
-              <CardTitle className="text-3xl">
-                {intl.formatMessage({
-                  id: 'signIn.titleLogin',
-                  defaultMessage: 'Welcome back!'
-                })}
-              </CardTitle>
-              <CardDescription>
-                {intl.formatMessage({
-                  id: 'signIn.descriptionLogin',
-                  defaultMessage: 'Enter your email and password to log in.'
-                })}
-              </CardDescription>
-            </CardHeader>
+          <p className="pt-4 text-sm text-shadcn-400">
+            {intl.formatMessage({
+              id: 'signIn.descriptionLogin',
+              defaultMessage: 'Enter your email and password to continue.'
+            })}
+          </p>
 
-            <CardContent>
-              <Form {...form}>
-                <form
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  className="space-y-8"
+          <div className="pt-8">
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-8"
+              >
+                <InputField
+                  control={form.control}
+                  name="username"
+                  label={intl.formatMessage({
+                    id: 'entity.auth.username',
+                    defaultMessage: 'E-mail'
+                  })}
+                  placeholder={intl.formatMessage({
+                    id: 'signIn.placeholderEmail',
+                    defaultMessage: 'Enter your registered email...'
+                  })}
+                />
+
+                <InputField
+                  control={form.control}
+                  name="password"
+                  label={intl.formatMessage({
+                    id: 'entity.auth.password',
+                    defaultMessage: 'Password'
+                  })}
+                  type="password"
+                  placeholder={intl.formatMessage({
+                    id: 'signIn.placeholderPassword',
+                    defaultMessage: '******'
+                  })}
+                  labelExtra={
+                    <TooltipProvider>
+                      <Tooltip delayDuration={300}>
+                        <TooltipTrigger>
+                          <span className="cursor-pointer text-sm font-medium text-slate-900 underline">
+                            {intl.formatMessage({
+                              id: 'entity.auth.reset.password',
+                              defaultMessage: 'I forgot the password'
+                            })}
+                          </span>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>
+                            {intl.formatMessage({
+                              id: 'tooltip.passwordInfo',
+                              defaultMessage: 'Contact the system administrator'
+                            })}
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  }
+                />
+
+                <LoadingButton
+                  className="w-full"
+                  type="submit"
+                  loading={form.formState.isSubmitting}
+                  size="xl"
+                  icon={<ArrowRight />}
+                  iconPlacement="far-end"
                 >
-                  <InputField
-                    control={form.control}
-                    name="username"
-                    label={intl.formatMessage({
-                      id: 'entity.auth.username',
-                      defaultMessage: 'User'
-                    })}
-                    placeholder={intl.formatMessage({
-                      id: 'signIn.placeholderEmail',
-                      defaultMessage: 'Enter your registered email...'
-                    })}
-                  />
-                  <InputField
-                    type="password"
-                    control={form.control}
-                    name="password"
-                    label={intl.formatMessage({
-                      id: 'entity.auth.password',
-                      defaultMessage: 'Password'
-                    })}
-                    placeholder={intl.formatMessage({
-                      id: 'signIn.placeholderPassword',
-                      defaultMessage: '******'
-                    })}
-                  />
-                  <LoadingButton
-                    className="w-full"
-                    type="submit"
-                    loading={form.formState.isSubmitting}
-                  >
-                    {intl.formatMessage({
-                      id: 'signIn.buttonSignIn',
-                      defaultMessage: 'Sign in'
-                    })}
-                  </LoadingButton>
-                </form>
-              </Form>
-            </CardContent>
-          </Card>
+                  {intl.formatMessage({
+                    id: 'signIn.buttonSignIn',
+                    defaultMessage: 'Continue'
+                  })}
+                </LoadingButton>
+              </form>
+            </Form>
+          </div>
+        </div>
+      </div>
+
+      <div className="relative flex w-3/6 items-center justify-center">
+        <Image
+          alt="Login background image"
+          src={BackgroundImage}
+          fill
+          sizes="50vw, 100vh"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+        <div className="relative z-10">
+          <Image alt="Midaz Logo" src={MidazLogo} width={150} height={150} />
         </div>
       </div>
     </div>
