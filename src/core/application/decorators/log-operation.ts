@@ -1,22 +1,39 @@
+import { inject } from 'inversify'
 import { LoggerAggregator } from '../logger/logger-aggregator'
-import { container } from '@/core/infrastructure/container-registry/container-registry'
+import { snakeCase } from 'lodash'
 
 export function LogOperation(options: {
   layer: 'application' | 'infrastructure' | 'domain'
-  operation: string
-}) {
-  const loggerAggregator = container.get<LoggerAggregator>(LoggerAggregator)
-  console.log(loggerAggregator)
+  operation?: string
+}): MethodDecorator {
+  // Gets a function for injecting the service
+  const ServiceInjection = inject(LoggerAggregator)
+
   return function (
-    target: any,
-    propertyKey: string,
+    target,
+    propertyKey: string | symbol,
     descriptor: PropertyDescriptor
   ) {
+    // Injects the service into the target
+    ServiceInjection(target, 'loggerAggregator')
+
+    // Saves the original method
     const originalMethod = descriptor.value
 
+    // If operation is not provided, use the class name as operation
+    // Example: FetchAllProductsUseCase -> fetch_all_products
+    if (!options.operation) {
+      options.operation = snakeCase(
+        target.constructor.name.replace('UseCase', '')
+      )
+    }
+
+    // Overrides the method
     descriptor.value = async function (...args: any[]) {
+      const logger: LoggerAggregator = (this as any).loggerAggregator
+
       try {
-        loggerAggregator.addEvent({
+        logger.addEvent({
           layer: options.layer,
           operation: `${options.operation}_start`,
           level: 'info',
@@ -26,7 +43,7 @@ export function LogOperation(options: {
 
         const result = await originalMethod.apply(this, args)
 
-        loggerAggregator.addEvent({
+        logger.addEvent({
           layer: options.layer,
           operation: `${options.operation}_success`,
           level: 'info',
@@ -36,17 +53,16 @@ export function LogOperation(options: {
 
         return result
       } catch (error) {
-        loggerAggregator.addEvent({
+        logger.addEvent({
           layer: options.layer,
           operation: `${options.operation}_error`,
           level: 'error',
           message: `${options.operation} failed`,
           error: error as Error
         })
+
         throw error
       }
     }
-
-    return descriptor
   }
 }

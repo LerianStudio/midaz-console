@@ -17,7 +17,7 @@ const createProductUseCase: CreateProduct =
 const fetchAllProductsUseCase: FetchAllProducts =
   container.get<FetchAllProducts>(FetchAllProductsUseCase)
 
-const loggerAggregator = container.get<LoggerAggregator>(LoggerAggregator)
+const loggerAggregator = container.get(LoggerAggregator)
 
 export async function POST(
   request: Request,
@@ -71,14 +71,32 @@ export async function GET(
     const organizationId = params.id
     const ledgerId = params.ledgerId
 
-    const products = await fetchAllProductsUseCase.execute(
-      organizationId,
-      ledgerId,
-      limit,
-      page
-    )
+    return loggerAggregator.runWithContext(
+      'fetchAllProducts',
+      'GET',
+      {
+        useCase: 'FetchAllProductsUseCase',
+        action: 'execute'
+      },
+      async () => {
+        loggerAggregator.addEvent({
+          message: 'Fetching all products',
+          metadata: { organizationId, ledgerId, limit, page },
+          layer: 'application',
+          operation: 'fetchAllProducts',
+          level: 'info'
+        })
 
-    return NextResponse.json(products)
+        const products = await fetchAllProductsUseCase.execute(
+          organizationId,
+          ledgerId,
+          limit,
+          page
+        )
+
+        return NextResponse.json(products)
+      }
+    )
   } catch (error: any) {
     console.error('Error fetching all products', error)
     const { message, status } = await apiErrorHandler(error)
