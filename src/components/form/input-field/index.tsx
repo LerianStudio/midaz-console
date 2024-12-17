@@ -8,6 +8,7 @@ import {
   FormTooltip
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 import { HTMLInputTypeAttribute, ReactNode } from 'react'
 import { Control } from 'react-hook-form'
 
@@ -22,6 +23,8 @@ export type InputFieldProps = {
   control: Control<any>
   disabled?: boolean
   readOnly?: boolean
+  rows?: number
+  textArea?: boolean
   required?: boolean
 }
 
@@ -34,6 +37,8 @@ export const InputField = ({
   description,
   required,
   readOnly,
+  rows,
+  textArea,
   ...others
 }: InputFieldProps) => {
   return (
@@ -51,12 +56,21 @@ export const InputField = ({
             </FormLabel>
           )}
           <FormControl>
-            <Input
-              type={type}
-              placeholder={placeholder}
-              readOnly={readOnly}
-              {...field}
-            />
+            {textArea ? (
+              <Textarea
+                placeholder={placeholder}
+                readOnly={readOnly}
+                rows={rows}
+                {...field}
+              />
+            ) : (
+              <Input
+                type={type}
+                placeholder={placeholder}
+                readOnly={readOnly}
+                {...field}
+              />
+            )}
           </FormControl>
           <FormMessage />
           {description && <FormDescription>{description}</FormDescription>}
