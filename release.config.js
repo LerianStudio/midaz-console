@@ -2,7 +2,6 @@ module.exports = {
   branches: [
     { name: 'main', channel: 'latest' },    // Prod
     { name: 'develop', channel: 'next' },    // Dev
-    { name: 'feature/improve-node-build', channel: 'feat' },    // Feature
   ],
   plugins: [
     "@semantic-release/commit-analyzer",
