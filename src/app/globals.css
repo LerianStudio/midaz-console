@@ -74,7 +74,11 @@
     @apply border-border;
   }
 
+  html {
+    @apply h-full overflow-y-auto;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply h-full overflow-y-auto bg-background text-foreground;
   }
 }
