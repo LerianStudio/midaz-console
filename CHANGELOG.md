@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/LerianStudio/midaz-console/compare/v1.1.2...v1.1.3) (2024-12-18)
+
+
+### Bug Fixes
+
+* set the improvement on the right branches ([eba8a36](https://github.com/LerianStudio/midaz-console/commit/eba8a36c5c2af90a021c3193903d64689188dead))
+
 ## [1.1.2](https://github.com/LerianStudio/midaz-console/compare/v1.1.1...v1.1.2) (2024-12-18)
 
 
