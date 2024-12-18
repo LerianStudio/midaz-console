@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-import { forwardRef, HTMLAttributes } from 'react'
+import { forwardRef, HTMLAttributes, PropsWithChildren } from 'react'
 
 export const Stepper = forwardRef<
   HTMLDivElement,
@@ -18,7 +18,7 @@ export const StepperItem = forwardRef<HTMLDivElement, StepperItemProps>(
     <div
       ref={ref}
       data-active={active}
-      className={cn('group flex flex-row items-center gap-3', className)}
+      className={cn('group flex flex-row gap-3', className)}
       {...props}
     />
   )
@@ -32,7 +32,7 @@ export const StepperItemNumber = forwardRef<
   <div
     ref={ref}
     className={cn(
-      'flex h-8 w-8 items-center justify-center rounded-full border border-shadcn-400 text-sm font-medium text-shadcn-400 group-data-[active]:border-none group-data-[active]:bg-white group-data-[active]:text-neutral-600 group-data-[active]:shadow-md',
+      'flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-shadcn-400 text-sm font-medium text-shadcn-400 group-data-[active=true]:border-none group-data-[active=true]:bg-white group-data-[active=true]:text-neutral-600 group-data-[active=true]:shadow-md',
       className
     )}
     {...props}
@@ -40,17 +40,37 @@ export const StepperItemNumber = forwardRef<
 ))
 StepperItemNumber.displayName = 'StepperItemNumber'
 
+export type StepperItemTextProps = HTMLAttributes<HTMLDivElement> & {
+  title: string
+  description?: string
+}
+
 export const StepperItemText = forwardRef<
   HTMLParagraphElement,
-  HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => (
-  <p
+  StepperItemTextProps
+>(({ className, title, description, ...props }, ref) => (
+  <div
     ref={ref}
     className={cn(
-      'text-sm font-medium text-shadcn-400 group-data-[active]:text-neutral-600',
+      'flex flex-col text-sm font-medium text-shadcn-400 group-data-[active=true]:text-neutral-600',
       className
     )}
     {...props}
-  />
+  >
+    <div className="flex h-8 items-center">
+      <p>{title}</p>
+    </div>
+    {description && (
+      <p className="text-xs group-data-[active=false]:hidden">{description}</p>
+    )}
+  </div>
 ))
 StepperItemText.displayName = 'StepperItemText'
+
+export type StepperControlProps = PropsWithChildren & {
+  active?: boolean
+}
+
+export const StepperContent = ({ active, children }: StepperControlProps) => {
+  return active ? <>{children}</> : null
+}

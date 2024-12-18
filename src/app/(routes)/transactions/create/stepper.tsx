@@ -6,37 +6,46 @@ import {
   StepperItemText
 } from '../primitives/stepper'
 
-export const Stepper = () => {
+export type StepperProps = {
+  step?: number
+}
+
+export const Stepper = ({ step = 0 }: StepperProps) => {
   const intl = useIntl()
 
   return (
     <PrimitiveStepper>
-      <StepperItem>
+      <StepperItem active={step === 0}>
         <StepperItemNumber>1</StepperItemNumber>
-        <StepperItemText>
-          {intl.formatMessage({
+        <StepperItemText
+          title={intl.formatMessage({
             id: 'transactions.create.stepper.first',
             defaultMessage: 'Transaction Data'
           })}
-        </StepperItemText>
+        />
       </StepperItem>
-      <StepperItem>
+      <StepperItem active={step === 1}>
         <StepperItemNumber>2</StepperItemNumber>
-        <StepperItemText>
-          {intl.formatMessage({
+        <StepperItemText
+          title={intl.formatMessage({
             id: 'transactions.create.stepper.second',
             defaultMessage: 'Operations and Metadata'
           })}
-        </StepperItemText>
+        />
       </StepperItem>
-      <StepperItem>
+      <StepperItem active={step === 2}>
         <StepperItemNumber>3</StepperItemNumber>
-        <StepperItemText>
-          {intl.formatMessage({
+        <StepperItemText
+          title={intl.formatMessage({
             id: 'transactions.create.stepper.third',
             defaultMessage: 'Review'
           })}
-        </StepperItemText>
+          description={intl.formatMessage({
+            id: 'transactions.create.stepper.third.description',
+            defaultMessage:
+              'Check the values ​​and parameters entered and confirm to create the transaction.'
+          })}
+        />
       </StepperItem>
     </PrimitiveStepper>
   )
