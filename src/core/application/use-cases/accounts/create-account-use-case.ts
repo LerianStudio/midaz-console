@@ -3,6 +3,7 @@ import { CreateAccountDto, AccountResponseDto } from '../../dto/account-dto'
 import { AccountEntity } from '@/core/domain/entities/account-entity'
 import { AccountMapper } from '../../mappers/account-mapper'
 import { inject, injectable } from 'inversify'
+import { LoggerAggregator } from '../../logger/logger-aggregator'
 
 export interface CreateAccount {
   execute: (
@@ -16,7 +17,9 @@ export interface CreateAccount {
 export class CreateAccountUseCase implements CreateAccount {
   constructor(
     @inject(CreateAccountsRepository)
-    private readonly createAccountRepository: CreateAccountsRepository
+    private readonly createAccountRepository: CreateAccountsRepository,
+    @inject(LoggerAggregator)
+    private readonly loggerAggregator: LoggerAggregator
   ) {}
 
   async execute(
@@ -24,6 +27,18 @@ export class CreateAccountUseCase implements CreateAccount {
     ledgerId: string,
     account: CreateAccountDto
   ): Promise<AccountResponseDto> {
+    this.loggerAggregator.addEvent({
+      layer: 'application',
+      operation: 'createAccount',
+      level: 'info',
+      message: 'Creating account',
+      metadata: {
+        organizationId,
+        ledgerId,
+        account
+      }
+    })
+
     account.status = {
       code: 'ACTIVE',
       description: 'Active Account'
