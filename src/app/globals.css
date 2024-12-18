@@ -82,3 +82,8 @@
     @apply h-full overflow-y-auto bg-background text-foreground;
   }
 }
+
+.ticket {
+  mask: radial-gradient(21px 13px at 50% 102%, #0000 98%, #000) 50%
+    calc(100% - 16px) / 64px 100% repeat-x;
+}
