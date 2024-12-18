@@ -2,6 +2,7 @@ module.exports = {
   branches: [
     { name: 'main', channel: 'latest' },    // Prod
     { name: 'develop', channel: 'next' },    // Dev
+    { name: 'feature/improve-node-build', channel: 'feat' },    // Feature
   ],
   plugins: [
     "@semantic-release/commit-analyzer",
@@ -11,8 +12,8 @@ module.exports = {
       "@semantic-release/github",
       {
         assets: [
-          { path: "dist/*.js", label: "JavaScript distribution" },
-          { path: "dist/*.map", label: "Source map" }
+          { path: ".next/static/chunks/*.js", label: "JavaScript distribution" },
+          { path: ".next/static/chunks/*.js.map", label: "Source map" }
         ]
       }
     ],
