@@ -2,22 +2,12 @@ import { RequestContextManager } from '@/lib/logger/request-context'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-// Adicionar um Set para rastrear requestIds já processados
-const processedRequests = new Set<string>()
-
 export async function apiLoggerMiddleware(
   request: NextRequest,
   next: () => Promise<NextResponse>
 ) {
   const requestId = crypto.randomUUID()
-
-  // Verificar se este requestId já foi processado
-  if (processedRequests.has(requestId)) {
-    return next()
-  }
-
   const startTime = Date.now()
-  processedRequests.add(requestId)
 
   const requestMetadata = {
     requestId,
@@ -64,10 +54,5 @@ export async function apiLoggerMiddleware(
       { error: 'Internal Server Error' },
       { status: 500 }
     )
-  } finally {
-    // Limpar o requestId do Set após um tempo
-    setTimeout(() => {
-      processedRequests.delete(requestId)
-    }, 5000) // 5 segundos de timeout
   }
 }

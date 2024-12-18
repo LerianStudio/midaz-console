@@ -39,14 +39,6 @@ export class PinoLoggerRepository implements LoggerRepository {
           translateTime: 'SYS:yyyy-mm-dd HH:MM:ss.l'
         })
       )
-      // loggerOptions.transport = {
-      //   target: 'pino-pretty',
-      //   options: {
-      //     colorize: true,
-      //     ignore: 'pid,hostname',
-      //     translateTime: 'SYS:yyyy-mm-dd HH:MM:ss.l'
-      //   }
-      // }
     }
 
     console.log('logger pino repository', loggerOptions)
