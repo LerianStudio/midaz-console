@@ -11,8 +11,8 @@ module.exports = {
       "@semantic-release/github",
       {
         assets: [
-          { path: "dist/*.js", label: "JavaScript distribution" },
-          { path: "dist/*.map", label: "Source map" }
+          { path: ".next/static/chunks/*.js", label: "JavaScript distribution" },
+          { path: ".next/static/chunks/*.js.map", label: "Source map" }
         ]
       }
     ],
