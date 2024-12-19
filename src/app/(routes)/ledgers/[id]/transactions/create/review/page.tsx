@@ -1,7 +1,7 @@
 'use client'
 
 import { SendHorizonal } from 'lucide-react'
-import { useTransactionForm } from '../provider'
+import { useTransactionForm } from '../transaction-form-provider'
 import { Stepper } from '../stepper'
 import { Separator } from '@/components/ui/separator'
 import { PageFooter, PageFooterSection } from '@/components/page-footer'

@@ -1,7 +1,7 @@
 'use client'
 
 import { Breadcrumb } from '@/components/breadcrumb'
-import { TransactionProvider } from './provider'
+import { TransactionProvider } from './transaction-form-provider'
 import { PageHeader } from '@/components/page-header'
 import { useIntl } from 'react-intl'
 

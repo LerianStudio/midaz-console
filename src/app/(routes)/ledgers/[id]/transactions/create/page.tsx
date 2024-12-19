@@ -13,7 +13,7 @@ import {
   OperationEmptyAccordion
 } from './operation-accordion'
 import { OperationSourceField } from './operation-source-field'
-import { useTransactionForm } from './provider'
+import { useTransactionForm } from './transaction-form-provider'
 import { StepperContent } from '@/components/transactions/primitives/stepper'
 import { MetadataAccordion } from './metadata-accordion'
 import ArrowRightCircle from '/public/svg/arrow-right-circle.svg'
