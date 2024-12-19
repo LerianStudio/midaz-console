@@ -104,7 +104,7 @@ export default function CreateTransactionPage() {
                   defaultMessage: 'Metadata'
                 })}
                 description={intl.formatMessage({
-                  id: 'transactions.create.operations.accordion.description',
+                  id: 'transactions.create.metadata.accordion.description',
                   defaultMessage:
                     'Fill in Value, Source and Destination to edit the Metadata.'
                 })}

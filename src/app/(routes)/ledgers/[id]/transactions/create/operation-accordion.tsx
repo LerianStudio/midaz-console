@@ -162,8 +162,8 @@ export const OperationAccordion = ({
             <InputField
               name={`${name}.description`}
               label={intl.formatMessage({
-                id: 'transactions.create.field.description',
-                defaultMessage: 'Transaction description'
+                id: 'transactions.field.operation.description',
+                defaultMessage: 'Operation description'
               })}
               description={intl.formatMessage({
                 id: 'common.optional',
