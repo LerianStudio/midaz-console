@@ -1,7 +1,11 @@
-{
-  "name": "midaz-console",
-  "version": "0.1.0",
-  "private": true,
+  {
+    "name": "midaz-console",
+    "version": "0.1.0",
+    "private": true,
+    "repository": {
+    "type": "git",
+     "url": "git+https://github.com/LerianStudio/midaz-console.git"
+    },
   "scripts": {
     "dev": "next dev -p 8081",
     "build": "next build",
@@ -79,6 +83,11 @@
     "@formatjs/cli": "^6.3.5",
     "@formatjs/cli-lib": "^6.6.1",
     "@playwright/test": "^1.48.2",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.0",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.1",
+    "@semantic-release/release-notes-generator": "^14.0.1",
     "@storybook/addon-essentials": "^8.3.6",
     "@storybook/addon-interactions": "^8.3.6",
     "@storybook/addon-links": "^8.3.6",
@@ -100,6 +109,7 @@
     "@types/react-color": "^3.0.12",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.4.20",
+    "esbuild": "^0.24.0",
     "eslint": "^8",
     "eslint-config-next": "15.0.1",
     "eslint-config-prettier": "^9.1.0",
@@ -113,6 +123,7 @@
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.8",
+    "semantic-release": "^24.2.0",
     "shx": "^0.3.4",
     "storybook": "^8.3.6",
     "tailwindcss": "^3.4.14",

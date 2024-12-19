@@ -38,6 +38,7 @@
   "common.id": "ID",
   "common.identification": "Identification",
   "common.inactive": "Inactive",
+  "common.itemsPerPage": "Items per page",
   "common.logoAlt": "Your organization logo",
   "common.metadata": "Metadata",
   "common.name": "Name",
@@ -78,7 +79,6 @@
   "entity.auth.username": "E-mail",
   "entity.ledger.asset": "Assets",
   "entity.ledger.name": "Ledger Name",
-  "entity.ledger.status": "Status",
   "entity.metadata.key": "Key",
   "entity.metadata.value": "Value",
   "entity.organization": "Organization",
@@ -171,6 +171,7 @@
   "ledgers.accounts.showing": "Showing {count} {number, plural, =0 {accounts} one {account} other {accounts}}.",
   "ledgers.accounts.subtitle": "{count} {count, plural, =0 {accounts found} one {account found} other {accounts found}}",
   "ledgers.accounts.title": "Accounts",
+  "ledgers.assets.count": "{count} assets",
   "ledgers.assets.createButton": "Create your first Asset",
   "ledgers.assets.emptyResource": "You haven't added any Asset within this Ledger yet.",
   "ledgers.assets.emptyResource.createButton": "New Asset",
@@ -193,7 +194,6 @@
   "ledgers.helperTrigger.question": "What is a Ledger?",
   "ledgers.helperTrigger.seeMore": "Read the docs",
   "ledgers.listingTemplate.addButton": "New Ledger",
-  "ledgers.listingTemplate.newAddButton": "Create your first Ledger",
   "ledgers.portfolio.deleteDialog.description": "You will delete a portfolio",
   "ledgers.portfolio.deleteDialog.title": "Are you sure?",
   "ledgers.portfolio.sheet.description": "Fill in the details of the Portfolio you want to create.",
@@ -325,5 +325,8 @@
   "transactions.operations.alert.title": "Multiple origins and destinations",
   "transactions.operations.metadata": "Operations Metadata",
   "transactions.source": "Source",
-  "transactions.tab.create": "New Transaction"
+  "transactions.tab.create": "New Transaction",
+  "table.pagination.next": "Next",
+  "table.pagination.previous": "Previous",
+  "tooltip.passwordInfo": "Contact the system administrator"
 }

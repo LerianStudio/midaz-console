@@ -7,15 +7,21 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import { AlertCircle } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
 import { useIntl } from 'react-intl'
 
+const DEFAULT_LIMIT = 10
+const DEFAULT_PAGE = 1
+
 const Page = () => {
-  const { currentOrganization, setOrganization } = useOrganization()
-  const { data: organizations } = useListOrganizations({})
   const intl = useIntl()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const limit = Number(searchParams.get('limit')) || DEFAULT_LIMIT
+  const page = Number(searchParams.get('page')) || DEFAULT_PAGE
+  const { currentOrganization, setOrganization } = useOrganization()
+  const { data: organizations } = useListOrganizations({})
 
   React.useEffect(() => {
     if (!currentOrganization && organizations?.items?.length! > 0) {
@@ -29,7 +35,9 @@ const Page = () => {
     isLoading
   } = useListLedgers({
     organizationId: currentOrganization?.id!,
-    enabled: !!currentOrganization
+    enabled: !!currentOrganization,
+    limit,
+    page
   })
 
   if (!currentOrganization) {
@@ -68,7 +76,13 @@ const Page = () => {
   }
 
   return (
-    <LedgersView ledgers={ledgers} refetch={refetch} isLoading={isLoading} />
+    <LedgersView
+      ledgers={ledgers}
+      refetch={refetch}
+      isLoading={isLoading}
+      defaultPageSize={limit}
+      defaultPage={page}
+    />
   )
 }
 
