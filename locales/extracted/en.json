@@ -298,6 +298,8 @@
   "signIn.placeholderPassword": "******",
   "signIn.titleLogin": "Welcome back!",
   "signIn.toast.error": "Invalid credentials.",
+  "table.pagination.next": "Next",
+  "table.pagination.previous": "Previous",
   "tooltip.passwordInfo": "Contact the system administrator",
   "transaction.create.cancel.description": "If you cancel this transaction, all filled data will be lost and cannot be recovered.",
   "transaction.create.cancel.title": "Do you wish to cancel this transaction?",
@@ -325,8 +327,5 @@
   "transactions.operations.alert.title": "Multiple origins and destinations",
   "transactions.operations.metadata": "Operations Metadata",
   "transactions.source": "Source",
-  "transactions.tab.create": "New Transaction",
-  "table.pagination.next": "Next",
-  "table.pagination.previous": "Previous",
-  "tooltip.passwordInfo": "Contact the system administrator"
+  "transactions.tab.create": "New Transaction"
 }

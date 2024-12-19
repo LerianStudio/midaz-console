@@ -324,9 +324,7 @@
   "transactions.source": "Origem",
   "transactions.tab.create": "Nova Transação",
   "transactions.field.operation.description": "Descrição da Operação",
-  "organizations.showing": "Mostrando {count} {number, plural, =0 {organizações} one {organização} other {organizações}}.",
   "common.itemsPerPage": "Itens por página",
-  "common.support": "Suporte",
   "ledgers.assets.count": "{count} ativos",
   "table.pagination.next": "Próxima página",
   "table.pagination.previous": "Página anterior"
