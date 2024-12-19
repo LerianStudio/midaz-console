@@ -14,8 +14,19 @@
     }
   ],
   "rules": {
-    "prettier/prettier": "error",
+    "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "react-hooks/rules-of-hooks": "off",
     "react-hooks/exhaustive-deps": "off"
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "parserOptions": {
+        "project": "./tsconfig.json"
+      }
+    }
+  ],
+  "linterOptions": {
+    "reportUnusedDisableDirectives": true
   }
 }
