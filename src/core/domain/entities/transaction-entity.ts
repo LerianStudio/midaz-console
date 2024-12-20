@@ -12,7 +12,7 @@ type TransactionSourceEntity = {
   remaining?: string
   description?: string
   chartOfAccounts?: string
-  metadata: Record<string, any>
+  metadata: Record<string, any> | null
 }
 
 export type TransactionEntity = {
@@ -30,5 +30,5 @@ export type TransactionEntity = {
   distribute: {
     to: TransactionSourceEntity[]
   }
-  metadata: Record<string, any>
+  metadata: Record<string, any> | null
 }

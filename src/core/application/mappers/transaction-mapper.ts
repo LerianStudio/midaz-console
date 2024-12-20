@@ -18,7 +18,8 @@ export class TransactionMapper {
               asset: transaction.asset,
               ...TransactionMapper.valueToAmount(source.value)
             },
-            metadata: source.metadata ?? {}
+            metadata:
+              Object.keys(source.metadata).length !== 0 ? source.metadata : null
           }))
         }
       },
@@ -29,10 +30,16 @@ export class TransactionMapper {
             asset: transaction.asset,
             ...TransactionMapper.valueToAmount(destination.value)
           },
-          metadata: destination.metadata ?? {}
+          metadata:
+            Object.keys(destination.metadata).length !== 0
+              ? destination.metadata
+              : null
         }))
       },
-      metadata: transaction.metadata ?? {}
+      metadata:
+        Object.keys(transaction.metadata).length !== 0
+          ? transaction.metadata
+          : null
     }
   }
 
