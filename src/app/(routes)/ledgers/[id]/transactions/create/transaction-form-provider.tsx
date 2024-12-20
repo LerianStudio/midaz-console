@@ -101,13 +101,13 @@ export const TransactionProvider = ({
     if (formValues.source.length === 1) {
       form.setValue('source.0.value', formValues.value)
     }
-  }, [formValues.source.length])
+  }, [formValues.value, formValues.source.length])
 
   useEffect(() => {
     if (formValues.destination.length === 1) {
       form.setValue('destination.0.value', formValues.value)
     }
-  }, [formValues.destination.length])
+  }, [formValues.value, formValues.destination.length])
 
   return (
     <TransactionFormProvider.Provider
