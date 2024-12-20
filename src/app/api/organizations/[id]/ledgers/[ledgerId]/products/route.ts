@@ -8,8 +8,10 @@ import {
   FetchAllProducts,
   FetchAllProductsUseCase
 } from '@/core/application/use-cases/product/fetch-all-products-use-case'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
+import { NextHandler } from '@/lib/applymiddleware/types'
+import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
 
 const createProductUseCase: CreateProduct =
   container.get<CreateProduct>(CreateProductUseCase)
@@ -19,14 +21,11 @@ const fetchAllProductsUseCase: FetchAllProducts =
 
 const loggerAggregator = container.get(LoggerAggregator)
 
-export async function POST(
-  request: Request,
-  { params }: { params: { id: string; ledgerId: string } }
-) {
-  try {
-    const body = await request.json()
-    const organizationId = params.id
-    const ledgerId = params.ledgerId
+export function testeMiddleware() {
+  return async (req: NextRequest, next: NextHandler) => {
+    const organizationId = '12312312312'
+    const ledgerId = '12312312312'
+    const body = await req.json()
 
     return loggerAggregator.runWithContext(
       'createProduct',
@@ -43,22 +42,36 @@ export async function POST(
           operation: 'createProduct',
           level: 'info'
         })
-        const productCreated = await createProductUseCase.execute(
-          organizationId,
-          ledgerId,
-          body
-        )
-
-        return NextResponse.json(productCreated)
+        const response = await next()
+        return response
       }
     )
-  } catch (error: any) {
-    console.error('Error creating product', error)
-    const { message, status } = await apiErrorHandler(error)
-
-    return NextResponse.json({ message }, { status })
   }
 }
+
+export const POST = applyMiddleware(
+  [testeMiddleware()],
+  async (request, params) => {
+    try {
+      const body = await request.json()
+      const organizationId = params.id
+      const ledgerId = params.ledgerId
+
+      const productCreated = await createProductUseCase.execute(
+        organizationId,
+        ledgerId,
+        body
+      )
+
+      return NextResponse.json(productCreated)
+    } catch (error: any) {
+      console.error('Error creating product', error)
+      const { message, status } = await apiErrorHandler(error)
+
+      return NextResponse.json({ message }, { status })
+    }
+  }
+)
 
 export async function GET(
   request: Request,
