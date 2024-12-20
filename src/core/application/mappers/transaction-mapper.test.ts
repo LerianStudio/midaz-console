@@ -28,7 +28,6 @@ describe('TransactionMapper', () => {
       const entity: TransactionEntity = TransactionMapper.toDomain(dto)
 
       expect(entity).toEqual({
-        code: '',
         send: {
           asset: 'USD',
           value: 100,
@@ -68,7 +67,6 @@ describe('TransactionMapper', () => {
   describe('toResponseDto', () => {
     it('should map TransactionEntity to TransactionResponseDto', () => {
       const entity: TransactionEntity = {
-        code: '123',
         send: {
           asset: 'USD',
           value: 100,

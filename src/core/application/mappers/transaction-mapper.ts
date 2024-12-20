@@ -8,7 +8,6 @@ import { isNumber } from 'lodash'
 export class TransactionMapper {
   static toDomain(transaction: CreateTransactionDto): TransactionEntity {
     return {
-      code: '',
       send: {
         asset: transaction.asset,
         ...TransactionMapper.valueToAmount(transaction.value),

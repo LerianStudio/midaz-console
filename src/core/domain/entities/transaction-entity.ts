@@ -17,7 +17,6 @@ type TransactionSourceEntity = {
 
 export type TransactionEntity = {
   id?: string
-  code: string
   description?: string
   chartOfAccountsGroupName?: string
   send: {
