@@ -40,7 +40,7 @@ export default function CreateTransactionPage() {
   const { handleDialogOpen, dialogProps } = useConfirmDialog({
     onConfirm: () => router.push('/transactions')
   })
-  console.log(form.getValues(), form.formState.errors)
+
   return (
     <>
       <ConfirmationDialog

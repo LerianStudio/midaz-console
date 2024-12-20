@@ -15,7 +15,7 @@ export const useCreateTransaction = ({
   return useMutation({
     mutationKey: ['transactions', 'create'],
     mutationFn: postFetcher(
-      `/api/organizations/${organizationId}/ledgers/${ledgerId}/transactions`
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/transactions/json`
     ),
     ...options
   })
