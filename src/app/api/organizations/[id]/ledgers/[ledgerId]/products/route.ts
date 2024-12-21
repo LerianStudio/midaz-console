@@ -49,9 +49,14 @@ export function testeMiddleware() {
   }
 }
 
+interface ProductParams {
+  id: string
+  ledgerId: string
+}
+
 export const POST = applyMiddleware(
   [testeMiddleware()],
-  async (request, params) => {
+  async (request: NextRequest, { params }: { params: ProductParams }) => {
     try {
       const body = await request.json()
       const organizationId = params.id
