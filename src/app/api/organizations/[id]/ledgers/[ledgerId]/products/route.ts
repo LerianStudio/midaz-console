@@ -12,6 +12,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
 import { NextHandler } from '@/lib/applymiddleware/types'
 import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { requestIdMiddleware } from '@/lib/middleware/request-id'
 
 const createProductUseCase: CreateProduct =
   container.get<CreateProduct>(CreateProductUseCase)
@@ -21,25 +22,39 @@ const fetchAllProductsUseCase: FetchAllProducts =
 
 const loggerAggregator = container.get(LoggerAggregator)
 
-export function testeMiddleware() {
+interface LoggerMiddlewareConfig {
+  operationName: string
+  method: string
+  useCase: string
+  action?: string
+}
+
+export function loggerMiddleware(config: LoggerMiddlewareConfig) {
   return async (req: NextRequest, next: NextHandler) => {
-    const organizationId = '12312312312'
-    const ledgerId = '12312312312'
-    const body = await req.json()
+    const existingMidazId = req.headers.get('X-Midaz-Id')
+
+    if (!existingMidazId) {
+      req.headers.set('X-Midaz-Id', crypto.randomUUID())
+    }
+
+    let body = undefined
+    if (config.method !== 'GET') {
+      body = await req.json()
+    }
 
     return loggerAggregator.runWithContext(
-      'createProduct',
-      'POST',
+      config.operationName,
+      config.method,
       {
-        useCase: 'CreateProductUseCase',
-        action: 'execute'
+        useCase: config.useCase,
+        action: config.action || 'execute'
       },
       async () => {
         loggerAggregator.addEvent({
-          message: 'Creating product',
-          metadata: { organizationId, ledgerId, product: body },
+          message: `${config.operationName} operation`,
+          metadata: { body, midazId: req.headers.get('X-Midaz-Id') },
           layer: 'application',
-          operation: 'createProduct',
+          operation: config.operationName,
           level: 'info'
         })
         const response = await next()
@@ -49,13 +64,21 @@ export function testeMiddleware() {
   }
 }
 
+// Add interface for params
 interface ProductParams {
   id: string
   ledgerId: string
 }
 
 export const POST = applyMiddleware(
-  [testeMiddleware()],
+  [
+    requestIdMiddleware(),
+    loggerMiddleware({
+      operationName: 'createProduct',
+      method: 'POST',
+      useCase: 'CreateProductUseCase'
+    })
+  ],
   async (request: NextRequest, { params }: { params: ProductParams }) => {
     try {
       const body = await request.json()
@@ -78,47 +101,84 @@ export const POST = applyMiddleware(
   }
 )
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string; ledgerId: string } }
-) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const limit = Number(searchParams.get('limit')) || 10
-    const page = Number(searchParams.get('page')) || 1
-    const organizationId = params.id
-    const ledgerId = params.ledgerId
+export const GET = applyMiddleware(
+  [
+    requestIdMiddleware(),
+    loggerMiddleware({
+      operationName: 'fetchAllProducts',
+      method: 'GET',
+      useCase: 'FetchAllProductsUseCase'
+    })
+  ],
+  async (request: NextRequest, { params }: { params: ProductParams }) => {
+    try {
+      const { searchParams } = new URL(request.url)
+      const limit = Number(searchParams.get('limit')) || 10
+      const page = Number(searchParams.get('page')) || 1
+      const organizationId = params.id
+      const ledgerId = params.ledgerId
 
-    return loggerAggregator.runWithContext(
-      'fetchAllProducts',
-      'GET',
-      {
-        useCase: 'FetchAllProductsUseCase',
-        action: 'execute'
-      },
-      async () => {
-        loggerAggregator.addEvent({
-          message: 'Fetching all products',
-          metadata: { organizationId, ledgerId, limit, page },
-          layer: 'application',
-          operation: 'fetchAllProducts',
-          level: 'info'
-        })
+      const products = await fetchAllProductsUseCase.execute(
+        organizationId,
+        ledgerId,
+        limit,
+        page
+      )
 
-        const products = await fetchAllProductsUseCase.execute(
-          organizationId,
-          ledgerId,
-          limit,
-          page
-        )
+      console.log('products', products)
 
-        return NextResponse.json(products)
-      }
-    )
-  } catch (error: any) {
-    console.error('Error fetching all products', error)
-    const { message, status } = await apiErrorHandler(error)
+      return NextResponse.json(products)
+    } catch (error: any) {
+      console.error('Error fetching all products', error)
+      const { message, status } = await apiErrorHandler(error)
 
-    return NextResponse.json({ message }, { status })
+      return NextResponse.json({ message }, { status })
+    }
   }
-}
+)
+
+// export async function GET(
+//   request: Request,
+//   { params }: { params: { id: string; ledgerId: string } }
+// ) {
+//   try {
+//     const { searchParams } = new URL(request.url)
+//     const limit = Number(searchParams.get('limit')) || 10
+//     const page = Number(searchParams.get('page')) || 1
+//     const organizationId = params.id
+//     const ledgerId = params.ledgerId
+//     const midazId = request.headers.get('X-Midaz-Id')
+//     return loggerAggregator.runWithContext(
+//       'fetchAllProducts',
+//       'GET',
+//       {
+//         useCase: 'FetchAllProductsUseCase',
+//         action: 'execute'
+//       },
+//       async () => {
+//         console.log('midazId', midazId)
+//         loggerAggregator.addEvent({
+//           message: 'Fetching all products',
+//           metadata: { organizationId, ledgerId, limit, page },
+//           layer: 'application',
+//           operation: 'fetchAllProducts',
+//           level: 'debug'
+//         })
+
+//         const products = await fetchAllProductsUseCase.execute(
+//           organizationId,
+//           ledgerId,
+//           limit,
+//           page
+//         )
+
+//         return NextResponse.json(products)
+//       }
+//     )
+//   } catch (error: any) {
+//     console.error('Error fetching all products', error)
+//     const { message, status } = await apiErrorHandler(error)
+
+//     return NextResponse.json({ message }, { status })
+//   }
+// }

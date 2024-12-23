@@ -36,9 +36,9 @@ export function LogOperation(options: {
         logger.addEvent({
           layer: options.layer,
           operation: `${options.operation}_start`,
-          level: 'info',
-          message: `Starting ${options.operation}`,
-          metadata: { args }
+          level: 'debug',
+          message: `Starting ${options.operation}`
+          // metadata: { args } //comentario aqui para remover o payload
         })
 
         const result = await originalMethod.apply(this, args)
@@ -46,9 +46,9 @@ export function LogOperation(options: {
         logger.addEvent({
           layer: options.layer,
           operation: `${options.operation}_success`,
-          level: 'info',
-          message: `${options.operation} completed successfully`,
-          metadata: { result }
+          level: 'debug',
+          message: `${options.operation} completed successfully`
+          // metadata: { result }//comentario aqui para remover o payload
         })
 
         return result

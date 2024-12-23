@@ -78,7 +78,9 @@ export class LoggerAggregator {
     if (context) {
       const duration = (Date.now() - context.startTime) / 1000
 
-      this.loggerRepository.info(
+      const logLevel = this.determineLogLevel(context.events)
+
+      this.loggerRepository[logLevel](
         'Request Timeline',
         {
           events: context.events.map((event) => ({
@@ -96,6 +98,18 @@ export class LoggerAggregator {
         }
       )
     }
+  }
+
+  private determineLogLevel(events: LogEvent[]): Level {
+    const levelPriority: Level[] = ['error', 'warn', 'audit', 'info', 'debug']
+
+    for (const level of levelPriority) {
+      if (events.some((event) => event.level === level)) {
+        return level
+      }
+    }
+
+    return 'info'
   }
 
   private getContext(): RequestContext | undefined {
