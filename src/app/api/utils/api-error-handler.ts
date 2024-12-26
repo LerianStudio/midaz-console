@@ -1,10 +1,9 @@
+import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
+import { container } from '@/core/infrastructure/container-registry/container-registry'
 import { UnauthorizedException } from '@/core/infrastructure/errors/http-exceptions'
 import { MidazError } from '@/core/infrastructure/errors/midaz-error'
 import { getIntl } from '@/lib/intl'
 import { PinoLogger } from '@/lib/logger/pino-logger'
-import { RequestContextManager } from '@/lib/logger/request-context'
-
-const logger = PinoLogger.getInstance()
 
 export interface ErrorResponse {
   message: string
@@ -13,6 +12,7 @@ export interface ErrorResponse {
 
 export async function apiErrorHandler(error: any): Promise<ErrorResponse> {
   const intl = await getIntl()
+  const loggerAggregator = container.get(LoggerAggregator)
   let errorResponse: ErrorResponse
 
   const errorMetadata = {
@@ -22,7 +22,7 @@ export async function apiErrorHandler(error: any): Promise<ErrorResponse> {
 
   switch (error.constructor) {
     case MidazError:
-      RequestContextManager.addEvent({
+      loggerAggregator.addEvent({
         layer: 'api',
         operation: 'api_error_handler',
         level: 'error',
@@ -32,7 +32,7 @@ export async function apiErrorHandler(error: any): Promise<ErrorResponse> {
       errorResponse = { message: error.message, status: 400 }
       break
     case UnauthorizedException:
-      RequestContextManager.addEvent({
+      loggerAggregator.addEvent({
         layer: 'api',
         operation: 'api_error_handler',
         level: 'error',
@@ -42,7 +42,7 @@ export async function apiErrorHandler(error: any): Promise<ErrorResponse> {
       errorResponse = { message: error.message, status: 401 }
       break
     default:
-      RequestContextManager.addEvent({
+      loggerAggregator.addEvent({
         layer: 'api',
         operation: 'api_error_handler',
         level: 'error',

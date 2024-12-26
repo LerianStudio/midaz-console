@@ -20,7 +20,6 @@ export class PinoLogger {
     }
 
     if (process.env.NODE_ENV === 'production') {
-      console.log('será que entrou aqui?')
       loggerOptions.transport = {
         target: 'pino-pretty',
         options: {

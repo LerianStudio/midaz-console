@@ -77,7 +77,6 @@ export class LoggerAggregator {
 
     if (context) {
       const duration = (Date.now() - context.startTime) / 1000
-
       const logLevel = this.determineLogLevel(context.events)
 
       this.loggerRepository[logLevel](
@@ -109,7 +108,7 @@ export class LoggerAggregator {
       }
     }
 
-    return 'info'
+    return 'debug'
   }
 
   private getContext(): RequestContext | undefined {

@@ -31,14 +31,16 @@ export function LogOperation(options: {
     // Overrides the method
     descriptor.value = async function (...args: any[]) {
       const logger: LoggerAggregator = (this as any).loggerAggregator
+      const isDebugEnabled = process.env.ENABLE_DEBUG === 'true'
 
       try {
         logger.addEvent({
           layer: options.layer,
           operation: `${options.operation}_start`,
-          level: 'debug',
-          message: `Starting ${options.operation}`
+          level: 'info',
+          message: `Starting ${options.operation}`,
           // metadata: { args } //comentario aqui para remover o payload
+          ...(isDebugEnabled && { metadata: { args } })
         })
 
         const result = await originalMethod.apply(this, args)
@@ -46,9 +48,10 @@ export function LogOperation(options: {
         logger.addEvent({
           layer: options.layer,
           operation: `${options.operation}_success`,
-          level: 'debug',
-          message: `${options.operation} completed successfully`
-          // metadata: { result }//comentario aqui para remover o payload
+          level: 'info',
+          message: `${options.operation} completed successfully`,
+          // metadata: { result } //comentario aqui para remover o payload
+          ...(isDebugEnabled && { metadata: { result } })
         })
 
         return result
