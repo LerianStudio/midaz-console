@@ -1,31 +1,28 @@
+import 'reflect-metadata'
 import { NextRequest, NextResponse } from 'next/server'
 import { requestIdMiddleware } from '@/lib/middleware/request-id'
+import { containerRequest } from './core/infrastructure/container-registry/container-request-registry'
+import { container } from './core/infrastructure/container-registry/container-registry'
+import {
+  MIDAZ_ID_KEY,
+  MidazRequestContext
+} from './core/infrastructure/logger/decorators/midaz-id'
+// const withRequestId = requestIdMiddleware()
 
-// Cria uma instância do middleware
-const withRequestId = requestIdMiddleware()
-
-// Função principal do middleware
 export async function middleware(request: NextRequest) {
-  // Cria uma resposta inicial
-  const response = NextResponse.next()
+  // const response = NextResponse.next()
+  request.headers.set('X-Midaz-Id', '123')
+  // await withRequestId(request, async () => response)
 
-  // Aplica o middleware
-  await withRequestId(request, async () => response)
+  // const midazId = request.headers.get('X-Midaz-Id')
 
-  // Propaga o X-Midaz-Id do request para o response
-  const midazId = request.headers.get('X-Midaz-Id')
-  if (midazId) {
-    response.headers.set('X-Midaz-Id', midazId)
-  }
+  // // if (midazId) {
+  // //   response.headers.set('X-Midaz-Id', midazId)
+  // // }
 
-  return response
+  return NextResponse.next()
 }
 
-// Define em quais rotas o middleware será executado
 export const config = {
-  matcher: [
-    // Executa em todas as rotas da API
-    '/api/:path*'
-    // Adicione outros padrões de rota conforme necessário
-  ]
+  matcher: ['/api/:path*']
 }

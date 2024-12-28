@@ -27,6 +27,7 @@ interface RequestContext {
 @injectable()
 export class LoggerAggregator {
   private storage = new AsyncLocalStorage<RequestContext>()
+
   constructor(
     @inject(LoggerRepository)
     private readonly loggerRepository: LoggerRepository

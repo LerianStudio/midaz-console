@@ -1,5 +1,8 @@
 import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
 import { container } from '@/core/infrastructure/container-registry/container-registry'
+import { MidazRequestContext } from '@/core/infrastructure/logger/decorators/midaz-id'
+import { containerRequest } from '@/core/infrastructure/container-registry/container-request-registry'
+import { MIDAZ_ID_KEY } from '@/core/infrastructure/logger/decorators/midaz-id'
 import { NextHandler } from '@/lib/applymiddleware/types'
 import { NextRequest } from 'next/server'
 
@@ -12,14 +15,18 @@ interface LoggerMiddlewareConfig {
 }
 
 const loggerAggregator = container.get(LoggerAggregator)
+const midazRequestContext: MidazRequestContext =
+  container.get<MidazRequestContext>(MIDAZ_ID_KEY)
 
 export function loggerMiddleware(config: LoggerMiddlewareConfig) {
   return async (req: NextRequest, next: NextHandler) => {
-    const existingMidazId = req.headers.get('X-Midaz-Id')
+    // const existingMidazId = req.headers.get('X-Midaz-Id')
 
-    if (!existingMidazId) {
-      req.headers.set('X-Midaz-Id', crypto.randomUUID())
-    }
+    // if (!existingMidazId) {
+    //   req.headers.set('X-Midaz-Id', crypto.randomUUID())
+    // }
+
+    console.log('midazRequestContext', midazRequestContext.getMidazId())
 
     let body = undefined
     if (config.method !== 'GET') {
@@ -41,7 +48,7 @@ export function loggerMiddleware(config: LoggerMiddlewareConfig) {
         loggerAggregator.addEvent({
           message: `${config.operationName} operation`,
           ...(shouldIncludePayload && {
-            metadata: { body, midazId: req.headers.get('X-Midaz-Id') }
+            metadata: { body, midazId: midazRequestContext.getMidazId() }
           }),
           layer: 'application',
           operation: config.operationName,

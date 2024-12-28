@@ -2,6 +2,12 @@ import { getServerSession } from 'next-auth'
 import { nextAuthCasdoorOptions } from '../next-auth/casdoor/next-auth-casdoor-provider'
 import { handleMidazError } from './midaz-error-handler'
 import { isNil } from 'lodash'
+import { MIDAZ_ID_KEY } from '../logger/decorators/midaz-id'
+import { MidazRequestContext } from '../logger/decorators/midaz-id'
+import { containerRequest } from '../container-registry/container-request-registry'
+import { container } from '../container-registry/container-registry'
+import { MidazId } from '../logger/decorators/MidazId.decorator'
+import { injectable } from 'inversify'
 
 export enum HTTP_METHODS {
   GET = 'GET',
@@ -23,6 +29,8 @@ export async function httpMidazAuthFetch<T>(
 ): Promise<T> {
   const session = await getServerSession(nextAuthCasdoorOptions)
   const { access_token } = session?.user
+  const midazId: MidazRequestContext =
+    container.get<MidazRequestContext>(MIDAZ_ID_KEY)
 
   const headers = {
     'Content-Type': 'application/json',
@@ -34,7 +42,8 @@ export async function httpMidazAuthFetch<T>(
     method: httpFetchOptions.method,
     body: httpFetchOptions.body,
     headers: {
-      ...headers
+      ...headers,
+      'Midaz-Id': midazId.getMidazId()
     }
   })
 
@@ -47,4 +56,18 @@ export async function httpMidazAuthFetch<T>(
   }
 
   return midazResponse
+}
+
+export class HttpFetchUtils {
+  @MidazId()
+  private readonly midazId!: string
+
+  httpMidazAuthFetch<T>(httpFetchOptions: HttpFetchOptions): Promise<T> {
+    console.log('midazIdhpptfetchuitls', this.midazId)
+    httpFetchOptions.headers = {
+      ...httpFetchOptions.headers,
+      'Midaz-Id': this.midazId
+    }
+    return httpMidazAuthFetch(httpFetchOptions)
+  }
 }

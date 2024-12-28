@@ -12,6 +12,9 @@ import { CasdoorModule } from '../casdoor/module/casdoor-module'
 import { AuthUseCaseModule } from './use-cases/auth-module'
 import { LoggerModule } from '../logger/module/logger-module'
 import { LoggerApplicationModule } from './logger-application-module'
+import { MIDAZ_ID_KEY } from '../logger/decorators/midaz-id'
+import { MidazRequestContext } from '../logger/decorators/midaz-id'
+import { interfaces } from 'inversify'
 
 export const container = new Container()
 
@@ -27,3 +30,15 @@ container.load(AccountUseCaseModule)
 container.load(AssetUseCaseModule)
 container.load(ProductUseCaseModule)
 container.load(LoggerApplicationModule)
+
+container.bind<MidazRequestContext>(MIDAZ_ID_KEY).to(MidazRequestContext)
+
+// const loggerMiddleware: interfaces.Middleware = (next) => (args) => {
+//   console.log(`[Inversify] Resolving: ${args.serviceIdentifier.toString()}`)
+//   const result = next(args)
+//   console.log('[Inversify] Result: ', result)
+//   console.log(`[Inversify] Resolved: ${args.serviceIdentifier.toString()}`)
+//   return result
+// }
+
+// container.container.applyMiddleware(loggerMiddleware)

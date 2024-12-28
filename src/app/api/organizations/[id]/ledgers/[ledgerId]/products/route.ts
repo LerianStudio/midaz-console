@@ -12,6 +12,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
 import { requestIdMiddleware } from '@/lib/middleware/request-id'
 import { loggerMiddleware } from '@/utils/logger-middleware-config'
+import { MIDAZ_ID_KEY } from '@/core/infrastructure/logger/decorators/midaz-id'
+import { MidazRequestContext } from '@/core/infrastructure/logger/decorators/midaz-id'
+import { containerRequest } from '@/core/infrastructure/container-registry/container-request-registry'
 
 const createProductUseCase: CreateProduct =
   container.get<CreateProduct>(CreateProductUseCase)
@@ -26,7 +29,6 @@ interface ProductParams {
 
 export const POST = applyMiddleware(
   [
-    requestIdMiddleware(),
     loggerMiddleware({
       operationName: 'createProduct',
       method: 'POST',
@@ -58,7 +60,6 @@ export const POST = applyMiddleware(
 
 export const GET = applyMiddleware(
   [
-    requestIdMiddleware(),
     loggerMiddleware({
       operationName: 'fetchAllProducts',
       method: 'GET',
@@ -74,7 +75,7 @@ export const GET = applyMiddleware(
       const organizationId = params.id
       const ledgerId = params.ledgerId
 
-      console.log('midazId', request.headers.get('X-Midaz-Id'))
+      // console.log('midazId', request.headers.get('X-Midaz-Id'))
 
       const products = await fetchAllProductsUseCase.execute(
         organizationId,
