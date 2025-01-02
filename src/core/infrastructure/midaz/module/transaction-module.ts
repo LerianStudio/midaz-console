@@ -4,6 +4,8 @@ import { MidazCreateTransactionRepository } from '../transactions/midaz-create-t
 
 export const MidazTransactionModule = new ContainerModule(
   (container: Container) => {
-    container.bind<CreateTransactionRepository>(CreateTransactionRepository).to(MidazCreateTransactionRepository)
+    container
+      .bind<CreateTransactionRepository>(CreateTransactionRepository)
+      .to(MidazCreateTransactionRepository)
   }
 )

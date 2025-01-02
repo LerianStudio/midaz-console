@@ -21,20 +21,20 @@ export class TransactionMapper {
             metadata:
               Object.keys(source.metadata).length !== 0 ? source.metadata : null
           }))
+        },
+        distribute: {
+          to: transaction.destination.map((destination) => ({
+            account: destination.account,
+            amount: {
+              asset: transaction.asset,
+              ...TransactionMapper.valueToAmount(destination.value)
+            },
+            metadata:
+              Object.keys(destination.metadata).length !== 0
+                ? destination.metadata
+                : null
+          }))
         }
-      },
-      distribute: {
-        to: transaction.destination.map((destination) => ({
-          account: destination.account,
-          amount: {
-            asset: transaction.asset,
-            ...TransactionMapper.valueToAmount(destination.value)
-          },
-          metadata:
-            Object.keys(destination.metadata).length !== 0
-              ? destination.metadata
-              : null
-        }))
       },
       metadata:
         Object.keys(transaction.metadata).length !== 0

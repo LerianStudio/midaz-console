@@ -26,9 +26,9 @@ export type TransactionEntity = {
     source: {
       from: TransactionSourceEntity[]
     }
-  }
-  distribute: {
-    to: TransactionSourceEntity[]
+    distribute: {
+      to: TransactionSourceEntity[]
+    }
   }
   metadata: Record<string, any> | null
 }

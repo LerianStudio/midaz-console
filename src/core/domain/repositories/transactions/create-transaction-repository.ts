@@ -1,4 +1,4 @@
-import { TransactionEntity } from "../../entities/transaction-entity";
+import { TransactionEntity } from '../../entities/transaction-entity'
 
 export abstract class CreateTransactionRepository {
   abstract create: (

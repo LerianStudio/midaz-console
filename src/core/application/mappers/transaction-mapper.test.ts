@@ -44,20 +44,20 @@ describe('TransactionMapper', () => {
                 metadata: { key: 'value' }
               }
             ]
+          },
+          distribute: {
+            to: [
+              {
+                account: 'destination-account-1',
+                amount: {
+                  asset: 'USD',
+                  value: 50,
+                  scale: 0
+                },
+                metadata: { key: 'value' }
+              }
+            ]
           }
-        },
-        distribute: {
-          to: [
-            {
-              account: 'destination-account-1',
-              amount: {
-                asset: 'USD',
-                value: 50,
-                scale: 0
-              },
-              metadata: { key: 'value' }
-            }
-          ]
         },
         metadata: { key: 'value' }
       })
@@ -83,20 +83,20 @@ describe('TransactionMapper', () => {
                 metadata: { key: 'value' }
               }
             ]
+          },
+          distribute: {
+            to: [
+              {
+                account: 'destination-account-1',
+                amount: {
+                  asset: 'USD',
+                  value: 50,
+                  scale: 0
+                },
+                metadata: { key: 'value' }
+              }
+            ]
           }
-        },
-        distribute: {
-          to: [
-            {
-              account: 'destination-account-1',
-              amount: {
-                asset: 'USD',
-                value: 50,
-                scale: 0
-              },
-              metadata: { key: 'value' }
-            }
-          ]
         },
         metadata: { key: 'value' }
       }
