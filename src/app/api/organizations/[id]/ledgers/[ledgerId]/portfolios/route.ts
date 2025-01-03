@@ -9,7 +9,8 @@ import {
   FetchAllPortfoliosUseCase
 } from '@/core/application/use-cases/portfolios/fetch-all-portfolio-use-case'
 import { NextRequest, NextResponse } from 'next/server'
-import { RequestContextManager } from '@/lib/logger/request-context'
+import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { loggerMiddleware } from '@/utils/logger-middleware-config'
 
 const createPortfolioUseCase: CreatePortfolio = container.get<CreatePortfolio>(
   CreatePortfolioUseCase
@@ -18,67 +19,66 @@ const createPortfolioUseCase: CreatePortfolio = container.get<CreatePortfolio>(
 const fetchAllPortfoliosUseCase: FetchAllPortfolios =
   container.get<FetchAllPortfolios>(FetchAllPortfoliosUseCase)
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string; ledgerId: string } }
-) {
-  const { searchParams } = new URL(request.url)
-  const limit = Number(searchParams.get('limit')) || 100
-  const page = Number(searchParams.get('page')) || 1
-  const organizationId = params.id
-  const ledgerId = params.ledgerId
-  return RequestContextManager.runWithContext(
-    request.url,
-    request.method,
-    { organizationId, ledgerId },
-    async () => {
-      try {
-        const portfolios = await fetchAllPortfoliosUseCase.execute(
-          organizationId,
-          ledgerId,
-          page,
-          limit
-        )
-
-        return NextResponse.json(portfolios)
-      } catch (error: any) {
-        const { message, status } = await apiErrorHandler(error)
-        return NextResponse.json({ message }, { status })
-      }
-    }
-  )
+interface PortfolioParams {
+  id: string
+  ledgerId: string
 }
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { id: string; ledgerId: string } }
-) {
-  const { id: organizationId, ledgerId } = params
-  const midazId = request.headers.get('X-Midaz-Id')
-  return RequestContextManager.runWithContext(
-    request.url,
-    request.method,
-    { organizationId, ledgerId, midazId },
-    async () => {
-      try {
-        if (!midazId) {
-          return NextResponse.json(
-            { message: 'X-Midaz-Id header is required' },
-            { status: 400 }
-          )
-        }
-        const body = await request.json()
-        const portfolio = await createPortfolioUseCase.execute(
-          organizationId,
-          ledgerId,
-          midazId,
-          body
-        )
-        return NextResponse.json(portfolio)
-      } catch (error) {
-        const { message, status } = await apiErrorHandler(error)
-        return NextResponse.json({ message }, { status })
-      }
+export const GET = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'fetchAllPortfolios',
+      method: 'GET',
+      useCase: 'FetchAllPortfoliosUseCase',
+      logLevel: 'debug'
+    })
+  ],
+  async (request: NextRequest, { params }: { params: PortfolioParams }) => {
+    try {
+      const { searchParams } = new URL(request.url)
+      const limit = Number(searchParams.get('limit')) || 100
+      const page = Number(searchParams.get('page')) || 1
+      const organizationId = params.id
+      const ledgerId = params.ledgerId
+
+      const portfolios = await fetchAllPortfoliosUseCase.execute(
+        organizationId,
+        ledgerId,
+        page,
+        limit
+      )
+
+      return NextResponse.json(portfolios)
+    } catch (error: any) {
+      const { message, status } = await apiErrorHandler(error)
+      return NextResponse.json({ message }, { status })
     }
-  )
-}
+  }
+)
+
+export const POST = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'createPortfolio',
+      method: 'POST',
+      useCase: 'CreatePortfolioUseCase',
+      logLevel: 'info'
+    })
+  ],
+  async (request: NextRequest, { params }: { params: PortfolioParams }) => {
+    try {
+      const { id: organizationId, ledgerId } = params
+
+      const body = await request.json()
+      const portfolio = await createPortfolioUseCase.execute(
+        organizationId,
+        ledgerId,
+        body
+      )
+      return NextResponse.json(portfolio)
+    } catch (error) {
+      const { message, status } = await apiErrorHandler(error)
+      return NextResponse.json({ message }, { status })
+    }
+  }
+)

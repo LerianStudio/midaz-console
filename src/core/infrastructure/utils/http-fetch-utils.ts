@@ -4,10 +4,8 @@ import { handleMidazError } from './midaz-error-handler'
 import { isNil } from 'lodash'
 import { MIDAZ_ID_KEY } from '../logger/decorators/midaz-id'
 import { MidazRequestContext } from '../logger/decorators/midaz-id'
-import { containerRequest } from '../container-registry/container-request-registry'
 import { container } from '../container-registry/container-registry'
 import { MidazId } from '../logger/decorators/MidazId.decorator'
-import { injectable } from 'inversify'
 
 export enum HTTP_METHODS {
   GET = 'GET',
@@ -32,22 +30,24 @@ export async function httpMidazAuthFetch<T>(
   const midazId: MidazRequestContext =
     container.get<MidazRequestContext>(MIDAZ_ID_KEY)
 
+  console.log('midazIdhttpfetchutils', midazId)
   const headers = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${access_token}`,
+    'Midaz-Id': midazId.getMidazId(),
     ...httpFetchOptions.headers
   }
+
+  console.log('headersMidazIdhttpfetchutils', headers)
 
   const response = await fetch(httpFetchOptions.url, {
     method: httpFetchOptions.method,
     body: httpFetchOptions.body,
     headers: {
-      ...headers,
-      'Midaz-Id': midazId.getMidazId()
+      ...headers
     }
   })
 
-  // If body is null, we don't want to parse it
   const midazResponse = !isNil(response.body) ? await response.json() : {}
 
   if (!response.ok) {

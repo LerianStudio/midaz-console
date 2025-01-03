@@ -14,6 +14,8 @@ import {
 } from '@/core/application/use-cases/portfolios/update-portfolio-use-case'
 import { NextRequest, NextResponse } from 'next/server'
 import { RequestContextManager } from '@/lib/logger/request-context'
+import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { loggerMiddleware } from '@/utils/logger-middleware-config'
 
 const updatePortfolioUseCase: UpdatePortfolio = container.get<UpdatePortfolio>(
   UpdatePortfolioUseCase
@@ -25,62 +27,46 @@ const deletePortfolioUseCase: DeletePortfolio = container.get<DeletePortfolio>(
 const getPortfolioByIdUseCase: FetchPortfolioById =
   container.get<FetchPortfolioById>(FetchPortfolioByIdUseCase)
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string; ledgerId: string; portfolioId: string } }
-) {
-  const { id: organizationId, ledgerId, portfolioId } = params
-  const midazId = request.headers.get('X-Midaz-Id')
-  return RequestContextManager.runWithContext(
-    request.url,
-    request.method,
+export const DELETE = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'deletePortfolio',
+      method: 'DELETE',
+      useCase: 'DeletePortfolioUseCase',
+      logLevel: 'audit'
+    })
+  ],
+  async (
+    request: NextRequest,
     {
-      organizationId,
-      ledgerId,
-      portfolioId,
-      deletedAt: new Date().toISOString(),
-      midazId
-    },
-    async () => {
-      RequestContextManager.addEvent({
-        layer: 'api',
-        operation: 'delete_portfolio',
-        level: 'audit',
-        message: 'Deleting portfolio',
-        metadata: {
-          organizationId,
-          ledgerId,
-          portfolioId
-        }
-      })
+      params
+    }: { params: { id: string; ledgerId: string; portfolioId: string } }
+  ) => {
+    const { id: organizationId, ledgerId, portfolioId } = params
 
-      try {
-        await deletePortfolioUseCase.execute(
-          organizationId,
-          ledgerId,
-          midazId!,
-          portfolioId
-        )
-        return NextResponse.json({}, { status: 200 })
-      } catch (error: any) {
-        const { message, status } = await apiErrorHandler(error)
-
-        return NextResponse.json({ message }, { status })
-      }
+    try {
+      await deletePortfolioUseCase.execute(
+        organizationId,
+        ledgerId,
+        portfolioId
+      )
+      return NextResponse.json({}, { status: 200 })
+    } catch (error: any) {
+      const { message, status } = await apiErrorHandler(error)
+      return NextResponse.json({ message }, { status })
     }
-  )
-}
+  }
+)
 
 export async function PATCH(
   request: NextRequest,
   { params }: { params: { id: string; ledgerId: string; portfolioId: string } }
 ) {
   const { id: organizationId, ledgerId, portfolioId } = params
-  const midazId = request.headers.get('X-Midaz-Id')
   return RequestContextManager.runWithContext(
     request.url,
     request.method,
-    { organizationId, ledgerId, portfolioId, midazId },
+    { organizationId, ledgerId, portfolioId },
     async () => {
       try {
         const body = await request.json()
@@ -89,14 +75,12 @@ export async function PATCH(
           organizationId,
           ledgerId,
           portfolioId,
-          midazId!,
           body
         )
 
         return NextResponse.json(portfolioUpdated)
       } catch (error: any) {
         const { message, status } = await apiErrorHandler(error)
-
         return NextResponse.json({ message }, { status })
       }
     }

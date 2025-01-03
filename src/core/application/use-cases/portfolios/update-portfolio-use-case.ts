@@ -14,7 +14,6 @@ export interface UpdatePortfolio {
     organizationId: string,
     ledgerId: string,
     portfolioId: string,
-    midazId: string,
     portfolio: Partial<UpdatePortfolioDto>
   ) => Promise<PortfolioResponseDto>
 }
@@ -30,7 +29,6 @@ export class UpdatePortfolioUseCase implements UpdatePortfolio {
     organizationId: string,
     ledgerId: string,
     portfolioId: string,
-    midazId: string,
     portfolio: Partial<UpdatePortfolioDto>
   ): Promise<PortfolioResponseDto> {
     portfolio.status = {
@@ -45,7 +43,6 @@ export class UpdatePortfolioUseCase implements UpdatePortfolio {
         organizationId,
         ledgerId,
         portfolioId,
-        midazId,
         portfolioEntity
       )
 

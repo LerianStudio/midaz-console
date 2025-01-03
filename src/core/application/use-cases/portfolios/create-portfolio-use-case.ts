@@ -12,7 +12,6 @@ export interface CreatePortfolio {
   execute: (
     organizationId: string,
     ledgerId: string,
-    midazId: string,
     portfolio: CreatePortfolioDto
   ) => Promise<PortfolioResponseDto>
 }
@@ -27,7 +26,6 @@ export class CreatePortfolioUseCase implements CreatePortfolio {
   async execute(
     organizationId: string,
     ledgerId: string,
-    midazId: string,
     portfolio: CreatePortfolioDto
   ): Promise<PortfolioResponseDto> {
     portfolio.status = {
@@ -38,7 +36,6 @@ export class CreatePortfolioUseCase implements CreatePortfolio {
     const portfolioCreated = await this.createPortfolioRepository.create(
       organizationId,
       ledgerId,
-      midazId,
       portfolioEntity
     )
 

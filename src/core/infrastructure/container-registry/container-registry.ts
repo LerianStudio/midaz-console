@@ -41,4 +41,4 @@ container.bind<MidazRequestContext>(MIDAZ_ID_KEY).to(MidazRequestContext)
 //   return result
 // }
 
-// container.container.applyMiddleware(loggerMiddleware)
+// container.container.apply  Middleware(loggerMiddleware)

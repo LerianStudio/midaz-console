@@ -10,11 +10,7 @@ import {
 } from '@/core/application/use-cases/product/fetch-all-products-use-case'
 import { NextRequest, NextResponse } from 'next/server'
 import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
-import { requestIdMiddleware } from '@/lib/middleware/request-id'
 import { loggerMiddleware } from '@/utils/logger-middleware-config'
-import { MIDAZ_ID_KEY } from '@/core/infrastructure/logger/decorators/midaz-id'
-import { MidazRequestContext } from '@/core/infrastructure/logger/decorators/midaz-id'
-import { containerRequest } from '@/core/infrastructure/container-registry/container-request-registry'
 
 const createProductUseCase: CreateProduct =
   container.get<CreateProduct>(CreateProductUseCase)

@@ -11,7 +11,6 @@ export class MidazDeletePortfolioRepository
   async delete(
     organizationId: string,
     ledgerId: string,
-    midazId: string,
     portfolioId: string
   ): Promise<void> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}`
@@ -19,9 +18,6 @@ export class MidazDeletePortfolioRepository
     await httpMidazAuthFetch<void>({
       url,
       method: HTTP_METHODS.DELETE,
-      headers: {
-        'Midaz-Id': midazId
-      }
     })
 
     return

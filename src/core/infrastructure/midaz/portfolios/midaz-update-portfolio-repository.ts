@@ -13,7 +13,6 @@ export class MidazUpdatePortfolioRepository
     organizationId: string,
     ledgerId: string,
     portfolioId: string,
-    midazId: string,
     portfolio: Partial<PortfolioEntity>
   ): Promise<PortfolioEntity> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}`
@@ -21,10 +20,7 @@ export class MidazUpdatePortfolioRepository
     const response = await httpMidazAuthFetch<PortfolioEntity>({
       url,
       method: HTTP_METHODS.PATCH,
-      body: JSON.stringify(portfolio),
-      headers: {
-        'Midaz-Id': midazId
-      }
+      body: JSON.stringify(portfolio)
     })
 
     return response

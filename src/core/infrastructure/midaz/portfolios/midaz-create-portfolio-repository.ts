@@ -11,7 +11,6 @@ export class MidazCreatePortfolioRepository
   async create(
     organizationId: string,
     ledgerId: string,
-    midazId: string,
     portfolio: PortfolioEntity
   ): Promise<PortfolioEntity> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios`
@@ -19,10 +18,7 @@ export class MidazCreatePortfolioRepository
     const response = await httpMidazAuthFetch<PortfolioEntity>({
       url,
       method: HTTP_METHODS.POST,
-      body: JSON.stringify(portfolio),
-      headers: {
-        'Midaz-Id': midazId
-      }
+      body: JSON.stringify(portfolio)
     })
 
     return response

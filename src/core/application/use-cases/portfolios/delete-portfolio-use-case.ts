@@ -6,7 +6,6 @@ export interface DeletePortfolio {
   execute: (
     organizationId: string,
     ledgerId: string,
-    midazId: string,
     portfolioId: string
   ) => Promise<void>
 }
@@ -21,13 +20,11 @@ export class DeletePortfolioUseCase implements DeletePortfolio {
   async execute(
     organizationId: string,
     ledgerId: string,
-    midazId: string,
     portfolioId: string
   ): Promise<void> {
     await this.deletePortfolioRepository.delete(
       organizationId,
       ledgerId,
-      midazId,
       portfolioId
     )
   }
