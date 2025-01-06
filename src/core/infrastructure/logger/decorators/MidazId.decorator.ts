@@ -3,6 +3,7 @@ import { MIDAZ_ID_KEY } from './midaz-id'
 import { container } from '../../container-registry/container-registry'
 
 import { MidazRequestContext } from './midaz-id'
+import { containerRequest } from '../../container-registry/container-request-registry'
 
 export function MidazId() {
   return function (target: any, propertyKey: string) {

@@ -6,6 +6,7 @@ import { MIDAZ_ID_KEY } from '../logger/decorators/midaz-id'
 import { MidazRequestContext } from '../logger/decorators/midaz-id'
 import { container } from '../container-registry/container-registry'
 import { MidazId } from '../logger/decorators/MidazId.decorator'
+import { injectable } from 'inversify'
 
 export enum HTTP_METHODS {
   GET = 'GET',
@@ -27,13 +28,14 @@ export async function httpMidazAuthFetch<T>(
 ): Promise<T> {
   const session = await getServerSession(nextAuthCasdoorOptions)
   const { access_token } = session?.user
-  const midazId: MidazRequestContext =
-    container.get<MidazRequestContext>(MIDAZ_ID_KEY)
+  // const midazId: MidazRequestContext =
+  //   container.get<MidazRequestContext>(MIDAZ_ID_KEY)
 
+  // console.log('uniqueid 1', midazId.getMidazId())
   const headers = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${access_token}`,
-    'Midaz-Id': midazId.getMidazId(),
+    // 'Midaz-Id': midazId.getMidazId(),
     ...httpFetchOptions.headers
   }
 
@@ -45,6 +47,8 @@ export async function httpMidazAuthFetch<T>(
     }
   })
 
+  // console.log('uniqueid 2', midazId.getMidazId())
+
   const midazResponse = !isNil(response.body) ? await response.json() : {}
 
   if (!response.ok) {
@@ -55,15 +59,42 @@ export async function httpMidazAuthFetch<T>(
   return midazResponse
 }
 
-export class HttpFetchUtils {
+@injectable()
+export class MidazHttpFetchUtils {
   @MidazId()
   private readonly midazId!: string
 
-  httpMidazAuthFetch<T>(httpFetchOptions: HttpFetchOptions): Promise<T> {
-    httpFetchOptions.headers = {
-      ...httpFetchOptions.headers,
-      'Midaz-Id': this.midazId
+  async httpMidazAuthFetch<T>(httpFetchOptions: HttpFetchOptions): Promise<T> {
+    const session = await getServerSession(nextAuthCasdoorOptions)
+    const { access_token } = session?.user
+    // const midazId: MidazRequestContext =
+    //   container.get<MidazRequestContext>(MIDAZ_ID_KEY)
+
+    console.log('uniqueid 1 class', this.midazId)
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${access_token}`,
+      'Midaz-Id': this.midazId,
+      ...httpFetchOptions.headers
     }
-    return httpMidazAuthFetch(httpFetchOptions)
+
+    const response = await fetch(httpFetchOptions.url, {
+      method: httpFetchOptions.method,
+      body: httpFetchOptions.body,
+      headers: {
+        ...headers
+      }
+    })
+
+    console.log('uniqueid 2 class', this.midazId)
+
+    const midazResponse = !isNil(response.body) ? await response.json() : {}
+
+    if (!response.ok) {
+      console.error('[ERROR] - httpMidazAuthFetch ', midazResponse)
+      throw await handleMidazError(midazResponse)
+    }
+
+    return midazResponse
   }
 }

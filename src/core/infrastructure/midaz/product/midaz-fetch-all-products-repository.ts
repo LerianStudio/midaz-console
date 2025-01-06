@@ -1,15 +1,23 @@
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { ProductEntity } from '@/core/domain/entities/product-entity'
 import { FetchAllProductsRepository } from '@/core/domain/repositories/products/fetch-all-products-repository'
-import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
-import { injectable } from 'inversify'
+import {
+  httpMidazAuthFetch,
+  HTTP_METHODS,
+  MidazHttpFetchUtils
+} from '../../utils/http-fetch-utils'
+import { inject, injectable } from 'inversify'
+import { MidazId } from '../../logger/decorators/MidazId.decorator'
 
 @injectable()
 export class MidazFetchAllProductsRepository
   implements FetchAllProductsRepository
 {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
-
+  constructor(
+    @inject(MidazHttpFetchUtils)
+    private readonly midazHttpFetchUtils: MidazHttpFetchUtils
+  ) {}
   async fetchAll(
     organizationId: string,
     ledgerId: string,
@@ -18,7 +26,9 @@ export class MidazFetchAllProductsRepository
   ): Promise<PaginationEntity<ProductEntity>> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/products?limit=${limit}&page=${page}`
 
-    const response = await httpMidazAuthFetch<PaginationEntity<ProductEntity>>({
+    const response = await this.midazHttpFetchUtils.httpMidazAuthFetch<
+      PaginationEntity<ProductEntity>
+    >({
       url,
       method: HTTP_METHODS.GET
     })
