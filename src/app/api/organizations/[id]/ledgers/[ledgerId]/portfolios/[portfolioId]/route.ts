@@ -13,7 +13,6 @@ import {
   UpdatePortfolioUseCase
 } from '@/core/application/use-cases/portfolios/update-portfolio-use-case'
 import { NextRequest, NextResponse } from 'next/server'
-import { RequestContextManager } from '@/lib/logger/request-context'
 import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
 import { loggerMiddleware } from '@/utils/logger-middleware-config'
 
@@ -58,62 +57,68 @@ export const DELETE = applyMiddleware(
   }
 )
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { id: string; ledgerId: string; portfolioId: string } }
-) {
-  const { id: organizationId, ledgerId, portfolioId } = params
-  return RequestContextManager.runWithContext(
-    request.url,
-    request.method,
-    { organizationId, ledgerId, portfolioId },
-    async () => {
-      try {
-        const body = await request.json()
+export const PATCH = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'updatePortfolio',
+      method: 'PATCH',
+      useCase: 'UpdatePortfolioUseCase',
+      logLevel: 'audit'
+    })
+  ],
+  async (
+    request: NextRequest,
+    {
+      params
+    }: { params: { id: string; ledgerId: string; portfolioId: string } }
+  ) => {
+    try {
+      const { id: organizationId, ledgerId, portfolioId } = params
+      const body = await request.json()
 
-        const portfolioUpdated = await updatePortfolioUseCase.execute(
-          organizationId,
-          ledgerId,
-          portfolioId,
-          body
-        )
+      const portfolioUpdated = await updatePortfolioUseCase.execute(
+        organizationId,
+        ledgerId,
+        portfolioId,
+        body
+      )
 
-        return NextResponse.json(portfolioUpdated)
-      } catch (error: any) {
-        const { message, status } = await apiErrorHandler(error)
-        return NextResponse.json({ message }, { status })
-      }
+      return NextResponse.json(portfolioUpdated)
+    } catch (error: any) {
+      const { message, status } = await apiErrorHandler(error)
+      return NextResponse.json({ message }, { status })
     }
-  )
-}
+  }
+)
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string; ledgerId: string; portfolioId: string } }
-) {
-  const { id: organizationId, ledgerId, portfolioId } = params
-  return RequestContextManager.runWithContext(
-    request.url,
-    request.method,
-    { organizationId, ledgerId, portfolioId },
-    async () => {
-      try {
-        const organizationId = params.id
-        const ledgerId = params.ledgerId
-        const portfolioId = params.portfolioId
+export const GET = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'fetchPortfolioById',
+      method: 'GET',
+      useCase: 'FetchPortfolioByIdUseCase',
+      logLevel: 'debug'
+    })
+  ],
+  async (
+    request: NextRequest,
+    {
+      params
+    }: { params: { id: string; ledgerId: string; portfolioId: string } }
+  ) => {
+    try {
+      const { id: organizationId, ledgerId, portfolioId } = params
 
-        const portfolio = await getPortfolioByIdUseCase.execute(
-          organizationId,
-          ledgerId,
-          portfolioId
-        )
+      const portfolio = await getPortfolioByIdUseCase.execute(
+        organizationId,
+        ledgerId,
+        portfolioId
+      )
 
-        return NextResponse.json(portfolio)
-      } catch (error: any) {
-        const { message, status } = await apiErrorHandler(error)
-
-        return NextResponse.json({ message }, { status })
-      }
+      return NextResponse.json(portfolio)
+    } catch (error: any) {
+      const { message, status } = await apiErrorHandler(error)
+      return NextResponse.json({ message }, { status })
     }
-  )
-}
+  }
+)

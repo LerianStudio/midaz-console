@@ -71,8 +71,6 @@ export const GET = applyMiddleware(
       const organizationId = params.id
       const ledgerId = params.ledgerId
 
-      // console.log('midazId', request.headers.get('X-Midaz-Id'))
-
       const products = await fetchAllProductsUseCase.execute(
         organizationId,
         ledgerId,

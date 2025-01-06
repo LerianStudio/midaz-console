@@ -20,12 +20,6 @@ const midazRequestContext: MidazRequestContext =
 
 export function loggerMiddleware(config: LoggerMiddlewareConfig) {
   return async (req: NextRequest, next: NextHandler) => {
-    // const existingMidazId = req.headers.get('X-Midaz-Id')
-
-    // if (!existingMidazId) {
-    //   req.headers.set('X-Midaz-Id', crypto.randomUUID())
-    // }
-
     console.log('midazRequestContext', midazRequestContext.getMidazId())
 
     let body = undefined
