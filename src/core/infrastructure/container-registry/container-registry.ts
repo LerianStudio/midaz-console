@@ -14,7 +14,7 @@ import { LoggerModule } from '../logger/module/logger-module'
 import { LoggerApplicationModule } from './logger-application-module'
 import { MIDAZ_ID_KEY } from '../logger/decorators/midaz-id'
 import { MidazRequestContext } from '../logger/decorators/midaz-id'
-import { interfaces } from 'inversify'
+import { TransactionUseCaseModule } from './use-cases/transactions-module'
 
 export const container = new Container()
 
@@ -33,12 +33,4 @@ container.load(LoggerApplicationModule)
 
 container.bind<MidazRequestContext>(MIDAZ_ID_KEY).to(MidazRequestContext)
 
-// const loggerMiddleware: interfaces.Middleware = (next) => (args) => {
-//   console.log(`[Inversify] Resolving: ${args.serviceIdentifier.toString()}`)
-//   const result = next(args)
-//   console.log('[Inversify] Result: ', result)
-//   console.log(`[Inversify] Resolved: ${args.serviceIdentifier.toString()}`)
-//   return result
-// }
-
-// container.container.apply  Middleware(loggerMiddleware)
+container.load(TransactionUseCaseModule)

@@ -5,7 +5,6 @@ import { PortfolioResponseDto } from '../../dto/portfolios-dto'
 import { FetchAllPortfoliosRepository } from '@/core/domain/repositories/portfolios/fetch-all-portfolio-repository'
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { inject, injectable } from 'inversify'
-import { LogOperation } from '../../decorators/log-operation'
 
 export interface FetchAllPortfolios {
   execute: (

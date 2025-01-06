@@ -30,15 +30,12 @@ export async function httpMidazAuthFetch<T>(
   const midazId: MidazRequestContext =
     container.get<MidazRequestContext>(MIDAZ_ID_KEY)
 
-  console.log('midazIdhttpfetchutils', midazId)
   const headers = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${access_token}`,
     'Midaz-Id': midazId.getMidazId(),
     ...httpFetchOptions.headers
   }
-
-  console.log('headersMidazIdhttpfetchutils', headers)
 
   const response = await fetch(httpFetchOptions.url, {
     method: httpFetchOptions.method,
@@ -63,7 +60,6 @@ export class HttpFetchUtils {
   private readonly midazId!: string
 
   httpMidazAuthFetch<T>(httpFetchOptions: HttpFetchOptions): Promise<T> {
-    console.log('midazIdhpptfetchuitls', this.midazId)
     httpFetchOptions.headers = {
       ...httpFetchOptions.headers,
       'Midaz-Id': this.midazId

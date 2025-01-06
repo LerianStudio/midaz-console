@@ -7,8 +7,11 @@ WORKDIR /usr/src/app
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# Configure npm to use GitHub token temporarily, without exposing it in the Dockerfile
+RUN echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" > ~/.npmrc && \
+    npm install && \
+    npm cache clean --force && \
+    rm -f ~/.npmrc
 
 # Copiar o arquivo .env.example para o diretório de trabalho
 COPY .env.example .env.example
@@ -19,7 +22,7 @@ RUN npm run set-env
 # Copy the rest of the application code
 COPY . .
 
-# Build app
+# Build the app
 RUN npm run build
 
 # Expose the port the app runs on

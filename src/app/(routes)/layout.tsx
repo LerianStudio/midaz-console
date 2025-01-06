@@ -24,12 +24,14 @@ export default async function RootLayout({
     <OrganizationProvider>
       <PermissionProvider>
         <SidebarProvider>
-          <div className="flex min-h-screen w-full bg-background text-foreground">
+          <div className="flex h-full min-h-screen w-full overflow-y-auto bg-background text-foreground">
             <Sidebar />
-            <div className="flex min-h-full w-full flex-col bg-shadcn-100">
+            <div className="flex min-h-full w-full flex-col overflow-y-auto bg-shadcn-100">
               <Header />
 
-              <div className="h-full w-full px-16 pb-16 pt-6">{children}</div>
+              <div className="h-full w-full overflow-y-auto px-16 pb-16 pt-6">
+                {children}
+              </div>
             </div>
           </div>
         </SidebarProvider>

@@ -1,6 +1,5 @@
 import { DeletePortfolioRepository } from '@/core/domain/repositories/portfolios/delete-portfolio-repository'
 import { inject, injectable } from 'inversify'
-import { LogOperation } from '../../decorators/log-operation'
 
 export interface DeletePortfolio {
   execute: (

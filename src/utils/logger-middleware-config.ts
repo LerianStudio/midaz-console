@@ -20,8 +20,6 @@ const midazRequestContext: MidazRequestContext =
 
 export function loggerMiddleware(config: LoggerMiddlewareConfig) {
   return async (req: NextRequest, next: NextHandler) => {
-    console.log('midazRequestContext', midazRequestContext.getMidazId())
-
     let body = undefined
     if (config.method !== 'GET' && config.method !== 'DELETE') {
       body = await req.json()

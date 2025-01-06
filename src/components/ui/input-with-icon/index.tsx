@@ -26,7 +26,7 @@ export interface InputWithIconProps
 const InputWithIcon = React.forwardRef<HTMLInputElement, InputWithIconProps>(
   ({ className, icon, iconPosition, ...props }, ref) => {
     return (
-      <div className="relative inline-block h-auto">
+      <div className="relative flex h-auto items-center">
         {iconPosition !== 'right' && (
           <span
             className={cn('text-shadcn-400', InputVariants({ iconPosition }))}

@@ -6,7 +6,6 @@ import type {
 } from '../../dto/portfolios-dto'
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { inject, injectable } from 'inversify'
-import { LogOperation } from '../../decorators/log-operation'
 
 export interface CreatePortfolio {
   execute: (
