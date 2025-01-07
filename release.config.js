@@ -2,7 +2,7 @@ module.exports = {
   branches: [
     { name: 'main', channel: 'latest' },    // Prod
     { name: 'develop', channel: 'next'}, // Develop
-    { name: 'feature/*', channel: 'alpha'}, // Alpha Version
+    { name: 'feature/authorization', channel: "alpha"}, // Alpha Version
   ],
   plugins: [
     "@semantic-release/commit-analyzer",
