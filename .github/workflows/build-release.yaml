@@ -5,6 +5,8 @@ on:
     branches:
       - develop
       - main
+      - feature/*
+      - release/*
     paths-ignore:
       - '.gitignore'
       - '**/*.env'
@@ -123,7 +125,10 @@ jobs:
             images: ${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}
             tags: |
               ${{ needs.release.outputs.semantic_tag }}
-              ${{ github.ref == 'refs/heads/main' && 'latest' || github.ref == 'refs/heads/develop' && 'next' || '' }}
+              ${{ github.ref == 'refs/heads/main' && 'latest' || 
+                  github.ref == 'refs/heads/develop' && 'next' || 
+                  startsWith(github.ref, 'refs/heads/feature/') && 'alpha' || 
+                  startsWith(github.ref, 'refs/heads/release/') && 'beta' || '' }}
         
       - name: Build Docker image
         uses: docker/build-push-action@v5
