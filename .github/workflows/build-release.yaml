@@ -5,8 +5,7 @@ on:
     branches:
       - develop
       - main
-      - feature/*
-      - release/*
+      - feature/*  # Mantivemos a configuração de feature/*
     paths-ignore:
       - '.gitignore'
       - '**/*.env'
@@ -82,7 +81,6 @@ jobs:
           echo "Generated tag: $TAG"
           echo "semantic_tag=$TAG" >> $GITHUB_ENV
 
-        
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
@@ -129,7 +127,7 @@ jobs:
               ${{ github.ref == 'refs/heads/main' && 'latest' || 
                   github.ref == 'refs/heads/develop' && 'next' || 
                   startsWith(github.ref, 'refs/heads/feature/') && 'alpha' || 
-                  startsWith(github.ref, 'refs/heads/release/') && 'beta' || '' }}
+                  '' }}
         
       - name: Build Docker image
         uses: docker/build-push-action@v5

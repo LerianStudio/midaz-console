@@ -3,7 +3,6 @@ module.exports = {
     { name: 'main', channel: 'latest' },    // Prod
     { name: 'develop', channel: 'next'}, // Develop
     { name: 'feature/*', channel: 'alpha'}, // Alpha Version
-    { name: 'release/*', channel: 'beta'}, // Beta Version
   ],
   plugins: [
     "@semantic-release/commit-analyzer",
