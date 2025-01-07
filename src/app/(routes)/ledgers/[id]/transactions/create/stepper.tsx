@@ -4,7 +4,7 @@ import {
   StepperItem,
   StepperItemNumber,
   StepperItemText
-} from '../primitives/stepper'
+} from '@/components/transactions/primitives/stepper'
 
 export type StepperProps = {
   step?: number
