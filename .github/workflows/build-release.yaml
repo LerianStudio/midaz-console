@@ -80,7 +80,8 @@ jobs:
         run: |
           TAG=$(npx semantic-release | grep 'The next release version is' | awk '{print $NF}')
           echo "Generated tag: $TAG"
-          echo "::set-output name=semantic_tag::$TAG"
+          echo "semantic_tag=$TAG" >> $GITHUB_ENV
+
         
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}

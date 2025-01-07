@@ -1,9 +1,9 @@
 module.exports = {
   branches: [
     { name: 'main', channel: 'latest' },    // Prod
-    { name: 'develop', channel: 'next', prerelease: false }, // Develop
-    { name: 'feature/*', channel: 'alpha', prerelease: true }, // Alpha Version
-    { name: 'release/*', channel: 'beta', prerelease: true }, // Beta Version
+    { name: 'develop', channel: 'next', prerelease: 'next' }, // Develop
+    { name: 'feature/*', channel: 'alpha', prerelease: 'alpha' }, // Alpha Version
+    { name: 'release/*', channel: 'beta', prerelease: 'beta' }, // Beta Version
   ],
   plugins: [
     "@semantic-release/commit-analyzer",
