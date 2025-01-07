@@ -11,17 +11,11 @@ import {
   DropdownMenuTrigger
 } from '../ui/dropdown-menu'
 import { useIntl } from 'react-intl'
-import { setCookie } from 'cookies-next'
 import { useRouter } from 'next/navigation'
 
 export const SettingsDropdown = () => {
   const intl = useIntl()
   const router = useRouter()
-
-  const handleLanguage = (locale: string) => {
-    setCookie('locale', locale)
-    router.refresh()
-  }
 
   return (
     <DropdownMenu>
@@ -61,24 +55,6 @@ export const SettingsDropdown = () => {
           {intl.formatMessage({
             id: 'settingsDropdown.security',
             defaultMessage: 'Security'
-          })}
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleLanguage('en')}>
-          <DropdownMenuItemIcon>
-            <Languages />
-          </DropdownMenuItemIcon>
-          {intl.formatMessage({
-            id: 'settingsDropdown.english',
-            defaultMessage: 'English'
-          })}
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleLanguage('pt')}>
-          <DropdownMenuItemIcon>
-            <Languages />
-          </DropdownMenuItemIcon>
-          {intl.formatMessage({
-            id: 'settingsDropdown.portuguese',
-            defaultMessage: 'Português'
           })}
         </DropdownMenuItem>
       </DropdownMenuContent>
