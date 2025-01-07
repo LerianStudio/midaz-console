@@ -1,13 +1,8 @@
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { ProductEntity } from '@/core/domain/entities/product-entity'
 import { FetchAllProductsRepository } from '@/core/domain/repositories/products/fetch-all-products-repository'
-import {
-  httpMidazAuthFetch,
-  HTTP_METHODS,
-  MidazHttpFetchUtils
-} from '../../utils/http-fetch-utils'
+import { HTTP_METHODS, MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
 import { inject, injectable } from 'inversify'
-import { MidazId } from '../../logger/decorators/MidazId.decorator'
 
 @injectable()
 export class MidazFetchAllProductsRepository

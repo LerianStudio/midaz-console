@@ -12,11 +12,9 @@ import { CasdoorModule } from '../casdoor/module/casdoor-module'
 import { AuthUseCaseModule } from './use-cases/auth-module'
 import { LoggerModule } from '../logger/module/logger-module'
 import { LoggerApplicationModule } from './logger-application-module'
-import { MIDAZ_ID_KEY } from '../logger/decorators/midaz-id'
 import { MidazRequestContext } from '../logger/decorators/midaz-id'
 import { TransactionUseCaseModule } from './use-cases/transactions-module'
 import { MidazHttpFetchUtils } from '../utils/http-fetch-utils'
-import { containerRequest } from './container-request-registry'
 
 export const container = new Container()
 
@@ -33,18 +31,10 @@ container.load(AssetUseCaseModule)
 container.load(ProductUseCaseModule)
 container.load(LoggerApplicationModule)
 
-// container.bind<MidazRequestContext>(MIDAZ_ID_KEY).to(MidazRequestContext)
-container.bind<MidazHttpFetchUtils>(MidazHttpFetchUtils).to(MidazHttpFetchUtils)
-// const loggerMiddleware: interfaces.Middleware = (next) => (args) => {
-//   console.log(`[Inversify] Resolving: ${args.serviceIdentifier.toString()}`)
-//   const result = next(args)
-//   console.log('[Inversify] Result: ', result)
-//   console.log(`[Inversify] Resolved: ${args.serviceIdentifier.toString()}`)
-//   return result
-// }
-
-// container.container.apply  Middleware(loggerMiddleware)
 container.load(TransactionUseCaseModule)
 
-export const childContainer = container.container.createChild()
-childContainer.load(containerRequest)
+container.bind<MidazHttpFetchUtils>(MidazHttpFetchUtils).to(MidazHttpFetchUtils)
+container
+  .bind<MidazRequestContext>(MidazRequestContext)
+  .toSelf()
+  .inSingletonScope()

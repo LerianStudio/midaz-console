@@ -1,8 +1,6 @@
 import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
 import { container } from '@/core/infrastructure/container-registry/container-registry'
 import { MidazRequestContext } from '@/core/infrastructure/logger/decorators/midaz-id'
-import { containerRequest } from '@/core/infrastructure/container-registry/container-request-registry'
-import { MIDAZ_ID_KEY } from '@/core/infrastructure/logger/decorators/midaz-id'
 import { NextHandler } from '@/lib/applymiddleware/types'
 import { NextRequest } from 'next/server'
 
@@ -16,7 +14,7 @@ interface LoggerMiddlewareConfig {
 
 const loggerAggregator = container.get(LoggerAggregator)
 const midazRequestContext: MidazRequestContext =
-  container.get<MidazRequestContext>(MIDAZ_ID_KEY)
+  container.get<MidazRequestContext>(MidazRequestContext)
 
 export function loggerMiddleware(config: LoggerMiddlewareConfig) {
   return async (req: NextRequest, next: NextHandler) => {

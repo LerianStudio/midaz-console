@@ -3,7 +3,6 @@ import { container } from '@/core/infrastructure/container-registry/container-re
 import { UnauthorizedException } from '@/core/infrastructure/errors/http-exceptions'
 import { MidazError } from '@/core/infrastructure/errors/midaz-error'
 import { getIntl } from '@/lib/intl'
-import { PinoLogger } from '@/lib/logger/pino-logger'
 
 export interface ErrorResponse {
   message: string

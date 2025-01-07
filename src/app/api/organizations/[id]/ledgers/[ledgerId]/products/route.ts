@@ -12,12 +12,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
 import { loggerMiddleware } from '@/utils/logger-middleware-config'
 
-const createProductUseCase: CreateProduct =
-  container.get<CreateProduct>(CreateProductUseCase)
-
-const fetchAllProductsUseCase: FetchAllProducts =
-  container.get<FetchAllProducts>(FetchAllProductsUseCase)
-
 interface ProductParams {
   id: string
   ledgerId: string
@@ -34,6 +28,9 @@ export const POST = applyMiddleware(
   ],
   async (request: NextRequest, { params }: { params: ProductParams }) => {
     try {
+      const createProductUseCase: CreateProduct =
+        container.get<CreateProduct>(CreateProductUseCase)
+
       const body = await request.json()
       const organizationId = params.id
       const ledgerId = params.ledgerId
@@ -65,6 +62,8 @@ export const GET = applyMiddleware(
   ],
   async (request: NextRequest, { params }: { params: ProductParams }) => {
     try {
+      const fetchAllProductsUseCase: FetchAllProducts =
+        container.get<FetchAllProducts>(FetchAllProductsUseCase)
       const { searchParams } = new URL(request.url)
       const limit = Number(searchParams.get('limit')) || 10
       const page = Number(searchParams.get('page')) || 1

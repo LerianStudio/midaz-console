@@ -41,8 +41,6 @@ export class PinoLoggerRepository implements LoggerRepository {
       )
     }
 
-    console.log('logger pino repository', loggerOptions)
-
     return pino(loggerOptions)
   }
 

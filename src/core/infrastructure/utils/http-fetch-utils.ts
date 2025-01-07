@@ -2,11 +2,9 @@ import { getServerSession } from 'next-auth'
 import { nextAuthCasdoorOptions } from '../next-auth/casdoor/next-auth-casdoor-provider'
 import { handleMidazError } from './midaz-error-handler'
 import { isNil } from 'lodash'
-import { MIDAZ_ID_KEY } from '../logger/decorators/midaz-id'
 import { MidazRequestContext } from '../logger/decorators/midaz-id'
 import { container } from '../container-registry/container-registry'
-import { MidazId } from '../logger/decorators/MidazId.decorator'
-import { injectable } from 'inversify'
+import { inject, injectable } from 'inversify'
 
 export enum HTTP_METHODS {
   GET = 'GET',
@@ -28,10 +26,7 @@ export async function httpMidazAuthFetch<T>(
 ): Promise<T> {
   const session = await getServerSession(nextAuthCasdoorOptions)
   const { access_token } = session?.user
-  // const midazId: MidazRequestContext =
-  //   container.get<MidazRequestContext>(MIDAZ_ID_KEY)
 
-  // console.log('uniqueid 1', midazId.getMidazId())
   const headers = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${access_token}`,
@@ -47,8 +42,6 @@ export async function httpMidazAuthFetch<T>(
     }
   })
 
-  // console.log('uniqueid 2', midazId.getMidazId())
-
   const midazResponse = !isNil(response.body) ? await response.json() : {}
 
   if (!response.ok) {
@@ -61,16 +54,19 @@ export async function httpMidazAuthFetch<T>(
 
 @injectable()
 export class MidazHttpFetchUtils {
-  @MidazId()
-  private readonly midazId!: string
+  private midazId: string
+
+  constructor(
+    @inject(MidazRequestContext)
+    private readonly midazRequestContext: MidazRequestContext
+  ) {
+    this.midazId = this.midazRequestContext.getMidazId()
+  }
 
   async httpMidazAuthFetch<T>(httpFetchOptions: HttpFetchOptions): Promise<T> {
     const session = await getServerSession(nextAuthCasdoorOptions)
     const { access_token } = session?.user
-    // const midazId: MidazRequestContext =
-    //   container.get<MidazRequestContext>(MIDAZ_ID_KEY)
 
-    console.log('uniqueid 1 class', this.midazId)
     const headers = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${access_token}`,
@@ -85,8 +81,6 @@ export class MidazHttpFetchUtils {
         ...headers
       }
     })
-
-    console.log('uniqueid 2 class', this.midazId)
 
     const midazResponse = !isNil(response.body) ? await response.json() : {}
 
