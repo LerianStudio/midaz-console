@@ -51,7 +51,7 @@ export class FetchAccountsWithPortfoliosUseCase
       )
 
     const portfolioMap = new Map<string, PortfolioEntity>()
-    portfoliosResult.items.forEach((portfolio) => {
+    portfoliosResult.items?.forEach((portfolio) => {
       if (portfolio.id) {
         portfolioMap.set(portfolio.id, portfolio)
       }

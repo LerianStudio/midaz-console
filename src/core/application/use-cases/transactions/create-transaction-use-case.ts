@@ -1,0 +1,43 @@
+import { CreateTransactionRepository } from '@/core/domain/repositories/transactions/create-transaction-repository'
+import { inject, injectable } from 'inversify'
+import { TransactionMapper } from '../../mappers/transaction-mapper'
+import {
+  CreateTransactionDto,
+  TransactionResponseDto
+} from '../../dto/transaction-dto'
+import { TransactionEntity } from '@/core/domain/entities/transaction-entity'
+
+export interface CreateTransaction {
+  execute: (
+    organizationId: string,
+    ledgerId: string,
+    transaction: CreateTransactionDto
+  ) => Promise<TransactionResponseDto>
+}
+
+@injectable()
+export class CreateTransactionUseCase implements CreateTransaction {
+  constructor(
+    @inject(CreateTransactionRepository)
+    private readonly createTransactionRepository: CreateTransactionRepository
+  ) {}
+  async execute(
+    organizationId: string,
+    ledgerId: string,
+    transaction: CreateTransactionDto
+  ): Promise<TransactionResponseDto> {
+    const transactionEntity: TransactionEntity =
+      TransactionMapper.toDomain(transaction)
+
+    const transactionCreated = await this.createTransactionRepository.create(
+      organizationId,
+      ledgerId,
+      transactionEntity
+    )
+
+    const transactionResponseDto: TransactionResponseDto =
+      TransactionMapper.toResponseDto(transactionCreated)
+
+    return transactionResponseDto
+  }
+}
