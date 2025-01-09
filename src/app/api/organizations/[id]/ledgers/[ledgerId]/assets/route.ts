@@ -9,63 +9,82 @@ import {
   FetchAllAssetsUseCase
 } from '@/core/application/use-cases/assets/fetch-all-assets-use-case'
 import { NextResponse } from 'next/server'
+import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { loggerMiddleware } from '@/utils/logger-middleware-config'
 
-const createAssetUseCase: CreateAsset =
-  container.get<CreateAsset>(CreateAssetUseCase)
+export const POST = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'createAsset',
+      method: 'POST',
+      useCase: 'CreateAssetUseCase',
+      logLevel: 'info'
+    })
+  ],
+  async (
+    request: Request,
+    { params }: { params: { id: string; ledgerId: string } }
+  ) => {
+    try {
+      const createAssetUseCase: CreateAsset =
+        container.get<CreateAsset>(CreateAssetUseCase)
+      const body = await request.json()
+      const organizationId = params.id
+      const ledgerId = params.ledgerId
 
-const fetchAllAssetsUseCase: FetchAllAssets = container.get<FetchAllAssets>(
-  FetchAllAssetsUseCase
+      const assetCreated = await createAssetUseCase.execute(
+        organizationId,
+        ledgerId,
+        body
+      )
+
+      return NextResponse.json(assetCreated)
+    } catch (error: any) {
+      console.error('Error creating asset', error)
+
+      const { message, status } = await apiErrorHandler(error)
+
+      return NextResponse.json({ message }, { status })
+    }
+  }
 )
 
-export async function POST(
-  request: Request,
-  { params }: { params: { id: string; ledgerId: string } }
-) {
-  try {
-    const body = await request.json()
-    const organizationId = params.id
-    const ledgerId = params.ledgerId
+export const GET = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'fetchAllAssets',
+      method: 'GET',
+      useCase: 'FetchAllAssetsUseCase',
+      logLevel: 'info'
+    })
+  ],
+  async (
+    request: Request,
+    { params }: { params: { id: string; ledgerId: string } }
+  ) => {
+    try {
+      const fetchAllAssetsUseCase: FetchAllAssets =
+        container.get<FetchAllAssets>(FetchAllAssetsUseCase)
+      const { searchParams } = new URL(request.url)
+      const limit = Number(searchParams.get('limit')) || 10
+      const page = Number(searchParams.get('page')) || 1
+      const organizationId = params.id
+      const ledgerId = params.ledgerId
 
-    const assetCreated = await createAssetUseCase.execute(
-      organizationId,
-      ledgerId,
-      body
-    )
+      const assets = await fetchAllAssetsUseCase.execute(
+        organizationId,
+        ledgerId,
+        limit,
+        page
+      )
 
-    return NextResponse.json(assetCreated)
-  } catch (error: any) {
-    console.error('Error creating asset', error)
+      return NextResponse.json(assets)
+    } catch (error: any) {
+      console.error('Error fetching all assets', error)
 
-    const { message, status } = await apiErrorHandler(error)
+      const { message, status } = await apiErrorHandler(error)
 
-    return NextResponse.json({ message }, { status })
+      return NextResponse.json({ message }, { status })
+    }
   }
-}
-
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string; ledgerId: string } }
-) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const limit = Number(searchParams.get('limit')) || 10
-    const page = Number(searchParams.get('page')) || 1
-    const organizationId = params.id
-    const ledgerId = params.ledgerId
-
-    const assets = await fetchAllAssetsUseCase.execute(
-      organizationId,
-      ledgerId,
-      limit,
-      page
-    )
-
-    return NextResponse.json(assets)
-  } catch (error: any) {
-    console.error('Error fetching all assets', error)
-
-    const { message, status } = await apiErrorHandler(error)
-
-    return NextResponse.json({ message }, { status })
-  }
-}
+)

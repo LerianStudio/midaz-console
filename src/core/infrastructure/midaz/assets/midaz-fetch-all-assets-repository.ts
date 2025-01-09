@@ -2,10 +2,16 @@ import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { FetchAllAssetsRepository } from '@/core/domain/repositories/assets/fetch-all-assets-repository'
 import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
-import { injectable } from 'inversify'
+import { injectable, inject, LazyServiceIdentifier } from 'inversify'
+import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
 
 @injectable()
 export class MidazFetchAllAssetsRepository implements FetchAllAssetsRepository {
+  constructor(
+    @inject(new LazyServiceIdentifier(() => MidazHttpFetchUtils))
+    private readonly midazHttpFetchUtils: MidazHttpFetchUtils
+  ) {}
+
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
 
   async fetchAll(
@@ -25,7 +31,9 @@ export class MidazFetchAllAssetsRepository implements FetchAllAssetsRepository {
     })
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets?${params.toString()}`
 
-    const response = await httpMidazAuthFetch<PaginationEntity<AssetEntity>>({
+    const response = await this.midazHttpFetchUtils.httpMidazAuthFetch<
+      PaginationEntity<AssetEntity>
+    >({
       url,
       method: HTTP_METHODS.GET
     })

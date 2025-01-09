@@ -12,9 +12,13 @@ jest.mock('../../utils/http-fetch-utils', () => ({
 
 describe('MidazFetchAllOrganizationsRepository', () => {
   let repository: MidazFetchAllOrganizationsRepository
+  let mockHttpFetchUtils: { httpMidazAuthFetch: jest.Mock }
 
   beforeEach(() => {
-    repository = new MidazFetchAllOrganizationsRepository()
+    mockHttpFetchUtils = { httpMidazAuthFetch: jest.fn() }
+    repository = new MidazFetchAllOrganizationsRepository(
+      mockHttpFetchUtils as any
+    )
     jest.clearAllMocks()
   })
 
@@ -56,11 +60,11 @@ describe('MidazFetchAllOrganizationsRepository', () => {
       page: 1
     }
 
-    ;(httpMidazAuthFetch as jest.Mock).mockResolvedValueOnce(response)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(response)
 
     const result = await repository.fetchAll(limit, page)
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations?limit=${limit}&page=${page}`,
       method: HTTP_METHODS.GET
     })
@@ -76,11 +80,11 @@ describe('MidazFetchAllOrganizationsRepository', () => {
       limit,
       page
     }
-    ;(httpMidazAuthFetch as jest.Mock).mockResolvedValueOnce(response)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(response)
 
     const result = await repository.fetchAll(limit, page)
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations?limit=${limit}&page=${page}`,
       method: HTTP_METHODS.GET
     })
@@ -92,7 +96,7 @@ describe('MidazFetchAllOrganizationsRepository', () => {
     const page = 1
     const error = new Error('Error occurred')
 
-    ;(httpMidazAuthFetch as jest.Mock).mockRejectedValueOnce(error)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockRejectedValueOnce(error)
 
     await expect(repository.fetchAll(limit, page)).rejects.toThrow(
       'Error occurred'

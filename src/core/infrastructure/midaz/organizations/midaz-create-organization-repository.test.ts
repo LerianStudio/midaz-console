@@ -11,9 +11,13 @@ jest.mock('../../utils/http-fetch-utils', () => ({
 
 describe('MidazCreateOrganizationRepository', () => {
   let repository: MidazCreateOrganizationRepository
+  let mockHttpFetchUtils: { httpMidazAuthFetch: jest.Mock }
 
   beforeEach(() => {
-    repository = new MidazCreateOrganizationRepository()
+    mockHttpFetchUtils = { httpMidazAuthFetch: jest.fn() }
+    repository = new MidazCreateOrganizationRepository(
+      mockHttpFetchUtils as any
+    )
     jest.clearAllMocks()
   })
 
@@ -46,11 +50,11 @@ describe('MidazCreateOrganizationRepository', () => {
     }
     const response: OrganizationEntity = { ...organizationData }
 
-    ;(httpMidazAuthFetch as jest.Mock).mockResolvedValueOnce(response)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(response)
 
     const result = await repository.create(organizationData)
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: process.env.MIDAZ_BASE_PATH + '/organizations',
       method: HTTP_METHODS.POST,
       body: JSON.stringify(organizationData)
@@ -87,13 +91,13 @@ describe('MidazCreateOrganizationRepository', () => {
     }
     const error = new Error('Error occurred')
 
-    ;(httpMidazAuthFetch as jest.Mock).mockRejectedValueOnce(error)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockRejectedValueOnce(error)
 
     await expect(repository.create(organizationData)).rejects.toThrow(
       'Error occurred'
     )
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: process.env.MIDAZ_BASE_PATH + '/organizations',
       method: HTTP_METHODS.POST,
       body: JSON.stringify(organizationData)

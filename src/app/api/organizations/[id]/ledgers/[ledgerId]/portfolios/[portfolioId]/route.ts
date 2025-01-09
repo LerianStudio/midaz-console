@@ -16,16 +16,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
 import { loggerMiddleware } from '@/utils/logger-middleware-config'
 
-const updatePortfolioUseCase: UpdatePortfolio = container.get<UpdatePortfolio>(
-  UpdatePortfolioUseCase
-)
-
-const deletePortfolioUseCase: DeletePortfolio = container.get<DeletePortfolio>(
-  DeletePortfolioUseCase
-)
-const getPortfolioByIdUseCase: FetchPortfolioById =
-  container.get<FetchPortfolioById>(FetchPortfolioByIdUseCase)
-
 export const DELETE = applyMiddleware(
   [
     loggerMiddleware({
@@ -36,14 +26,16 @@ export const DELETE = applyMiddleware(
     })
   ],
   async (
-    request: NextRequest,
+    _,
     {
       params
     }: { params: { id: string; ledgerId: string; portfolioId: string } }
   ) => {
-    const { id: organizationId, ledgerId, portfolioId } = params
-
     try {
+      const { id: organizationId, ledgerId, portfolioId } = params
+      const deletePortfolioUseCase: DeletePortfolio =
+        container.get<DeletePortfolio>(DeletePortfolioUseCase)
+
       await deletePortfolioUseCase.execute(
         organizationId,
         ledgerId,
@@ -73,6 +65,8 @@ export const PATCH = applyMiddleware(
     }: { params: { id: string; ledgerId: string; portfolioId: string } }
   ) => {
     try {
+      const updatePortfolioUseCase: UpdatePortfolio =
+        container.get<UpdatePortfolio>(UpdatePortfolioUseCase)
       const { id: organizationId, ledgerId, portfolioId } = params
       const body = await request.json()
 
@@ -101,12 +95,14 @@ export const GET = applyMiddleware(
     })
   ],
   async (
-    request: NextRequest,
+    _,
     {
       params
     }: { params: { id: string; ledgerId: string; portfolioId: string } }
   ) => {
     try {
+      const getPortfolioByIdUseCase: FetchPortfolioById =
+        container.get<FetchPortfolioById>(FetchPortfolioByIdUseCase)
       const { id: organizationId, ledgerId, portfolioId } = params
 
       const portfolio = await getPortfolioByIdUseCase.execute(

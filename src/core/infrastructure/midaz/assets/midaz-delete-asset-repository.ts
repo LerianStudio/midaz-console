@@ -1,9 +1,15 @@
 import { DeleteAssetRepository } from '@/core/domain/repositories/assets/delete-asset-repository'
 import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
-import { injectable } from 'inversify'
+import { injectable, inject, LazyServiceIdentifier } from 'inversify'
+import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
 
 @injectable()
 export class MidazDeleteAssetRepository implements DeleteAssetRepository {
+  constructor(
+    @inject(new LazyServiceIdentifier(() => MidazHttpFetchUtils))
+    private readonly midazHttpFetchUtils: MidazHttpFetchUtils
+  ) {}
+
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
 
   async delete(
@@ -13,7 +19,7 @@ export class MidazDeleteAssetRepository implements DeleteAssetRepository {
   ): Promise<void> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`
 
-    const response = await httpMidazAuthFetch<void>({
+    await this.midazHttpFetchUtils.httpMidazAuthFetch<void>({
       url,
       method: HTTP_METHODS.DELETE
     })

@@ -13,79 +13,105 @@ import {
   UpdateLedgerUseCase
 } from '@/core/application/use-cases/ledgers/update-ledger-use-case'
 import { NextResponse } from 'next/server'
+import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { loggerMiddleware } from '@/utils/logger-middleware-config'
 
-const fetchLedgerByIdUseCase = container.get<FetchLedgerById>(
-  FetchLedgerByIdUseCase
+export const GET = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'fetchLedgerById',
+      method: 'GET',
+      useCase: 'FetchLedgerByIdUseCase',
+      logLevel: 'info'
+    })
+  ],
+  async (_, { params }: { params: { id: string; ledgerId: string } }) => {
+    try {
+      const fetchLedgerByIdUseCase: FetchLedgerById =
+        container.get<FetchLedgerById>(FetchLedgerByIdUseCase)
+      const organizationId = params.id
+      const ledgerId = params.ledgerId
+
+      const ledgers = await fetchLedgerByIdUseCase.execute(
+        organizationId,
+        ledgerId
+      )
+
+      return NextResponse.json(ledgers)
+    } catch (error: any) {
+      console.error('Error fetching ledger by id', error)
+
+      const { message, status } = await apiErrorHandler(error)
+
+      return NextResponse.json({ message }, { status })
+    }
+  }
 )
 
-const updateLedgerUseCase = container.get<UpdateLedger>(UpdateLedgerUseCase)
+export const PATCH = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'updateLedger',
+      method: 'PATCH',
+      useCase: 'UpdateLedgerUseCase',
+      logLevel: 'info'
+    })
+  ],
+  async (
+    request: Request,
+    { params }: { params: { id: string; ledgerId: string } }
+  ) => {
+    try {
+      const updateLedgerUseCase =
+        container.get<UpdateLedger>(UpdateLedgerUseCase)
 
-const deleteLedgerUseCase = container.get<DeleteLedger>(DeleteLedgerUseCase)
+      const body = await request.json()
+      const organizationId = params.id
+      const ledgerId = params.ledgerId
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string; ledgerId: string } }
-) {
-  try {
-    const organizationId = params.id
-    const ledgerId = params.ledgerId
+      const ledgerUpdated = await updateLedgerUseCase.execute(
+        organizationId,
+        ledgerId,
+        body
+      )
 
-    const ledgers = await fetchLedgerByIdUseCase.execute(
-      organizationId,
-      ledgerId
-    )
+      return NextResponse.json({ ledgerUpdated })
+    } catch (error: any) {
+      console.error('Error updating ledger', error)
 
-    return NextResponse.json(ledgers)
-  } catch (error: any) {
-    console.error('Error fetching ledger by id', error)
+      const { message, status } = await apiErrorHandler(error)
 
-    const { message, status } = await apiErrorHandler(error)
-
-    return NextResponse.json({ message }, { status })
+      return NextResponse.json({ message }, { status })
+    }
   }
-}
+)
 
-export async function PATCH(
-  request: Request,
-  { params }: { params: { id: string; ledgerId: string } }
-) {
-  try {
-    const body = await request.json()
-    const organizationId = params.id
-    const ledgerId = params.ledgerId
+export const DELETE = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'deleteLedger',
+      method: 'DELETE',
+      useCase: 'DeleteLedgerUseCase',
+      logLevel: 'info'
+    })
+  ],
+  async (_, { params }: { params: { id: string; ledgerId: string } }) => {
+    try {
+      const deleteLedgerUseCase =
+        container.get<DeleteLedger>(DeleteLedgerUseCase)
 
-    const ledgerUpdated = await updateLedgerUseCase.execute(
-      organizationId,
-      ledgerId,
-      body
-    )
+      const organizationId = params.id
+      const ledgerId = params.ledgerId
 
-    return NextResponse.json({ ledgerUpdated })
-  } catch (error: any) {
-    console.error('Error updating ledger', error)
+      await deleteLedgerUseCase.execute(organizationId, ledgerId)
 
-    const { message, status } = await apiErrorHandler(error)
+      return NextResponse.json({}, { status: 200 })
+    } catch (error: any) {
+      console.error('Error deleting ledger', error)
 
-    return NextResponse.json({ message }, { status })
+      const { message, status } = await apiErrorHandler(error)
+
+      return NextResponse.json({ message }, { status })
+    }
   }
-}
-
-export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string; ledgerId: string } }
-) {
-  try {
-    const organizationId = params.id
-    const ledgerId = params.ledgerId
-
-    await deleteLedgerUseCase.execute(organizationId, ledgerId)
-
-    return NextResponse.json({}, { status: 200 })
-  } catch (error: any) {
-    console.error('Error deleting ledger', error)
-
-    const { message, status } = await apiErrorHandler(error)
-
-    return NextResponse.json({ message }, { status })
-  }
-}
+)

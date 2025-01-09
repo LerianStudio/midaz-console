@@ -16,39 +16,48 @@ import { NextResponse, NextRequest } from 'next/server'
 import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
 import { loggerMiddleware } from '@/utils/logger-middleware-config'
 
-const getAccountByIdUseCase: FetchAccountById = container.get<FetchAccountById>(
-  FetchAccountByIdUseCase
-)
+export const GET = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'getAccountById',
+      method: 'GET',
+      useCase: 'FetchAccountByIdUseCase',
+      logLevel: 'info'
+    })
+  ],
+  async (
+    request: NextRequest,
+    {
+      params
+    }: {
+      params: {
+        id: string
+        ledgerId: string
+        accountId: string
+      }
+    }
+  ) => {
+    try {
+      const getAccountByIdUseCase: FetchAccountById =
+        container.get<FetchAccountById>(FetchAccountByIdUseCase)
 
-export async function GET(
-  request: Request,
-  {
-    params
-  }: {
-    params: {
-      id: string
-      ledgerId: string
-      accountId: string
+      const { id: organizationId, ledgerId, accountId } = params
+
+      const account = await getAccountByIdUseCase.execute(
+        organizationId,
+        ledgerId,
+        accountId
+      )
+
+      return NextResponse.json(account)
+    } catch (error: any) {
+      console.error('Error getting account', error)
+      const { message, status } = await apiErrorHandler(error)
+
+      return NextResponse.json({ message }, { status })
     }
   }
-) {
-  try {
-    const { id: organizationId, ledgerId, accountId } = params
-
-    const account = await getAccountByIdUseCase.execute(
-      organizationId,
-      ledgerId,
-      accountId
-    )
-
-    return NextResponse.json(account)
-  } catch (error: any) {
-    console.error('Error getting account', error)
-    const { message, status } = await apiErrorHandler(error)
-
-    return NextResponse.json({ message }, { status })
-  }
-}
+)
 
 export const PATCH = applyMiddleware(
   [

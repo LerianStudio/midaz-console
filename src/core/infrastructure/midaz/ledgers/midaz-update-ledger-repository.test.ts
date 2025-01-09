@@ -11,9 +11,11 @@ jest.mock('../../utils/http-fetch-utils', () => ({
 
 describe('MidazUpdateLedgerRepository', () => {
   let repository: MidazUpdateLedgerRepository
+  let mockHttpFetchUtils: { httpMidazAuthFetch: jest.Mock }
 
   beforeEach(() => {
-    repository = new MidazUpdateLedgerRepository()
+    mockHttpFetchUtils = { httpMidazAuthFetch: jest.fn() }
+    repository = new MidazUpdateLedgerRepository(mockHttpFetchUtils as any)
     jest.clearAllMocks()
   })
 
@@ -33,11 +35,11 @@ describe('MidazUpdateLedgerRepository', () => {
       deletedAt: null
     }
 
-    ;(httpMidazAuthFetch as jest.Mock).mockResolvedValueOnce(response)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(response)
 
     const result = await repository.update(organizationId, ledgerId, ledgerData)
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}`,
       method: HTTP_METHODS.PATCH,
       body: JSON.stringify(ledgerData)
@@ -53,13 +55,13 @@ describe('MidazUpdateLedgerRepository', () => {
     }
     const error = new Error('Error occurred')
 
-    ;(httpMidazAuthFetch as jest.Mock).mockRejectedValueOnce(error)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockRejectedValueOnce(error)
 
     await expect(
       repository.update(organizationId, ledgerId, ledgerData)
     ).rejects.toThrow('Error occurred')
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}`,
       method: HTTP_METHODS.PATCH,
       body: JSON.stringify(ledgerData)

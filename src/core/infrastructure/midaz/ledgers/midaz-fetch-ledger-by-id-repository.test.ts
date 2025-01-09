@@ -11,9 +11,11 @@ jest.mock('../../utils/http-fetch-utils', () => ({
 
 describe('MidazFetchLedgerByIdRepository', () => {
   let repository: MidazFetchLedgerByIdRepository
+  let mockHttpFetchUtils: { httpMidazAuthFetch: jest.Mock }
 
   beforeEach(() => {
-    repository = new MidazFetchLedgerByIdRepository()
+    mockHttpFetchUtils = { httpMidazAuthFetch: jest.fn() }
+    repository = new MidazFetchLedgerByIdRepository(mockHttpFetchUtils as any)
     jest.clearAllMocks()
   })
 
@@ -28,11 +30,11 @@ describe('MidazFetchLedgerByIdRepository', () => {
       status: { code: 'active', description: 'Active' }
     }
 
-    ;(httpMidazAuthFetch as jest.Mock).mockResolvedValueOnce(response)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(response)
 
     const result = await repository.fetchById(organizationId, ledgerId)
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}`,
       method: HTTP_METHODS.GET
     })
@@ -44,7 +46,7 @@ describe('MidazFetchLedgerByIdRepository', () => {
     const ledgerId = '1'
     const error = new Error('Error occurred')
 
-    ;(httpMidazAuthFetch as jest.Mock).mockRejectedValueOnce(error)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockRejectedValueOnce(error)
 
     await expect(
       repository.fetchById(organizationId, ledgerId)

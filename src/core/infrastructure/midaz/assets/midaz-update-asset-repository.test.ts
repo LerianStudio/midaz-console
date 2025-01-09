@@ -11,9 +11,11 @@ jest.mock('../../utils/http-fetch-utils', () => ({
 
 describe('MidazUpdateAssetRepository', () => {
   let repository: MidazUpdateAssetRepository
+  let mockHttpFetchUtils: { httpMidazAuthFetch: jest.Mock }
 
   beforeEach(() => {
-    repository = new MidazUpdateAssetRepository()
+    mockHttpFetchUtils = { httpMidazAuthFetch: jest.fn() }
+    repository = new MidazUpdateAssetRepository(mockHttpFetchUtils as any)
     jest.clearAllMocks()
   })
 
@@ -31,7 +33,7 @@ describe('MidazUpdateAssetRepository', () => {
       metadata: { key: 'value' }
     }
 
-    ;(httpMidazAuthFetch as jest.Mock).mockResolvedValueOnce(response)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(response)
 
     const result = await repository.update(
       organizationId,
@@ -40,7 +42,7 @@ describe('MidazUpdateAssetRepository', () => {
       assetData
     )
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`,
       method: HTTP_METHODS.PATCH,
       body: JSON.stringify(assetData)
@@ -55,13 +57,13 @@ describe('MidazUpdateAssetRepository', () => {
     const assetData: Partial<AssetEntity> = { name: 'Updated Asset' }
     const error = new Error('Error occurred')
 
-    ;(httpMidazAuthFetch as jest.Mock).mockRejectedValueOnce(error)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockRejectedValueOnce(error)
 
     await expect(
       repository.update(organizationId, ledgerId, assetId, assetData)
     ).rejects.toThrow('Error occurred')
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`,
       method: HTTP_METHODS.PATCH,
       body: JSON.stringify(assetData)
