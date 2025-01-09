@@ -1,12 +1,17 @@
 import { UpdatePortfolioRepository } from '@/core/domain/repositories/portfolios/update-portfolio-repository'
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
-import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
-import { injectable } from 'inversify'
+import { HTTP_METHODS, MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
+import { injectable, inject, LazyServiceIdentifier } from 'inversify'
 
 @injectable()
 export class MidazUpdatePortfolioRepository
   implements UpdatePortfolioRepository
 {
+  constructor(
+    @inject(new LazyServiceIdentifier(() => MidazHttpFetchUtils))
+    private readonly midazHttpFetchUtils: MidazHttpFetchUtils
+  ) {}
+
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
 
   async update(
@@ -17,11 +22,12 @@ export class MidazUpdatePortfolioRepository
   ): Promise<PortfolioEntity> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}`
 
-    const response = await httpMidazAuthFetch<PortfolioEntity>({
-      url,
-      method: HTTP_METHODS.PATCH,
-      body: JSON.stringify(portfolio)
-    })
+    const response =
+      await this.midazHttpFetchUtils.httpMidazAuthFetch<PortfolioEntity>({
+        url,
+        method: HTTP_METHODS.PATCH,
+        body: JSON.stringify(portfolio)
+      })
 
     return response
   }

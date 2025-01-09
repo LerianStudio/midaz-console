@@ -1,11 +1,17 @@
 import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
-import { injectable } from 'inversify'
+import { injectable, inject, LazyServiceIdentifier } from 'inversify'
 import { DeletePortfolioRepository } from '@/core/domain/repositories/portfolios/delete-portfolio-repository'
+import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
 
 @injectable()
 export class MidazDeletePortfolioRepository
   implements DeletePortfolioRepository
 {
+  constructor(
+    @inject(new LazyServiceIdentifier(() => MidazHttpFetchUtils))
+    private readonly midazHttpFetchUtils: MidazHttpFetchUtils
+  ) {}
+
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
 
   async delete(
@@ -15,9 +21,9 @@ export class MidazDeletePortfolioRepository
   ): Promise<void> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}`
 
-    await httpMidazAuthFetch<void>({
+    await this.midazHttpFetchUtils.httpMidazAuthFetch<void>({
       url,
-      method: HTTP_METHODS.DELETE,
+      method: HTTP_METHODS.DELETE
     })
 
     return

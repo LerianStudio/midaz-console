@@ -1,12 +1,18 @@
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { FetchPortfolioByIdRepository } from '@/core/domain/repositories/portfolios/fetch-portfolio-by-id-repository'
 import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
-import { injectable } from 'inversify'
+import { injectable, inject, LazyServiceIdentifier } from 'inversify'
+import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
 
 @injectable()
 export class MidazFetchPortfolioByIdRepository
   implements FetchPortfolioByIdRepository
 {
+  constructor(
+    @inject(new LazyServiceIdentifier(() => MidazHttpFetchUtils))
+    private readonly midazHttpFetchUtils: MidazHttpFetchUtils
+  ) {}
+
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
 
   async fetchById(
@@ -16,10 +22,11 @@ export class MidazFetchPortfolioByIdRepository
   ): Promise<PortfolioEntity> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}`
 
-    const response = await httpMidazAuthFetch<PortfolioEntity>({
-      url,
-      method: HTTP_METHODS.GET
-    })
+    const response =
+      await this.midazHttpFetchUtils.httpMidazAuthFetch<PortfolioEntity>({
+        url,
+        method: HTTP_METHODS.GET
+      })
 
     return response
   }
