@@ -8,76 +8,96 @@ import {
   FetchAllAccounts,
   FetchAllAccountsUseCase
 } from '@/core/application/use-cases/accounts/fetch-all-account-use-case'
+import { NextResponse, NextRequest } from 'next/server'
+import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { loggerMiddleware } from '@/utils/logger-middleware-config'
 
-import { NextResponse } from 'next/server'
-
-const createAccountUseCase: CreateAccount =
-  container.get<CreateAccount>(CreateAccountUseCase)
-
-const fetchAllAccountsUseCase: FetchAllAccounts =
-  container.get<FetchAllAccounts>(FetchAllAccountsUseCase)
-
-export async function GET(
-  request: Request,
-  {
-    params
-  }: {
-    params: {
-      id: string
-      ledgerId: string
+export const GET = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'fetchAllAccounts',
+      method: 'GET',
+      useCase: 'FetchAllAccountsUseCase',
+      logLevel: 'info'
+    })
+  ],
+  async (
+    request: NextRequest,
+    {
+      params
+    }: {
+      params: {
+        id: string
+        ledgerId: string
+      }
     }
-  }
-) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const { id: organizationId, ledgerId } = params
-    const limit = Number(searchParams.get('limit')) || 10
-    const page = Number(searchParams.get('page')) || 1
+  ) => {
+    try {
+      const fetchAllAccountsUseCase: FetchAllAccounts =
+        container.get<FetchAllAccounts>(FetchAllAccountsUseCase)
+      const { searchParams } = new URL(request.url)
+      const { id: organizationId, ledgerId } = params
+      const limit = Number(searchParams.get('limit')) || 10
+      const page = Number(searchParams.get('page')) || 1
 
-    if (!organizationId || !ledgerId) {
-      return NextResponse.json(
-        { message: 'Missing required parameters' },
-        { status: 400 }
+      if (!organizationId || !ledgerId) {
+        return NextResponse.json(
+          { message: 'Missing required parameters' },
+          { status: 400 }
+        )
+      }
+
+      const accounts = await fetchAllAccountsUseCase.execute(
+        organizationId,
+        ledgerId,
+        page,
+        limit
       )
+
+      return NextResponse.json(accounts)
+    } catch (error: any) {
+      console.error('Error fetching all accounts', error)
+
+      const { message, status } = await apiErrorHandler(error)
+
+      return NextResponse.json({ message }, { status })
     }
-
-    const accounts = await fetchAllAccountsUseCase.execute(
-      organizationId,
-      ledgerId,
-      page,
-      limit
-    )
-
-    return NextResponse.json(accounts)
-  } catch (error: any) {
-    console.error('Error fetching all accounts', error)
-
-    const { message, status } = await apiErrorHandler(error)
-
-    return NextResponse.json({ message }, { status })
   }
-}
+)
 
-export async function POST(
-  request: Request,
-  { params }: { params: { id: string; ledgerId: string } }
-) {
-  try {
-    const body = await request.json()
-    const organizationId = params.id
-    const ledgerId = params.ledgerId
+export const POST = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'createAccount',
+      method: 'POST',
+      useCase: 'CreateAccountUseCase',
+      logLevel: 'info'
+    })
+  ],
+  async (
+    request: NextRequest,
+    { params }: { params: { id: string; ledgerId: string } }
+  ) => {
+    try {
+      const createAccountUseCase: CreateAccount =
+        container.get<CreateAccount>(CreateAccountUseCase)
 
-    const account = await createAccountUseCase.execute(
-      organizationId,
-      ledgerId,
-      body
-    )
+      const body = await request.json()
+      const organizationId = params.id
+      const ledgerId = params.ledgerId
 
-    return NextResponse.json(account)
-  } catch (error: any) {
-    console.error('Error creating accounts', error)
-    const { message, status } = await apiErrorHandler(error)
+      const account = await createAccountUseCase.execute(
+        organizationId,
+        ledgerId,
+        body
+      )
 
-    return NextResponse.json({ message }, { status })
+      return NextResponse.json(account)
+    } catch (error: any) {
+      console.error('Error creating accounts', error)
+      const { message, status } = await apiErrorHandler(error)
+
+      return NextResponse.json({ message }, { status })
+    }
   }
-}
+)

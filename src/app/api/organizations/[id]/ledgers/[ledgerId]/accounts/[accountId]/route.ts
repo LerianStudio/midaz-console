@@ -12,13 +12,9 @@ import {
   UpdateAccount,
   UpdateAccountUseCase
 } from '@/core/application/use-cases/accounts/update-account-use-case'
-import { NextResponse } from 'next/server'
-
-const updateAccountUseCase: UpdateAccount =
-  container.get<UpdateAccount>(UpdateAccountUseCase)
-
-const deleteAccountUseCase: DeleteAccount =
-  container.get<DeleteAccount>(DeleteAccountUseCase)
+import { NextResponse, NextRequest } from 'next/server'
+import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { loggerMiddleware } from '@/utils/logger-middleware-config'
 
 const getAccountByIdUseCase: FetchAccountById = container.get<FetchAccountById>(
   FetchAccountByIdUseCase
@@ -54,62 +50,84 @@ export async function GET(
   }
 }
 
-export async function PATCH(
-  request: Request,
-  {
-    params
-  }: {
-    params: {
-      id: string
-      ledgerId: string
-      accountId: string
+export const PATCH = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'updateAccount',
+      method: 'PATCH',
+      useCase: 'UpdateAccountUseCase',
+      logLevel: 'info'
+    })
+  ],
+  async (
+    request: NextRequest,
+    {
+      params
+    }: {
+      params: {
+        id: string
+        ledgerId: string
+        accountId: string
+      }
+    }
+  ) => {
+    try {
+      const updateAccountUseCase: UpdateAccount =
+        container.get<UpdateAccount>(UpdateAccountUseCase)
+      const body = await request.json()
+      const { id: organizationId, ledgerId, accountId } = params
+
+      const accountUpdated = await updateAccountUseCase.execute(
+        organizationId,
+        ledgerId,
+        accountId,
+        body
+      )
+
+      return NextResponse.json(accountUpdated)
+    } catch (error: any) {
+      console.error('Error updating account', error)
+      const { message, status } = await apiErrorHandler(error)
+
+      return NextResponse.json({ message }, { status })
     }
   }
-) {
-  try {
-    const body = await request.json()
-    const { id: organizationId, ledgerId, accountId } = params
+)
 
-    const accountUpdated = await updateAccountUseCase.execute(
-      organizationId,
-      ledgerId,
-      accountId,
-      body
-    )
+export const DELETE = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'deleteAccount',
+      method: 'DELETE',
+      useCase: 'DeleteAccountUseCase',
+      logLevel: 'info'
+    })
+  ],
+  async (
+    request: NextRequest,
+    {
+      params
+    }: {
+      params: {
+        id: string
+        ledgerId: string
+        accountId: string
+      }
+    }
+  ) => {
+    try {
+      const deleteAccountUseCase: DeleteAccount =
+        container.get<DeleteAccount>(DeleteAccountUseCase)
+      const { id: organizationId, ledgerId, accountId } = params
 
-    return NextResponse.json(accountUpdated)
-  } catch (error: any) {
-    console.error('Error updating account', error)
-    const { message, status } = await apiErrorHandler(error)
+      await deleteAccountUseCase.execute(organizationId, ledgerId, accountId)
 
-    return NextResponse.json({ message }, { status })
-  }
-}
+      return NextResponse.json({}, { status: 200 })
+    } catch (error: any) {
+      console.error('Error deleting account', error)
+      const { message, status } = await apiErrorHandler(error)
 
-export async function DELETE(
-  request: Request,
-  {
-    params
-  }: {
-    params: {
-      id: string
-      ledgerId: string
-      accountId: string
+      return NextResponse.json({ message }, { status })
     }
   }
-) {
-  try {
-    const organizationId = params.id!
-    const ledgerId = params.ledgerId
-    const accountId = params.accountId
-
-    await deleteAccountUseCase.execute(organizationId, ledgerId, accountId)
-
-    return NextResponse.json({}, { status: 200 })
-  } catch (error: any) {
-    console.error('Error deleting account', error)
-    const { message, status } = await apiErrorHandler(error)
-
-    return NextResponse.json({ message }, { status })
-  }
-}
+)
