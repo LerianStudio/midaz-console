@@ -11,9 +11,11 @@ jest.mock('../../utils/http-fetch-utils', () => ({
 
 describe('MidazFetchProductByIdRepository', () => {
   let repository: MidazFetchProductByIdRepository
+  let mockHttpFetchUtils: { httpMidazAuthFetch: jest.Mock }
 
   beforeEach(() => {
-    repository = new MidazFetchProductByIdRepository()
+    mockHttpFetchUtils = { httpMidazAuthFetch: jest.fn() }
+    repository = new MidazFetchProductByIdRepository(mockHttpFetchUtils as any)
     jest.clearAllMocks()
   })
 
@@ -28,7 +30,7 @@ describe('MidazFetchProductByIdRepository', () => {
       metadata: {}
     }
 
-    ;(httpMidazAuthFetch as jest.Mock).mockResolvedValueOnce(response)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(response)
 
     const result = await repository.fetchById(
       organizationId,
@@ -36,7 +38,7 @@ describe('MidazFetchProductByIdRepository', () => {
       productId
     )
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/products/${productId}`,
       method: HTTP_METHODS.GET
     })
@@ -49,13 +51,13 @@ describe('MidazFetchProductByIdRepository', () => {
     const productId = '1'
     const error = new Error('Error occurred')
 
-    ;(httpMidazAuthFetch as jest.Mock).mockRejectedValueOnce(error)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockRejectedValueOnce(error)
 
     await expect(
       repository.fetchById(organizationId, ledgerId, productId)
     ).rejects.toThrow('Error occurred')
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/products/${productId}`,
       method: HTTP_METHODS.GET
     })

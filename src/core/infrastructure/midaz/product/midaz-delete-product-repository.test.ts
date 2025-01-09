@@ -10,9 +10,11 @@ jest.mock('../../utils/http-fetch-utils', () => ({
 
 describe('MidazDeleteProductRepository', () => {
   let repository: MidazDeleteProductRepository
+  let mockHttpFetchUtils: { httpMidazAuthFetch: jest.Mock }
 
   beforeEach(() => {
-    repository = new MidazDeleteProductRepository()
+    mockHttpFetchUtils = { httpMidazAuthFetch: jest.fn() }
+    repository = new MidazDeleteProductRepository(mockHttpFetchUtils as any)
     jest.clearAllMocks()
   })
 
@@ -21,11 +23,11 @@ describe('MidazDeleteProductRepository', () => {
     const ledgerId = '1'
     const productId = '1'
 
-    ;(httpMidazAuthFetch as jest.Mock).mockResolvedValueOnce(undefined)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(undefined)
 
     await repository.delete(organizationId, ledgerId, productId)
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/products/${productId}`,
       method: HTTP_METHODS.DELETE
     })
@@ -37,13 +39,13 @@ describe('MidazDeleteProductRepository', () => {
     const productId = '1'
     const error = new Error('Error occurred')
 
-    ;(httpMidazAuthFetch as jest.Mock).mockRejectedValueOnce(error)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockRejectedValueOnce(error)
 
     await expect(
       repository.delete(organizationId, ledgerId, productId)
     ).rejects.toThrow('Error occurred')
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/products/${productId}`,
       method: HTTP_METHODS.DELETE
     })

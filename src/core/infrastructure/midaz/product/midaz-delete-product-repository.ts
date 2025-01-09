@@ -4,13 +4,13 @@ import {
   HTTP_METHODS,
   MidazHttpFetchUtils
 } from '../../utils/http-fetch-utils'
-import { inject, injectable } from 'inversify'
+import { inject, injectable, LazyServiceIdentifier } from 'inversify'
 
 @injectable()
 export class MidazDeleteProductRepository implements DeleteProductRepository {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
   constructor(
-    @inject(MidazHttpFetchUtils)
+    @inject(new LazyServiceIdentifier(() => MidazHttpFetchUtils))
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
   async delete(

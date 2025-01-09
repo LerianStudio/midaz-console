@@ -1,11 +1,16 @@
 import { ProductEntity } from '@/core/domain/entities/product-entity'
 import { CreateProductRepository } from '@/core/domain/repositories/products/create-product-repository'
-import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
-import { injectable } from 'inversify'
+import { HTTP_METHODS, MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
+import { injectable, inject, LazyServiceIdentifier } from 'inversify'
 
 @injectable()
 export class MidazCreateProductRepository implements CreateProductRepository {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
+
+  constructor(
+    @inject(new LazyServiceIdentifier(() => MidazHttpFetchUtils))
+    private readonly midazHttpFetchUtils: MidazHttpFetchUtils
+  ) {}
 
   async create(
     organizationId: string,
@@ -13,11 +18,12 @@ export class MidazCreateProductRepository implements CreateProductRepository {
     product: ProductEntity
   ): Promise<ProductEntity> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/products`
-    const response = await httpMidazAuthFetch<ProductEntity>({
-      url,
-      method: HTTP_METHODS.POST,
-      body: JSON.stringify(product)
-    })
+    const response =
+      await this.midazHttpFetchUtils.httpMidazAuthFetch<ProductEntity>({
+        url,
+        method: HTTP_METHODS.POST,
+        body: JSON.stringify(product)
+      })
 
     return response
   }
