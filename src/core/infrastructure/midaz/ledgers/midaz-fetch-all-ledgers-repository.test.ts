@@ -1,7 +1,7 @@
 import { MidazFetchAllLedgersRepository } from './midaz-fetch-all-ledgers-repository'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
-import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 jest.mock('../../utils/http-fetch-utils', () => ({
   httpMidazAuthFetch: jest.fn(),

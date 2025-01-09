@@ -1,5 +1,5 @@
 import { DeleteAssetRepository } from '@/core/domain/repositories/assets/delete-asset-repository'
-import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 import { injectable, inject, LazyServiceIdentifier } from 'inversify'
 import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
 

@@ -1,7 +1,7 @@
 import { MidazFetchAllOrganizationsRepository } from './midaz-fetch-all-organizations-repository'
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
-import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 jest.mock('../../utils/http-fetch-utils', () => ({
   httpMidazAuthFetch: jest.fn(),
@@ -102,7 +102,7 @@ describe('MidazFetchAllOrganizationsRepository', () => {
       'Error occurred'
     )
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations?limit=${limit}&page=${page}`,
       method: HTTP_METHODS.GET
     })

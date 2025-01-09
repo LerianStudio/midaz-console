@@ -1,6 +1,6 @@
 import { MidazFetchAssetByIdRepository } from './midaz-fetch-asset-by-id-repository'
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
-import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 jest.mock('../../utils/http-fetch-utils', () => ({
   httpMidazAuthFetch: jest.fn(),

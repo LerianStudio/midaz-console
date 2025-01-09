@@ -1,6 +1,5 @@
 import { DeleteProductRepository } from '@/core/domain/repositories/products/delete-product-repository'
 import {
-  httpMidazAuthFetch,
   HTTP_METHODS,
   MidazHttpFetchUtils
 } from '../../utils/http-fetch-utils'

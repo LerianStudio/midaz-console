@@ -1,8 +1,7 @@
-import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
 import { AccountEntity } from '@/core/domain/entities/account-entity'
 import { CreateAccountsRepository } from '@/core/domain/repositories/accounts/create-accounts-repository'
 import { injectable, inject, LazyServiceIdentifier } from 'inversify'
-import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
+import { MidazHttpFetchUtils, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 @injectable()
 export class MidazCreateAccountRepository implements CreateAccountsRepository {

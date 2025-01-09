@@ -1,8 +1,7 @@
 import { AccountEntity } from '@/core/domain/entities/account-entity'
 import { FetchAccountByIdRepository } from '@/core/domain/repositories/accounts/fetch-account-by-id-repository'
-import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
 import { injectable, inject, LazyServiceIdentifier } from 'inversify'
-import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
+import { MidazHttpFetchUtils, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 @injectable()
 export class MidazFetchAccountByIdRepository

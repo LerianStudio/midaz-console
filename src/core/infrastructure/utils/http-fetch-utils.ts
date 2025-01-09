@@ -3,7 +3,6 @@ import { nextAuthCasdoorOptions } from '../next-auth/casdoor/next-auth-casdoor-p
 import { handleMidazError } from './midaz-error-handler'
 import { isNil } from 'lodash'
 import { MidazRequestContext } from '../logger/decorators/midaz-id'
-import { container } from '../container-registry/container-registry'
 import { inject, injectable } from 'inversify'
 
 export enum HTTP_METHODS {
@@ -30,7 +29,6 @@ export async function httpMidazAuthFetch<T>(
   const headers = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${access_token}`,
-    // 'Midaz-Id': midazId.getMidazId(),
     ...httpFetchOptions.headers
   }
 

@@ -1,6 +1,6 @@
 import { MidazUpdateLedgerRepository } from './midaz-update-ledger-repository'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
-import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 jest.mock('../../utils/http-fetch-utils', () => ({
   httpMidazAuthFetch: jest.fn(),

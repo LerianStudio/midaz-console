@@ -1,6 +1,6 @@
 import { MidazFetchOrganizationByIdRepository } from './midaz-fetch-organization-by-id-repository'
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
-import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 jest.mock('../../utils/http-fetch-utils', () => ({
   httpMidazAuthFetch: jest.fn(),

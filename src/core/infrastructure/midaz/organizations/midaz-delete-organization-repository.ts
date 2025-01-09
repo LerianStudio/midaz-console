@@ -1,5 +1,5 @@
 import { DeleteOrganizationRepository } from '@/core/domain/repositories/organizations/delete-organization-repository'
-import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
+import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 import { injectable, inject, LazyServiceIdentifier } from 'inversify'
 import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
 
