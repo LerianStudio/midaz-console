@@ -27,15 +27,15 @@ export default function TransactionsPage() {
   const router = useRouter()
   const { currentOrganization } = useOrganization()
 
-  const [selectedLedger, setSelectedLedger] = React.useState<string>('')
-  const [loadAsDefault, setLoadAsDefault] = React.useState<boolean>(false)
+  const [pendingLedgerId, setPendingLedgerId] = React.useState<string>('')
+  const [saveAsDefault, setSaveAsDefault] = React.useState<boolean>(false)
 
-  const [currentLedger, setCurrentLedger] = React.useState<string>('')
-  const [defaultLedgerId, setDefaultLedgerId] = React.useState<string | null>(
-    null
-  )
+  const [activeLedgerId, setActiveLedgerId] = React.useState<string>('')
+  const [storedDefaultLedgerId, setStoredDefaultLedgerId] = React.useState<
+    string | null
+  >(null)
 
-  const [initialized, setInitialized] = React.useState<boolean>(false)
+  const [isInitialized, setIsInitialized] = React.useState<boolean>(false)
 
   const { data: ledgers, isLoading: isLoadingLedgers } = useListLedgers({
     organizationId: currentOrganization?.id!
@@ -44,45 +44,47 @@ export default function TransactionsPage() {
   React.useEffect(() => {
     const storedLedgerId = localStorage.getItem('defaultTransactionLedgerId')
     if (storedLedgerId) {
-      setDefaultLedgerId(storedLedgerId)
+      setStoredDefaultLedgerId(storedLedgerId)
     }
-    setInitialized(true)
+    setIsInitialized(true)
   }, [])
 
   React.useEffect(() => {
-    if (!initialized || !ledgers?.items || !defaultLedgerId) return
+    if (!isInitialized || !ledgers?.items || !storedDefaultLedgerId) return
 
-    const found = ledgers.items.some((ledger) => ledger.id === defaultLedgerId)
+    const found = ledgers.items.some(
+      (ledger) => ledger.id === storedDefaultLedgerId
+    )
     if (!found) {
       localStorage.removeItem('defaultTransactionLedgerId')
-      setDefaultLedgerId(null)
+      setStoredDefaultLedgerId(null)
     }
-  }, [initialized, ledgers, defaultLedgerId])
+  }, [isInitialized, ledgers, storedDefaultLedgerId])
 
-  const handleLoadLedger = React.useCallback(() => {
-    if (!selectedLedger) return
+  const onLoadLedger = React.useCallback(() => {
+    if (!pendingLedgerId) return
 
-    setCurrentLedger(selectedLedger)
+    setActiveLedgerId(pendingLedgerId)
 
-    if (loadAsDefault) {
-      localStorage.setItem('defaultTransactionLedgerId', selectedLedger)
-      setDefaultLedgerId(selectedLedger)
+    if (saveAsDefault) {
+      localStorage.setItem('defaultTransactionLedgerId', pendingLedgerId)
+      setStoredDefaultLedgerId(pendingLedgerId)
     } else {
       localStorage.removeItem('defaultTransactionLedgerId')
-      setDefaultLedgerId(null)
+      setStoredDefaultLedgerId(null)
     }
-  }, [selectedLedger, loadAsDefault])
+  }, [pendingLedgerId, saveAsDefault])
 
-  const handleNewTransaction = React.useCallback(() => {
-    const ledgerId = defaultLedgerId || currentLedger
+  const onCreateTransaction = React.useCallback(() => {
+    const ledgerId = storedDefaultLedgerId || activeLedgerId
     if (!ledgerId) {
       console.warn('No ledger selected, cannot create a new transaction.')
       return
     }
     router.push(`/ledgers/${ledgerId}/transactions/create`)
-  }, [defaultLedgerId, currentLedger, router])
+  }, [storedDefaultLedgerId, activeLedgerId, router])
 
-  if (!initialized) {
+  if (!isInitialized) {
     return (
       <div>
         <Skeleton className="h-[80px] w-full bg-zinc-200" />
@@ -92,7 +94,7 @@ export default function TransactionsPage() {
     )
   }
 
-  const hasLedgerLoaded = Boolean(currentLedger || defaultLedgerId)
+  const isLedgerLoaded = Boolean(activeLedgerId || storedDefaultLedgerId)
 
   return (
     <React.Fragment>
@@ -110,7 +112,7 @@ export default function TransactionsPage() {
             })}
           />
 
-          {defaultLedgerId && (
+          {storedDefaultLedgerId && (
             <PageHeader.ActionButtons>
               <PageHeader.CollapsibleInfoTrigger
                 question={intl.formatMessage({
@@ -139,48 +141,46 @@ export default function TransactionsPage() {
         />
       </PageHeader.Root>
 
-      {hasLedgerLoaded ? (
+      {isLedgerLoaded ? (
         <div className="mt-10">
           <EntityBox.Root>
             <EntityBox.Actions className="flex w-full justify-between gap-4">
-              <React.Fragment>
-                <div className="flex items-center gap-4">
-                  <p className="text-sm font-medium text-gray-600">
-                    {intl.formatMessage({
-                      id: 'ledger.title',
-                      defaultMessage: 'Ledger'
-                    })}
-                  </p>
-
-                  <Select
-                    value={defaultLedgerId || currentLedger}
-                    onValueChange={(val) => {
-                      setCurrentLedger(val)
-                      setDefaultLedgerId(val)
-                      localStorage.setItem('defaultTransactionLedgerId', val)
-                    }}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Ledger" />
-                    </SelectTrigger>
-
-                    <SelectContent>
-                      {ledgers?.items?.map((ledger) => (
-                        <SelectItem key={ledger.id} value={ledger.id}>
-                          {ledger.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <Button variant="default" onClick={handleNewTransaction}>
+              <div className="flex items-center gap-4">
+                <p className="text-sm font-medium text-gray-600">
                   {intl.formatMessage({
-                    id: 'transactions.create.title',
-                    defaultMessage: 'New Transaction'
+                    id: 'ledger.title',
+                    defaultMessage: 'Ledger'
                   })}
-                </Button>
-              </React.Fragment>
+                </p>
+
+                <Select
+                  value={storedDefaultLedgerId || activeLedgerId}
+                  onValueChange={(val) => {
+                    setActiveLedgerId(val)
+                    setStoredDefaultLedgerId(val)
+                    localStorage.setItem('defaultTransactionLedgerId', val)
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Ledger" />
+                  </SelectTrigger>
+
+                  <SelectContent>
+                    {ledgers?.items?.map((ledger) => (
+                      <SelectItem key={ledger.id} value={ledger.id}>
+                        {ledger.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <Button variant="default" onClick={onCreateTransaction}>
+                {intl.formatMessage({
+                  id: 'transactions.create.title',
+                  defaultMessage: 'New Transaction'
+                })}
+              </Button>
             </EntityBox.Actions>
           </EntityBox.Root>
 
@@ -194,7 +194,7 @@ export default function TransactionsPage() {
               defaultMessage: 'No transaction found.'
             })}
           >
-            <Button variant="default" onClick={handleNewTransaction}>
+            <Button variant="default" onClick={onCreateTransaction}>
               {intl.formatMessage({
                 id: 'transactions.create.title',
                 defaultMessage: 'New Transaction'
@@ -256,8 +256,8 @@ export default function TransactionsPage() {
                 <React.Fragment>
                   <Select
                     disabled={isLoadingLedgers || !ledgers?.items?.length}
-                    value={selectedLedger}
-                    onValueChange={(val) => setSelectedLedger(val)}
+                    value={pendingLedgerId}
+                    onValueChange={(val) => setPendingLedgerId(val)}
                   >
                     <SelectTrigger className="w-fit">
                       <SelectValue
@@ -276,8 +276,8 @@ export default function TransactionsPage() {
                     </SelectContent>
                   </Select>
 
-                  {selectedLedger && (
-                    <Button onClick={handleLoadLedger}>
+                  {pendingLedgerId && (
+                    <Button onClick={onLoadLedger}>
                       {intl.formatMessage({
                         id: 'common.load',
                         defaultMessage: 'Load'
@@ -288,13 +288,13 @@ export default function TransactionsPage() {
               )}
             </div>
 
-            {selectedLedger && (
+            {pendingLedgerId && (
               <div className="items-top mt-8 flex space-x-2">
                 <Checkbox
                   id="defaultLedger"
-                  checked={loadAsDefault}
+                  checked={saveAsDefault}
                   onCheckedChange={(checked) => {
-                    setLoadAsDefault(Boolean(checked))
+                    setSaveAsDefault(Boolean(checked))
                   }}
                 />
                 <div className="grid gap-1.5 leading-none">
