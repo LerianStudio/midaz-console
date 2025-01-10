@@ -1,6 +1,6 @@
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { CreatePortfolioRepository } from '@/core/domain/repositories/portfolios/create-portfolio-repository'
-import { HTTP_METHODS} from '../../utils/http-fetch-utils'
+import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 import { injectable, inject, LazyServiceIdentifier } from 'inversify'
 import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
 
