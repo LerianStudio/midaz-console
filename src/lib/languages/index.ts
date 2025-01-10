@@ -1,19 +1,21 @@
+import { defineMessage } from 'react-intl'
+
 const languages = [
   {
     name: 'English',
     locale: 'en-US',
-    localizedName: {
+    localizedName: defineMessage({
       id: 'language.english',
       defaultMessage: 'English'
-    }
+    })
   },
   {
-    name: 'Português',
+    name: 'Português (Brasil)',
     locale: 'pt-BR',
-    localizedName: {
+    localizedName: defineMessage({
       id: 'language.portuguese',
       defaultMessage: 'Portuguese'
-    }
+    })
   }
 ]
 

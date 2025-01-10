@@ -14,14 +14,12 @@ export class MidazCreateTransactionRepository
     transaction: TransactionEntity
   ) {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/transactions/json`
-    console.log(transaction, JSON.stringify(transaction))
+
     const response = await httpMidazAuthFetch<TransactionEntity>({
       url,
       method: HTTP_METHODS.POST,
       body: JSON.stringify(transaction)
     })
-
-    console.log(response)
 
     return response
   }
