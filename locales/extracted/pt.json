@@ -1,6 +1,4 @@
 {
-  "settingsDropdown.portuguese": "Português",
-  "settingsDropdown.english": "English",
   "settingsDropdown.organizations": "Organizações",
   "settingsDropdown.security": "Segurança",
   "settingsDropdown.settings": "Configurações",
@@ -8,7 +6,6 @@
   "organizations.organizationView.avatarDialog.description": "Insira a URL da imagem SVG ou PNG",
   "organizations.organizationView.avatarDialog.title": "Avatar",
   "settings.tabs.organizations": "Organizações",
-  "settings.tabs.others": "Outras Configurações",
   "settings.title": "Configurações",
   "organizations.listingTemplate.addButton": "Nova Organização",
   "organizations.organizationView.breadcrumbs.newOrganization": "Nova Organização",
@@ -93,8 +90,6 @@
   "ledgers.emptyResource.createButton": "Novo Ledger",
   "ledgers.emptyResourceExtra": "Nenhum Ledger encontrado.",
   "organizations.emptyResource": "Você ainda não criou nenhuma Organização",
-  "settings.tab.organizations": "Organização",
-  "settings.tab.otherSettings": "Outras Configurações",
   "common.actions": "Ações",
   "common.id": "ID",
   "common.logoAlt": "Logo da sua organização",
@@ -342,5 +337,11 @@
   "transactions.ledgers.subtitle": "Selecione um ledger para carregar as transações.",
   "transactions.section.description": "Este é o espaço das {transactions}. As movimentações que acontecem em todas as suas ledgers ficam organizadas aqui.",
   "transactions.subtitle": "Visualize, edite e gerencie as transações de um Ledgers específico.",
-  "transactions.title": "Transações"
+  "transactions.title": "Transações",
+  "language.english": "Inglês",
+  "language.portuguese": "Português",
+  "settings.system.language": "Idioma",
+  "settings.system.locale.description": "Selecione o idioma que você gostaria de usar no Midaz.",
+  "settings.system.paper.description": "Ajustes as preferências de sistema.",
+  "settings.tabs.system": "Sistema"
 }

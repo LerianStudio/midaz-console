@@ -1,5 +1,6 @@
 import {
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -13,13 +14,15 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
+import { PropsWithChildren, ReactNode } from 'react'
 import { Control } from 'react-hook-form'
 
-export type SelectFieldProps = React.PropsWithChildren & {
+export type SelectFieldProps = PropsWithChildren & {
   name: string
-  label?: React.ReactNode
+  label?: ReactNode
   tooltip?: string
   labelExtra?: React.ReactNode
+  description?: ReactNode
   placeholder?: string
   disabled?: boolean
   control: Control<any>
@@ -32,6 +35,7 @@ export const SelectField = ({
   labelExtra,
   required,
   placeholder,
+  description,
   disabled,
   children,
   ...others
@@ -62,6 +66,7 @@ export const SelectField = ({
             <SelectContent>{children}</SelectContent>
           </Select>
           <FormMessage />
+          {description && <FormDescription>{description}</FormDescription>}
         </FormItem>
       )}
     />
