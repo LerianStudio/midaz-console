@@ -8,6 +8,7 @@ import { useTabs } from '@/hooks/use-tabs'
 import { getBreadcrumbPaths } from '@/components/breadcrumb/get-breadcrumb-paths'
 import { OrganizationsTabContent } from './organizations-tab-content'
 import { PageHeader } from '@/components/page-header'
+import { SystemTabContent } from './system-tab-content'
 
 const Page = () => {
   const intl = useIntl()
@@ -30,17 +31,17 @@ const Page = () => {
           },
           {
             name: intl.formatMessage({
-              id: `settings.tab.organizations`,
+              id: `settings.tabs.organizations`,
               defaultMessage: 'Organizations'
             }),
             active: () => activeTab === 'organizations'
           },
           {
             name: intl.formatMessage({
-              id: `settings.tab.otherSettings`,
-              defaultMessage: 'Other Settings'
+              id: `settings.tabs.system`,
+              defaultMessage: 'System'
             }),
-            active: () => activeTab === 'others'
+            active: () => activeTab === 'system'
           }
         ])}
       />
@@ -64,10 +65,10 @@ const Page = () => {
               defaultMessage: 'Organizations'
             })}
           </TabsTrigger>
-          <TabsTrigger value="others">
+          <TabsTrigger value="system">
             {intl.formatMessage({
-              id: 'settings.tabs.others',
-              defaultMessage: 'Others Settings'
+              id: 'settings.tabs.system',
+              defaultMessage: 'System'
             })}
           </TabsTrigger>
         </TabsList>
@@ -75,7 +76,9 @@ const Page = () => {
         <TabsContent value="organizations">
           <OrganizationsTabContent />
         </TabsContent>
-        <TabsContent value="others">Others Configurations</TabsContent>
+        <TabsContent value="system">
+          <SystemTabContent />
+        </TabsContent>
       </Tabs>
     </>
   )
