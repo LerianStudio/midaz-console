@@ -39,7 +39,6 @@ export function LogOperation(options: {
           operation: `${options.operation}_start`,
           level: 'info',
           message: `Starting ${options.operation}`,
-          // metadata: { args } //comentario aqui para remover o payload
           ...(isDebugEnabled && { metadata: { args } })
         })
 
