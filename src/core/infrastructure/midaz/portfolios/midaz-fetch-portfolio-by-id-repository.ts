@@ -1,7 +1,7 @@
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { FetchPortfolioByIdRepository } from '@/core/domain/repositories/portfolios/fetch-portfolio-by-id-repository'
 import { HTTP_METHODS } from '../../utils/http-fetch-utils'
-import { injectable, inject, LazyServiceIdentifier } from 'inversify'
+import { injectable, inject } from 'inversify'
 import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
 
 @injectable()
@@ -9,7 +9,7 @@ export class MidazFetchPortfolioByIdRepository
   implements FetchPortfolioByIdRepository
 {
   constructor(
-    @inject(new LazyServiceIdentifier(() => MidazHttpFetchUtils))
+    @inject(MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 

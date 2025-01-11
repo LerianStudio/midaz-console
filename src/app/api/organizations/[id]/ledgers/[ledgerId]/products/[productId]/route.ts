@@ -46,7 +46,7 @@ export async function GET(
 
     return NextResponse.json(products)
   } catch (error: any) {
-    console.error('Error fetching all products', error)
+    ('Error fetching all products', error)
     const { message, status } = await apiErrorHandler(error)
 
     return NextResponse.json({ message }, { status })
@@ -76,7 +76,7 @@ export const DELETE = applyMiddleware(
 
       return NextResponse.json({}, { status: 200 })
     } catch (error: any) {
-      console.error('Error deleting product', error)
+      ('Error deleting product', error)
       const { message, status } = await apiErrorHandler(error)
 
       return NextResponse.json({ message }, { status })
@@ -103,7 +103,7 @@ export async function PATCH(
 
     return NextResponse.json(productUpdated)
   } catch (error: any) {
-    console.error('Error updating product', error)
+    ('Error updating product', error)
     const { message, status } = await apiErrorHandler(error)
 
     return NextResponse.json({ message }, { status })

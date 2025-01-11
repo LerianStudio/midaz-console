@@ -1,6 +1,6 @@
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { CreateAssetRepository } from '@/core/domain/repositories/assets/create-asset-repository'
-import { injectable, inject, LazyServiceIdentifier } from 'inversify'
+import { injectable, inject } from 'inversify'
 import { MidazHttpFetchUtils, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 @injectable()
@@ -8,7 +8,7 @@ export class MidazCreateAssetRepository implements CreateAssetRepository {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
 
   constructor(
-    @inject(new LazyServiceIdentifier(() => MidazHttpFetchUtils))
+     @inject(MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 

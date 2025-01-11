@@ -2,7 +2,7 @@ import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { ProductEntity } from '@/core/domain/entities/product-entity'
 import { FetchAllProductsRepository } from '@/core/domain/repositories/products/fetch-all-products-repository'
 import { HTTP_METHODS, MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
-import { inject, injectable, LazyServiceIdentifier } from 'inversify'
+import { inject, injectable } from 'inversify'
 
 @injectable()
 export class MidazFetchAllProductsRepository
@@ -10,7 +10,7 @@ export class MidazFetchAllProductsRepository
 {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
   constructor(
-    @inject(new LazyServiceIdentifier(() => MidazHttpFetchUtils))
+    @inject(MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
   async fetchAll(

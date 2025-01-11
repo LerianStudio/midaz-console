@@ -1,7 +1,7 @@
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { CreatePortfolioRepository } from '@/core/domain/repositories/portfolios/create-portfolio-repository'
 import { HTTP_METHODS } from '../../utils/http-fetch-utils'
-import { injectable, inject, LazyServiceIdentifier } from 'inversify'
+import { injectable, inject } from 'inversify'
 import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
 
 @injectable()
@@ -11,7 +11,7 @@ export class MidazCreatePortfolioRepository
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
 
   constructor(
-    @inject(new LazyServiceIdentifier(() => MidazHttpFetchUtils))
+    @inject(MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 

@@ -1,6 +1,6 @@
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { FetchOrganizationByIdRepository } from '@/core/domain/repositories/organizations/fetch-organization-by-id-repository'
-import { injectable, inject, LazyServiceIdentifier } from 'inversify'
+import { injectable, inject } from 'inversify'
 import { MidazHttpFetchUtils, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 @injectable()
@@ -8,7 +8,7 @@ export class MidazFetchOrganizationByIdRepository
   implements FetchOrganizationByIdRepository
 {
   constructor(
-    @inject(new LazyServiceIdentifier(() => MidazHttpFetchUtils))
+    @inject(MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 

@@ -33,7 +33,7 @@ export const GET = applyMiddleware(
 
       return NextResponse.json(ledgers)
     } catch (error: any) {
-      console.error('Error fetching all ledgers', error)
+      ('Error fetching all ledgers', error)
 
       const { message, status } = await apiErrorHandler(error)
 

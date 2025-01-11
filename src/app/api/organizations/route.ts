@@ -36,8 +36,6 @@ export const GET = applyMiddleware(
 
       return NextResponse.json(organizations)
     } catch (error: any) {
-      console.error('Error fetching all organizations', error)
-
       const { message, status } = await apiErrorHandler(error)
 
       return NextResponse.json({ message }, { status })
@@ -63,8 +61,6 @@ export const POST = applyMiddleware(
 
       return NextResponse.json({ result }, { status: 201 })
     } catch (error: any) {
-      console.error('Error creating organization', error)
-
       const { message, status } = await apiErrorHandler(error)
 
       return NextResponse.json({ message }, { status })

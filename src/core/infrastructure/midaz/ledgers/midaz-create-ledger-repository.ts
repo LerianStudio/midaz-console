@@ -9,7 +9,7 @@ export class MidazCreateLedgerRepository implements CreateLedgerRepository {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
 
   constructor(
-    @inject(new LazyServiceIdentifier(() => MidazHttpFetchUtils))
+     @inject(MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 

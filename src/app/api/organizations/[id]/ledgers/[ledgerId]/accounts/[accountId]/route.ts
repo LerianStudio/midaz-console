@@ -51,7 +51,6 @@ export const GET = applyMiddleware(
 
       return NextResponse.json(account)
     } catch (error: any) {
-      console.error('Error getting account', error)
       const { message, status } = await apiErrorHandler(error)
 
       return NextResponse.json({ message }, { status })
@@ -95,7 +94,6 @@ export const PATCH = applyMiddleware(
 
       return NextResponse.json(accountUpdated)
     } catch (error: any) {
-      console.error('Error updating account', error)
       const { message, status } = await apiErrorHandler(error)
 
       return NextResponse.json({ message }, { status })
@@ -133,7 +131,6 @@ export const DELETE = applyMiddleware(
 
       return NextResponse.json({}, { status: 200 })
     } catch (error: any) {
-      console.error('Error deleting account', error)
       const { message, status } = await apiErrorHandler(error)
 
       return NextResponse.json({ message }, { status })

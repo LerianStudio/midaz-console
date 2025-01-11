@@ -43,7 +43,6 @@ export const POST = applyMiddleware(
 
       return NextResponse.json(productCreated)
     } catch (error: any) {
-      console.error('Error creating product', error)
       const { message, status } = await apiErrorHandler(error)
 
       return NextResponse.json({ message }, { status })
@@ -79,7 +78,6 @@ export const GET = applyMiddleware(
 
       return NextResponse.json(products)
     } catch (error: any) {
-      console.error('Error fetching all products', error)
       const { message, status } = await apiErrorHandler(error)
 
       return NextResponse.json({ message }, { status })

@@ -1,12 +1,12 @@
 import { DeleteAssetRepository } from '@/core/domain/repositories/assets/delete-asset-repository'
 import { HTTP_METHODS } from '../../utils/http-fetch-utils'
-import { injectable, inject, LazyServiceIdentifier } from 'inversify'
+import { injectable, inject } from 'inversify'
 import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
 
 @injectable()
 export class MidazDeleteAssetRepository implements DeleteAssetRepository {
   constructor(
-    @inject(new LazyServiceIdentifier(() => MidazHttpFetchUtils))
+     @inject(MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 

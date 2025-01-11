@@ -1,14 +1,14 @@
 import { ProductEntity } from '@/core/domain/entities/product-entity'
 import { UpdateProductRepository } from '@/core/domain/repositories/products/update-product-repository'
 import { HTTP_METHODS, MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
-import { injectable, inject, LazyServiceIdentifier } from 'inversify'
+import { injectable, inject } from 'inversify'
 
 @injectable()
 export class MidazUpdateProductRepository implements UpdateProductRepository {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
 
   constructor(
-    @inject(new LazyServiceIdentifier(() => MidazHttpFetchUtils))
+    @inject(MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 

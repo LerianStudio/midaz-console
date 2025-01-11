@@ -42,7 +42,7 @@ export const GET = applyMiddleware(
 
       return NextResponse.json(portfoliosWithAccounts)
     } catch (error: any) {
-      console.error('Error fetching portfolios with accounts', error)
+      ('Error fetching portfolios with accounts', error)
 
       const { message, status } = await apiErrorHandler(error)
 

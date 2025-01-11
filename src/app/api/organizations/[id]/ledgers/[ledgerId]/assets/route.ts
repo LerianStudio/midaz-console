@@ -40,7 +40,6 @@ export const POST = applyMiddleware(
 
       return NextResponse.json(assetCreated)
     } catch (error: any) {
-      console.error('Error creating asset', error)
 
       const { message, status } = await apiErrorHandler(error)
 
@@ -80,8 +79,6 @@ export const GET = applyMiddleware(
 
       return NextResponse.json(assets)
     } catch (error: any) {
-      console.error('Error fetching all assets', error)
-
       const { message, status } = await apiErrorHandler(error)
 
       return NextResponse.json({ message }, { status })

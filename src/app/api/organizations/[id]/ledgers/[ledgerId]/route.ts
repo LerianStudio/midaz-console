@@ -39,7 +39,6 @@ export const GET = applyMiddleware(
 
       return NextResponse.json(ledgers)
     } catch (error: any) {
-      console.error('Error fetching ledger by id', error)
 
       const { message, status } = await apiErrorHandler(error)
 
@@ -77,7 +76,6 @@ export const PATCH = applyMiddleware(
 
       return NextResponse.json({ ledgerUpdated })
     } catch (error: any) {
-      console.error('Error updating ledger', error)
 
       const { message, status } = await apiErrorHandler(error)
 
@@ -107,8 +105,6 @@ export const DELETE = applyMiddleware(
 
       return NextResponse.json({}, { status: 200 })
     } catch (error: any) {
-      console.error('Error deleting ledger', error)
-
       const { message, status } = await apiErrorHandler(error)
 
       return NextResponse.json({ message }, { status })

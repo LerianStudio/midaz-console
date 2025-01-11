@@ -1,7 +1,7 @@
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { FetchAllAccountsRepository } from '@/core/domain/repositories/accounts/fetch-all-accounts-repository'
 import { AccountEntity } from '@/core/domain/entities/account-entity'
-import { injectable, inject, LazyServiceIdentifier } from 'inversify'
+import { injectable, inject } from 'inversify'
 import { MidazHttpFetchUtils, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 @injectable()
@@ -11,7 +11,7 @@ export class MidazFetchAllAccountsRepository
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
 
   constructor(
-    @inject(new LazyServiceIdentifier(() => MidazHttpFetchUtils))
+    @inject(MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 

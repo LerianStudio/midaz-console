@@ -1,12 +1,12 @@
 import { FetchAssetByIdRepository } from '@/core/domain/repositories/assets/fetch-asset-by-id-repository'
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
-import { injectable, inject, LazyServiceIdentifier } from 'inversify'
+import { injectable, inject } from 'inversify'
 import { MidazHttpFetchUtils, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 @injectable()
 export class MidazFetchAssetByIdRepository implements FetchAssetByIdRepository {
   constructor(
-    @inject(new LazyServiceIdentifier(() => MidazHttpFetchUtils))
+     @inject(MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 

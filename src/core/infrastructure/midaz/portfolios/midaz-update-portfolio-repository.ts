@@ -1,14 +1,14 @@
 import { UpdatePortfolioRepository } from '@/core/domain/repositories/portfolios/update-portfolio-repository'
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { HTTP_METHODS, MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
-import { injectable, inject, LazyServiceIdentifier } from 'inversify'
+import { injectable, inject } from 'inversify'
 
 @injectable()
 export class MidazUpdatePortfolioRepository
   implements UpdatePortfolioRepository
 {
   constructor(
-    @inject(new LazyServiceIdentifier(() => MidazHttpFetchUtils))
+    @inject(MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 

@@ -36,8 +36,6 @@ export const GET = applyMiddleware(
 
       return NextResponse.json(organizations)
     } catch (error: any) {
-      console.error('Error fetching organization', error)
-
       const { message, status } = await apiErrorHandler(error)
 
       return NextResponse.json({ message }, { status })
@@ -65,8 +63,6 @@ export const PATCH = applyMiddleware(
       )
       return NextResponse.json({ organizationUpdated })
     } catch (error: any) {
-      console.error('Error updating organization', error)
-
       const { message, status } = await apiErrorHandler(error)
 
       return NextResponse.json({ message }, { status })
@@ -90,7 +86,6 @@ export const DELETE = applyMiddleware(
       await deleteOrganizationUseCase.execute(params.id)
       return NextResponse.json({}, { status: 200 })
     } catch (error: any) {
-      console.error('Error deleting organization', error)
       const { message, status } = await apiErrorHandler(error)
 
       return NextResponse.json({ message }, { status })

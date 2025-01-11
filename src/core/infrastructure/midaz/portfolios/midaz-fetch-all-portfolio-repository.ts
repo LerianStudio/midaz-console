@@ -2,14 +2,14 @@ import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { FetchAllPortfoliosRepository } from '@/core/domain/repositories/portfolios/fetch-all-portfolio-repository'
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { HTTP_METHODS } from '../../utils/http-fetch-utils'
-import { injectable, inject, LazyServiceIdentifier } from 'inversify'
+import { injectable, inject } from 'inversify'
 import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
 @injectable()
 export class MidazFetchAllPortfoliosRepository
   implements FetchAllPortfoliosRepository
 {
   constructor(
-    @inject(new LazyServiceIdentifier(() => MidazHttpFetchUtils))
+    @inject(MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 

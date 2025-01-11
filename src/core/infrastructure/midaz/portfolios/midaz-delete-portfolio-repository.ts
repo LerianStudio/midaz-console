@@ -1,5 +1,5 @@
 import { HTTP_METHODS } from '../../utils/http-fetch-utils'
-import { injectable, inject, LazyServiceIdentifier } from 'inversify'
+import { injectable, inject } from 'inversify'
 import { DeletePortfolioRepository } from '@/core/domain/repositories/portfolios/delete-portfolio-repository'
 import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
 
@@ -8,7 +8,7 @@ export class MidazDeletePortfolioRepository
   implements DeletePortfolioRepository
 {
   constructor(
-    @inject(new LazyServiceIdentifier(() => MidazHttpFetchUtils))
+    @inject(MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 

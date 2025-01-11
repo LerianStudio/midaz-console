@@ -2,13 +2,13 @@ import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { FetchAllAssetsRepository } from '@/core/domain/repositories/assets/fetch-all-assets-repository'
 import { HTTP_METHODS } from '../../utils/http-fetch-utils'
-import { injectable, inject, LazyServiceIdentifier } from 'inversify'
+import { injectable, inject } from 'inversify'
 import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
 
 @injectable()
 export class MidazFetchAllAssetsRepository implements FetchAllAssetsRepository {
   constructor(
-    @inject(new LazyServiceIdentifier(() => MidazHttpFetchUtils))
+     @inject(MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 

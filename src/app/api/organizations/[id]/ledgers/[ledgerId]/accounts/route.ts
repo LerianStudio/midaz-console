@@ -56,7 +56,6 @@ export const GET = applyMiddleware(
 
       return NextResponse.json(accounts)
     } catch (error: any) {
-      console.error('Error fetching all accounts', error)
 
       const { message, status } = await apiErrorHandler(error)
 
@@ -94,7 +93,6 @@ export const POST = applyMiddleware(
 
       return NextResponse.json(account)
     } catch (error: any) {
-      console.error('Error creating accounts', error)
       const { message, status } = await apiErrorHandler(error)
 
       return NextResponse.json({ message }, { status })

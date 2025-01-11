@@ -1,12 +1,12 @@
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { UpdateAssetRepository } from '@/core/domain/repositories/assets/update-asset-repository'
-import { injectable, inject, LazyServiceIdentifier } from 'inversify'
+import { injectable, inject } from 'inversify'
 import { MidazHttpFetchUtils, HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 @injectable()
 export class MidazUpdateAssetRepository implements UpdateAssetRepository {
   constructor(
-    @inject(new LazyServiceIdentifier(() => MidazHttpFetchUtils))
+     @inject(MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 
