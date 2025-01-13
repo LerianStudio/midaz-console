@@ -3,6 +3,7 @@ import { ProductEntity } from '@/core/domain/entities/product-entity'
 import { FetchAllProductsRepository } from '@/core/domain/repositories/products/fetch-all-products-repository'
 import { HTTP_METHODS, MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
 import { inject, injectable } from 'inversify'
+import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
 
 @injectable()
 export class MidazFetchAllProductsRepository
@@ -10,7 +11,7 @@ export class MidazFetchAllProductsRepository
 {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
   constructor(
-    @inject(MidazHttpFetchUtils)
+    @inject(ContainerTypeMidazHttpFetch.MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
   async fetchAll(

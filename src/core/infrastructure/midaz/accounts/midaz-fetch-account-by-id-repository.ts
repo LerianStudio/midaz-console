@@ -2,6 +2,7 @@ import { AccountEntity } from '@/core/domain/entities/account-entity'
 import { FetchAccountByIdRepository } from '@/core/domain/repositories/accounts/fetch-account-by-id-repository'
 import { injectable, inject } from 'inversify'
 import { MidazHttpFetchUtils, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
 
 @injectable()
 export class MidazFetchAccountByIdRepository
@@ -10,7 +11,7 @@ export class MidazFetchAccountByIdRepository
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
 
   constructor(
-    @inject(MidazHttpFetchUtils)
+    @inject(ContainerTypeMidazHttpFetch.MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 

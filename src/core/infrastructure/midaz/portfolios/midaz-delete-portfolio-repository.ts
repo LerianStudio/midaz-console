@@ -2,13 +2,14 @@ import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 import { injectable, inject } from 'inversify'
 import { DeletePortfolioRepository } from '@/core/domain/repositories/portfolios/delete-portfolio-repository'
 import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
+import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
 
 @injectable()
 export class MidazDeletePortfolioRepository
   implements DeletePortfolioRepository
 {
   constructor(
-    @inject(MidazHttpFetchUtils)
+    @inject(ContainerTypeMidazHttpFetch.MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 

@@ -15,6 +15,7 @@ import { LoggerApplicationModule } from './logger-application-module'
 import { MidazRequestContext } from '../logger/decorators/midaz-id'
 import { TransactionUseCaseModule } from './use-cases/transactions-module'
 import { MidazHttpFetchUtils } from '../utils/http-fetch-utils'
+import { MidazHttpFetchModule } from './midaz-http-fetch-module'
 
 export const container = new Container()
 
@@ -33,7 +34,8 @@ container.load(LoggerApplicationModule)
 
 container.load(TransactionUseCaseModule)
 
-container.bind<MidazHttpFetchUtils>(MidazHttpFetchUtils).to(MidazHttpFetchUtils)
+container.load(MidazHttpFetchModule)
+
 container
   .bind<MidazRequestContext>(MidazRequestContext)
   .toSelf()

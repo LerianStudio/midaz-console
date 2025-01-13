@@ -3,6 +3,7 @@ import { CreatePortfolioRepository } from '@/core/domain/repositories/portfolios
 import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 import { injectable, inject } from 'inversify'
 import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
+import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
 
 @injectable()
 export class MidazCreatePortfolioRepository
@@ -11,7 +12,7 @@ export class MidazCreatePortfolioRepository
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
 
   constructor(
-    @inject(MidazHttpFetchUtils)
+    @inject(ContainerTypeMidazHttpFetch.MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 

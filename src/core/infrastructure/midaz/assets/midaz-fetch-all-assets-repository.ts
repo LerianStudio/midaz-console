@@ -4,11 +4,12 @@ import { FetchAllAssetsRepository } from '@/core/domain/repositories/assets/fetc
 import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 import { injectable, inject } from 'inversify'
 import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
+import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
 
 @injectable()
 export class MidazFetchAllAssetsRepository implements FetchAllAssetsRepository {
   constructor(
-     @inject(MidazHttpFetchUtils)
+    @inject(ContainerTypeMidazHttpFetch.MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 

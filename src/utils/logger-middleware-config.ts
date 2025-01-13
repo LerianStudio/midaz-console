@@ -32,13 +32,14 @@ export function loggerMiddleware(config: LoggerMiddlewareConfig) {
       config.method,
       {
         useCase: config.useCase,
-        action: config.action || 'execute'
+        action: config.action || 'execute',
+        midazId: midazRequestContext.getMidazId()
       },
       async () => {
         loggerAggregator.addEvent({
           message: `${config.operationName} operation`,
           ...(shouldIncludePayload && {
-            metadata: { body, midazId: midazRequestContext.getMidazId() }
+            metadata: { body }
           }),
           layer: 'application',
           operation: config.operationName,

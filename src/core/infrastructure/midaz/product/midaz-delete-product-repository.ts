@@ -1,12 +1,13 @@
 import { DeleteProductRepository } from '@/core/domain/repositories/products/delete-product-repository'
 import { HTTP_METHODS, MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
 import { inject, injectable } from 'inversify'
+import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
 
 @injectable()
 export class MidazDeleteProductRepository implements DeleteProductRepository {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
   constructor(
-    @inject(MidazHttpFetchUtils)
+    @inject(ContainerTypeMidazHttpFetch.MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
   async delete(

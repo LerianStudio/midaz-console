@@ -1,8 +1,9 @@
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { FetchLedgerByIdRepository } from '@/core/domain/repositories/ledgers/fetch-ledger-by-id-repository'
 import { injectable } from 'inversify'
-import { inject, LazyServiceIdentifier } from 'inversify'
+import { inject } from 'inversify'
 import { MidazHttpFetchUtils, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
 
 @injectable()
 export class MidazFetchLedgerByIdRepository
@@ -11,7 +12,7 @@ export class MidazFetchLedgerByIdRepository
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
 
   constructor(
-     @inject(MidazHttpFetchUtils)
+    @inject(ContainerTypeMidazHttpFetch.MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 

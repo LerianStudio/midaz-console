@@ -2,13 +2,14 @@ import { UpdatePortfolioRepository } from '@/core/domain/repositories/portfolios
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { HTTP_METHODS, MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
 import { injectable, inject } from 'inversify'
+import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
 
 @injectable()
 export class MidazUpdatePortfolioRepository
   implements UpdatePortfolioRepository
 {
   constructor(
-    @inject(MidazHttpFetchUtils)
+    @inject(ContainerTypeMidazHttpFetch.MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 

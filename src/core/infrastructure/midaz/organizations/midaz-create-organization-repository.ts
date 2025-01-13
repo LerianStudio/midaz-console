@@ -2,13 +2,14 @@ import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { CreateOrganizationRepository } from '@/core/domain/repositories/organizations/create-organization-repository'
 import { injectable, inject } from 'inversify'
 import { MidazHttpFetchUtils, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
 
 @injectable()
 export class MidazCreateOrganizationRepository
   implements CreateOrganizationRepository
 {
   constructor(
-    @inject(MidazHttpFetchUtils)
+    @inject(ContainerTypeMidazHttpFetch.MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 

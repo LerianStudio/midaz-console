@@ -2,11 +2,12 @@ import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { UpdateAssetRepository } from '@/core/domain/repositories/assets/update-asset-repository'
 import { injectable, inject } from 'inversify'
 import { MidazHttpFetchUtils, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
 
 @injectable()
 export class MidazUpdateAssetRepository implements UpdateAssetRepository {
   constructor(
-     @inject(MidazHttpFetchUtils)
+    @inject(ContainerTypeMidazHttpFetch.MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 

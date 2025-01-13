@@ -52,7 +52,7 @@ describe('MidazFetchLedgerByIdRepository', () => {
       repository.fetchById(organizationId, ledgerId)
     ).rejects.toThrow('Error occurred')
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}`,
       method: HTTP_METHODS.GET
     })

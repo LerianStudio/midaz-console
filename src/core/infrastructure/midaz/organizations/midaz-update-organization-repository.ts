@@ -2,6 +2,7 @@ import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { UpdateOrganizationRepository } from '@/core/domain/repositories/organizations/update-organization-repository'
 import { injectable, inject } from 'inversify'
 import { MidazHttpFetchUtils, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
 
 @injectable()
 export class MidazUpdateOrganizationRepository
@@ -10,7 +11,7 @@ export class MidazUpdateOrganizationRepository
   private baseUrl: string = process.env.MIDAZ_BASE_PATH + '/organizations'
 
   constructor(
-    @inject(MidazHttpFetchUtils)
+    @inject(ContainerTypeMidazHttpFetch.MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 
