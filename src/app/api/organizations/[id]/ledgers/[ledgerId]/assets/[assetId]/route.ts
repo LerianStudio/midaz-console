@@ -38,7 +38,6 @@ export const GET = applyMiddleware(
 
       return NextResponse.json(assets)
     } catch (error: any) {
-
       const { message, status } = await apiErrorHandler(error)
 
       return NextResponse.json({ message }, { status })
@@ -74,7 +73,6 @@ export const PATCH = applyMiddleware(
 
       return NextResponse.json(assetUpdated)
     } catch (error: any) {
-
       const { message, status } = await apiErrorHandler(error)
 
       return NextResponse.json({ message }, { status })
@@ -104,7 +102,6 @@ export const DELETE = applyMiddleware(
 
       return NextResponse.json({}, { status: 200 })
     } catch (error: any) {
-
       const { message, status } = await apiErrorHandler(error)
 
       return NextResponse.json({ message }, { status })

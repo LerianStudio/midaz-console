@@ -9,7 +9,7 @@ export class MidazDeleteOrganizationRepository
   implements DeleteOrganizationRepository
 {
   constructor(
-     @inject(ContainerTypeMidazHttpFetch.MidazHttpFetchUtils)
+    @inject(ContainerTypeMidazHttpFetch.MidazHttpFetchUtils)
     private readonly midazHttpFetchUtils: MidazHttpFetchUtils
   ) {}
 

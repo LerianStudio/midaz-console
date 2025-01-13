@@ -40,7 +40,6 @@ export const POST = applyMiddleware(
 
       return NextResponse.json(assetCreated)
     } catch (error: any) {
-
       const { message, status } = await apiErrorHandler(error)
 
       return NextResponse.json({ message }, { status })

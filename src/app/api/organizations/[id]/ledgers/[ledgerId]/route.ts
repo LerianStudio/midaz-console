@@ -39,7 +39,6 @@ export const GET = applyMiddleware(
 
       return NextResponse.json(ledgers)
     } catch (error: any) {
-
       const { message, status } = await apiErrorHandler(error)
 
       return NextResponse.json({ message }, { status })
@@ -76,7 +75,6 @@ export const PATCH = applyMiddleware(
 
       return NextResponse.json({ ledgerUpdated })
     } catch (error: any) {
-
       const { message, status } = await apiErrorHandler(error)
 
       return NextResponse.json({ message }, { status })

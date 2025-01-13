@@ -56,7 +56,6 @@ export const GET = applyMiddleware(
 
       return NextResponse.json(accounts)
     } catch (error: any) {
-
       const { message, status } = await apiErrorHandler(error)
 
       return NextResponse.json({ message }, { status })
