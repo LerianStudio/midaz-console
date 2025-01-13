@@ -48,7 +48,7 @@ export const BasicInformationPaper = ({
             defaultMessage: 'Optional'
           })}
           control={control}
-          rows={1}
+          maxHeight={100}
           textArea
         />
         <InputField
