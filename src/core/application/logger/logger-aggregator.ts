@@ -6,7 +6,7 @@ import { LoggerRepository } from '@/core/domain/repositories/logger/logger-repos
  * LoggerAggregator
  * This class provides a sophisticated logging system that aggregates logs per request.
  * It uses AsyncLocalStorage to maintain request-scoped context and collect all log events
- * that occur during a request's lifecycle.
+ * that occurs during a request's lifecycle.
  *
  * Key features:
  * - Request-scoped logging context
