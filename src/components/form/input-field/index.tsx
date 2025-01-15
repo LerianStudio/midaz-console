@@ -1,5 +1,7 @@
+import { AutosizeTextarea } from '@/components/ui/autosize-textarea'
 import {
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -17,9 +19,13 @@ export type InputFieldProps = {
   tooltip?: string
   labelExtra?: ReactNode
   placeholder?: string
+  description?: ReactNode
   control: Control<any>
   disabled?: boolean
   readOnly?: boolean
+  minHeight?: number
+  maxHeight?: number
+  textArea?: boolean
   required?: boolean
 }
 
@@ -29,8 +35,12 @@ export const InputField = ({
   tooltip,
   labelExtra,
   placeholder,
+  description,
   required,
   readOnly,
+  minHeight,
+  maxHeight,
+  textArea,
   ...others
 }: InputFieldProps) => {
   return (
@@ -48,14 +58,25 @@ export const InputField = ({
             </FormLabel>
           )}
           <FormControl>
-            <Input
-              type={type}
-              placeholder={placeholder}
-              readOnly={readOnly}
-              {...field}
-            />
+            {textArea ? (
+              <AutosizeTextarea
+                placeholder={placeholder}
+                readOnly={readOnly}
+                minHeight={minHeight}
+                maxHeight={maxHeight}
+                {...field}
+              />
+            ) : (
+              <Input
+                type={type}
+                placeholder={placeholder}
+                readOnly={readOnly}
+                {...field}
+              />
+            )}
           </FormControl>
           <FormMessage />
+          {description && <FormDescription>{description}</FormDescription>}
         </FormItem>
       )}
     />

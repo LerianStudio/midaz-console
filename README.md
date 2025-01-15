@@ -14,7 +14,6 @@ Midaz Console is a comprehensive solution for managing your Midaz open-source le
 
 The Midaz Open-Source Ledger offers flexible management options via APIs, gRPC, and CLI. Midaz Console is purpose-built to simplify user operations and streamline routine tasks on the Midaz platform.
 
-
 ## Getting Started
 
 To start using Midaz Console, you’ll need a running instance of the Midaz Open-Source Ledger. Please follow our [Getting Started Guide](https://docs.lerian.studio/docs/getting-started) for the [Midaz Open-Source Ledger](https://github.com/LerianStudio/midaz) <img src="https://github.com/favicon.ico" width="20" height="20" alt="GitHub Logo">. For a complete overview of Midaz features, API references, and best practices, visit our [Official Documentation](https://docs.lerian.studio/).
@@ -27,13 +26,12 @@ To start using Midaz Console, you’ll need a running instance of the Midaz Open
 - Docker: [Docker Installation](https://docs.docker.com/get-docker/)
 - Docker Compose: [Docker Compose Installation](https://docs.docker.com/compose/install/)
 
-
 ## Running the Application Locally
 
 :warning: **Note:** Ensure that the [Midaz Open-Source Ledger](https://github.com/LerianStudio/midaz) environment is active and accessible, then follow these steps:
 
-
 1. Clone the Midaz Console repository:
+
 ```bash
 git clone https://github.com/LerianStudio/midaz-console.git
 ```
@@ -48,12 +46,12 @@ npm run dev
 
 3. Open http://localhost:8081 in your browser to verify that Midaz Console is running.
 
-
 ## Deploying with Docker
 
 To deploy Midaz Console in a Docker environment, execute the following npm script:
+
 ```bash
-npm run docker-compose
+npm run docker-up
 ```
 
 ## Community & Support
@@ -65,7 +63,7 @@ npm run docker-compose
 
 ## Contributing & License
 
-We welcome contributions from the community! Please read our [Contributing Guidelines](CONTRIBUTING.md) to get started. 
+We welcome contributions from the community! Please read our [Contributing Guidelines](CONTRIBUTING.md) to get started.
 
 Midaz is released under the Apache License 2.0. See the [LICENSE](LICENSE.md) for more details. This license allows you to use, modify, and distribute Midaz, provided you include the original copyright and license.
 

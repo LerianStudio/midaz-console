@@ -9,21 +9,19 @@ import ZodSchemaProvider from '@/lib/zod/zod-schema-provider'
 
 export default async function App({ children }: { children: React.ReactNode }) {
   return (
-    <div>
-      <QueryProvider>
-        <LocalizationProvider>
-          <ThemeProvider>
-            <ZodSchemaProvider>
-              <div>{children}</div>
-              <Toaster
-                position="top-right"
-                containerStyle={{ top: 60, right: 60 }}
-              />
-            </ZodSchemaProvider>
-          </ThemeProvider>
-        </LocalizationProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryProvider>
-    </div>
+    <QueryProvider>
+      <LocalizationProvider>
+        <ThemeProvider>
+          <ZodSchemaProvider>
+            {children}
+            <Toaster
+              position="top-right"
+              containerStyle={{ top: 60, right: 60 }}
+            />
+          </ZodSchemaProvider>
+        </ThemeProvider>
+      </LocalizationProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryProvider>
   )
 }

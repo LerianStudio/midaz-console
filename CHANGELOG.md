@@ -1,3 +1,33 @@
+# [1.2.0](https://github.com/LerianStudio/midaz-console/compare/v1.1.4...v1.2.0) (2025-01-15)
+
+
+### Features
+
+* set the paths of asset ([4f180c6](https://github.com/LerianStudio/midaz-console/commit/4f180c640a69969295a351a9654507f976f034ae))
+
+## [1.1.4](https://github.com/LerianStudio/midaz-console/compare/v1.1.3...v1.1.4) (2024-12-23)
+
+## [1.1.3](https://github.com/LerianStudio/midaz-console/compare/v1.1.2...v1.1.3) (2024-12-18)
+
+
+### Bug Fixes
+
+* set the improvement on the right branches ([eba8a36](https://github.com/LerianStudio/midaz-console/commit/eba8a36c5c2af90a021c3193903d64689188dead))
+
+## [1.1.2](https://github.com/LerianStudio/midaz-console/compare/v1.1.1...v1.1.2) (2024-12-18)
+
+
+### Bug Fixes
+
+* improvement on the build of nodejs and set the flow ([c71a502](https://github.com/LerianStudio/midaz-console/commit/c71a50215f31728b6f732c16e6fa0696c0328f69))
+
+## [1.1.1](https://github.com/LerianStudio/midaz-console/compare/v1.1.0...v1.1.1) (2024-12-18)
+
+
+### Bug Fixes
+
+* improvement on the build of nodejs ([cb4a6b3](https://github.com/LerianStudio/midaz-console/commit/cb4a6b3daad07782415c7efc49d971d5d8a14b99))
+
 # [1.1.0](https://github.com/LerianStudio/midaz-console/compare/v1.0.4...v1.1.0) (2024-12-17)
 
 

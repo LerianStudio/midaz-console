@@ -4,15 +4,23 @@ module.exports = {
     { name: 'develop', channel: 'next' },    // Dev
   ],
   plugins: [
-    "@semantic-release/commit-analyzer",
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        preset: "conventionalcommits",
+        releaseRules: [
+          { type: "chore", release: "patch" }, // Included "chore" on patch type
+          { type: "fix", release: "patch" } // Included "fix" on patch type
+        ]
+      }
+    ],
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
     [
       "@semantic-release/github",
       {
         assets: [
-          { path: "dist/*.js", label: "JavaScript distribution" },
-          { path: "dist/*.map", label: "Source map" }
+          { path: ".next/**", label: "Next.js build files" } // Updated to include all files in .next/
         ]
       }
     ],

@@ -1,11 +1,11 @@
-  {
-    "name": "midaz-console",
-    "version": "0.1.0",
-    "private": true,
-    "repository": {
+{
+  "name": "midaz-console",
+  "version": "0.1.0",
+  "private": true,
+  "repository": {
     "type": "git",
-     "url": "git+https://github.com/LerianStudio/midaz-console.git"
-    },
+    "url": "git+https://github.com/LerianStudio/midaz-console.git"
+  },
   "scripts": {
     "dev": "next dev -p 8081",
     "build": "next build",
@@ -20,7 +20,7 @@
     "test:e2e": "playwright test --ui",
     "set-local-env": "shx cp .env.local.example .env",
     "set-env": "shx cp .env.example .env",
-    "docker-compose": "npm run set-env && docker-compose up -d"
+    "docker-up": "npm run set-env && docker compose up -d"
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.5.6",
@@ -87,7 +87,7 @@
     "@semantic-release/commit-analyzer": "^13.0.0",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^11.0.1",
-    "@semantic-release/release-notes-generator": "^14.0.1",
+    "@semantic-release/release-notes-generator": "^14.0.2",
     "@storybook/addon-essentials": "^8.3.6",
     "@storybook/addon-interactions": "^8.3.6",
     "@storybook/addon-links": "^8.3.6",
@@ -109,6 +109,7 @@
     "@types/react-color": "^3.0.12",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.4.20",
+    "conventional-changelog-conventionalcommits": "^8.0.0",
     "esbuild": "^0.24.0",
     "eslint": "^8",
     "eslint-config-next": "15.0.1",

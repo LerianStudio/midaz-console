@@ -3,6 +3,7 @@
  */
 
 import { signOut } from 'next-auth/react'
+import { redirect } from 'next/navigation'
 
 export const getFetcher = (url: string) => {
   return async () => {
@@ -55,6 +56,15 @@ export const deleteFetcher = (url: string) => {
     })
 
     return fetcherResponseHandler(response)
+  }
+}
+
+export const serverFetcher = async <T = void>(action: () => Promise<T>) => {
+  try {
+    return await action()
+  } catch (error) {
+    redirect('/signin')
+    return null
   }
 }
 
