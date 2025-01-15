@@ -11,6 +11,7 @@ import {
 import { NextRequest, NextResponse } from 'next/server'
 import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
 import { loggerMiddleware } from '@/utils/logger-middleware-config'
+import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
 
 const createPortfolioUseCase: CreatePortfolio = container.get<CreatePortfolio>(
   CreatePortfolioUseCase
@@ -19,6 +20,7 @@ const createPortfolioUseCase: CreatePortfolio = container.get<CreatePortfolio>(
 const fetchAllPortfoliosUseCase: FetchAllPortfolios =
   container.get<FetchAllPortfolios>(FetchAllPortfoliosUseCase)
 
+const midazLogger = container.get(LoggerAggregator)
 interface PortfolioParams {
   id: string
   ledgerId: string
@@ -29,8 +31,6 @@ export const GET = applyMiddleware(
     loggerMiddleware({
       operationName: 'fetchAllPortfolios',
       method: 'GET',
-      useCase: 'FetchAllPortfoliosUseCase',
-      logLevel: 'debug'
     })
   ],
   async (request: NextRequest, { params }: { params: PortfolioParams }) => {
@@ -48,6 +48,8 @@ export const GET = applyMiddleware(
         limit
       )
 
+
+
       return NextResponse.json(portfolios)
     } catch (error: any) {
       const { message, status } = await apiErrorHandler(error)
@@ -61,23 +63,30 @@ export const POST = applyMiddleware(
     loggerMiddleware({
       operationName: 'createPortfolio',
       method: 'POST',
-      useCase: 'CreatePortfolioUseCase',
-      logLevel: 'info'
     })
   ],
   async (request: NextRequest, { params }: { params: PortfolioParams }) => {
     try {
       const { id: organizationId, ledgerId } = params
-
+      
       const body = await request.json()
       const portfolio = await createPortfolioUseCase.execute(
         organizationId,
         ledgerId,
         body
       )
+
+      midazLogger.info(`organization logger ${organizationId}`, {teste: 123})
+      
+      midazLogger.debug(`body ${JSON.stringify(body)}`)
+
       return NextResponse.json(portfolio)
-    } catch (error) {
+    } catch (error: any) {
       const { message, status } = await apiErrorHandler(error)
+      midazLogger.error({
+        message: error.message,
+        context: error
+      })
       return NextResponse.json({ message }, { status })
     }
   }

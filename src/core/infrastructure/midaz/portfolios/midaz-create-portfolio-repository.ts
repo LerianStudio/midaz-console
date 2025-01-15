@@ -4,6 +4,7 @@ import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 import { injectable, inject } from 'inversify'
 import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
 import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
+import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
 
 @injectable()
 export class MidazCreatePortfolioRepository
@@ -13,7 +14,9 @@ export class MidazCreatePortfolioRepository
 
   constructor(
     @inject(ContainerTypeMidazHttpFetch.MidazHttpFetchUtils)
-    private readonly midazHttpFetchUtils: MidazHttpFetchUtils
+    private readonly midazHttpFetchUtils: MidazHttpFetchUtils,
+    @inject(LoggerAggregator)
+    private readonly loggerAggregator: LoggerAggregator
   ) {}
 
   async create(
@@ -29,7 +32,7 @@ export class MidazCreatePortfolioRepository
         method: HTTP_METHODS.POST,
         body: JSON.stringify(portfolio)
       })
-
+    
     return response
   }
 }

@@ -25,8 +25,7 @@ export class PinoLoggerRepository implements LoggerRepository {
       },
       timestamp: pino.stdTimeFunctions.isoTime,
       base: {
-        env: process.env.NODE_ENV || 'production',
-        version: process.env.APP_VERSION || '1.0.0'
+        env: process.env.NODE_ENV || 'production'
       }
     }
 
@@ -35,7 +34,7 @@ export class PinoLoggerRepository implements LoggerRepository {
         loggerOptions,
         pretty({
           colorize: true,
-          ignore: 'pid,hostname',
+          ignore: 'pid,hostname,level',
           translateTime: 'SYS:yyyy-mm-dd HH:MM:ss.l'
         })
       )

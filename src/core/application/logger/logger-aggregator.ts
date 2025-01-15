@@ -26,11 +26,11 @@ type Level = 'info' | 'error' | 'warn' | 'debug' | 'audit'
 
 interface LogEvent {
   timestamp: number
-  layer: Layer
-  operation: string
-  level: Level
+  layer?: Layer
+  operation?: string
+  level?: Level
   message: string
-  metadata?: Record<string, any>
+  context?: any
   error?: Error
 }
 
@@ -111,44 +111,30 @@ export class LoggerAggregator {
       // Calculate the total request duration in seconds
       const duration = (Date.now() - context.startTime) / 1000
       // Determine the most severe log level from all collected events
-      const logLevel = this.determineLogLevel(context.events)
+      // const logLevel = this.determineLogLevel(context.events)
       // Log the final timeline using the logger repository
-      this.loggerRepository[logLevel](
-        'Request Timeline',
+
+      this.loggerRepository.info(
+        `${context.method} ${context.path}`,
         {
-          // Transform all events timestamps to ISO string format
-          // while preserving all other event properties
-          events: context.events.map((event) => ({
-            ...event,
-            timestamp: new Date(event.timestamp).toISOString()
+          events: context.events.map(event => ({
+            timestamp: new Date(event.timestamp).toISOString(),
+            level: event.level?.toUpperCase() || 'INFO',
+            message: event.message,
+            layer: event.layer,
+            operation: event.operation,
+            ...(event.error && { error: event.error }),
+            ...(event.context && { context: event.context })
           }))
         },
         {
-          // Add request metadata to help with debugging and monitoring
-          layer: 'api',
-          operation: 'request_timeline',
-          path: context.path, // The API endpoint path
-          method: context.method, // HTTP method used (GET, POST, etc)
-          duration, // Total request duration in seconds
-          metadata: context.metadata // Any additional request metadata
+          duration: `${duration}s`,
+          path: context.path,
+          method: context.method,
+          ...context.metadata
         }
       )
     }
-  }
-
-  /**
-   * Determines the overall log level for the request based on event severity
-   * Prioritizes errors over warnings, warnings over audit, etc.
-   * @param events - List of log events to analyze
-   */
-  private determineLogLevel(events: LogEvent[]): Level {
-    const levelPriority: Level[] = ['error', 'warn', 'audit', 'info', 'debug']
-    for (const level of levelPriority) {
-      if (events.some((event) => event.level === level)) {
-        return level
-      }
-    }
-    return 'debug'
   }
 
   /**
@@ -177,5 +163,62 @@ export class LoggerAggregator {
       }
       context.events.push(fullEvent)
     }
+  }
+
+  /**
+   * Helper method to create a standardized log event
+   */
+  private createLogEvent(
+    level: Level,
+    message: any,
+    context?: any,
+    defaultLayer?: Layer
+  ): Omit<LogEvent, 'timestamp'> {
+    if (typeof message === 'string') {
+      return {
+        level,
+        message,
+        context,
+        layer: defaultLayer
+      }
+    }
+
+    return {
+      message: message.message || '',
+      ...message,
+      level,
+      layer: message.layer || defaultLayer,
+      context: {
+        ...message.context
+      }
+    }
+  }
+
+  debug(message: any, context?: any) {
+    if (!this.shouldLogDebug()) {
+      return
+    }
+    const event = this.createLogEvent('debug', message, context)
+    this.addEvent(event)
+  }
+
+  info(message: any, context?: any) {
+    const event = this.createLogEvent('info', message, context)
+    this.addEvent(event)
+  }
+
+  error(message: any, context?: any) {
+    const event = this.createLogEvent('error', message, context)
+    this.addEvent(event)
+  }
+
+  warn(message: any, context?: any) {
+    const event = this.createLogEvent('warn', message, context)
+    this.addEvent(event)
+  }
+
+  audit(message: any, context?: any) {
+    const event = this.createLogEvent('audit', message, context)
+    this.addEvent(event)
   }
 }

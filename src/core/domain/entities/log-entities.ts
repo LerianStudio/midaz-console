@@ -13,6 +13,6 @@ export interface LogEntry {
   message: string
   timestamp: string
   midazId?: string
-  metadata: LogMetadata
-  context: LogContext
+  metadata?: LogMetadata
+  context?: LogContext
 }

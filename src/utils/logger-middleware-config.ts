@@ -7,7 +7,7 @@ import { NextRequest } from 'next/server'
 interface LoggerMiddlewareConfig {
   operationName: string
   method: string
-  useCase: string
+  useCase?: string
   action?: string
   logLevel?: 'info' | 'error' | 'warn' | 'debug' | 'audit'
 }
@@ -36,15 +36,15 @@ export function loggerMiddleware(config: LoggerMiddlewareConfig) {
         midazId: midazRequestContext.getMidazId()
       },
       async () => {
-        loggerAggregator.addEvent({
-          message: `${config.operationName} operation`,
-          ...(shouldIncludePayload && {
-            metadata: { body }
-          }),
-          layer: 'application',
-          operation: config.operationName,
-          level: config.logLevel || 'info'
-        })
+        // loggerAggregator.addEvent({
+        //   message: `${config.operationName} operation`,
+        //   ...(shouldIncludePayload && {
+        //     metadata: { body }
+        //   }),
+        //   layer: 'application',
+        //   operation: config.operationName,
+        //   level: config.logLevel || 'info'
+        // })
         const response = await next()
         return response
       }

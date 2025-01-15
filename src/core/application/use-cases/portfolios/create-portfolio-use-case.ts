@@ -6,6 +6,7 @@ import type {
 } from '../../dto/portfolios-dto'
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { inject, injectable } from 'inversify'
+import { LoggerAggregator } from '../../logger/logger-aggregator'
 
 export interface CreatePortfolio {
   execute: (
@@ -19,7 +20,7 @@ export interface CreatePortfolio {
 export class CreatePortfolioUseCase implements CreatePortfolio {
   constructor(
     @inject(CreatePortfolioRepository)
-    private readonly createPortfolioRepository: CreatePortfolioRepository
+    private readonly createPortfolioRepository: CreatePortfolioRepository,
   ) {}
 
   async execute(
