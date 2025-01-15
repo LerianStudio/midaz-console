@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/LerianStudio/midaz-console/compare/v1.1.4...v1.2.0) (2025-01-15)
+
+
+### Features
+
+* set the paths of asset ([4f180c6](https://github.com/LerianStudio/midaz-console/commit/4f180c640a69969295a351a9654507f976f034ae))
+
 ## [1.1.4](https://github.com/LerianStudio/midaz-console/compare/v1.1.3...v1.1.4) (2024-12-23)
 
 ## [1.1.3](https://github.com/LerianStudio/midaz-console/compare/v1.1.2...v1.1.3) (2024-12-18)
