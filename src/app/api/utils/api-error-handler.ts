@@ -21,7 +21,7 @@ export async function apiErrorHandler(error: any): Promise<ErrorResponse> {
   
   switch (error.constructor) {
     case MidazError:
-      midazLogger.error(`Midaz error: ${errorMetadata}`)
+      midazLogger.error(`Midaz error: ${JSON.stringify(errorMetadata)}`)
       errorResponse = { message: error.message, status: 400 }
       break
     case UnauthorizedException:

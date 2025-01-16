@@ -42,13 +42,6 @@ export const GET = applyMiddleware(
           page
         )
 
-      midazLogger.debug('Accounts with portfolios fetched', {
-        organizationId,
-        ledgerId: params.ledgerId,
-        portfolioId: params.portfolioId,
-        accountsWithPortfolios
-      })
-
       return NextResponse.json(accountsWithPortfolios)
     } catch (error: any) {
       const { message, status } = await apiErrorHandler(error)

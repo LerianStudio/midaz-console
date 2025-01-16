@@ -4,6 +4,7 @@ import { handleMidazError } from './midaz-error-handler'
 import { isNil } from 'lodash'
 import { MidazRequestContext } from '../logger/decorators/midaz-id'
 import { inject, injectable } from 'inversify'
+import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
 
 export enum HTTP_METHODS {
   GET = 'GET',
@@ -52,14 +53,15 @@ export async function httpMidazAuthFetch<T>(
 
 @injectable()
 export class MidazHttpFetchUtils {
-  private midazId: string
 
   constructor(
     @inject(MidazRequestContext)
-    private readonly midazRequestContext: MidazRequestContext
+    private readonly midazRequestContext: MidazRequestContext,
+    @inject(LoggerAggregator)
+    private readonly midazLogger: LoggerAggregator
   ) {
-    this.midazId = this.midazRequestContext.getMidazId()
   }
+  
 
   async httpMidazAuthFetch<T>(httpFetchOptions: HttpFetchOptions): Promise<T> {
     const session = await getServerSession(nextAuthCasdoorOptions)
@@ -68,7 +70,7 @@ export class MidazHttpFetchUtils {
     const headers = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${access_token}`,
-      'Midaz-Id': this.midazId,
+      'Midaz-Id': this.midazRequestContext.getMidazId(),
       ...httpFetchOptions.headers
     }
 
@@ -83,7 +85,7 @@ export class MidazHttpFetchUtils {
     const midazResponse = !isNil(response.body) ? await response.json() : {}
 
     if (!response.ok) {
-      console.error('[ERROR] - httpMidazAuthFetch ', midazResponse)
+      this.midazLogger.error('[ERROR] - httpMidazAuthFetch ', midazResponse)
       throw await handleMidazError(midazResponse)
     }
 

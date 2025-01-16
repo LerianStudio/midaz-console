@@ -48,13 +48,6 @@ export const GET = applyMiddleware(
         limit
       )
 
-
-      midazLogger.debug('Portfolios fetched', {
-        organizationId,
-        ledgerId,
-        portfolios
-      })
-
       return NextResponse.json(portfolios)
     } catch (error: any) {
       const { message, status } = await apiErrorHandler(error)
@@ -80,11 +73,7 @@ export const POST = applyMiddleware(
         ledgerId,
         body
       )
-
-      midazLogger.info(`organization logger ${organizationId}`, {teste: 123})
       
-      midazLogger.debug(`body ${JSON.stringify(body)}`)
-
       return NextResponse.json(portfolio)
     } catch (error: any) {
       const { message, status } = await apiErrorHandler(error)

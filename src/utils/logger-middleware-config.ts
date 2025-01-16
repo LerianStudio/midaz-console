@@ -4,49 +4,46 @@ import { MidazRequestContext } from '@/core/infrastructure/logger/decorators/mid
 import { NextHandler } from '@/lib/applymiddleware/types'
 import { NextRequest } from 'next/server'
 
+// Configuration interface for the logger middleware
 interface LoggerMiddlewareConfig {
-  operationName: string
-  method: string
-  useCase?: string
-  action?: string
-  logLevel?: 'info' | 'error' | 'warn' | 'debug' | 'audit'
+  operationName: string    // Name of the operation being logged
+  method: string          // HTTP method (GET, POST, etc.)
+  useCase?: string        // Optional: Use case being executed
+  action?: string         // Optional: Specific action being performed
+  logLevel?: 'info' | 'error' | 'warn' | 'debug' | 'audit'  // Optional: Log level
 }
 
+// Get instances from the dependency injection container
 const loggerAggregator = container.get(LoggerAggregator)
 const midazRequestContext: MidazRequestContext =
   container.get<MidazRequestContext>(MidazRequestContext)
 
+/**
+ * Middleware factory function that creates a logger middleware
+ * This middleware handles request logging with context information
+ */
 export function loggerMiddleware(config: LoggerMiddlewareConfig) {
   return async (req: NextRequest, next: NextHandler) => {
+    // Clear any existing Midaz ID from the context
+    midazRequestContext.clearMidazId()
+
+    // Extract request body for non-GET and non-DELETE requests
     let body = undefined
     if (config.method !== 'GET' && config.method !== 'DELETE') {
       body = await req.json()
     }
 
-    const shouldIncludePayload =
-      (config.logLevel === 'debug' && process.env.ENABLE_DEBUG === 'true') ||
-      (config.logLevel !== 'debug' && process.env.ENABLE_DEBUG === 'false')
-
+    // Execute the next middleware/handler within a logged context
     return loggerAggregator.runWithContext(
       config.operationName,
       config.method,
       {
         useCase: config.useCase,
-        action: config.action || 'execute',
+        action: config.action || 'execute',  // Default action is 'execute'
         midazId: midazRequestContext.getMidazId()
       },
       async () => {
-        // loggerAggregator.addEvent({
-        //   message: `${config.operationName} operation`,
-        //   ...(shouldIncludePayload && {
-        //     metadata: { body }
-        //   }),
-        //   layer: 'application',
-        //   operation: config.operationName,
-        //   level: config.logLevel || 'info'
-        // })
-        const response = await next()
-        return response
+        return await next()
       }
     )
   }
