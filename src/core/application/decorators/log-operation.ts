@@ -31,27 +31,25 @@ export function LogOperation(options: {
     // Overrides the method
     descriptor.value = async function (...args: any[]) {
       const midazLogger: LoggerAggregator = (this as any).loggerAggregator
-      // const isDebugEnabled = process.env.ENABLE_DEBUG === 'true'
+      const isDebugEnabled = process.env.ENABLE_DEBUG === 'true'
 
       try {
-        // logger.addEvent({
-        //   layer: options.layer,
-        //   operation: `${options.operation}_start`,
-        //   level: 'info',
-        //   message: `Starting ${options.operation}`,
-        //   ...(isDebugEnabled && { metadata: { args } })
-        // })
+        midazLogger.info({
+          layer: options.layer,
+          operation: `${options.operation}_start`,
+          level: 'info',
+          message: `Starting ${options.operation}`,
+          ...(isDebugEnabled && { metadata: { args } })
+        })
 
         const result = await originalMethod.apply(this, args)
 
-        // logger.addEvent({
-        //   layer: options.layer,
-        //   operation: `${options.operation}_success`,
-        //   level: 'info',
-        //   message: `${options.operation} completed successfully`,
-        //   // metadata: { result } //comentario aqui para remover o payload
-        //   ...(isDebugEnabled && { metadata: { result } })
-        // })
+        midazLogger.info({
+          layer: options.layer,
+          operation: `${options.operation}_success`,
+          message: `${options.operation} completed successfully`,
+          ...(isDebugEnabled && { metadata: { result } })
+        })
 
         return result
       } catch (error) {
