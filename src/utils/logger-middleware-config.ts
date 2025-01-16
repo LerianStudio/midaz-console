@@ -4,13 +4,12 @@ import { MidazRequestContext } from '@/core/infrastructure/logger/decorators/mid
 import { NextHandler } from '@/lib/applymiddleware/types'
 import { NextRequest } from 'next/server'
 
-// Configuration interface for the logger middleware
 interface LoggerMiddlewareConfig {
-  operationName: string    // Name of the operation being logged
-  method: string          // HTTP method (GET, POST, etc.)
-  useCase?: string        // Optional: Use case being executed
-  action?: string         // Optional: Specific action being performed
-  logLevel?: 'info' | 'error' | 'warn' | 'debug' | 'audit'  // Optional: Log level
+  operationName: string
+  method: string
+  useCase?: string
+  action?: string
+  logLevel?: 'info' | 'error' | 'warn' | 'debug' | 'audit'
 }
 
 // Get instances from the dependency injection container
@@ -39,7 +38,7 @@ export function loggerMiddleware(config: LoggerMiddlewareConfig) {
       config.method,
       {
         useCase: config.useCase,
-        action: config.action || 'execute',  // Default action is 'execute'
+        action: config.action || 'execute', // Default action is 'execute'
         midazId: midazRequestContext.getMidazId()
       },
       async () => {

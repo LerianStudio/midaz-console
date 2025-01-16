@@ -117,7 +117,7 @@ export class LoggerAggregator {
       this.loggerRepository.info(
         `${context.method} ${context.path}`,
         {
-          events: context.events.map(event => ({
+          events: context.events.map((event) => ({
             timestamp: new Date(event.timestamp).toISOString(),
             level: event.level?.toUpperCase() || 'INFO',
             message: event.message,

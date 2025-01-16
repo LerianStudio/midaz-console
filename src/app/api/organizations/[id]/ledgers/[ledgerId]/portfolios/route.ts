@@ -66,14 +66,14 @@ export const POST = applyMiddleware(
   async (request: NextRequest, { params }: { params: PortfolioParams }) => {
     try {
       const { id: organizationId, ledgerId } = params
-      
+
       const body = await request.json()
       const portfolio = await createPortfolioUseCase.execute(
         organizationId,
         ledgerId,
         body
       )
-      
+
       return NextResponse.json(portfolio)
     } catch (error: any) {
       const { message, status } = await apiErrorHandler(error)

@@ -53,15 +53,12 @@ export async function httpMidazAuthFetch<T>(
 
 @injectable()
 export class MidazHttpFetchUtils {
-
   constructor(
     @inject(MidazRequestContext)
     private readonly midazRequestContext: MidazRequestContext,
     @inject(LoggerAggregator)
     private readonly midazLogger: LoggerAggregator
-  ) {
-  }
-  
+  ) {}
 
   async httpMidazAuthFetch<T>(httpFetchOptions: HttpFetchOptions): Promise<T> {
     const session = await getServerSession(nextAuthCasdoorOptions)

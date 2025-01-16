@@ -32,7 +32,7 @@ export class MidazCreatePortfolioRepository
         method: HTTP_METHODS.POST,
         body: JSON.stringify(portfolio)
       })
-    
+
     return response
   }
 }

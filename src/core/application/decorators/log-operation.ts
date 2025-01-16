@@ -58,7 +58,7 @@ export function LogOperation(options: {
         midazLogger.error(`${options.operation} failed`, {
           error: error as Error
         })
-      
+
         throw error
       }
     }

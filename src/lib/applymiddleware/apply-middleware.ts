@@ -4,11 +4,11 @@ import { MiddlewareHandler, NextHandler, RouteHandler } from './types'
 /**
  * Applies an array of middleware functions to a route handler.
  * Implements a middleware chain pattern similar to Express.js middleware system.
- * 
+ *
  * @param middlewares - Array of middleware functions to be executed in sequence
  * @param action - Final route handler to be executed after all middleware
  * @returns A function that handles the request through the middleware chain
- * 
+ *
  * @example
  * const handler = applyMiddleware([
  *   authMiddleware,

@@ -18,7 +18,7 @@ export async function apiErrorHandler(error: any): Promise<ErrorResponse> {
     errorType: error.constructor.name,
     originalMessage: error.message
   }
-  
+
   switch (error.constructor) {
     case MidazError:
       midazLogger.error(`Midaz error: ${JSON.stringify(errorMetadata)}`)

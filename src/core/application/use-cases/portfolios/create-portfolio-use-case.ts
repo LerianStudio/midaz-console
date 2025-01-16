@@ -20,7 +20,7 @@ export interface CreatePortfolio {
 export class CreatePortfolioUseCase implements CreatePortfolio {
   constructor(
     @inject(CreatePortfolioRepository)
-    private readonly createPortfolioRepository: CreatePortfolioRepository,
+    private readonly createPortfolioRepository: CreatePortfolioRepository
   ) {}
 
   async execute(
