@@ -4,6 +4,7 @@ import {
   TransactionResponseDto
 } from '../dto/transaction-dto'
 import { isNumber } from 'lodash'
+import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 
 export class TransactionMapper {
   static toDomain(transaction: CreateTransactionDto): TransactionEntity {
@@ -63,5 +64,16 @@ export class TransactionMapper {
     }
 
     return { value: resultValue, scale }
+  }
+
+  static toPaginatedResponseDto(
+    paginationEntity: PaginationEntity<TransactionEntity>
+  ): PaginationEntity<TransactionResponseDto> {
+    return {
+      ...paginationEntity,
+      items: paginationEntity.items.map((transaction) =>
+        TransactionMapper.toResponseDto(transaction)
+      )
+    }
   }
 }
