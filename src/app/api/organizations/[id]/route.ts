@@ -20,9 +20,7 @@ export const GET = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'fetchOrganizationById',
-      method: 'GET',
-      useCase: 'FetchOrganizationByIdUseCase',
-      logLevel: 'info'
+      method: 'GET'
     })
   ],
   async (request: Request, { params }: { params: { id: string } }) => {
@@ -47,9 +45,7 @@ export const PATCH = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'updateOrganization',
-      method: 'PATCH',
-      useCase: 'UpdateOrganizationUseCase',
-      logLevel: 'info'
+      method: 'PATCH'
     })
   ],
   async (request: Request, { params }: { params: { id: string } }) => {
@@ -74,9 +70,7 @@ export const DELETE = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'deleteOrganization',
-      method: 'DELETE',
-      useCase: 'DeleteOrganizationUseCase',
-      logLevel: 'info'
+      method: 'DELETE'
     })
   ],
   async (_, { params }: { params: { id: string } }) => {

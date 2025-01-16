@@ -30,7 +30,7 @@ export const GET = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'fetchAllPortfolios',
-      method: 'GET',
+      method: 'GET'
     })
   ],
   async (request: NextRequest, { params }: { params: PortfolioParams }) => {
@@ -49,6 +49,11 @@ export const GET = applyMiddleware(
       )
 
 
+      midazLogger.debug('Portfolios fetched', {
+        organizationId,
+        ledgerId,
+        portfolios
+      })
 
       return NextResponse.json(portfolios)
     } catch (error: any) {
@@ -62,7 +67,7 @@ export const POST = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'createPortfolio',
-      method: 'POST',
+      method: 'POST'
     })
   ],
   async (request: NextRequest, { params }: { params: PortfolioParams }) => {

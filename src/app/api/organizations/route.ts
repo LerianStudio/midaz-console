@@ -16,9 +16,7 @@ export const GET = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'fetchAllOrganizations',
-      method: 'GET',
-      useCase: 'FetchAllOrganizationsUseCase',
-      logLevel: 'info'
+      method: 'GET'
     })
   ],
   async (request: Request) => {
@@ -47,9 +45,7 @@ export const POST = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'createOrganization',
-      method: 'POST',
-      useCase: 'CreateOrganizationUseCase',
-      logLevel: 'info'
+      method: 'POST'
     })
   ],
   async (request: Request) => {

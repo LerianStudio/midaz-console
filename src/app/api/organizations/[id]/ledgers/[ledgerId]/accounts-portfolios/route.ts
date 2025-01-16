@@ -7,14 +7,15 @@ import {
 } from '@/core/application/use-cases/accounts-with-portfolios/fetch-accounts-with-portfolios-use-case'
 import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
 import { loggerMiddleware } from '@/utils/logger-middleware-config'
+import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
+
+const midazLogger = container.get(LoggerAggregator)
 
 export const GET = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'fetchAccountsWithPortfolios',
-      method: 'GET',
-      useCase: 'FetchAccountsWithPortfoliosUseCase',
-      logLevel: 'info'
+      method: 'GET'
     })
   ],
   async (
@@ -40,6 +41,13 @@ export const GET = applyMiddleware(
           limit,
           page
         )
+
+      midazLogger.debug('Accounts with portfolios fetched', {
+        organizationId,
+        ledgerId: params.ledgerId,
+        portfolioId: params.portfolioId,
+        accountsWithPortfolios
+      })
 
       return NextResponse.json(accountsWithPortfolios)
     } catch (error: any) {

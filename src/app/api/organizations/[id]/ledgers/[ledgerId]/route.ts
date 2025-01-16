@@ -20,9 +20,7 @@ export const GET = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'fetchLedgerById',
-      method: 'GET',
-      useCase: 'FetchLedgerByIdUseCase',
-      logLevel: 'info'
+      method: 'GET'
     })
   ],
   async (_, { params }: { params: { id: string; ledgerId: string } }) => {
@@ -50,9 +48,7 @@ export const PATCH = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'updateLedger',
-      method: 'PATCH',
-      useCase: 'UpdateLedgerUseCase',
-      logLevel: 'info'
+      method: 'PATCH'
     })
   ],
   async (
@@ -86,9 +82,7 @@ export const DELETE = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'deleteLedger',
-      method: 'DELETE',
-      useCase: 'DeleteLedgerUseCase',
-      logLevel: 'info'
+      method: 'DELETE'
     })
   ],
   async (_, { params }: { params: { id: string; ledgerId: string } }) => {

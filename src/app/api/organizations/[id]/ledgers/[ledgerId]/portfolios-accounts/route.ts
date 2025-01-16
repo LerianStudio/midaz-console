@@ -12,9 +12,7 @@ export const GET = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'fetchPortfoliosWithAccounts',
-      method: 'GET',
-      useCase: 'FetchPortfoliosWithAccountsUseCase',
-      logLevel: 'info'
+      method: 'GET'
     })
   ],
   async (

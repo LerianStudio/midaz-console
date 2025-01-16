@@ -16,9 +16,7 @@ export const POST = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'createAsset',
-      method: 'POST',
-      useCase: 'CreateAssetUseCase',
-      logLevel: 'info'
+      method: 'POST'
     })
   ],
   async (
@@ -51,9 +49,7 @@ export const GET = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'fetchAllAssets',
-      method: 'GET',
-      useCase: 'FetchAllAssetsUseCase',
-      logLevel: 'info'
+      method: 'GET'
     })
   ],
   async (

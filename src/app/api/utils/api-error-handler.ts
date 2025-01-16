@@ -11,43 +11,26 @@ export interface ErrorResponse {
 
 export async function apiErrorHandler(error: any): Promise<ErrorResponse> {
   const intl = await getIntl()
-  const loggerAggregator = container.get(LoggerAggregator)
+  const midazLogger = container.get(LoggerAggregator)
   let errorResponse: ErrorResponse
 
   const errorMetadata = {
     errorType: error.constructor.name,
     originalMessage: error.message
   }
-
+  
   switch (error.constructor) {
     case MidazError:
-      loggerAggregator.addEvent({
-        layer: 'api',
-        operation: 'api_error_handler',
-        level: 'error',
-        message: error.message,
-        metadata: errorMetadata
-      })
+      midazLogger.error(`Midaz error: ${errorMetadata}`)
       errorResponse = { message: error.message, status: 400 }
       break
     case UnauthorizedException:
-      loggerAggregator.addEvent({
-        layer: 'api',
-        operation: 'api_error_handler',
-        level: 'error',
-        message: error.message,
-        metadata: errorMetadata
-      })
+      midazLogger.error(`Unauthorized error: ${errorMetadata}`)
       errorResponse = { message: error.message, status: 401 }
       break
     default:
-      loggerAggregator.addEvent({
-        layer: 'api',
-        operation: 'api_error_handler',
-        level: 'error',
-        message: error.message,
-        metadata: errorMetadata
-      })
+      midazLogger.error(`Unknown error: ${errorMetadata}`)
+
       errorResponse = {
         message: intl.formatMessage({
           id: 'error.midaz.unknowError',

@@ -11,9 +11,7 @@ export const GET = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'fetchParentOrganizations',
-      method: 'GET',
-      useCase: 'FetchParentOrganizationsUseCase',
-      logLevel: 'info'
+      method: 'GET'
     })
   ],
   async (request: Request) => {

@@ -11,9 +11,7 @@ export const GET = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'fetchAllLedgersAssets',
-      method: 'GET',
-      useCase: 'FetchAllLedgersAssetsUseCase',
-      logLevel: 'info'
+      method: 'GET'
     })
   ],
   async (request: Request, { params }: { params: { id: string } }) => {

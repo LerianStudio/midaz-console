@@ -21,9 +21,7 @@ export const POST = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'createProduct',
-      method: 'POST',
-      useCase: 'CreateProductUseCase',
-      logLevel: 'info'
+      method: 'POST'
     })
   ],
   async (request: NextRequest, { params }: { params: ProductParams }) => {
@@ -54,9 +52,7 @@ export const GET = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'fetchAllProducts',
-      method: 'GET',
-      useCase: 'FetchAllProductsUseCase',
-      logLevel: 'debug'
+      method: 'GET'
     })
   ],
   async (request: NextRequest, { params }: { params: ProductParams }) => {

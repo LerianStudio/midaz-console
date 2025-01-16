@@ -62,9 +62,7 @@ export const DELETE = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'deleteProduct',
-      method: 'DELETE',
-      useCase: 'DeleteProductUseCase',
-      logLevel: 'info'
+      method: 'DELETE'
     })
   ],
   async (request: Request, { params }: { params: ProductParams }) => {

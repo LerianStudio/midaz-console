@@ -20,9 +20,7 @@ export const DELETE = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'deletePortfolio',
-      method: 'DELETE',
-      useCase: 'DeletePortfolioUseCase',
-      logLevel: 'audit'
+      method: 'DELETE'
     })
   ],
   async (
@@ -53,9 +51,7 @@ export const PATCH = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'updatePortfolio',
-      method: 'PATCH',
-      useCase: 'UpdatePortfolioUseCase',
-      logLevel: 'audit'
+      method: 'PATCH'
     })
   ],
   async (
@@ -89,9 +85,7 @@ export const GET = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'fetchPortfolioById',
-      method: 'GET',
-      useCase: 'FetchPortfolioByIdUseCase',
-      logLevel: 'debug'
+      method: 'GET'
     })
   ],
   async (

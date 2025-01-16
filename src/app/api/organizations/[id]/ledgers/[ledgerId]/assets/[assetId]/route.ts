@@ -20,9 +20,7 @@ export const GET = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'fetchAssetById',
-      method: 'GET',
-      useCase: 'FetchAssetByIdUseCase',
-      logLevel: 'info'
+      method: 'GET'
     })
   ],
   async (
@@ -49,9 +47,7 @@ export const PATCH = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'updateAsset',
-      method: 'PATCH',
-      useCase: 'UpdateAssetUseCase',
-      logLevel: 'info'
+      method: 'PATCH'
     })
   ],
   async (
@@ -84,9 +80,7 @@ export const DELETE = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'deleteAsset',
-      method: 'DELETE',
-      useCase: 'DeleteAssetUseCase',
-      logLevel: 'info'
+      method: 'DELETE'
     })
   ],
   async (

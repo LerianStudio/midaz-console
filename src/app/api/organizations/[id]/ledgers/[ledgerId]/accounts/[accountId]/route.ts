@@ -15,14 +15,15 @@ import {
 import { NextResponse, NextRequest } from 'next/server'
 import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
 import { loggerMiddleware } from '@/utils/logger-middleware-config'
+import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
+
+const midazLogger = container.get(LoggerAggregator)
 
 export const GET = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'getAccountById',
-      method: 'GET',
-      useCase: 'FetchAccountByIdUseCase',
-      logLevel: 'info'
+      method: 'GET'
     })
   ],
   async (
@@ -62,9 +63,7 @@ export const PATCH = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'updateAccount',
-      method: 'PATCH',
-      useCase: 'UpdateAccountUseCase',
-      logLevel: 'info'
+      method: 'PATCH'
     })
   ],
   async (
@@ -105,9 +104,7 @@ export const DELETE = applyMiddleware(
   [
     loggerMiddleware({
       operationName: 'deleteAccount',
-      method: 'DELETE',
-      useCase: 'DeleteAccountUseCase',
-      logLevel: 'info'
+      method: 'DELETE'
     })
   ],
   async (
@@ -128,7 +125,7 @@ export const DELETE = applyMiddleware(
       const { id: organizationId, ledgerId, accountId } = params
 
       await deleteAccountUseCase.execute(organizationId, ledgerId, accountId)
-
+      midazLogger.audit('Account deleted', { accountId })
       return NextResponse.json({}, { status: 200 })
     } catch (error: any) {
       const { message, status } = await apiErrorHandler(error)
