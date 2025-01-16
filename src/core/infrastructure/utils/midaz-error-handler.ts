@@ -113,7 +113,8 @@ export async function handleMidazError(
         intl.formatMessage({
           id: 'error.midaz.unauthorized',
           defaultMessage: 'Error Midaz unauthorized'
-        })
+        }),
+        midazError.code
       )
 
     default:
