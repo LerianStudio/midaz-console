@@ -9,7 +9,8 @@ module.exports = {
       {
         preset: "conventionalcommits",
         releaseRules: [
-          { type: "chore", release: "patch" } // Included "chore" on patch type
+          { type: "chore", release: "patch" }, // Included "chore" on patch type
+          { type: "fix", release: "patch" } // Included "fix" on patch type
         ]
       }
     ],
@@ -19,8 +20,7 @@ module.exports = {
       "@semantic-release/github",
       {
         assets: [
-          { path: ".next/static/chunks/*.js", label: "JavaScript distribution" },
-          { path: ".next/static/chunks/*.js.map", label: "Source map" }
+          { path: ".next/**", label: "Next.js build files" } // Updated to include all files in .next/
         ]
       }
     ],
