@@ -2,6 +2,7 @@
  * TODO: Better error handling
  */
 
+import { MidazError } from '@/core/infrastructure/errors/midaz-error'
 import { signOut } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 
@@ -63,7 +64,9 @@ export const serverFetcher = async <T = void>(action: () => Promise<T>) => {
   try {
     return await action()
   } catch (error) {
-    redirect('/signin')
+    if (error instanceof MidazError && error.code === '0042') {
+      redirect('/signout')
+    }
     return null
   }
 }
