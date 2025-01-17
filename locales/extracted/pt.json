@@ -343,5 +343,7 @@
   "settings.system.language": "Idioma",
   "settings.system.locale.description": "Selecione o idioma que você gostaria de usar no Midaz.",
   "settings.system.paper.description": "Ajustes as preferências de sistema.",
-  "settings.tabs.system": "Sistema"
+  "settings.tabs.system": "Sistema",
+  "notAuthorized.backToHome": "Voltar para Home",
+  "notAuthorized.title": "Você não tem autorização para acessar esta página."
 }

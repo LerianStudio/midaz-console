@@ -239,6 +239,8 @@
   "ledgers.toast.update.success": "Ledger changes saved successfully",
   "ledgersPage.alert.description": "To use ledger features, you need to create an organization.",
   "ledgersPage.alert.title": "Organization Required",
+  "notAuthorized.backToHome": "Back to Home",
+  "notAuthorized.title": "You are not authorized to access this page.",
   "notFound.backToHome": "Back to Home",
   "notFound.description": "Try accessing another page.",
   "notFound.title": "The page you are looking for does not exist.",
