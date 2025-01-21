@@ -5,22 +5,22 @@ module.exports = {
     {
       name: "patch/*", // Branches começando com "patch/"
       channel: "patch",
-      prerelease: "patch", // Gera pré-releases para "patch/*"
+      prerelease: "patch-${name}", // Gera pré-releases para "patch/*"
     },
     {
       name: "fix/*", // Branches começando com "fix/"
       channel: "fix",
-      prerelease: "fix", // Identificador derivado do nome da branch
+      prerelease: "fix-${name}", // Identificador derivado do nome da branch
     },
     {
       name: "feature/*", // Branches começando com "feature/"
       channel: "feature",
-      prerelease: "feature", // Identificador derivado do nome da branch
+      prerelease: "feature-${name}", // Identificador derivado do nome da branch
     },
     {
       name: "hotfix/*", // Adicionado para hotfixes
       channel: "hotfix",
-      prerelease: "hotfix", // Pré-releases para "hotfix/*"
+      prerelease: "hotfix-${name}", // Pré-releases para "hotfix/*"
     },
   ],
   plugins: [
