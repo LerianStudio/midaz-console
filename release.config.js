@@ -3,20 +3,8 @@ module.exports = {
     { name: "main", channel: "latest" }, // Produção
     { name: "develop", channel: "next" }, // Desenvolvimento
     {
-      name: "patch/*", // Branches começando com "patch/"
-      channel: "patch",
-    },
-    {
-      name: "fix/*", // Branches começando com "fix/"
-      channel: "fix",
-    },
-    {
       name: "feature/*", // Branches começando com "feature/"
-      channel: "feature",
-    },
-    {
-      name: "hotfix/*", // Adicionado para hotfixes
-      channel: "hotfix",
+      channel: "alpha",
     },
   ],
   plugins: [
