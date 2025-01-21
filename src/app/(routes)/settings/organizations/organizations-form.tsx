@@ -10,12 +10,6 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger
-} from '@/components/ui/collapsible'
-import { ChevronDown, ChevronUp } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useIntl } from 'react-intl'
 import { MetadataField } from '@/components/form/metadata-field'
@@ -30,6 +24,11 @@ import {
 import { LoadingButton } from '@/components/ui/loading-button'
 import { omit } from 'lodash'
 import { OrganizationsFormParentIdField } from './organizations-form-parent-id-field'
+import {
+  PaperCollapsible,
+  PaperCollapsibleBanner,
+  PaperCollapsibleContent
+} from '@/components/transactions/primitives/paper-collapsible'
 
 type OrganizationsViewProps = {
   data?: OrganizationsType
@@ -313,58 +312,34 @@ export const OrganizationsForm = ({
               </CardContent>
             </Card.Root>
 
-            <Card.Root className="p-0 shadow">
-              <Collapsible
-                open={showMetadataCollapse}
-                onOpenChange={setShowMetadataCollapse}
-              >
-                <CardContent>
-                  <div className="flex items-center justify-between pt-6">
-                    <div>
-                      <Card.Header
-                        className="text-lg font-medium normal-case text-zinc-600"
-                        title={intl.formatMessage({
-                          id: 'common.metadata',
-                          defaultMessage: 'Metadata'
-                        })}
-                      />
-
-                      <p className="self-stretch text-xs font-normal italic text-zinc-400">
-                        {intl.formatMessage(
-                          {
-                            id: 'organizations.organizationForm.metadataRegisterCountText',
-                            defaultMessage:
-                              '{count} added {count, plural, =0 {records} one {record} other {records}}'
-                          },
-                          {
-                            count: Object.entries(metadataValue || 0).length
-                          }
-                        )}
-                      </p>
-                    </div>
-
-                    <CollapsibleTrigger
-                      className="content-end justify-end"
-                      asChild
-                    >
-                      <button className="inline-flex h-[25px] w-[25px] items-center justify-center rounded-full border-none">
-                        {showMetadataCollapse ? <ChevronUp /> : <ChevronDown />}
-                      </button>
-                    </CollapsibleTrigger>
-                  </div>
-                </CardContent>
-
-                <CollapsibleContent>
-                  <Separator />
-
-                  <CardContent className="pt-6">
-                    <React.Fragment>
-                      <MetadataField name="metadata" control={form.control} />
-                    </React.Fragment>
-                  </CardContent>
-                </CollapsibleContent>
-              </Collapsible>
-            </Card.Root>
+            <PaperCollapsible className="mb-32">
+              <PaperCollapsibleBanner className="flex items-center justify-between">
+                <p className="text-lg font-medium normal-case text-zinc-600">
+                  {intl.formatMessage({
+                    id: 'common.metadata',
+                    defaultMessage: 'Metadata'
+                  })}
+                </p>
+                <p className="text-xs italic text-shadcn-400">
+                  {intl.formatMessage(
+                    {
+                      id: 'organizations.organizationForm.metadataRegisterCountText',
+                      defaultMessage:
+                        '{count} added {count, plural, =0 {records} one {record} other {records}}'
+                    },
+                    {
+                      count: Object.entries(metadataValue || 0).length
+                    }
+                  )}
+                </p>
+              </PaperCollapsibleBanner>
+              <PaperCollapsibleContent>
+                <Separator orientation="horizontal" />
+                <div className="p-6">
+                  <MetadataField name="metadata" control={form.control} />
+                </div>
+              </PaperCollapsibleContent>
+            </PaperCollapsible>
           </div>
 
           <div className="grow space-y-6">
