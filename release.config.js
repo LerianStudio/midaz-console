@@ -1,22 +1,27 @@
 module.exports = {
   branches: [
-    { name: 'main', channel: 'latest' }, // Prod
-    { name: 'develop', channel: 'next' }, // Dev
+    { name: "main", channel: "latest" }, // Produção
+    { name: "develop", channel: "next" }, // Desenvolvimento
     {
-      name: 'patch/*', // Branches begin with "patch/"
-      channel: 'patch',
-      prerelease: 'patch', // Generate pre-releases for "patch/*"
+      name: "patch/*", // Branches começando com "patch/"
+      channel: "patch",
+      prerelease: "patch", // Gera pré-releases para "patch/*"
     },
     {
-      name: 'fix/*', // Branches begin with "fix/"
-      channel: 'fix',
-      prerelease: 'fix', // Generate pre-releases for "fix/*"
+      name: "fix/*", // Branches começando com "fix/"
+      channel: "fix",
+      prerelease: true, // Identificador derivado do nome da branch
     },
     {
-      name: 'feature/*', // Branches begin with "feature/"
-      channel: 'feature',
-      prerelease: 'feature', // Generate pre-releases for "feature/*"
-    }
+      name: "feature/*", // Branches começando com "feature/"
+      channel: "feature",
+      prerelease: true, // Identificador derivado do nome da branch
+    },
+    {
+      name: "hotfix/*", // Adicionado para hotfixes
+      channel: "hotfix",
+      prerelease: true, // Pré-releases para "hotfix/*"
+    },
   ],
   plugins: [
     [
@@ -26,9 +31,9 @@ module.exports = {
         releaseRules: [
           { type: "chore", release: "patch" },
           { type: "fix", release: "patch" },
-          { type: "feat", release: "minor" }
-        ]
-      }
+          { type: "feat", release: "minor" },
+        ],
+      },
     ],
     "@semantic-release/release-notes-generator",
     "@semantic-release/changelog",
@@ -36,16 +41,17 @@ module.exports = {
       "@semantic-release/github",
       {
         assets: [
-          { path: ".next/**", label: "Next.js build files" }
-        ]
-      }
+          { path: ".next/**", label: "Next.js build files" },
+        ],
+      },
     ],
     [
       "@semantic-release/git",
       {
         assets: ["package.json", "CHANGELOG.md"],
-        message: "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-      }
-    ]
-  ]
+        message:
+          "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}",
+      },
+    ],
+  ],
 };
