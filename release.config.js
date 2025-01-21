@@ -10,17 +10,17 @@ module.exports = {
     {
       name: "fix/*", // Branches começando com "fix/"
       channel: "fix",
-      prerelease: "fix-${name}", // Identificador derivado do nome da branch
+      prerelease: "${name}", // Identificador derivado do nome da branch
     },
     {
       name: "feature/*", // Branches começando com "feature/"
       channel: "feature",
-      prerelease: "feature-${name}", // Identificador derivado do nome da branch
+      prerelease: "${name}", // Identificador derivado do nome da branch
     },
     {
       name: "hotfix/*", // Adicionado para hotfixes
       channel: "hotfix",
-      prerelease: "hotfix-${name}", // Pré-releases para "hotfix/*"
+      prerelease: "${name}", // Pré-releases para "hotfix/*"
     },
   ],
   plugins: [
