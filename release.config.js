@@ -2,10 +2,7 @@ module.exports = {
   branches: [
     { name: "main", channel: "latest" }, // Produção
     { name: "develop", channel: "next" }, // Desenvolvimento
-    {
-      name: "feature/*", // Branches começando com "feature/"
-      channel: "alpha",
-    },
+    { name: "feature/*", channel: "alpha", prerelease: true }
   ],
   plugins: [
     [
