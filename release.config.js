@@ -10,12 +10,12 @@ module.exports = {
     {
       name: "fix/*", // Branches começando com "fix/"
       channel: "fix",
-      prerelease: "fix", // Identificador derivado do nome da branch
+      prerelease: true, // Identificador derivado do nome da branch
     },
     {
       name: "feature/*", // Branches começando com "feature/"
       channel: "feature",
-      prerelease: "feature", // Identificador derivado do nome da branch
+      prerelease: true, // Identificador derivado do nome da branch
     },
     {
       name: "hotfix/*", // Adicionado para hotfixes
