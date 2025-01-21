@@ -10,7 +10,7 @@ export type UseCreateTransactionProps = {
 
 export type UseListTransactionsProps = {
   organizationId: string
-  ledgerId: string
+  ledgerId: string | null
   enabled?: boolean
 }
 
