@@ -1,5 +1,5 @@
-import { postFetcher } from '@/lib/fetcher'
-import { useMutation } from '@tanstack/react-query'
+import { getFetcher, postFetcher } from '@/lib/fetcher'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 export type UseCreateTransactionProps = {
   organizationId: string
@@ -16,6 +16,27 @@ export const useCreateTransaction = ({
     mutationKey: ['transactions', 'create'],
     mutationFn: postFetcher(
       `/api/organizations/${organizationId}/ledgers/${ledgerId}/transactions/json`
+    ),
+    ...options
+  })
+}
+
+type UseGetTransactionByIdProps = {
+  organizationId: string
+  ledgerId: string
+  transactionId: string
+}
+
+export const useGetTransactionById = ({
+  organizationId,
+  ledgerId,
+  transactionId,
+  ...options
+}: UseGetTransactionByIdProps) => {
+  return useQuery({
+    queryKey: ['transactions-by-id', transactionId, organizationId, ledgerId],
+    queryFn: getFetcher(
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/transactions/${transactionId}`
     ),
     ...options
   })
