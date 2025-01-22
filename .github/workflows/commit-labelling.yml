@@ -18,10 +18,13 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Get Commit Message
+        id: commit_message
+        run: |
+          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+
       - name: Check Commit Messages for "fix", "feat", "chore", or "release"
         run: |
-          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-          
           if [[ "$COMMIT_MESSAGE" =~ ^fix ]]; then
             echo "Commit is a FIX. Proceed with color labeling!"
             echo "![Fix Badge](https://img.shields.io/badge/Fix-%23FF5733)"
