@@ -94,7 +94,6 @@ jobs:
       - name: Run Unit Tests
         run: npm test
   
-  # Job to check Commit Messages (Commitlint with Husky)
   commitlint:
     runs-on: ubuntu-latest
     name: Run Commitlint to check commit message format
