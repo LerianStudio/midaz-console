@@ -26,7 +26,7 @@ jobs:
 
       - name: Check Commit Messages for "fix", "feat", "chore", or "release"
         run: |
-          if [[ "$COMMIT_MESSAGE" =~ ^(fix|feat|chore|release) ]]; then
+          if [[ "$COMMIT_MESSAGE" =~ fix|feat|chore|release ]]; then
             if [[ "$COMMIT_MESSAGE" =~ ^fix ]]; then
               echo "Commit is a FIX. Proceed with color labeling!"
               echo "![Fix Badge](https://img.shields.io/badge/Fix-%23FF5733)"
