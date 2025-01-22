@@ -8,61 +8,75 @@ import {
   FetchAllProducts,
   FetchAllProductsUseCase
 } from '@/core/application/use-cases/product/fetch-all-products-use-case'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { loggerMiddleware } from '@/utils/logger-middleware-config'
 
-const createProductUseCase: CreateProduct =
-  container.get<CreateProduct>(CreateProductUseCase)
-
-const fetchAllProductsUseCase: FetchAllProducts =
-  container.get<FetchAllProducts>(FetchAllProductsUseCase)
-
-export async function POST(
-  request: Request,
-  { params }: { params: { id: string; ledgerId: string } }
-) {
-  try {
-    const body = await request.json()
-    const organizationId = params.id
-    const ledgerId = params.ledgerId
-
-    const productCreated = await createProductUseCase.execute(
-      organizationId,
-      ledgerId,
-      body
-    )
-
-    return NextResponse.json(productCreated)
-  } catch (error: any) {
-    console.error('Error creating product', error)
-    const { message, status } = await apiErrorHandler(error)
-
-    return NextResponse.json({ message }, { status })
-  }
+interface ProductParams {
+  id: string
+  ledgerId: string
 }
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string; ledgerId: string } }
-) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const limit = Number(searchParams.get('limit')) || 10
-    const page = Number(searchParams.get('page')) || 1
-    const organizationId = params.id
-    const ledgerId = params.ledgerId
+export const POST = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'createProduct',
+      method: 'POST'
+    })
+  ],
+  async (request: NextRequest, { params }: { params: ProductParams }) => {
+    try {
+      const createProductUseCase: CreateProduct =
+        container.get<CreateProduct>(CreateProductUseCase)
 
-    const products = await fetchAllProductsUseCase.execute(
-      organizationId,
-      ledgerId,
-      limit,
-      page
-    )
+      const body = await request.json()
+      const organizationId = params.id
+      const ledgerId = params.ledgerId
 
-    return NextResponse.json(products)
-  } catch (error: any) {
-    console.error('Error fetching all products', error)
-    const { message, status } = await apiErrorHandler(error)
+      const productCreated = await createProductUseCase.execute(
+        organizationId,
+        ledgerId,
+        body
+      )
 
-    return NextResponse.json({ message }, { status })
+      return NextResponse.json(productCreated)
+    } catch (error: any) {
+      const { message, status } = await apiErrorHandler(error)
+
+      return NextResponse.json({ message }, { status })
+    }
   }
-}
+)
+
+export const GET = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'fetchAllProducts',
+      method: 'GET'
+    })
+  ],
+  async (request: NextRequest, { params }: { params: ProductParams }) => {
+    try {
+      const fetchAllProductsUseCase: FetchAllProducts =
+        container.get<FetchAllProducts>(FetchAllProductsUseCase)
+      const { searchParams } = new URL(request.url)
+      const limit = Number(searchParams.get('limit')) || 10
+      const page = Number(searchParams.get('page')) || 1
+      const organizationId = params.id
+      const ledgerId = params.ledgerId
+
+      const products = await fetchAllProductsUseCase.execute(
+        organizationId,
+        ledgerId,
+        limit,
+        page
+      )
+
+      return NextResponse.json(products)
+    } catch (error: any) {
+      const { message, status } = await apiErrorHandler(error)
+
+      return NextResponse.json({ message }, { status })
+    }
+  }
+)

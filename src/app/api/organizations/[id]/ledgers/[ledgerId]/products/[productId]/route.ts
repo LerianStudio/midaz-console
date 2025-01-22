@@ -13,6 +13,8 @@ import {
   UpdateProductUseCase
 } from '@/core/application/use-cases/product/update-product-use-case'
 import { NextResponse } from 'next/server'
+import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { loggerMiddleware } from '@/utils/logger-middleware-config'
 
 const fetchProductById: FetchProductById = container.get<FetchProductById>(
   FetchProductByIdUseCase
@@ -44,32 +46,39 @@ export async function GET(
 
     return NextResponse.json(products)
   } catch (error: any) {
-    console.error('Error fetching all products', error)
     const { message, status } = await apiErrorHandler(error)
 
     return NextResponse.json({ message }, { status })
   }
 }
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string; ledgerId: string; productId: string } }
-) {
-  try {
-    const organizationId = params.id
-    const ledgerId = params.ledgerId
-    const productId = params.productId
-
-    await deleteProductUseCase.execute(organizationId, ledgerId, productId)
-
-    return NextResponse.json({}, { status: 200 })
-  } catch (error: any) {
-    console.error('Error deleting product', error)
-    const { message, status } = await apiErrorHandler(error)
-
-    return NextResponse.json({ message }, { status })
-  }
+interface ProductParams {
+  id: string
+  ledgerId: string
+  productId: string
 }
+
+export const DELETE = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'deleteProduct',
+      method: 'DELETE'
+    })
+  ],
+  async (request: Request, { params }: { params: ProductParams }) => {
+    try {
+      const { id: organizationId, ledgerId, productId } = params
+
+      await deleteProductUseCase.execute(organizationId, ledgerId, productId)
+
+      return NextResponse.json({}, { status: 200 })
+    } catch (error: any) {
+      const { message, status } = await apiErrorHandler(error)
+
+      return NextResponse.json({ message }, { status })
+    }
+  }
+)
 
 export async function PATCH(
   request: Request,
@@ -90,7 +99,6 @@ export async function PATCH(
 
     return NextResponse.json(productUpdated)
   } catch (error: any) {
-    console.error('Error updating product', error)
     const { message, status } = await apiErrorHandler(error)
 
     return NextResponse.json({ message }, { status })

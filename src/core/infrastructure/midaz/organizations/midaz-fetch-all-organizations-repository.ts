@@ -1,13 +1,20 @@
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { FetchAllOrganizationsRepository } from '@/core/domain/repositories/organizations/fetch-all-organizations-repository'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
-import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
-import { injectable } from 'inversify'
+import { HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { injectable, inject } from 'inversify'
+import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
+import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
 
 @injectable()
 export class MidazFetchAllOrganizationsRepository
   implements FetchAllOrganizationsRepository
 {
+  constructor(
+    @inject(ContainerTypeMidazHttpFetch.MidazHttpFetchUtils)
+    private readonly midazHttpFetchUtils: MidazHttpFetchUtils
+  ) {}
+
   private baseUrl: string = process.env.MIDAZ_BASE_PATH + '/organizations'
 
   async fetchAll(
@@ -20,7 +27,7 @@ export class MidazFetchAllOrganizationsRepository
     })
     const url = `${this.baseUrl}?${params.toString()}`
 
-    const response = await httpMidazAuthFetch<
+    const response = await this.midazHttpFetchUtils.httpMidazAuthFetch<
       PaginationEntity<OrganizationEntity>
     >({
       url,

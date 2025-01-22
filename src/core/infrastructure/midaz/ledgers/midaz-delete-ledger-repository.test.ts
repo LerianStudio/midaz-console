@@ -1,5 +1,5 @@
 import { MidazDeleteLedgerRepository } from './midaz-delete-ledger-repository'
-import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 jest.mock('../../utils/http-fetch-utils', () => ({
   httpMidazAuthFetch: jest.fn(),
@@ -10,9 +10,11 @@ jest.mock('../../utils/http-fetch-utils', () => ({
 
 describe('MidazDeleteLedgerRepository', () => {
   let repository: MidazDeleteLedgerRepository
+  let mockHttpFetchUtils: { httpMidazAuthFetch: jest.Mock }
 
   beforeEach(() => {
-    repository = new MidazDeleteLedgerRepository()
+    mockHttpFetchUtils = { httpMidazAuthFetch: jest.fn() }
+    repository = new MidazDeleteLedgerRepository(mockHttpFetchUtils as any)
     jest.clearAllMocks()
   })
 
@@ -20,11 +22,11 @@ describe('MidazDeleteLedgerRepository', () => {
     const organizationId = '1'
     const ledgerId = '1'
 
-    ;(httpMidazAuthFetch as jest.Mock).mockResolvedValueOnce(undefined)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(undefined)
 
     await repository.delete(organizationId, ledgerId)
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}`,
       method: HTTP_METHODS.DELETE
     })
@@ -35,13 +37,13 @@ describe('MidazDeleteLedgerRepository', () => {
     const ledgerId = '1'
     const error = new Error('Error occurred')
 
-    ;(httpMidazAuthFetch as jest.Mock).mockRejectedValueOnce(error)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockRejectedValueOnce(error)
 
     await expect(repository.delete(organizationId, ledgerId)).rejects.toThrow(
       'Error occurred'
     )
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}`,
       method: HTTP_METHODS.DELETE
     })

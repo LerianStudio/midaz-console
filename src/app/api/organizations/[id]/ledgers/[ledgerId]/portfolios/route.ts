@@ -8,8 +8,10 @@ import {
   FetchAllPortfolios,
   FetchAllPortfoliosUseCase
 } from '@/core/application/use-cases/portfolios/fetch-all-portfolio-use-case'
-
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { loggerMiddleware } from '@/utils/logger-middleware-config'
+import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
 
 const createPortfolioUseCase: CreatePortfolio = container.get<CreatePortfolio>(
   CreatePortfolioUseCase
@@ -18,53 +20,68 @@ const createPortfolioUseCase: CreatePortfolio = container.get<CreatePortfolio>(
 const fetchAllPortfoliosUseCase: FetchAllPortfolios =
   container.get<FetchAllPortfolios>(FetchAllPortfoliosUseCase)
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string; ledgerId: string } }
-) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const limit = Number(searchParams.get('limit')) || 100
-    const page = Number(searchParams.get('page')) || 1
-    const organizationId = params.id
-    const ledgerId = params.ledgerId
-
-    const portfolios = await fetchAllPortfoliosUseCase.execute(
-      organizationId,
-      ledgerId,
-      page,
-      limit
-    )
-
-    return NextResponse.json(portfolios)
-  } catch (error: any) {
-    console.error('Error fetching all portfolios', error)
-    const { message, status } = await apiErrorHandler(error)
-
-    return NextResponse.json({ message }, { status })
-  }
+const midazLogger = container.get(LoggerAggregator)
+interface PortfolioParams {
+  id: string
+  ledgerId: string
 }
 
-export async function POST(
-  request: Request,
-  { params }: { params: { id: string; ledgerId: string } }
-) {
-  try {
-    const body = await request.json()
-    const organizationId = params.id
-    const ledgerId = params.ledgerId
+export const GET = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'fetchAllPortfolios',
+      method: 'GET'
+    })
+  ],
+  async (request: NextRequest, { params }: { params: PortfolioParams }) => {
+    try {
+      const { searchParams } = new URL(request.url)
+      const limit = Number(searchParams.get('limit')) || 100
+      const page = Number(searchParams.get('page')) || 1
+      const organizationId = params.id
+      const ledgerId = params.ledgerId
 
-    const portfolio = await createPortfolioUseCase.execute(
-      organizationId,
-      ledgerId,
-      body
-    )
+      const portfolios = await fetchAllPortfoliosUseCase.execute(
+        organizationId,
+        ledgerId,
+        page,
+        limit
+      )
 
-    return NextResponse.json(portfolio)
-  } catch (error: any) {
-    console.error('Error creating portfolio', error)
-    const { message, status } = await apiErrorHandler(error)
-
-    return NextResponse.json({ message }, { status })
+      return NextResponse.json(portfolios)
+    } catch (error: any) {
+      const { message, status } = await apiErrorHandler(error)
+      return NextResponse.json({ message }, { status })
+    }
   }
-}
+)
+
+export const POST = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'createPortfolio',
+      method: 'POST'
+    })
+  ],
+  async (request: NextRequest, { params }: { params: PortfolioParams }) => {
+    try {
+      const { id: organizationId, ledgerId } = params
+
+      const body = await request.json()
+      const portfolio = await createPortfolioUseCase.execute(
+        organizationId,
+        ledgerId,
+        body
+      )
+
+      return NextResponse.json(portfolio)
+    } catch (error: any) {
+      const { message, status } = await apiErrorHandler(error)
+      midazLogger.error({
+        message: error.message,
+        context: error
+      })
+      return NextResponse.json({ message }, { status })
+    }
+  }
+)

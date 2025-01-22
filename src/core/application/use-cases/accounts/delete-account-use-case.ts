@@ -1,5 +1,6 @@
 import { DeleteAccountsRepository } from '@/core/domain/repositories/accounts/delete-accounts-repository'
 import { inject, injectable } from 'inversify'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface DeleteAccount {
   execute: (
@@ -8,7 +9,6 @@ export interface DeleteAccount {
     accountId: string
   ) => Promise<void>
 }
-
 @injectable()
 export class DeleteAccountUseCase implements DeleteAccount {
   constructor(
@@ -16,6 +16,7 @@ export class DeleteAccountUseCase implements DeleteAccount {
     private readonly deleteAccountRepository: DeleteAccountsRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string,
