@@ -126,7 +126,7 @@ export const ProductsSheet = ({
               {intl.formatMessage(
                 {
                   id: 'ledgers.products.sheet.edit.title',
-                  defaultMessage: 'Edit {productName}'
+                  defaultMessage: 'Edit "{productName}"'
                 },
                 {
                   productName: data?.name
