@@ -285,7 +285,7 @@ export const ProductsTabContent = () => {
                   '{number, plural, =0 {No products found} one {Showing {count} product} other {Showing {count} products}}.'
               },
               {
-                number: data?.items?.length,
+                number: data?.items?.length || 0,
                 count: <span className="font-bold">{data?.items?.length}</span>
               }
             )}
