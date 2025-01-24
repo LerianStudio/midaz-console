@@ -4,9 +4,11 @@ import { AccountEntity } from '@/core/domain/entities/account-entity'
 import {
   deleteFetcher,
   getFetcher,
+  getPaginatedFetcher,
   patchFetcher,
   postFetcher
 } from '@/lib/fetcher'
+import { PaginationRequest } from '@/types/pagination-request-type'
 import {
   useMutation,
   UseMutationOptions,
@@ -32,7 +34,7 @@ export const useListAccounts = ({
   })
 }
 
-type UseAccountsWithPortfoliosProps = {
+type UseAccountsWithPortfoliosProps = PaginationRequest & {
   organizationId: string
   ledgerId: string
 }
@@ -40,12 +42,21 @@ type UseAccountsWithPortfoliosProps = {
 export const useAccountsWithPortfolios = ({
   organizationId,
   ledgerId,
+  page,
+  limit,
   ...options
 }: UseAccountsWithPortfoliosProps) => {
   return useQuery<PaginationDto<AccountResponseDto>>({
-    queryKey: [organizationId, ledgerId, 'accounts-with-portfolios'],
-    queryFn: getFetcher(
-      `/api/organizations/${organizationId}/ledgers/${ledgerId}/accounts-portfolios`
+    queryKey: [
+      organizationId,
+      ledgerId,
+      'accounts-with-portfolios',
+      page,
+      limit
+    ],
+    queryFn: getPaginatedFetcher(
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/accounts-portfolios`,
+      { page, limit }
     ),
     ...options
   })
