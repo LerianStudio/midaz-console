@@ -51,12 +51,13 @@ export class FetchPortfoliosWithAccountsUseCase
       (account) => account.portfolioId || 'no_portfolio'
     )
 
-    const portfoliosWithAccounts = portfoliosResult.items.map((portfolio) =>
-      PortfolioMapper.toDtoWithAccounts(
-        portfolio,
-        (accountsGrouped[portfolio.id!] || []).map(AccountMapper.toDto)
-      )
-    )
+    const portfoliosWithAccounts =
+      portfoliosResult?.items?.map((portfolio) =>
+        PortfolioMapper.toDtoWithAccounts(
+          portfolio,
+          (accountsGrouped[portfolio.id!] || []).map(AccountMapper.toDto)
+        )
+      ) || []
 
     const responseDTO: PaginationDto<any> = {
       items: portfoliosWithAccounts,
