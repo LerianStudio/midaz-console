@@ -3,10 +3,13 @@ import { ProductResponseDto } from '@/core/application/dto/product-dto'
 import {
   deleteFetcher,
   getFetcher,
+  getPaginatedFetcher,
   patchFetcher,
   postFetcher
 } from '@/lib/fetcher'
+import { PaginationRequest } from '@/types/pagination-request-type'
 import {
+  keepPreviousData,
   useMutation,
   UseMutationOptions,
   useQuery
@@ -34,18 +37,26 @@ export const useCreateProduct = ({
   })
 }
 
-type UseListProductsProps = UseCreateProductProps
+type UseListProductsProps = UseCreateProductProps &
+  PaginationRequest & {
+    name?: string
+  }
 
 export const useListProducts = ({
   organizationId,
   ledgerId,
+  limit,
+  page,
+  name,
   ...options
 }: UseListProductsProps) => {
   return useQuery<PaginationDto<ProductResponseDto>>({
-    queryKey: [organizationId, ledgerId],
-    queryFn: getFetcher(
-      `/api/organizations/${organizationId}/ledgers/${ledgerId}/products`
+    queryKey: [organizationId, ledgerId, limit, page, name],
+    queryFn: getPaginatedFetcher(
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/products`,
+      { limit, page, name }
     ),
+    placeholderData: keepPreviousData,
     ...options
   })
 }

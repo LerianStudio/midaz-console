@@ -41,7 +41,7 @@ export default function CreateTransactionReviewPage() {
       onSuccess: () => router.push('/transactions')
     })
 
-  const { values, currentStep, handleBack } = useTransactionForm()
+  const { values, currentStep } = useTransactionForm()
 
   const { handleDialogOpen: handleCancelOpen, dialogProps: cancelDialogProps } =
     useConfirmDialog({

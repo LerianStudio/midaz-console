@@ -91,14 +91,14 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
       <Breadcrumb paths={breadcrumbPaths} />
 
       <PageHeader.Root>
-        <div className="flex justify-between border-b">
+        <PageHeader.Wrapper>
           <PageHeader.InfoTitle
             title={data.name ?? ''}
             subtitle={data.id ?? ''}
           >
             <PageHeader.InfoTooltip subtitle={data.id ?? ''} />
           </PageHeader.InfoTitle>
-        </div>
+        </PageHeader.Wrapper>
       </PageHeader.Root>
 
       <Tabs
