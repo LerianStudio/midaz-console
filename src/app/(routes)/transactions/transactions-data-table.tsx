@@ -32,12 +32,7 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui/tooltip'
-import {
-  capitalizeFirstLetter,
-  formatDateTime,
-  formatToBrazilianCurrency,
-  truncateString
-} from '@/helpers'
+import { capitalizeFirstLetter, truncateString } from '@/helpers'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { Arrow } from '@radix-ui/react-tooltip'
 import {
@@ -46,12 +41,15 @@ import {
   useReactTable
 } from '@tanstack/react-table'
 import { isNil } from 'lodash'
-import { ChevronLeft, ChevronRight, MoreVertical } from 'lucide-react'
+import { MoreVertical } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
 import { useIntl } from 'react-intl'
-import { TransactionsSkeleton } from './transactions-skeleton'
+import dayjs from 'dayjs'
+
+const getBadgeVariant = (status: string) =>
+  status === 'APPROVED' ? 'active' : 'inactive'
 
 const TransactionRow: React.FC<any> = ({
   transaction,
@@ -61,14 +59,20 @@ const TransactionRow: React.FC<any> = ({
   const intl = useIntl()
   const id = transaction.original.id || ''
   const displayId = id && id.length > 12 ? `${truncateString(id, 12)}` : id
-  const assetCode = transaction.original.assetCode
-  const badgeVariant =
-    transaction.original.status.code === 'APPROVED' ? 'active' : 'inactive'
+  const badgeVariant = getBadgeVariant(transaction.original.status.code)
+  const { amount, amountScale, assetCode } = transaction.original
+  const numericValue = amount / 10 ** amountScale
+  const displayValue = numericValue.toLocaleString(intl.locale, {
+    minimumFractionDigits: amountScale,
+    maximumFractionDigits: amountScale
+  })
 
   return (
     <React.Fragment>
       <TableRow key={transaction.id}>
-        <TableCell>{formatDateTime(transaction.original.createdAt)}</TableCell>
+        <TableCell>
+          {dayjs(transaction.original.createdAt).format('L HH:mm')}
+        </TableCell>
         <TableCell>
           <TooltipProvider>
             <Tooltip delayDuration={300}>
@@ -113,7 +117,7 @@ const TransactionRow: React.FC<any> = ({
         </TableCell>
         <TableCell className="text-base font-medium text-zinc-600">
           <span className="mr-2 text-xs font-normal">{assetCode}</span>
-          {formatToBrazilianCurrency(transaction.original.amount)}
+          {displayValue}
         </TableCell>
         <TableCell className="w-0">
           <div className="flex justify-center">

@@ -10,13 +10,6 @@ export const capitalizeFirstLetter = (string: string) => {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
 }
 
-export const formatToBrazilianCurrency = (value: number) => {
-  return new Intl.NumberFormat('pt-BR', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  }).format(value)
-}
-
 export const formatDateTime = (dateString: string) => {
   const date = new Date(dateString)
 
