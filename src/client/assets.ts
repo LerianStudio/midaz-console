@@ -2,10 +2,11 @@ import { AssetResponseDto } from '@/core/application/dto/asset-response-dto'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
 import {
   deleteFetcher,
-  getFetcher,
+  getPaginatedFetcher,
   patchFetcher,
   postFetcher
 } from '@/lib/fetcher'
+import { PaginationRequest } from '@/types/pagination-request-type'
 import {
   useMutation,
   UseMutationOptions,
@@ -17,7 +18,7 @@ type UseCreateAssetProps = UseMutationOptions & {
   ledgerId: string
 }
 
-type UseListAssetsProps = UseCreateAssetProps
+type UseListAssetsProps = UseCreateAssetProps & PaginationRequest
 
 type UseUpdateAssetProps = UseMutationOptions & {
   organizationId: string
@@ -43,12 +44,15 @@ const useCreateAsset = ({
 const useListAssets = ({
   organizationId,
   ledgerId,
+  page,
+  limit,
   ...options
 }: UseListAssetsProps) => {
   return useQuery<PaginationDto<AssetResponseDto>>({
-    queryKey: ['assets', organizationId, ledgerId],
-    queryFn: getFetcher(
-      `/api/organizations/${organizationId}/ledgers/${ledgerId}/assets`
+    queryKey: ['assets', organizationId, ledgerId, page, limit],
+    queryFn: getPaginatedFetcher(
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/assets`,
+      { page, limit }
     ),
     ...options
   })
