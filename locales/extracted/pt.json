@@ -333,5 +333,7 @@
   "common.new.portfolio": "Novo Portfólio",
   "ledgers.portfolios.emptyResource": "Você ainda não criou nenhum portfólio.",
   "common.new.account": "Nova Conta",
-  "ledgers.accounts.emptyResource": "Você ainda não criou nenhum conta."
+  "ledgers.accounts.emptyResource": "Você ainda não criou nenhum conta.",
+  "ledgers.accounts.tooltip": "As contas são a base do ledger, e cada uma representa um ativo específico.",
+  "ledgers.portfolio.tooltip": "Crie portfólios e associe contas para gerenciar com mais eficiência."
 }

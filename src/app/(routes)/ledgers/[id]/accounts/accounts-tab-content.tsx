@@ -204,6 +204,11 @@ export const AccountsTabContent = () => {
               id: 'ledgers.accounts.subtitle',
               defaultMessage: 'Manage the accounts of this ledger.'
             })}
+            tooltip={intl.formatMessage({
+              id: 'ledgers.accounts.tooltip',
+              defaultMessage:
+                'Accounts are the basis of the ledger, and each one represents a specific asset.'
+            })}
           />
           <EntityBox.Actions>
             <Button onClick={handleCreate}>

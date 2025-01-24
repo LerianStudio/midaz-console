@@ -133,6 +133,11 @@ export const PortfoliosTabContent = () => {
               id: `ledgers.portfolio.subtitle`,
               defaultMessage: 'Manage portfolios on this ledger.'
             })}
+            tooltip={intl.formatMessage({
+              id: 'ledgers.portfolio.tooltip',
+              defaultMessage:
+                'Create portfolios and link accounts to manage more efficiently.'
+            })}
           />
           <EntityBox.Actions>
             <Button onClick={handleCreate}>
