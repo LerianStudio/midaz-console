@@ -36,10 +36,9 @@ import { useOrganization } from '@/context/organization-provider/organization-pr
 import { useParams } from 'next/navigation'
 import { EntityDataTable } from '@/components/entity-data-table'
 import { Skeleton } from '@/components/ui/skeleton'
-import { SelectItem } from '@/components/ui/select'
 import { useQueryParams } from '@/hooks/use-query-params'
 import { Pagination } from '@/components/pagination'
-import { InputField, SelectField } from '@/components/form'
+import { PaginationLimitField } from '@/components/form/pagination-limit-field'
 
 export const ProductsTabContent = () => {
   const intl = useIntl()
@@ -135,7 +134,7 @@ export const ProductsTabContent = () => {
                 'Clustering or allocation of customers at different levels.'
             })}
           />
-          <EntityBox.Actions className="">
+          <EntityBox.Actions>
             <Button onClick={handleCreate}>
               {intl.formatMessage({
                 id: 'common.new.product',
@@ -146,22 +145,8 @@ export const ProductsTabContent = () => {
           </EntityBox.Actions>
         </EntityBox.Banner>
         <EntityBox.CollapsibleContent>
-          <div className="col-start-3 flex flex-row items-center justify-end gap-4">
-            <div className="flex items-center gap-4">
-              <p className="whitespace-nowrap text-sm font-medium text-gray-600">
-                {intl.formatMessage({
-                  id: 'common.itemsPerPage',
-                  defaultMessage: 'Items per page'
-                })}
-              </p>
-              <SelectField name="limit" control={form.control}>
-                {[10, 50, 100].map((pageSize: number) => (
-                  <SelectItem key={pageSize} value={String(pageSize)}>
-                    {pageSize}
-                  </SelectItem>
-                ))}
-              </SelectField>
-            </div>
+          <div className="col-start-3 flex justify-end">
+            <PaginationLimitField control={form.control} />
           </div>
         </EntityBox.CollapsibleContent>
       </EntityBox.Collapsible>
