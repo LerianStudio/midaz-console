@@ -22,6 +22,8 @@ import { EntityDataTable } from '@/components/entity-data-table'
 import { useQueryParams } from '@/hooks/use-query-params'
 import { Pagination } from '@/components/pagination'
 import { PaginationLimitField } from '@/components/form/pagination-limit-field'
+import { EmptyResource } from '@/components/empty-resource'
+import { isNil } from 'lodash'
 
 export const AccountsTabContent = () => {
   const intl = useIntl()
@@ -223,6 +225,24 @@ export const AccountsTabContent = () => {
       <EntityDataTable.Root>
         {isAccountsLoading && <Skeleton className="h-64" />}
 
+        {isNil(
+          accountsList?.length === 0 && (
+            <EmptyResource
+              message={intl.formatMessage({
+                id: 'ledgers.accounts.emptyResource',
+                defaultMessage: "You haven't created any Accounts yet"
+              })}
+            >
+              <Button onClick={handleCreate}>
+                {intl.formatMessage({
+                  id: 'common.new.account',
+                  defaultMessage: 'New Account'
+                })}
+              </Button>
+            </EmptyResource>
+          )
+        )}
+
         {accountsList && (
           <AccountsDataTable
             accounts={{ items: accountsList }}
@@ -239,7 +259,7 @@ export const AccountsTabContent = () => {
               {
                 id: 'ledgers.accounts.showing',
                 defaultMessage:
-                  'Showing {count} {number, plural, =0 {accounts} one {account} other {accounts}}.'
+                  '{number, plural, =0 {No accounts found} one {Showing {count} account} other {Showing {count} accounts}}.'
               },
               {
                 number: accountsList?.length,
