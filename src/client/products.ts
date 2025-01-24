@@ -37,24 +37,20 @@ export const useCreateProduct = ({
   })
 }
 
-type UseListProductsProps = UseCreateProductProps &
-  PaginationRequest & {
-    name?: string
-  }
+type UseListProductsProps = UseCreateProductProps & PaginationRequest
 
 export const useListProducts = ({
   organizationId,
   ledgerId,
   limit,
   page,
-  name,
   ...options
 }: UseListProductsProps) => {
   return useQuery<PaginationDto<ProductResponseDto>>({
-    queryKey: [organizationId, ledgerId, limit, page, name],
+    queryKey: [organizationId, ledgerId, limit, page],
     queryFn: getPaginatedFetcher(
       `/api/organizations/${organizationId}/ledgers/${ledgerId}/products`,
-      { limit, page, name }
+      { limit, page }
     ),
     placeholderData: keepPreviousData,
     ...options
