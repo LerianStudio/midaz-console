@@ -5,7 +5,6 @@ import { PageHeader } from '@/components/page-header'
 import { useIntl } from 'react-intl'
 import { Button } from '@/components/ui/button'
 import ConfirmationDialog from '@/components/confirmation-dialog'
-import { Plus } from 'lucide-react'
 import {
   getCoreRowModel,
   getFilteredRowModel,
