@@ -64,10 +64,7 @@ export default function CreateTransactionPage() {
             <div className="mb-10 flex flex-row items-center gap-3">
               <OperationSourceField
                 name="source"
-                label={intl.formatMessage({
-                  id: 'transactions.source',
-                  defaultMessage: 'Source'
-                })}
+                label="Source"
                 values={values.source}
                 onSubmit={addSource}
                 control={form.control}

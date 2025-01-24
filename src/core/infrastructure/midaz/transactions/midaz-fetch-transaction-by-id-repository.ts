@@ -21,8 +21,6 @@ export class MidazFetchTransactionByIdRepository
       method: HTTP_METHODS.GET
     })
 
-    console.log('TEST_AWAIT', response)
-
     return response
   }
 }

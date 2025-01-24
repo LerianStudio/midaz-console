@@ -30,10 +30,6 @@ export class FetchTransactionByIdUseCase implements FetchTransactionById {
       transactionId
     )
 
-    console.log('transaction', transaction)
-
-    console.log('TEST_AWAIT', transaction)
-
     return TransactionMapper.toResponseDto(transaction)
   }
 }

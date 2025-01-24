@@ -25,8 +25,6 @@ export async function GET(
       transactionId
     )
 
-    console.log('dasdasdadqw', transaction)
-
     return NextResponse.json(transaction)
   } catch (error) {
     return NextResponse.json(

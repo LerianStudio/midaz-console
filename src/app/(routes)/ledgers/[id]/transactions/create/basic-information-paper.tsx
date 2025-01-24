@@ -12,10 +12,12 @@ import { useParams } from 'next/navigation'
 
 export type BasicInformationPaperProps = {
   control: Control<any>
+  readOnly?: boolean
 }
 
 export const BasicInformationPaper = ({
-  control
+  control,
+  readOnly = false
 }: BasicInformationPaperProps) => {
   const intl = useIntl()
   const { id } = useParams<{ id: string }>()
@@ -25,6 +27,8 @@ export const BasicInformationPaper = ({
     organizationId: currentOrganization.id!,
     ledgerId: id
   })
+
+  console.log('control teste', control)
 
   return (
     <Paper className="mb-6 flex flex-col">
@@ -62,6 +66,7 @@ export const BasicInformationPaper = ({
             defaultMessage: 'Optional'
           })}
           control={control}
+          disabled={readOnly}
         />
       </div>
       <Separator orientation="horizontal" />
@@ -75,6 +80,7 @@ export const BasicInformationPaper = ({
               defaultMessage: 'Value'
             })}
             control={control}
+            disabled={readOnly}
           />
         </div>
         <SelectField
@@ -84,9 +90,10 @@ export const BasicInformationPaper = ({
             defaultMessage: 'Asset'
           })}
           control={control}
+          disabled={readOnly}
         >
           {assets?.items?.map((asset) => (
-            <SelectItem key={asset.code} value={asset.code}>
+            <SelectItem key={asset.code} value={asset.code} disabled={readOnly}>
               {asset.code}
             </SelectItem>
           ))}
