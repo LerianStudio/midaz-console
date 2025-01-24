@@ -4,23 +4,32 @@ import {
   FetchParentOrganizationsUseCase
 } from '@/core/application/use-cases/organizations/fetch-parent-organizations-use-case'
 import { NextResponse } from 'next/server'
+import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { loggerMiddleware } from '@/utils/logger-middleware-config'
 
-const fetchParentOrganizations = container.get<FetchParentOrganizations>(
-  FetchParentOrganizationsUseCase
-)
+export const GET = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'fetchParentOrganizations',
+      method: 'GET'
+    })
+  ],
+  async (request: Request) => {
+    try {
+      const fetchParentOrganizations: FetchParentOrganizations =
+        container.get<FetchParentOrganizations>(FetchParentOrganizationsUseCase)
+      const { searchParams } = new URL(request.url)
+      const organizationId = searchParams.get('organizationId') || undefined
 
-export async function GET(request: Request) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const organizationId = searchParams.get('organizationId') || undefined
+      const organizations =
+        await fetchParentOrganizations.execute(organizationId)
 
-    const organizations = await fetchParentOrganizations.execute(organizationId)
-
-    return NextResponse.json(organizations)
-  } catch (error: unknown) {
-    return NextResponse.json(
-      { message: 'Error fetching parent organizations' },
-      { status: 400 }
-    )
+      return NextResponse.json(organizations)
+    } catch (error: unknown) {
+      return NextResponse.json(
+        { message: 'Error fetching parent organizations' },
+        { status: 400 }
+      )
+    }
   }
-}
+)

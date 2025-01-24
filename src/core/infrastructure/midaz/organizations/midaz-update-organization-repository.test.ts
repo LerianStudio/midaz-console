@@ -1,6 +1,6 @@
 import { MidazUpdateOrganizationRepository } from './midaz-update-organization-repository'
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
-import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 jest.mock('../../utils/http-fetch-utils', () => ({
   httpMidazAuthFetch: jest.fn(),
@@ -11,9 +11,13 @@ jest.mock('../../utils/http-fetch-utils', () => ({
 
 describe('MidazUpdateOrganizationRepository', () => {
   let repository: MidazUpdateOrganizationRepository
+  let mockHttpFetchUtils: { httpMidazAuthFetch: jest.Mock }
 
   beforeEach(() => {
-    repository = new MidazUpdateOrganizationRepository()
+    mockHttpFetchUtils = { httpMidazAuthFetch: jest.fn() }
+    repository = new MidazUpdateOrganizationRepository(
+      mockHttpFetchUtils as any
+    )
     jest.clearAllMocks()
   })
 
@@ -47,14 +51,14 @@ describe('MidazUpdateOrganizationRepository', () => {
       legalDocument: '123456789'
     }
 
-    ;(httpMidazAuthFetch as jest.Mock).mockResolvedValueOnce(response)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(response)
 
     const result = await repository.updateOrganization(
       organizationId,
       organizationData
     )
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}`,
       method: HTTP_METHODS.PATCH,
       body: JSON.stringify(organizationData)
@@ -79,13 +83,13 @@ describe('MidazUpdateOrganizationRepository', () => {
     }
     const error = new Error('Error occurred')
 
-    ;(httpMidazAuthFetch as jest.Mock).mockRejectedValueOnce(error)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockRejectedValueOnce(error)
 
     await expect(
       repository.updateOrganization(organizationId, organizationData)
     ).rejects.toThrow('Error occurred')
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}`,
       method: HTTP_METHODS.PATCH,
       body: JSON.stringify(organizationData)

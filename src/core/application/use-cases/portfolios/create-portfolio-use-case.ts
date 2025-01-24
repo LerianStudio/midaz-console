@@ -1,11 +1,12 @@
 import { CreatePortfolioRepository } from '@/core/domain/repositories/portfolios/create-portfolio-repository'
 import { PortfolioMapper } from '../../mappers/portfolio-mapper'
-import {
+import type {
   CreatePortfolioDto,
   PortfolioResponseDto
 } from '../../dto/portfolios-dto'
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { inject, injectable } from 'inversify'
+import { LoggerAggregator } from '../../logger/logger-aggregator'
 
 export interface CreatePortfolio {
   execute: (

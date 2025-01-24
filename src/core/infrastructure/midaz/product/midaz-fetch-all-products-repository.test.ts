@@ -1,7 +1,7 @@
 import { MidazFetchAllProductsRepository } from './midaz-fetch-all-products-repository'
 import { ProductEntity } from '@/core/domain/entities/product-entity'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
-import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 jest.mock('../../utils/http-fetch-utils', () => ({
   httpMidazAuthFetch: jest.fn(),
@@ -12,9 +12,11 @@ jest.mock('../../utils/http-fetch-utils', () => ({
 
 describe('MidazFetchAllProductsRepository', () => {
   let repository: MidazFetchAllProductsRepository
+  let mockHttpFetchUtils: { httpMidazAuthFetch: jest.Mock }
 
   beforeEach(() => {
-    repository = new MidazFetchAllProductsRepository()
+    mockHttpFetchUtils = { httpMidazAuthFetch: jest.fn() }
+    repository = new MidazFetchAllProductsRepository(mockHttpFetchUtils as any)
     jest.clearAllMocks()
   })
 
@@ -42,7 +44,7 @@ describe('MidazFetchAllProductsRepository', () => {
       page
     }
 
-    ;(httpMidazAuthFetch as jest.Mock).mockResolvedValueOnce(response)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(response)
 
     const result = await repository.fetchAll(
       organizationId,
@@ -51,7 +53,7 @@ describe('MidazFetchAllProductsRepository', () => {
       page
     )
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/products?limit=${limit}&page=${page}`,
       method: HTTP_METHODS.GET
     })
@@ -65,13 +67,13 @@ describe('MidazFetchAllProductsRepository', () => {
     const page = 1
     const error = new Error('Error occurred')
 
-    ;(httpMidazAuthFetch as jest.Mock).mockRejectedValueOnce(error)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockRejectedValueOnce(error)
 
     await expect(
       repository.fetchAll(organizationId, ledgerId, limit, page)
     ).rejects.toThrow('Error occurred')
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/products?limit=${limit}&page=${page}`,
       method: HTTP_METHODS.GET
     })

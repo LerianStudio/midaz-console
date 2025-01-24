@@ -1,11 +1,17 @@
 import { ProductEntity } from '@/core/domain/entities/product-entity'
 import { UpdateProductRepository } from '@/core/domain/repositories/products/update-product-repository'
-import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
-import { injectable } from 'inversify'
+import { HTTP_METHODS, MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
+import { injectable, inject } from 'inversify'
+import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
 
 @injectable()
 export class MidazUpdateProductRepository implements UpdateProductRepository {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
+
+  constructor(
+    @inject(ContainerTypeMidazHttpFetch.MidazHttpFetchUtils)
+    private readonly midazHttpFetchUtils: MidazHttpFetchUtils
+  ) {}
 
   async update(
     organizationId: string,
@@ -15,11 +21,12 @@ export class MidazUpdateProductRepository implements UpdateProductRepository {
   ): Promise<ProductEntity> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/products/${productId}`
 
-    const response = await httpMidazAuthFetch<ProductEntity>({
-      url,
-      method: HTTP_METHODS.PATCH,
-      body: JSON.stringify(product)
-    })
+    const response =
+      await this.midazHttpFetchUtils.httpMidazAuthFetch<ProductEntity>({
+        url,
+        method: HTTP_METHODS.PATCH,
+        body: JSON.stringify(product)
+      })
 
     return response
   }

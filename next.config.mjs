@@ -2,6 +2,7 @@ import { hostname } from 'os'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: false,
   logging: {
     fetches: {
       fullUrl: true
@@ -46,9 +47,22 @@ const nextConfig = {
         ? { properties: ['^data-testid$'] }
         : false
   },
+  webpack: (config, { isServer }) => {
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      worker_threads: false,
+      pino: false
+    }
+
+    return config
+  },
   experimental: {
-    instrumentationHook: true,
-    serverComponentsExternalPackages: ['@opentelemetry/instrumentation']
+    serverComponentsExternalPackages: [
+      'pino',
+      'pino-pretty',
+      '@opentelemetry/instrumentation'
+    ],
+    instrumentationHook: true
   }
 }
 
