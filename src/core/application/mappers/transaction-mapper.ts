@@ -6,6 +6,11 @@ import {
 import { isNumber } from 'lodash'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 
+type FormatTransactionValueProps = {
+  amount: number
+  amountScale: number
+}
+
 export class TransactionMapper {
   static toDomain(transaction: CreateTransactionDto): TransactionEntity {
     return {
@@ -46,6 +51,22 @@ export class TransactionMapper {
 
   static toResponseDto(transaction: TransactionEntity): TransactionResponseDto {
     return transaction
+  }
+
+  static formatTransactionValue(
+    transaction: FormatTransactionValueProps,
+    locale?: string
+  ): string {
+    const { amount, amountScale } = transaction
+
+    const numericValue = amount / 10 ** amountScale
+
+    const decimalString = numericValue.toLocaleString(locale ?? undefined, {
+      minimumFractionDigits: amountScale,
+      maximumFractionDigits: amountScale
+    })
+
+    return decimalString
   }
 
   static valueToAmount(value: number) {

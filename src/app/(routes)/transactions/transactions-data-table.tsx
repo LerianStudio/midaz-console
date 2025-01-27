@@ -47,6 +47,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
 import { useIntl } from 'react-intl'
 import dayjs from 'dayjs'
+import { TransactionMapper } from '@/core/application/mappers/transaction-mapper'
 
 const getBadgeVariant = (status: string) =>
   status === 'APPROVED' ? 'active' : 'inactive'
@@ -57,15 +58,18 @@ const TransactionRow: React.FC<any> = ({
   handleDialogOpen
 }) => {
   const intl = useIntl()
-  const id = transaction.original.id || ''
-  const displayId = id && id.length > 12 ? `${truncateString(id, 12)}` : id
-  const badgeVariant = getBadgeVariant(transaction.original.status.code)
-  const { amount, amountScale, assetCode } = transaction.original
-  const numericValue = amount / 10 ** amountScale
-  const displayValue = numericValue.toLocaleString(intl.locale, {
-    minimumFractionDigits: amountScale,
-    maximumFractionDigits: amountScale
-  })
+  const {
+    id = '',
+    status: { code },
+    assetCode
+  } = transaction.original
+  const displayId = id.length > 12 ? truncateString(id, 12) : id
+  const badgeVariant = getBadgeVariant(code)
+
+  const displayValue = TransactionMapper.formatTransactionValue(
+    transaction.original,
+    intl.locale
+  )
 
   return (
     <React.Fragment>
