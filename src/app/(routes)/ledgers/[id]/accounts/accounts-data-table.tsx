@@ -11,7 +11,6 @@ import {
   TableBody
 } from '@/components/ui/table'
 import { Minus, MoreVertical } from 'lucide-react'
-import useCustomToast from '@/hooks/use-custom-toast'
 import { isNil } from 'lodash'
 import {
   DropdownMenu,
@@ -20,16 +19,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
-} from '@/components/ui/tooltip'
-import { Arrow } from '@radix-ui/react-tooltip'
-import { truncateString } from '@/helpers'
 import { Button } from '@/components/ui/button'
 import { AccountType } from '@/types/accounts-type'
+import { IdTableCell } from '../IdTableCell'
+import { MetadataTableCell } from '../MetadataTableCell'
 
 type AccountsTableProps = {
   accounts: { items: AccountType[] }
@@ -47,76 +40,22 @@ type AccountsTableProps = {
 type AccountRowProps = {
   account: { id: string; original: AccountType }
   handleEdit: (account: AccountType) => void
-  handleCopyToClipboard: (value: string, message: string) => void
   onDelete: (id: string, account: AccountType) => void
 }
 
 const AccountRow: React.FC<AccountRowProps> = ({
   account,
   handleEdit,
-  handleCopyToClipboard,
   onDelete
 }) => {
   const intl = useIntl()
-  const id = account.original.id || ''
-  const displayId =
-    account.original.id && account.original.id.length > 8
-      ? `${truncateString(account.original.id, 8)}`
-      : account.original.id
-  const metadataCount = Object.entries(account.original.metadata || []).length
 
   return (
     <TableRow key={account.id}>
-      <TableCell>
-        <TooltipProvider>
-          <Tooltip delayDuration={300}>
-            <TooltipTrigger
-              onClick={() =>
-                handleCopyToClipboard(
-                  id,
-                  intl.formatMessage({
-                    id: 'ledgers.toast.copyId',
-                    defaultMessage: 'The id has been copied to your clipboard.'
-                  })
-                )
-              }
-            >
-              <p className="text-shadcn-600 underline">{displayId}</p>
-            </TooltipTrigger>
-            <TooltipContent
-              className="border-none bg-shadcn-600"
-              arrowPadding={0}
-            >
-              <p className="text-shadcn-400">{id}</p>
-              <p className="text-center text-white">
-                {intl.formatMessage({
-                  id: 'ledgers.columnsTable.tooltipCopyText',
-                  defaultMessage: 'Click to copy'
-                })}
-              </p>
-              <Arrow height={8} width={15} />
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </TableCell>
+      <IdTableCell id={account.original.id} />
       <TableCell>{account.original.name}</TableCell>
       <TableCell>{account.original.assetCode}</TableCell>
-      <TableCell>
-        {metadataCount === 0 ? (
-          <Minus size={20} />
-        ) : (
-          intl.formatMessage(
-            {
-              id: 'common.table.metadata',
-              defaultMessage:
-                '{number, plural, =0 {-} one {# record} other {# records}}'
-            },
-            {
-              number: metadataCount
-            }
-          )
-        )}
-      </TableCell>
+      <MetadataTableCell metadata={account.original.metadata} />
       <TableCell>
         {account.original.portfolio?.name ?? <Minus size={20} />}
       </TableCell>
@@ -159,12 +98,6 @@ export const AccountsDataTable: React.FC<AccountsTableProps> = ({
   handleEdit
 }) => {
   const intl = useIntl()
-  const { showInfo } = useCustomToast()
-
-  const handleCopyToClipboard = (value: string, message: string) => {
-    navigator.clipboard.writeText(value)
-    showInfo(message)
-  }
 
   return (
     <React.Fragment>
@@ -217,7 +150,6 @@ export const AccountsDataTable: React.FC<AccountsTableProps> = ({
                   key={account.id}
                   account={account}
                   handleEdit={handleEdit}
-                  handleCopyToClipboard={handleCopyToClipboard}
                   onDelete={onDelete}
                 />
               ))}

@@ -39,6 +39,8 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { useQueryParams } from '@/hooks/use-query-params'
 import { Pagination } from '@/components/pagination'
 import { PaginationLimitField } from '@/components/form/pagination-limit-field'
+import { IdTableCell } from '../IdTableCell'
+import { MetadataTableCell } from '../MetadataTableCell'
 
 export const ProductsTabContent = () => {
   const intl = useIntl()
@@ -205,22 +207,9 @@ export const ProductsTabContent = () => {
               <TableBody>
                 {table.getRowModel().rows.map((product) => (
                   <TableRow key={product.id}>
-                    <TableCell>{product.original.id}</TableCell>
+                    <IdTableCell id={product.original.id} />
                     <TableCell>{product.original.name}</TableCell>
-                    <TableCell>
-                      {intl.formatMessage(
-                        {
-                          id: 'common.table.metadata',
-                          defaultMessage:
-                            '{number, plural, =0 {-} one {# record} other {# records}}'
-                        },
-                        {
-                          number: Object.entries(
-                            product.original.metadata || []
-                          ).length
-                        }
-                      )}
-                    </TableCell>
+                    <MetadataTableCell metadata={product.original.metadata} />
                     <TableCell className="w-0" align="center">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
