@@ -155,17 +155,14 @@ export const AssetsDataTable: React.FC<AssetsTableProps> = ({
   }
 
   return (
-    <div>
+    <>
+      <AssetsSheet ledgerId={ledgerId} onSuccess={refetch} {...sheetProps} />
+
       {isNil(assets?.items) || assets.items.length === 0 ? (
         <EmptyResource
           message={intl.formatMessage({
             id: 'ledgers.assets.emptyResource',
-            defaultMessage:
-              "You haven't added any Asset within this Ledger yet."
-          })}
-          extra={intl.formatMessage({
-            id: 'ledgers.assets.emptyResourceExtra',
-            defaultMessage: 'No Asset found.'
+            defaultMessage: 'You have not created any assets yet.'
           })}
         >
           <Button variant="outline" onClick={handleCreate} icon={<Plus />}>
@@ -228,8 +225,6 @@ export const AssetsDataTable: React.FC<AssetsTableProps> = ({
           </Table>
         </TableContainer>
       )}
-
-      <AssetsSheet ledgerId={ledgerId} onSuccess={refetch} {...sheetProps} />
-    </div>
+    </>
   )
 }
