@@ -12,6 +12,22 @@ import { Input } from '@/components/ui/input'
 import { HTMLInputTypeAttribute, ReactNode } from 'react'
 import { Control } from 'react-hook-form'
 
+// export type InputFieldProps = {
+//   name: string
+//   type?: HTMLInputTypeAttribute
+//   label?: ReactNode
+//   tooltip?: string
+//   labelExtra?: ReactNode
+//   placeholder?: string
+//   description?: ReactNode
+//   control: Control<any>
+//   disabled?: boolean
+//   readOnly?: boolean
+//   minHeight?: number
+//   maxHeight?: number
+//   textArea?: boolean
+//   required?: boolean
+// }
 export type InputFieldProps = {
   name: string
   type?: HTMLInputTypeAttribute
@@ -27,8 +43,11 @@ export type InputFieldProps = {
   maxHeight?: number
   textArea?: boolean
   required?: boolean
+  value?: string
+  onChange?: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void
 }
-
 export const InputField = ({
   type,
   label,
@@ -41,6 +60,7 @@ export const InputField = ({
   minHeight,
   maxHeight,
   textArea,
+  onChange,
   ...others
 }: InputFieldProps) => {
   return (
@@ -65,6 +85,11 @@ export const InputField = ({
                 minHeight={minHeight}
                 maxHeight={maxHeight}
                 {...field}
+                value={field.value}
+                onChange={(e) => {
+                  field.onChange(e)
+                  onChange?.(e)
+                }}
               />
             ) : (
               <Input
