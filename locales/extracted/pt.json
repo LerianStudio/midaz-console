@@ -335,5 +335,14 @@
   "common.new.account": "Nova Conta",
   "ledgers.accounts.emptyResource": "Você ainda não criou nenhum conta.",
   "ledgers.accounts.tooltip": "As contas são a base do ledger, e cada uma representa um ativo específico.",
-  "ledgers.portfolio.tooltip": "Crie portfólios e associe contas para gerenciar com mais eficiência."
+  "ledgers.portfolio.tooltip": "Crie portfólios e associe contas para gerenciar com mais eficiência.",
+  "entity.portfolio": "Portfólio",
+  "ledgers.account.field.allowReceiving": "Permitir Recebimento",
+  "ledgers.account.field.allowReceiving.tooltip": "Operações habilitadas nesta conta",
+  "ledgers.account.field.allowSending": "Permitir Envio",
+  "ledgers.account.sheet.createPortfolio": "Portfólio",
+  "ledgers.account.sheet.linkedPortfolio": "Conta vinculada a um portfólio.",
+  "ledgers.account.sheet.noLinkedPortfolio": "Conta não vinculada a nenhum portfólio.",
+  "ledgers.account.sheet.noPortfolio.description": "Você não tem um portfólio disponível para vincular aqui.",
+  "ledgers.account.sheet.noPortfolio.title": "Vincular a um Portfólio"
 }
