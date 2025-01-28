@@ -41,16 +41,39 @@ import {
   useReactTable
 } from '@tanstack/react-table'
 import { isNil } from 'lodash'
-import { MoreVertical } from 'lucide-react'
+import { HelpCircle, MoreVertical } from 'lucide-react'
 import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useIntl } from 'react-intl'
 import dayjs from 'dayjs'
 import { TransactionMapper } from '@/core/application/mappers/transaction-mapper'
 
+enum TransactionStatus {
+  APPROVED = 'APPROVED',
+  CANCELED = 'CANCELED'
+}
+
 const getBadgeVariant = (status: string) =>
-  status === 'APPROVED' ? 'active' : 'inactive'
+  status === TransactionStatus.APPROVED ? 'active' : 'inactive'
+
+const getTranslatedStatus = (
+  statusCode: TransactionStatus,
+  intl: any
+): string => {
+  switch (statusCode) {
+    case TransactionStatus.APPROVED:
+      return intl.formatMessage({
+        id: 'status.approved',
+        defaultMessage: 'Approved'
+      })
+    case TransactionStatus.CANCELED:
+      return intl.formatMessage({
+        id: 'status.canceled',
+        defaultMessage: 'Canceled'
+      })
+  }
+}
 
 const TransactionRow: React.FC<any> = ({
   transaction,
@@ -61,22 +84,83 @@ const TransactionRow: React.FC<any> = ({
   const {
     id = '',
     status: { code },
-    assetCode
+    createdAt,
+    assetCode,
+    source = [],
+    destination = []
   } = transaction.original
+
   const displayId = id.length > 12 ? truncateString(id, 12) : id
   const badgeVariant = getBadgeVariant(code)
+  const translatedStatus = getTranslatedStatus(code, intl)
 
   const displayValue = TransactionMapper.formatTransactionValue(
     transaction.original,
     intl.locale
   )
 
+  const renderItemsList = (items: any[], type: 'source' | 'destination') => {
+    if (items.length === 1) {
+      return <p>{String(items[0])}</p>
+    }
+
+    if (items.length === 0) {
+      return null
+    }
+
+    let label: string
+    if (type === 'source') {
+      label = intl.formatMessage({
+        id: 'transactions.source.table.row.text',
+        defaultMessage: 'sources'
+      })
+    } else {
+      label = intl.formatMessage({
+        id: 'transactions.destination.table.row.text',
+        defaultMessage: 'destinations'
+      })
+    }
+
+    return (
+      <div className="flex items-center gap-1">
+        <p>
+          {intl.formatMessage(
+            {
+              id: 'transactions.multiple.label',
+              defaultMessage: '{count} {label}'
+            },
+            {
+              count: items.length,
+              label
+            }
+          )}
+        </p>
+        <TooltipProvider>
+          <Tooltip delayDuration={300}>
+            <TooltipTrigger asChild className="flex self-end">
+              <span className="cursor-pointer">
+                <HelpCircle size={16} />
+              </span>
+            </TooltipTrigger>
+            <TooltipContent className="max-w-80">
+              <p className="text-shadcn-400">
+                {items.map((item) => String(item)).join(', ')}
+              </p>
+              <Arrow height={8} width={15} />
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
+    )
+  }
+
+  const renderSource = renderItemsList(source, 'source')
+  const renderDestination = renderItemsList(destination, 'destination')
+
   return (
     <React.Fragment>
       <TableRow key={transaction.id}>
-        <TableCell>
-          {dayjs(transaction.original.createdAt).format('L HH:mm')}
-        </TableCell>
+        <TableCell>{dayjs(createdAt).format('L HH:mm')}</TableCell>
         <TableCell>
           <TooltipProvider>
             <Tooltip delayDuration={300}>
@@ -110,18 +194,16 @@ const TransactionRow: React.FC<any> = ({
             </Tooltip>
           </TooltipProvider>
         </TableCell>
-        <TableCell>{String(transaction.original.source)}</TableCell>
-        <TableCell>{String(transaction.original.destination)}</TableCell>
+        <TableCell>{renderSource}</TableCell>
+        <TableCell>{renderDestination}</TableCell>
         <TableCell>
-          <div>
-            <Badge variant={badgeVariant}>
-              {capitalizeFirstLetter(transaction.original.status.code)}
-            </Badge>
+          <div className="text-center">
+            <Badge variant={badgeVariant}>{translatedStatus}</Badge>
           </div>
         </TableCell>
         <TableCell className="text-base font-medium text-zinc-600">
           <span className="mr-2 text-xs font-normal">{assetCode}</span>
-          {displayValue}
+          {capitalizeFirstLetter(displayValue)}
         </TableCell>
         <TableCell className="w-0">
           <div className="flex justify-center">
@@ -177,20 +259,18 @@ export const TransactionsDataTable = ({
 }: any) => {
   const intl = useIntl()
   const { showInfo } = useCustomToast()
-  const searchParams = useSearchParams()
-  const items = ledgers?.items ?? []
-  const limit = ledgers?.limit ?? 10
   const router = useRouter()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
 
   const table = useReactTable({
     data: transactions?.items || [],
     columns: [
+      { accessorKey: 'data' },
       { accessorKey: 'id' },
-      { accessorKey: 'name' },
-      { accessorKey: 'assets' },
-      { accessorKey: 'metadata' },
+      { accessorKey: 'source' },
+      { accessorKey: 'destination' },
       { accessorKey: 'status' },
+      { accessorKey: 'value' },
       { accessorKey: 'actions' }
     ],
     getCoreRowModel: getCoreRowModel(),
@@ -198,13 +278,6 @@ export const TransactionsDataTable = ({
     onColumnFiltersChange: setColumnFilters,
     state: { columnFilters }
   })
-
-  const setQueryParam = (limit: number, page: number) => {
-    const params = new URLSearchParams(searchParams.toString())
-    params.set('limit', String(limit))
-    params.set('page', String(page))
-    router.push(`?${params.toString()}`)
-  }
 
   const onCreateTransaction = React.useCallback(() => {
     if (!selectedLedgerId) {
@@ -310,7 +383,7 @@ export const TransactionsDataTable = ({
                         defaultMessage: 'Destination'
                       })}
                     </TableHead>
-                    <TableHead>
+                    <TableHead className="text-center">
                       {intl.formatMessage({
                         id: 'common.status',
                         defaultMessage: 'Status'
