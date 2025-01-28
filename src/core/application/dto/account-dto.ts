@@ -9,6 +9,8 @@ export interface CreateAccountDto {
   parentAccountId?: string | null
   portfolioId?: string | null
   productId?: string
+  allowSending?: boolean
+  allowReceiving?: boolean
   status: {
     code: string
     description: string
@@ -29,6 +31,8 @@ export interface AccountResponseDto {
   portfolioId?: string | null
   productId: string
   status: StatusDto
+  allowSending?: boolean
+  allowReceiving?: boolean
   metadata: Record<string, any>
   createdAt: Date
   updatedAt: Date
@@ -44,6 +48,8 @@ export interface UpdateAccountDto {
   parentAccountId?: string
   productId?: string
   portfolioId?: string
+  allowSending?: boolean
+  allowReceiving?: boolean
   status?: StatusDto
   metadata?: Record<string, any>
 }
