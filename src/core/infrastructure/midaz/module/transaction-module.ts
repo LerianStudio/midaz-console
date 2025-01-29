@@ -3,6 +3,8 @@ import { Container, ContainerModule } from '../../utils/di/container'
 import { MidazCreateTransactionRepository } from '../transactions/midaz-create-transaction-repository'
 import { MidazFetchTransactionByIdRepository } from '../transactions/midaz-fetch-transaction-by-id-repository'
 import { FetchTransactionByIdRepository } from '@/core/domain/repositories/transactions/fetch-transaction-by-id-repository'
+import { UpdateTransactionRepository } from '@/core/domain/repositories/transactions/update-transaction-repository'
+import { MidazUpdateTransactionRepository } from '../transactions/midaz-update-transaction-repository'
 
 export const MidazTransactionModule = new ContainerModule(
   (container: Container) => {
@@ -13,5 +15,9 @@ export const MidazTransactionModule = new ContainerModule(
     container
       .bind<FetchTransactionByIdRepository>(FetchTransactionByIdRepository)
       .to(MidazFetchTransactionByIdRepository)
+
+    container
+      .bind<UpdateTransactionRepository>(UpdateTransactionRepository)
+      .to(MidazUpdateTransactionRepository)
   }
 )

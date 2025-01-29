@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button'
 import { LoadingButton } from '@/components/ui/loading-button'
 import { ArrowRight } from 'lucide-react'
 import { PageFooter, PageFooterSection } from '@/components/page-footer'
+import { useUpdateTransaction } from '@/client/transactions'
 
 export type BasicInformationPaperProps = {
   control: Control<any>
@@ -34,6 +35,7 @@ export const BasicInformationPaperReadOnly = ({
 }: BasicInformationPaperProps) => {
   const intl = useIntl()
   const { id } = useParams<{ id: string }>()
+  const { transactionId } = useParams<{ transactionId: string }>()
   const { currentOrganization } = useOrganization()
   const [isEditing, setIsEditing] = useState(false)
   const [initialDescription, setInitialDescription] = useState(
@@ -42,6 +44,8 @@ export const BasicInformationPaperReadOnly = ({
   const [currentDescription, setCurrentDescription] = useState(
     values.description || ''
   )
+
+  console.log(id)
 
   const form = useForm({
     defaultValues: {
@@ -77,10 +81,23 @@ export const BasicInformationPaperReadOnly = ({
     onCancel?.()
   }
 
+  const { mutate: updateTransaction, isPending: updatePending } =
+    useUpdateTransaction({
+      organizationId: currentOrganization.id!,
+      ledgerId: id!,
+      transactionId: transactionId!
+    })
+
   const handleSave = () => {
-    console.log(currentDescription, isEditing, values.description)
-    onSave?.(currentDescription)
-    setIsEditing(false)
+    updateTransaction(
+      { description: currentDescription },
+      {
+        onSuccess: () => {
+          setIsEditing(false)
+          onSave?.(currentDescription)
+        }
+      }
+    )
   }
 
   const formatCurrency = (value: string | number) => {

@@ -7,10 +7,13 @@ import {
   FetchTransactionById,
   FetchTransactionByIdUseCase
 } from '@/core/application/use-cases/transactions/fetch-transaction-by-id-use-case'
+import { UpdateTransactionUseCase } from '@/core/application/use-cases/transactions/update-transaction-use-case'
+import { UpdateTransaction } from '@/core/application/use-cases/transactions/update-transaction-use-case'
 
 export const TransactionUseCaseModule = new ContainerModule(
   (container: Container) => {
     container.bind<CreateTransaction>(CreateTransactionUseCase).toSelf()
     container.bind<FetchTransactionById>(FetchTransactionByIdUseCase).toSelf()
+    container.bind<UpdateTransaction>(UpdateTransactionUseCase).toSelf()
   }
 )

@@ -64,4 +64,14 @@ export class TransactionMapper {
 
     return { value: resultValue, scale }
   }
+
+  static transactionMapperUpdate(
+    description?: string,
+    metadata?: Record<string, any>
+  ) {
+    return {
+      description,
+      metadata: metadata && Object.keys(metadata).length !== 0 ? metadata : null
+    }
+  }
 }

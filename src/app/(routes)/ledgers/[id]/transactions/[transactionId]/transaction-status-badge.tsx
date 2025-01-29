@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
-import { CheckIcon, ClockIcon } from 'lucide-react'
+import { CheckCheckIcon, ClockIcon } from 'lucide-react'
 
 type TransactionStatus = 'APPROVED' | 'PENDING'
 
@@ -19,19 +19,19 @@ export function TransactionStatusBadge({
       {status === 'APPROVED' ? (
         <Badge
           className={cn(
-            'bg-emerald-100 text-emerald-800', // D1FAE5 e 065F46
-            'flex items-center gap-1.5 px-3 py-0.5',
+            'bg-emerald-500 text-white hover:bg-emerald-400',
+            'flex items-center gap-2 px-4 py-1.5',
             'font-medium',
             className
           )}
         >
           Aprovada
-          <CheckIcon className="h-4 w-4" />
+          <CheckCheckIcon className="h-4 w-4" />
         </Badge>
       ) : (
         <Badge
           className={cn(
-            'bg-gray-100 text-gray-700', // F3F4F6 e 1F2937
+            'bg-gray-100 text-gray-700',
             'flex items-center gap-1.5 px-3 py-0.5',
             'font-medium',
             className

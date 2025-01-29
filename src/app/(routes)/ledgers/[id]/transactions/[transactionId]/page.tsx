@@ -37,9 +37,10 @@ import { OperationSourceField } from '../create/operation-source-field'
 import { OperationAccordion } from '../create/operation-accordion'
 import { BasicInformationPaperReadOnly } from './basic-information-paper-readOnly'
 import { OperationSourceFieldReadOnly } from './operation-source-field-readOnly'
-import CheckApproveCircle from '/public/svg/approve.svg'
+import CheckApproveCircle from '/public/svg/approved-circle.svg'
 import { TransactionStatusBadge } from './transaction-status-badge'
 import { Badge } from '@/components/ui/badge'
+import { OperationAccordionReadOnly } from './operation-accordion-readOnly'
 
 const TAB_VALUES = {
   SUMMARY: 'summary',
@@ -75,7 +76,6 @@ const TransactionDetailsPage = () => {
     transactionId
   })
 
-  console.log('transaction', transaction)
   const initialValues = {
     description: transaction?.description || '',
     chartOfAccountsGroupName: transaction?.chartOfAccountsGroupName || '',
@@ -125,10 +125,6 @@ const TransactionDetailsPage = () => {
     values: initialValues
   })
 
-  console.log('transaction teste', transaction)
-
-  console.log('form teste', form)
-
   const breadcrumbPaths = getBreadcrumbPaths([
     {
       name: intl.formatMessage({
@@ -146,7 +142,7 @@ const TransactionDetailsPage = () => {
   if (isLoading) {
     return <div>Loading...</div>
   }
-  console.log('transaction', transaction)
+
   return (
     <div>
       <PageHeader.Root>
@@ -402,7 +398,7 @@ const TransactionDetailsPage = () => {
               <div className="col-span-2">
                 {transaction?.operations?.map(
                   (operation: Operation, index: number) => (
-                    <OperationAccordion
+                    <OperationAccordionReadOnly
                       key={index}
                       type={operation.type === 'DEBIT' ? 'debit' : 'credit'}
                       name={
@@ -421,6 +417,7 @@ const TransactionDetailsPage = () => {
                     />
                   )
                 )}
+                <pre>{JSON.stringify(transaction, null, 2)}</pre>
               </div>
             </div>
           </Form>
