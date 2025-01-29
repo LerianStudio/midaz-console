@@ -321,7 +321,6 @@
   "common.load": "Carregar",
   "transactions": "transações",
   "transactions.checkbox.text": "Carregar este Ledger por padrão",
-  "transactions.emptyLedgers.subtitle": "Você precisa de um ledger para criar transações.",
   "transactions.helperTrigger.question": "O que é uma Transação?",
   "transactions.ledgers.subtitle": "Selecione um ledger para carregar as transações.",
   "transactions.section.description": "Este é o espaço das {transactions}. As movimentações que acontecem em todas as suas ledgers ficam organizadas aqui.",
@@ -357,5 +356,6 @@
   "transactions.destination.table.row.text": "destinos",
   "transactions.source.table.row.text": "origens",
   "status.approved": "Aprovada",
-  "status.canceled": "Cancelada"
+  "status.canceled": "Cancelada",
+  "common.details": "Ver detalhes"
 }

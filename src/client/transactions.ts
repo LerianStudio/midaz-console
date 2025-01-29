@@ -1,5 +1,6 @@
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
-import { getFetcher, postFetcher } from '@/lib/fetcher'
+import { getFetcher, getPaginatedFetcher, postFetcher } from '@/lib/fetcher'
+import { PaginationRequest } from '@/types/pagination-request-type'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
 export type UseCreateTransactionProps = {
@@ -12,7 +13,7 @@ export type UseListTransactionsProps = {
   organizationId: string
   ledgerId: string | null
   enabled?: boolean
-}
+} & PaginationRequest
 
 export const useCreateTransaction = ({
   organizationId,
@@ -31,15 +32,16 @@ export const useCreateTransaction = ({
 export const useListTransactions = ({
   organizationId,
   ledgerId,
-  enabled = true,
+  page,
+  limit,
   ...options
 }: UseListTransactionsProps) => {
   return useQuery<PaginationDto<any>>({
-    queryKey: ['transactions-list', organizationId, ledgerId],
-    queryFn: getFetcher(
-      `/api/organizations/${organizationId}/ledgers/${ledgerId}/transactions`
+    queryKey: ['transactions-list', organizationId, ledgerId, page, limit],
+    queryFn: getPaginatedFetcher(
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/transactions`,
+      { page, limit }
     ),
-    enabled,
     ...options
   })
 }

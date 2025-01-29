@@ -2,11 +2,11 @@ import { PageHeader } from '@/components/page-header'
 import { useIntl } from 'react-intl'
 
 type TransactionsHeaderProps = {
-  hasLoadedLedger?: boolean
+  hasLedgerLoaded?: boolean
 }
 
 export const TransactionsHeader = ({
-  hasLoadedLedger
+  hasLedgerLoaded
 }: TransactionsHeaderProps) => {
   const intl = useIntl()
 
@@ -25,7 +25,7 @@ export const TransactionsHeader = ({
           })}
         />
 
-        {hasLoadedLedger && (
+        {hasLedgerLoaded && (
           <PageHeader.ActionButtons>
             <PageHeader.CollapsibleInfoTrigger
               question={intl.formatMessage({

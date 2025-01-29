@@ -7,7 +7,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import {
@@ -48,6 +47,24 @@ import React from 'react'
 import { useIntl } from 'react-intl'
 import dayjs from 'dayjs'
 import { TransactionMapper } from '@/core/application/mappers/transaction-mapper'
+import { PaginationLimitField } from '@/components/form/pagination-limit-field'
+import { Pagination, PaginationProps } from '@/components/pagination'
+import { FormProvider, UseFormReturn } from 'react-hook-form'
+import { PaginationDto } from '@/core/application/dto/pagination-dto'
+import { ILedgerType } from '@/types/ledgers-type'
+import { ITransactiontType } from '@/types/transactions-type'
+
+type TransactionsDataTableProps = {
+  transactionsState: {
+    ledgers: PaginationDto<ILedgerType> | undefined
+    transactions: PaginationDto<ITransactiontType> | undefined
+    form: UseFormReturn<any>
+    total: number
+    pagination: PaginationProps
+    selectedLedgerId: string
+    setSelectedLedgerId: (id: string) => void
+  }
+}
 
 enum TransactionStatus {
   APPROVED = 'APPROVED',
@@ -77,8 +94,7 @@ const getTranslatedStatus = (
 
 const TransactionRow: React.FC<any> = ({
   transaction,
-  handleCopyToClipboard,
-  handleDialogOpen
+  handleCopyToClipboard
 }) => {
   const intl = useIntl()
   const {
@@ -218,29 +234,14 @@ const TransactionRow: React.FC<any> = ({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <Link href={`/ledgers/${transaction.original.id}`}>
+                <Link href={`/transactions/${transaction.original.id}`}>
                   <DropdownMenuItem>
                     {intl.formatMessage({
-                      id: 'common.edit',
-                      defaultMessage: 'Edit'
+                      id: 'common.details',
+                      defaultMessage: 'See details'
                     })}
                   </DropdownMenuItem>
                 </Link>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  data-testid="delete"
-                  onClick={() =>
-                    handleDialogOpen(
-                      transaction.original.id || '',
-                      transaction.original.name || ''
-                    )
-                  }
-                >
-                  {intl.formatMessage({
-                    id: 'common.delete',
-                    defaultMessage: 'Delete'
-                  })}
-                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -251,16 +252,22 @@ const TransactionRow: React.FC<any> = ({
 }
 
 export const TransactionsDataTable = ({
-  ledgers,
-  transactions,
-  refetch,
-  selectedLedgerId,
-  setSelectedLedgerId
-}: any) => {
+  transactionsState
+}: TransactionsDataTableProps) => {
   const intl = useIntl()
   const { showInfo } = useCustomToast()
   const router = useRouter()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
+
+  const {
+    ledgers,
+    transactions,
+    form,
+    total,
+    pagination,
+    selectedLedgerId,
+    setSelectedLedgerId
+  } = transactionsState
 
   const table = useReactTable({
     data: transactions?.items || [],
@@ -294,8 +301,8 @@ export const TransactionsDataTable = ({
 
   return (
     <React.Fragment>
-      <EntityBox.Root>
-        <EntityBox.Actions className="flex w-full justify-between gap-4">
+      <EntityBox.Collapsible>
+        <EntityBox.Banner>
           <div className="flex items-center gap-4">
             <p className="text-sm font-medium text-gray-600">
               {intl.formatMessage({
@@ -306,12 +313,12 @@ export const TransactionsDataTable = ({
 
             <Select
               value={selectedLedgerId}
-              onValueChange={(val) => {
-                setSelectedLedgerId(val)
-                localStorage.setItem('defaultTransactionLedgerId', val)
+              onValueChange={(value) => {
+                setSelectedLedgerId(value)
+                localStorage.setItem('defaultTransactionLedgerId', value)
               }}
             >
-              <SelectTrigger>
+              <SelectTrigger className="w-fit">
                 <SelectValue placeholder="Select Ledger" />
               </SelectTrigger>
 
@@ -325,14 +332,25 @@ export const TransactionsDataTable = ({
             </Select>
           </div>
 
-          <Button variant="default" onClick={onCreateTransaction}>
-            {intl.formatMessage({
-              id: 'transactions.create.title',
-              defaultMessage: 'New Transaction'
-            })}
-          </Button>
-        </EntityBox.Actions>
-      </EntityBox.Root>
+          <EntityBox.Actions className="gap-4">
+            <Button onClick={onCreateTransaction}>
+              {intl.formatMessage({
+                id: 'transactions.create.title',
+                defaultMessage: 'New Transaction'
+              })}
+            </Button>
+            <EntityBox.CollapsibleTrigger />
+          </EntityBox.Actions>
+        </EntityBox.Banner>
+
+        <EntityBox.CollapsibleContent>
+          <FormProvider {...form}>
+            <div className="col-start-3 flex justify-end">
+              <PaginationLimitField control={form.control} />
+            </div>
+          </FormProvider>
+        </EntityBox.CollapsibleContent>
+      </EntityBox.Collapsible>
 
       <EntityDataTable.Root>
         {isNil(transactions?.items) || transactions.items.length === 0 ? (
@@ -346,7 +364,7 @@ export const TransactionsDataTable = ({
               defaultMessage: 'No transaction found.'
             })}
           >
-            <Button variant="default" onClick={() => {}}>
+            <Button variant="default" onClick={onCreateTransaction}>
               {intl.formatMessage({
                 id: 'transactions.create.title',
                 defaultMessage: 'New Transaction'
@@ -409,8 +427,6 @@ export const TransactionsDataTable = ({
                       key={transaction.id}
                       transaction={transaction}
                       handleCopyToClipboard={handleCopyToClipboard}
-                      handleDialogOpen={() => {}}
-                      refetch={refetch}
                     />
                   ))}
                 </TableBody>
@@ -435,6 +451,7 @@ export const TransactionsDataTable = ({
                   }
                 )}
               </EntityDataTable.FooterText>
+              <Pagination total={total} {...pagination} />
             </EntityDataTable.Footer>
           </React.Fragment>
         )}
