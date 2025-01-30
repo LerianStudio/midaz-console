@@ -56,7 +56,7 @@ interface Operation {
   chartOfAccounts?: string
 }
 
-const TransactionDetailsPage = () => {
+export default function TransactionDetailsPage() {
   const intl = useIntl()
   type FormSchema = z.infer<typeof formSchema>
   const { id: ledgerId, transactionId } = useParams<{
@@ -417,5 +417,3 @@ const TransactionDetailsPage = () => {
     </div>
   )
 }
-
-export default TransactionDetailsPage

@@ -180,10 +180,10 @@ export const OperationAccordionReadOnly = ({
               {values.chartOfAccounts}
             </div>
           </div>
-
-          <div className="h-9 w-9" />
         </div>
+
         <Separator orientation="horizontal" />
+
         <div className="p-6">
           <p className="mb-3 text-sm font-medium">
             {intl.formatMessage({
@@ -191,11 +191,38 @@ export const OperationAccordionReadOnly = ({
               defaultMessage: 'Operations Metadata'
             })}
           </p>
-          <MetadataField
-            name={`${name}.metadata`}
-            control={control}
-            defaultValue={values.metadata || {}}
-          />
+          <div className="flex flex-row gap-4">
+            <div className="flex flex-grow flex-col gap-4">
+              <Label>
+                {intl.formatMessage({
+                  id: 'transactions.operations.metadata.key',
+                  defaultMessage: 'Key'
+                })}
+              </Label>
+              {Object.entries(values.metadata || {}).map(([key]) => (
+                <div key={key} className="flex flex-row gap-4">
+                  <div className="flex h-9 flex-grow items-center rounded-md bg-shadcn-100 px-2">
+                    {key}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="flex flex-grow flex-col gap-4">
+              <Label>
+                {intl.formatMessage({
+                  id: 'transactions.operations.metadata.value',
+                  defaultMessage: 'Value'
+                })}
+              </Label>
+              {Object.entries(values.metadata || {}).map(([key, value]) => (
+                <div key={key} className="flex flex-row gap-4">
+                  <div className="flex h-9 flex-grow items-center rounded-md bg-shadcn-100 px-2">
+                    {value}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </PaperCollapsibleContent>
     </PaperCollapsible>
