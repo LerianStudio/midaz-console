@@ -10,7 +10,7 @@ import {
   TableCell,
   TableBody
 } from '@/components/ui/table'
-import { Minus, MoreVertical } from 'lucide-react'
+import { MoreVertical } from 'lucide-react'
 import { isNil } from 'lodash'
 import {
   DropdownMenu,
@@ -54,10 +54,17 @@ const AccountRow: React.FC<AccountRowProps> = ({
     <TableRow key={account.id}>
       <IdTableCell id={account.original.id} />
       <TableCell>{account.original.name}</TableCell>
-      <TableCell>{account.original.assetCode}</TableCell>
-      <MetadataTableCell metadata={account.original.metadata} />
-      <TableCell>
-        {account.original.portfolio?.name ?? <Minus size={20} />}
+      <TableCell align="center">{account.original.assetCode}</TableCell>
+      <MetadataTableCell align="center" metadata={account.original.metadata} />
+      <TableCell align="center">
+        {account.original.portfolio?.name ?? (
+          <Button variant="link" onClick={() => handleEdit(account.original)}>
+            {intl.formatMessage({
+              id: 'common.link',
+              defaultMessage: 'Link'
+            })}
+          </Button>
+        )}
       </TableCell>
       <TableCell className="w-0">
         <DropdownMenu>
@@ -118,19 +125,19 @@ export const AccountsDataTable: React.FC<AccountsTableProps> = ({
                     defaultMessage: 'Account Name'
                   })}
                 </TableHead>
-                <TableHead>
+                <TableHead className="text-center">
                   {intl.formatMessage({
                     id: 'entity.account.currency',
                     defaultMessage: 'Assets'
                   })}
                 </TableHead>
-                <TableHead>
+                <TableHead className="text-center">
                   {intl.formatMessage({
                     id: 'common.metadata',
                     defaultMessage: 'Metadata'
                   })}
                 </TableHead>
-                <TableHead>
+                <TableHead className="text-center">
                   {intl.formatMessage({
                     id: 'common.portfolio',
                     defaultMessage: 'Portfolio'

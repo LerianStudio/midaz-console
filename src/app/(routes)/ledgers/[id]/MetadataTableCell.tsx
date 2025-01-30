@@ -1,16 +1,20 @@
 import { TableCell } from '@/components/ui/table'
 import { Metadata } from '@/types/metadata-type'
+import { TdHTMLAttributes } from 'react'
 import { useIntl } from 'react-intl'
 
-export type MetadataTableCellProps = {
+export type MetadataTableCellProps = TdHTMLAttributes<HTMLTableCellElement> & {
   metadata?: Metadata
 }
 
-export const MetadataTableCell = ({ metadata }: MetadataTableCellProps) => {
+export const MetadataTableCell = ({
+  metadata,
+  ...others
+}: MetadataTableCellProps) => {
   const intl = useIntl()
 
   return (
-    <TableCell>
+    <TableCell {...others}>
       {intl.formatMessage(
         {
           id: 'common.table.metadata',

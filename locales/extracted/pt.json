@@ -344,5 +344,6 @@
   "ledgers.account.sheet.linkedPortfolio": "Conta vinculada a um portfólio.",
   "ledgers.account.sheet.noLinkedPortfolio": "Conta não vinculada a nenhum portfólio.",
   "ledgers.account.sheet.noPortfolio.description": "Você não tem um portfólio disponível para vincular aqui.",
-  "ledgers.account.sheet.noPortfolio.title": "Vincular a um Portfólio"
+  "ledgers.account.sheet.noPortfolio.title": "Vincular a um Portfólio",
+  "common.link": "Vincular"
 }
