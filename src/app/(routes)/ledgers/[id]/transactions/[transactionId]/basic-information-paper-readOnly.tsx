@@ -1,4 +1,3 @@
-import { useListAssets } from '@/client/assets'
 import { InputField } from '@/components/form'
 import { Paper } from '@/components/ui/paper'
 import { Separator } from '@/components/ui/separator'
@@ -14,6 +13,9 @@ import { LoadingButton } from '@/components/ui/loading-button'
 import { ArrowRight } from 'lucide-react'
 import { PageFooter, PageFooterSection } from '@/components/page-footer'
 import { useUpdateTransaction } from '@/client/transactions'
+import useCustomToast from '@/hooks/use-custom-toast'
+import ConfirmationDialog from '@/components/confirmation-dialog'
+import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 
 export type BasicInformationPaperProps = {
   control: Control<any>
@@ -24,17 +26,20 @@ export type BasicInformationPaperProps = {
     description?: string
   }
   onCancel?: () => void
-  onSave?: (description: string) => void
+  onSave?: (description: string) => void,
+  handleTabChange?: (tab: string) => void
 }
 
 export const BasicInformationPaperReadOnly = ({
   control,
   values,
   onCancel,
-  onSave
+  onSave,
+  handleTabChange
 }: BasicInformationPaperProps) => {
   const intl = useIntl()
   const { id } = useParams<{ id: string }>()
+  const { showSuccess } = useCustomToast()
   const { transactionId } = useParams<{ transactionId: string }>()
   const { currentOrganization } = useOrganization()
   const [isEditing, setIsEditing] = useState(false)
@@ -45,19 +50,7 @@ export const BasicInformationPaperReadOnly = ({
     values.description || ''
   )
 
-  console.log(id)
-
-  const form = useForm({
-    defaultValues: {
-      description: initialDescription
-    },
-    values: {
-      description: initialDescription
-    }
-  })
-
   useEffect(() => {
-    console.log('values.description', values.description)
     setInitialDescription(values.description || '')
     setCurrentDescription(values.description || '')
   }, [values.description])
@@ -70,14 +63,9 @@ export const BasicInformationPaperReadOnly = ({
     setIsEditing(newValue !== initialDescription)
   }
 
-  console.log(currentDescription, isEditing, values.description)
-
   const handleCancel = () => {
     setCurrentDescription(initialDescription)
     setIsEditing(false)
-    console.log(initialDescription, currentDescription)
-    form.reset({ description: initialDescription })
-    console.log(values.description)
     onCancel?.()
   }
 
@@ -93,8 +81,16 @@ export const BasicInformationPaperReadOnly = ({
       { description: currentDescription },
       {
         onSuccess: () => {
+          showSuccess(
+            intl.formatMessage({
+              id: 'transactions.toast.update.success',
+              defaultMessage: 'Transaction updated successfully'
+            })
+          )
           setIsEditing(false)
+          handleDialogClose()
           onSave?.(currentDescription)
+          handleTabChange?.('summary')
         }
       }
     )
@@ -108,8 +104,13 @@ export const BasicInformationPaperReadOnly = ({
     }).format(Number(value))
   }
 
+
+  const { handleDialogOpen, handleDialogClose, dialogProps } = useConfirmDialog({
+    onConfirm: () => handleSave()
+  })
+
   return (
-    <Form {...form}>
+    <>
       <Paper className="mb-6 flex flex-col">
         <div className="grid grid-cols-2 gap-5 p-6">
           <InputField
@@ -181,7 +182,7 @@ export const BasicInformationPaperReadOnly = ({
           <LoadingButton
             icon={<ArrowRight />}
             iconPlacement="end"
-            onClick={handleSave}
+            onClick={() => handleDialogOpen('')}
           >
             {intl.formatMessage({
               id: 'common.save',
@@ -190,6 +191,17 @@ export const BasicInformationPaperReadOnly = ({
           </LoadingButton>
         </PageFooterSection>
       </PageFooter>
-    </Form>
+      <ConfirmationDialog
+        title={intl.formatMessage({
+          id: 'common.confirm',
+          defaultMessage: 'Confirm'
+        })}
+        description={intl.formatMessage({
+          id: 'common.confirmDescription',
+          defaultMessage: 'Are you sure you want to save?'
+        })}
+        {...dialogProps}
+      />
+    </>
   )
 }
