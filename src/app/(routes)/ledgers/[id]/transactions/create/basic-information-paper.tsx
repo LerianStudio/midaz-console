@@ -15,7 +15,7 @@ export type BasicInformationPaperProps = {
 }
 
 export const BasicInformationPaper = ({
-  control,
+  control
 }: BasicInformationPaperProps) => {
   const intl = useIntl()
   const { id } = useParams<{ id: string }>()

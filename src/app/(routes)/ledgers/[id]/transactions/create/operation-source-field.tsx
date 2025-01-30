@@ -33,7 +33,7 @@ export const OperationSourceField = ({
   label,
   values = [],
   onSubmit,
-  control,
+  control
 }: OperationSourceFieldProps) => {
   const intl = useIntl()
 
@@ -54,42 +54,42 @@ export const OperationSourceField = ({
 
   return (
     <Paper className="flex flex-grow flex-col gap-4 p-6">
-        <div className="flex flex-row gap-4">
-          <div className="flex-grow">
-            <InputField
-              name="account"
-              label={label}
-              placeholder={intl.formatMessage({
-                id: 'transactions.create.field.origin.placeholder',
-                defaultMessage: 'Type ID or alias'
-              })}
-              control={form.control}
-            />
-          </div>
-          <Button
-            className="h-9 w-9 self-end rounded-full bg-shadcn-600 disabled:bg-shadcn-200"
-            onClick={form.handleSubmit(handleSubmit)}
-          >
-            <Plus size={16} className="shrink-0" />
-          </Button>
+      <div className="flex flex-row gap-4">
+        <div className="flex-grow">
+          <InputField
+            name="account"
+            label={label}
+            placeholder={intl.formatMessage({
+              id: 'transactions.create.field.origin.placeholder',
+              defaultMessage: 'Type ID or alias'
+            })}
+            control={form.control}
+          />
         </div>
+        <Button
+          className="h-9 w-9 self-end rounded-full bg-shadcn-600 disabled:bg-shadcn-200"
+          onClick={form.handleSubmit(handleSubmit)}
+        >
+          <Plus size={16} className="shrink-0" />
+        </Button>
+      </div>
       {values?.map((field, index) => (
         <div key={index} className="flex flex-row gap-4">
           <div className="flex h-9 flex-grow items-center rounded-md bg-shadcn-100 px-2">
             {field.account}
           </div>
-            <Button
-              onClick={(e) => {
-                e.preventDefault()
-                remove(index)
-              }}
-              className="group h-9 w-9 rounded-full border border-shadcn-200 bg-white hover:border-none"
-            >
-              <Trash
-                size={16}
-                className="shrink-0 text-black group-hover:text-white"
-              />
-            </Button>
+          <Button
+            onClick={(e) => {
+              e.preventDefault()
+              remove(index)
+            }}
+            className="group h-9 w-9 rounded-full border border-shadcn-200 bg-white hover:border-none"
+          >
+            <Trash
+              size={16}
+              className="shrink-0 text-black group-hover:text-white"
+            />
+          </Button>
         </div>
       ))}
     </Paper>

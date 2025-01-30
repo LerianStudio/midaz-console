@@ -2,7 +2,7 @@ import { InputField } from '@/components/form'
 import { Paper } from '@/components/ui/paper'
 import { Separator } from '@/components/ui/separator'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
-import { Control, Form, useForm } from 'react-hook-form'
+import { Control } from 'react-hook-form'
 import { useIntl } from 'react-intl'
 import DolarSign from '/public/svg/dolar-sign.svg'
 import Image from 'next/image'
@@ -26,7 +26,7 @@ export type BasicInformationPaperProps = {
     description?: string
   }
   onCancel?: () => void
-  onSave?: (description: string) => void,
+  onSave?: (description: string) => void
   handleTabChange?: (tab: string) => void
 }
 
@@ -104,10 +104,11 @@ export const BasicInformationPaperReadOnly = ({
     }).format(Number(value))
   }
 
-
-  const { handleDialogOpen, handleDialogClose, dialogProps } = useConfirmDialog({
-    onConfirm: () => handleSave()
-  })
+  const { handleDialogOpen, handleDialogClose, dialogProps } = useConfirmDialog(
+    {
+      onConfirm: () => handleSave()
+    }
+  )
 
   return (
     <>

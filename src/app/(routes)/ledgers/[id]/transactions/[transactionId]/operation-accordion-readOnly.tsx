@@ -156,10 +156,12 @@ export const OperationAccordionReadOnly = ({
         <Separator orientation="horizontal" />
         <div className="flex flex-row gap-5 p-6">
           <div className="flex flex-grow flex-col gap-4">
-            <Label>{intl.formatMessage({
-                  id: 'transactions.field.operation.description',
-                  defaultMessage: 'Operation description'
-                })}</Label>
+            <Label>
+              {intl.formatMessage({
+                id: 'transactions.field.operation.description',
+                defaultMessage: 'Operation description'
+              })}
+            </Label>
             <div className="flex flex-row gap-4">
               <div className="flex h-9 flex-grow items-center rounded-md bg-shadcn-100 px-2">
                 {values.description}
@@ -168,17 +170,19 @@ export const OperationAccordionReadOnly = ({
           </div>
 
           <div className="flex flex-grow flex-col gap-4">
-            <Label>{intl.formatMessage({
+            <Label>
+              {intl.formatMessage({
                 id: 'transactions.field.operation.chartOfAccounts',
                 defaultMessage: 'Chart of accounts'
-              })}</Label>
+              })}
+            </Label>
             <div className="flex h-9 flex-grow items-center rounded-md bg-shadcn-100 px-2">
               {values.chartOfAccounts}
             </div>
           </div>
-          
+
           <div className="h-9 w-9" />
-        </div> 
+        </div>
         <Separator orientation="horizontal" />
         <div className="p-6">
           <p className="mb-3 text-sm font-medium">
@@ -192,7 +196,7 @@ export const OperationAccordionReadOnly = ({
             control={control}
             defaultValue={values.metadata || {}}
           />
-        </div>   
+        </div>
       </PaperCollapsibleContent>
     </PaperCollapsible>
   )

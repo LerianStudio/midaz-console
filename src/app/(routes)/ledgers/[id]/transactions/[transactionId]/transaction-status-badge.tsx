@@ -17,10 +17,12 @@ export function TransactionStatusBadge({
   const intl = useIntl()
   return (
     <div className="flex items-center gap-2">
-      <span className="text-sm text-slate-500">{intl.formatMessage({
+      <span className="text-sm text-slate-500">
+        {intl.formatMessage({
           id: 'transactions.status.title',
           defaultMessage: 'Transaction Status'
-        })}</span>
+        })}
+      </span>
       {status === 'APPROVED' ? (
         <Badge
           className={cn(
@@ -37,24 +39,20 @@ export function TransactionStatusBadge({
           <CheckCheckIcon className="h-4 w-4" />
         </Badge>
       ) : (
-        
-
         <Badge
-        className={cn(
-        'bg-gray-100 border-gray-400 text-gray-700',
-          'flex items-center gap-2 px-4 py-1.5',
-          'font-medium',
-          className
-        )}
+          className={cn(
+            'border-gray-400 bg-gray-100 text-gray-700',
+            'flex items-center gap-2 px-4 py-1.5',
+            'font-medium',
+            className
+          )}
         >
-        {intl.formatMessage({
-          id: 'transactions.status.canceled',
-          defaultMessage: 'Canceled'
-        })}
-        <X className="h-4 w-4" />
+          {intl.formatMessage({
+            id: 'transactions.status.canceled',
+            defaultMessage: 'Canceled'
+          })}
+          <X className="h-4 w-4" />
         </Badge>
-
-
       )}
     </div>
   )

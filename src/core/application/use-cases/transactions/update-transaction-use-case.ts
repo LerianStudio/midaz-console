@@ -27,7 +27,6 @@ export class UpdateTransactionUseCase implements UpdateTransaction {
     transactionId: string,
     transaction: Partial<UpdateTransactionDto>
   ): Promise<TransactionResponseDto> {
-
     const transactionEntity = TransactionMapper.transactionMapperUpdate(
       transaction.description ?? '',
       transaction.metadata ?? {}

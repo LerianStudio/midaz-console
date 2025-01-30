@@ -26,7 +26,10 @@ export const MetaAccordionTransactionDetails = ({
   control
 }: MetadataAccordionProps) => {
   const intl = useIntl()
-  const { id, transactionId } = useParams<{ id: string; transactionId: string }>()
+  const { id, transactionId } = useParams<{
+    id: string
+    transactionId: string
+  }>()
   const { currentOrganization } = useOrganization()
 
   const { mutate: updateTransaction } = useUpdateTransaction({
@@ -37,32 +40,35 @@ export const MetaAccordionTransactionDetails = ({
 
   const metadata = useWatch({
     control,
-    name: `metadata`,
-  }) 
-  
+    name: `metadata`
+  })
+
   const { showSuccess } = useCustomToast()
 
   useEffect(() => {
-    if (!metadata || !values) return;
+    if (!metadata || !values) return
 
-    const metadataString = JSON.stringify(metadata);
-    const valuesString = JSON.stringify(values);
+    const metadataString = JSON.stringify(metadata)
+    const valuesString = JSON.stringify(values)
 
     if (metadataString !== valuesString && Object.keys(metadata).length > 0) {
-      updateTransaction({
-        metadata: {
-          ...metadata,
+      updateTransaction(
+        {
+          metadata: {
+            ...metadata
+          }
+        },
+        {
+          onSuccess: () => {
+            showSuccess(
+              intl.formatMessage({
+                id: 'transactions.toast.update.success',
+                defaultMessage: 'Transaction updated successfully'
+              })
+            )
+          }
         }
-      }, {
-        onSuccess: () => {
-          showSuccess(
-            intl.formatMessage({
-              id: 'transactions.toast.update.success',
-              defaultMessage: 'Transaction updated successfully'
-            })
-          )
-        }
-      })
+      )
     }
   }, [metadata, values])
 

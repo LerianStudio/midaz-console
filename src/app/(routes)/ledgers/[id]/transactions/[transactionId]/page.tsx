@@ -93,27 +93,11 @@ const TransactionDetailsPage = () => {
       })) || []
   }
 
-
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: initialValues,
     values: initialValues
   })
-
-  const breadcrumbPaths = getBreadcrumbPaths([
-    {
-      name: intl.formatMessage({
-        id: 'entity.ledgers',
-        defaultMessage: 'Ledgers'
-      }),
-      href: '/ledgers'
-    },
-    {
-      name: transaction?.description || transactionId,
-      href: `/ledgers/${ledgerId}/transactions/${transactionId}`
-    }
-  ])
-
 
   if (isLoading) {
     return <SkeletonTransactionDialog />
@@ -121,9 +105,32 @@ const TransactionDetailsPage = () => {
 
   return (
     <div>
+      <Breadcrumb
+        paths={getBreadcrumbPaths([
+          {
+            name: intl.formatMessage({
+              id: 'settings.title',
+              defaultMessage: 'Settings'
+            }),
+            href: '/settings'
+          },
+          {
+            name: intl.formatMessage({
+              id: 'transactions.tab.list',
+              defaultMessage: 'Transactions list'
+            }),
+            href: `/ledgers/${ledgerId}/transactions`
+          },
+          {
+            name: intl.formatMessage({
+              id: 'transactions.details.title',
+              defaultMessage: 'Transaction details'
+            })
+          }
+        ])}
+      />
       <PageHeader.Root>
         <PageHeader.Wrapper>
-          {/* <Breadcrumb paths={breadcrumbPaths} /> */}
           <div className="flex w-full items-center justify-between">
             <PageHeader.InfoTitle
               title={intl.formatMessage(
@@ -166,183 +173,177 @@ const TransactionDetailsPage = () => {
         onValueChange={handleTabChange}
       >
         <Form {...form}>
-        <TabsList>
-          <TabsTrigger value={TAB_VALUES.SUMMARY}>
-            {intl.formatMessage({
-              id: 'transactions.tab.summary',
-              defaultMessage: 'Summary'
-            })}
-          </TabsTrigger>
-          <TabsTrigger value={TAB_VALUES.TRANSACTION_DATA}>
-            {intl.formatMessage({
-              id: 'transactions.tab.data',
-              defaultMessage: 'Transaction Data'
-            })}
-          </TabsTrigger>
-          <TabsTrigger value={TAB_VALUES.OPERATIONS}>
-            {intl.formatMessage({
-              id: 'transactions.tab.operations',
-              defaultMessage: 'Operations & Metadata'
-            })}
-          </TabsTrigger>
-        </TabsList>
+          <TabsList>
+            <TabsTrigger value={TAB_VALUES.SUMMARY}>
+              {intl.formatMessage({
+                id: 'transactions.tab.summary',
+                defaultMessage: 'Summary'
+              })}
+            </TabsTrigger>
+            <TabsTrigger value={TAB_VALUES.TRANSACTION_DATA}>
+              {intl.formatMessage({
+                id: 'transactions.tab.data',
+                defaultMessage: 'Transaction Data'
+              })}
+            </TabsTrigger>
+            <TabsTrigger value={TAB_VALUES.OPERATIONS}>
+              {intl.formatMessage({
+                id: 'transactions.tab.operations',
+                defaultMessage: 'Operations & Metadata'
+              })}
+            </TabsTrigger>
+          </TabsList>
 
-        <TabsContent value={TAB_VALUES.SUMMARY}>
-          <div className="mx-auto max-w-[700px]">
-            <TransactionReceipt className="mb-2 w-full">
-              <Image
-                alt=""
-                src={
-                  transaction?.status?.code === 'APPROVED'
-                    ? CheckApproveCircle
-                    : CancelledCircle
-                }
-              />
-              <TransactionReceiptValue
-                asset={transaction?.assetCode}
-                value={new Intl.NumberFormat('pt-BR', {
-                  style: 'decimal',
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2
-                }).format(Number(transaction?.amount))}
-              />
-              <StatusDisplay status={transaction?.status?.code || ''} />
-              <TransactionReceiptSubjects
-                sources={transaction?.source}
-                destinations={transaction?.destination}
-              />
-              {transaction?.description && (
-                <TransactionReceiptDescription>
-                  {transaction.description}
-                </TransactionReceiptDescription>
-              )}
-            </TransactionReceipt>
-
-            <TransactionReceipt type="ticket">
-              <TransactionReceiptItem
-                label={intl.formatMessage({
-                  id: 'transactions.source',
-                  defaultMessage: 'Source'
-                })}
-                value={
-                  <div className="flex flex-col">
-                    {transaction?.source?.map(
-                      (source: string, index: number) => (
-                        <p key={index} className="underline">
-                          {source}
-                        </p>
-                      )
-                    )}
-                  </div>
-                }
-              />
-              <TransactionReceiptItem
-                label={intl.formatMessage({
-                  id: 'transactions.destination',
-                  defaultMessage: 'Destination'
-                })}
-                value={
-                  <div className="flex flex-col">
-                    {transaction?.destination?.map(
-                      (destination: string, index: number) => (
-                        <p key={index} className="underline">
-                          {destination}
-                        </p>
-                      )
-                    )}
-                  </div>
-                }
-              />
-              <TransactionReceiptItem
-                label={intl.formatMessage({
-                  id: 'common.value',
-                  defaultMessage: 'Value'
-                })}
-                value={`${transaction?.assetCode} ${new Intl.NumberFormat(
-                  'pt-BR',
-                  {
+          <TabsContent value={TAB_VALUES.SUMMARY}>
+            <div className="mx-auto max-w-[700px]">
+              <TransactionReceipt className="mb-2 w-full">
+                <Image
+                  alt=""
+                  src={
+                    transaction?.status?.code === 'APPROVED'
+                      ? CheckApproveCircle
+                      : CancelledCircle
+                  }
+                />
+                <TransactionReceiptValue
+                  asset={transaction?.assetCode}
+                  value={new Intl.NumberFormat('pt-BR', {
                     style: 'decimal',
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2
-                  }
-                ).format(Number(transaction?.amount))}`}
-              />
-              <Separator orientation="horizontal" />
-              {transaction?.operations
-                ?.filter((op: any) => op.type === 'DEBIT')
-                .map((operation: any, index: number) => (
-                  <TransactionReceiptOperation
-                    key={index}
-                    type="debit"
-                    account={operation.accountAlias}
-                    asset={operation.assetCode}
-                    value={new Intl.NumberFormat(
-                      'pt-BR',
-                      {
-                        style: 'decimal',
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                      }
-                    ).format(Number(operation.amount.amount))}
-                  />
-                ))}
-              {transaction?.operations
-                ?.filter((op: any) => op.type === 'CREDIT')
-                .map((operation: any, index: number) => (
-                  <TransactionReceiptOperation
-                    key={index}
-                    type="credit"
-                    account={operation.accountAlias}
-                    asset={operation.assetCode}
-                    value={new Intl.NumberFormat(
-                      'pt-BR',
-                      {
-                        style: 'decimal',
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                      }
-                    ).format(Number(operation.amount.amount))}
-                  />
-                ))}
-              <Separator orientation="horizontal" />
-              <TransactionReceiptItem
-                label={intl.formatMessage({
-                  id: 'transactions.create.field.chartOfAccountsGroupName',
-                  defaultMessage: 'Accounting route group'
-                })}
-                value={
-                  !isNil(transaction?.chartOfAccountsGroupName) &&
-                  transaction.chartOfAccountsGroupName !== ''
-                    ? transaction.chartOfAccountsGroupName
-                    : intl.formatMessage({
-                        id: 'common.none',
-                        defaultMessage: 'None'
-                      })
-                }
-              />
-              <TransactionReceiptItem
-                label={intl.formatMessage({
-                  id: 'common.metadata',
-                  defaultMessage: 'Metadata'
-                })}
-                value={intl.formatMessage(
-                  {
-                    id: 'common.table.metadata',
-                    defaultMessage:
-                      '{number, plural, =0 {-} one {# record} other {# records}}'
-                  },
-                  {
-                    number: Object.keys(transaction?.metadata ?? {}).length
-                  }
+                  }).format(Number(transaction?.amount))}
+                />
+                <StatusDisplay status={transaction?.status?.code || ''} />
+                <TransactionReceiptSubjects
+                  sources={transaction?.source}
+                  destinations={transaction?.destination}
+                />
+                {transaction?.description && (
+                  <TransactionReceiptDescription>
+                    {transaction.description}
+                  </TransactionReceiptDescription>
                 )}
-              />
-            </TransactionReceipt>
+              </TransactionReceipt>
 
-            <TransactionReceiptTicket />
-          </div>
-        </TabsContent>
+              <TransactionReceipt type="ticket">
+                <TransactionReceiptItem
+                  label={intl.formatMessage({
+                    id: 'transactions.source',
+                    defaultMessage: 'Source'
+                  })}
+                  value={
+                    <div className="flex flex-col">
+                      {transaction?.source?.map(
+                        (source: string, index: number) => (
+                          <p key={index} className="underline">
+                            {source}
+                          </p>
+                        )
+                      )}
+                    </div>
+                  }
+                />
+                <TransactionReceiptItem
+                  label={intl.formatMessage({
+                    id: 'transactions.destination',
+                    defaultMessage: 'Destination'
+                  })}
+                  value={
+                    <div className="flex flex-col">
+                      {transaction?.destination?.map(
+                        (destination: string, index: number) => (
+                          <p key={index} className="underline">
+                            {destination}
+                          </p>
+                        )
+                      )}
+                    </div>
+                  }
+                />
+                <TransactionReceiptItem
+                  label={intl.formatMessage({
+                    id: 'common.value',
+                    defaultMessage: 'Value'
+                  })}
+                  value={`${transaction?.assetCode} ${new Intl.NumberFormat(
+                    'pt-BR',
+                    {
+                      style: 'decimal',
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2
+                    }
+                  ).format(Number(transaction?.amount))}`}
+                />
+                <Separator orientation="horizontal" />
+                {transaction?.operations
+                  ?.filter((op: any) => op.type === 'DEBIT')
+                  .map((operation: any, index: number) => (
+                    <TransactionReceiptOperation
+                      key={index}
+                      type="debit"
+                      account={operation.accountAlias}
+                      asset={operation.assetCode}
+                      value={new Intl.NumberFormat('pt-BR', {
+                        style: 'decimal',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                      }).format(Number(operation.amount.amount))}
+                    />
+                  ))}
+                {transaction?.operations
+                  ?.filter((op: any) => op.type === 'CREDIT')
+                  .map((operation: any, index: number) => (
+                    <TransactionReceiptOperation
+                      key={index}
+                      type="credit"
+                      account={operation.accountAlias}
+                      asset={operation.assetCode}
+                      value={new Intl.NumberFormat('pt-BR', {
+                        style: 'decimal',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                      }).format(Number(operation.amount.amount))}
+                    />
+                  ))}
+                <Separator orientation="horizontal" />
+                <TransactionReceiptItem
+                  label={intl.formatMessage({
+                    id: 'transactions.create.field.chartOfAccountsGroupName',
+                    defaultMessage: 'Accounting route group'
+                  })}
+                  value={
+                    !isNil(transaction?.chartOfAccountsGroupName) &&
+                    transaction.chartOfAccountsGroupName !== ''
+                      ? transaction.chartOfAccountsGroupName
+                      : intl.formatMessage({
+                          id: 'common.none',
+                          defaultMessage: 'None'
+                        })
+                  }
+                />
+                <TransactionReceiptItem
+                  label={intl.formatMessage({
+                    id: 'common.metadata',
+                    defaultMessage: 'Metadata'
+                  })}
+                  value={intl.formatMessage(
+                    {
+                      id: 'common.table.metadata',
+                      defaultMessage:
+                        '{number, plural, =0 {-} one {# record} other {# records}}'
+                    },
+                    {
+                      number: Object.keys(transaction?.metadata ?? {}).length
+                    }
+                  )}
+                />
+              </TransactionReceipt>
 
-        <TabsContent value={TAB_VALUES.TRANSACTION_DATA}>
+              <TransactionReceiptTicket />
+            </div>
+          </TabsContent>
+
+          <TabsContent value={TAB_VALUES.TRANSACTION_DATA}>
             <div className="grid grid-cols-3">
               <div className="col-span-2">
                 <BasicInformationPaperReadOnly
@@ -374,9 +375,9 @@ const TransactionDetailsPage = () => {
                 </div>
               </div>
             </div>
-        </TabsContent>
+          </TabsContent>
 
-        <TabsContent value={TAB_VALUES.OPERATIONS}>
+          <TabsContent value={TAB_VALUES.OPERATIONS}>
             <div className="grid grid-cols-3">
               <div className="col-span-2">
                 {transaction?.operations?.map(
@@ -411,7 +412,7 @@ const TransactionDetailsPage = () => {
                 </div>
               </div>
             </div>
-        </TabsContent>
+          </TabsContent>
         </Form>
       </Tabs>
     </div>

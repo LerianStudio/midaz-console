@@ -48,7 +48,11 @@ export type MetadataFieldProps = {
   defaultValue?: Metadata
 }
 
-export const MetadataField = ({ name, control, defaultValue }: MetadataFieldProps) => {
+export const MetadataField = ({
+  name,
+  control,
+  defaultValue
+}: MetadataFieldProps) => {
   return (
     <FormField
       name={name}

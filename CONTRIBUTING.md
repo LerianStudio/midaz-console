@@ -4,16 +4,16 @@ At Midaz, we believe in the power of collaboration and the incredible impact tha
 
 #### Why Contribute?
 
-* **Impact**: Your work will directly impact and improve a project used by organizations around the world, making their operations smoother and more efficient.
-* **Learn and Grow**: Contributing to Midaz offers you a unique opportunity to learn from a community of talented developers, enhancing your skills and knowledge in architecture design, CQRS, Ports & Adapters, and more.
-* **Community**: Join a welcoming and supportive community of developers who share your passion for creating high-quality, open-source software.
+- **Impact**: Your work will directly impact and improve a project used by organizations around the world, making their operations smoother and more efficient.
+- **Learn and Grow**: Contributing to Midaz offers you a unique opportunity to learn from a community of talented developers, enhancing your skills and knowledge in architecture design, CQRS, Ports & Adapters, and more.
+- **Community**: Join a welcoming and supportive community of developers who share your passion for creating high-quality, open-source software.
 
 #### How Can You Contribute?
 
-* **Code Contributions**: From minor fixes to major features, your code contributions are always welcome. Our architecture and minimal dependencies make it easy for you to understand and enhance Midaz.
-* **Documentation**: Help us improve our documentation to make Midaz more accessible and understandable for everyone.
-* **Feedback and Ideas**: Share your insights, suggestions, and innovative ideas to help us shape the future of Midaz.
-* **Testing**: Assist in testing new releases or features, providing valuable feedback to ensure stability and usability.
+- **Code Contributions**: From minor fixes to major features, your code contributions are always welcome. Our architecture and minimal dependencies make it easy for you to understand and enhance Midaz.
+- **Documentation**: Help us improve our documentation to make Midaz more accessible and understandable for everyone.
+- **Feedback and Ideas**: Share your insights, suggestions, and innovative ideas to help us shape the future of Midaz.
+- **Testing**: Assist in testing new releases or features, providing valuable feedback to ensure stability and usability.
 
 ## Our Workflow
 

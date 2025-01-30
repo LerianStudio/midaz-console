@@ -41,7 +41,7 @@ jobs:
           RAW_RELEASE=$(gh release list --repo $GITHUB_REPOSITORY --limit 1 --json tagName --jq '.[0].tagName')
           echo "Raw release: $RAW_RELEASE"
           echo "tag=${RAW_RELEASE}" >> $GITHUB_ENV
-      
+
       # Definir a mensagem com base na branch
       - name: Set Message for Slack Notification
         id: set_message
@@ -52,16 +52,15 @@ jobs:
             echo "message=🚀 *Nova Release na branch develop* \n \n <https://github.com/${{ github.repository }}/releases/tag/${{ env.tag }} | *Clique aqui para detalhes*>" >> $GITHUB_ENV
           fi
 
-
       # Notificar o Slack sobre nova release
       - name: Notify Slack of New Release
         uses: rtCamp/action-slack-notify@v2
         if: always() # Sempre notificar (ou ajuste conforme necessário)
         env:
-          SLACK_CHANNEL: "Marvin" # Canal no Slack
-          SLACK_COLOR: "#36a64f"
-          SLACK_ICON_EMOJI: ":rocket"
-          SLACK_TITLE: "Midaz-Console New Release: ${{ env.tag }}"
+          SLACK_CHANNEL: 'Marvin' # Canal no Slack
+          SLACK_COLOR: '#36a64f'
+          SLACK_ICON_EMOJI: ':rocket'
+          SLACK_TITLE: 'Midaz-Console New Release: ${{ env.tag }}'
           SLACK_MESSAGE: "🎉 *Nova Release Publicada!* \n \n <https://github.com/${{ github.repository }}/releases/tag/${{ env.tag }} | *Clique aqui para detalhes*>"
           SLACK_WEBHOOK: ${{ secrets.RELEASE_WEBHOOK_NOTIFICATION_URL }}
 
