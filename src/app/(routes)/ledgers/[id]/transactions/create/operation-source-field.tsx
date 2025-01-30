@@ -26,7 +26,6 @@ export type OperationSourceFieldProps = {
   values?: TransactionSourceFormSchema | []
   onSubmit?: (value: string) => void
   control: Control<TransactionFormSchema>
-  readonly?: boolean
 }
 
 export const OperationSourceField = ({
@@ -35,7 +34,6 @@ export const OperationSourceField = ({
   values = [],
   onSubmit,
   control,
-  readonly = false
 }: OperationSourceFieldProps) => {
   const intl = useIntl()
 
@@ -56,8 +54,6 @@ export const OperationSourceField = ({
 
   return (
     <Paper className="flex flex-grow flex-col gap-4 p-6">
-      <Label>{label}</Label>
-      {!readonly && (
         <div className="flex flex-row gap-4">
           <div className="flex-grow">
             <InputField
@@ -77,13 +73,11 @@ export const OperationSourceField = ({
             <Plus size={16} className="shrink-0" />
           </Button>
         </div>
-      )}
       {values?.map((field, index) => (
         <div key={index} className="flex flex-row gap-4">
           <div className="flex h-9 flex-grow items-center rounded-md bg-shadcn-100 px-2">
             {field.account}
           </div>
-          {!readonly && (
             <Button
               onClick={(e) => {
                 e.preventDefault()
@@ -96,7 +90,6 @@ export const OperationSourceField = ({
                 className="shrink-0 text-black group-hover:text-white"
               />
             </Button>
-          )}
         </div>
       ))}
     </Paper>

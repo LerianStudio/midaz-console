@@ -12,22 +12,6 @@ import { Input } from '@/components/ui/input'
 import { HTMLInputTypeAttribute, ReactNode } from 'react'
 import { Control } from 'react-hook-form'
 
-// export type InputFieldProps = {
-//   name: string
-//   type?: HTMLInputTypeAttribute
-//   label?: ReactNode
-//   tooltip?: string
-//   labelExtra?: ReactNode
-//   placeholder?: string
-//   description?: ReactNode
-//   control: Control<any>
-//   disabled?: boolean
-//   readOnly?: boolean
-//   minHeight?: number
-//   maxHeight?: number
-//   textArea?: boolean
-//   required?: boolean
-// }
 export type InputFieldProps = {
   name: string
   type?: HTMLInputTypeAttribute
