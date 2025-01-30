@@ -45,14 +45,16 @@ MetadataWrapper.displayName = 'MetadataWrapper'
 export type MetadataFieldProps = {
   name: string
   control: Control<any>
+  defaultValue?: Metadata
 }
 
-export const MetadataField = ({ name, control }: MetadataFieldProps) => {
+export const MetadataField = ({ name, control, defaultValue }: MetadataFieldProps) => {
   return (
     <FormField
       name={name}
       control={control}
       render={({ field }) => <MetadataWrapper {...field} />}
+      defaultValue={defaultValue}
     />
   )
 }
