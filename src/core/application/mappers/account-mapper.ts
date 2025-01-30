@@ -28,7 +28,9 @@ export class AccountMapper {
       assetCode: account.assetCode,
       parentAccountId: account.parentAccountId!,
       productId: account.productId!,
-      portfolioId: account.portfolioId
+      portfolioId: account.portfolioId,
+      allowSending: account.allowSending,
+      allowReceiving: account.allowReceiving
     }
   }
 
@@ -45,6 +47,8 @@ export class AccountMapper {
       parentAccountId: dto.parentAccountId,
       productId: dto.productId,
       portfolioId: dto.portfolioId,
+      allowSending: dto.allowSending,
+      allowReceiving: dto.allowReceiving,
       metadata: dto.metadata ?? {}
     }
   }

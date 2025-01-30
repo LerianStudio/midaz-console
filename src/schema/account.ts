@@ -15,6 +15,10 @@ const productId = z.string().nullable().optional()
 
 const type = z.string()
 
+const allowSending = z.boolean()
+
+const allowReceiving = z.boolean()
+
 export const accountSchema = z.object({
   name,
   alias,
@@ -23,5 +27,7 @@ export const accountSchema = z.object({
   portfolioId,
   productId,
   metadata,
-  type
+  type,
+  allowSending,
+  allowReceiving
 })
