@@ -1,8 +1,9 @@
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
-import { CheckCheckIcon, ClockIcon } from 'lucide-react'
+import { CheckCheckIcon, X } from 'lucide-react'
+import { useIntl } from 'react-intl'
 
-type TransactionStatus = 'APPROVED' | 'PENDING'
+type TransactionStatus = 'APPROVED' | 'CANCELLED'
 
 interface TransactionStatusBadgeProps {
   status: TransactionStatus
@@ -13,33 +14,47 @@ export function TransactionStatusBadge({
   status,
   className
 }: TransactionStatusBadgeProps) {
+  const intl = useIntl()
   return (
     <div className="flex items-center gap-2">
-      <span className="text-sm text-slate-500">Status da Transação</span>
+      <span className="text-sm text-slate-500">{intl.formatMessage({
+          id: 'transactions.status.title',
+          defaultMessage: 'Transaction Status'
+        })}</span>
       {status === 'APPROVED' ? (
         <Badge
           className={cn(
-            'bg-emerald-500 text-white hover:bg-emerald-400',
+            'bg-[#16A34A] text-white hover:bg-emerald-600',
             'flex items-center gap-2 px-4 py-1.5',
             'font-medium',
             className
           )}
         >
-          Aprovada
+          {intl.formatMessage({
+            id: 'transactions.status.approved',
+            defaultMessage: 'Approved'
+          })}
           <CheckCheckIcon className="h-4 w-4" />
         </Badge>
       ) : (
+        
+
         <Badge
-          className={cn(
-            'bg-gray-100 text-gray-700',
-            'flex items-center gap-1.5 px-3 py-0.5',
-            'font-medium',
-            className
-          )}
+        className={cn(
+        'bg-gray-100 border-gray-400 text-gray-700',
+          'flex items-center gap-2 px-4 py-1.5',
+          'font-medium',
+          className
+        )}
         >
-          Pendente
-          <ClockIcon className="h-4 w-4" />
+        {intl.formatMessage({
+          id: 'transactions.status.canceled',
+          defaultMessage: 'Canceled'
+        })}
+        <X className="h-4 w-4" />
         </Badge>
+
+
       )}
     </div>
   )
