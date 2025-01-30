@@ -1,14 +1,20 @@
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
-import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
 import { FetchAllAccountsRepository } from '@/core/domain/repositories/accounts/fetch-all-accounts-repository'
 import { AccountEntity } from '@/core/domain/entities/account-entity'
-import { injectable } from 'inversify'
+import { injectable, inject } from 'inversify'
+import { MidazHttpFetchUtils, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
 
 @injectable()
 export class MidazFetchAllAccountsRepository
   implements FetchAllAccountsRepository
 {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
+
+  constructor(
+    @inject(ContainerTypeMidazHttpFetch.MidazHttpFetchUtils)
+    private readonly midazHttpFetchUtils: MidazHttpFetchUtils
+  ) {}
 
   async fetchAll(
     organizationId: string,
@@ -18,7 +24,9 @@ export class MidazFetchAllAccountsRepository
   ): Promise<PaginationEntity<AccountEntity>> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/accounts?limit=${limit}&page=${page}`
 
-    const response = await httpMidazAuthFetch<PaginationEntity<AccountEntity>>({
+    const response = await this.midazHttpFetchUtils.httpMidazAuthFetch<
+      PaginationEntity<AccountEntity>
+    >({
       url,
       method: HTTP_METHODS.GET
     })

@@ -1,7 +1,7 @@
 import { MidazFetchAllLedgersRepository } from './midaz-fetch-all-ledgers-repository'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
-import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 jest.mock('../../utils/http-fetch-utils', () => ({
   httpMidazAuthFetch: jest.fn(),
@@ -12,9 +12,11 @@ jest.mock('../../utils/http-fetch-utils', () => ({
 
 describe('MidazFetchAllLedgersRepository', () => {
   let repository: MidazFetchAllLedgersRepository
+  let mockHttpFetchUtils: { httpMidazAuthFetch: jest.Mock }
 
   beforeEach(() => {
-    repository = new MidazFetchAllLedgersRepository()
+    mockHttpFetchUtils = { httpMidazAuthFetch: jest.fn() }
+    repository = new MidazFetchAllLedgersRepository(mockHttpFetchUtils as any)
     jest.clearAllMocks()
   })
 
@@ -43,11 +45,11 @@ describe('MidazFetchAllLedgersRepository', () => {
       page
     }
 
-    ;(httpMidazAuthFetch as jest.Mock).mockResolvedValueOnce(response)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(response)
 
     const result = await repository.fetchAll(organizationId, limit, page)
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers?limit=${limit}&page=${page}`,
       method: HTTP_METHODS.GET
     })
@@ -60,13 +62,13 @@ describe('MidazFetchAllLedgersRepository', () => {
     const page = 1
     const error = new Error('Error occurred')
 
-    ;(httpMidazAuthFetch as jest.Mock).mockRejectedValueOnce(error)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockRejectedValueOnce(error)
 
     await expect(
       repository.fetchAll(organizationId, limit, page)
     ).rejects.toThrow('Error occurred')
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers?limit=${limit}&page=${page}`,
       method: HTTP_METHODS.GET
     })

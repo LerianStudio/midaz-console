@@ -1,9 +1,11 @@
 import { cn } from '@/lib/utils'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Paper, PaperProps } from '../ui/paper'
 
 const EntityDataTableRoot = React.forwardRef<HTMLDivElement, PaperProps>(
-  (props) => <Paper {...props} />
+  ({ className, ...props }) => (
+    <Paper className={cn('', className)} {...props} />
+  )
 )
 EntityDataTableRoot.displayName = 'EntityDataTable'
 
@@ -11,7 +13,14 @@ const EntityDataTableFooter = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn('px-6 py-3', className)} {...props} />
+  <div
+    ref={ref}
+    className={cn(
+      'flex flex-row items-center justify-between px-6 py-3',
+      className
+    )}
+    {...props}
+  />
 ))
 EntityDataTableFooter.displayName = 'EntityDataTableFooter'
 
@@ -26,6 +35,12 @@ const EntityDataTableFooterText = React.forwardRef<
   />
 ))
 EntityDataTableFooterText.displayName = 'EntityDataTableFooterText'
+
+export type EntityDataTableFooterLabelProps = React.PropsWithChildren & {
+  label: ReactNode
+  empty?: boolean
+  emptyLabel?: ReactNode
+}
 
 export const EntityDataTable = {
   Root: EntityDataTableRoot,

@@ -33,8 +33,6 @@ export async function GET(
 
     return NextResponse.json(ledgers)
   } catch (error: any) {
-    console.error('Error fetching all ledgers', error)
-
     const { message, status } = await apiErrorHandler(error)
 
     return NextResponse.json({ message }, { status })
@@ -52,8 +50,6 @@ export async function POST(
     const ledger = await createLedgerUseCases.execute(organizationId, body)
     return NextResponse.json({ ledger }, { status: 201 })
   } catch (error: any) {
-    console.error('Error creating ledger', error)
-
     const { message, status } = await apiErrorHandler(error)
 
     return NextResponse.json({ message }, { status })

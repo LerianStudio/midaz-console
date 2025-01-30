@@ -14,10 +14,10 @@ export const EmptyResource = ({
   children
 }: EmptyResourceProps) => {
   return (
-    <Card className="gap-0 p-0">
+    <Card className="gap-0 rounded-b-none p-0">
       <CardContent className="p-6">
         <div className="flex flex-col items-center justify-center gap-4">
-          <Image src={NoResourceImage} alt="No Resource" />
+          <Image className="mb-2" src={NoResourceImage} alt="No Resource" />
 
           <span className="text-center text-sm font-medium text-shadcn-400">
             {message}

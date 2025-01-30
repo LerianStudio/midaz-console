@@ -12,84 +12,103 @@ import {
   UpdatePortfolio,
   UpdatePortfolioUseCase
 } from '@/core/application/use-cases/portfolios/update-portfolio-use-case'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { loggerMiddleware } from '@/utils/logger-middleware-config'
 
-const updatePortfolioUseCase: UpdatePortfolio = container.get<UpdatePortfolio>(
-  UpdatePortfolioUseCase
+export const DELETE = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'deletePortfolio',
+      method: 'DELETE'
+    })
+  ],
+  async (
+    _,
+    {
+      params
+    }: { params: { id: string; ledgerId: string; portfolioId: string } }
+  ) => {
+    try {
+      const { id: organizationId, ledgerId, portfolioId } = params
+      const deletePortfolioUseCase: DeletePortfolio =
+        container.get<DeletePortfolio>(DeletePortfolioUseCase)
+
+      await deletePortfolioUseCase.execute(
+        organizationId,
+        ledgerId,
+        portfolioId
+      )
+      return NextResponse.json({}, { status: 200 })
+    } catch (error: any) {
+      const { message, status } = await apiErrorHandler(error)
+      return NextResponse.json({ message }, { status })
+    }
+  }
 )
 
-const deletePortfolioUseCase: DeletePortfolio = container.get<DeletePortfolio>(
-  DeletePortfolioUseCase
+export const PATCH = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'updatePortfolio',
+      method: 'PATCH'
+    })
+  ],
+  async (
+    request: NextRequest,
+    {
+      params
+    }: { params: { id: string; ledgerId: string; portfolioId: string } }
+  ) => {
+    try {
+      const updatePortfolioUseCase: UpdatePortfolio =
+        container.get<UpdatePortfolio>(UpdatePortfolioUseCase)
+      const { id: organizationId, ledgerId, portfolioId } = params
+      const body = await request.json()
+
+      const portfolioUpdated = await updatePortfolioUseCase.execute(
+        organizationId,
+        ledgerId,
+        portfolioId,
+        body
+      )
+
+      return NextResponse.json(portfolioUpdated)
+    } catch (error: any) {
+      const { message, status } = await apiErrorHandler(error)
+      return NextResponse.json({ message }, { status })
+    }
+  }
 )
-const getPortfolioByIdUseCase: FetchPortfolioById =
-  container.get<FetchPortfolioById>(FetchPortfolioByIdUseCase)
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string; ledgerId: string; portfolioId: string } }
-) {
-  try {
-    const organizationId = params.id
-    const ledgerId = params.ledgerId
-    const portfolioId = params.portfolioId
+export const GET = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'fetchPortfolioById',
+      method: 'GET'
+    })
+  ],
+  async (
+    _,
+    {
+      params
+    }: { params: { id: string; ledgerId: string; portfolioId: string } }
+  ) => {
+    try {
+      const getPortfolioByIdUseCase: FetchPortfolioById =
+        container.get<FetchPortfolioById>(FetchPortfolioByIdUseCase)
+      const { id: organizationId, ledgerId, portfolioId } = params
 
-    await deletePortfolioUseCase.execute(organizationId, ledgerId, portfolioId)
+      const portfolio = await getPortfolioByIdUseCase.execute(
+        organizationId,
+        ledgerId,
+        portfolioId
+      )
 
-    return NextResponse.json({}, { status: 200 })
-  } catch (error: any) {
-    console.error('Error deleting portfolio', error)
-    const { message, status } = await apiErrorHandler(error)
-
-    return NextResponse.json({ message }, { status })
+      return NextResponse.json(portfolio)
+    } catch (error: any) {
+      const { message, status } = await apiErrorHandler(error)
+      return NextResponse.json({ message }, { status })
+    }
   }
-}
-
-export async function PATCH(
-  request: Request,
-  { params }: { params: { id: string; ledgerId: string; portfolioId: string } }
-) {
-  try {
-    const body = await request.json()
-    const organizationId = params.id
-    const ledgerId = params.ledgerId
-    const portfolioId = params.portfolioId
-
-    const portfolioUpdated = await updatePortfolioUseCase.execute(
-      organizationId,
-      ledgerId,
-      portfolioId,
-      body
-    )
-
-    return NextResponse.json(portfolioUpdated)
-  } catch (error: any) {
-    console.error('Error updating portfolio', error)
-    const { message, status } = await apiErrorHandler(error)
-
-    return NextResponse.json({ message }, { status })
-  }
-}
-
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string; ledgerId: string; portfolioId: string } }
-) {
-  try {
-    const organizationId = params.id
-    const ledgerId = params.ledgerId
-    const portfolioId = params.portfolioId
-
-    const portfolio = await getPortfolioByIdUseCase.execute(
-      organizationId,
-      ledgerId,
-      portfolioId
-    )
-
-    return NextResponse.json(portfolio)
-  } catch (error: any) {
-    console.error('Error getting portfolio', error)
-    const { message, status } = await apiErrorHandler(error)
-
-    return NextResponse.json({ message }, { status })
-  }
-}
+)

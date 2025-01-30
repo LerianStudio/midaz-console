@@ -2,6 +2,7 @@ import { FetchAccountByIdRepository } from '@/core/domain/repositories/accounts/
 import { AccountResponseDto } from '../../dto/account-dto'
 import { AccountMapper } from '../../mappers/account-mapper'
 import { inject, injectable } from 'inversify'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface FetchAccountById {
   execute: (
@@ -17,7 +18,7 @@ export class FetchAccountByIdUseCase implements FetchAccountById {
     @inject(FetchAccountByIdRepository)
     private readonly fetchAccountByIdRepository: FetchAccountByIdRepository
   ) {}
-
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string,
