@@ -50,15 +50,12 @@ export async function PATCH(
     const organizationId = params.id
     const ledgerId = params.ledgerId
     const transactionId = params.transactionId
-    console.log('transaction', transaction)
     const updatedTransaction = await updateTransactionUseCase.execute(
       organizationId,
       ledgerId,
       transactionId,
       transaction
     )
-
-    console.log('updatedTransaction', updatedTransaction)
 
     return NextResponse.json(updatedTransaction)
   } catch (error) {

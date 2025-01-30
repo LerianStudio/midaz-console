@@ -27,16 +27,11 @@ export class UpdateTransactionUseCase implements UpdateTransaction {
     transactionId: string,
     transaction: Partial<UpdateTransactionDto>
   ): Promise<TransactionResponseDto> {
-    console.log('transaction use case', transaction)
 
     const transactionEntity = TransactionMapper.transactionMapperUpdate(
       transaction.description ?? '',
       transaction.metadata ?? {}
     )
-
-    console.log('transaction entity', transactionEntity)
-
-    console.log('transactionsentriuty', transactionEntity)
 
     const updatedTransaction: TransactionEntity =
       await this.updateTransactionRepository.update(
@@ -45,8 +40,6 @@ export class UpdateTransactionUseCase implements UpdateTransaction {
         transactionId,
         transactionEntity
       )
-
-    console.log('updatedTransaction', updatedTransaction)
 
     return TransactionMapper.toResponseDto(updatedTransaction)
   }

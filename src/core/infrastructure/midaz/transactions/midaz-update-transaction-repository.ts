@@ -22,8 +22,6 @@ export class MidazUpdateTransactionRepository
       body: JSON.stringify(transaction)
     })
 
-    console.log('response from update transaction', response)
-
     return response
   }
 }
