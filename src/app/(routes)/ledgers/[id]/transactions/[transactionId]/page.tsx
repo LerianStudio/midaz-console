@@ -18,29 +18,25 @@ import {
   TransactionReceiptTicket,
   TransactionReceiptValue
 } from '@/components/transactions/primitives/transaction-receipt'
-import ArrowRightLeftCircle from '/public/svg/arrow-right-left-circle.svg'
 import Image from 'next/image'
-import { isNil, values } from 'lodash'
+import { isNil } from 'lodash'
 import { Separator } from '@/components/ui/separator'
-import { BasicInformationPaper } from '../create/basic-information-paper'
-import { Paper } from '@/components/ui/paper'
-import DolarSign from '/public/svg/dolar-sign.svg'
-import { InputField, SelectField } from '@/components/form'
 import { Form } from '@/components/ui/form'
-import { useTransactionForm } from '../create/transaction-form-provider'
-import { Control, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'node_modules/zod/lib'
 import { StatusDisplay } from '@/components/organization-switcher/status'
 import ArrowRightCircle from '/public/svg/arrow-right-circle.svg'
-import { OperationSourceField } from '../create/operation-source-field'
-import { OperationAccordion } from '../create/operation-accordion'
 import { BasicInformationPaperReadOnly } from './basic-information-paper-readOnly'
 import { OperationSourceFieldReadOnly } from './operation-source-field-readOnly'
 import CheckApproveCircle from '/public/svg/approved-circle.svg'
 import { TransactionStatusBadge } from './transaction-status-badge'
-import { Badge } from '@/components/ui/badge'
 import { OperationAccordionReadOnly } from './operation-accordion-readOnly'
+import { MetaAccordionTransactionDetails } from './meta-accordion-transaction-details'
+import { Skeleton } from '@/components/ui/skeleton'
+import { formSchema } from './schemas'
+import { SkeletonTransactionDialog } from './skeleton-transaction-dialog'
+import CancelledCircle from '/public/svg/cancelled-circle.svg'
 
 const TAB_VALUES = {
   SUMMARY: 'summary',
@@ -57,10 +53,13 @@ interface Operation {
     amount: string
   }
   metadata?: Record<string, any>
+  description?: string
+  chartOfAccounts?: string
 }
 
 const TransactionDetailsPage = () => {
   const intl = useIntl()
+  type FormSchema = z.infer<typeof formSchema>
   const { id: ledgerId, transactionId } = useParams<{
     id: string
     transactionId: string
@@ -94,31 +93,7 @@ const TransactionDetailsPage = () => {
       })) || []
   }
 
-  const formSchema = z.object({
-    description: z.string().optional(),
-    chartOfAccountsGroupName: z.string().optional(),
-    value: z.string().optional(),
-    asset: z.string().optional(),
-    metadata: z.record(z.string(), z.string()).optional(),
-    source: z
-      .array(
-        z.object({
-          account: z.string(),
-          value: z.string().optional()
-        })
-      )
-      .optional(),
-    destination: z
-      .array(
-        z.object({
-          account: z.string(),
-          value: z.string().optional()
-        })
-      )
-      .optional()
-  })
 
-  type FormSchema = z.infer<typeof formSchema>
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: initialValues,
@@ -139,8 +114,9 @@ const TransactionDetailsPage = () => {
     }
   ])
 
+
   if (isLoading) {
-    return <div>Loading...</div>
+    return <SkeletonTransactionDialog />
   }
 
   return (
@@ -160,7 +136,7 @@ const TransactionDetailsPage = () => {
               subtitle={intl.formatMessage(
                 {
                   id: 'transactions.details.status.processed.withDate',
-                  defaultMessage: 'Processada em {date}'
+                  defaultMessage: 'Processed on {date}'
                 },
                 {
                   date: new Intl.DateTimeFormat('pt-BR', {
@@ -177,7 +153,7 @@ const TransactionDetailsPage = () => {
               status={
                 transaction?.status?.code === 'APPROVED'
                   ? 'APPROVED'
-                  : 'PENDING'
+                  : 'CANCELLED'
               }
             />
           </div>
@@ -189,6 +165,7 @@ const TransactionDetailsPage = () => {
         defaultValue={DEFAULT_TAB_VALUE}
         onValueChange={handleTabChange}
       >
+        <Form {...form}>
         <TabsList>
           <TabsTrigger value={TAB_VALUES.SUMMARY}>
             {intl.formatMessage({
@@ -218,7 +195,7 @@ const TransactionDetailsPage = () => {
                 src={
                   transaction?.status?.code === 'APPROVED'
                     ? CheckApproveCircle
-                    : ArrowRightCircle
+                    : CancelledCircle
                 }
               />
               <TransactionReceiptValue
@@ -292,31 +269,39 @@ const TransactionDetailsPage = () => {
               />
               <Separator orientation="horizontal" />
               {transaction?.operations
-                ?.filter((op) => op.type === 'DEBIT')
-                .map((operation, index) => (
+                ?.filter((op: any) => op.type === 'DEBIT')
+                .map((operation: any, index: number) => (
                   <TransactionReceiptOperation
                     key={index}
                     type="debit"
                     account={operation.accountAlias}
                     asset={operation.assetCode}
-                    value={(
-                      operation.amount.amount /
-                      Math.pow(10, operation.amount.scale)
-                    ).toString()}
+                    value={new Intl.NumberFormat(
+                      'pt-BR',
+                      {
+                        style: 'decimal',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                      }
+                    ).format(Number(operation.amount.amount))}
                   />
                 ))}
               {transaction?.operations
-                ?.filter((op) => op.type === 'CREDIT')
-                .map((operation, index) => (
+                ?.filter((op: any) => op.type === 'CREDIT')
+                .map((operation: any, index: number) => (
                   <TransactionReceiptOperation
                     key={index}
                     type="credit"
                     account={operation.accountAlias}
                     asset={operation.assetCode}
-                    value={(
-                      operation.amount.amount /
-                      Math.pow(10, operation.amount.scale)
-                    ).toString()}
+                    value={new Intl.NumberFormat(
+                      'pt-BR',
+                      {
+                        style: 'decimal',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                      }
+                    ).format(Number(operation.amount.amount))}
                   />
                 ))}
               <Separator orientation="horizontal" />
@@ -358,7 +343,6 @@ const TransactionDetailsPage = () => {
         </TabsContent>
 
         <TabsContent value={TAB_VALUES.TRANSACTION_DATA}>
-          <Form {...form}>
             <div className="grid grid-cols-3">
               <div className="col-span-2">
                 <BasicInformationPaperReadOnly
@@ -369,6 +353,7 @@ const TransactionDetailsPage = () => {
                     asset: initialValues.asset
                   }}
                   control={form.control}
+                  handleTabChange={handleTabChange}
                 />
                 <div className="mb-10 flex flex-row items-center gap-3">
                   <OperationSourceFieldReadOnly
@@ -389,11 +374,9 @@ const TransactionDetailsPage = () => {
                 </div>
               </div>
             </div>
-          </Form>
         </TabsContent>
 
         <TabsContent value={TAB_VALUES.OPERATIONS}>
-          <Form {...form}>
             <div className="grid grid-cols-3">
               <div className="col-span-2">
                 {transaction?.operations?.map(
@@ -412,16 +395,24 @@ const TransactionDetailsPage = () => {
                       values={{
                         account: operation.accountAlias,
                         value: Number(operation.amount.amount),
-                        metadata: operation.metadata || null
+                        metadata: operation.metadata || {},
+                        description: operation.description || '',
+                        chartOfAccounts: operation.chartOfAccounts || ''
                       }}
                     />
                   )
                 )}
-                <pre>{JSON.stringify(transaction, null, 2)}</pre>
+                <div className="mt-10">
+                  <MetaAccordionTransactionDetails
+                    name="metadata"
+                    values={transaction?.metadata}
+                    control={form.control}
+                  />
+                </div>
               </div>
             </div>
-          </Form>
         </TabsContent>
+        </Form>
       </Tabs>
     </div>
   )
