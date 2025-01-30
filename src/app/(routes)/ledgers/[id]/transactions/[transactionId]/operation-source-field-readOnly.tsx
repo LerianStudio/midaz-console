@@ -10,7 +10,6 @@ export const OperationSourceFieldReadOnly = ({
   label,
   values = []
 }: OperationSourceFieldProps) => {
-  console.log('values', values)
   return (
     <Paper className="flex flex-grow flex-col gap-4 p-6">
       <Label>{label}</Label>
