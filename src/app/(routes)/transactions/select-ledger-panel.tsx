@@ -2,9 +2,7 @@
 
 import React from 'react'
 import { Paper } from '@/components/ui/paper'
-import { TransactionsSkeleton } from './transactions-skeleton'
-import { TransactionsDataTable } from './transactions-data-table'
-import { Checkbox } from '@/components/ui/checkbox'
+import { ArrowLeftRightIcon } from 'lucide-react'
 import {
   Select,
   SelectTrigger,
@@ -13,101 +11,30 @@ import {
   SelectItem
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { ArrowLeftRightIcon } from 'lucide-react'
+import { Checkbox } from '@/components/ui/checkbox'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { PaginationDto } from '@/core/application/dto/pagination-dto'
-import { ILedgerType } from '@/types/ledgers-type'
-import { ITransactiontType } from '@/types/transactions-type'
-import { UseFormReturn } from 'react-hook-form'
-import { PaginationProps } from '@/components/pagination'
 
-type TransactionsViewProps = {
-  transactionsState: {
-    ledgers: PaginationDto<ILedgerType> | undefined
-    transactions: PaginationDto<ITransactiontType> | undefined
-    selectedLedgerId: string
-    setSelectedLedgerId: (id: string) => void
-    pendingLedgerId: string
-    setPendingLedgerId: (value: string) => void
-    saveAsDefault: boolean
-    setSaveAsDefault: (value: boolean) => void
-    isInitialized: boolean
-    isLoadingLedgers: boolean
-    isLoadingTx: boolean
-    form: UseFormReturn<any>
-    total: number
-    pagination: PaginationProps
-  }
+type SelectLedgerPanelProps = {
+  ledgers: any
+  pendingLedgerId: string
+  setPendingLedgerId: (value: string) => void
+  saveAsDefault: boolean
+  setSaveAsDefault: (value: boolean) => void
+  onLoadLedger: () => void
 }
 
-export function TransactionsView({ transactionsState }: TransactionsViewProps) {
-  const {
-    ledgers,
-    selectedLedgerId,
-    setSelectedLedgerId,
-    pendingLedgerId,
-    setPendingLedgerId,
-    saveAsDefault,
-    setSaveAsDefault,
-    isInitialized,
-    isLoadingLedgers,
-    isLoadingTx
-  } = transactionsState
-
-  const isLoadingEverything = !isInitialized || isLoadingLedgers || isLoadingTx
-  if (isLoadingEverything) {
-    return (
-      <div className="mt-10">
-        <TransactionsSkeleton />
-      </div>
-    )
-  }
-
-  const hasLoadedLedger = Boolean(selectedLedgerId)
-  if (hasLoadedLedger) {
-    return <TransactionsDataTable transactionsState={transactionsState} />
-  }
-
-  return (
-    <SelectLedgerPanel
-      ledgers={ledgers}
-      pendingLedgerId={pendingLedgerId}
-      setPendingLedgerId={setPendingLedgerId}
-      saveAsDefault={saveAsDefault}
-      setSaveAsDefault={setSaveAsDefault}
-      onLoadLedger={() => {
-        if (!pendingLedgerId) return
-        setSelectedLedgerId(pendingLedgerId)
-
-        if (saveAsDefault) {
-          localStorage.setItem('defaultTransactionLedgerId', pendingLedgerId)
-        } else {
-          localStorage.removeItem('defaultTransactionLedgerId')
-        }
-      }}
-    />
-  )
-}
-
-function SelectLedgerPanel({
+export function SelectLedgerPanel({
   ledgers,
   pendingLedgerId,
   setPendingLedgerId,
   saveAsDefault,
   setSaveAsDefault,
   onLoadLedger
-}: {
-  ledgers: any
-  pendingLedgerId: string
-  setPendingLedgerId: (val: string) => void
-  saveAsDefault: boolean
-  setSaveAsDefault: (val: boolean) => void
-  onLoadLedger: () => void
-}) {
+}: SelectLedgerPanelProps) {
   const intl = useIntl()
 
   return (
-    <Paper className="mt-10 flex gap-8 p-8">
+    <Paper className="flex gap-8 p-8">
       <div className="my-12 flex w-3/6 flex-col">
         <LedgerIntroText />
 
@@ -124,7 +51,7 @@ function SelectLedgerPanel({
               <Select
                 disabled={!ledgers?.items?.length}
                 value={pendingLedgerId}
-                onValueChange={(val) => setPendingLedgerId(val)}
+                onValueChange={(value) => setPendingLedgerId(value)}
               >
                 <SelectTrigger className="w-fit">
                   <SelectValue

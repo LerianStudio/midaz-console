@@ -46,7 +46,6 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useIntl } from 'react-intl'
 import dayjs from 'dayjs'
-import { TransactionMapper } from '@/core/application/mappers/transaction-mapper'
 import { PaginationLimitField } from '@/components/form/pagination-limit-field'
 import { Pagination, PaginationProps } from '@/components/pagination'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
@@ -56,7 +55,7 @@ import { ITransactiontType } from '@/types/transactions-type'
 
 type TransactionsDataTableProps = {
   transactionsState: {
-    ledgers: PaginationDto<ILedgerType> | undefined
+    ledgers: PaginationDto<ILedgerType>
     transactions: PaginationDto<ITransactiontType> | undefined
     form: UseFormReturn<any>
     total: number
@@ -109,11 +108,12 @@ const TransactionRow: React.FC<any> = ({
   const displayId = id.length > 12 ? truncateString(id, 12) : id
   const badgeVariant = getBadgeVariant(code)
   const translatedStatus = getTranslatedStatus(code, intl)
+  const numericValue = transaction.original.decimalValue
 
-  const displayValue = TransactionMapper.formatTransactionValue(
-    transaction.original,
-    intl.locale
-  )
+  const displayValue = intl.formatNumber(numericValue, {
+    minimumFractionDigits: transaction.original.amountScale,
+    maximumFractionDigits: transaction.original.amountScale
+  })
 
   const renderItemsList = (items: any[], type: 'source' | 'destination') => {
     if (items.length === 1) {
@@ -212,39 +212,35 @@ const TransactionRow: React.FC<any> = ({
         </TableCell>
         <TableCell>{renderSource}</TableCell>
         <TableCell>{renderDestination}</TableCell>
-        <TableCell>
-          <div className="text-center">
-            <Badge variant={badgeVariant}>{translatedStatus}</Badge>
-          </div>
+        <TableCell align="center">
+          <Badge variant={badgeVariant}>{translatedStatus}</Badge>
         </TableCell>
         <TableCell className="text-base font-medium text-zinc-600">
           <span className="mr-2 text-xs font-normal">{assetCode}</span>
           {capitalizeFirstLetter(displayValue)}
         </TableCell>
-        <TableCell className="w-0">
-          <div className="flex justify-center">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="secondary"
-                  className="h-auto w-max p-2"
-                  data-testid="actions"
-                >
-                  <MoreVertical size={16} />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <Link href={`/transactions/${transaction.original.id}`}>
-                  <DropdownMenuItem>
-                    {intl.formatMessage({
-                      id: 'common.details',
-                      defaultMessage: 'See details'
-                    })}
-                  </DropdownMenuItem>
-                </Link>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+        <TableCell align="center">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="secondary"
+                className="h-auto w-max p-2"
+                data-testid="actions"
+              >
+                <MoreVertical size={16} />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <Link href={`/transactions/${transaction.original.id}`}>
+                <DropdownMenuItem>
+                  {intl.formatMessage({
+                    id: 'common.seeDetails',
+                    defaultMessage: 'See details'
+                  })}
+                </DropdownMenuItem>
+              </Link>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </TableCell>
       </TableRow>
     </React.Fragment>

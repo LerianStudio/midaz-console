@@ -1,11 +1,4 @@
 import { StatusDto } from '@/core/application/dto/status.dto'
-import { IAssetType } from './assets-type'
-
-export interface LedgersResponse {
-  items: ILedgerType[]
-  limit: number
-  page: number
-}
 export interface ILedgerType {
   id: string
   organizationId: string
