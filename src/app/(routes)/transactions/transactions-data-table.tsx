@@ -31,9 +31,8 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui/tooltip'
-import { capitalizeFirstLetter, truncateString } from '@/helpers'
+import { capitalizeFirstLetter } from '@/helpers'
 import useCustomToast from '@/hooks/use-custom-toast'
-import { Arrow } from '@radix-ui/react-tooltip'
 import {
   getCoreRowModel,
   getFilteredRowModel,
@@ -44,7 +43,7 @@ import { HelpCircle, MoreVertical } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React from 'react'
-import { useIntl } from 'react-intl'
+import { defineMessages, IntlShape, useIntl } from 'react-intl'
 import dayjs from 'dayjs'
 import { PaginationLimitField } from '@/components/form/pagination-limit-field'
 import { Pagination, PaginationProps } from '@/components/pagination'
@@ -52,10 +51,12 @@ import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
 import { ILedgerType } from '@/types/ledgers-type'
 import { ITransactiontType } from '@/types/transactions-type'
+import { IdTableCell } from '@/components/id-table-cell'
+import { SelectField } from '@/components/form'
 
 type TransactionsDataTableProps = {
   transactionsState: {
-    ledgers: PaginationDto<ILedgerType>
+    ledgers: PaginationDto<ILedgerType> | undefined
     transactions: PaginationDto<ITransactiontType> | undefined
     form: UseFormReturn<any>
     total: number
@@ -65,39 +66,39 @@ type TransactionsDataTableProps = {
   }
 }
 
-enum TransactionStatus {
+const multipleItemsMessages = defineMessages({
+  source: {
+    id: 'transactions.multiple.source',
+    defaultMessage: '{count} sources'
+  },
+  destination: {
+    id: 'transactions.multiple.destination',
+    defaultMessage: '{count} destinations'
+  }
+})
+
+const getBadgeVariant = (status: string) =>
+  status === Status.APPROVED ? 'active' : 'inactive'
+
+enum Status {
   APPROVED = 'APPROVED',
   CANCELED = 'CANCELED'
 }
 
-const getBadgeVariant = (status: string) =>
-  status === TransactionStatus.APPROVED ? 'active' : 'inactive'
-
-const getTranslatedStatus = (
-  statusCode: TransactionStatus,
-  intl: any
-): string => {
-  switch (statusCode) {
-    case TransactionStatus.APPROVED:
-      return intl.formatMessage({
-        id: 'status.approved',
-        defaultMessage: 'Approved'
-      })
-    case TransactionStatus.CANCELED:
-      return intl.formatMessage({
-        id: 'status.canceled',
-        defaultMessage: 'Canceled'
-      })
+const statusMessages = defineMessages({
+  [Status.APPROVED]: {
+    id: 'status.approved',
+    defaultMessage: 'Approved'
+  },
+  [Status.CANCELED]: {
+    id: 'status.canceled',
+    defaultMessage: 'Canceled'
   }
-}
+})
 
-const TransactionRow: React.FC<any> = ({
-  transaction,
-  handleCopyToClipboard
-}) => {
+const TransactionRow: React.FC<any> = ({ transaction }) => {
   const intl = useIntl()
   const {
-    id = '',
     status: { code },
     createdAt,
     assetCode,
@@ -105,9 +106,7 @@ const TransactionRow: React.FC<any> = ({
     destination = []
   } = transaction.original
 
-  const displayId = id.length > 12 ? truncateString(id, 12) : id
   const badgeVariant = getBadgeVariant(code)
-  const translatedStatus = getTranslatedStatus(code, intl)
   const numericValue = transaction.original.decimalValue
 
   const displayValue = intl.formatNumber(numericValue, {
@@ -115,7 +114,11 @@ const TransactionRow: React.FC<any> = ({
     maximumFractionDigits: transaction.original.amountScale
   })
 
-  const renderItemsList = (items: any[], type: 'source' | 'destination') => {
+  const renderItemsList = (
+    items: string[],
+    type: 'source' | 'destination',
+    intl: IntlShape
+  ) => {
     if (items.length === 1) {
       return <p>{String(items[0])}</p>
     }
@@ -124,45 +127,24 @@ const TransactionRow: React.FC<any> = ({
       return null
     }
 
-    let label: string
-    if (type === 'source') {
-      label = intl.formatMessage({
-        id: 'transactions.source.table.row.text',
-        defaultMessage: 'sources'
-      })
-    } else {
-      label = intl.formatMessage({
-        id: 'transactions.destination.table.row.text',
-        defaultMessage: 'destinations'
-      })
-    }
+    const messageDescriptor = multipleItemsMessages[type]
+
+    const labelWithCount = intl.formatMessage(messageDescriptor, {
+      count: items.length
+    })
 
     return (
       <div className="flex items-center gap-1">
-        <p>
-          {intl.formatMessage(
-            {
-              id: 'transactions.multiple.label',
-              defaultMessage: '{count} {label}'
-            },
-            {
-              count: items.length,
-              label
-            }
-          )}
-        </p>
+        <p>{labelWithCount}</p>
         <TooltipProvider>
           <Tooltip delayDuration={300}>
             <TooltipTrigger asChild className="flex self-end">
-              <span className="cursor-pointer">
-                <HelpCircle size={16} />
-              </span>
+              <HelpCircle size={16} className="cursor-pointer" />
             </TooltipTrigger>
             <TooltipContent className="max-w-80">
               <p className="text-shadcn-400">
                 {items.map((item) => String(item)).join(', ')}
               </p>
-              <Arrow height={8} width={15} />
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -170,50 +152,24 @@ const TransactionRow: React.FC<any> = ({
     )
   }
 
-  const renderSource = renderItemsList(source, 'source')
-  const renderDestination = renderItemsList(destination, 'destination')
+  const renderSource = renderItemsList(source, 'source', intl)
+  const renderDestination = renderItemsList(destination, 'destination', intl)
 
   return (
     <React.Fragment>
       <TableRow key={transaction.id}>
         <TableCell>{dayjs(createdAt).format('L HH:mm')}</TableCell>
-        <TableCell>
-          <TooltipProvider>
-            <Tooltip delayDuration={300}>
-              <TooltipTrigger
-                onClick={() =>
-                  handleCopyToClipboard(
-                    id,
-                    intl.formatMessage({
-                      id: 'ledgers.toast.copyId',
-                      defaultMessage:
-                        'The id has been copied to your clipboard.'
-                    })
-                  )
-                }
-              >
-                <p className="text-shadcn-600 underline">{displayId}</p>
-              </TooltipTrigger>
-              <TooltipContent
-                className="border-none bg-shadcn-600"
-                arrowPadding={0}
-              >
-                <p className="text-shadcn-400">{id}</p>
-                <p className="text-center text-white">
-                  {intl.formatMessage({
-                    id: 'ledgers.columnsTable.tooltipCopyText',
-                    defaultMessage: 'Click to copy'
-                  })}
-                </p>
-                <Arrow height={8} width={15} />
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </TableCell>
+        <IdTableCell id={transaction.original.id} />
         <TableCell>{renderSource}</TableCell>
         <TableCell>{renderDestination}</TableCell>
         <TableCell align="center">
-          <Badge variant={badgeVariant}>{translatedStatus}</Badge>
+          <Badge variant={badgeVariant}>
+            {capitalizeFirstLetter(
+              intl.formatMessage(
+                statusMessages[code as keyof typeof statusMessages]
+              )
+            )}
+          </Badge>
         </TableCell>
         <TableCell className="text-base font-medium text-zinc-600">
           <span className="mr-2 text-xs font-normal">{assetCode}</span>
@@ -282,11 +238,7 @@ export const TransactionsDataTable = ({
     state: { columnFilters }
   })
 
-  const onCreateTransaction = React.useCallback(() => {
-    if (!selectedLedgerId) {
-      console.warn('No ledger selected, cannot create a new transaction.')
-      return
-    }
+  const handleCreateTransaction = React.useCallback(() => {
     router.push(`/ledgers/${selectedLedgerId}/transactions/create`)
   }, [selectedLedgerId, router])
 
@@ -295,8 +247,22 @@ export const TransactionsDataTable = ({
     showInfo(message)
   }
 
+  const watchLedger = form.watch('ledgerId')
+  React.useEffect(() => {
+    if (watchLedger) {
+      setSelectedLedgerId(watchLedger)
+      localStorage.setItem('defaultTransactionLedgerId', watchLedger)
+    }
+  }, [watchLedger])
+
+  React.useEffect(() => {
+    if (selectedLedgerId) {
+      form.setValue('ledgerId', selectedLedgerId)
+    }
+  }, [selectedLedgerId])
+
   return (
-    <React.Fragment>
+    <FormProvider {...form}>
       <EntityBox.Collapsible>
         <EntityBox.Banner>
           <div className="flex items-center gap-4">
@@ -307,29 +273,17 @@ export const TransactionsDataTable = ({
               })}
             </p>
 
-            <Select
-              value={selectedLedgerId}
-              onValueChange={(value) => {
-                setSelectedLedgerId(value)
-                localStorage.setItem('defaultTransactionLedgerId', value)
-              }}
-            >
-              <SelectTrigger className="w-fit">
-                <SelectValue placeholder="Select Ledger" />
-              </SelectTrigger>
-
-              <SelectContent>
-                {ledgers?.items?.map((ledger: any) => (
-                  <SelectItem key={ledger.id} value={ledger.id}>
-                    {ledger.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <SelectField name="ledgerId" control={form.control}>
+              {ledgers?.items?.map((ledger: any) => (
+                <SelectItem key={ledger.id} value={ledger.id}>
+                  {ledger.name}
+                </SelectItem>
+              ))}
+            </SelectField>
           </div>
 
           <EntityBox.Actions className="gap-4">
-            <Button onClick={onCreateTransaction}>
+            <Button onClick={handleCreateTransaction}>
               {intl.formatMessage({
                 id: 'transactions.create.title',
                 defaultMessage: 'New Transaction'
@@ -340,11 +294,9 @@ export const TransactionsDataTable = ({
         </EntityBox.Banner>
 
         <EntityBox.CollapsibleContent>
-          <FormProvider {...form}>
-            <div className="col-start-3 flex justify-end">
-              <PaginationLimitField control={form.control} />
-            </div>
-          </FormProvider>
+          <div className="col-start-3 flex justify-end">
+            <PaginationLimitField control={form.control} />
+          </div>
         </EntityBox.CollapsibleContent>
       </EntityBox.Collapsible>
 
@@ -355,12 +307,8 @@ export const TransactionsDataTable = ({
               id: 'transactions.emptyResource',
               defaultMessage: "You haven't created any transactions yet."
             })}
-            extra={intl.formatMessage({
-              id: 'transactions.emptyResourceExtra',
-              defaultMessage: 'No transaction found.'
-            })}
           >
-            <Button variant="default" onClick={onCreateTransaction}>
+            <Button variant="default" onClick={handleCreateTransaction}>
               {intl.formatMessage({
                 id: 'transactions.create.title',
                 defaultMessage: 'New Transaction'
@@ -368,90 +316,88 @@ export const TransactionsDataTable = ({
             </Button>
           </EmptyResource>
         ) : (
-          <React.Fragment>
-            <TableContainer>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>
-                      {intl.formatMessage({
-                        id: 'entity.transactions.data',
-                        defaultMessage: 'Data'
-                      })}
-                    </TableHead>
-                    <TableHead>
-                      {intl.formatMessage({
-                        id: 'common.id',
-                        defaultMessage: 'ID'
-                      })}
-                    </TableHead>
-                    <TableHead>
-                      {intl.formatMessage({
-                        id: 'entity.transactions.source',
-                        defaultMessage: 'Source'
-                      })}
-                    </TableHead>
-                    <TableHead>
-                      {intl.formatMessage({
-                        id: 'entity.transactions.destination',
-                        defaultMessage: 'Destination'
-                      })}
-                    </TableHead>
-                    <TableHead className="text-center">
-                      {intl.formatMessage({
-                        id: 'common.status',
-                        defaultMessage: 'Status'
-                      })}
-                    </TableHead>
-                    <TableHead>
-                      {intl.formatMessage({
-                        id: 'entity.transactions.value',
-                        defaultMessage: 'Value'
-                      })}
-                    </TableHead>
-                    <TableHead className="w-0">
-                      {intl.formatMessage({
-                        id: 'common.actions',
-                        defaultMessage: 'Actions'
-                      })}
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {table.getRowModel().rows.map((transaction: any) => (
-                    <TransactionRow
-                      key={transaction.id}
-                      transaction={transaction}
-                      handleCopyToClipboard={handleCopyToClipboard}
-                    />
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-
-            <EntityDataTable.Footer className="flex items-center justify-between py-4">
-              <EntityDataTable.FooterText>
-                {intl.formatMessage(
-                  {
-                    id: 'transactions.showing',
-                    defaultMessage:
-                      'Showing {count} {number, plural, =0 {transactions} one {transaction} other {transactions}}.'
-                  },
-                  {
-                    number: transactions?.items?.length,
-                    count: (
-                      <span className="font-bold">
-                        {transactions?.items?.length}
-                      </span>
-                    )
-                  }
-                )}
-              </EntityDataTable.FooterText>
-              <Pagination total={total} {...pagination} />
-            </EntityDataTable.Footer>
-          </React.Fragment>
+          <TableContainer>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>
+                    {intl.formatMessage({
+                      id: 'entity.transactions.data',
+                      defaultMessage: 'Data'
+                    })}
+                  </TableHead>
+                  <TableHead>
+                    {intl.formatMessage({
+                      id: 'common.id',
+                      defaultMessage: 'ID'
+                    })}
+                  </TableHead>
+                  <TableHead>
+                    {intl.formatMessage({
+                      id: 'entity.transactions.source',
+                      defaultMessage: 'Source'
+                    })}
+                  </TableHead>
+                  <TableHead>
+                    {intl.formatMessage({
+                      id: 'entity.transactions.destination',
+                      defaultMessage: 'Destination'
+                    })}
+                  </TableHead>
+                  <TableHead className="text-center">
+                    {intl.formatMessage({
+                      id: 'common.status',
+                      defaultMessage: 'Status'
+                    })}
+                  </TableHead>
+                  <TableHead>
+                    {intl.formatMessage({
+                      id: 'entity.transactions.value',
+                      defaultMessage: 'Value'
+                    })}
+                  </TableHead>
+                  <TableHead className="w-0">
+                    {intl.formatMessage({
+                      id: 'common.actions',
+                      defaultMessage: 'Actions'
+                    })}
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows.map((transaction: any) => (
+                  <TransactionRow
+                    key={transaction.id}
+                    transaction={transaction}
+                    handleCopyToClipboard={handleCopyToClipboard}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         )}
+
+        <EntityDataTable.Footer className="flex items-center justify-between py-4">
+          <EntityDataTable.FooterText>
+            {intl.formatMessage(
+              {
+                id: 'transactions.showing',
+                defaultMessage:
+                  '{number, plural, =0 {No transaction found} one {Showing {count} transaction} other {Showing {count} transactions}}.'
+              },
+              {
+                number: transactions?.items?.length,
+                count: (
+                  <span className="font-bold">
+                    {transactions?.items?.length}
+                  </span>
+                )
+              }
+            )}
+          </EntityDataTable.FooterText>
+          <Pagination total={total} {...pagination} />
+        </EntityDataTable.Footer>
       </EntityDataTable.Root>
-    </React.Fragment>
+    </FormProvider>
   )
 }

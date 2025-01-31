@@ -349,13 +349,11 @@
   "entity.transactions.value": "Valor",
   "ledger.title": "Ledger",
   "transactions.emptyResource": "Você ainda não criou nenhuma transação.",
-  "transactions.emptyResourceExtra": "Nenhuma transação encontrada.",
-  "transactions.showing": "Mostrando {count} {number, plural, =0 {transações} one {transação} other {transações}}.",
-  "transactions.multiple.label": "{count} {label}",
-  "transactions.destination.table.row.text": "destinos",
-  "transactions.source.table.row.text": "origens",
+  "transactions.showing": "{number, plural, =0 {Nenhuma transação encontrada} one {Mostrando {count} transação} other {Mostrando {count} transações}}.",
+  "common.seeDetails": "Ver detalhes",
+  "transactions": "transações",
   "status.approved": "Aprovada",
   "status.canceled": "Cancelada",
-  "common.seeDetails": "Ver detalhes",
-  "transactions": "transações"
+  "transactions.multiple.destination": "{count} destinos",
+  "transactions.multiple.source": "{count} origens"
 }

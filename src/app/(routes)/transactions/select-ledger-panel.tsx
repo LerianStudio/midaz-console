@@ -12,10 +12,12 @@ import {
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { useIntl } from 'react-intl'
+import { PaginationDto } from '@/core/application/dto/pagination-dto'
+import { ILedgerType } from '@/types/ledgers-type'
 
 type SelectLedgerPanelProps = {
-  ledgers: any
+  ledgers: PaginationDto<ILedgerType> | undefined
   pendingLedgerId: string
   setPendingLedgerId: (value: string) => void
   saveAsDefault: boolean
@@ -121,18 +123,25 @@ const LedgerIntroText = () => {
   return (
     <div className="flex flex-col gap-8">
       <p className="max-w-xl">
-        <FormattedMessage
-          id="transactions.section.description"
-          defaultMessage="This is the {transactions} space. The movements that occur in all your ledgers are organized here."
-          values={{
+        {intl.formatMessage(
+          {
+            id: 'transactions.section.description',
+            defaultMessage:
+              'This is the {transactions} space. The movements that occur in all your ledgers are organized here.'
+          },
+          {
             transactions: (
-              <FormattedMessage id="transactions" defaultMessage="transactions">
-                {(text) => <span className="font-bold">{text}</span>}
-              </FormattedMessage>
+              <span className="font-bold">
+                {intl.formatMessage({
+                  id: 'transactions',
+                  defaultMessage: 'transactions'
+                })}
+              </span>
             )
-          }}
-        />
+          }
+        )}
       </p>
+
       <span className="text-sm text-zinc-400">
         {intl.formatMessage({
           id: 'transactions.ledgers.subtitle',
