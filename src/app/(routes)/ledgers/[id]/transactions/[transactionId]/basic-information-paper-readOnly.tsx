@@ -73,27 +73,23 @@ export const BasicInformationPaperReadOnly = ({
     useUpdateTransaction({
       organizationId: currentOrganization.id!,
       ledgerId: id!,
-      transactionId: transactionId!
+      transactionId: transactionId!,
+      onSuccess: () => {
+        showSuccess(
+          intl.formatMessage({
+            id: 'transactions.toast.update.success',
+            defaultMessage: 'Transaction updated successfully'
+          })
+        )
+        setIsEditing(false)
+        handleDialogClose()
+        onSave?.(currentDescription)
+        handleTabChange?.('summary')
+      }
     })
 
   const handleSave = () => {
-    updateTransaction(
-      { description: currentDescription },
-      {
-        onSuccess: () => {
-          showSuccess(
-            intl.formatMessage({
-              id: 'transactions.toast.update.success',
-              defaultMessage: 'Transaction updated successfully'
-            })
-          )
-          setIsEditing(false)
-          handleDialogClose()
-          onSave?.(currentDescription)
-          handleTabChange?.('summary')
-        }
-      }
-    )
+    updateTransaction({ description: currentDescription })
   }
 
   const formatCurrency = (value: string | number) => {

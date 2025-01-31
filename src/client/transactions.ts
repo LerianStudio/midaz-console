@@ -1,5 +1,5 @@
 import { getFetcher, patchFetcher, postFetcher } from '@/lib/fetcher'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient, UseMutationOptions } from '@tanstack/react-query'
 
 export type UseCreateTransactionProps = {
   organizationId: string
@@ -42,7 +42,11 @@ export const useGetTransactionById = ({
   })
 }
 
-type UseUpdateTransactionProps = {
+type UseUpdateTransactionProps = UseMutationOptions<
+  any,
+  Error,
+  { metadata?: Record<string, any> | null; description?: string | null }
+> & {
   organizationId: string
   ledgerId: string
   transactionId: string
@@ -52,13 +56,22 @@ export const useUpdateTransaction = ({
   organizationId,
   ledgerId,
   transactionId,
+  onSuccess,
   ...options
 }: UseUpdateTransactionProps) => {
+  const queryClient = useQueryClient()
+
   return useMutation({
     mutationKey: ['transactions', 'update'],
     mutationFn: patchFetcher(
       `/api/organizations/${organizationId}/ledgers/${ledgerId}/transactions/${transactionId}`
     ),
+    onSuccess: (...args) => {
+      queryClient.invalidateQueries({
+        queryKey: ['transactions-by-id', transactionId, organizationId, ledgerId]
+      })
+      onSuccess?.(...args)
+    },
     ...options
   })
 }

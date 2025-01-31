@@ -208,10 +208,10 @@ export default function TransactionDetailsPage() {
                 />
                 <TransactionReceiptValue
                   asset={transaction?.assetCode}
-                  value={new Intl.NumberFormat('pt-BR', {
-                    style: 'decimal',
+                  value={new Intl.NumberFormat('en-US', {
                     minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
+                    maximumFractionDigits: 2,
+                    currency: 'USD'
                   }).format(Number(transaction?.amount))}
                 />
                 <StatusDisplay status={transaction?.status?.code || ''} />
