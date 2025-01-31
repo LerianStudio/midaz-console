@@ -8,7 +8,6 @@ import { useIntl } from 'react-intl'
 import { z } from 'zod'
 import { transaction } from '@/schema/transactions'
 import { TransactionFormSchema, TransactionSourceFormSchema } from './schemas'
-import { Label } from '@/components/ui/label'
 
 const formSchema = z.object({
   account: transaction.source.account
@@ -39,7 +38,7 @@ export const OperationSourceField = ({
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialValues || values
+    defaultValues: initialValues
   })
 
   const { remove } = useFieldArray({

@@ -123,7 +123,7 @@ export const BasicInformationPaperReadOnly = ({
             control={control}
             maxHeight={100}
             textArea
-            value={currentDescription}
+            defaultValue={currentDescription}
             onChange={handleDescriptionChange}
           />
           <div className="flex flex-col gap-2">

@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation'
 import { useIntl } from 'react-intl'
-import { useGetTransactionById } from '@/client/transactions' // Você precisará criar este hook
+import { useGetTransactionById } from '@/client/transactions'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import { PageHeader } from '@/components/page-header'
 import { Breadcrumb } from '@/components/breadcrumb'
@@ -36,6 +36,7 @@ import { MetaAccordionTransactionDetails } from './meta-accordion-transaction-de
 import { formSchema } from './schemas'
 import { SkeletonTransactionDialog } from './skeleton-transaction-dialog'
 import CancelledCircle from '/public/svg/cancelled-circle.svg'
+import { truncateString } from '@/helpers'
 
 const TAB_VALUES = {
   SUMMARY: 'summary',
@@ -56,9 +57,10 @@ interface Operation {
   chartOfAccounts?: string
 }
 
+type FormSchema = z.infer<typeof formSchema>
+
 export default function TransactionDetailsPage() {
   const intl = useIntl()
-  type FormSchema = z.infer<typeof formSchema>
   const { id: ledgerId, transactionId } = useParams<{
     id: string
     transactionId: string
@@ -137,7 +139,7 @@ export default function TransactionDetailsPage() {
                   id: 'transactions.details.title',
                   defaultMessage: 'Transaction - {id}'
                 },
-                { id: `${transactionId.slice(0, 13)}...` }
+                { id: `${truncateString(transactionId, 13)}` }
               )}
               subtitle={intl.formatMessage(
                 {
@@ -390,7 +392,6 @@ export default function TransactionDetailsPage() {
                           : `destination.${index}`
                       }
                       asset={transaction?.asset}
-                      valueEditable={false}
                       control={form.control}
                       values={{
                         account: operation.accountAlias,
