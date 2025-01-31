@@ -355,5 +355,14 @@
   "status.approved": "Aprovada",
   "status.canceled": "Cancelada",
   "transactions.multiple.destination": "{count} destinos",
-  "transactions.multiple.source": "{count} origens"
+  "transactions.multiple.source": "{count} origens",
+  "entity.portfolio": "Portfólio",
+  "ledgers.account.field.allowReceiving": "Permitir Recebimento",
+  "ledgers.account.field.allowReceiving.tooltip": "Operações habilitadas nesta conta",
+  "ledgers.account.field.allowSending": "Permitir Envio",
+  "ledgers.account.sheet.createPortfolio": "Portfólio",
+  "ledgers.account.sheet.linkedPortfolio": "Conta vinculada a um portfólio.",
+  "ledgers.account.sheet.noLinkedPortfolio": "Conta não vinculada a nenhum portfólio.",
+  "ledgers.account.sheet.noPortfolio.description": "Você não tem um portfólio disponível para vincular aqui.",
+  "ledgers.account.sheet.noPortfolio.title": "Vincular a um Portfólio"
 }
