@@ -5,63 +5,81 @@ import {
 import { UpdateTransactionUseCase } from '@/core/application/use-cases/transactions/update-transaction-use-case'
 import { UpdateTransaction } from '@/core/application/use-cases/transactions/update-transaction-use-case'
 import { container } from '@/core/infrastructure/container-registry/container-registry'
+import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { loggerMiddleware } from '@/utils/logger-middleware-config'
 import { NextResponse } from 'next/server'
 
-const getTransactionByIdUseCase: FetchTransactionById =
-  container.get<FetchTransactionById>(FetchTransactionByIdUseCase)
+export const GET = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'fetchTransactionById',
+      method: 'GET'
+    })
+  ],
+  async (
+    request: Request,
+    {
+      params
+    }: { params: { id: string; ledgerId: string; transactionId: string } }
+  ) => {
+    try {
+      const getTransactionByIdUseCase: FetchTransactionById =
+        container.get<FetchTransactionById>(FetchTransactionByIdUseCase)
+      const organizationId = params.id
+      const ledgerId = params.ledgerId
+      const transactionId = params.transactionId
 
-const updateTransactionUseCase: UpdateTransaction =
-  container.get<UpdateTransaction>(UpdateTransactionUseCase)
+      const transaction = await getTransactionByIdUseCase.execute(
+        organizationId,
+        ledgerId,
+        transactionId
+      )
 
-export async function GET(
-  request: Request,
-  {
-    params
-  }: { params: { id: string; ledgerId: string; transactionId: string } }
-) {
-  try {
-    const organizationId = params.id
-    const ledgerId = params.ledgerId
-    const transactionId = params.transactionId
-
-    const transaction = await getTransactionByIdUseCase.execute(
-      organizationId,
-      ledgerId,
-      transactionId
-    )
-
-    return NextResponse.json(transaction)
-  } catch (error) {
-    return NextResponse.json(
-      { error: 'Failed to fetch transaction' },
-      { status: 500 }
-    )
+      return NextResponse.json(transaction)
+    } catch (error) {
+      return NextResponse.json(
+        { error: 'Failed to fetch transaction' },
+        { status: 500 }
+      )
+    }
   }
-}
+)
 
-export async function PATCH(
-  request: Request,
-  {
-    params
-  }: { params: { id: string; ledgerId: string; transactionId: string } }
-) {
-  try {
-    const transaction = await request.json()
-    const organizationId = params.id
-    const ledgerId = params.ledgerId
-    const transactionId = params.transactionId
-    const updatedTransaction = await updateTransactionUseCase.execute(
-      organizationId,
-      ledgerId,
-      transactionId,
-      transaction
-    )
+export const PATCH = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'updateTransaction',
+      method: 'PATCH'
+    })
+  ],
+  async (
+    request: Request,
+    {
+      params
+    }: { params: { id: string; ledgerId: string; transactionId: string } }
+  ) => {
+    try {
+      const updateTransactionUseCase: UpdateTransaction =
+        container.get<UpdateTransaction>(UpdateTransactionUseCase)
 
-    return NextResponse.json(updatedTransaction)
-  } catch (error) {
-    return NextResponse.json(
-      { error: 'Failed to update transaction' },
-      { status: 500 }
-    )
+      const transaction = await request.json()
+      const organizationId = params.id
+      const ledgerId = params.ledgerId
+      const transactionId = params.transactionId
+
+      const updatedTransaction = await updateTransactionUseCase.execute(
+        organizationId,
+        ledgerId,
+        transactionId,
+        transaction
+      )
+
+      return NextResponse.json(updatedTransaction)
+    } catch (error) {
+      return NextResponse.json(
+        { error: 'Failed to update transaction' },
+        { status: 500 }
+      )
+    }
   }
-}
+)
