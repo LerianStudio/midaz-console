@@ -37,8 +37,7 @@ type FormSchema = z.infer<typeof formSchema>
 
 export const MetaAccordionTransactionDetails = ({
   name,
-  values,
-  control
+  values
 }: MetadataAccordionProps) => {
   const intl = useIntl()
   const { id, transactionId } = useParams<{

@@ -352,7 +352,8 @@ export default function TransactionDetailsPage() {
                     chartOfAccountsGroupName:
                       initialValues.chartOfAccountsGroupName,
                     value: initialValues.value,
-                    asset: initialValues.asset
+                    asset: initialValues.asset,
+                    description: initialValues.description
                   }}
                   control={form.control}
                   handleTabChange={handleTabChange}
