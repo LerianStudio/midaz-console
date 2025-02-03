@@ -34,5 +34,5 @@ module.exports = {
       }
     ]
   ],
-  tagFormat: '${version}${nextRelease.channel === "alpha" ? "-alpha" : ""}${nextRelease.channel === "beta" ? "-beta" : ""}', // Alpha for feature, Beta for fix
+  tagFormat: '${nextRelease.version}${nextRelease.channel === "alpha" ? "-alpha" : ""}${nextRelease.channel === "beta" ? "-beta" : ""}', // Alpha for feature, Beta for fix
 };
