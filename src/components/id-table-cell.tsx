@@ -17,7 +17,7 @@ export const IdTableCell = ({ id }: IdTableCellProps) => {
   const intl = useIntl()
   const { showInfo } = useCustomToast()
 
-  const displayId = id && id.length > 8 ? `${truncateString(id, 8)}` : id
+  const displayId = id && id.length > 12 ? `${truncateString(id, 12)}` : id
 
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(id!)

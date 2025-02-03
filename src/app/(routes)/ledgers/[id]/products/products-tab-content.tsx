@@ -39,8 +39,8 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { useQueryParams } from '@/hooks/use-query-params'
 import { Pagination } from '@/components/pagination'
 import { PaginationLimitField } from '@/components/form/pagination-limit-field'
-import { IdTableCell } from '../IdTableCell'
 import { MetadataTableCell } from '../MetadataTableCell'
+import { IdTableCell } from '@/components/id-table-cell'
 
 export const ProductsTabContent = () => {
   const intl = useIntl()
