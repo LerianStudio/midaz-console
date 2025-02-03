@@ -3,8 +3,8 @@ name: Release and Build
 on:
   push:
     branches:
-      - develop
-      - main
+      #- develop
+      #- main
       - '*'
     paths-ignore:
       - '.gitignore'
