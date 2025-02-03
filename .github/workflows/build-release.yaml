@@ -5,6 +5,7 @@ on:
     branches:
       - develop
       - main
+      - '*'
     paths-ignore:
       - '.gitignore'
       - '**/*.env'
