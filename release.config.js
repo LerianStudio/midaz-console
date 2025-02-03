@@ -34,8 +34,5 @@ module.exports = {
       }
     ]
   ],
-  tagFormat: (version, { nextRelease }) => {
-    const channel = nextRelease ? nextRelease.channel : 'latest'; // Garantir que o nextRelease e channel existem
-    return `${version}${channel === 'alpha' ? '-alpha' : ''}${channel === 'beta' ? '-beta' : ''}`;
-  }
-};
+  tagFormat: '${nextRelease.version}', // Simples, sem a lógica do channel
+  };
