@@ -35,7 +35,8 @@ module.exports = {
     ]
   ],
   tagFormat: (version, context) => {
-    const channel = context.nextRelease ? context.nextRelease.channel : 'latest';
+    // Acessa o canal diretamente do context
+    const channel = context ? context.nextRelease.channel : 'latest'; // Garantir que o channel existe
     return `${version}${channel === 'alpha' ? '-alpha' : ''}${channel === 'beta' ? '-beta' : ''}`;
   }
 };
