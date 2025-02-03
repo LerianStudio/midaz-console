@@ -2,6 +2,8 @@ module.exports = {
   branches: [
     { name: 'main', channel: 'latest' },    // Prod
     { name: 'develop', channel: 'next' },    // Dev
+    { name: 'feature/', channel: 'alpha' },  // Alpha
+    { name: 'fix/', channel: 'beta' },       // Beta
   ],
   plugins: [
     [
@@ -32,5 +34,5 @@ module.exports = {
       }
     ]
   ],
-  tagFormat: '${version}',
+  tagFormat: '${version}${nextRelease.channel === "alpha" ? "-alpha" : ""}${nextRelease.channel === "beta" ? "-beta" : ""}', // Alpha for feature, Beta for fix
 };

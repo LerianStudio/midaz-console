@@ -3,9 +3,10 @@ name: Release and Build
 on:
   push:
     branches:
-      #- develop
-      #- main
+      - develop
+      - main
       - feature/*
+      - fix/*
     paths-ignore:
       - '.gitignore'
       - '**/*.env'
