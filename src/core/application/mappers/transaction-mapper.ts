@@ -58,13 +58,13 @@ export class TransactionMapper {
   }
 
   static valueToAmount(value: number) {
-    if (!isNumber(value)) {
+    if (!isNumber(Number(value))) {
       throw new Error(
         `TransactionMapper.valueToAmount: value ${value} is not a number`
       )
     }
 
-    let resultValue = value
+    let resultValue = Number(value)
     let scale = 0
 
     while (resultValue % 1 !== 0) {

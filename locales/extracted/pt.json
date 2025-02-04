@@ -365,6 +365,7 @@
   "ledgers.account.sheet.noLinkedPortfolio": "Conta não vinculada a nenhum portfólio.",
   "ledgers.account.sheet.noPortfolio.description": "Você não tem um portfólio disponível para vincular aqui.",
   "ledgers.account.sheet.noPortfolio.title": "Vincular a um Portfólio",
+  "common.link": "Vincular",
   "common.confirmDescription": "Tem certeza que deseja salvar?",
   "transactions.details.breadcrumb": "Detalhes da transação",
   "transactions.details.status.processed.withDate": "Processado em {date}",
