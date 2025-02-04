@@ -103,11 +103,9 @@ export const BasicInformationPaperReadOnly = ({
     handleTabChange
   )
 
-  const { handleDialogOpen, dialogProps } = useConfirmDialog(
-    {
-      onConfirm: handleSave
-    }
-  )
+  const { handleDialogOpen, dialogProps } = useConfirmDialog({
+    onConfirm: handleSave
+  })
 
   return (
     <form onSubmit={form.handleSubmit(handleSave)}>
