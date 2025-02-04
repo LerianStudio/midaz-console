@@ -5,6 +5,8 @@ import { MidazFetchTransactionByIdRepository } from '../transactions/midaz-fetch
 import { FetchTransactionByIdRepository } from '@/core/domain/repositories/transactions/fetch-transaction-by-id-repository'
 import { UpdateTransactionRepository } from '@/core/domain/repositories/transactions/update-transaction-repository'
 import { MidazUpdateTransactionRepository } from '../transactions/midaz-update-transaction-repository'
+import { FetchAllTransactionsRepository } from '@/core/domain/repositories/transactions/fetch-all-transactions-repository'
+import { MidazFetchAllTransactionsRepository } from '../transactions/midaz-fetch-all-transactions-repository'
 
 export const MidazTransactionModule = new ContainerModule(
   (container: Container) => {
@@ -19,5 +21,9 @@ export const MidazTransactionModule = new ContainerModule(
     container
       .bind<UpdateTransactionRepository>(UpdateTransactionRepository)
       .to(MidazUpdateTransactionRepository)
+      
+    container
+      .bind<FetchAllTransactionsRepository>(FetchAllTransactionsRepository)
+      .to(MidazFetchAllTransactionsRepository)
   }
 )

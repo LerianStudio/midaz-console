@@ -1,3 +1,38 @@
+# [1.3.0](https://github.com/LerianStudio/midaz-console/compare/v1.2.0...v1.3.0) (2025-02-03)
+
+
+### Bug Fixes
+
+* pr changes ([8171ac1](https://github.com/LerianStudio/midaz-console/commit/8171ac1cb1d2a8ad2c1c79662ac34d4534f17897))
+* pr changes ([c4343e9](https://github.com/LerianStudio/midaz-console/commit/c4343e939cb1bc4698d21d87a6454a95fa25bb1c))
+* remove console and unused codes ([529b28e](https://github.com/LerianStudio/midaz-console/commit/529b28e865afc59db563934b1b426c607ebb2ed7))
+
+
+### Features
+
+* added midazhttpauth in all files repositories ([c4778cf](https://github.com/LerianStudio/midaz-console/commit/c4778cf39af4d93acce84e089709465d5bca94c6))
+* added midazhttpauth on account repository ([33d49c2](https://github.com/LerianStudio/midaz-console/commit/33d49c20120c4bb60be7bd2aec0e41e7fc0ba584))
+* added new logger structure implementation ([66f5a3b](https://github.com/LerianStudio/midaz-console/commit/66f5a3bdb2de59b929482487a3287e861e28990d))
+* clean up logger v.0 implementation ([47ca3ed](https://github.com/LerianStudio/midaz-console/commit/47ca3ed2a8b32289329a40fab1905d68507e2a4d))
+* comentaries to indicate how implmentation works ([44763fc](https://github.com/LerianStudio/midaz-console/commit/44763fc06ef12172e198d5d38c63b11c94ae6935))
+* create container load and remove lazy service ([842aed7](https://github.com/LerianStudio/midaz-console/commit/842aed7a289729293df07fa972f26203b208b433))
+* fix build ([95bba8e](https://github.com/LerianStudio/midaz-console/commit/95bba8eb6a3fad98f82c83eefe3897fd2a7712ed))
+* fix build ([e138d2a](https://github.com/LerianStudio/midaz-console/commit/e138d2a7bae29a65795a39f6f22ab37163b1f873))
+* implement midaz id clearscope ([6a0d8c6](https://github.com/LerianStudio/midaz-console/commit/6a0d8c64f6d0f684f8430f5b6733819f1e1e4f0b))
+* implement new httpfetchmidazId on product repository and tests ([891d0a1](https://github.com/LerianStudio/midaz-console/commit/891d0a10bf06e95f6fd77f00f0930877ba73d086))
+* improve midaz log lib to improve dev experience ([c23a36d](https://github.com/LerianStudio/midaz-console/commit/c23a36d05221bfc61cc5f8e29efb4693185d08b0))
+* improve prettier fixes build ([13869c8](https://github.com/LerianStudio/midaz-console/commit/13869c8c81c03b04f1ddc7a1f5bc35da912e0775))
+* merge with develop ([f798a85](https://github.com/LerianStudio/midaz-console/commit/f798a858d30ba099469f7ad0bfa7d11bb985d445))
+* portfolio repository ([c11415b](https://github.com/LerianStudio/midaz-console/commit/c11415be2e73669a93dc3a37d801fc4acb344f34))
+* remove commentary ([29da4f9](https://github.com/LerianStudio/midaz-console/commit/29da4f9ef93c4f02508eebf1e9ddb7a7d90a3348))
+* remove lazy service ([38ee1a4](https://github.com/LerianStudio/midaz-console/commit/38ee1a43d944fb9d75ad35f6bb27a33ec25febb7))
+* remove lazy service ([9f0ad3f](https://github.com/LerianStudio/midaz-console/commit/9f0ad3f41805b21650b96a370a42260acbc2ce29))
+* remove log commentary ([a82680d](https://github.com/LerianStudio/midaz-console/commit/a82680d149375ab498ad599109b267d7b57caae4))
+* remove log-container ([5bb9960](https://github.com/LerianStudio/midaz-console/commit/5bb9960cc3b2e12f82ffd903dc9f6a3f96ea6cec))
+* remove unused code ([790eb7e](https://github.com/LerianStudio/midaz-console/commit/790eb7ee9eecb733fb5ee419b2b22d7c5efd34b5))
+* remove unused code ([6482610](https://github.com/LerianStudio/midaz-console/commit/6482610fba91859d1709e8f578c186cece520d37))
+* remove unused code ([95529df](https://github.com/LerianStudio/midaz-console/commit/95529df1c9827fae8ac1d0998b1c9d7c3d03c5c8))
+
 # [1.2.0](https://github.com/LerianStudio/midaz-console/compare/v1.1.4...v1.2.0) (2025-01-15)
 
 ### Features

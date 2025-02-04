@@ -1,7 +1,4 @@
-type Status = {
-  code: string
-  description: string
-}
+import { StatusDto } from '@/core/application/dto/status.dto'
 
 type Metadata = Record<string, string>
 
@@ -12,6 +9,9 @@ export type IAssetType = {
   name: string
   type: string
   code: string
-  status: Status
+  status: StatusDto
   metadata: Metadata | null
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date | null
 }

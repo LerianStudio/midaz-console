@@ -36,7 +36,8 @@ import { MetaAccordionTransactionDetails } from './meta-accordion-transaction-de
 import { formSchema } from './schemas'
 import { SkeletonTransactionDialog } from './skeleton-transaction-dialog'
 import CancelledCircle from '/public/svg/cancelled-circle.svg'
-import { truncateString } from '@/helpers'
+import { capitalizeFirstLetter, truncateString } from '@/helpers'
+import dayjs from 'dayjs'
 
 const TAB_VALUES = {
   SUMMARY: 'summary',
@@ -100,6 +101,15 @@ export default function TransactionDetailsPage() {
     values: initialValues
   })
 
+  const numericValue = transaction?.decimalValue
+
+
+  const displayValue= (amount: number) => intl.formatNumber(amount, {
+    minimumFractionDigits: transaction?.amountScale,
+    maximumFractionDigits: transaction?.amountScale
+    })
+
+
   if (isLoading) {
     return <SkeletonTransactionDialog />
   }
@@ -147,13 +157,7 @@ export default function TransactionDetailsPage() {
                   defaultMessage: 'Processed on {date}'
                 },
                 {
-                  date: new Intl.DateTimeFormat('pt-BR', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  }).format(new Date(transaction?.createdAt))
+                  date: dayjs(transaction?.createdAt).format('L HH:mm')
                 }
               )}
             />
@@ -208,11 +212,7 @@ export default function TransactionDetailsPage() {
                 />
                 <TransactionReceiptValue
                   asset={transaction?.assetCode}
-                  value={new Intl.NumberFormat('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                    currency: 'USD'
-                  }).format(Number(transaction?.amount))}
+                  value={capitalizeFirstLetter(displayValue(Number(transaction?.amount)))}  
                 />
                 <StatusDisplay status={transaction?.status?.code || ''} />
                 <TransactionReceiptSubjects
@@ -266,14 +266,7 @@ export default function TransactionDetailsPage() {
                     id: 'common.value',
                     defaultMessage: 'Value'
                   })}
-                  value={`${transaction?.assetCode} ${new Intl.NumberFormat(
-                    'pt-BR',
-                    {
-                      style: 'decimal',
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2
-                    }
-                  ).format(Number(transaction?.amount))}`}
+                  value={`${transaction?.assetCode} ${displayValue(Number(transaction?.amount))}`}
                 />
                 <Separator orientation="horizontal" />
                 {transaction?.operations
@@ -284,11 +277,7 @@ export default function TransactionDetailsPage() {
                       type="debit"
                       account={operation.accountAlias}
                       asset={operation.assetCode}
-                      value={new Intl.NumberFormat('pt-BR', {
-                        style: 'decimal',
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                      }).format(Number(operation.amount.amount))}
+                      value={(displayValue(Number(operation?.amount.amount)))}  
                     />
                   ))}
                 {transaction?.operations
@@ -299,11 +288,7 @@ export default function TransactionDetailsPage() {
                       type="credit"
                       account={operation.accountAlias}
                       asset={operation.assetCode}
-                      value={new Intl.NumberFormat('pt-BR', {
-                        style: 'decimal',
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                      }).format(Number(operation.amount.amount))}
+                      value={displayValue(Number(operation?.amount.amount))}  
                     />
                   ))}
                 <Separator orientation="horizontal" />
