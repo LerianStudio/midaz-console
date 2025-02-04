@@ -46,7 +46,7 @@
   "header.userDropdown.profile": "Perfil",
   "header.userDropdown.subscription": "Assinatura",
   "header.userDropdown.support": "Suporte",
-  "settingsDialog.description": "Faça as alterações desejadas e clique em “Salvar” quando finalizar.",
+  "settingsDialog.description": "Faça as alterações desejadas e clique em 'Salvar' quando finalizar.",
   "settingsDialog.title": "Configurações",
   "sideBar.accountHolders.accounts": "Contas",
   "sideBar.accountHolders.portfolios": "Portfólios",
@@ -364,5 +364,18 @@
   "ledgers.account.sheet.linkedPortfolio": "Conta vinculada a um portfólio.",
   "ledgers.account.sheet.noLinkedPortfolio": "Conta não vinculada a nenhum portfólio.",
   "ledgers.account.sheet.noPortfolio.description": "Você não tem um portfólio disponível para vincular aqui.",
-  "ledgers.account.sheet.noPortfolio.title": "Vincular a um Portfólio"
+  "ledgers.account.sheet.noPortfolio.title": "Vincular a um Portfólio",
+  "common.confirmDescription": "Tem certeza que deseja salvar?",
+  "transactions.details.breadcrumb": "Detalhes da transação",
+  "transactions.details.status.processed.withDate": "Processado em {date}",
+  "transactions.details.title": "Transação - {id}",
+  "transactions.field.operation.chartOfAccounts": "Plano de contas",
+  "transactions.operations.metadata.key": "Chave",
+  "transactions.operations.metadata.value": "Valor",
+  "transactions.status.title": "Status da Transação",
+  "transactions.tab.data": "Dados da Transação",
+  "transactions.tab.list": "Lista de transações",
+  "transactions.tab.operations": "Operações e Metadados",
+  "transactions.tab.summary": "Resumo",
+  "transactions.toast.update.success": "Transação atualizada com sucesso"
 }

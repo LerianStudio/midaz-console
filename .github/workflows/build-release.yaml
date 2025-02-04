@@ -61,7 +61,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-      
+
       - name: Cache Node.js dependencies
         uses: actions/cache@v3
         with:
@@ -72,7 +72,7 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Build the project
         run: npm run build
 
@@ -82,7 +82,7 @@ jobs:
           TAG=$(npx semantic-release | grep 'The next release version is' | awk '{print $NF}')
           echo "Generated tag: $TAG"
           echo "::set-output name=semantic_tag::$TAG"
-        
+
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
@@ -90,12 +90,12 @@ jobs:
           GIT_AUTHOR_EMAIL: ${{ secrets.LERIAN_CI_CD_USER_EMAIL }}
           GIT_COMMITTER_NAME: ${{ secrets.LERIAN_CI_CD_USER_NAME }}
           GIT_COMMITTER_EMAIL: ${{ secrets.LERIAN_CI_CD_USER_EMAIL }}
-      
+
       - name: Fail if no tag is generated
         if: ${{ steps.semantic_release.outputs.semantic_tag == '' }}
         run: |
-            echo -e "\033[31mNo new version was generated. Stopping the pipeline.\033[0m"
-            exit 1
+          echo -e "\033[31mNo new version was generated. Stopping the pipeline.\033[0m"
+          exit 1
 
   build_and_publish:
     name: Build and Publish Docker Image
@@ -123,19 +123,19 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-            images: ${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}
-            tags: |
-              ${{ needs.release.outputs.semantic_tag }}
-              ${{ github.ref == 'refs/heads/main' && 'latest' || github.ref == 'refs/heads/develop' && 'next' || '' }}
-        
+          images: ${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}
+          tags: |
+            ${{ needs.release.outputs.semantic_tag }}
+            ${{ github.ref == 'refs/heads/main' && 'latest' || github.ref == 'refs/heads/develop' && 'next' || '' }}
+
       - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
-            context: .
-            file: ./Dockerfile
-            load: true
-            tags: ${{ steps.meta.outputs.tags }}
-            cache-from: type=registry,ref=${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}:latest
+          context: .
+          file: ./Dockerfile
+          load: true
+          tags: ${{ steps.meta.outputs.tags }}
+          cache-from: type=registry,ref=${{ env.DOCKERHUB_ORG }}/${{ env.APP_NAME }}:latest
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master

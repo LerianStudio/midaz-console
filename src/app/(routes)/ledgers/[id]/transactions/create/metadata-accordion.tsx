@@ -49,7 +49,11 @@ export const MetadataAccordion = ({
         <PaperCollapsibleContent>
           <Separator orientation="horizontal" />
           <div className="p-6">
-            <MetadataField name={name} control={control} />
+            <MetadataField
+              name={name}
+              control={control}
+              defaultValue={values || {}}
+            />
           </div>
         </PaperCollapsibleContent>
       </PaperCollapsible>

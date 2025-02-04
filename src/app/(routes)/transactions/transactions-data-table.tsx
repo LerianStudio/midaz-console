@@ -53,6 +53,7 @@ import { ILedgerType } from '@/types/ledgers-type'
 import { ITransactiontType } from '@/types/transactions-type'
 import { IdTableCell } from '@/components/id-table-cell'
 import { SelectField } from '@/components/form'
+import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 
 type TransactionsDataTableProps = {
   transactionsState: {
@@ -96,7 +97,7 @@ const statusMessages = defineMessages({
   }
 })
 
-const TransactionRow: React.FC<any> = ({ transaction }) => {
+const TransactionRow: React.FC<any> = ({ transaction, selectedLedgerId }) => {
   const intl = useIntl()
   const {
     status: { code },
@@ -187,7 +188,9 @@ const TransactionRow: React.FC<any> = ({ transaction }) => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <Link href={`/transactions/${transaction.original.id}`}>
+              <Link
+                href={`/ledgers/${selectedLedgerId}/transactions/${transaction.original.id}`}
+              >
                 <DropdownMenuItem>
                   {intl.formatMessage({
                     id: 'common.seeDetails',
@@ -369,6 +372,7 @@ export const TransactionsDataTable = ({
                   <TransactionRow
                     key={transaction.id}
                     transaction={transaction}
+                    selectedLedgerId={selectedLedgerId}
                     handleCopyToClipboard={handleCopyToClipboard}
                   />
                 ))}

@@ -1,8 +1,17 @@
-import { PaginationDto } from '@/core/application/dto/pagination-dto'
-import { getFetcher, getPaginatedFetcher, postFetcher } from '@/lib/fetcher'
+import {
+  getFetcher,
+  patchFetcher,
+  postFetcher,
+  getPaginatedFetcher
+} from '@/lib/fetcher'
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  UseMutationOptions
+} from '@tanstack/react-query'
 import { PaginationRequest } from '@/types/pagination-request-type'
-import { useMutation, useQuery } from '@tanstack/react-query'
-
+import { PaginationDto } from '@/core/application/dto/pagination-dto'
 export type UseCreateTransactionProps = {
   organizationId: string
   ledgerId: string
@@ -29,6 +38,27 @@ export const useCreateTransaction = ({
   })
 }
 
+type UseGetTransactionByIdProps = {
+  organizationId: string
+  ledgerId: string
+  transactionId: string
+}
+
+export const useGetTransactionById = ({
+  organizationId,
+  ledgerId,
+  transactionId,
+  ...options
+}: UseGetTransactionByIdProps) => {
+  return useQuery({
+    queryKey: ['transactions-by-id', transactionId, organizationId, ledgerId],
+    queryFn: getFetcher(
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/transactions/${transactionId}`
+    ),
+    ...options
+  })
+}
+
 export const useListTransactions = ({
   organizationId,
   ledgerId,
@@ -42,6 +72,45 @@ export const useListTransactions = ({
       `/api/organizations/${organizationId}/ledgers/${ledgerId}/transactions`,
       { page, limit }
     ),
+    ...options
+  })
+}
+
+type UseUpdateTransactionProps = UseMutationOptions<
+  any,
+  Error,
+  { metadata?: Record<string, any> | null; description?: string | null }
+> & {
+  organizationId: string
+  ledgerId: string
+  transactionId: string
+}
+
+export const useUpdateTransaction = ({
+  organizationId,
+  ledgerId,
+  transactionId,
+  onSuccess,
+  ...options
+}: UseUpdateTransactionProps) => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationKey: ['transactions', 'update'],
+    mutationFn: patchFetcher(
+      `/api/organizations/${organizationId}/ledgers/${ledgerId}/transactions/${transactionId}`
+    ),
+    onSuccess: (...args) => {
+      queryClient.invalidateQueries({
+        queryKey: [
+          'transactions-by-id',
+          transactionId,
+          organizationId,
+          ledgerId
+        ]
+      })
+      onSuccess?.(...args)
+    },
     ...options
   })
 }
