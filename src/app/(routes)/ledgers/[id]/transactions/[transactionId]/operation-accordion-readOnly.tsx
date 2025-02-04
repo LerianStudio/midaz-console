@@ -67,13 +67,6 @@ const ValueField = ({ name, error, control }: ValueFieldProps) => {
   )
 }
 
-const formatCurrency = (value: number, currency: string) => {
-  return new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: currency || 'BRL'
-  }).format(value)
-}
-
 export type OperationAccordionReadOnlyProps = {
   type?: 'debit' | 'credit'
   name: string
@@ -81,6 +74,7 @@ export type OperationAccordionReadOnlyProps = {
   values: TransactionSourceFormSchema[0]
   valueEditable?: boolean
   control: Control<any>
+  amount: string
 }
 
 export const OperationAccordionReadOnly = ({
@@ -88,6 +82,7 @@ export const OperationAccordionReadOnly = ({
   name,
   asset,
   values,
+  amount,
   valueEditable,
   control
 }: OperationAccordionReadOnlyProps) => {
@@ -144,7 +139,7 @@ export const OperationAccordionReadOnly = ({
                     'text-green-500': type === 'credit'
                   })}
                 >
-                  {formatCurrency(Number(values.value), asset || 'BRL')}
+                  {amount}
                 </p>
               )}
             </div>

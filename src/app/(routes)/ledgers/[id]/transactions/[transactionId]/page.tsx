@@ -51,7 +51,7 @@ interface Operation {
   type: 'DEBIT' | 'CREDIT'
   accountAlias: string
   amount: {
-    amount: string
+    amount: string | number
   }
   metadata?: Record<string, any>
   description?: string
@@ -267,7 +267,7 @@ export default function TransactionDetailsPage() {
                     id: 'common.value',
                     defaultMessage: 'Value'
                   })}
-                  value={`${transaction?.assetCode} ${displayValue(Number(transaction?.amount))}`}
+                  value={`${transaction?.assetCode} ${displayValue(transaction?.amount)}`}
                 />
                 <Separator orientation="horizontal" />
                 {transaction?.operations
@@ -278,7 +278,7 @@ export default function TransactionDetailsPage() {
                       type="debit"
                       account={operation.accountAlias}
                       asset={operation.assetCode}
-                      value={displayValue(Number(operation?.amount.amount))}
+                      value={displayValue(operation?.amount.amount)}
                     />
                   ))}
                 {transaction?.operations
@@ -289,7 +289,7 @@ export default function TransactionDetailsPage() {
                       type="credit"
                       account={operation.accountAlias}
                       asset={operation.assetCode}
-                      value={displayValue(Number(operation?.amount.amount))}
+                      value={displayValue(operation?.amount.amount)}
                     />
                   ))}
                 <Separator orientation="horizontal" />
@@ -334,6 +334,7 @@ export default function TransactionDetailsPage() {
             <div className="grid grid-cols-3">
               <div className="col-span-2">
                 <BasicInformationPaperReadOnly
+                  amount={displayValue(transaction?.amount)}
                   values={{
                     chartOfAccountsGroupName:
                       initialValues.chartOfAccountsGroupName,
@@ -372,6 +373,7 @@ export default function TransactionDetailsPage() {
                   (operation: Operation, index: number) => (
                     <OperationAccordionReadOnly
                       key={index}
+                      amount={displayValue(Number(operation?.amount?.amount))}
                       type={operation.type === 'DEBIT' ? 'debit' : 'credit'}
                       name={
                         operation.type === 'DEBIT'

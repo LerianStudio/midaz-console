@@ -28,6 +28,7 @@ interface TransactionValues {
 export interface BasicInformationPaperProps {
   control: Control<any>
   values: TransactionValues
+  amount: string
   onCancel?: () => void
   onSave?: (description: string) => void
   handleTabChange?: (tab: string) => void
@@ -88,16 +89,9 @@ const useTransactionForm = (
   }
 }
 
-const formatCurrency = (value: number): string => {
-  return new Intl.NumberFormat('pt-BR', {
-    style: 'decimal',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  }).format(value)
-}
-
 export const BasicInformationPaperReadOnly = ({
   values,
+  amount,
   onCancel,
   onSave,
   handleTabChange
@@ -109,7 +103,7 @@ export const BasicInformationPaperReadOnly = ({
     handleTabChange
   )
 
-  const { handleDialogOpen, handleDialogClose, dialogProps } = useConfirmDialog(
+  const { handleDialogOpen, dialogProps } = useConfirmDialog(
     {
       onConfirm: handleSave
     }
@@ -117,6 +111,7 @@ export const BasicInformationPaperReadOnly = ({
 
   return (
     <form onSubmit={form.handleSubmit(handleSave)}>
+      <pre>{JSON.stringify(values, null, 2)}</pre>
       <Paper className="mb-6 flex flex-col">
         <div className="grid grid-cols-2 gap-5 p-6">
           <InputField
@@ -154,7 +149,7 @@ export const BasicInformationPaperReadOnly = ({
                 })}
               </label>
               <div className="flex h-9 items-center rounded-md bg-shadcn-100 px-3">
-                {formatCurrency(values.value || 0)}
+                {amount}
               </div>
             </div>
           </div>
