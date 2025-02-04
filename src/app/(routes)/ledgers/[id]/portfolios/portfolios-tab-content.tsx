@@ -42,8 +42,8 @@ import { PaginationLimitField } from '@/components/form/pagination-limit-field'
 import { useQueryParams } from '@/hooks/use-query-params'
 import { Pagination } from '@/components/pagination'
 import { EmptyResource } from '@/components/empty-resource'
-import { IdTableCell } from '../IdTableCell'
 import { MetadataTableCell } from '../MetadataTableCell'
+import { IdTableCell } from '@/components/id-table-cell'
 
 export const PortfoliosTabContent = () => {
   const intl = useIntl()

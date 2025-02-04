@@ -103,7 +103,10 @@ describe('TransactionMapper', () => {
 
       const responseDto = TransactionMapper.toResponseDto(entity)
 
-      expect(responseDto).toEqual(entity)
+      expect(responseDto).toEqual({
+        ...entity,
+        decimalValue: 0
+      })
     })
   })
 
