@@ -109,7 +109,6 @@ export const BasicInformationPaperReadOnly = ({
 
   return (
     <form onSubmit={form.handleSubmit(handleSave)}>
-      <pre>{JSON.stringify(values, null, 2)}</pre>
       <Paper className="mb-6 flex flex-col">
         <div className="grid grid-cols-2 gap-5 p-6">
           <InputField
