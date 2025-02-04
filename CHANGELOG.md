@@ -1,3 +1,32 @@
+# [1.4.0](https://github.com/LerianStudio/midaz-console/compare/v1.3.0...v1.4.0) (2025-02-04)
+
+
+### Features
+
+* added default on component ([a303dc9](https://github.com/LerianStudio/midaz-console/commit/a303dc9dfb4ee18da5de3565aca9eb58d934e29e))
+* added display value ([6133132](https://github.com/LerianStudio/midaz-console/commit/6133132c99a3f3fa2ef46baa0c1e0fe69987d9ff))
+* added format package json format code and added breadcrumb ([a675606](https://github.com/LerianStudio/midaz-console/commit/a675606e6a637563e22256b175435bb4202bc6b0))
+* added logger route ([b39058e](https://github.com/LerianStudio/midaz-console/commit/b39058e892e4122fe9537a2ad18f7b6b04dcb8d6))
+* added schema ([bf49307](https://github.com/LerianStudio/midaz-console/commit/bf49307c98ac698cb0a20885eed6ba67bac41ef0))
+* ajust yml quote ([076b7c6](https://github.com/LerianStudio/midaz-console/commit/076b7c67ab8a83bce0d78b4fa2702302d6fa48e9))
+* cancelled circle icon ([dca8bca](https://github.com/LerianStudio/midaz-console/commit/dca8bcaed912ecc11a0c2b1c2be6386f1bbc20a6))
+* component rollback ([881dbe5](https://github.com/LerianStudio/midaz-console/commit/881dbe581130e23af0526661b0004c58c50f6858))
+* console log unused ([26ab0ba](https://github.com/LerianStudio/midaz-console/commit/26ab0ba77455cc4423b513ea63930c5953464b79))
+* create transaction details structure ([4a20066](https://github.com/LerianStudio/midaz-console/commit/4a20066675ece8f6c99b99806b238455f1957e76))
+* i18n translate ([0168a58](https://github.com/LerianStudio/midaz-console/commit/0168a586a207ac830c74654c29838b610a441da9))
+* improve component badger and opretaion acordion readyonly ([b7af9ca](https://github.com/LerianStudio/midaz-console/commit/b7af9caf51ca5892efabc8247c976658de0452e0))
+* improve update description ([3ee4371](https://github.com/LerianStudio/midaz-console/commit/3ee4371ec6174d0244d0d083e0d735fa3f6dbf7f))
+* prettier fixes ([20725e9](https://github.com/LerianStudio/midaz-console/commit/20725e974fb25aaed714c947069eea4200fe9218))
+* prettier formater ([d8a6390](https://github.com/LerianStudio/midaz-console/commit/d8a6390b678689ff27ce9f60e6fac6da94636b50))
+* refactor transactions code ([5bc86be](https://github.com/LerianStudio/midaz-console/commit/5bc86be4f360eb004d1ea467bf0ca7576ee20895))
+* refactoring modal to added pagefooter ([0b312d6](https://github.com/LerianStudio/midaz-console/commit/0b312d69caee788b7a4e3366ae87d2abe4a72be6))
+* remove console log ([656155f](https://github.com/LerianStudio/midaz-console/commit/656155fbe91b91f0ab1da21db0632f98874eec55))
+* remove pre html tag ([e4efe49](https://github.com/LerianStudio/midaz-console/commit/e4efe494fd6f296670b5569b86fcca52999f2c0b))
+* remove readyonly prop ([9e96290](https://github.com/LerianStudio/midaz-console/commit/9e96290ef68c76e143865f9a3c786da86225bd75))
+* remove unused code and implement transactions update ([7bbd83e](https://github.com/LerianStudio/midaz-console/commit/7bbd83e29881a253b15ae76f0c65c0400aa9a4d4))
+* skeleton component ([5f5d993](https://github.com/LerianStudio/midaz-console/commit/5f5d993cb9412eb1519bd3ff66e9b4018ee494f8))
+* update badge component ([e282f2d](https://github.com/LerianStudio/midaz-console/commit/e282f2d1c659277519817de44fab6c548ed45efb))
+
 # [1.3.0](https://github.com/LerianStudio/midaz-console/compare/v1.2.0...v1.3.0) (2025-02-03)
 
 
