@@ -67,7 +67,6 @@ type TransactionsDataTableProps = {
   }
 }
 
-
 const multipleItemsMessages = defineMessages({
   source: {
     id: 'transactions.multiple.source',
@@ -105,18 +104,16 @@ const TransactionRow: React.FC<any> = ({ transaction, selectedLedgerId }) => {
     createdAt,
     assetCode,
     source = [],
-    destination = [],
+    destination = []
   } = transaction.original
 
   const badgeVariant = getBadgeVariant(code)
   const numericValue = transaction.original.decimalValue
 
-
   const displayValue = intl.formatNumber(numericValue, {
     minimumFractionDigits: transaction.original.amountScale,
     maximumFractionDigits: transaction.original.amountScale
   })
-
 
   const renderItemsList = (
     items: string[],

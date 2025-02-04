@@ -54,7 +54,7 @@ export const MetaAccordionTransactionDetails = ({
     transactionId: transactionId!,
     onSuccess: (response) => {
       form.reset({ metadata: response.metadata })
-      
+
       showSuccess(
         intl.formatMessage({
           id: 'transactions.toast.update.success',
@@ -65,14 +65,12 @@ export const MetaAccordionTransactionDetails = ({
     }
   })
 
-
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       metadata: values
     }
   })
-
 
   const handleCancel = () => {
     form.reset()
@@ -87,7 +85,6 @@ export const MetaAccordionTransactionDetails = ({
   useEffect(() => {
     setIsFooterOpen(form.formState.isDirty)
   }, [form.formState.isDirty])
-
 
   return (
     <Form {...form}>
@@ -124,7 +121,7 @@ export const MetaAccordionTransactionDetails = ({
           </div>
         </PaperCollapsibleContent>
       </PaperCollapsible>
-            
+
       <PageFooter open={isFooterOpen}>
         <PageFooterSection>
           <Button variant="outline" onClick={handleCancel}>

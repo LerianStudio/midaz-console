@@ -103,12 +103,11 @@ export default function TransactionDetailsPage() {
 
   const numericValue = transaction?.decimalValue
 
-
-  const displayValue= (amount: number) => intl.formatNumber(amount, {
-    minimumFractionDigits: transaction?.amountScale,
-    maximumFractionDigits: transaction?.amountScale
+  const displayValue = (amount: number) =>
+    intl.formatNumber(amount, {
+      minimumFractionDigits: transaction?.amountScale,
+      maximumFractionDigits: transaction?.amountScale
     })
-
 
   if (isLoading) {
     return <SkeletonTransactionDialog />
@@ -212,7 +211,9 @@ export default function TransactionDetailsPage() {
                 />
                 <TransactionReceiptValue
                   asset={transaction?.assetCode}
-                  value={capitalizeFirstLetter(displayValue(Number(transaction?.amount)))}  
+                  value={capitalizeFirstLetter(
+                    displayValue(Number(transaction?.amount))
+                  )}
                 />
                 <StatusDisplay status={transaction?.status?.code || ''} />
                 <TransactionReceiptSubjects
@@ -277,7 +278,7 @@ export default function TransactionDetailsPage() {
                       type="debit"
                       account={operation.accountAlias}
                       asset={operation.assetCode}
-                      value={(displayValue(Number(operation?.amount.amount)))}  
+                      value={displayValue(Number(operation?.amount.amount))}
                     />
                   ))}
                 {transaction?.operations
@@ -288,7 +289,7 @@ export default function TransactionDetailsPage() {
                       type="credit"
                       account={operation.accountAlias}
                       asset={operation.assetCode}
-                      value={displayValue(Number(operation?.amount.amount))}  
+                      value={displayValue(Number(operation?.amount.amount))}
                     />
                   ))}
                 <Separator orientation="horizontal" />

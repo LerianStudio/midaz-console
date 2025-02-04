@@ -1,5 +1,15 @@
-import { getFetcher, patchFetcher, postFetcher, getPaginatedFetcher } from '@/lib/fetcher'
-import { useMutation, useQuery, useQueryClient, UseMutationOptions } from '@tanstack/react-query'
+import {
+  getFetcher,
+  patchFetcher,
+  postFetcher,
+  getPaginatedFetcher
+} from '@/lib/fetcher'
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  UseMutationOptions
+} from '@tanstack/react-query'
 import { PaginationRequest } from '@/types/pagination-request-type'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
 export type UseCreateTransactionProps = {
@@ -92,7 +102,12 @@ export const useUpdateTransaction = ({
     ),
     onSuccess: (...args) => {
       queryClient.invalidateQueries({
-        queryKey: ['transactions-by-id', transactionId, organizationId, ledgerId]
+        queryKey: [
+          'transactions-by-id',
+          transactionId,
+          organizationId,
+          ledgerId
+        ]
       })
       onSuccess?.(...args)
     },

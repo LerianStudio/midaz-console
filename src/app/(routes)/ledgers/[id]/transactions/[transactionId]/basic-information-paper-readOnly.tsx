@@ -45,7 +45,10 @@ const useTransactionForm = (
   handleTabChange?: (tab: string) => void
 ) => {
   const intl = useIntl()
-  const { id, transactionId } = useParams<{ id: string; transactionId: string }>()
+  const { id, transactionId } = useParams<{
+    id: string
+    transactionId: string
+  }>()
   const { showSuccess } = useCustomToast()
   const { currentOrganization } = useOrganization()
 
@@ -106,9 +109,11 @@ export const BasicInformationPaperReadOnly = ({
     handleTabChange
   )
 
-  const { handleDialogOpen, handleDialogClose, dialogProps } = useConfirmDialog({
-    onConfirm: handleSave
-  })
+  const { handleDialogOpen, handleDialogClose, dialogProps } = useConfirmDialog(
+    {
+      onConfirm: handleSave
+    }
+  )
 
   return (
     <form onSubmit={form.handleSubmit(handleSave)}>
@@ -136,9 +141,9 @@ export const BasicInformationPaperReadOnly = ({
             </div>
           </div>
         </div>
-        
+
         <Separator orientation="horizontal" />
-        
+
         <div className="grid grid-cols-4 gap-5 p-6">
           <div className="col-span-2">
             <div className="flex flex-col gap-2">
@@ -194,7 +199,7 @@ export const BasicInformationPaperReadOnly = ({
           </LoadingButton>
         </PageFooterSection>
       </PageFooter>
-      
+
       <ConfirmationDialog
         title={intl.formatMessage({
           id: 'common.confirm',

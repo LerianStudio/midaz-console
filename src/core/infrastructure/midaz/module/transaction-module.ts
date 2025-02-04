@@ -21,7 +21,7 @@ export const MidazTransactionModule = new ContainerModule(
     container
       .bind<UpdateTransactionRepository>(UpdateTransactionRepository)
       .to(MidazUpdateTransactionRepository)
-      
+
     container
       .bind<FetchAllTransactionsRepository>(FetchAllTransactionsRepository)
       .to(MidazFetchAllTransactionsRepository)
