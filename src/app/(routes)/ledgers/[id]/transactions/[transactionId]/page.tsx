@@ -133,7 +133,7 @@ export default function TransactionDetailsPage() {
           },
           {
             name: intl.formatMessage({
-              id: 'transactions.details.title',
+              id: 'transactions.details.breadcrumb',
               defaultMessage: 'Transaction details'
             })
           }
