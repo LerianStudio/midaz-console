@@ -7,7 +7,6 @@
 * pr changes ([c4343e9](https://github.com/LerianStudio/midaz-console/commit/c4343e939cb1bc4698d21d87a6454a95fa25bb1c))
 * remove console and unused codes ([529b28e](https://github.com/LerianStudio/midaz-console/commit/529b28e865afc59db563934b1b426c607ebb2ed7))
 
-
 ### Features
 
 * added midazhttpauth in all files repositories ([c4778cf](https://github.com/LerianStudio/midaz-console/commit/c4778cf39af4d93acce84e089709465d5bca94c6))
