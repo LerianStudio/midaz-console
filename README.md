@@ -16,7 +16,7 @@ The Midaz Open-Source Ledger offers flexible management options via APIs, gRPC, 
 
 ## Getting Started
 
-To start using Midaz Console, you’ll need a running instance of the Midaz Open-Source Ledger. Please follow our [Getting Started Guide](https://docs.midaz.io/getting-started) for the [Midaz Open-Source Ledger](https://github.com/LerianStudio/midaz) <img src="https://github.com/favicon.ico" width="20" height="20" alt="GitHub Logo">. For a complete overview of Midaz features, API references, and best practices, visit our [Official Documentation](https://docs.midaz.io).
+To start using Midaz Console, you’ll need a running instance of the Midaz Open-Source Ledger. Please follow our [Getting Started Guide](https://docs.lerian.studio/docs/getting-started) for the [Midaz Open-Source Ledger](https://github.com/LerianStudio/midaz) <img src="https://github.com/favicon.ico" width="20" height="20" alt="GitHub Logo">. For a complete overview of Midaz features, API references, and best practices, visit our [Official Documentation](https://docs.lerian.studio/).
 
 ### Prerequisites
 

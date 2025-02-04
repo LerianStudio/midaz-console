@@ -40,13 +40,13 @@ jobs:
           GIT_COMMITTER_EMAIL: ${{ secrets.LERIAN_CI_CD_USER_EMAIL }}
         run: |
           cd midaz-full
-          
+
           cd midaz-console
           git checkout main       
           git pull origin main
-          
+
           cd ..
-          
+
           git add midaz-console
           git commit -S -m "Updating the submodule 'midaz-console' to the latest version"
           git push origin main
