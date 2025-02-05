@@ -14,6 +14,7 @@ import {
 } from '../ui/dropdown-menu'
 import { useIntl } from 'react-intl'
 import {
+  CircleUser,
   CreditCard,
   ExternalLink,
   Github,
@@ -31,13 +32,15 @@ export const UserDropdown = () => {
     <div>
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+          <CircleUser className="h-8 w-8 text-shadcn-400" />
         </DropdownMenuTrigger>
         <DropdownMenuContent className="min-w-[241px]">
-          <DropdownMenuLabel>Rick Morty</DropdownMenuLabel>
+          <DropdownMenuLabel>
+            {intl.formatMessage({
+              id: 'common.user',
+              defaultMessage: 'User'
+            })}
+          </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <DropdownMenuItemIcon>
