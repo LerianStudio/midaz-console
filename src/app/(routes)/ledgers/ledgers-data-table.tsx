@@ -82,11 +82,14 @@ const LedgerRow: React.FC<LedgerRowProps> = ({
   refetch
 }) => {
   const intl = useIntl()
+  const router = useRouter()
   const id = ledger.original.id || ''
   const displayId = id && id.length > 8 ? `${truncateString(id, 8)}` : id
   const metadataCount = Object.entries(ledger.original.metadata || []).length
   const assetsItems = ledger.original.assets || []
   const { handleCreate, sheetProps } = useCreateUpdateSheet<any>()
+
+  const handleClick = () => router.push(`/ledgers/${ledger.original.id}`)
 
   const renderAssets = () => {
     if (assetsItems.length === 1) {
@@ -125,7 +128,14 @@ const LedgerRow: React.FC<LedgerRowProps> = ({
     }
 
     return (
-      <Button variant="link" className="h-fit px-0 py-0" onClick={handleCreate}>
+      <Button
+        variant="link"
+        className="h-fit px-0 py-0"
+        onClick={(e) => {
+          e.stopPropagation()
+          handleCreate()
+        }}
+      >
         <p className="text-shadcn-600 underline">
           {intl.formatMessage({
             id: 'common.add',
@@ -138,12 +148,13 @@ const LedgerRow: React.FC<LedgerRowProps> = ({
 
   return (
     <React.Fragment>
-      <TableRow key={ledger.id}>
+      <TableRow key={ledger.id} button onClick={handleClick}>
         <TableCell>
           <TooltipProvider>
             <Tooltip delayDuration={300}>
               <TooltipTrigger
-                onClick={() =>
+                onClick={(e) => {
+                  e.stopPropagation()
                   handleCopyToClipboard(
                     id,
                     intl.formatMessage({
@@ -152,7 +163,7 @@ const LedgerRow: React.FC<LedgerRowProps> = ({
                         'The id has been copied to your clipboard.'
                     })
                   )
-                }
+                }}
               >
                 <p className="text-shadcn-600 underline">{displayId}</p>
               </TooltipTrigger>
@@ -306,7 +317,7 @@ export const LedgersDataTable: React.FC<
                   handlePageSizeChange(Number(value))
                 }}
               >
-                <SelectTrigger className="w-16 border border-zinc-300 px-3 py-2 shadow-sm">
+                <SelectTrigger className="w-fit border border-zinc-300 px-3 py-2 shadow-sm">
                   <SelectValue placeholder={String(currentPageSize)} />
                 </SelectTrigger>
                 <SelectContent side="bottom">

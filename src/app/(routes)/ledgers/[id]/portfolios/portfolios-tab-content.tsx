@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { MoreVertical, Plus, ChevronDown, ChevronUp, Minus } from 'lucide-react'
+import { MoreVertical } from 'lucide-react'
 import { PortfolioSheet } from './portfolios-sheet'
 import { useParams } from 'next/navigation'
 import { EntityBox } from '@/components/entity-box'
@@ -17,7 +17,7 @@ import {
   getFilteredRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import {
   DropdownMenu,
@@ -35,25 +35,27 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
-import { truncateString } from '@/helpers'
 import ConfirmationDialog from '@/components/confirmation-dialog'
 import { Skeleton } from '@/components/ui/skeleton'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
-} from '@/components/ui/tooltip'
-import useCustomToast from '@/hooks/use-custom-toast'
-import { Arrow } from '@radix-ui/react-tooltip'
 import { EntityDataTable } from '@/components/entity-data-table'
+import { PaginationLimitField } from '@/components/form/pagination-limit-field'
+import { useQueryParams } from '@/hooks/use-query-params'
+import { Pagination } from '@/components/pagination'
+import { EmptyResource } from '@/components/empty-resource'
+import { MetadataTableCell } from '../MetadataTableCell'
+import { IdTableCell } from '@/components/id-table-cell'
 
 export const PortfoliosTabContent = () => {
   const intl = useIntl()
   const { id: ledgerId } = useParams<{ id: string }>()
   const { currentOrganization } = useOrganization()
-  const [columnFilters, setColumnFilters] = React.useState<any>([])
-  const { showInfo } = useCustomToast()
+  const [columnFilters, setColumnFilters] = useState<any>([])
+
+  const [total, setTotal] = useState(0)
+
+  const { form, searchValues, pagination } = useQueryParams({
+    total
+  })
 
   const {
     data: portfoliosData,
@@ -61,8 +63,13 @@ export const PortfoliosTabContent = () => {
     isLoading
   } = usePortfoliosWithAccounts({
     organizationId: currentOrganization.id!,
-    ledgerId: ledgerId
+    ledgerId: ledgerId,
+    ...(searchValues as any)
   })
+
+  useEffect(() => {
+    setTotal(portfoliosData?.items?.length || 0)
+  }, [portfoliosData?.items?.length])
 
   const { mutate: deletePortfolio, isPending: deletePending } =
     useDeletePortfolio({
@@ -98,14 +105,6 @@ export const PortfoliosTabContent = () => {
     }
   })
 
-  if (isLoading) {
-    return <Skeleton className="h-[84px] w-full bg-zinc-200" />
-  }
-  const handleCopyToClipboard = (value: string, message: string) => {
-    navigator.clipboard.writeText(value)
-    showInfo(message)
-  }
-
   return (
     <>
       <ConfirmationDialog
@@ -123,49 +122,60 @@ export const PortfoliosTabContent = () => {
 
       <PortfolioSheet ledgerId={ledgerId} onSucess={refetch} {...sheetProps} />
 
-      <EntityBox.Root>
-        <EntityBox.Header
-          title={intl.formatMessage({
-            id: `ledgers.portfolio.title`,
-            defaultMessage: 'Portfolios'
-          })}
-          subtitle={
-            portfoliosData?.items?.length !== undefined
-              ? intl.formatMessage(
-                  {
-                    id: `ledgers.portfolio.subtitle`,
-                    defaultMessage:
-                      '{count} {count, plural, =0 {portfolios found} one {portfolio found} other {portfolios found}}'
-                  },
-                  {
-                    count: portfoliosData.items.length
-                  }
-                )
-              : undefined
-          }
-        />
-        <EntityBox.Actions>
-          <Button
-            variant="secondary"
-            onClick={handleCreate}
-            className="h-9 p-2"
-          >
-            {portfoliosData?.items?.length ? (
-              <Plus />
-            ) : (
-              <React.Fragment>
-                {intl.formatMessage({
-                  id: `portfolio.create`,
-                  defaultMessage: 'Create first portfolio'
-                })}
-                <Plus />
-              </React.Fragment>
-            )}
-          </Button>
-        </EntityBox.Actions>
-      </EntityBox.Root>
+      <EntityBox.Collapsible>
+        <EntityBox.Banner>
+          <EntityBox.Header
+            title={intl.formatMessage({
+              id: `ledgers.portfolio.title`,
+              defaultMessage: 'Portfolios'
+            })}
+            subtitle={intl.formatMessage({
+              id: `ledgers.portfolio.subtitle`,
+              defaultMessage: 'Manage portfolios on this ledger.'
+            })}
+            tooltip={intl.formatMessage({
+              id: 'ledgers.portfolio.tooltip',
+              defaultMessage:
+                'Create portfolios and link accounts to manage more efficiently.'
+            })}
+          />
+          <EntityBox.Actions>
+            <Button onClick={handleCreate}>
+              {intl.formatMessage({
+                id: `common.new.portfolio`,
+                defaultMessage: 'New Portfolio'
+              })}
+            </Button>
+            <EntityBox.CollapsibleTrigger />
+          </EntityBox.Actions>
+        </EntityBox.Banner>
+        <EntityBox.CollapsibleContent>
+          <div className="col-start-3 flex justify-end">
+            <PaginationLimitField control={form.control} />
+          </div>
+        </EntityBox.CollapsibleContent>
+      </EntityBox.Collapsible>
 
       <EntityDataTable.Root>
+        {isLoading && <Skeleton className="h-64" />}
+
+        {isNil(portfoliosData?.items) ||
+          (portfoliosData?.items.length === 0 && (
+            <EmptyResource
+              message={intl.formatMessage({
+                id: 'ledgers.portfolios.emptyResource',
+                defaultMessage: "You haven't created any Portfolios yet"
+              })}
+            >
+              <Button onClick={handleCreate}>
+                {intl.formatMessage({
+                  id: 'common.new.portfolio',
+                  defaultMessage: 'New Portfolio'
+                })}
+              </Button>
+            </EmptyResource>
+          ))}
+
         {!isNil(portfoliosData?.items) && portfoliosData?.items.length > 0 && (
           <TableContainer>
             <Table>
@@ -185,14 +195,14 @@ export const PortfoliosTabContent = () => {
                   </TableHead>
                   <TableHead>
                     {intl.formatMessage({
-                      id: 'common.metadata',
-                      defaultMessage: 'Metadata'
+                      id: 'common.accounts',
+                      defaultMessage: 'Accounts'
                     })}
                   </TableHead>
                   <TableHead>
                     {intl.formatMessage({
-                      id: 'common.accounts',
-                      defaultMessage: 'Accounts'
+                      id: 'common.metadata',
+                      defaultMessage: 'Metadata'
                     })}
                   </TableHead>
                   <TableHead className="w-0">
@@ -208,67 +218,11 @@ export const PortfoliosTabContent = () => {
                   const metadataCount = Object.entries(
                     portfolio.original.metadata || []
                   ).length
-                  const displayId =
-                    portfolio.original.id && portfolio.original.id.length > 8
-                      ? `${truncateString(portfolio.original.id, 8)}`
-                      : portfolio.original.id
 
                   return (
                     <TableRow key={portfolio.id}>
-                      <TableCell>
-                        <TooltipProvider>
-                          <Tooltip delayDuration={300}>
-                            <TooltipTrigger
-                              onClick={() =>
-                                handleCopyToClipboard(
-                                  portfolio.original.id,
-                                  intl.formatMessage({
-                                    id: 'ledgers.toast.copyId',
-                                    defaultMessage:
-                                      'The id has been copied to your clipboard.'
-                                  })
-                                )
-                              }
-                            >
-                              <p className="text-shadcn-600 underline">
-                                {displayId}
-                              </p>
-                            </TooltipTrigger>
-                            <TooltipContent
-                              className="border-none bg-shadcn-600"
-                              arrowPadding={0}
-                            >
-                              <p className="text-shadcn-400">
-                                {portfolio.original.id}
-                              </p>
-                              <p className="text-center text-white">
-                                {intl.formatMessage({
-                                  id: 'ledgers.columnsTable.tooltipCopyText',
-                                  defaultMessage: 'Click to copy'
-                                })}
-                              </p>
-                              <Arrow height={8} width={15} />
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      </TableCell>
+                      <IdTableCell id={portfolio.original.id} />
                       <TableCell>{portfolio.original.name}</TableCell>
-                      <TableCell>
-                        {metadataCount === 0 ? (
-                          <Minus size={20} />
-                        ) : (
-                          intl.formatMessage(
-                            {
-                              id: 'common.table.metadata',
-                              defaultMessage:
-                                '{number, plural, =0 {-} one {# record} other {# records}}'
-                            },
-                            {
-                              number: metadataCount
-                            }
-                          )
-                        )}
-                      </TableCell>
                       <TableCell>
                         {intl.formatMessage(
                           {
@@ -281,6 +235,9 @@ export const PortfoliosTabContent = () => {
                           }
                         )}
                       </TableCell>
+                      <MetadataTableCell
+                        metadata={portfolio.original.metadata}
+                      />
 
                       <TableCell className="w-0">
                         <DropdownMenu>
@@ -339,10 +296,10 @@ export const PortfoliosTabContent = () => {
               {
                 id: 'ledgers.portfolios.showing',
                 defaultMessage:
-                  'Showing {count} {number, plural, =0 {portfolios} one {portifolio} other {portfolios}}.'
+                  '{number, plural, =0 {No portfolios found} one {Showing {count} portfolio} other {Showing {count} portfolios}}.'
               },
               {
-                number: portfoliosData?.items?.length,
+                number: portfoliosData?.items?.length || 0,
                 count: (
                   <span className="font-bold">
                     {portfoliosData?.items?.length}
@@ -351,6 +308,7 @@ export const PortfoliosTabContent = () => {
               }
             )}
           </EntityDataTable.FooterText>
+          <Pagination total={total} {...pagination} />
         </EntityDataTable.Footer>
       </EntityDataTable.Root>
     </>

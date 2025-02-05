@@ -3,6 +3,7 @@ import { PaginationDto } from '../../dto/pagination-dto'
 import { ProductResponseDto } from '../../dto/product-dto'
 import { ProductMapper } from '../../mappers/product-mapper'
 import { inject, injectable } from 'inversify'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface FetchAllProducts {
   execute: (
@@ -20,6 +21,7 @@ export class FetchAllProductsUseCase implements FetchAllProducts {
     private readonly fetchAllProductsRepository: FetchAllProductsRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string,

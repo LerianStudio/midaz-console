@@ -91,6 +91,13 @@ export const PortfolioSheet = ({
     form.reset(defaultValues)
   }
 
+  // Resets information if using creation mode
+  React.useEffect(() => {
+    if (mode === 'create') {
+      form.reset(defaultValues)
+    }
+  }, [mode])
+
   React.useEffect(() => {
     if (!isNil(data)) {
       if (mode === 'edit') {

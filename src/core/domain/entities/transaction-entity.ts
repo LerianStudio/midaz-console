@@ -31,4 +31,7 @@ export type TransactionEntity = {
     }
   }
   metadata: Record<string, any> | null
+  amount?: number
+  amountScale?: number
+  decimalValue?: number
 }

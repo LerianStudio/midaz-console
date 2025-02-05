@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { EntityBox } from '@/components/entity-box'
 import { Button } from '@/components/ui/button'
 import {
@@ -16,10 +17,9 @@ import {
   TableRow
 } from '@/components/ui/table'
 import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu'
-import { MoreVertical, Plus, Search } from 'lucide-react'
+import { MoreVertical } from 'lucide-react'
 import { useIntl } from 'react-intl'
 import { ProductsSheet } from './products-sheet'
-import React from 'react'
 import ConfirmationDialog from '@/components/confirmation-dialog'
 import { useDeleteProduct, useListProducts } from '@/client/products'
 import { ProductResponseDto } from '@/core/application/dto/product-dto'
@@ -27,7 +27,6 @@ import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-d
 import { EmptyResource } from '@/components/empty-resource'
 import { isNil } from 'lodash'
 import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
-import { InputWithIcon } from '@/components/ui/input-with-icon'
 import {
   getCoreRowModel,
   getFilteredRowModel,
@@ -36,17 +35,39 @@ import {
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import { useParams } from 'next/navigation'
 import { EntityDataTable } from '@/components/entity-data-table'
+import { Skeleton } from '@/components/ui/skeleton'
+import { useQueryParams } from '@/hooks/use-query-params'
+import { Pagination } from '@/components/pagination'
+import { PaginationLimitField } from '@/components/form/pagination-limit-field'
+import { MetadataTableCell } from '../MetadataTableCell'
+import { IdTableCell } from '@/components/id-table-cell'
 
 export const ProductsTabContent = () => {
   const intl = useIntl()
   const { currentOrganization } = useOrganization()
   const { id: ledgerId } = useParams<{ id: string }>()
-  const [columnFilters, setColumnFilters] = React.useState<any>([])
+  const [columnFilters, setColumnFilters] = useState<any>([])
 
-  const { data, refetch } = useListProducts({
-    organizationId: currentOrganization.id!,
-    ledgerId
+  const [total, setTotal] = useState(0)
+
+  const { form, searchValues, pagination } = useQueryParams({
+    total
   })
+
+  const {
+    data,
+    refetch,
+    isPending: listLoading
+  } = useListProducts({
+    organizationId: currentOrganization.id!,
+    ledgerId,
+    ...(searchValues as any)
+  })
+
+  useEffect(() => {
+    setTotal(data?.items.length || 0)
+  }, [data?.items.length])
+
   const { mutate: deleteMutate, isPending: deletePending } = useDeleteProduct({
     organizationId: currentOrganization.id!,
     ledgerId,
@@ -61,6 +82,7 @@ export const ProductsTabContent = () => {
       onConfirm: (id: string) => deleteMutate({ id })
     }
   )
+
   const { handleCreate, handleEdit, sheetProps } =
     useCreateUpdateSheet<ProductResponseDto>()
 
@@ -97,38 +119,43 @@ export const ProductsTabContent = () => {
 
       <ProductsSheet ledgerId={ledgerId} onSucess={refetch} {...sheetProps} />
 
-      <EntityBox.Root>
-        <EntityBox.Header
-          title={intl.formatMessage({
-            id: 'ledgers.products.title',
-            defaultMessage: 'Products'
-          })}
-          subtitle={intl.formatMessage({
-            id: 'ledgers.products.subtitle',
-            defaultMessage:
-              'Clustering or allocation of customers at different levels.'
-          })}
-        />
-        <EntityBox.Actions className="gap-4">
-          <InputWithIcon
-            placeholder={intl.formatMessage({
-              id: 'common.filter',
-              defaultMessage: 'Filter'
+      <EntityBox.Collapsible>
+        <EntityBox.Banner>
+          <EntityBox.Header
+            title={intl.formatMessage({
+              id: 'ledgers.products.title',
+              defaultMessage: 'Products'
             })}
-            value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-            onChange={(event) =>
-              table.getColumn('name')?.setFilterValue(event.target.value)
-            }
-            className="w-full min-w-[300px]"
-            icon={<Search />}
+            subtitle={intl.formatMessage({
+              id: 'ledgers.products.subtitle',
+              defaultMessage: 'Manage the products of this ledger.'
+            })}
+            tooltip={intl.formatMessage({
+              id: 'ledgers.products.tooltip',
+              defaultMessage:
+                'Clustering or allocation of customers at different levels.'
+            })}
           />
-          <Button variant="secondary" onClick={handleCreate}>
-            <Plus />
-          </Button>
-        </EntityBox.Actions>
-      </EntityBox.Root>
+          <EntityBox.Actions>
+            <Button onClick={handleCreate}>
+              {intl.formatMessage({
+                id: 'common.new.product',
+                defaultMessage: 'New Product'
+              })}
+            </Button>
+            <EntityBox.CollapsibleTrigger />
+          </EntityBox.Actions>
+        </EntityBox.Banner>
+        <EntityBox.CollapsibleContent>
+          <div className="col-start-3 flex justify-end">
+            <PaginationLimitField control={form.control} />
+          </div>
+        </EntityBox.CollapsibleContent>
+      </EntityBox.Collapsible>
 
       <EntityDataTable.Root>
+        {listLoading && <Skeleton className="h-64" />}
+
         {isNil(data?.items) ||
           (data?.items.length === 0 && (
             <EmptyResource
@@ -137,10 +164,10 @@ export const ProductsTabContent = () => {
                 defaultMessage: "You haven't created any Products yet"
               })}
             >
-              <Button variant="outline" onClick={handleCreate} icon={<Plus />}>
+              <Button onClick={handleCreate}>
                 {intl.formatMessage({
-                  id: 'common.create',
-                  defaultMessage: 'Create'
+                  id: 'common.new.product',
+                  defaultMessage: 'New Product'
                 })}
               </Button>
             </EmptyResource>
@@ -180,30 +207,20 @@ export const ProductsTabContent = () => {
               <TableBody>
                 {table.getRowModel().rows.map((product) => (
                   <TableRow key={product.id}>
-                    <TableCell>{product.original.id}</TableCell>
+                    <IdTableCell id={product.original.id} />
                     <TableCell>{product.original.name}</TableCell>
-                    <TableCell>
-                      {intl.formatMessage(
-                        {
-                          id: 'common.table.metadata',
-                          defaultMessage:
-                            '{number, plural, =0 {-} one {# record} other {# records}}'
-                        },
-                        {
-                          number: Object.entries(
-                            product.original.metadata || []
-                          ).length
-                        }
-                      )}
-                    </TableCell>
-                    <TableCell className="w-0">
+                    <MetadataTableCell metadata={product.original.metadata} />
+                    <TableCell className="w-0" align="center">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="secondary">
-                            <MoreVertical size={16} onClick={() => {}} />
+                          <Button
+                            className="h-[34px] w-[34px] p-2"
+                            variant="secondary"
+                          >
+                            <MoreVertical size={16} />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
+                        <DropdownMenuContent>
                           <DropdownMenuItem
                             onClick={() => handleEdit(product.original)}
                           >
@@ -239,14 +256,15 @@ export const ProductsTabContent = () => {
               {
                 id: 'ledgers.products.showing',
                 defaultMessage:
-                  'Showing {count} {number, plural, =0 {products} one {product} other {products}}.'
+                  '{number, plural, =0 {No products found} one {Showing {count} product} other {Showing {count} products}}.'
               },
               {
-                number: data?.items?.length,
+                number: data?.items?.length || 0,
                 count: <span className="font-bold">{data?.items?.length}</span>
               }
             )}
           </EntityDataTable.FooterText>
+          <Pagination total={data?.items?.length || 0} {...pagination} />
         </EntityDataTable.Footer>
       </EntityDataTable.Root>
     </>

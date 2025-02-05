@@ -1,5 +1,6 @@
 import { DeleteProductRepository } from '@/core/domain/repositories/products/delete-product-repository'
 import { inject, injectable } from 'inversify'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface DeleteProduct {
   execute: (
@@ -15,7 +16,7 @@ export class DeleteProductUseCase implements DeleteProduct {
     @inject(DeleteProductRepository)
     private readonly deleteProductRepository: DeleteProductRepository
   ) {}
-
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string,

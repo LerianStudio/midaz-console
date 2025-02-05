@@ -4,7 +4,8 @@ import {
   TransactionResponseDto
 } from '../dto/transaction-dto'
 import { isNumber } from 'lodash'
-
+import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
+import { PaginationMapper } from './pagination-mapper'
 export class TransactionMapper {
   static toDomain(transaction: CreateTransactionDto): TransactionEntity {
     return {
@@ -43,18 +44,27 @@ export class TransactionMapper {
     }
   }
 
+  static toDecimalValue(amount: number, amountScale: number): number {
+    return amount / 10 ** amountScale
+  }
+
   static toResponseDto(transaction: TransactionEntity): TransactionResponseDto {
-    return transaction
+    const decimalValue = TransactionMapper.toDecimalValue(
+      transaction.amount ?? 0,
+      transaction.amountScale ?? 0
+    )
+
+    return { ...transaction, decimalValue }
   }
 
   static valueToAmount(value: number) {
-    if (!isNumber(value)) {
+    if (!isNumber(Number(value))) {
       throw new Error(
         `TransactionMapper.valueToAmount: value ${value} is not a number`
       )
     }
 
-    let resultValue = value
+    let resultValue = Number(value)
     let scale = 0
 
     while (resultValue % 1 !== 0) {
@@ -63,5 +73,24 @@ export class TransactionMapper {
     }
 
     return { value: resultValue, scale }
+  }
+
+  static transactionMapperUpdate(
+    description?: string,
+    metadata?: Record<string, any>
+  ) {
+    return {
+      description,
+      metadata: metadata && Object.keys(metadata).length !== 0 ? metadata : null
+    }
+  }
+
+  static toPaginatedResponseDto(
+    paginationEntity: PaginationEntity<TransactionEntity>
+  ): PaginationEntity<TransactionResponseDto> {
+    return PaginationMapper.toResponseDto(
+      paginationEntity,
+      TransactionMapper.toResponseDto
+    )
   }
 }

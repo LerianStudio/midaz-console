@@ -1,14 +1,27 @@
 /**
  * TODO: Better error handling
  */
-
 import { MidazError } from '@/core/infrastructure/errors/midaz-error'
 import { signOut } from 'next-auth/react'
 import { redirect } from 'next/navigation'
+import { createQueryString } from '../search'
 
 export const getFetcher = (url: string) => {
   return async () => {
     const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    return fetcherResponseHandler(response)
+  }
+}
+
+export const getPaginatedFetcher = (url: string, params?: {}) => {
+  return async () => {
+    const response = await fetch(url + createQueryString(params), {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

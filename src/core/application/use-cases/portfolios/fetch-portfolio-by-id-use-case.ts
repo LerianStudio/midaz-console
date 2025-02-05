@@ -17,7 +17,6 @@ export class FetchPortfolioByIdUseCase implements FetchPortfolioById {
     @inject(FetchPortfolioByIdRepository)
     private readonly fetchPortfolioByIdRepository: FetchPortfolioByIdRepository
   ) {}
-
   async execute(
     organizationId: string,
     ledgerId: string,

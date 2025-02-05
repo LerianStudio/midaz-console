@@ -9,7 +9,7 @@
     {
       "files": ["*.js", "*.jsx", "*.ts", "*.tsx"],
       "rules": {
-       // "linterOptions/reportUnusedDisableDirectives": ["error"]
+        // "linterOptions/reportUnusedDisableDirectives": ["error"]
       }
     }
   ],

@@ -13,74 +13,92 @@ import {
   UpdateAssetUseCase
 } from '@/core/application/use-cases/assets/update-asset-use-case'
 import { NextResponse } from 'next/server'
+import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { loggerMiddleware } from '@/utils/logger-middleware-config'
 
-const fetchAssetByIdUseCase: FetchAssetById = container.get<FetchAssetById>(
-  FetchAssetByIdUseCase
+export const GET = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'fetchAssetById',
+      method: 'GET'
+    })
+  ],
+  async (
+    _,
+    { params }: { params: { id: string; ledgerId: string; assetId: string } }
+  ) => {
+    try {
+      const fetchAssetByIdUseCase: FetchAssetById =
+        container.get<FetchAssetById>(FetchAssetByIdUseCase)
+      const { id, ledgerId, assetId } = params
+
+      const assets = await fetchAssetByIdUseCase.execute(id, ledgerId, assetId)
+
+      return NextResponse.json(assets)
+    } catch (error: any) {
+      const { message, status } = await apiErrorHandler(error)
+
+      return NextResponse.json({ message }, { status })
+    }
+  }
 )
 
-const updateAssetUseCase = container.get<UpdateAsset>(UpdateAssetUseCase)
+export const PATCH = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'updateAsset',
+      method: 'PATCH'
+    })
+  ],
+  async (
+    request: Request,
+    { params }: { params: { id: string; ledgerId: string; assetId: string } }
+  ) => {
+    try {
+      const updateAssetUseCase = container.get<UpdateAsset>(UpdateAssetUseCase)
 
-const deleteAssetUseCase = container.get<DeleteAsset>(DeleteAssetUseCase)
+      const { id, ledgerId, assetId } = params
+      const body = await request.json()
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string; ledgerId: string; assetId: string } }
-) {
-  try {
-    const { id, ledgerId, assetId } = params
+      const assetUpdated = await updateAssetUseCase.execute(
+        id,
+        ledgerId,
+        assetId,
+        body
+      )
 
-    const assets = await fetchAssetByIdUseCase.execute(id, ledgerId, assetId)
+      return NextResponse.json(assetUpdated)
+    } catch (error: any) {
+      const { message, status } = await apiErrorHandler(error)
 
-    return NextResponse.json(assets)
-  } catch (error: any) {
-    console.error('Error fetching asset', error)
-
-    const { message, status } = await apiErrorHandler(error)
-
-    return NextResponse.json({ message }, { status })
+      return NextResponse.json({ message }, { status })
+    }
   }
-}
+)
 
-export async function PATCH(
-  request: Request,
-  { params }: { params: { id: string; ledgerId: string; assetId: string } }
-) {
-  try {
-    const { id, ledgerId, assetId } = params
-    const body = await request.json()
+export const DELETE = applyMiddleware(
+  [
+    loggerMiddleware({
+      operationName: 'deleteAsset',
+      method: 'DELETE'
+    })
+  ],
+  async (
+    request: Request,
+    { params }: { params: { id: string; ledgerId: string; assetId: string } }
+  ) => {
+    try {
+      const deleteAssetUseCase = container.get<DeleteAsset>(DeleteAssetUseCase)
 
-    const assetUpdated = await updateAssetUseCase.execute(
-      id,
-      ledgerId,
-      assetId,
-      body
-    )
+      const { id, ledgerId, assetId } = params
 
-    return NextResponse.json(assetUpdated)
-  } catch (error: any) {
-    console.error('Error updating asset', error)
+      await deleteAssetUseCase.execute(id, ledgerId, assetId)
 
-    const { message, status } = await apiErrorHandler(error)
+      return NextResponse.json({}, { status: 200 })
+    } catch (error: any) {
+      const { message, status } = await apiErrorHandler(error)
 
-    return NextResponse.json({ message }, { status })
+      return NextResponse.json({ message }, { status })
+    }
   }
-}
-
-export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string; ledgerId: string; assetId: string } }
-) {
-  try {
-    const { id, ledgerId, assetId } = params
-
-    await deleteAssetUseCase.execute(id, ledgerId, assetId)
-
-    return NextResponse.json({}, { status: 200 })
-  } catch (error: any) {
-    console.error('Error deleting asset', error)
-
-    const { message, status } = await apiErrorHandler(error)
-
-    return NextResponse.json({ message }, { status })
-  }
-}
+)

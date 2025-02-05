@@ -91,14 +91,14 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
       <Breadcrumb paths={breadcrumbPaths} />
 
       <PageHeader.Root>
-        <div className="flex justify-between border-b">
+        <PageHeader.Wrapper>
           <PageHeader.InfoTitle
             title={data.name ?? ''}
             subtitle={data.id ?? ''}
           >
             <PageHeader.InfoTooltip subtitle={data.id ?? ''} />
           </PageHeader.InfoTitle>
-        </div>
+        </PageHeader.Wrapper>
       </PageHeader.Root>
 
       <Tabs
@@ -128,17 +128,17 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
             })}
           </TabsTrigger>
 
-          <TabsTrigger value={TAB_VALUES.PORTFOLIOS}>
-            {intl.formatMessage({
-              id: 'ledgers.tab.portfolios',
-              defaultMessage: 'Portfolios'
-            })}
-          </TabsTrigger>
-
           <TabsTrigger value={TAB_VALUES.ACCOUNTS}>
             {intl.formatMessage({
               id: 'ledgers.tab.accounts',
               defaultMessage: 'Accounts'
+            })}
+          </TabsTrigger>
+
+          <TabsTrigger value={TAB_VALUES.PORTFOLIOS}>
+            {intl.formatMessage({
+              id: 'ledgers.tab.portfolios',
+              defaultMessage: 'Portfolios'
             })}
           </TabsTrigger>
         </TabsList>

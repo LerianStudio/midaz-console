@@ -1,9 +1,12 @@
 import { CreateAccountsRepository } from '@/core/domain/repositories/accounts/create-accounts-repository'
-import { CreateAccountDto, AccountResponseDto } from '../../dto/account-dto'
 import { AccountEntity } from '@/core/domain/entities/account-entity'
 import { AccountMapper } from '../../mappers/account-mapper'
 import { inject, injectable } from 'inversify'
-
+import { LogOperation } from '../../decorators/log-operation'
+import type {
+  CreateAccountDto,
+  AccountResponseDto
+} from '../../dto/account-dto'
 export interface CreateAccount {
   execute: (
     organizationId: string,
@@ -19,6 +22,7 @@ export class CreateAccountUseCase implements CreateAccount {
     private readonly createAccountRepository: CreateAccountsRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string,
