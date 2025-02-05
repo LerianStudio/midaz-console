@@ -35,15 +35,20 @@ export type TransactionReceiptValueProps =
 export const TransactionReceiptValue = forwardRef<
   HTMLDivElement,
   TransactionReceiptValueProps
->(({ className, asset, value, children, ...props }, ref) => (
-  <p
-    ref={ref}
-    className={cn('text-4xl font-bold text-neutral-600', className)}
-    {...props}
-  >
-    <span className="text-2xl">{asset}</span> {value}
-  </p>
-))
+>(({ className, asset, value, children, ...props }, ref) => {
+  const intl = useIntl()
+
+  return (
+    <p
+      ref={ref}
+      className={cn('text-4xl font-bold text-neutral-600', className)}
+      {...props}
+    >
+      <span className="text-2xl">{asset}</span>{' '}
+      {intl.formatNumber(Number(value))}
+    </p>
+  )
+})
 TransactionReceiptValue.displayName = 'TransactionReceiptValue'
 
 export const TransactionReceiptDescription = forwardRef<
@@ -168,7 +173,8 @@ export const TransactionReceiptOperation = forwardRef<
               type === 'debit' ? 'text-red-500' : 'text-green-500'
             )}
           >
-            {type === 'debit' ? '-' : '+'} {asset} {value}
+            {type === 'debit' ? '-' : '+'} {asset}{' '}
+            {intl.formatNumber(Number(value))}
           </p>
         </div>
       </div>

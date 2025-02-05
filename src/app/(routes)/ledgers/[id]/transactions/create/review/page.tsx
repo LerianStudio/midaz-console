@@ -142,7 +142,7 @@ export default function CreateTransactionReviewPage() {
                 id: 'common.value',
                 defaultMessage: 'Value'
               })}
-              value={`${values.asset} ${values.value}`}
+              value={`${values.asset} ${intl.formatNumber(values.value)}`}
             />
             <Separator orientation="horizontal" />
             {values.source?.map((source, index) => (
