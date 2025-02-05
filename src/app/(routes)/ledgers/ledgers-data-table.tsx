@@ -148,7 +148,7 @@ const LedgerRow: React.FC<LedgerRowProps> = ({
 
   return (
     <React.Fragment>
-      <TableRow key={ledger.id} button onClick={handleClick}>
+      <TableRow key={ledger.id} onClick={handleClick}>
         <TableCell>
           <TooltipProvider>
             <Tooltip delayDuration={300}>
@@ -225,12 +225,13 @@ const LedgerRow: React.FC<LedgerRowProps> = ({
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   data-testid="delete"
-                  onClick={() =>
+                  onClick={(e) => {
+                    e.stopPropagation()
                     handleDialogOpen(
                       ledger.original.id || '',
                       ledger.original.name || ''
                     )
-                  }
+                  }}
                 >
                   {intl.formatMessage({
                     id: `common.delete`,
