@@ -148,7 +148,7 @@ const LedgerRow: React.FC<LedgerRowProps> = ({
 
   return (
     <React.Fragment>
-      <TableRow key={ledger.id} onClick={handleClick}>
+      <TableRow key={ledger.id} button onClick={handleClick}>
         <TableCell>
           <TooltipProvider>
             <Tooltip delayDuration={300}>
