@@ -4,6 +4,7 @@ import { Breadcrumb } from '@/components/breadcrumb'
 import { TransactionProvider } from './transaction-form-provider'
 import { PageHeader } from '@/components/page-header'
 import { useIntl } from 'react-intl'
+import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 
 export default function RootLayout({
   children
@@ -12,15 +13,14 @@ export default function RootLayout({
 }) {
   const intl = useIntl()
 
+  const { currentOrganization } = useOrganization()
+
   return (
     <TransactionProvider>
       <Breadcrumb
         paths={[
           {
-            name: intl.formatMessage({
-              id: `settings.title`,
-              defaultMessage: 'Settings'
-            }),
+            name: currentOrganization?.legalName || '',
             href: '#'
           },
           {

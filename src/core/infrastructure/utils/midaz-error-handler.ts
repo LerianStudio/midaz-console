@@ -77,6 +77,22 @@ export async function handleMidazError(
         })
       )
 
+    case '0018':
+      throw new MidazError(
+        intl.formatMessage({
+          id: 'error.midaz.insufficientFundsError',
+          defaultMessage: 'Error Midaz insufficient funds error'
+        })
+      )
+
+    case '0019':
+      throw new MidazError(
+        intl.formatMessage({
+          id: 'error.midaz.accountIneligibilityError',
+          defaultMessage: 'Error Midaz account ineligibility error'
+        })
+      )
+
     case '0017':
       throw new MidazError(
         intl.formatMessage({
@@ -113,6 +129,43 @@ export async function handleMidazError(
         intl.formatMessage({
           id: 'error.midaz.unauthorized',
           defaultMessage: 'Error Midaz unauthorized'
+        }),
+        midazError.code
+      )
+
+    case '0047':
+      throw new MidazError(
+        intl.formatMessage({
+          id: 'error.midaz.badRequest',
+          defaultMessage: 'Error Midaz Bad Request'
+        }),
+        midazError.code
+      )
+
+    case '0065':
+      throw new MidazError(
+        intl.formatMessage({
+          id: 'error.midaz.invalidPathParameter',
+          defaultMessage: 'Error Midaz invalid path parameter'
+        }),
+        midazError.code
+      )
+
+    case '0074':
+      throw new MidazError(
+        intl.formatMessage({
+          id: 'error.midaz.externalAccountModificationProhibitedError',
+          defaultMessage:
+            'Error Midaz external account modification prohibited error'
+        }),
+        midazError.code
+      )
+
+    case '0084':
+      throw new MidazError(
+        intl.formatMessage({
+          id: 'error.midaz.duplicateIdempotencyKey',
+          defaultMessage: 'Error Midaz duplicate idempotency key'
         }),
         midazError.code
       )
