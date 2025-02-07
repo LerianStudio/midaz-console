@@ -248,13 +248,7 @@
   "common.noOptions": "Nenhuma opção encontrada.",
   "common.search": "Pesquisar...",
   "entity.auth.reset.password": "Esqueci a senha",
-  "homePage.alert.description": "Você não tem uma organização, por favor crie uma.",
-  "homePage.alert.title": "Atenção",
-  "homePage.dialog.description.part1": "Seu Midaz Console já está ativo e operante.",
-  "homePage.dialog.description.part2": "Porém, para avançar na jornada, é necessário que você crie uma {organization}, onde ficarão sua ledger e todas suas informações.",
   "homePage.dialog.footer.createOrganizationButton": "Criar Organização",
-  "homePage.dialog.footer.laterButton": "Agora não",
-  "homePage.greetings.title": "Saudações,",
   "organization": "Organização",
   "tooltip.passwordInfo": "Contacte o admin do sistema",
   "homePage.welcome.title": "Seja bem-vindo, {user}!",
@@ -378,5 +372,9 @@
   "transactions.tab.list": "Lista de transações",
   "transactions.tab.operations": "Operações e Metadados",
   "transactions.tab.summary": "Resumo",
-  "transactions.toast.update.success": "Transação atualizada com sucesso"
+  "transactions.toast.update.success": "Transação atualizada com sucesso",
+  "homePage.dialog.onboarding.description": "",
+  "homePage.dialog.onboarding.gettingStarted": "",
+  "homePage.dialog.onboarding.title": "",
+  "homePage.dialog.startOnboarding.button": ""
 }
