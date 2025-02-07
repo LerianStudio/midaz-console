@@ -225,12 +225,13 @@ const LedgerRow: React.FC<LedgerRowProps> = ({
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   data-testid="delete"
-                  onClick={() =>
+                  onClick={(e) => {
+                    e.stopPropagation()
                     handleDialogOpen(
                       ledger.original.id || '',
                       ledger.original.name || ''
                     )
-                  }
+                  }}
                 >
                   {intl.formatMessage({
                     id: `common.delete`,

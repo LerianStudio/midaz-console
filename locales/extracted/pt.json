@@ -378,5 +378,6 @@
   "transactions.tab.list": "Lista de transações",
   "transactions.tab.operations": "Operações e Metadados",
   "transactions.tab.summary": "Resumo",
-  "transactions.toast.update.success": "Transação atualizada com sucesso"
+  "transactions.toast.update.success": "Transação atualizada com sucesso",
+  "common.user": "Usuário"
 }
