@@ -373,8 +373,5 @@
   "transactions.tab.operations": "Operações e Metadados",
   "transactions.tab.summary": "Resumo",
   "transactions.toast.update.success": "Transação atualizada com sucesso",
-  "homePage.dialog.onboarding.description": "",
-  "homePage.dialog.onboarding.gettingStarted": "",
-  "homePage.dialog.onboarding.title": "",
-  "homePage.dialog.startOnboarding.button": ""
+  "common.user": "Usuário"
 }
