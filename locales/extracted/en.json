@@ -384,5 +384,6 @@
   "transactions.tab.operations": "Operations & Metadata",
   "transactions.tab.summary": "Summary",
   "transactions.title": "Transactions",
-  "transactions.toast.update.success": "Transaction updated successfully"
+  "transactions.toast.update.success": "Transaction updated successfully",
+  "transactions.toast.update.error": "Transaction updated Failed"
 }

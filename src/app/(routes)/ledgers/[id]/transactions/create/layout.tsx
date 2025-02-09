@@ -20,7 +20,7 @@ export default function RootLayout({
       <Breadcrumb
         paths={[
           {
-            name: currentOrganization?.legalName || '',
+            name: currentOrganization?.legalName,
             href: '#'
           },
           {

@@ -8,10 +8,12 @@ import {
   useMutation,
   useQuery,
   useQueryClient,
-  UseMutationOptions
+  UseMutationOptions,
+  UseQueryResult
 } from '@tanstack/react-query'
 import { PaginationRequest } from '@/types/pagination-request-type'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
+import { TransactionResponseDto } from '@/core/application/dto/transaction-dto'
 export type UseCreateTransactionProps = {
   organizationId: string
   ledgerId: string
@@ -49,7 +51,10 @@ export const useGetTransactionById = ({
   ledgerId,
   transactionId,
   ...options
-}: UseGetTransactionByIdProps) => {
+}: UseGetTransactionByIdProps): UseQueryResult<
+  TransactionResponseDto,
+  Error
+> => {
   return useQuery({
     queryKey: ['transactions-by-id', transactionId, organizationId, ledgerId],
     queryFn: getFetcher(

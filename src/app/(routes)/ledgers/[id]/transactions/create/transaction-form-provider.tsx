@@ -52,6 +52,8 @@ export const TransactionProvider = ({
 
   const formValues = form.watch()
 
+  console.log('formValues', formValues)
+
   const { step, handleNext, handlePrevious } =
     useTransactionFormControl(formValues)
   const { errors } = useTransactionFormErrors(formValues)

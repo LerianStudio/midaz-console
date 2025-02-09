@@ -38,7 +38,9 @@ export default function CreateTransactionReviewPage() {
     useCreateTransaction({
       organizationId: currentOrganization.id!,
       ledgerId: id,
-      onSuccess: () => router.push('/transactions')
+      onSuccess: () => {
+        return router.push('/transactions')
+      }
     })
 
   const { values, currentStep } = useTransactionForm()

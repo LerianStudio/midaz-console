@@ -1,12 +1,18 @@
 import { TransactionEntity } from '@/core/domain/entities/transaction-entity'
-import { injectable } from 'inversify'
-import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
 import { FetchTransactionByIdRepository } from '@/core/domain/repositories/transactions/fetch-transaction-by-id-repository'
+import { inject, injectable } from 'inversify'
+import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
+import { HTTP_METHODS, MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
 
 @injectable()
 export class MidazFetchTransactionByIdRepository
   implements FetchTransactionByIdRepository
 {
+  constructor(
+    @inject(ContainerTypeMidazHttpFetch.MidazHttpFetchUtils)
+    private readonly midazHttpFetchUtils: MidazHttpFetchUtils
+  ) {}
+
   private baseUrl: string = process.env.MIDAZ_TRANSACTION_BASE_PATH as string
 
   async fetchById(
@@ -16,10 +22,11 @@ export class MidazFetchTransactionByIdRepository
   ): Promise<TransactionEntity> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/transactions/${transactionId}`
 
-    const response = await httpMidazAuthFetch<TransactionEntity>({
-      url,
-      method: HTTP_METHODS.GET
-    })
+    const response =
+      await this.midazHttpFetchUtils.httpMidazAuthFetch<TransactionEntity>({
+        url,
+        method: HTTP_METHODS.GET
+      })
 
     return response
   }

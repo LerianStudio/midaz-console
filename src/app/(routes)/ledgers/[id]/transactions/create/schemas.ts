@@ -33,16 +33,25 @@ export type TransactionFormSchema = z.infer<typeof transactionFormSchema>
 export const initialValues = {
   description: '',
   chartOfAccountsGroupName: '',
-  value: '',
-  asset: '',
-  source: [],
-  destination: [],
+  send: {
+    asset: '',
+    value: 0,
+    source: [],
+    distribute: []
+  },
   metadata: {}
 }
 
 export const sourceInitialValues = {
   account: '',
-  value: 0,
+  amount: {
+    asset: '',
+    value: 0
+  },
+  share: {
+    percentage: 0,
+    percentageOfPercentage: 0
+  },
   description: '',
   chartOfAccounts: '',
   metadata: {}
