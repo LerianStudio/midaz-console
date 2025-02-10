@@ -23,8 +23,7 @@
   "docker-up": "npm run set-env && docker compose up -d",
   "prepare": "husky install",
   "format": "prettier --write ."
-}
-  },
+},
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.5.6",
     "@hookform/resolvers": "^3.9.0",
