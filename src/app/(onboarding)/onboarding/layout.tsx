@@ -3,7 +3,7 @@ import '@/app/globals.css'
 import { redirect, RedirectType } from 'next/navigation'
 import { getServerSession } from 'next-auth'
 import { nextAuthCasdoorOptions } from '@/core/infrastructure/next-auth/casdoor/next-auth-casdoor-provider'
-import { Header } from './header-onboarding'
+import { StaticHeader } from '@/components/header'
 
 export default async function RootLayout({
   children
@@ -18,7 +18,7 @@ export default async function RootLayout({
 
   return (
     <React.Fragment>
-      <Header />
+      <StaticHeader />
       {children}
     </React.Fragment>
   )
