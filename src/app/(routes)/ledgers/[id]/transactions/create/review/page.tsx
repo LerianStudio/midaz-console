@@ -25,23 +25,35 @@ import Image from 'next/image'
 import { isNil } from 'lodash'
 import { useCreateTransaction } from '@/client/transactions'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
+import useCustomToast from '@/hooks/use-custom-toast'
 
 export default function CreateTransactionReviewPage() {
   const intl = useIntl()
   const router = useRouter()
 
   const { id } = useParams<{ id: string }>()
+  const { showSuccess, showError } = useCustomToast()
 
   const { currentOrganization } = useOrganization()
 
-  const { mutate: createTransaction, isPending: createLoading } =
-    useCreateTransaction({
-      organizationId: currentOrganization.id!,
-      ledgerId: id,
-      onSuccess: () => {
-        return router.push('/transactions')
-      }
-    })
+  const {
+    mutate: createTransaction,
+    isPending: createLoading,
+    error,
+    data
+  } = useCreateTransaction({
+    organizationId: currentOrganization.id!,
+    ledgerId: id,
+    onSuccess: (data) => {
+      showSuccess('Transaction created successfully')
+      handleSubmitClose()
+      router.push(`/ledgers/${data.ledgerId}/transactions/${data.id}`)
+    },
+    onError(message) {
+      showError(message)
+      handleSubmitClose()
+    }
+  })
 
   const { values, currentStep } = useTransactionForm()
 
@@ -50,10 +62,13 @@ export default function CreateTransactionReviewPage() {
       onConfirm: () => router.push('/transactions')
     })
 
-  const { handleDialogOpen: handleSubmitOpen, dialogProps: submitDialogProps } =
-    useConfirmDialog({
-      onConfirm: () => createTransaction(values)
-    })
+  const {
+    handleDialogOpen: handleSubmitOpen,
+    dialogProps: submitDialogProps,
+    handleDialogClose: handleSubmitClose
+  } = useConfirmDialog({
+    onConfirm: () => createTransaction(values)
+  })
 
   return (
     <>

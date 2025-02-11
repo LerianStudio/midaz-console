@@ -4,7 +4,6 @@ import {
 } from '@/core/domain/entities/transaction-entity'
 import {
   CreateTransactionDto,
-  CreateTransactionSourceDto,
   TransactionResponseDto
 } from '../dto/transaction-dto'
 import { isNumber } from 'lodash'
@@ -14,64 +13,78 @@ import { PaginationDto } from '../dto/pagination-dto'
 export class TransactionMapper {
   static toDomain(transaction: CreateTransactionDto): TransactionCreateEntity {
     const transactionCreateEntity: TransactionCreateEntity = {
-      description: transaction.description,
-      chartOfAccountsGroupName: transaction.chartOfAccountsGroupName,
+      ...(transaction.description && transaction.description.trim() !== ''
+        ? { description: transaction.description }
+        : {}),
+      ...(transaction.chartOfAccountsGroupName &&
+      transaction.chartOfAccountsGroupName.trim() !== ''
+        ? { chartOfAccountsGroupName: transaction.chartOfAccountsGroupName }
+        : {}),
+
+      metadata:
+        Object.keys(transaction.metadata).length !== 0
+          ? transaction.metadata
+          : null,
 
       send: {
-        asset: transaction.send.asset,
-        ...TransactionMapper.valueToAmount(transaction.send.value),
+        asset: transaction.asset,
+        ...TransactionMapper.valueToAmount(transaction.value),
         source: {
-          from: transaction.send.source.from.map(
-            (source: CreateTransactionSourceDto) => ({
-              account: source.account,
-              amount: {
-                asset: transaction.send.asset,
-                ...TransactionMapper.valueToAmount(source.amount.value)
-              },
-
-              share: source.share
-                ? {
+          from: transaction.source.map((source) => ({
+            account: source.account,
+            amount: {
+              asset: source.asset,
+              ...TransactionMapper.valueToAmount(source.value)
+            },
+            ...(source.share
+              ? {
+                  share: {
                     percentage: source.share.percentage,
                     percentageOfPercentage: source.share.percentageOfPercentage
                   }
-                : undefined,
-              chartOfAccounts: source.chartOfAccounts,
-              description: source.description,
-              metadata:
-                Object.keys(source.metadata).length !== 0
-                  ? source.metadata
-                  : null
-            })
-          )
+                }
+              : {}),
+            ...(source.chartOfAccounts && source.chartOfAccounts.trim() !== ''
+              ? { chartOfAccounts: source.chartOfAccounts }
+              : {}),
+
+            ...(source.description && source.description.trim() !== ''
+              ? { description: source.description }
+              : {}),
+
+            metadata:
+              Object.keys(source.metadata).length !== 0 ? source.metadata : null
+          }))
         },
         distribute: {
-          to: transaction.send.distribute.to.map(
-            (destination: CreateTransactionSourceDto) => ({
-              account: destination.account,
-              amount: {
-                asset: transaction.send.asset,
-                ...TransactionMapper.valueToAmount(destination.amount.value)
-              },
-              share: destination.share
-                ? {
+          to: transaction.destination.map((destination) => ({
+            account: destination.account,
+            amount: {
+              asset: destination.asset,
+              ...TransactionMapper.valueToAmount(destination.value)
+            },
+            ...(destination.share
+              ? {
+                  share: {
                     percentage: destination.share.percentage,
                     percentageOfPercentage:
                       destination.share.percentageOfPercentage
                   }
-                : undefined,
-              chartOfAccounts: destination.chartOfAccounts,
-              description: destination.description,
-              metadata:
-                Object.keys(destination.metadata).length !== 0
-                  ? destination.metadata
-                  : null
-            })
-          )
-        },
-        metadata:
-          Object.keys(transaction.metadata).length !== 0
-            ? transaction.metadata
-            : null
+                }
+              : {}),
+            ...(destination.chartOfAccounts &&
+            destination.chartOfAccounts.trim() !== ''
+              ? { chartOfAccounts: destination.chartOfAccounts }
+              : {}),
+            ...(destination.description && destination.description.trim() !== ''
+              ? { description: destination.description }
+              : {}),
+            metadata:
+              Object.keys(destination.metadata).length !== 0
+                ? destination.metadata
+                : null
+          }))
+        }
       }
     }
 

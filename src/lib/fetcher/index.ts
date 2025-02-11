@@ -86,14 +86,13 @@ export const serverFetcher = async <T = void>(action: () => Promise<T>) => {
 }
 
 const fetcherResponseHandler = async (response: Response) => {
-  console.log('Fetcher Response', response)
   if (!response.ok) {
-    console.error('Fetcher Error', response)
     if (response.status === 401) {
       signOut({ callbackUrl: '/login' })
       return
     }
-    throw new Error('Fetcher Error')
+    const errorMessage = await response.json()
+    throw new Error(errorMessage.message)
   }
 
   return await response.json()

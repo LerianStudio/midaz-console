@@ -1,6 +1,5 @@
 import { getIntl } from '@/lib/intl'
 import { MidazError } from '../errors/midaz-error'
-import { UnauthorizedException } from '../errors/http-exceptions'
 
 export interface MidazErrorData {
   code: string
@@ -138,6 +137,15 @@ export async function handleMidazError(
         intl.formatMessage({
           id: 'error.midaz.badRequest',
           defaultMessage: 'Error Midaz Bad Request'
+        }),
+        midazError.code
+      )
+
+    case '0053':
+      throw new MidazError(
+        intl.formatMessage({
+          id: 'error.midaz.unexpectedFieldsInTheRequest',
+          defaultMessage: 'Error Midaz unexpected fields in the request'
         }),
         midazError.code
       )

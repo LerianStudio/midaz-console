@@ -35,8 +35,8 @@ export type TransactionCreateEntity = {
     distribute: {
       to: TransactionSourceEntity[]
     }
-    metadata: Record<string, any> | null
   }
+  metadata: Record<string, any> | null
 }
 
 export type OperationEntity = {

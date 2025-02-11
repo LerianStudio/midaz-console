@@ -127,6 +127,7 @@
   "error.midaz.duplicateIdempotencyKey": "A chave de idempotência já está em uso. Forneça uma chave exclusiva e tente novamente.",
   "error.midaz.badRequest": "O servidor não conseguiu entender a solicitação devido à sintaxe malformada. Verifique os campos listados e tente novamente.",
   "error.midaz.externalAccountModificationProhibitedError": "As contas do tipo 'externas' não podem ser excluídas ou modificadas, pois são utilizadas para rastreabilidade com sistemas externos. Revise sua solicitação e certifique-se de que as operações sejam realizadas apenas em contas internas.",
+  "error.midaz.unexpectedFieldsInTheRequest": "O corpo da solicitação contém mais campos do que o esperado. Por favor envie apenas os campos permitidos conforme a documentação.",
   "error.midaz.unknowError": "Erro no Midaz, por favor, entre em contato com o suporte.",
   "errors.custom.date.invalid": "Data inválida",
   "errors.custom.one_lowercase_letter": "Campo deve conter pelo menos 1 letra minúscula",

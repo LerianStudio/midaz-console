@@ -1,38 +1,27 @@
-import { TransactionEntity } from '@/core/domain/entities/transaction-entity'
 import { StatusDto } from './status.dto'
 
-export type CreateTransactionSourceDto = {
+type CreateTransactionSourceDto = {
   account: string
-  amount: {
-    asset: string
-    value: number
-  }
+  asset: string
+  value: number
   share?: {
     percentage: number
     percentageOfPercentage: number
   }
-  chartOfAccounts?: string
   description?: string
+  chartOfAccounts?: string
   metadata: Record<string, any>
 }
 
 export type CreateTransactionDto = {
   description?: string
   chartOfAccountsGroupName?: string
-  send: {
-    asset: string
-    value: number
-    source: {
-      from: CreateTransactionSourceDto[]
-    }
-    distribute: {
-      to: CreateTransactionSourceDto[]
-    }
-  }
+  value: number
+  asset: string
+  source: CreateTransactionSourceDto[]
+  destination: CreateTransactionSourceDto[]
   metadata: Record<string, any>
 }
-
-// export type TransactionResponseDto = TransactionEntity
 
 export type OperationDto = {
   id: string

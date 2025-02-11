@@ -129,6 +129,7 @@
   "error.midaz.duplicateIdempotencyKey": "The idempotency key is already in use. Please provide a unique key and try again.",
   "error.midaz.badRequest": "The server could not understand the request due to malformed syntax. Please check the listed fields and try again.",
   "error.midaz.externalAccountModificationProhibitedError": "Accounts of type 'external' cannot be deleted or modified as they are used for traceability with external systems. Please review your request and ensure operations are only performed on internal accounts.",
+  "error.midaz.unexpectedFieldsInTheRequest": "The request body contains more fields than expected. Please send only the allowed fields as per the documentation.",
   "error.midaz.unknowError": "Error on Midaz.",
   "errors.custom.date.invalid": "Invalid date",
   "errors.custom.one_lowercase_letter": "Field must contain at least 1 lowercase letter",

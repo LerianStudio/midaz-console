@@ -99,7 +99,6 @@ const useTransactionForm = (
   }
 }
 
-
 export const BasicInformationPaperReadOnly = ({
   values,
   amount,

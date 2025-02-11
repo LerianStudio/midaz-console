@@ -5,6 +5,7 @@ export const transactionSourceFormSchema = z
   .array(
     z.object({
       account: transaction.source.account,
+      asset: transaction.source.asset.optional(),
       value: transaction.value,
       description: transaction.description.optional(),
       chartOfAccounts: transaction.chartOfAccounts.optional(),
@@ -33,25 +34,17 @@ export type TransactionFormSchema = z.infer<typeof transactionFormSchema>
 export const initialValues = {
   description: '',
   chartOfAccountsGroupName: '',
-  send: {
-    asset: '',
-    value: 0,
-    source: [],
-    distribute: []
-  },
+  value: '',
+  asset: '',
+  source: [],
+  destination: [],
   metadata: {}
 }
 
 export const sourceInitialValues = {
   account: '',
-  amount: {
-    asset: '',
-    value: 0
-  },
-  share: {
-    percentage: 0,
-    percentageOfPercentage: 0
-  },
+  value: '',
+  asset: '',
   description: '',
   chartOfAccounts: '',
   metadata: {}

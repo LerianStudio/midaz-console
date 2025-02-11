@@ -9,8 +9,6 @@ export const useTransactionFormErrors = (values: TransactionFormSchema) => {
   const [errors, setErrors] = useState<TransactionFormErrors>({})
   const { value, source, destination } = values
 
-  console.log('source', source)
-
   const sum = (source: TransactionSourceFormSchema) =>
     source.reduce((acc, curr) => acc + Number(curr.value), 0)
 
