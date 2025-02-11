@@ -187,7 +187,6 @@ export class TransactionMapper {
     let scale = 0
 
     while (resultValue % 1 !== 0) {
-      console.log(value, resultValue, scale)
       resultValue *= 10
       scale++
     }
