@@ -3,8 +3,12 @@ import { HashIcon } from 'lucide-react'
 import { Control, ControllerRenderProps } from 'react-hook-form'
 import { ChromePicker, ColorResult } from 'react-color'
 import { FormDescription, FormField, FormItem } from '@/components/ui/form'
-import { isNil } from 'lodash'
 import { InputWithIcon } from '@/components/ui/input-with-icon'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from '@/components/ui/popover'
 
 type ColorInputProps = Omit<ControllerRenderProps, 'ref'>
 
@@ -25,35 +29,43 @@ const ColorInput = React.forwardRef<HTMLInputElement, ColorInputProps>(
 
     return (
       <div className="mb-4 flex w-full flex-col gap-2">
-        <div className="flex w-full gap-2">
-          <div
-            className="h-9 w-9 flex-shrink-0 cursor-pointer rounded-md border border-zinc-300 hover:border-zinc-400"
-            style={{
-              backgroundColor: value !== '' ? value : '#FFFFFF'
-            }}
-            onClick={() => setOpen(!open)}
-          />
+        <Popover open={open} onOpenChange={setOpen}>
+          <div className="flex w-full gap-2">
+            <PopoverTrigger asChild>
+              <div
+                className="h-9 w-9 flex-shrink-0 cursor-pointer rounded-md border border-zinc-300 hover:border-zinc-400"
+                style={{
+                  backgroundColor: value !== '' ? value : '#FFFFFF'
+                }}
+              />
+            </PopoverTrigger>
 
-          <InputWithIcon
-            icon={<HashIcon />}
-            value={value?.replace('#', '')}
-            onChange={handleInputChange}
-            disabled
-            {...others}
-          />
-        </div>
-
-        {open && (
-          <div>
-            <ChromePicker
-              className="absolute"
-              color={value}
-              disableAlpha={true}
-              onChangeComplete={handleChange}
-              onChange={handleChange}
+            <InputWithIcon
+              icon={<HashIcon />}
+              value={value?.replace('#', '')}
+              onChange={handleInputChange}
+              disabled
+              {...others}
             />
           </div>
-        )}
+
+          <PopoverContent className="w-auto p-0" side="bottom" align="start">
+            <ChromePicker
+              color={value}
+              disableAlpha
+              onChange={handleChange}
+              onChangeComplete={handleChange}
+              styles={{
+                default: {
+                  picker: {
+                    boxShadow:
+                      '0px 10px 15px -3px rgba(0, 0, 0, 0.10), 0px 4px 6px -2px rgba(0, 0, 0, 0.05)'
+                  }
+                }
+              }}
+            />
+          </PopoverContent>
+        </Popover>
       </div>
     )
   }
@@ -76,9 +88,7 @@ export const OrganizationsFormColorField = ({
       render={({ field }) => (
         <FormItem>
           <ColorInput {...field} />
-          {description && (isNil(field.value) || field.value === '') && (
-            <FormDescription>{description}</FormDescription>
-          )}
+          <FormDescription>{description}</FormDescription>
         </FormItem>
       )}
     />

@@ -3,9 +3,10 @@ import {
   TransactionEntity
 } from '@/core/domain/entities/transaction-entity'
 import { CreateTransactionRepository } from '@/core/domain/repositories/transactions/create-transaction-repository'
+import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 import { inject, injectable } from 'inversify'
 import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
-import { HTTP_METHODS, MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
+import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
 
 @injectable()
 export class MidazCreateTransactionRepository

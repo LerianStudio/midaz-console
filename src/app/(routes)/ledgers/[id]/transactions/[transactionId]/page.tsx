@@ -99,11 +99,19 @@ export default function TransactionDetailsPage() {
     values: initialValues
   })
 
-  const displayValue = (amount: number, scale: number) =>
-    intl.formatNumber(amount, {
+  const displayValue = (amount: number, scale: number) => {
+    const number = intl.formatNumber(amount, {
       minimumFractionDigits: scale,
       maximumFractionDigits: scale
     })
+
+    const withoutThousandSeparator = number.replace(/\./g, '')
+    const normalized = withoutThousandSeparator.replace(',', '.')
+
+    const parsed = parseFloat(normalized)
+
+    return parsed.toString()
+  }
 
   if (isLoading) {
     return <SkeletonTransactionDialog />
@@ -199,11 +207,9 @@ export default function TransactionDetailsPage() {
                 />
                 <TransactionReceiptValue
                   asset={transaction?.assetCode!}
-                  value={capitalizeFirstLetter(
-                    displayValue(
-                      transaction?.amount!,
-                      transaction?.amountScale!
-                    )
+                  value={displayValue(
+                    transaction?.amount!,
+                    transaction?.amountScale!
                   )}
                 />
                 <StatusDisplay status={transaction?.status?.code || ''} />

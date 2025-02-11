@@ -1,3 +1,16 @@
+# [1.5.0](https://github.com/LerianStudio/midaz-console/compare/v1.4.0...v1.5.0) (2025-02-07)
+
+
+### Bug Fixes
+
+* delete ledgers behavior remove redirect ([c5e164a](https://github.com/LerianStudio/midaz-console/commit/c5e164aa27cac3b7d26298ac50d0132e9ecd1d70))
+
+
+### Features
+
+* added button prop ([612b06e](https://github.com/LerianStudio/midaz-console/commit/612b06e42d24aa4b334791355e2f70d982c17613))
+* httpfetchmidaz on transaction create route ([b229e01](https://github.com/LerianStudio/midaz-console/commit/b229e01a7e7d4ab387fdb3fac9944970f9e74360))
+
 # [1.4.0](https://github.com/LerianStudio/midaz-console/compare/v1.3.0...v1.4.0) (2025-02-04)
 
 

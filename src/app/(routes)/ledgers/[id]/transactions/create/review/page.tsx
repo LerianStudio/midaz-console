@@ -26,6 +26,7 @@ import { isNil } from 'lodash'
 import { useCreateTransaction } from '@/client/transactions'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import useCustomToast from '@/hooks/use-custom-toast'
+import { TransactionFormSchema } from '../schemas'
 
 export default function CreateTransactionReviewPage() {
   const intl = useIntl()
@@ -62,13 +63,23 @@ export default function CreateTransactionReviewPage() {
       onConfirm: () => router.push('/transactions')
     })
 
-  const {
-    handleDialogOpen: handleSubmitOpen,
-    dialogProps: submitDialogProps,
-    handleDialogClose: handleSubmitClose
-  } = useConfirmDialog({
-    onConfirm: () => createTransaction(values)
+  const parse = (values: TransactionFormSchema) => ({
+    ...values,
+    value: Number(values.value),
+    source: values.source?.map((source) => ({
+      ...source,
+      value: Number(source.value)
+    })),
+    destination: values.destination?.map((destination) => ({
+      ...destination,
+      value: Number(destination.value)
+    }))
   })
+
+  const { handleDialogOpen: handleSubmitOpen, dialogProps: submitDialogProps, handleDialogClose: handleSubmitClose } =
+    useConfirmDialog({
+      onConfirm: () => createTransaction(parse(values))
+    })
 
   return (
     <>
@@ -159,7 +170,7 @@ export default function CreateTransactionReviewPage() {
                 id: 'common.value',
                 defaultMessage: 'Value'
               })}
-              value={`${values.asset} ${values.value}`}
+              value={`${values.asset} ${intl.formatNumber(values.value)}`}
             />
             <Separator orientation="horizontal" />
             {values.source?.map((source, index) => (
