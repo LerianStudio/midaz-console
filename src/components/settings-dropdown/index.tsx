@@ -1,6 +1,14 @@
 'use client'
 
-import { Building, Code, Languages, Settings, Shield } from 'lucide-react'
+import {
+  Building,
+  Code,
+  HelpCircle,
+  Languages,
+  Settings,
+  Shield,
+  Users
+} from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -41,20 +49,27 @@ export const SettingsDropdown = () => {
         </DropdownMenuItem>
         <DropdownMenuItem>
           <DropdownMenuItemIcon>
-            <Code />
+            <Users />
           </DropdownMenuItemIcon>
+          {intl.formatMessage({
+            id: 'settingsDropdown.users',
+            defaultMessage: 'Users'
+          })}
+        </DropdownMenuItem>
+        <DropdownMenuItem className="pl-10">
           {intl.formatMessage({
             id: 'settingsDropdown.system',
             defaultMessage: 'System'
           })}
         </DropdownMenuItem>
+        <DropdownMenuSeparator />
         <DropdownMenuItem>
           <DropdownMenuItemIcon>
-            <Shield />
+            <HelpCircle />
           </DropdownMenuItemIcon>
           {intl.formatMessage({
-            id: 'settingsDropdown.security',
-            defaultMessage: 'Security'
+            id: 'settingsDropdown.about.midaz',
+            defaultMessage: 'About Midaz'
           })}
         </DropdownMenuItem>
       </DropdownMenuContent>
