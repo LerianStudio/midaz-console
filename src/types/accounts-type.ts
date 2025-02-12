@@ -13,7 +13,7 @@ export type AccountType = {
   portfolioId?: string | null
   portfolio: Pick<PortfolioType, 'name'>
   portfolioName?: string
-  productId: string
+  segmentId: string
   status: {
     code: string
     description: string

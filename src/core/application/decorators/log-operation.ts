@@ -21,7 +21,7 @@ export function LogOperation(options: {
     const originalMethod = descriptor.value
 
     // If operation is not provided, use the class name as operation
-    // Example: FetchAllProductsUseCase -> fetch_all_products
+    // Example: FetchAllSegmentsUseCase -> fetch_all_segments
     if (!options.operation) {
       options.operation = snakeCase(
         target.constructor.name.replace('UseCase', '')

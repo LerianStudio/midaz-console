@@ -147,7 +147,7 @@ export const PortfolioSheet = ({
               <SheetDescription>
                 {intl.formatMessage({
                   id: 'ledgers.portfolio.sheet.edit.description',
-                  defaultMessage: 'View and edit product fields.'
+                  defaultMessage: 'View and edit segment fields.'
                 })}
               </SheetDescription>
             </SheetHeader>

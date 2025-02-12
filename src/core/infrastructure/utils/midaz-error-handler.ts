@@ -71,8 +71,8 @@ export async function handleMidazError(
     case '0015':
       throw new MidazError(
         intl.formatMessage({
-          id: 'error.midaz.duplicateProductNameError',
-          defaultMessage: 'Error Midaz duplicate product name error'
+          id: 'error.midaz.duplicateSegmentNameError',
+          defaultMessage: 'Error Midaz duplicate segment name error'
         })
       )
 

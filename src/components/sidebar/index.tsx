@@ -84,11 +84,11 @@ export const Sidebar = () => {
           </SidebarGroupTitle>
           <SidebarItem
             title={intl.formatMessage({
-              id: 'sideBar.accountHolders.products',
-              defaultMessage: 'Products'
+              id: 'sideBar.accountHolders.segments',
+              defaultMessage: 'Segments'
             })}
             icon={<Box />}
-            href="/products"
+            href="/segments"
           />
           <SidebarItem
             title={intl.formatMessage({
