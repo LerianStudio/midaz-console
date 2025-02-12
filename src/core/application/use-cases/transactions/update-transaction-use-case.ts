@@ -27,10 +27,11 @@ export class UpdateTransactionUseCase implements UpdateTransaction {
     transactionId: string,
     transaction: Partial<UpdateTransactionDto>
   ): Promise<TransactionResponseDto> {
-    const transactionEntity = TransactionMapper.transactionMapperUpdate(
-      transaction.description ?? '',
-      transaction.metadata ?? {}
-    )
+    const transactionEntity: Partial<TransactionEntity> =
+      TransactionMapper.transactionMapperUpdate(
+        transaction.description ?? '',
+        transaction.metadata ?? {}
+      )
 
     const updatedTransaction: TransactionEntity =
       await this.updateTransactionRepository.update(
@@ -40,6 +41,9 @@ export class UpdateTransactionUseCase implements UpdateTransaction {
         transactionEntity
       )
 
-    return TransactionMapper.toResponseDto(updatedTransaction)
+    const updatedTransactionResponseDto: TransactionResponseDto =
+      TransactionMapper.toResponseDto(updatedTransaction)!
+
+    return updatedTransactionResponseDto
   }
 }

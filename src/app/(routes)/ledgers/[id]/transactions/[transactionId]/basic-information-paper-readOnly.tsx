@@ -17,6 +17,7 @@ import ConfirmationDialog from '@/components/confirmation-dialog'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { TRANSACTION_DETAILS_TAB_VALUES } from './Transaction-details-tab-values'
 
 interface TransactionValues {
   chartOfAccountsGroupName?: string
@@ -50,7 +51,7 @@ const useTransactionForm = (
     id: string
     transactionId: string
   }>()
-  const { showSuccess } = useCustomToast()
+  const { showSuccess, showError } = useCustomToast()
   const { currentOrganization } = useOrganization()
 
   const form = useForm<FormSchema>({
@@ -72,7 +73,16 @@ const useTransactionForm = (
         })
       )
       onSave?.(form.getValues().description)
-      handleTabChange?.('summary')
+      handleTabChange?.(TRANSACTION_DETAILS_TAB_VALUES.SUMMARY)
+    },
+    onError: (error) => {
+      showError(
+        intl.formatMessage({
+          id: 'transactions.toast.update.error',
+          defaultMessage: 'An error occurred while updating the transaction'
+        })
+      ),
+        handleTabChange?.(TRANSACTION_DETAILS_TAB_VALUES.SUMMARY)
     }
   })
 
