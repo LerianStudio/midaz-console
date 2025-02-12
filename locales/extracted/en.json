@@ -71,6 +71,7 @@
   "common.tooltipCopyText": "Click to copy",
   "common.type": "Type",
   "common.typePlaceholder": "Type...",
+  "common.user": "User",
   "common.value": "Value",
   "entity.account.currency": "Assets",
   "entity.account.name": "Account Name",

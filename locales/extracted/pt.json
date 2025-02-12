@@ -378,5 +378,6 @@
   "ledgers.tab.segments": "Segmentos",
   "segments.delete.description": "Você está prestes a excluir permanentemente este segmento. Essa ação não pode ser desfeita. Deseja continuar?",
   "settings.tab.segments": "Segmentos",
-  "sideBar.accountHolders.segments": "Segmentos"
+  "sideBar.accountHolders.segments": "Segmentos",
+  "common.user": "Usuário"
 }

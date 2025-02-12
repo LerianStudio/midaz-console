@@ -1,6 +1,11 @@
 name: "Pre-Release"
-
+## Flow to review the essential steps
 on:
+  push:
+    branches:
+      - feature/*
+      - fix/*
+      - hotfix/*
   pull_request:
     branches:
       - develop
@@ -90,3 +95,20 @@ jobs:
         run: npm install
       - name: Run Unit Tests
         run: npm test
+  
+  commitlint:
+    runs-on: ubuntu-latest
+    name: Run Commitlint to check commit message format
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm install
+      - name: Run Commitlint
+        run: |
+          npx --no-install commitlint --from=HEAD~1 --to=HEAD

@@ -147,7 +147,7 @@ export const OperationAccordion = ({
                     'text-green-500': type === 'credit'
                   })}
                 >
-                  {values.value}
+                  {intl.formatNumber(values.value)}
                 </p>
               )}
             </div>
