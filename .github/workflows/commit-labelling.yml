@@ -7,6 +7,7 @@ on:
       - develop
       - hotfix/v*
       - feature/*
+      - fix/*
     paths-ignore:
       - '.gitignore'
       - '**/*.md'
@@ -18,22 +19,31 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Get Commit Message (Sanitized)
+        id: commit_message
+        run: |
+          RAW_MESSAGE=$(git log -1 --pretty=format:%s)
+          SAFE_MESSAGE=$(echo "$RAW_MESSAGE" | sed 's/[^a-zA-Z0-9 :_-]//g')
+          echo "COMMIT_MESSAGE=$SAFE_MESSAGE" >> $GITHUB_ENV
+
       - name: Check Commit Messages for "fix", "feat", "chore", or "release"
         run: |
-          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          echo "Checking commit message: $COMMIT_MESSAGE"
           
-          if [[ "$COMMIT_MESSAGE" =~ ^fix ]]; then
+          if [[ "$COMMIT_MESSAGE" =~ ^fix: ]]; then
             echo "Commit is a FIX. Proceed with color labeling!"
             echo "![Fix Badge](https://img.shields.io/badge/Fix-%23FF5733)"
-          elif [[ "$COMMIT_MESSAGE" =~ ^feat ]]; then
+          elif [[ "$COMMIT_MESSAGE" =~ ^feat: ]]; then
             echo "Commit is a FEATURE. Proceed with color labeling!"
             echo "![Feature Badge](https://img.shields.io/badge/Feature-%234CAF50)"
-          elif [[ "$COMMIT_MESSAGE" =~ ^chore ]]; then
+          elif [[ "$COMMIT_MESSAGE" =~ ^chore: ]]; then
             echo "Commit is a CHORE. Proceed with color labeling!"
             echo "![Chore Badge](https://img.shields.io/badge/Chore-%23FF9800)"
-          elif [[ "$COMMIT_MESSAGE" =~ ^release ]]; then
+          elif [[ "$COMMIT_MESSAGE" =~ ^release: ]]; then
             echo "Commit is a RELEASE. Proceed with color labeling!"
             echo "![Release Badge](https://img.shields.io/badge/Release-%237E57C2)"
           else
             echo "Commit does not match 'fix', 'feat', 'chore', or 'release'. No action."
           fi
+        env:
+          COMMIT_MESSAGE: ${{ env.COMMIT_MESSAGE }}
