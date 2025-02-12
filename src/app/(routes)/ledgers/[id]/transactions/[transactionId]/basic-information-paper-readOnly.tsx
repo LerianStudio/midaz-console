@@ -17,7 +17,7 @@ import ConfirmationDialog from '@/components/confirmation-dialog'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { TRANSACTION_DETAILS_TAB_VALUES } from './page'
+import { TRANSACTION_DETAILS_TAB_VALUES } from './Transaction-details-tab-values'
 
 interface TransactionValues {
   chartOfAccountsGroupName?: string

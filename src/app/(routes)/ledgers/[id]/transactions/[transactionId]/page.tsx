@@ -42,12 +42,7 @@ import {
   OperationDto,
   TransactionResponseDto
 } from '@/core/application/dto/transaction-dto'
-
-export const TRANSACTION_DETAILS_TAB_VALUES = {
-  SUMMARY: 'summary',
-  TRANSACTION_DATA: 'transaction-data',
-  OPERATIONS: 'operations'
-}
+import { TRANSACTION_DETAILS_TAB_VALUES } from './Transaction-details-tab-values'
 
 const DEFAULT_TAB_VALUE = TRANSACTION_DETAILS_TAB_VALUES.SUMMARY
 

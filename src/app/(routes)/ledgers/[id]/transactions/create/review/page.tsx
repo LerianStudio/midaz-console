@@ -76,10 +76,13 @@ export default function CreateTransactionReviewPage() {
     }))
   })
 
-  const { handleDialogOpen: handleSubmitOpen, dialogProps: submitDialogProps, handleDialogClose: handleSubmitClose } =
-    useConfirmDialog({
-      onConfirm: () => createTransaction(parse(values))
-    })
+  const {
+    handleDialogOpen: handleSubmitOpen,
+    dialogProps: submitDialogProps,
+    handleDialogClose: handleSubmitClose
+  } = useConfirmDialog({
+    onConfirm: () => createTransaction(parse(values))
+  })
 
   return (
     <>
