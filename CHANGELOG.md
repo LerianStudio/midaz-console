@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/LerianStudio/midaz-console/compare/v1.7.0...v1.8.0) (2025-02-13)
+
+
+### Features
+
+* disable codeql temporarily to execute entire flow ([abbfac7](https://github.com/LerianStudio/midaz-console/commit/abbfac74da26c83781abffba425f3d6a98ae42cf))
+
 # [1.7.0](https://github.com/LerianStudio/midaz-console/compare/v1.6.1...v1.7.0) (2025-02-13)
 
 
