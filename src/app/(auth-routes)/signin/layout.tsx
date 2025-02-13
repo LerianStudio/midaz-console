@@ -8,9 +8,7 @@ interface AuthRoutesProps {
   children: React.ReactNode
 }
 
-const AuthRoutes = async ({
-  children,
-}: AuthRoutesProps) => {
+const AuthRoutes = async ({ children }: AuthRoutesProps) => {
   const session = await getServerSession(nextAuthCasdoorOptions)
 
   if (session?.user) {
