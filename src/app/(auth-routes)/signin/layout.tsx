@@ -4,16 +4,12 @@ import { getServerSession } from 'next-auth'
 import React from 'react'
 import { nextAuthCasdoorOptions } from '@/core/infrastructure/next-auth/casdoor/next-auth-casdoor-provider'
 
-type AuthRoutesProps = {
+interface AuthRoutesProps {
   children: React.ReactNode
-  params: {
-    locale: string
-  }
 }
 
 const AuthRoutes = async ({
   children,
-  params: { locale }
 }: AuthRoutesProps) => {
   const session = await getServerSession(nextAuthCasdoorOptions)
 
