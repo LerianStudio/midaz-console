@@ -1,7 +1,6 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import { useIntl } from 'react-intl'
 import { Button } from '@/components/ui/button'
-import { Plus, Search } from 'lucide-react'
 import { EntityBox } from '@/components/entity-box'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import { useDeleteAsset, useListAssets } from '@/client/assets'
@@ -14,13 +13,15 @@ import {
 } from '@tanstack/react-table'
 import { ILedgerType } from '@/types/ledgers-type'
 import { AssetsSkeleton } from './assets-skeleton'
-import { InputWithIcon } from '@/components/ui/input-with-icon'
 import { AssetsSheet } from './assets-sheet'
 import { useParams } from 'next/navigation'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import ConfirmationDialog from '@/components/confirmation-dialog'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { EntityDataTable } from '@/components/entity-data-table'
+import { useQueryParams } from '@/hooks/use-query-params'
+import { Pagination } from '@/components/pagination'
+import { PaginationLimitField } from '@/components/form/pagination-limit-field'
 
 type AssetsTabContentProps = {
   data: ILedgerType
@@ -30,10 +31,16 @@ export const AssetsTabContent = ({ data }: AssetsTabContentProps) => {
   const intl = useIntl()
   const { id: ledgerId } = useParams<{ id: string }>()
   const { currentOrganization } = useOrganization()
-  const [columnFilters, setColumnFilters] = React.useState<any>([])
+  const [columnFilters, setColumnFilters] = useState<any>([])
   const { showSuccess, showError } = useCustomToast()
 
   const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>()
+
+  const [total, setTotal] = useState(0)
+
+  const { form, searchValues, pagination } = useQueryParams({
+    total
+  })
 
   const {
     data: assets,
@@ -41,8 +48,13 @@ export const AssetsTabContent = ({ data }: AssetsTabContentProps) => {
     isLoading
   } = useListAssets({
     organizationId: currentOrganization.id!,
-    ledgerId: data?.id!
+    ledgerId: data?.id!,
+    ...(searchValues as any)
   })
+
+  useEffect(() => {
+    setTotal(assets?.items.length || 0)
+  }, [assets?.items.length])
 
   const { mutate: deleteMutate, isPending: deletePending } = useDeleteAsset({
     organizationId: currentOrganization.id!,
@@ -92,54 +104,54 @@ export const AssetsTabContent = ({ data }: AssetsTabContentProps) => {
   })
 
   return (
-    <div>
-      <EntityBox.Root>
-        <EntityBox.Header
-          title={intl.formatMessage({
-            id: 'ledgers.assets.title',
-            defaultMessage: 'Assets'
-          })}
-          subtitle={intl.formatMessage({
-            id: 'ledgers.assets.subtitle',
-            defaultMessage:
-              'Currency or assets of any nature traded on this Ledger.'
-          })}
-        />
-        <EntityBox.Actions className="gap-4">
-          {!assets || assets.items.length === 0 ? (
-            <Button variant="outline" onClick={handleCreate} icon={<Plus />}>
+    <>
+      <ConfirmationDialog
+        title={intl.formatMessage({
+          id: 'common.confirmDeletion',
+          defaultMessage: 'Confirm Deletion'
+        })}
+        description={intl.formatMessage({
+          id: 'assets.delete.description',
+          defaultMessage:
+            'You are about to permanently delete this asset. This action cannot be undone. Do you wish to continue?'
+        })}
+        loading={deletePending}
+        {...dialogProps}
+      />
+
+      <EntityBox.Collapsible>
+        <EntityBox.Banner>
+          <EntityBox.Header
+            title={intl.formatMessage({
+              id: 'ledgers.assets.title',
+              defaultMessage: 'Assets'
+            })}
+            subtitle={intl.formatMessage({
+              id: 'ledgers.assets.subtitle',
+              defaultMessage: 'Manage the assets of this ledger.'
+            })}
+            tooltip={intl.formatMessage({
+              id: 'ledgers.assets.tooltip',
+              defaultMessage:
+                'Currency or assets of any nature traded on this Ledger.'
+            })}
+          />
+          <EntityBox.Actions className="gap-4">
+            <Button onClick={handleCreate}>
               {intl.formatMessage({
-                id: 'ledgers.assets.createButton',
-                defaultMessage: 'Create your first Asset'
+                id: 'common.new.asset',
+                defaultMessage: 'New Asset'
               })}
             </Button>
-          ) : (
-            <React.Fragment>
-              <InputWithIcon
-                placeholder={intl.formatMessage({
-                  id: 'common.filter',
-                  defaultMessage: 'Filter'
-                })}
-                value={
-                  (table.getColumn('name')?.getFilterValue() as string) ?? ''
-                }
-                onChange={(event) =>
-                  table.getColumn('name')?.setFilterValue(event.target.value)
-                }
-                className="w-full min-w-[300px]"
-                icon={<Search />}
-              />
-              <Button
-                variant="secondary"
-                onClick={handleCreate}
-                className="h-9 w-10 p-2"
-              >
-                <Plus />
-              </Button>
-            </React.Fragment>
-          )}
-        </EntityBox.Actions>
-      </EntityBox.Root>
+            <EntityBox.CollapsibleTrigger />
+          </EntityBox.Actions>
+        </EntityBox.Banner>
+        <EntityBox.CollapsibleContent>
+          <div className="col-start-3 flex justify-end">
+            <PaginationLimitField control={form.control} />
+          </div>
+        </EntityBox.CollapsibleContent>
+      </EntityBox.Collapsible>
 
       <AssetsSheet ledgerId={ledgerId} onSuccess={refetch} {...sheetProps} />
 
@@ -163,7 +175,7 @@ export const AssetsTabContent = ({ data }: AssetsTabContentProps) => {
               {
                 id: 'ledgers.assets.showing',
                 defaultMessage:
-                  'Showing {count} {number, plural, =0 {assets} one {asset} other {assets}}.'
+                  '{number, plural, =0 {No asset found} one {Showing {count} asset} other {Showing {count} assets}}.'
               },
               {
                 number: assets?.items?.length,
@@ -173,22 +185,9 @@ export const AssetsTabContent = ({ data }: AssetsTabContentProps) => {
               }
             )}
           </EntityDataTable.FooterText>
+          <Pagination total={total} {...pagination} />
         </EntityDataTable.Footer>
       </EntityDataTable.Root>
-
-      <ConfirmationDialog
-        title={intl.formatMessage({
-          id: 'common.confirmDeletion',
-          defaultMessage: 'Confirm Deletion'
-        })}
-        description={intl.formatMessage({
-          id: 'assets.delete.description',
-          defaultMessage:
-            'You are about to permanently delete this asset. This action cannot be undone. Do you wish to continue?'
-        })}
-        loading={deletePending}
-        {...dialogProps}
-      />
-    </div>
+    </>
   )
 }

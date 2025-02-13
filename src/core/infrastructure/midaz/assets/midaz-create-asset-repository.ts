@@ -1,11 +1,18 @@
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { CreateAssetRepository } from '@/core/domain/repositories/assets/create-asset-repository'
-import { HTTP_METHODS, httpMidazAuthFetch } from '../../utils/http-fetch-utils'
-import { injectable } from 'inversify'
+import { injectable, inject } from 'inversify'
+import { MidazHttpFetchUtils, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
 
 @injectable()
 export class MidazCreateAssetRepository implements CreateAssetRepository {
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
+
+  constructor(
+    @inject(ContainerTypeMidazHttpFetch.MidazHttpFetchUtils)
+    private readonly midazHttpFetchUtils: MidazHttpFetchUtils
+  ) {}
+
   async create(
     organizationId: string,
     ledgerId: string,
@@ -13,11 +20,12 @@ export class MidazCreateAssetRepository implements CreateAssetRepository {
   ): Promise<AssetEntity> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets`
 
-    const response = await httpMidazAuthFetch<AssetEntity>({
-      url,
-      method: HTTP_METHODS.POST,
-      body: JSON.stringify(asset)
-    })
+    const response =
+      await this.midazHttpFetchUtils.httpMidazAuthFetch<AssetEntity>({
+        url,
+        method: HTTP_METHODS.POST,
+        body: JSON.stringify(asset)
+      })
 
     return response
   }

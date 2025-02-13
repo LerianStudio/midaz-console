@@ -91,6 +91,13 @@ export const PortfolioSheet = ({
     form.reset(defaultValues)
   }
 
+  // Resets information if using creation mode
+  React.useEffect(() => {
+    if (mode === 'create') {
+      form.reset(defaultValues)
+    }
+  }, [mode])
+
   React.useEffect(() => {
     if (!isNil(data)) {
       if (mode === 'edit') {
@@ -140,7 +147,7 @@ export const PortfolioSheet = ({
               <SheetDescription>
                 {intl.formatMessage({
                   id: 'ledgers.portfolio.sheet.edit.description',
-                  defaultMessage: 'View and edit product fields.'
+                  defaultMessage: 'View and edit segment fields.'
                 })}
               </SheetDescription>
             </SheetHeader>

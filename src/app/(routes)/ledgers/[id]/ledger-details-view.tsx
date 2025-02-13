@@ -6,7 +6,6 @@ import React from 'react'
 import { cn } from '@/lib/utils'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { useIntl } from 'react-intl'
-import { ProductsTabContent } from './products/products-tab-content'
 import { useTabs } from '@/hooks/use-tabs'
 import { getBreadcrumbPaths } from '@/components/breadcrumb/get-breadcrumb-paths'
 import { ILedgerType } from '@/types/ledgers-type'
@@ -15,11 +14,12 @@ import { OverviewTabContent } from './overview/overview-tab-content'
 import { AssetsTabContent } from './assets/assets-tab-content'
 import { PortfoliosTabContent } from './portfolios/portfolios-tab-content'
 import { AccountsTabContent } from './accounts/accounts-tab-content'
+import { SegmentsTabContent } from './segments/segments-tab-content'
 
 const TAB_VALUES = {
   OVERVIEW: 'overview',
   ASSETS: 'assets',
-  PRODUCTS: 'products',
+  SEGMENTS: 'segments',
   PORTFOLIOS: 'portfolios',
   ACCOUNTS: 'accounts'
 }
@@ -61,10 +61,10 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
     },
     {
       name: intl.formatMessage({
-        id: `settings.tab.products`,
-        defaultMessage: 'Products'
+        id: `settings.tab.segments`,
+        defaultMessage: 'Segments'
       }),
-      active: () => activeTab === TAB_VALUES.PRODUCTS
+      active: () => activeTab === TAB_VALUES.SEGMENTS
     },
     {
       name: intl.formatMessage({
@@ -91,14 +91,14 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
       <Breadcrumb paths={breadcrumbPaths} />
 
       <PageHeader.Root>
-        <div className="flex justify-between border-b">
+        <PageHeader.Wrapper>
           <PageHeader.InfoTitle
             title={data.name ?? ''}
             subtitle={data.id ?? ''}
           >
             <PageHeader.InfoTooltip subtitle={data.id ?? ''} />
           </PageHeader.InfoTitle>
-        </div>
+        </PageHeader.Wrapper>
       </PageHeader.Root>
 
       <Tabs
@@ -121,17 +121,10 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
             })}
           </TabsTrigger>
 
-          <TabsTrigger value={TAB_VALUES.PRODUCTS}>
+          <TabsTrigger value={TAB_VALUES.SEGMENTS}>
             {intl.formatMessage({
-              id: 'ledgers.tab.products',
-              defaultMessage: 'Products'
-            })}
-          </TabsTrigger>
-
-          <TabsTrigger value={TAB_VALUES.PORTFOLIOS}>
-            {intl.formatMessage({
-              id: 'ledgers.tab.portfolios',
-              defaultMessage: 'Portfolios'
+              id: 'ledgers.tab.segments',
+              defaultMessage: 'Segments'
             })}
           </TabsTrigger>
 
@@ -139,6 +132,13 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
             {intl.formatMessage({
               id: 'ledgers.tab.accounts',
               defaultMessage: 'Accounts'
+            })}
+          </TabsTrigger>
+
+          <TabsTrigger value={TAB_VALUES.PORTFOLIOS}>
+            {intl.formatMessage({
+              id: 'ledgers.tab.portfolios',
+              defaultMessage: 'Portfolios'
             })}
           </TabsTrigger>
         </TabsList>
@@ -151,8 +151,8 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
           <AssetsTabContent data={data} />
         </TabsContent>
 
-        <TabsContent value={TAB_VALUES.PRODUCTS}>
-          <ProductsTabContent />
+        <TabsContent value={TAB_VALUES.SEGMENTS}>
+          <SegmentsTabContent />
         </TabsContent>
 
         <TabsContent value={TAB_VALUES.PORTFOLIOS}>

@@ -11,13 +11,13 @@ import {
   SheetTitle
 } from '@/components/ui/sheet'
 import { Form } from '@/components/ui/form'
-import { useParams } from 'next/navigation'
+import { useParams, usePathname, useRouter } from 'next/navigation'
 import { useIntl } from 'react-intl'
 import { DialogProps } from '@radix-ui/react-dialog'
 import { LoadingButton } from '@/components/ui/loading-button'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import { MetadataField } from '@/components/form/metadata-field'
-import { useListProducts } from '@/client/products'
+import { useListSegments } from '@/client/segments'
 import { useCreateAccount, useUpdateAccount } from '@/client/accounts'
 import { useListPortfolios } from '@/client/portfolios'
 import { isNil, omitBy } from 'lodash'
@@ -29,6 +29,11 @@ import { SelectItem } from '@/components/ui/select'
 import { InputField, SelectField } from '@/components/form'
 import { TabsContent } from '@radix-ui/react-tabs'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { ChevronRight, InfoIcon } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { SwitchField } from '@/components/form/switch-field'
+import { createQueryString } from '@/lib/search'
 
 export type AccountSheetProps = DialogProps & {
   ledgerId: string
@@ -41,10 +46,12 @@ const initialValues = {
   name: '',
   entityId: '',
   portfolioId: '',
-  productId: '',
+  segmentId: '',
   assetCode: '',
   alias: '',
   type: '',
+  allowSending: true,
+  allowReceiving: true,
   metadata: {}
 }
 
@@ -58,10 +65,12 @@ export const AccountSheet = ({
   ...others
 }: AccountSheetProps) => {
   const intl = useIntl()
+  const pathname = usePathname()
+  const router = useRouter()
   const { id: ledgerId } = useParams<{ id: string }>()
   const { currentOrganization } = useOrganization()
 
-  const { data: rawProductListData } = useListProducts({
+  const { data: rawSegmentListData } = useListSegments({
     organizationId: currentOrganization.id!,
     ledgerId
   })
@@ -80,14 +89,14 @@ export const AccountSheet = ({
     )
   }, [rawPortfolioData])
 
-  const productListData = useMemo(() => {
+  const segmentListData = useMemo(() => {
     return (
-      rawProductListData?.items?.map((product) => ({
-        value: product.id,
-        label: product.name
+      rawSegmentListData?.items?.map((segment) => ({
+        value: segment.id,
+        label: segment.name
       })) || []
     )
-  }, [rawProductListData])
+  }, [rawSegmentListData])
 
   const { data: rawAssetListData } = useListAssets({
     organizationId: currentOrganization.id!,
@@ -107,6 +116,8 @@ export const AccountSheet = ({
     resolver: zodResolver(accountSchema),
     defaultValues: initialValues
   })
+
+  const portfolioId = form.watch('portfolioId')
 
   const { mutate: createAccount, isPending: createPending } = useCreateAccount({
     organizationId: currentOrganization.id!,
@@ -163,6 +174,9 @@ export const AccountSheet = ({
 
   const { showSuccess, showError } = useCustomToast()
 
+  const handlePortfolioClick = () =>
+    router.push(pathname + createQueryString({ tab: 'portfolios' }))
+
   const handleSubmit = (data: FormData) => {
     const cleanedData = omitBy(data, (value) => value === '' || isNil(value))
 
@@ -172,7 +186,8 @@ export const AccountSheet = ({
         portfolioId: cleanedData.portfolioId
       })
     } else if (mode === 'edit') {
-      const { type, portfolioId, assetCode, ...updateData } = cleanedData
+      const { type, assetCode, ...updateData } = cleanedData
+
       updateAccount({
         ...updateData
       })
@@ -180,6 +195,13 @@ export const AccountSheet = ({
 
     form.reset(initialValues)
   }
+
+  // Resets information if using creation mode
+  React.useEffect(() => {
+    if (mode === 'create') {
+      form.reset(initialValues)
+    }
+  }, [mode])
 
   React.useEffect(() => {
     if (!isNil(data)) {
@@ -249,6 +271,12 @@ export const AccountSheet = ({
                       defaultMessage: 'Account Details'
                     })}
                   </TabsTrigger>
+                  <TabsTrigger value="portfolio">
+                    {intl.formatMessage({
+                      id: 'entity.portfolio',
+                      defaultMessage: 'Portfolio'
+                    })}
+                  </TabsTrigger>
                   <TabsTrigger value="metadata">
                     {intl.formatMessage({
                       id: 'common.metadata',
@@ -269,6 +297,7 @@ export const AccountSheet = ({
                         id: 'ledgers.account.field.name.tooltip',
                         defaultMessage: 'Enter the name of the account'
                       })}
+                      required
                     />
 
                     <InputField
@@ -283,6 +312,7 @@ export const AccountSheet = ({
                         defaultMessage:
                           'Nickname (@) for identifying the Account holder'
                       })}
+                      required
                     />
 
                     {mode === 'create' && (
@@ -298,6 +328,7 @@ export const AccountSheet = ({
                             id: 'ledgers.account.field.type.tooltip',
                             defaultMessage: 'The type of account'
                           })}
+                          required
                         >
                           <SelectItem value="deposit">
                             {intl.formatMessage({
@@ -354,6 +385,7 @@ export const AccountSheet = ({
                             defaultMessage:
                               'Identification number (EntityId) of the Account holder'
                           })}
+                          required
                         />
                         <SelectField
                           control={form.control}
@@ -367,33 +399,11 @@ export const AccountSheet = ({
                             defaultMessage:
                               'Asset or currency that will be operated in this Account using balance'
                           })}
+                          required
                         >
                           {assetListData?.map((asset) => (
                             <SelectItem key={asset.value} value={asset.value}>
                               {asset.label}
-                            </SelectItem>
-                          ))}
-                        </SelectField>
-
-                        <SelectField
-                          control={form.control}
-                          name="portfolioId"
-                          label={intl.formatMessage({
-                            id: 'ledgers.account.field.portfolio',
-                            defaultMessage: 'Portfolio'
-                          })}
-                          tooltip={intl.formatMessage({
-                            id: 'ledgers.account.field.portfolio.tooltip',
-                            defaultMessage:
-                              'Portfolio that will receive this account'
-                          })}
-                        >
-                          {portfolioListData?.map((portfolio) => (
-                            <SelectItem
-                              key={portfolio.value}
-                              value={portfolio.value}
-                            >
-                              {portfolio.label}
                             </SelectItem>
                           ))}
                         </SelectField>
@@ -402,23 +412,49 @@ export const AccountSheet = ({
 
                     <SelectField
                       control={form.control}
-                      name="productId"
+                      name="segmentId"
                       label={intl.formatMessage({
-                        id: 'ledgers.account.field.product',
-                        defaultMessage: 'Product'
+                        id: 'ledgers.account.field.segment',
+                        defaultMessage: 'Segment'
                       })}
                       tooltip={intl.formatMessage({
-                        id: 'ledgers.account.field.product.tooltip',
+                        id: 'ledgers.account.field.segment.tooltip',
                         defaultMessage:
                           'Category (cluster) of clients with specific characteristics'
                       })}
+                      required
                     >
-                      {productListData?.map((product) => (
-                        <SelectItem key={product.value} value={product.value}>
-                          {product.label}
+                      {segmentListData?.map((segment) => (
+                        <SelectItem key={segment.value} value={segment.value}>
+                          {segment.label}
                         </SelectItem>
                       ))}
                     </SelectField>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <SwitchField
+                        control={form.control}
+                        name="allowSending"
+                        label={intl.formatMessage({
+                          id: 'ledgers.account.field.allowSending',
+                          defaultMessage: 'Allow Sending'
+                        })}
+                        required
+                      />
+                      <SwitchField
+                        control={form.control}
+                        name="allowReceiving"
+                        label={intl.formatMessage({
+                          id: 'ledgers.account.field.allowReceiving',
+                          defaultMessage: 'Allow Receiving'
+                        })}
+                        tooltip={intl.formatMessage({
+                          id: 'ledgers.account.field.allowReceiving.tooltip',
+                          defaultMessage: 'Operations enabled on this account'
+                        })}
+                        required
+                      />
+                    </div>
 
                     <p className="text-xs font-normal italic text-shadcn-400">
                       {intl.formatMessage({
@@ -428,6 +464,76 @@ export const AccountSheet = ({
                     </p>
                   </div>
                 </TabsContent>
+
+                <TabsContent value="portfolio">
+                  {portfolioListData.length === 0 && (
+                    <Alert variant="informative" className="mb-8">
+                      <InfoIcon className="h-4 w-4" />
+                      <AlertTitle>
+                        {intl.formatMessage({
+                          id: 'ledgers.account.sheet.noPortfolio.title',
+                          defaultMessage: 'Link to a Portfolio'
+                        })}
+                      </AlertTitle>
+                      <AlertDescription>
+                        {intl.formatMessage({
+                          id: 'ledgers.account.sheet.noPortfolio.description',
+                          defaultMessage:
+                            'You do not have a portfolio available to link here.'
+                        })}
+                      </AlertDescription>
+                    </Alert>
+                  )}
+
+                  <SelectField
+                    control={form.control}
+                    name="portfolioId"
+                    label={intl.formatMessage({
+                      id: 'ledgers.account.field.portfolio',
+                      defaultMessage: 'Portfolio'
+                    })}
+                    tooltip={intl.formatMessage({
+                      id: 'ledgers.account.field.portfolio.tooltip',
+                      defaultMessage: 'Portfolio that will receive this account'
+                    })}
+                    disabled={portfolioListData.length === 0}
+                  >
+                    {portfolioListData?.map((portfolio) => (
+                      <SelectItem key={portfolio.value} value={portfolio.value}>
+                        {portfolio.label}
+                      </SelectItem>
+                    ))}
+                  </SelectField>
+
+                  <div className="mt-4 flex flex-row items-center">
+                    <div className="flex-grow">
+                      <p className="text-xs font-normal italic text-shadcn-400">
+                        {isNil(portfolioId) || portfolioId === ''
+                          ? intl.formatMessage({
+                              id: 'ledgers.account.sheet.noLinkedPortfolio',
+                              defaultMessage:
+                                'Account not linked to any portfolio.'
+                            })
+                          : intl.formatMessage({
+                              id: 'ledgers.account.sheet.linkedPortfolio',
+                              defaultMessage: 'Account linked to a portfolio.'
+                            })}
+                      </p>
+                    </div>
+                    <Button
+                      variant="outline"
+                      icon={<ChevronRight />}
+                      iconPlacement="end"
+                      onClick={handlePortfolioClick}
+                    >
+                      {intl.formatMessage({
+                        id: 'ledgers.account.sheet.createPortfolio',
+                        defaultMessage: 'Portfolios'
+                      })}
+                    </Button>
+                  </div>
+                </TabsContent>
+
                 <TabsContent value="metadata">
                   <MetadataField name="metadata" control={form.control} />
                 </TabsContent>

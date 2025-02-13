@@ -11,9 +11,13 @@ const assetCode = z.string()
 
 const portfolioId = z.string().nullable().optional()
 
-const productId = z.string().nullable().optional()
+const segmentId = z.string().nullable().optional()
 
 const type = z.string()
+
+const allowSending = z.boolean()
+
+const allowReceiving = z.boolean()
 
 export const accountSchema = z.object({
   name,
@@ -21,7 +25,9 @@ export const accountSchema = z.object({
   entityId,
   assetCode,
   portfolioId,
-  productId,
+  segmentId,
   metadata,
-  type
+  type,
+  allowSending,
+  allowReceiving
 })

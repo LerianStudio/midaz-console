@@ -1,14 +1,27 @@
 /**
  * TODO: Better error handling
  */
-
 import { MidazError } from '@/core/infrastructure/errors/midaz-error'
 import { signOut } from 'next-auth/react'
 import { redirect } from 'next/navigation'
+import { createQueryString } from '../search'
 
 export const getFetcher = (url: string) => {
   return async () => {
     const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    return fetcherResponseHandler(response)
+  }
+}
+
+export const getPaginatedFetcher = (url: string, params?: {}) => {
+  return async () => {
+    const response = await fetch(url + createQueryString(params), {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -64,6 +77,7 @@ export const serverFetcher = async <T = void>(action: () => Promise<T>) => {
   try {
     return await action()
   } catch (error) {
+    console.error('Server Fetcher Error', error)
     if (error instanceof MidazError && error.code === '0042') {
       redirect('/signout')
     }
@@ -72,14 +86,13 @@ export const serverFetcher = async <T = void>(action: () => Promise<T>) => {
 }
 
 const fetcherResponseHandler = async (response: Response) => {
-  console.log('Fetcher Error', response)
-
   if (!response.ok) {
     if (response.status === 401) {
       signOut({ callbackUrl: '/login' })
       return
     }
-    throw new Error('Fetcher Error')
+    const errorMessage = await response.json()
+    throw new Error(errorMessage.message)
   }
 
   return await response.json()

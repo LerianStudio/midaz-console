@@ -1,6 +1,5 @@
-import React, { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Plus } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { EntityBox } from '@/components/entity-box'
 import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
@@ -20,12 +19,23 @@ import { AccountType } from '@/types/accounts-type'
 import { AccountSheet } from './accounts-sheet'
 import { AccountsDataTable } from './accounts-data-table'
 import { EntityDataTable } from '@/components/entity-data-table'
+import { useQueryParams } from '@/hooks/use-query-params'
+import { Pagination } from '@/components/pagination'
+import { PaginationLimitField } from '@/components/form/pagination-limit-field'
+import { EmptyResource } from '@/components/empty-resource'
+import { isNil } from 'lodash'
 
 export const AccountsTabContent = () => {
   const intl = useIntl()
   const { id: ledgerId } = useParams<{ id: string }>()
   const { currentOrganization } = useOrganization()
-  const [columnFilters, setColumnFilters] = React.useState<any>([])
+  const [columnFilters, setColumnFilters] = useState<any>([])
+
+  const [total, setTotal] = useState(0)
+
+  const { form, searchValues, pagination } = useQueryParams({
+    total
+  })
 
   const {
     data: accountsData,
@@ -33,8 +43,13 @@ export const AccountsTabContent = () => {
     isLoading: isAccountsLoading
   } = useAccountsWithPortfolios({
     organizationId: currentOrganization.id!,
-    ledgerId: ledgerId
+    ledgerId: ledgerId,
+    ...(searchValues as any)
   })
+
+  useEffect(() => {
+    setTotal(accountsData?.items?.length || 0)
+  }, [accountsData?.items?.length])
 
   const accountsList: AccountType[] = useMemo(() => {
     return (
@@ -42,7 +57,7 @@ export const AccountsTabContent = () => {
         ...account,
         assetCode: account.assetCode,
         parentAccountId: account.parentAccountId,
-        productId: account.productId,
+        segmentId: account.segmentId,
         metadata: account.metadata,
         portfolioId: account.portfolio?.id,
         portfolioName: account.portfolio?.name
@@ -157,12 +172,8 @@ export const AccountsTabContent = () => {
     }
   })
 
-  if (isAccountsLoading) {
-    return <Skeleton className="h-[84px] w-full bg-zinc-200" />
-  }
-
   return (
-    <React.Fragment>
+    <>
       <ConfirmationDialog
         title={intl.formatMessage({
           id: 'ledgers.account.deleteDialog.title',
@@ -182,49 +193,61 @@ export const AccountsTabContent = () => {
         {...sheetProps}
       />
 
-      <EntityBox.Root>
-        <EntityBox.Header
-          title={intl.formatMessage({
-            id: 'ledgers.accounts.title',
-            defaultMessage: 'Accounts'
-          })}
-          subtitle={
-            accountsList.length !== undefined
-              ? intl.formatMessage(
-                  {
-                    id: 'ledgers.accounts.subtitle',
-                    defaultMessage:
-                      '{count} {count, plural, =0 {accounts found} one {account found} other {accounts found}}'
-                  },
-                  {
-                    count: accountsList.length
-                  }
-                )
-              : undefined
-          }
-        />
-        <EntityBox.Actions>
-          <Button
-            variant="secondary"
-            onClick={handleCreate}
-            className="h-9 p-2"
-          >
-            {accountsList && accountsList.length > 0 ? (
-              <Plus />
-            ) : (
-              <>
-                {intl.formatMessage({
-                  id: 'ledgers.accounts.createFirst',
-                  defaultMessage: 'Create first account'
-                })}
-                <Plus />
-              </>
-            )}
-          </Button>
-        </EntityBox.Actions>
-      </EntityBox.Root>
+      <EntityBox.Collapsible>
+        <EntityBox.Banner>
+          <EntityBox.Header
+            title={intl.formatMessage({
+              id: 'ledgers.accounts.title',
+              defaultMessage: 'Accounts'
+            })}
+            subtitle={intl.formatMessage({
+              id: 'ledgers.accounts.subtitle',
+              defaultMessage: 'Manage the accounts of this ledger.'
+            })}
+            tooltip={intl.formatMessage({
+              id: 'ledgers.accounts.tooltip',
+              defaultMessage:
+                'Accounts are the basis of the ledger, and each one represents a specific asset.'
+            })}
+          />
+          <EntityBox.Actions>
+            <Button onClick={handleCreate}>
+              {intl.formatMessage({
+                id: 'common.new.account',
+                defaultMessage: 'New Account'
+              })}
+            </Button>
+            <EntityBox.CollapsibleTrigger />
+          </EntityBox.Actions>
+        </EntityBox.Banner>
+        <EntityBox.CollapsibleContent>
+          <div className="col-start-3 flex flex-row justify-end">
+            <PaginationLimitField control={form.control} />
+          </div>
+        </EntityBox.CollapsibleContent>
+      </EntityBox.Collapsible>
 
       <EntityDataTable.Root>
+        {isAccountsLoading && <Skeleton className="h-64" />}
+
+        {isNil(
+          accountsList?.length === 0 && (
+            <EmptyResource
+              message={intl.formatMessage({
+                id: 'ledgers.accounts.emptyResource',
+                defaultMessage: "You haven't created any Accounts yet"
+              })}
+            >
+              <Button onClick={handleCreate}>
+                {intl.formatMessage({
+                  id: 'common.new.account',
+                  defaultMessage: 'New Account'
+                })}
+              </Button>
+            </EmptyResource>
+          )
+        )}
+
         {accountsList && (
           <AccountsDataTable
             accounts={{ items: accountsList }}
@@ -241,7 +264,7 @@ export const AccountsTabContent = () => {
               {
                 id: 'ledgers.accounts.showing',
                 defaultMessage:
-                  'Showing {count} {number, plural, =0 {accounts} one {account} other {accounts}}.'
+                  '{number, plural, =0 {No accounts found} one {Showing {count} account} other {Showing {count} accounts}}.'
               },
               {
                 number: accountsList?.length,
@@ -249,8 +272,9 @@ export const AccountsTabContent = () => {
               }
             )}
           </EntityDataTable.FooterText>
+          <Pagination total={total} {...pagination} />
         </EntityDataTable.Footer>
       </EntityDataTable.Root>
-    </React.Fragment>
+    </>
   )
 }

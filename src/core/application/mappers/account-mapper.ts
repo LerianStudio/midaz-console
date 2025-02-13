@@ -27,8 +27,10 @@ export class AccountMapper {
       alias: account.alias,
       assetCode: account.assetCode,
       parentAccountId: account.parentAccountId!,
-      productId: account.productId!,
-      portfolioId: account.portfolioId
+      segmentId: account.segmentId!,
+      portfolioId: account.portfolioId,
+      allowSending: account.allowSending,
+      allowReceiving: account.allowReceiving
     }
   }
 
@@ -43,8 +45,10 @@ export class AccountMapper {
       assetCode: dto.assetCode!,
       status: dto.status!,
       parentAccountId: dto.parentAccountId,
-      productId: dto.productId,
+      segmentId: dto.segmentId,
       portfolioId: dto.portfolioId,
+      allowSending: dto.allowSending,
+      allowReceiving: dto.allowReceiving,
       metadata: dto.metadata ?? {}
     }
   }

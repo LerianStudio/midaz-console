@@ -5,7 +5,7 @@ export type AccountEntity = {
   ledgerId?: string
   organizationId?: string
   parentAccountId?: string | null
-  productId?: string | null
+  segmentId?: string | null
   portfolioId?: string | null
   entityId?: string | null
   name: string
@@ -13,6 +13,8 @@ export type AccountEntity = {
   type: string
   assetCode: string
   status: StatusEntity
+  allowSending?: boolean
+  allowReceiving?: boolean
   metadata: Record<string, any>
   createdAt?: Date
   updatedAt?: Date

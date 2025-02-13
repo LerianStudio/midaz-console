@@ -1,6 +1,6 @@
 import { MidazCreateAssetRepository } from './midaz-create-asset-repository'
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
-import { httpMidazAuthFetch, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 jest.mock('../../utils/http-fetch-utils', () => ({
   httpMidazAuthFetch: jest.fn(),
@@ -11,9 +11,11 @@ jest.mock('../../utils/http-fetch-utils', () => ({
 
 describe('MidazCreateAssetRepository', () => {
   let repository: MidazCreateAssetRepository
+  let mockHttpFetchUtils: { httpMidazAuthFetch: jest.Mock }
 
   beforeEach(() => {
-    repository = new MidazCreateAssetRepository()
+    mockHttpFetchUtils = { httpMidazAuthFetch: jest.fn() }
+    repository = new MidazCreateAssetRepository(mockHttpFetchUtils as any)
     jest.clearAllMocks()
   })
 
@@ -30,11 +32,11 @@ describe('MidazCreateAssetRepository', () => {
     }
     const response: AssetEntity = { ...asset }
 
-    ;(httpMidazAuthFetch as jest.Mock).mockResolvedValueOnce(response)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(response)
 
     const result = await repository.create(organizationId, ledgerId, asset)
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/assets`,
       method: HTTP_METHODS.POST,
       body: JSON.stringify(asset)
@@ -55,13 +57,13 @@ describe('MidazCreateAssetRepository', () => {
     }
     const error = new Error('Error occurred')
 
-    ;(httpMidazAuthFetch as jest.Mock).mockRejectedValueOnce(error)
+    mockHttpFetchUtils.httpMidazAuthFetch.mockRejectedValueOnce(error)
 
     await expect(
       repository.create(organizationId, ledgerId, asset)
     ).rejects.toThrow('Error occurred')
 
-    expect(httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/assets`,
       method: HTTP_METHODS.POST,
       body: JSON.stringify(asset)
