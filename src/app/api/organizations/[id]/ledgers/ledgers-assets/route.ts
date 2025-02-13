@@ -4,7 +4,7 @@ import {
   FetchAllLedgersAssets,
   FetchAllLedgersAssetsUseCase
 } from '@/core/application/use-cases/ledgers-assets/fetch-ledger-assets-use-case'
-import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { applyMiddleware } from '@/lib/middleware'
 import { loggerMiddleware } from '@/utils/logger-middleware-config'
 import { NextResponse } from 'next/server'
 export const GET = applyMiddleware(

@@ -13,7 +13,7 @@ import {
   UpdateProductUseCase
 } from '@/core/application/use-cases/product/update-product-use-case'
 import { NextResponse } from 'next/server'
-import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { applyMiddleware } from '@/lib/middleware'
 import { loggerMiddleware } from '@/utils/logger-middleware-config'
 
 const fetchProductById: FetchProductById = container.get<FetchProductById>(

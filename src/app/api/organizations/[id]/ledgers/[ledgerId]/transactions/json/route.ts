@@ -5,7 +5,7 @@ import {
 } from '@/core/application/use-cases/transactions/create-transaction-use-case'
 import { container } from '@/core/infrastructure/container-registry/container-registry'
 import { loggerMiddleware } from '@/utils/logger-middleware-config'
-import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { applyMiddleware } from '@/lib/middleware'
 import { NextResponse } from 'next/server'
 
 export const POST = applyMiddleware(

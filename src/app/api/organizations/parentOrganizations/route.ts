@@ -4,7 +4,7 @@ import {
   FetchParentOrganizationsUseCase
 } from '@/core/application/use-cases/organizations/fetch-parent-organizations-use-case'
 import { NextResponse } from 'next/server'
-import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { applyMiddleware } from '@/lib/middleware'
 import { loggerMiddleware } from '@/utils/logger-middleware-config'
 
 export const GET = applyMiddleware(
