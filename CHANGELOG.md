@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/LerianStudio/midaz-console/compare/v1.6.1...v1.7.0) (2025-02-13)
+
+
+### Features
+
+* disable commit lint on flow to execute release on main ([9ae3816](https://github.com/LerianStudio/midaz-console/commit/9ae3816d053ce6b3ced0cdc42f67a920ae884b98))
+
 ## [1.6.1](https://github.com/LerianStudio/midaz-console/compare/v1.6.0...v1.6.1) (2025-02-12)
 
 
