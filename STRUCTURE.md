@@ -23,7 +23,7 @@ The project is structured into several key directories, each serving specific ro
     │   |   |   └── [id]
     │   |   |       ├── accounts-and-portfolios
     │   |   |       ├── overview
-    │   |   |       └── products
+    │   |   |       └── segments
     │   |   ├── settings
     │   |   |   └── organizations
     │   └── api
@@ -40,8 +40,8 @@ The project is structured into several key directories, each serving specific ro
     |       |           |   |   └── [assetId]
     |       |           |   ├── portfolios
     |       |           |   |   └── [portfolioId]
-    |       |           |   └── products
-    |       |           |       └── [productId]
+    |       |           |   └── segments
+    |       |           |       └── [segmentId]
     |       |           |
     |       |           └── ledgers-assets
     |       └── utils

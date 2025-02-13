@@ -1,13 +1,13 @@
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { CreateLedgerDto } from '../dto/create-ledger-dto'
 import { LedgerResponseDto } from '../dto/ledger-response-dto'
-import { UpdateProductDto } from '../dto/product-dto'
+import { UpdateSegmentDto } from '../dto/segment-dto'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { PaginationMapper } from './pagination-mapper'
 
 export class LedgerMapper {
   public static toDomain(
-    dto: CreateLedgerDto | UpdateProductDto
+    dto: CreateLedgerDto | UpdateSegmentDto
   ): LedgerEntity {
     return {
       name: dto.name!,

@@ -1,4 +1,7 @@
-import { TransactionEntity } from '@/core/domain/entities/transaction-entity'
+import {
+  TransactionCreateEntity,
+  TransactionEntity
+} from '@/core/domain/entities/transaction-entity'
 import { CreateTransactionRepository } from '@/core/domain/repositories/transactions/create-transaction-repository'
 import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 import { inject, injectable } from 'inversify'
@@ -18,8 +21,8 @@ export class MidazCreateTransactionRepository
   async create(
     organizationId: string,
     ledgerId: string,
-    transaction: TransactionEntity
-  ) {
+    transaction: TransactionCreateEntity
+  ): Promise<TransactionEntity> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/transactions/json`
 
     const response =

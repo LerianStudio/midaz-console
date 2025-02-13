@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils'
 import { useIntl } from 'react-intl'
 
 export type StatusIndicatorProps = {
-  status: 'active' | 'inactive'
+  status: 'active' | 'inactive' | string
 }
 
 const StatusIndicator = ({ status }: StatusIndicatorProps) => (

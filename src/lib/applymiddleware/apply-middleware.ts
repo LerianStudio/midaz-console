@@ -48,7 +48,7 @@ export function applyMiddleware(
         return await layer(localReq, next)
       } catch (error) {
         // Log any errors and continue chain with error
-        console.log(error)
+        console.error(error)
         return await next(error)
       }
     }

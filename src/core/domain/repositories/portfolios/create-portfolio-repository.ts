@@ -4,6 +4,6 @@ export abstract class CreatePortfolioRepository {
   abstract create: (
     organizationId: string,
     ledgerId: string,
-    product: PortfolioEntity
+    segment: PortfolioEntity
   ) => Promise<PortfolioEntity>
 }

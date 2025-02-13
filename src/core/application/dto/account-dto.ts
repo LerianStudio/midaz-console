@@ -8,7 +8,7 @@ export interface CreateAccountDto {
   entityId?: string | null
   parentAccountId?: string | null
   portfolioId?: string | null
-  productId?: string
+  segmentId?: string
   allowSending?: boolean
   allowReceiving?: boolean
   status: {
@@ -29,7 +29,7 @@ export interface AccountResponseDto {
   entityId: string
   parentAccountId: string
   portfolioId?: string | null
-  productId: string
+  segmentId: string
   status: StatusDto
   allowSending?: boolean
   allowReceiving?: boolean
@@ -46,7 +46,7 @@ export interface UpdateAccountDto {
   type?: string
   entityId?: string
   parentAccountId?: string
-  productId?: string
+  segmentId?: string
   portfolioId?: string
   allowSending?: boolean
   allowReceiving?: boolean

@@ -1,3 +1,28 @@
+# [1.8.0](https://github.com/LerianStudio/midaz-console/compare/v1.7.0...v1.8.0) (2025-02-13)
+
+
+### Features
+
+* disable codeql temporarily to execute entire flow ([abbfac7](https://github.com/LerianStudio/midaz-console/commit/abbfac74da26c83781abffba425f3d6a98ae42cf))
+
+# [1.7.0](https://github.com/LerianStudio/midaz-console/compare/v1.6.1...v1.7.0) (2025-02-13)
+
+
+### Features
+
+* disable commit lint on flow to execute release on main ([9ae3816](https://github.com/LerianStudio/midaz-console/commit/9ae3816d053ce6b3ced0cdc42f67a920ae884b98))
+
+## [1.6.1](https://github.com/LerianStudio/midaz-console/compare/v1.6.0...v1.6.1) (2025-02-12)
+
+
+### Bug Fixes
+
+* handling create transaction error ([33cf68a](https://github.com/LerianStudio/midaz-console/commit/33cf68aa7a63ef2861d9ceec71497b2466cb31b5))
+* lint errors ([0c9ab4f](https://github.com/LerianStudio/midaz-console/commit/0c9ab4f1a7573f7a4a8ebbffcf52671e41ef076c))
+* merge conflicts ([7ffbccf](https://github.com/LerianStudio/midaz-console/commit/7ffbccf94313353bf5d437ba52307d6e6bbb10d5))
+* remove logs ([5940d20](https://github.com/LerianStudio/midaz-console/commit/5940d2079f41e43a913b7a8f117f956fb88b327f))
+* transaction-mapper unit test ([bea3e00](https://github.com/LerianStudio/midaz-console/commit/bea3e00202a0b6c6e0867b703a02f0d74c0ce4c5))
+
 # [1.6.0](https://github.com/LerianStudio/midaz-console/compare/v1.5.0...v1.6.0) (2025-02-12)
 
 

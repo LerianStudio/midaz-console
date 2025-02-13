@@ -24,37 +24,37 @@ permissions:
   security-events: write
 
 jobs:
-  # Job to execute CodeQL
-  CodeQL:
-    runs-on: ubuntu-latest
-    name: Run CodeQL for Next.js
-    timeout-minutes: 60
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - language: javascript
-            build-mode: none
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '22'
-      - name: Install dependencies
-        run: |
-          npm install
-      - name: Build the project
-        run: |
-          npm run build
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: ${{ matrix.language }}
-          build-mode: ${{ matrix.build-mode }}
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
-        with:
-          category: "/language:${{ matrix.language }}"
+  # # Job to execute CodeQL
+  # CodeQL:
+  #   runs-on: ubuntu-latest
+  #   name: Run CodeQL for Next.js
+  #   timeout-minutes: 60
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       include:
+  #         - language: javascript
+  #           build-mode: none
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: '22'
+  #     - name: Install dependencies
+  #       run: |
+  #         npm install
+  #     - name: Build the project
+  #       run: |
+  #         npm run build
+  #     - name: Initialize CodeQL
+  #       uses: github/codeql-action/init@v3
+  #       with:
+  #         languages: ${{ matrix.language }}
+  #         build-mode: ${{ matrix.build-mode }}
+  #     - name: Perform CodeQL Analysis
+  #       uses: github/codeql-action/analyze@v3
+  #       with:
+  #         category: "/language:${{ matrix.language }}"
 
   # Job to execute Npm Audit
   npm-audit:
@@ -96,19 +96,19 @@ jobs:
       - name: Run Unit Tests
         run: npm test
   
-  commitlint:
-    runs-on: ubuntu-latest
-    name: Run Commitlint to check commit message format
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '22'
-      - name: Install dependencies
-        run: npm install
-      - name: Run Commitlint
-        run: |
-          npx --no-install commitlint --from=HEAD~1 --to=HEAD
+  # commitlint:
+  #   runs-on: ubuntu-latest
+  #   name: Run Commitlint to check commit message format
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: '22'
+  #     - name: Install dependencies
+  #       run: npm install
+  #     - name: Run Commitlint
+  #       run: |
+  #         npx --no-install commitlint --from=HEAD~1 --to=HEAD

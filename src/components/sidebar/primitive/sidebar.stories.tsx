@@ -52,7 +52,7 @@ function Template() {
           <SidebarGroupTitle collapsed={isCollapsed}>
             AccountHolders
           </SidebarGroupTitle>
-          <SidebarItem title="Products" icon={<Box />} href="/products" />
+          <SidebarItem title="Segments" icon={<Box />} href="/segments" />
           <SidebarItem title="Accounts" icon={<Coins />} href="/accounts" />
           <SidebarItem
             title="Portfolios"

@@ -7,7 +7,7 @@ import { LedgerUseCaseModule } from './use-cases/ledger-module'
 import { PortfolioUseCaseModule } from './use-cases/portfolios-module'
 import { AccountUseCaseModule } from './use-cases/account-module'
 import { AssetUseCaseModule } from './use-cases/asset-module'
-import { ProductUseCaseModule } from './use-cases/product-module'
+import { SegmentUseCaseModule } from './use-cases/segment-module'
 import { CasdoorModule } from '../casdoor/module/casdoor-module'
 import { AuthUseCaseModule } from './use-cases/auth-module'
 import { LoggerModule } from '../logger/module/logger-module'
@@ -29,7 +29,7 @@ container.load(LedgerUseCaseModule)
 container.load(PortfolioUseCaseModule)
 container.load(AccountUseCaseModule)
 container.load(AssetUseCaseModule)
-container.load(ProductUseCaseModule)
+container.load(SegmentUseCaseModule)
 container.load(LoggerApplicationModule)
 
 container.load(TransactionUseCaseModule)

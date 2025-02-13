@@ -1,31 +1,30 @@
-import { ArrowLeft, ArrowRight, MinusCircle, PlusCircle } from 'lucide-react'
 import {
   PaperCollapsible,
   PaperCollapsibleBanner,
   PaperCollapsibleContent
 } from '@/components/transactions/primitives/paper-collapsible'
-import { Separator } from '@/components/ui/separator'
-import { MetadataField } from '@/components/form'
-import { useIntl } from 'react-intl'
-import { Control } from 'react-hook-form'
-import { Input } from '@/components/ui/input'
 import {
   FormControl,
   FormField,
   FormItem,
   FormMessage
 } from '@/components/ui/form'
-import { cn } from '@/lib/utils'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Separator } from '@/components/ui/separator'
 import {
   Tooltip,
-  TooltipTrigger,
   TooltipContent,
-  TooltipProvider
+  TooltipProvider,
+  TooltipTrigger
 } from '@/components/ui/tooltip'
-import { useState, useEffect } from 'react'
+import { cn } from '@/lib/utils'
+import { ArrowLeft, ArrowRight, MinusCircle, PlusCircle } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Control } from 'react-hook-form'
+import { useIntl } from 'react-intl'
 import { TransactionSourceFormSchema } from '../create/schemas'
 import { useTransactionForm } from '../create/transaction-form-provider'
-import { Label } from '@/components/ui/label'
 
 type ValueFieldProps = {
   name: string

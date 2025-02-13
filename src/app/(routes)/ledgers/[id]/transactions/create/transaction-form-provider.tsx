@@ -79,11 +79,13 @@ export const TransactionProvider = ({
       fieldArray.append({
         ...sourceInitialValues,
         account,
+        asset: formValues.asset,
         value: formValues.value
       })
     } else {
       fieldArray.append({
         ...sourceInitialValues,
+        asset: formValues.asset,
         account
       })
     }
@@ -120,7 +122,7 @@ export const TransactionProvider = ({
         addSource: (account: string) => addSource(originFieldArray, account),
         addDestination: (account: string) =>
           addSource(destinationFieldArray, account),
-        handleReview,
+        handleReview: handleReview,
         handleBack: handlePrevious
       }}
     >

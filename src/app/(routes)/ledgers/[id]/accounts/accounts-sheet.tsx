@@ -17,7 +17,7 @@ import { DialogProps } from '@radix-ui/react-dialog'
 import { LoadingButton } from '@/components/ui/loading-button'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import { MetadataField } from '@/components/form/metadata-field'
-import { useListProducts } from '@/client/products'
+import { useListSegments } from '@/client/segments'
 import { useCreateAccount, useUpdateAccount } from '@/client/accounts'
 import { useListPortfolios } from '@/client/portfolios'
 import { isNil, omitBy } from 'lodash'
@@ -46,7 +46,7 @@ const initialValues = {
   name: '',
   entityId: '',
   portfolioId: '',
-  productId: '',
+  segmentId: '',
   assetCode: '',
   alias: '',
   type: '',
@@ -70,7 +70,7 @@ export const AccountSheet = ({
   const { id: ledgerId } = useParams<{ id: string }>()
   const { currentOrganization } = useOrganization()
 
-  const { data: rawProductListData } = useListProducts({
+  const { data: rawSegmentListData } = useListSegments({
     organizationId: currentOrganization.id!,
     ledgerId
   })
@@ -89,14 +89,14 @@ export const AccountSheet = ({
     )
   }, [rawPortfolioData])
 
-  const productListData = useMemo(() => {
+  const segmentListData = useMemo(() => {
     return (
-      rawProductListData?.items?.map((product) => ({
-        value: product.id,
-        label: product.name
+      rawSegmentListData?.items?.map((segment) => ({
+        value: segment.id,
+        label: segment.name
       })) || []
     )
-  }, [rawProductListData])
+  }, [rawSegmentListData])
 
   const { data: rawAssetListData } = useListAssets({
     organizationId: currentOrganization.id!,
@@ -412,21 +412,21 @@ export const AccountSheet = ({
 
                     <SelectField
                       control={form.control}
-                      name="productId"
+                      name="segmentId"
                       label={intl.formatMessage({
-                        id: 'ledgers.account.field.product',
-                        defaultMessage: 'Product'
+                        id: 'ledgers.account.field.segment',
+                        defaultMessage: 'Segment'
                       })}
                       tooltip={intl.formatMessage({
-                        id: 'ledgers.account.field.product.tooltip',
+                        id: 'ledgers.account.field.segment.tooltip',
                         defaultMessage:
                           'Category (cluster) of clients with specific characteristics'
                       })}
                       required
                     >
-                      {productListData?.map((product) => (
-                        <SelectItem key={product.value} value={product.value}>
-                          {product.label}
+                      {segmentListData?.map((segment) => (
+                        <SelectItem key={segment.value} value={segment.value}>
+                          {segment.label}
                         </SelectItem>
                       ))}
                     </SelectField>

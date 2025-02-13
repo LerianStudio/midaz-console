@@ -8,15 +8,16 @@ import {
   useMutation,
   useQuery,
   useQueryClient,
-  UseMutationOptions
+  UseMutationOptions,
+  UseQueryResult,
+  UseMutationResult
 } from '@tanstack/react-query'
 import { PaginationRequest } from '@/types/pagination-request-type'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
-export type UseCreateTransactionProps = {
-  organizationId: string
-  ledgerId: string
-  onSuccess: () => void
-}
+import {
+  CreateTransactionDto,
+  TransactionResponseDto
+} from '@/core/application/dto/transaction-dto'
 
 export type UseListTransactionsProps = {
   organizationId: string
@@ -24,17 +25,31 @@ export type UseListTransactionsProps = {
   enabled?: boolean
 } & PaginationRequest
 
+export type UseCreateTransactionProps = {
+  organizationId: string
+  ledgerId: string
+  onSuccess?: (data: TransactionResponseDto) => void
+  onError?: (message: string) => void
+}
+
 export const useCreateTransaction = ({
   organizationId,
   ledgerId,
   ...options
-}: UseCreateTransactionProps) => {
+}: UseCreateTransactionProps): UseMutationResult<
+  TransactionResponseDto | CreateTransactionDto
+> => {
   return useMutation({
     mutationKey: ['transactions', 'create'],
     mutationFn: postFetcher(
       `/api/organizations/${organizationId}/ledgers/${ledgerId}/transactions/json`
     ),
-    ...options
+    onSuccess: (data) => {
+      options.onSuccess?.(data)
+    },
+    onError: (error) => {
+      options.onError?.(error.message)
+    }
   })
 }
 
@@ -49,7 +64,10 @@ export const useGetTransactionById = ({
   ledgerId,
   transactionId,
   ...options
-}: UseGetTransactionByIdProps) => {
+}: UseGetTransactionByIdProps): UseQueryResult<
+  TransactionResponseDto,
+  Error
+> => {
   return useQuery({
     queryKey: ['transactions-by-id', transactionId, organizationId, ledgerId],
     queryFn: getFetcher(
