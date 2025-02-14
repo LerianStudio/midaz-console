@@ -356,7 +356,6 @@
   "transactions.operations.metadata.value": "Valor",
   "transactions.status.title": "Status da Transação",
   "transactions.tab.data": "Dados da Transação",
-  "transactions.tab.list": "Lista de transações",
   "transactions.tab.operations": "Operações e Metadados",
   "transactions.tab.summary": "Resumo",
   "transactions.toast.update.success": "Transação atualizada com sucesso",
@@ -419,5 +418,5 @@
   "segments.delete.description": "Você está prestes a excluir permanentemente este segmento. Essa ação não pode ser desfeita. Deseja continuar?",
   "settings.tab.segments": "Segmentos",
   "sideBar.accountHolders.segments": "Segmentos",
-  "common.user": "Usuário"
+  "transactions.toast.update.error": ""
 }
