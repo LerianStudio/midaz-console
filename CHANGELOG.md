@@ -1,3 +1,74 @@
+# [1.8.0](https://github.com/LerianStudio/midaz-console/compare/v1.7.0...v1.8.0) (2025-02-13)
+
+
+### Features
+
+* disable codeql temporarily to execute entire flow ([abbfac7](https://github.com/LerianStudio/midaz-console/commit/abbfac74da26c83781abffba425f3d6a98ae42cf))
+
+# [1.7.0](https://github.com/LerianStudio/midaz-console/compare/v1.6.1...v1.7.0) (2025-02-13)
+
+
+### Features
+
+* disable commit lint on flow to execute release on main ([9ae3816](https://github.com/LerianStudio/midaz-console/commit/9ae3816d053ce6b3ced0cdc42f67a920ae884b98))
+
+## [1.6.1](https://github.com/LerianStudio/midaz-console/compare/v1.6.0...v1.6.1) (2025-02-12)
+
+
+### Bug Fixes
+
+* handling create transaction error ([33cf68a](https://github.com/LerianStudio/midaz-console/commit/33cf68aa7a63ef2861d9ceec71497b2466cb31b5))
+* lint errors ([0c9ab4f](https://github.com/LerianStudio/midaz-console/commit/0c9ab4f1a7573f7a4a8ebbffcf52671e41ef076c))
+* merge conflicts ([7ffbccf](https://github.com/LerianStudio/midaz-console/commit/7ffbccf94313353bf5d437ba52307d6e6bbb10d5))
+* remove logs ([5940d20](https://github.com/LerianStudio/midaz-console/commit/5940d2079f41e43a913b7a8f117f956fb88b327f))
+* transaction-mapper unit test ([bea3e00](https://github.com/LerianStudio/midaz-console/commit/bea3e00202a0b6c6e0867b703a02f0d74c0ce4c5))
+
+# [1.6.0](https://github.com/LerianStudio/midaz-console/compare/v1.5.0...v1.6.0) (2025-02-12)
+
+
+### Features
+
+* avoid injection on commit labelling ([1587788](https://github.com/LerianStudio/midaz-console/commit/158778843bf23fea3e00fd93c04bea78bdb31355))
+* control mid versions on releases ([7d16214](https://github.com/LerianStudio/midaz-console/commit/7d1621418fa0a0108a7f541260eb090acf83fb40))
+* include regex on mensage flow on commit msg ([b9ce36c](https://github.com/LerianStudio/midaz-console/commit/b9ce36c7ca1986dabb46c086068bd961c7ef0165))
+* include regex on mensage flow on commit msg on github ([92a2605](https://github.com/LerianStudio/midaz-console/commit/92a2605791931389ec9fdb6c7090a81098809a06))
+* include regex on message flow on commit msg on github ([6003b11](https://github.com/LerianStudio/midaz-console/commit/6003b11bc434b5e53995f7f85189d71444b32137))
+* increase the flow of commit labelling ([6df8c86](https://github.com/LerianStudio/midaz-console/commit/6df8c862ec409ef4f6ab9c5683fe2db6569eb061))
+* increase the flows on feature, fix and hotfix branches ([7519283](https://github.com/LerianStudio/midaz-console/commit/75192836c354e44d3e0a98b88edaf1c4696341a8))
+* insert commitlint on the pipeline workflow ([31dfc3f](https://github.com/LerianStudio/midaz-console/commit/31dfc3f55528911a065f979378b946164020ed36))
+* set regex of commit labelling ([1ca37bd](https://github.com/LerianStudio/midaz-console/commit/1ca37bd98efe9f54c07287eb58e6e58100c0b83b))
+* set regex of commit labelling ([3b64060](https://github.com/LerianStudio/midaz-console/commit/3b64060d2df7ea6ba66e1df97133d9adfd2285a3))
+* set regex of commit labelling flow ([f49bcdc](https://github.com/LerianStudio/midaz-console/commit/f49bcdc1bcd8e31c5526e0f6adc5e63da82611ca))
+* set regex of commit labelling flow ([b168262](https://github.com/LerianStudio/midaz-console/commit/b168262d08e6c452a37ebd6c5b3e5fdafea95ed7))
+* set regex of commit labelling flow ([55be954](https://github.com/LerianStudio/midaz-console/commit/55be954c6eef7181e74aeaaea7a9bdc26cce6a3f))
+* set release channel ([ea62a82](https://github.com/LerianStudio/midaz-console/commit/ea62a825a949ecc2eeea3fcabe6b83027a6489cd))
+* set release version of mid versions ([a2f9e7c](https://github.com/LerianStudio/midaz-console/commit/a2f9e7c8fbc4c7a1be8f3a4e9d436ed8fd622616))
+* set tagformat of releases ([466dbfb](https://github.com/LerianStudio/midaz-console/commit/466dbfb03df19a80af944ceda22eff5d29b94ffa))
+* set the codeql vulnerability ([1949e1d](https://github.com/LerianStudio/midaz-console/commit/1949e1d63fbd5e1d188cd90e243d1e1d14d4abd9))
+* set the commit label ([2bfdb21](https://github.com/LerianStudio/midaz-console/commit/2bfdb218941b2edd9fbbaa9cb6f517d5456c364b))
+* set the commitlint flow ([33672c1](https://github.com/LerianStudio/midaz-console/commit/33672c12368d26683f9988fff2540da9c5f6653d))
+* set the pre-release of workflow ([8e5020b](https://github.com/LerianStudio/midaz-console/commit/8e5020b63b1bff8c5629369a79abe285381bae8a))
+* set the release channel ([bf46947](https://github.com/LerianStudio/midaz-console/commit/bf46947a70bb45841e072c5d11260e2320f28bfb))
+* set the tagformat on release flow ([fa7b708](https://github.com/LerianStudio/midaz-console/commit/fa7b708decb6d0455c011ec937dade74968f53b3))
+* set the types of branch ([2e272c0](https://github.com/LerianStudio/midaz-console/commit/2e272c01052258632579a7b0bcf93575b787b314))
+* set the vulnerability tracked on codeql ([0fabfef](https://github.com/LerianStudio/midaz-console/commit/0fabfef85fbf2d228235a698ed7418a9c1abf798))
+* set versions of alpha and beta ([8bf73fd](https://github.com/LerianStudio/midaz-console/commit/8bf73fdc499313233e86760c5e7b60fac64dda6e))
+* test the build release change of flow ([1aaf866](https://github.com/LerianStudio/midaz-console/commit/1aaf866b68958ec267a974e45b536fed2c67c275))
+* test the flow of build release ([fa40382](https://github.com/LerianStudio/midaz-console/commit/fa40382b8e7a5313a4b716fb6937533c3c39c6bb))
+
+# [1.5.0](https://github.com/LerianStudio/midaz-console/compare/v1.4.0...v1.5.0) (2025-02-07)
+
+
+### Bug Fixes
+
+* delete ledgers behavior remove redirect ([c5e164a](https://github.com/LerianStudio/midaz-console/commit/c5e164aa27cac3b7d26298ac50d0132e9ecd1d70))
+
+
+### Features
+
+* added button prop ([612b06e](https://github.com/LerianStudio/midaz-console/commit/612b06e42d24aa4b334791355e2f70d982c17613))
+* httpfetchmidaz on transaction create route ([b229e01](https://github.com/LerianStudio/midaz-console/commit/b229e01a7e7d4ab387fdb3fac9944970f9e74360))
+
 # [1.4.0](https://github.com/LerianStudio/midaz-console/compare/v1.3.0...v1.4.0) (2025-02-04)
 
 

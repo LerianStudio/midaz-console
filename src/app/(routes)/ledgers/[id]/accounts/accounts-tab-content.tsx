@@ -57,7 +57,7 @@ export const AccountsTabContent = () => {
         ...account,
         assetCode: account.assetCode,
         parentAccountId: account.parentAccountId,
-        productId: account.productId,
+        segmentId: account.segmentId,
         metadata: account.metadata,
         portfolioId: account.portfolio?.id,
         portfolioName: account.portfolio?.name

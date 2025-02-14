@@ -5,7 +5,7 @@ export type AccountEntity = {
   ledgerId?: string
   organizationId?: string
   parentAccountId?: string | null
-  productId?: string | null
+  segmentId?: string | null
   portfolioId?: string | null
   entityId?: string | null
   name: string

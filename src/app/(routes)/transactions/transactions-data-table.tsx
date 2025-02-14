@@ -108,7 +108,7 @@ const TransactionRow: React.FC<any> = ({ transaction, selectedLedgerId }) => {
   } = transaction.original
 
   const badgeVariant = getBadgeVariant(code)
-  const numericValue = transaction.original.decimalValue
+  const numericValue = transaction.original.amount
 
   const displayValue = intl.formatNumber(numericValue, {
     minimumFractionDigits: transaction.original.amountScale,

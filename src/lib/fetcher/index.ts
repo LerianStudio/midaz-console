@@ -77,6 +77,7 @@ export const serverFetcher = async <T = void>(action: () => Promise<T>) => {
   try {
     return await action()
   } catch (error) {
+    console.error('Server Fetcher Error', error)
     if (error instanceof MidazError && error.code === '0042') {
       redirect('/signout')
     }
@@ -85,16 +86,13 @@ export const serverFetcher = async <T = void>(action: () => Promise<T>) => {
 }
 
 const fetcherResponseHandler = async (response: Response) => {
-  console.log('Fetcher Error', response)
-
   if (!response.ok) {
     if (response.status === 401) {
       signOut({ callbackUrl: '/login' })
       return
     }
-    const error = await response.json()
-
-    throw new Error(error.message)
+    const errorMessage = await response.json()
+    throw new Error(errorMessage.message)
   }
 
   return await response.json()

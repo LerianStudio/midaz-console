@@ -33,7 +33,7 @@ export const useAutosizeTextArea = ({
       const scrollHeight = textAreaElement.scrollHeight
 
       // We then set the height directly, outside of the render loop
-      // Trying to set this with state or a ref will product an incorrect value.
+      // Trying to set this with state or a ref will segment an incorrect value.
       if (scrollHeight > maxHeight) {
         textAreaElement.style.height = `${maxHeight}px`
         textAreaElement.style.overflowY = 'auto'

@@ -38,25 +38,13 @@ import { SkeletonTransactionDialog } from './skeleton-transaction-dialog'
 import CancelledCircle from '/public/svg/cancelled-circle.svg'
 import { capitalizeFirstLetter, truncateString } from '@/helpers'
 import dayjs from 'dayjs'
+import {
+  OperationDto,
+  TransactionResponseDto
+} from '@/core/application/dto/transaction-dto'
+import { TRANSACTION_DETAILS_TAB_VALUES } from './Transaction-details-tab-values'
 
-const TAB_VALUES = {
-  SUMMARY: 'summary',
-  TRANSACTION_DATA: 'transaction-data',
-  OPERATIONS: 'operations'
-}
-
-const DEFAULT_TAB_VALUE = TAB_VALUES.SUMMARY
-
-interface Operation {
-  type: 'DEBIT' | 'CREDIT'
-  accountAlias: string
-  amount: {
-    amount: string | number
-  }
-  metadata?: Record<string, any>
-  description?: string
-  chartOfAccounts?: string
-}
+const DEFAULT_TAB_VALUE = TRANSACTION_DETAILS_TAB_VALUES.SUMMARY
 
 type FormSchema = z.infer<typeof formSchema>
 
@@ -77,22 +65,27 @@ export default function TransactionDetailsPage() {
     transactionId
   })
 
-  const initialValues = {
+  const initialValues: TransactionResponseDto = {
+    id: transaction?.id || '',
     description: transaction?.description || '',
+    template: transaction?.template || '',
+    status: transaction?.status || {
+      code: '',
+      description: ''
+    },
+    amount: transaction?.amount || 0,
+    amountScale: transaction?.amountScale || 0,
+    assetCode: transaction?.assetCode || '',
     chartOfAccountsGroupName: transaction?.chartOfAccountsGroupName || '',
-    value: transaction?.amount || '',
-    asset: transaction?.assetCode || '',
-    metadata: transaction?.metadata || {},
-    source:
-      transaction?.source?.map((src: any) => ({
-        account: src.account,
-        value: src.value
-      })) || [],
-    destination:
-      transaction?.destination?.map((dest: any) => ({
-        account: dest.account,
-        value: dest.value
-      })) || []
+    source: transaction?.source!,
+    destination: transaction?.destination || [],
+    ledgerId: transaction?.ledgerId || '',
+    organizationId: transaction?.organizationId || '',
+    operations: transaction?.operations!,
+    createdAt: transaction?.createdAt || '',
+    updatedAt: transaction?.updatedAt || '',
+    deletedAt: transaction?.deletedAt || '',
+    metadata: transaction?.metadata!
   }
 
   const form = useForm<FormSchema>({
@@ -101,13 +94,19 @@ export default function TransactionDetailsPage() {
     values: initialValues
   })
 
-  const numericValue = transaction?.decimalValue
-
-  const displayValue = (amount: number) =>
-    intl.formatNumber(amount, {
-      minimumFractionDigits: transaction?.amountScale,
-      maximumFractionDigits: transaction?.amountScale
+  const displayValue = (amount: number, scale: number) => {
+    const number = intl.formatNumber(amount, {
+      minimumFractionDigits: scale,
+      maximumFractionDigits: scale
     })
+
+    const withoutThousandSeparator = number.replace(/\./g, '')
+    const normalized = withoutThousandSeparator.replace(',', '.')
+
+    const parsed = parseFloat(normalized)
+
+    return parsed.toString()
+  }
 
   if (isLoading) {
     return <SkeletonTransactionDialog />
@@ -118,18 +117,8 @@ export default function TransactionDetailsPage() {
       <Breadcrumb
         paths={getBreadcrumbPaths([
           {
-            name: intl.formatMessage({
-              id: 'settings.title',
-              defaultMessage: 'Settings'
-            }),
-            href: '/settings'
-          },
-          {
-            name: intl.formatMessage({
-              id: 'transactions.tab.list',
-              defaultMessage: 'Transactions list'
-            }),
-            href: `/ledgers/${ledgerId}/transactions`
+            name: currentOrganization.legalName,
+            href: `#`
           },
           {
             name: intl.formatMessage({
@@ -178,19 +167,21 @@ export default function TransactionDetailsPage() {
       >
         <Form {...form}>
           <TabsList>
-            <TabsTrigger value={TAB_VALUES.SUMMARY}>
+            <TabsTrigger value={TRANSACTION_DETAILS_TAB_VALUES.SUMMARY}>
               {intl.formatMessage({
                 id: 'transactions.tab.summary',
                 defaultMessage: 'Summary'
               })}
             </TabsTrigger>
-            <TabsTrigger value={TAB_VALUES.TRANSACTION_DATA}>
+            <TabsTrigger
+              value={TRANSACTION_DETAILS_TAB_VALUES.TRANSACTION_DATA}
+            >
               {intl.formatMessage({
                 id: 'transactions.tab.data',
                 defaultMessage: 'Transaction Data'
               })}
             </TabsTrigger>
-            <TabsTrigger value={TAB_VALUES.OPERATIONS}>
+            <TabsTrigger value={TRANSACTION_DETAILS_TAB_VALUES.OPERATIONS}>
               {intl.formatMessage({
                 id: 'transactions.tab.operations',
                 defaultMessage: 'Operations & Metadata'
@@ -198,7 +189,7 @@ export default function TransactionDetailsPage() {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value={TAB_VALUES.SUMMARY}>
+          <TabsContent value={TRANSACTION_DETAILS_TAB_VALUES.SUMMARY}>
             <div className="mx-auto max-w-[700px]">
               <TransactionReceipt className="mb-2 w-full">
                 <Image
@@ -210,15 +201,16 @@ export default function TransactionDetailsPage() {
                   }
                 />
                 <TransactionReceiptValue
-                  asset={transaction?.assetCode}
-                  value={capitalizeFirstLetter(
-                    displayValue(Number(transaction?.amount))
+                  asset={transaction?.assetCode!}
+                  value={displayValue(
+                    transaction?.amount!,
+                    transaction?.amountScale!
                   )}
                 />
                 <StatusDisplay status={transaction?.status?.code || ''} />
                 <TransactionReceiptSubjects
-                  sources={transaction?.source}
-                  destinations={transaction?.destination}
+                  sources={transaction?.source!}
+                  destinations={transaction?.destination!}
                 />
                 {transaction?.description && (
                   <TransactionReceiptDescription>
@@ -267,7 +259,7 @@ export default function TransactionDetailsPage() {
                     id: 'common.value',
                     defaultMessage: 'Value'
                   })}
-                  value={`${transaction?.assetCode} ${displayValue(transaction?.amount)}`}
+                  value={`${transaction?.assetCode} ${displayValue(transaction?.amount!, transaction?.amountScale!)}`}
                 />
                 <Separator orientation="horizontal" />
                 {transaction?.operations
@@ -278,7 +270,10 @@ export default function TransactionDetailsPage() {
                       type="debit"
                       account={operation.accountAlias}
                       asset={operation.assetCode}
-                      value={displayValue(operation?.amount.amount)}
+                      value={displayValue(
+                        operation?.amount.amount,
+                        operation?.amount.scale
+                      )}
                     />
                   ))}
                 {transaction?.operations
@@ -289,7 +284,10 @@ export default function TransactionDetailsPage() {
                       type="credit"
                       account={operation.accountAlias}
                       asset={operation.assetCode}
-                      value={displayValue(operation?.amount.amount)}
+                      value={displayValue(
+                        operation?.amount.amount,
+                        operation?.amount.scale
+                      )}
                     />
                   ))}
                 <Separator orientation="horizontal" />
@@ -330,16 +328,18 @@ export default function TransactionDetailsPage() {
             </div>
           </TabsContent>
 
-          <TabsContent value={TAB_VALUES.TRANSACTION_DATA}>
+          <TabsContent value={TRANSACTION_DETAILS_TAB_VALUES.TRANSACTION_DATA}>
             <div className="grid grid-cols-3">
               <div className="col-span-2">
                 <BasicInformationPaperReadOnly
-                  amount={displayValue(transaction?.amount)}
+                  amount={displayValue(
+                    transaction?.amount!,
+                    transaction?.amountScale!
+                  )}
                   values={{
                     chartOfAccountsGroupName:
                       initialValues.chartOfAccountsGroupName,
-                    value: initialValues.value,
-                    asset: initialValues.asset,
+                    asset: initialValues.assetCode,
                     description: initialValues.description
                   }}
                   control={form.control}
@@ -366,21 +366,24 @@ export default function TransactionDetailsPage() {
             </div>
           </TabsContent>
 
-          <TabsContent value={TAB_VALUES.OPERATIONS}>
+          <TabsContent value={TRANSACTION_DETAILS_TAB_VALUES.OPERATIONS}>
             <div className="grid grid-cols-3">
               <div className="col-span-2">
                 {transaction?.operations?.map(
-                  (operation: Operation, index: number) => (
+                  (operation: OperationDto, index: number) => (
                     <OperationAccordionReadOnly
                       key={index}
-                      amount={displayValue(Number(operation?.amount?.amount))}
+                      amount={displayValue(
+                        Number(operation?.amount?.amount),
+                        operation?.amount?.scale
+                      )}
                       type={operation.type === 'DEBIT' ? 'debit' : 'credit'}
                       name={
                         operation.type === 'DEBIT'
                           ? `source.${index}`
                           : `destination.${index}`
                       }
-                      asset={transaction?.asset}
+                      asset={transaction?.assetCode}
                       control={form.control}
                       values={{
                         account: operation.accountAlias,
@@ -395,7 +398,7 @@ export default function TransactionDetailsPage() {
                 <div className="mt-10">
                   <MetaAccordionTransactionDetails
                     name="metadata"
-                    values={transaction?.metadata}
+                    values={transaction?.metadata!}
                     control={form.control}
                   />
                 </div>

@@ -1,27 +1,25 @@
-import { Separator } from '@/components/ui/separator'
+import { useUpdateTransaction } from '@/client/transactions'
+import { MetadataField } from '@/components/form'
+import { PageFooter, PageFooterSection } from '@/components/page-footer'
 import {
   PaperCollapsible,
   PaperCollapsibleBanner,
   PaperCollapsibleContent
 } from '@/components/transactions/primitives/paper-collapsible'
-import { MetadataField } from '@/components/form'
-import { Control, Form, useForm, useWatch } from 'react-hook-form'
-import { useIntl } from 'react-intl'
-import { Metadata } from '@/types/metadata-type'
-import { useEffect, useState } from 'react'
-import { useUpdateTransaction } from '@/client/transactions'
-import { useParams } from 'next/navigation'
-import { useOrganization } from '@/context/organization-provider/organization-provider-client'
-import useCustomToast from '@/hooks/use-custom-toast'
-import { SaveSheet } from '../../overview/save-sheet'
-import { PageFooter } from '@/components/page-footer'
-import { ArrowRight } from 'lucide-react'
-import { PageFooterSection } from '@/components/page-footer'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'node_modules/zod/lib'
-import { metadata } from '@/schema/metadata'
 import { Button } from '@/components/ui/button'
 import { LoadingButton } from '@/components/ui/loading-button'
+import { Separator } from '@/components/ui/separator'
+import { useOrganization } from '@/context/organization-provider/organization-provider-client'
+import useCustomToast from '@/hooks/use-custom-toast'
+import { metadata } from '@/schema/metadata'
+import { Metadata } from '@/types/metadata-type'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { ArrowRight } from 'lucide-react'
+import { useParams } from 'next/navigation'
+import { z } from 'node_modules/zod/lib'
+import { useEffect, useState } from 'react'
+import { Control, Form, useForm } from 'react-hook-form'
+import { useIntl } from 'react-intl'
 
 export type MetadataAccordionProps = {
   name: string

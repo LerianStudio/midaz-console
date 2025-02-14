@@ -1,6 +1,5 @@
 import { getIntl } from '@/lib/intl'
 import { MidazError } from '../errors/midaz-error'
-import { UnauthorizedException } from '../errors/http-exceptions'
 
 export interface MidazErrorData {
   code: string
@@ -72,8 +71,24 @@ export async function handleMidazError(
     case '0015':
       throw new MidazError(
         intl.formatMessage({
-          id: 'error.midaz.duplicateProductNameError',
-          defaultMessage: 'Error Midaz duplicate product name error'
+          id: 'error.midaz.duplicateSegmentNameError',
+          defaultMessage: 'Error Midaz duplicate segment name error'
+        })
+      )
+
+    case '0018':
+      throw new MidazError(
+        intl.formatMessage({
+          id: 'error.midaz.insufficientFundsError',
+          defaultMessage: 'Error Midaz insufficient funds error'
+        })
+      )
+
+    case '0019':
+      throw new MidazError(
+        intl.formatMessage({
+          id: 'error.midaz.accountIneligibilityError',
+          defaultMessage: 'Error Midaz account ineligibility error'
         })
       )
 
@@ -113,6 +128,52 @@ export async function handleMidazError(
         intl.formatMessage({
           id: 'error.midaz.unauthorized',
           defaultMessage: 'Error Midaz unauthorized'
+        }),
+        midazError.code
+      )
+
+    case '0047':
+      throw new MidazError(
+        intl.formatMessage({
+          id: 'error.midaz.badRequest',
+          defaultMessage: 'Error Midaz Bad Request'
+        }),
+        midazError.code
+      )
+
+    case '0053':
+      throw new MidazError(
+        intl.formatMessage({
+          id: 'error.midaz.unexpectedFieldsInTheRequest',
+          defaultMessage: 'Error Midaz unexpected fields in the request'
+        }),
+        midazError.code
+      )
+
+    case '0065':
+      throw new MidazError(
+        intl.formatMessage({
+          id: 'error.midaz.invalidPathParameter',
+          defaultMessage: 'Error Midaz invalid path parameter'
+        }),
+        midazError.code
+      )
+
+    case '0074':
+      throw new MidazError(
+        intl.formatMessage({
+          id: 'error.midaz.externalAccountModificationProhibitedError',
+          defaultMessage:
+            'Error Midaz external account modification prohibited error'
+        }),
+        midazError.code
+      )
+
+    case '0084':
+      throw new MidazError(
+        intl.formatMessage({
+          id: 'error.midaz.duplicateIdempotencyKey',
+          defaultMessage: 'Error Midaz duplicate idempotency key'
         }),
         midazError.code
       )
