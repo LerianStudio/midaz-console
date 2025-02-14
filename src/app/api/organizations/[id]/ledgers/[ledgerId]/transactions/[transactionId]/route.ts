@@ -5,7 +5,7 @@ import {
 import { UpdateTransactionUseCase } from '@/core/application/use-cases/transactions/update-transaction-use-case'
 import { UpdateTransaction } from '@/core/application/use-cases/transactions/update-transaction-use-case'
 import { container } from '@/core/infrastructure/container-registry/container-registry'
-import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { applyMiddleware } from '@/lib/middleware'
 import { loggerMiddleware } from '@/utils/logger-middleware-config'
 import { NextResponse } from 'next/server'
 

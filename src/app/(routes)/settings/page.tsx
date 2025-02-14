@@ -9,6 +9,7 @@ import { getBreadcrumbPaths } from '@/components/breadcrumb/get-breadcrumb-paths
 import { OrganizationsTabContent } from './organizations-tab-content'
 import { PageHeader } from '@/components/page-header'
 import { SystemTabContent } from './system-tab-content'
+import React from 'react'
 
 const Page = () => {
   const intl = useIntl()
@@ -19,7 +20,7 @@ const Page = () => {
   })
 
   return (
-    <>
+    <React.Fragment>
       <Breadcrumb
         paths={getBreadcrumbPaths([
           {
@@ -80,7 +81,7 @@ const Page = () => {
           <SystemTabContent />
         </TabsContent>
       </Tabs>
-    </>
+    </React.Fragment>
   )
 }
 

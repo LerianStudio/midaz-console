@@ -5,7 +5,7 @@ import {
   FetchAllTransactions,
   FetchAllTransactionsUseCase
 } from '@/core/application/use-cases/transactions/fetch-all-transactions-use-case'
-import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { applyMiddleware } from '@/lib/middleware'
 import { loggerMiddleware } from '@/utils/logger-middleware-config'
 
 export const GET = applyMiddleware(

@@ -9,7 +9,7 @@ import {
 } from '@/core/application/use-cases/organizations/fetch-all-organizations-use-case'
 import { NextResponse } from 'next/server'
 import { apiErrorHandler } from '../utils/api-error-handler'
-import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { applyMiddleware } from '@/lib/middleware'
 import { loggerMiddleware } from '@/utils/logger-middleware-config'
 
 export const GET = applyMiddleware(

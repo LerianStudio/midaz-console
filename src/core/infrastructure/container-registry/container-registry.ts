@@ -14,8 +14,8 @@ import { LoggerModule } from '../logger/module/logger-module'
 import { LoggerApplicationModule } from './logger-application-module'
 import { MidazRequestContext } from '../logger/decorators/midaz-id'
 import { TransactionUseCaseModule } from './use-cases/transactions-module'
-import { MidazHttpFetchUtils } from '../utils/http-fetch-utils'
 import { MidazHttpFetchModule } from './midaz-http-fetch-module'
+import { OnboardingUseCaseModule } from './use-cases/onboarding-module'
 
 export const container = new Container()
 
@@ -24,6 +24,7 @@ container.load(AuthUseCaseModule)
 container.load(LoggerModule)
 container.load(MidazModule)
 
+container.load(OnboardingUseCaseModule)
 container.load(OrganizationUseCaseModule)
 container.load(LedgerUseCaseModule)
 container.load(PortfolioUseCaseModule)

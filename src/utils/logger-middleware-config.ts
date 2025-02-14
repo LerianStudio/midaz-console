@@ -1,7 +1,7 @@
 import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
 import { container } from '@/core/infrastructure/container-registry/container-registry'
 import { MidazRequestContext } from '@/core/infrastructure/logger/decorators/midaz-id'
-import { NextHandler } from '@/lib/applymiddleware/types'
+import { NextHandler } from '@/lib/middleware/types'
 import { NextRequest } from 'next/server'
 
 interface LoggerMiddlewareConfig {

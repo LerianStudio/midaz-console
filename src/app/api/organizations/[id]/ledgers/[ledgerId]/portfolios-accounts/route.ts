@@ -5,7 +5,7 @@ import {
   FetchPortfoliosWithAccounts,
   FetchPortfoliosWithAccountsUseCase
 } from '@/core/application/use-cases/portfolios-with-accounts/fetch-portfolios-with-account-use-case'
-import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { applyMiddleware } from '@/lib/middleware'
 import { loggerMiddleware } from '@/utils/logger-middleware-config'
 
 export const GET = applyMiddleware(

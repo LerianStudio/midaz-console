@@ -1,8 +1,6 @@
 import React from 'react'
 import '@/app/globals.css'
 import { redirect, RedirectType } from 'next/navigation'
-import { Header } from '@/components/header'
-import { Sidebar } from '@/components/sidebar'
 import { SidebarProvider } from '@/components/sidebar/primitive'
 import { OrganizationProvider } from '@/context/organization-provider'
 import { getServerSession } from 'next-auth'
@@ -23,18 +21,7 @@ export default async function RootLayout({
   return (
     <OrganizationProvider>
       <PermissionProvider>
-        <SidebarProvider>
-          <div className="flex h-full min-h-screen w-full overflow-y-auto bg-background text-foreground">
-            <Sidebar />
-            <div className="flex min-h-full w-full flex-col overflow-y-auto bg-shadcn-100">
-              <Header />
-
-              <div className="h-full w-full overflow-y-auto px-16 pb-16 pt-6">
-                {children}
-              </div>
-            </div>
-          </div>
-        </SidebarProvider>
+        <SidebarProvider>{children}</SidebarProvider>
       </PermissionProvider>
     </OrganizationProvider>
   )

@@ -23,7 +23,7 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui/tooltip'
-import { Arrow } from '@radix-ui/react-tooltip'
+import { useListOrganizations } from '@/client/organizations'
 
 const FormSchema = z.object({
   username: auth.username,
@@ -48,6 +48,22 @@ const SignInPage = () => {
   const { showError } = useCustomToast()
   const [isLoading, setIsLoading] = React.useState(false)
   const [isSubmitting, setIsSubmitting] = React.useState(false)
+  const [redirectUrl, setRedirectUrl] = React.useState<string | null>(null)
+
+  const { data: organizationsData, isLoading: orgLoading } =
+    useListOrganizations({
+      enabled: isLoading
+    })
+
+  React.useEffect(() => {
+    if (isLoading && !orgLoading) {
+      if (organizationsData?.items && organizationsData.items.length > 0) {
+        setRedirectUrl('/')
+      } else {
+        setRedirectUrl('/onboarding')
+      }
+    }
+  }, [isLoading, orgLoading, organizationsData])
 
   const onSubmit = async (values: FormData) => {
     setIsSubmitting(true)
@@ -74,7 +90,15 @@ const SignInPage = () => {
   }
 
   if (isLoading) {
-    return <LoadingScreen onComplete={() => route.replace('/')} />
+    return (
+      <LoadingScreen
+        onComplete={() => {
+          if (redirectUrl) {
+            route.replace(redirectUrl)
+          }
+        }}
+      />
+    )
   }
 
   return (
