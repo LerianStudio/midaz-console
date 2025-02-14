@@ -92,7 +92,9 @@ const fetcherResponseHandler = async (response: Response) => {
       signOut({ callbackUrl: '/login' })
       return
     }
-    throw new Error('Fetcher Error')
+    const error = await response.json()
+
+    throw new Error(error.message)
   }
 
   return await response.json()

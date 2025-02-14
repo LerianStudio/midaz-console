@@ -12,7 +12,7 @@ export const OnboardTitle = forwardRef<HTMLDivElement, OnboardTitleProps>(
       {subtitle && (
         <p className="text-sm font-normal text-shadcn-400">{subtitle}</p>
       )}
-      <h1>{title}</h1>
+      <h1 className="my-12 text-4xl font-bold text-zinc-700">{title}</h1>
     </div>
   )
 )
