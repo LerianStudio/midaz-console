@@ -34,7 +34,8 @@ export class CompleteOnboardingUseCase implements CompleteOnboarding {
       await this.fetchOrganizationByIdRepository.fetchById(organizationId)
 
     await this.updateOrganizationRepository.updateOrganization(organizationId, {
-      // ...organization,
+      legalName: organization.legalName,
+      doingBusinessAs: organization.doingBusinessAs,
       metadata: omit(organization.metadata, 'onboarding')
     })
 
