@@ -62,7 +62,7 @@ ColorInput.displayName = 'ColorInput'
 
 export type OrganizationsFormColorFieldProps = {
   name: string
-  description: string
+  description?: string
   control: Control<any>
 }
 
