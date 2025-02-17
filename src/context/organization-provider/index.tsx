@@ -25,7 +25,7 @@ export const OrganizationProvider = async ({
   )
 
   return (
-    <OrganizationProviderClient organization={result?.items[0]!}>
+    <OrganizationProviderClient organizations={result?.items ?? []}>
       {children}
     </OrganizationProviderClient>
   )

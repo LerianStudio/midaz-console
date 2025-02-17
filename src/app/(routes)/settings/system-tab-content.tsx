@@ -8,6 +8,7 @@ import { Separator } from '@/components/ui/separator'
 import { getLocaleCode } from '@/lib/intl/get-locale-code'
 import { useLocale } from '@/lib/intl/use-locale'
 import languages from '@/lib/languages'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useIntl } from 'react-intl'
 import { z } from 'zod'
@@ -38,7 +39,7 @@ export const SystemTabContent = () => {
   const handleCancel = () => form.reset()
 
   return (
-    <>
+    <React.Fragment>
       <div className="grid grid-cols-3">
         <Paper className="col-span-2 mb-6 flex flex-col">
           <p className="p-6 text-sm font-medium text-shadcn-400">
@@ -97,6 +98,6 @@ export const SystemTabContent = () => {
           </Form>
         </Paper>
       </div>
-    </>
+    </React.Fragment>
   )
 }

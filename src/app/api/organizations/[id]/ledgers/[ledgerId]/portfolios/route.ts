@@ -9,7 +9,7 @@ import {
   FetchAllPortfoliosUseCase
 } from '@/core/application/use-cases/portfolios/fetch-all-portfolio-use-case'
 import { NextRequest, NextResponse } from 'next/server'
-import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { applyMiddleware } from '@/lib/middleware'
 import { loggerMiddleware } from '@/utils/logger-middleware-config'
 import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
 

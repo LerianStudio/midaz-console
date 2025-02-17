@@ -9,7 +9,7 @@ import {
   FetchAllAccountsUseCase
 } from '@/core/application/use-cases/accounts/fetch-all-account-use-case'
 import { NextResponse, NextRequest } from 'next/server'
-import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { applyMiddleware } from '@/lib/middleware'
 import { loggerMiddleware } from '@/utils/logger-middleware-config'
 import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
 
