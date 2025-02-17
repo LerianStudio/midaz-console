@@ -8,9 +8,9 @@ type LogoProps = {
   alt: string
   orgName: string
   active?: boolean
-  disabled?: boolean
   collapsed?: boolean
   button?: boolean
+  singleOrg?: boolean
 }
 
 const Logo = ({
@@ -18,9 +18,9 @@ const Logo = ({
   alt,
   orgName,
   active,
-  disabled,
   collapsed,
-  button
+  button,
+  singleOrg
 }: LogoProps) => {
   return (
     <div
@@ -52,7 +52,7 @@ const Logo = ({
         </h1>
       )}
 
-      {!collapsed && !disabled && (
+      {!collapsed && !singleOrg && (
         <ChevronDown
           className={cn(active && 'rotate-180 text-shadcn-400')}
           size={16}
@@ -65,15 +65,21 @@ const Logo = ({
 export type SwitcherTriggerProps = Omit<LogoProps, 'active'> & {
   open: boolean
   disabled?: boolean
+  singleOrg?: boolean
 }
 
 export const SwitcherTrigger = ({
   open,
   disabled,
+  singleOrg,
   ...others
 }: SwitcherTriggerProps) => {
   if (disabled) {
-    return <Logo disabled={disabled} {...others} />
+    return (
+      <PopoverTrigger>
+        <Logo singleOrg active={open} {...others} />
+      </PopoverTrigger>
+    )
   }
 
   return (

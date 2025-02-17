@@ -63,7 +63,7 @@ export const SettingsDropdown = () => {
           })}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={() => console.log('clicked')}>
           <DropdownMenuItemIcon>
             <HelpCircle />
           </DropdownMenuItemIcon>

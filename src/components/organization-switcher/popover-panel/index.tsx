@@ -7,7 +7,7 @@ export type PopoverPanelProps = React.HTMLAttributes<HTMLDivElement>
 const PopoverPanelTitle = (props: PopoverPanelProps) => {
   return (
     <div
-      className="flex flex-col gap-2 text-base font-semibold text-[#3f3f46]"
+      className="flex flex-col gap-2 text-base font-semibold text-zinc-700"
       {...props}
     />
   )
@@ -20,7 +20,7 @@ const PopoverPanelContent = (props: PopoverPanelProps) => {
 const PopoverPanelFooter = (props: PopoverPanelProps) => {
   return (
     <div
-      className="mt-5 text-xs font-normal text-[#3F3F46] underline"
+      className="mt-5 text-xs font-normal text-zinc-700 underline"
       {...props}
     />
   )
@@ -66,7 +66,7 @@ const PopoverPanelLink = ({
     >
       <div
         className={cn(
-          'flex flex-col gap-2 text-sm font-medium text-[#52525B]',
+          'flex items-center gap-2 text-sm font-medium text-zinc-600',
           dense && 'flex-row items-center'
         )}
       >

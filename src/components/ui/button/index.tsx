@@ -46,7 +46,7 @@ const iconVariants = cva('', {
     position: {
       start: 'mr-2',
       end: 'ml-2',
-      'far-end': 'absolute right-4'
+      'far-end': 'absolute right-2'
     },
     size: {
       default: 'h-10',

@@ -65,38 +65,40 @@ export const OrganizationSwitcherContent = ({
         </PopoverPanelFooter>
       </PopoverPanel>
 
-      <PopoverPanelActions>
-        {data.map((organization) => (
+      {data?.length > 1 && (
+        <PopoverPanelActions>
+          {data.map((organization) => (
+            <PopoverPanelLink
+              key={organization.id}
+              href="#"
+              icon={<ArrowRight />}
+              dense={data.length >= 4}
+              onClick={() => onChange?.(organization)}
+            >
+              <Image
+                src={MidazLogo}
+                alt=""
+                className="rounded-full"
+                height={24}
+              />
+
+              {organization.legalName}
+            </PopoverPanelLink>
+          ))}
+
           <PopoverPanelLink
-            key={organization.id}
-            href="#"
-            icon={<ArrowRight />}
+            href="/settings?tab=organizations"
             dense={data.length >= 4}
-            onClick={() => onChange?.(organization)}
+            onClick={onClose}
+            icon={<Settings />}
           >
-            <Image
-              src={MidazLogo}
-              alt=""
-              className="rounded-full"
-              height={24}
-            />
-
-            {organization.legalName}
+            {intl.formatMessage({
+              id: 'entity.organization',
+              defaultMessage: 'Organization'
+            })}
           </PopoverPanelLink>
-        ))}
-
-        <PopoverPanelLink
-          href="/settings?tab=organizations"
-          dense={data.length >= 4}
-          onClick={onClose}
-          icon={<Settings />}
-        >
-          {intl.formatMessage({
-            id: 'entity.organization',
-            defaultMessage: 'Organization'
-          })}
-        </PopoverPanelLink>
-      </PopoverPanelActions>
+        </PopoverPanelActions>
+      )}
     </PopoverContent>
   )
 }
