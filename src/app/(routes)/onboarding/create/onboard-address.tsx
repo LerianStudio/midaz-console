@@ -8,6 +8,8 @@ import { PageFooter, PageFooterSection } from '@/components/page-footer'
 import { Button } from '@/components/ui/button'
 import { useOnboardForm } from './onboard-form-provider'
 import { OnboardTitle } from '../onboard-title'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { addressFormSchema } from './schemas'
 
 const initialValues = {
   address: {
@@ -28,6 +30,7 @@ export function OnboardAddress({ onCancel }: OnboardAddressProps) {
   const intl = useIntl()
 
   const form = useForm({
+    resolver: zodResolver(addressFormSchema),
     defaultValues: initialValues
   })
 
