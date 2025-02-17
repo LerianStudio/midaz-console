@@ -67,7 +67,7 @@ export class MidazHttpFetchUtils {
     const headers = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${access_token}`,
-      'Midaz-Id': this.midazRequestContext.getMidazId(),
+      'X-Request-Id': this.midazRequestContext.getMidazId(),
       ...httpFetchOptions.headers
     }
 
