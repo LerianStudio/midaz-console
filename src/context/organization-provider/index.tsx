@@ -45,7 +45,7 @@ export const OrganizationProvider = async ({
 
   return (
     <OrganizationProviderClient
-      organization={firstOrganization!}
+      organizations={orgResult?.items ?? []}
       defaultLedgerId={defaultLedgerId}
     >
       {children}

@@ -97,11 +97,33 @@ export const LedgerSelector = () => {
     ) {
       setLedgerId(ledgers.items[0].id)
     }
-  }, [currentOrganization, ledgers])
+  }, [currentOrganization, ledgers, currentLedgerId, setLedgerId])
 
   const hasLedgers = !!ledgers?.items?.length
   const totalLedgers = ledgers?.items?.length ?? 0
   const isLargeList = totalLedgers >= 10
+  const isSingle = totalLedgers === 1
+
+  if (isSingle) {
+    return (
+      <Button
+        disabled
+        className="flex cursor-default items-center gap-4 disabled:opacity-100"
+        variant="outline"
+      >
+        <Book size={20} className="text-zinc-400" />
+        <span className="pt-[2px] text-xs font-normal uppercase text-zinc-400">
+          {intl.formatMessage({
+            id: 'ledger.selector.currentLedger.label',
+            defaultMessage: 'Current Ledger'
+          })}
+        </span>
+        <span className="text-sm font-semibold text-zinc-800">
+          {ledgers?.items[0].name}
+        </span>
+      </Button>
+    )
+  }
 
   return (
     <TooltipProvider>

@@ -101,7 +101,7 @@ export const Sidebar = () => {
               defaultMessage: 'Assets'
             })}
             icon={<DollarSign />}
-            href="/types"
+            href="/assets"
           />
 
           <SidebarItem
