@@ -8,7 +8,7 @@ import { PortfolioUseCaseModule } from './use-cases/portfolios-module'
 import { AccountUseCaseModule } from './use-cases/account-module'
 import { AssetUseCaseModule } from './use-cases/asset-module'
 import { SegmentUseCaseModule } from './use-cases/segment-module'
-import { CasdoorModule } from '../casdoor/module/casdoor-module'
+import { LerianAuthModule } from '../lerian-auth/module/lerian-auth-module'
 import { AuthUseCaseModule } from './use-cases/auth-module'
 import { LoggerModule } from '../logger/module/logger-module'
 import { LoggerApplicationModule } from './logger-application-module'
@@ -19,7 +19,7 @@ import { OnboardingUseCaseModule } from './use-cases/onboarding-module'
 
 export const container = new Container()
 
-container.load(CasdoorModule)
+container.load(LerianAuthModule)
 container.load(AuthUseCaseModule)
 container.load(LoggerModule)
 container.load(MidazModule)

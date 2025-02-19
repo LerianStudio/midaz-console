@@ -7,7 +7,7 @@ import { AuthPermissionRepository } from '@/core/domain/repositories/auth/auth-p
 import { AuthPermissionEntity } from '@/core/domain/entities/auth-permission-entity'
 
 @injectable()
-export class CasdoorAuthPermissionRepository
+export class LerianAuthPermissionRepository
   implements AuthPermissionRepository
 {
   private readonly casdoorSdk: CasdoorSdk = new CasdoorSdk(casdoorSdkConfig)
