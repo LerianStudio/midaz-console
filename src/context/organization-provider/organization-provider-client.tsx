@@ -13,6 +13,8 @@ import { usePathname, useRouter } from 'next/navigation'
 type OrganizationContextProps = {
   currentOrganization: OrganizationEntity
   setOrganization: (organization: OrganizationEntity) => void
+  currentLedgerId: string | null
+  setLedgerId: (ledgerId: string | null) => void
 }
 
 const OrganizationContext = createContext<OrganizationContextProps>(
@@ -23,10 +25,12 @@ export const useOrganization = () => useContext(OrganizationContext)
 
 export type OrganizationProviderClientProps = PropsWithChildren & {
   organizations: OrganizationEntity[]
+  defaultLedgerId?: string | null
 }
 
 export const OrganizationProviderClient = ({
   organizations: organizationsProp,
+  defaultLedgerId,
   children
 }: OrganizationProviderClientProps) => {
   const router = useRouter()
@@ -62,9 +66,18 @@ export const OrganizationProviderClient = ({
     }
   }, [])
 
+  const [currentLedgerId, setLedgerId] = useState<string | null>(
+    defaultLedgerId ?? null
+  )
+
   return (
     <OrganizationContext.Provider
-      value={{ currentOrganization: current, setOrganization: setCurrent }}
+      value={{
+        currentOrganization: current,
+        setOrganization: setCurrent,
+        currentLedgerId,
+        setLedgerId
+      }}
     >
       {children}
     </OrganizationContext.Provider>

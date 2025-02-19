@@ -3,14 +3,13 @@
 import React from 'react'
 import {
   ArrowLeftRight,
-  BarChartHorizontal,
-  Box,
   Briefcase,
   Coins,
-  DatabaseZap,
   DollarSign,
+  Gauge,
+  Group,
   Home,
-  UsersRound
+  LibraryBig
 } from 'lucide-react'
 import { OrganizationSwitcher } from '../organization-switcher'
 import { useIntl } from 'react-intl'
@@ -24,10 +23,11 @@ import {
   SidebarExpandButton,
   SidebarRoot
 } from './primitive'
+import { Separator } from '../ui/separator'
 
 export const Sidebar = () => {
   const intl = useIntl()
-  const { isCollapsed, toggleSidebar } = useSidebar()
+  const { isCollapsed } = useSidebar()
   const [isMobileWidth, setIsMobileWidth] = React.useState(false)
 
   React.useEffect(() => {
@@ -57,47 +57,71 @@ export const Sidebar = () => {
             icon={<Home />}
             href="/"
           />
+
           <SidebarItem
             title={intl.formatMessage({
               id: 'sideBar.ledgers',
               defaultMessage: 'Ledgers'
             })}
-            icon={<DatabaseZap />}
+            icon={<LibraryBig />}
             href="/ledgers"
           />
-          <SidebarItem
-            title={intl.formatMessage({
-              id: 'sideBar.team',
-              defaultMessage: 'Team'
-            })}
-            icon={<UsersRound />}
-            href="/team"
-          />
         </SidebarGroup>
+
+        {isCollapsed && <Separator />}
 
         <SidebarGroup>
           <SidebarGroupTitle collapsed={isCollapsed}>
             {intl.formatMessage({
-              id: 'sideBar.accountHolders.title',
-              defaultMessage: 'AccountHolders'
+              id: 'sideBar.ledger.title',
+              defaultMessage: 'Ledger'
             })}
           </SidebarGroupTitle>
           <SidebarItem
             title={intl.formatMessage({
-              id: 'sideBar.accountHolders.segments',
-              defaultMessage: 'Segments'
+              id: 'sideBar.ledger.overview',
+              defaultMessage: 'Overview'
             })}
-            icon={<Box />}
-            href="/segments"
+            icon={<Gauge />}
+            href="/overview"
           />
+
           <SidebarItem
             title={intl.formatMessage({
-              id: 'sideBar.accountHolders.accounts',
+              id: 'sideBar.ledger.transactions',
+              defaultMessage: 'Transactions'
+            })}
+            icon={<ArrowLeftRight />}
+            href="/transactions"
+          />
+
+          <SidebarItem
+            title={intl.formatMessage({
+              id: 'sideBar.ledger.assets',
+              defaultMessage: 'Assets'
+            })}
+            icon={<DollarSign />}
+            href="/assets"
+          />
+
+          <SidebarItem
+            title={intl.formatMessage({
+              id: 'sideBar.ledger.accounts',
               defaultMessage: 'Accounts'
             })}
             icon={<Coins />}
             href="/accounts"
           />
+
+          <SidebarItem
+            title={intl.formatMessage({
+              id: 'sideBar.ledger.segments',
+              defaultMessage: 'Segments'
+            })}
+            icon={<Group />}
+            href="/segments"
+          />
+
           <SidebarItem
             title={intl.formatMessage({
               id: 'sideBar.accountHolders.portfolios',
@@ -105,48 +129,6 @@ export const Sidebar = () => {
             })}
             icon={<Briefcase />}
             href="/portfolios"
-          />
-        </SidebarGroup>
-
-        <SidebarGroup>
-          <SidebarGroupTitle collapsed={isCollapsed}>
-            {intl.formatMessage({
-              id: 'sideBar.transactions.title',
-              defaultMessage: 'Transactions'
-            })}
-          </SidebarGroupTitle>
-          <SidebarItem
-            title={intl.formatMessage({
-              id: 'sideBar.transactions.types',
-              defaultMessage: 'Types'
-            })}
-            icon={<DollarSign />}
-            href="/types"
-          />
-          <SidebarItem
-            title={intl.formatMessage({
-              id: 'sideBar.transactions.resume',
-              defaultMessage: 'Resume'
-            })}
-            icon={<ArrowLeftRight />}
-            href="/transactions"
-          />
-        </SidebarGroup>
-
-        <SidebarGroup>
-          <SidebarGroupTitle collapsed={isCollapsed}>
-            {intl.formatMessage({
-              id: 'sideBar.reports.title',
-              defaultMessage: 'Reports'
-            })}
-          </SidebarGroupTitle>
-          <SidebarItem
-            title={intl.formatMessage({
-              id: 'sideBar.reports.runReport',
-              defaultMessage: 'Run Report'
-            })}
-            icon={<BarChartHorizontal />}
-            href="/reports"
           />
         </SidebarGroup>
       </SidebarContent>

@@ -24,13 +24,13 @@ export const SidebarItemButton = ({
           variant: active ? 'activeLink' : 'hoverLink',
           size: 'sm'
         }),
-        'group/link flex items-center justify-start'
+        'group/link flex h-9 items-center justify-start'
       )}
     >
       {React.isValidElement(icon)
         ? React.cloneElement(icon as React.ReactElement, {
             className: cn(
-              'mr-2 h-6 w-6 text-shadcn-400',
+              'mr-3 h-6 w-6 text-shadcn-400',
               'group-hover/link:text-accent-foreground',
               active && 'text-black group-hover/link:text-black'
             )
