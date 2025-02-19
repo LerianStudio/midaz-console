@@ -1,5 +1,5 @@
 import { getServerSession } from 'next-auth'
-import { nextAuthCasdoorOptions } from '../next-auth/casdoor/next-auth-casdoor-provider'
+import { nextAuthOptions } from '../next-auth/casdoor/next-auth-provider'
 import { handleMidazError } from './midaz-error-handler'
 import { isNil } from 'lodash'
 import { MidazRequestContext } from '../logger/decorators/midaz-id'
@@ -24,7 +24,7 @@ export type HttpFetchOptions = {
 export async function httpMidazAuthFetch<T>(
   httpFetchOptions: HttpFetchOptions
 ): Promise<T> {
-  const session = await getServerSession(nextAuthCasdoorOptions)
+  const session = await getServerSession(nextAuthOptions)
   const { access_token } = session?.user
 
   const headers = {
@@ -61,7 +61,7 @@ export class MidazHttpFetchUtils {
   ) {}
 
   async httpMidazAuthFetch<T>(httpFetchOptions: HttpFetchOptions): Promise<T> {
-    const session = await getServerSession(nextAuthCasdoorOptions)
+    const session = await getServerSession(nextAuthOptions)
     const { access_token } = session?.user
 
     const headers = {

@@ -1,5 +1,5 @@
 import { getServerSession } from 'next-auth'
-import { nextAuthCasdoorOptions } from '../next-auth/casdoor/next-auth-casdoor-provider'
+import { nextAuthOptions } from '../next-auth/casdoor/next-auth-provider'
 import { handleMidazError } from './midaz-error-handler'
 import {
   httpMidazAuthFetch,
@@ -50,7 +50,7 @@ describe('httpMidazAuthFetch', () => {
 
     const result = await httpMidazAuthFetch(httpFetchOptions)
 
-    expect(getServerSession).toHaveBeenCalledWith(nextAuthCasdoorOptions)
+    expect(getServerSession).toHaveBeenCalledWith(nextAuthOptions)
     expect(fetch).toHaveBeenCalledWith(httpFetchOptions.url, {
       method: httpFetchOptions.method,
       body: httpFetchOptions.body,
@@ -78,7 +78,7 @@ describe('httpMidazAuthFetch', () => {
 
     const response = await httpMidazAuthFetch(options)
 
-    expect(getServerSession).toHaveBeenCalledWith(nextAuthCasdoorOptions)
+    expect(getServerSession).toHaveBeenCalledWith(nextAuthOptions)
     expect(fetch).toHaveBeenCalledWith(options.url, {
       method: options.method,
       headers: {
@@ -108,7 +108,7 @@ describe('httpMidazAuthFetch', () => {
 
     const response = await httpMidazAuthFetch(options)
 
-    expect(getServerSession).toHaveBeenCalledWith(nextAuthCasdoorOptions)
+    expect(getServerSession).toHaveBeenCalledWith(nextAuthOptions)
     expect(fetch).toHaveBeenCalledWith(options.url, {
       method: options.method,
       headers: {
@@ -138,7 +138,7 @@ describe('httpMidazAuthFetch', () => {
       'Error occurred'
     )
 
-    expect(getServerSession).toHaveBeenCalledWith(nextAuthCasdoorOptions)
+    expect(getServerSession).toHaveBeenCalledWith(nextAuthOptions)
     expect(fetch).toHaveBeenCalledWith(httpFetchOptions.url, {
       method: httpFetchOptions.method,
       body: httpFetchOptions.body,

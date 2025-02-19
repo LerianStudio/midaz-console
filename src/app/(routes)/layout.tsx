@@ -4,7 +4,7 @@ import { redirect, RedirectType } from 'next/navigation'
 import { SidebarProvider } from '@/components/sidebar/primitive'
 import { OrganizationProvider } from '@/context/organization-provider'
 import { getServerSession } from 'next-auth'
-import { nextAuthCasdoorOptions } from '@/core/infrastructure/next-auth/casdoor/next-auth-casdoor-provider'
+import { nextAuthOptions } from '@/core/infrastructure/next-auth/casdoor/next-auth-provider'
 import { PermissionProvider } from '@/context/permission-provider'
 
 export default async function RootLayout({
@@ -12,7 +12,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await getServerSession(nextAuthCasdoorOptions)
+  const session = await getServerSession(nextAuthOptions)
 
   if (!session) {
     redirect(`/signin`, RedirectType.replace)

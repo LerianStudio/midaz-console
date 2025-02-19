@@ -8,7 +8,7 @@ import { AuthEntity } from '@/core/domain/entities/auth-entity'
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
-export const nextAuthCasdoorOptions: NextAuthOptions = {
+export const nextAuthOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt',
     maxAge: 30 * 60,
@@ -53,14 +53,17 @@ export const nextAuthCasdoorOptions: NextAuthOptions = {
 
           const loginEntity: AuthEntity = {
             grant_type: 'password',
-            client_id: process.env.NEXTAUTH_CASDOOR_CLIENT_ID as string,
-            client_secret: process.env.NEXTAUTH_CASDOOR_CLIENT_SECRET as string,
+            client_id: process.env.NEXTAUTH_AUTH_SERVICE_CLIENT_ID as string,
+            client_secret: process.env
+              .NEXTAUTH_AUTH_SERVICE_CLIENT_SECRET as string,
             username,
             password
           }
 
           const authLoginResponse: AuthSessionDto =
             await authLoginUseCase.execute(loginEntity)
+
+            console.log('authLoginResponse', authLoginResponse)
 
           return authLoginResponse
         } catch (error: any) {
@@ -76,12 +79,14 @@ export const nextAuthCasdoorOptions: NextAuthOptions = {
   },
   callbacks: {
     jwt: async ({ token, user }) => {
+      console.log('jwt', token, user)
       if (user) {
         token = { ...token, ...user }
       }
       return token
     },
     session: async ({ session, token }) => {
+      console.log('session', session, token)
       session.user = token
       return session
     }
