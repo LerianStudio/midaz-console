@@ -2,42 +2,24 @@
 
 import React from 'react'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
-import { useListLedgers } from '@/client/ledgers'
 import { useListTransactions } from '@/client/transactions'
 import { TransactionsDataTable } from './transactions-data-table'
-import { SelectLedgerPanel } from './select-ledger-panel'
 import { TransactionsSkeleton } from './transactions-skeleton'
 import { useQueryParams } from '@/hooks/use-query-params'
-import { useDefaultLedgerTransactions } from '@/hooks/use-default-ledger-transactions'
 import { PageHeader } from '@/components/page-header'
 import { useIntl } from 'react-intl'
 
 export default function TransactionsPage() {
   const intl = useIntl()
-  const { currentOrganization } = useOrganization()
+  const { currentOrganization, currentLedgerId } = useOrganization()
   const [total, setTotal] = React.useState(0)
 
   const { form, searchValues, pagination } = useQueryParams({ total })
 
-  const { data: ledgers, isLoading: isLoadingLedgers } = useListLedgers({
-    organizationId: currentOrganization?.id!
-  })
-
-  const {
-    selectedLedgerId,
-    setSelectedLedgerId,
-    saveAsDefault,
-    setSaveAsDefault,
-    isInitialized,
-    pendingLedgerId,
-    setPendingLedgerId,
-    handleLoadLedger
-  } = useDefaultLedgerTransactions({ ledgers })
-
   const { data: transactions, isLoading: isLoadingTransactions } =
     useListTransactions({
       organizationId: currentOrganization?.id!,
-      ledgerId: selectedLedgerId,
+      ledgerId: currentLedgerId,
       ...(searchValues as any)
     })
 
@@ -45,9 +27,7 @@ export default function TransactionsPage() {
     setTotal(transactions?.items?.length || 0)
   }, [transactions?.items])
 
-  const isLoadingEverything =
-    !isInitialized || isLoadingLedgers || isLoadingTransactions
-  const hasLedgerLoaded = Boolean(selectedLedgerId)
+  const hasLedgerLoaded = Boolean(currentLedgerId)
 
   return (
     <React.Fragment>
@@ -94,36 +74,23 @@ export default function TransactionsPage() {
         />
       </PageHeader.Root>
 
-      {isLoadingEverything ? (
-        <div className="mt-10">
+      <div className="mt-10">
+        {isLoadingTransactions ? (
           <TransactionsSkeleton />
-        </div>
-      ) : hasLedgerLoaded ? (
-        <div className="mt-10">
-          <TransactionsDataTable
-            transactionsState={{
-              ledgers,
-              transactions,
-              form,
-              total,
-              pagination,
-              selectedLedgerId,
-              setSelectedLedgerId
-            }}
-          />
-        </div>
-      ) : (
-        <div className="mt-10">
-          <SelectLedgerPanel
-            ledgers={ledgers}
-            pendingLedgerId={pendingLedgerId}
-            setPendingLedgerId={setPendingLedgerId}
-            saveAsDefault={saveAsDefault}
-            setSaveAsDefault={setSaveAsDefault}
-            onLoadLedger={handleLoadLedger}
-          />
-        </div>
-      )}
+        ) : (
+          hasLedgerLoaded && (
+            <TransactionsDataTable
+              transactionsState={{
+                transactions,
+                form,
+                total,
+                pagination,
+                currentLedgerId
+              }}
+            />
+          )
+        )}
+      </div>
     </React.Fragment>
   )
 }
