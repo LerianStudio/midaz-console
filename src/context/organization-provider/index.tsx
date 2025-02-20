@@ -31,23 +31,9 @@ export const OrganizationProvider = async ({
   const orgResult = await serverFetcher(
     async () => await fetchAllOrganizationsUseCase.execute(10, 1)
   )
-  const firstOrganization = orgResult?.items?.[0]
-
-  let defaultLedgerId: string | null = null
-  if (firstOrganization?.id) {
-    const ledgersResult = await serverFetcher(
-      async () =>
-        await fetchAllLedgersUseCase.execute(firstOrganization.id, 10, 1)
-    )
-
-    defaultLedgerId = ledgersResult?.items?.[0]?.id ?? null
-  }
 
   return (
-    <OrganizationProviderClient
-      organizations={orgResult?.items ?? []}
-      defaultLedgerId={defaultLedgerId}
-    >
+    <OrganizationProviderClient organizations={orgResult?.items ?? []}>
       {children}
     </OrganizationProviderClient>
   )
