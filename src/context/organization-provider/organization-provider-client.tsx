@@ -9,12 +9,16 @@ import {
 } from 'react'
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { usePathname, useRouter } from 'next/navigation'
+import { useListLedgers } from '@/client/ledgers'
+import { ILedgerType } from '@/types/ledgers-type'
+import { useDefaultOrg } from './use-default-org'
+import { useDefaultLedger } from './use-default-ledger'
 
 type OrganizationContextProps = {
   currentOrganization: OrganizationEntity
   setOrganization: (organization: OrganizationEntity) => void
-  currentLedgerId: string | null
-  setLedgerId: (ledgerId: string | null) => void
+  currentLedger: ILedgerType
+  setLedger: (ledger: ILedgerType) => void
 }
 
 const OrganizationContext = createContext<OrganizationContextProps>(
@@ -25,12 +29,10 @@ export const useOrganization = () => useContext(OrganizationContext)
 
 export type OrganizationProviderClientProps = PropsWithChildren & {
   organizations: OrganizationEntity[]
-  defaultLedgerId?: string | null
 }
 
 export const OrganizationProviderClient = ({
   organizations: organizationsProp,
-  defaultLedgerId,
   children
 }: OrganizationProviderClientProps) => {
   const router = useRouter()
@@ -41,6 +43,11 @@ export const OrganizationProviderClient = ({
   const [organizations, setOrganizations] = useState<OrganizationEntity[]>(
     organizationsProp ?? []
   )
+
+  const [currentLedger, setCurrentLedger] = useState<ILedgerType>(
+    {} as ILedgerType
+  )
+  const { data: ledgers } = useListLedgers({ organizationId: current?.id! })
 
   useEffect(() => {
     // Do nothing if the user is already at the onboarding
@@ -59,24 +66,26 @@ export const OrganizationProviderClient = ({
     }
   }, [current?.id, organizations.length])
 
-  // Initialize a current organization
-  useEffect(() => {
-    if (organizations.length > 0) {
-      setCurrent(organizations[0])
-    }
-  }, [])
+  useDefaultOrg({
+    organizations,
+    current,
+    setCurrent
+  })
 
-  const [currentLedgerId, setLedgerId] = useState<string | null>(
-    defaultLedgerId ?? null
-  )
+  useDefaultLedger({
+    current,
+    ledgers: ledgers?.items ?? [],
+    currentLedger,
+    setCurrentLedger
+  })
 
   return (
     <OrganizationContext.Provider
       value={{
         currentOrganization: current,
         setOrganization: setCurrent,
-        currentLedgerId,
-        setLedgerId
+        currentLedger: currentLedger,
+        setLedger: setCurrentLedger
       }}
     >
       {children}
