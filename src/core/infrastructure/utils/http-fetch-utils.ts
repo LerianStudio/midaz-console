@@ -21,36 +21,6 @@ export type HttpFetchOptions = {
   body?: string
 }
 
-export async function httpMidazAuthFetch<T>(
-  httpFetchOptions: HttpFetchOptions
-): Promise<T> {
-  const session = await getServerSession(nextAuthCasdoorOptions)
-  const { access_token } = session?.user
-
-  const headers = {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${access_token}`,
-    ...httpFetchOptions.headers
-  }
-
-  const response = await fetch(httpFetchOptions.url, {
-    method: httpFetchOptions.method,
-    body: httpFetchOptions.body,
-    headers: {
-      ...headers
-    }
-  })
-
-  const midazResponse = !isNil(response.body) ? await response.json() : {}
-
-  if (!response.ok) {
-    console.error('[ERROR] - httpMidazAuthFetch ', midazResponse)
-    throw await handleMidazError(midazResponse)
-  }
-
-  return midazResponse
-}
-
 @injectable()
 export class MidazHttpFetchUtils {
   constructor(
@@ -67,7 +37,7 @@ export class MidazHttpFetchUtils {
     const headers = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${access_token}`,
-      'Midaz-Id': this.midazRequestContext.getMidazId(),
+      'X-Request-Id': this.midazRequestContext.getMidazId(),
       ...httpFetchOptions.headers
     }
 
@@ -82,9 +52,20 @@ export class MidazHttpFetchUtils {
     const midazResponse = !isNil(response.body) ? await response.json() : {}
 
     if (!response.ok) {
-      this.midazLogger.error('[ERROR] - httpMidazAuthFetch ', midazResponse)
+      this.midazLogger.error('[ERROR] - httpMidazAuthFetch ', {
+        url: httpFetchOptions.url,
+        method: httpFetchOptions.method,
+        status: response.status,
+        response: midazResponse
+      })
       throw await handleMidazError(midazResponse)
     }
+
+    this.midazLogger.info('[INFO] - httpMidazAuthFetch ', {
+      url: httpFetchOptions.url,
+      method: httpFetchOptions.method,
+      status: response.status
+    })
 
     return midazResponse
   }
