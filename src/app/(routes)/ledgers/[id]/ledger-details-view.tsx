@@ -54,7 +54,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
     },
     {
       name: intl.formatMessage({
-        id: `ledgers.tab.assets`,
+        id: `common.assets`,
         defaultMessage: 'Assets'
       }),
       active: () => activeTab === TAB_VALUES.ASSETS
@@ -116,7 +116,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
 
           <TabsTrigger value={TAB_VALUES.ASSETS}>
             {intl.formatMessage({
-              id: 'ledgers.tab.assets',
+              id: 'common.assets',
               defaultMessage: 'Assets'
             })}
           </TabsTrigger>

@@ -373,7 +373,7 @@ export const LedgersDataTable: React.FC<
                     </TableHead>
                     <TableHead>
                       {intl.formatMessage({
-                        id: 'entity.ledger.asset',
+                        id: 'common.assets',
                         defaultMessage: 'Assets'
                       })}
                     </TableHead>

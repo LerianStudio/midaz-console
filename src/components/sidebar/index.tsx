@@ -97,7 +97,7 @@ export const Sidebar = () => {
 
           <SidebarItem
             title={intl.formatMessage({
-              id: 'sideBar.ledger.assets',
+              id: 'common.assets',
               defaultMessage: 'Assets'
             })}
             icon={<DollarSign />}
