@@ -1,3 +1,12 @@
+## [1.9.1](https://github.com/LerianStudio/midaz-console/compare/v1.9.0...v1.9.1) (2025-02-24)
+
+
+### Bug Fixes
+
+* http fetch utils unit test ([0da1a49](https://github.com/LerianStudio/midaz-console/commit/0da1a49a6e256319bd4a4eb2d78dbef1f2c7d4b0))
+* include status code into midaz reponse log ([9953314](https://github.com/LerianStudio/midaz-console/commit/99533145f3aed166e3b4d2f92974d234ae1e2185))
+* update midaz id to x-request-id into midaz requests ([23e56c8](https://github.com/LerianStudio/midaz-console/commit/23e56c8071a1fe3199f46004e9a82cf9f79fab40))
+
 # [1.9.0](https://github.com/LerianStudio/midaz-console/compare/v1.8.0...v1.9.0) (2025-02-21)
 
 
