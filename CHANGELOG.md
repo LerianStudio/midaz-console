@@ -1,3 +1,31 @@
+# [1.9.0](https://github.com/LerianStudio/midaz-console/compare/v1.8.0...v1.9.0) (2025-02-21)
+
+
+### Bug Fixes
+
+* Added zod validation to address ([464f34d](https://github.com/LerianStudio/midaz-console/commit/464f34d8d349f45205189dcb2f88bce6c5281f54))
+* Audit ([a4da3d7](https://github.com/LerianStudio/midaz-console/commit/a4da3d7cf1f9516064fc921d51a3c4b1f00f57d0))
+* Data preservation between steps ([6e58f9d](https://github.com/LerianStudio/midaz-console/commit/6e58f9d087ba537e146d3d5f8f3327b57552b0a2))
+* modal not closing after deleting an organization ([8fcf3be](https://github.com/LerianStudio/midaz-console/commit/8fcf3bee0f8e1d25e7f4d543e7843eae18d9c291))
+
+
+### Features
+
+* Added translation keys ([b5e23e3](https://github.com/LerianStudio/midaz-console/commit/b5e23e3f6a5a8e4de66bf91bdbb0a2370ad6ab59))
+* Adjusted layout setup ([79033db](https://github.com/LerianStudio/midaz-console/commit/79033db3542da0a1b6d3ba015c33f4966561e487))
+* Changed applyMiddleware path ([1a075d7](https://github.com/LerianStudio/midaz-console/commit/1a075d7eaa4eb8400a7a3ebd18dcefc62e8b07c5))
+* create ledger selector and update navbar ([10d4a9e](https://github.com/LerianStudio/midaz-console/commit/10d4a9eee22c122e54258357108e4fd8fae20b6e))
+* Created onboarding endpoints ([5af1ba6](https://github.com/LerianStudio/midaz-console/commit/5af1ba682c10577a1ae92231d33375a3350f3452))
+* Created page layout component ([04b5083](https://github.com/LerianStudio/midaz-console/commit/04b5083e24edd871712c17dcfef86fdcc3b6d54a))
+* implement 'About Midaz' dialog ([ca2a211](https://github.com/LerianStudio/midaz-console/commit/ca2a2117c87039dbb44dfd2329165a08da177b5f))
+* Implemented Form ([5962d9a](https://github.com/LerianStudio/midaz-console/commit/5962d9aa5206837d982801a9dd91019a635aa9c7))
+* Implemented helper components ([47f4ae6](https://github.com/LerianStudio/midaz-console/commit/47f4ae6544ecd3bb9fbf14cf87c67cdcdb53ec07))
+* Implemented onboarding redirect ([2ff6c35](https://github.com/LerianStudio/midaz-console/commit/2ff6c35dcba5e691f5da6e50330aacf9dbc8320f))
+* Merge ([0c25847](https://github.com/LerianStudio/midaz-console/commit/0c25847a41d7e52e9eed61019424a286cd123df9))
+* separate AboutMidazDialog to its own file ([dc8ec96](https://github.com/LerianStudio/midaz-console/commit/dc8ec96d473d025b9d0227925adf89a0a1f6674b))
+* start the refactor of sidebar and navbar ([0f12195](https://github.com/LerianStudio/midaz-console/commit/0f12195cc7e28bf4145a8a11ac92ce6a2441e605))
+* update transactions page to use global ledger selector ([6d80801](https://github.com/LerianStudio/midaz-console/commit/6d80801981acb5ae0a73279e9fa589e76d811e3e))
+
 # [1.8.0](https://github.com/LerianStudio/midaz-console/compare/v1.7.0...v1.8.0) (2025-02-13)
 
 
