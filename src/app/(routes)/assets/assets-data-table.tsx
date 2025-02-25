@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/table'
 import { EmptyResource } from '@/components/empty-resource'
 import { Button } from '@/components/ui/button'
-import { Plus, MoreVertical, Minus } from 'lucide-react'
+import { MoreVertical, Minus } from 'lucide-react'
 import { capitalizeFirstLetter } from '@/helpers'
 import {
   DropdownMenu,
@@ -27,9 +27,9 @@ import { AssetsSheet } from './assets-sheet'
 import { useParams } from 'next/navigation'
 import { EntityBox } from '@/components/entity-box'
 import { PaginationLimitField } from '@/components/form/pagination-limit-field'
-import { FormProvider } from 'react-hook-form'
+import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { EntityDataTable } from '@/components/entity-data-table'
-import { Pagination } from '@/components/pagination'
+import { Pagination, PaginationProps } from '@/components/pagination'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
 import { AssetResponseDto } from '@/core/application/dto/asset-response-dto'
 
@@ -37,22 +37,22 @@ type AssetsTableProps = {
   assets: PaginationDto<AssetResponseDto> | undefined
   table: {
     getRowModel: () => {
-      rows: { id: string; original: any }[]
+      rows: { id: string; original: AssetResponseDto }[]
     }
   }
   handleDialogOpen: (id: string, name: string) => void
-  handleEdit: any
+  handleEdit: (asset: AssetResponseDto) => void
   refetch: () => void
-  form: any
-  pagination: any
-  total: any
+  form: UseFormReturn<any>
+  total: number
+  pagination: PaginationProps
 }
 
 type AssetRowProps = {
-  asset: { id: string; original: any }
+  asset: { id: string; original: AssetResponseDto }
   handleCopyToClipboard: (value: string, message: string) => void
   handleDialogOpen: (id: string, name: string) => void
-  handleEdit: any
+  handleEdit: (asset: AssetResponseDto) => void
 }
 
 const AssetRow: React.FC<AssetRowProps> = ({
@@ -111,7 +111,7 @@ const AssetRow: React.FC<AssetRowProps> = ({
           )
         )}
       </TableCell>
-      <TableCell className="w-0">
+      <TableCell align="center">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="secondary" className="h-auto w-max p-2">
@@ -167,6 +167,10 @@ export const AssetsDataTable: React.FC<AssetsTableProps> = (props) => {
     navigator.clipboard.writeText(value)
     showInfo(message)
   }
+
+  console.log('form->', form)
+  console.log('total->', total)
+  console.log('pagination->', pagination)
 
   return (
     <FormProvider {...form}>
