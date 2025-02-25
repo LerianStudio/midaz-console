@@ -143,7 +143,7 @@ const Page = () => {
             <PageHeader.CollapsibleInfoTrigger
               question={intl.formatMessage({
                 id: 'assets.helperTrigger.question',
-                defaultMessage: 'What is a Asset?'
+                defaultMessage: 'What is an Asset?'
               })}
             />
 
@@ -159,7 +159,7 @@ const Page = () => {
         <PageHeader.CollapsibleInfo
           question={intl.formatMessage({
             id: 'assets.helperTrigger.question',
-            defaultMessage: 'What is a Asset?'
+            defaultMessage: 'What is an Asset?'
           })}
           answer={intl.formatMessage({
             id: 'assets.helperTrigger.answer',

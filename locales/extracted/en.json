@@ -10,7 +10,7 @@
   "accounts.toast.update.error": "Error updating account",
   "assets.delete.description": "You are about to permanently delete this asset. This action cannot be undone. Do you wish to continue?",
   "assets.helperTrigger.answer": "Book with the record of all transactions and operations of the Organization.",
-  "assets.helperTrigger.question": "What is a Asset?",
+  "assets.helperTrigger.question": "What is an Asset?",
   "assets.listingTemplate.addButton": "New Asset",
   "assets.sheet.select.commodity": "Commodity",
   "assets.sheet.select.crypto": "Crypto",
