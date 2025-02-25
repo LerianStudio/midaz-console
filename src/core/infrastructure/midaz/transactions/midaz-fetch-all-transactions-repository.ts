@@ -1,13 +1,9 @@
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
-import {
-  httpMidazAuthFetch,
-  HTTP_METHODS,
-  MidazHttpFetchUtils
-} from '../../utils/http-fetch-utils'
-import { inject, injectable } from 'inversify'
-import { FetchAllTransactionsRepository } from '@/core/domain/repositories/transactions/fetch-all-transactions-repository'
 import { TransactionEntity } from '@/core/domain/entities/transaction-entity'
+import { FetchAllTransactionsRepository } from '@/core/domain/repositories/transactions/fetch-all-transactions-repository'
+import { inject, injectable } from 'inversify'
 import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
+import { HTTP_METHODS, MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
 
 @injectable()
 export class MidazFetchAllTransactionsRepository

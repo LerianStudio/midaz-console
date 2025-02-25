@@ -34,9 +34,10 @@ export class CompleteOnboardingUseCase implements CompleteOnboarding {
       await this.fetchOrganizationByIdRepository.fetchById(organizationId)
 
     await this.updateOrganizationRepository.updateOrganization(organizationId, {
-      legalName: organization.legalName,
-      doingBusinessAs: organization.doingBusinessAs,
-      metadata: omit(organization.metadata, 'onboarding')
+      metadata: {
+        ...organization.metadata,
+        onboarding: null
+      }
     })
 
     const ledgerEntity: LedgerEntity = LedgerMapper.toDomain(ledger)

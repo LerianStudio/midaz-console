@@ -50,7 +50,10 @@ const LedgerCommand = ({
   return (
     <Command>
       <CommandInput
-        placeholder="Search ledger..."
+        placeholder={intl.formatMessage({
+          id: 'common.search',
+          defaultMessage: 'Search...'
+        })}
         value={query}
         onValueChange={setQuery}
         className="border-b px-2 py-1 pr-10"
@@ -81,8 +84,7 @@ const LedgerCommand = ({
 export const LedgerSelector = () => {
   const intl = useIntl()
   const [openCommand, setOpenCommand] = React.useState(false)
-  const { currentOrganization, currentLedgerId, setLedgerId } =
-    useOrganization()
+  const { currentOrganization, currentLedger, setLedger } = useOrganization()
   const { data: ledgers } = useListLedgers({
     organizationId: currentOrganization?.id!
   })
@@ -90,14 +92,14 @@ export const LedgerSelector = () => {
   React.useEffect(() => {
     if (
       ledgers?.items?.length &&
-      (!currentLedgerId ||
+      (!currentLedger?.id ||
         !ledgers.items.some(
-          (ledger: ILedgerType) => ledger.id === currentLedgerId
+          (ledger: ILedgerType) => ledger.id === currentLedger.id
         ))
     ) {
-      setLedgerId(ledgers.items[0].id)
+      setLedger(ledgers.items[0])
     }
-  }, [currentOrganization, ledgers, currentLedgerId, setLedgerId])
+  }, [currentOrganization, ledgers, currentLedger?.id, setLedger])
 
   const hasLedgers = !!ledgers?.items?.length
   const totalLedgers = ledgers?.items?.length ?? 0
@@ -125,14 +127,23 @@ export const LedgerSelector = () => {
     )
   }
 
+  const handleSelectChange = (id: string) => {
+    setLedger(ledgers?.items.find((ledger) => ledger.id === id)!)
+  }
+
+  const handleCommandChange = (id: string) => {
+    setLedger(ledgers?.items.find((ledger) => ledger.id === id)!)
+    setOpenCommand(false)
+  }
+
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
           <div>
             <Select
-              value={currentLedgerId ?? undefined}
-              onValueChange={(newLedgerId) => setLedgerId(newLedgerId)}
+              value={currentLedger?.id ?? undefined}
+              onValueChange={handleSelectChange}
               onOpenChange={(open) => !open && setOpenCommand(false)}
               disabled={!hasLedgers}
             >
@@ -160,11 +171,11 @@ export const LedgerSelector = () => {
                     </SelectLabel>
                     <SelectItem
                       disabled
-                      value={currentLedgerId ?? ''}
+                      value={currentLedger?.id ?? ''}
                       className="font-medium text-zinc-800 data-[disabled]:opacity-100"
                     >
                       {ledgers?.items?.find(
-                        (ledger: any) => ledger.id === currentLedgerId
+                        (ledger: any) => ledger.id === currentLedger?.id
                       )?.name ||
                         intl.formatMessage({
                           id: 'ledger.selector.placeholder',
@@ -195,10 +206,7 @@ export const LedgerSelector = () => {
                         >
                           <LedgerCommand
                             ledgers={ledgers!.items}
-                            onSelect={(id: string) => {
-                              setLedgerId(id)
-                              setOpenCommand(false)
-                            }}
+                            onSelect={handleCommandChange}
                           />
                         </div>
                       )}
