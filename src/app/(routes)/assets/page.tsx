@@ -27,15 +27,12 @@ const Page = () => {
   const intl = useIntl()
   const { id: ledgerId } = useParams<{ id: string }>()
   const [columnFilters, setColumnFilters] = useState<any>([])
-  const { currentOrganization, currentLedgerId } = useOrganization()
+  const { currentOrganization, currentLedger } = useOrganization()
   const { showSuccess, showError } = useCustomToast()
   const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>()
   const [total, setTotal] = useState(0)
 
   const { form, searchValues, pagination } = useQueryParams({ total })
-
-  console.log('currentOrg-> ', currentOrganization)
-  console.log('currentLedger-> ', currentLedgerId)
 
   const {
     data: assets,
@@ -43,7 +40,7 @@ const Page = () => {
     isLoading
   } = useListAssets({
     organizationId: currentOrganization.id!,
-    ledgerId: currentLedgerId,
+    ledgerId: currentLedger.id,
     ...(searchValues as any)
   })
 
@@ -53,7 +50,7 @@ const Page = () => {
 
   const { mutate: deleteMutate, isPending: deletePending } = useDeleteAsset({
     organizationId: currentOrganization.id!,
-    ledgerId,
+    ledgerId: currentLedger.id,
     onSuccess: () => {
       handleDialogClose()
       refetch()
@@ -103,10 +100,7 @@ const Page = () => {
       name: currentOrganization.legalName
     },
     {
-      name: intl.formatMessage({
-        id: `ledgers.title`,
-        defaultMessage: 'Ledgers'
-      })
+      name: currentLedger.name
     },
     {
       name: intl.formatMessage({
