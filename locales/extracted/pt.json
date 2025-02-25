@@ -415,10 +415,10 @@
   "sideBar.ledger.segments": "Segmentos",
   "sideBar.ledger.title": "Ledger",
   "sideBar.ledger.transactions": "Transações",
-  "assets.helperTrigger.answer": "",
-  "assets.helperTrigger.question": "",
-  "assets.listingTemplate.addButton": "",
-  "assets.subtitle": "",
-  "common.assets": "",
-  "common.read.docs": ""
+  "assets.helperTrigger.answer": "Livro com o registro de todas as transações e operações da Organização.",
+  "assets.helperTrigger.question": "O que é um ativo?",
+  "assets.listingTemplate.addButton": "Novo Ativo",
+  "assets.subtitle": "Visualize, edite e gerencie os ativos do livro razão atual.",
+  "common.assets": "Ativos",
+  "common.read.docs": "Leia a documentação."
 }
