@@ -168,10 +168,6 @@ export const AssetsDataTable: React.FC<AssetsTableProps> = (props) => {
     showInfo(message)
   }
 
-  console.log('form->', form)
-  console.log('total->', total)
-  console.log('pagination->', pagination)
-
   return (
     <FormProvider {...form}>
       <EntityBox.Root>
