@@ -37,7 +37,7 @@ export const PageContent = forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('h-full w-full overflow-y-auto px-16 pb-16 pt-6', className)}
+    className={cn('h-full w-full overflow-y-auto p-16', className)}
     {...props}
   />
 ))

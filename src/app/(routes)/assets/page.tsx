@@ -1,46 +1,38 @@
-import { useEffect, useState } from 'react'
+'use client'
+
+import React, { useEffect, useState } from 'react'
 import { useIntl } from 'react-intl'
 import { Button } from '@/components/ui/button'
-import { EntityBox } from '@/components/entity-box'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import { useDeleteAsset, useListAssets } from '@/client/assets'
 import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
-import { AssetsDataTable } from './assets-data-table'
 import {
   getCoreRowModel,
   getFilteredRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import { ILedgerType } from '@/types/ledgers-type'
-import { AssetsSkeleton } from './assets-skeleton'
-import { AssetsSheet } from './assets-sheet'
 import { useParams } from 'next/navigation'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import ConfirmationDialog from '@/components/confirmation-dialog'
 import useCustomToast from '@/hooks/use-custom-toast'
-import { EntityDataTable } from '@/components/entity-data-table'
 import { useQueryParams } from '@/hooks/use-query-params'
-import { Pagination } from '@/components/pagination'
-import { PaginationLimitField } from '@/components/form/pagination-limit-field'
+import { AssetsSheet } from './assets-sheet'
+import { AssetsSkeleton } from './assets-skeleton'
+import { AssetsDataTable } from './assets-data-table'
+import { PageHeader } from '@/components/page-header'
+import { getBreadcrumbPaths } from '@/components/breadcrumb/get-breadcrumb-paths'
+import { Breadcrumb } from '@/components/breadcrumb'
 
-type AssetsTabContentProps = {
-  data: ILedgerType
-}
-
-export const AssetsTabContent = ({ data }: AssetsTabContentProps) => {
+const Page = () => {
   const intl = useIntl()
   const { id: ledgerId } = useParams<{ id: string }>()
-  const { currentOrganization } = useOrganization()
   const [columnFilters, setColumnFilters] = useState<any>([])
+  const { currentOrganization, currentLedger } = useOrganization()
   const { showSuccess, showError } = useCustomToast()
-
   const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>()
-
   const [total, setTotal] = useState(0)
 
-  const { form, searchValues, pagination } = useQueryParams({
-    total
-  })
+  const { form, searchValues, pagination } = useQueryParams({ total })
 
   const {
     data: assets,
@@ -48,7 +40,7 @@ export const AssetsTabContent = ({ data }: AssetsTabContentProps) => {
     isLoading
   } = useListAssets({
     organizationId: currentOrganization.id!,
-    ledgerId: data?.id!,
+    ledgerId: currentLedger.id,
     ...(searchValues as any)
   })
 
@@ -58,7 +50,7 @@ export const AssetsTabContent = ({ data }: AssetsTabContentProps) => {
 
   const { mutate: deleteMutate, isPending: deletePending } = useDeleteAsset({
     organizationId: currentOrganization.id!,
-    ledgerId,
+    ledgerId: currentLedger.id,
     onSuccess: () => {
       handleDialogClose()
       refetch()
@@ -103,8 +95,84 @@ export const AssetsTabContent = ({ data }: AssetsTabContentProps) => {
     }
   })
 
+  const breadcrumbPaths = getBreadcrumbPaths([
+    {
+      name: currentOrganization.legalName
+    },
+    {
+      name: currentLedger.name
+    },
+    {
+      name: intl.formatMessage({
+        id: `common.assets`,
+        defaultMessage: 'Assets'
+      })
+    }
+  ])
+
+  const assetsProps = {
+    assets,
+    table,
+    handleDialogOpen,
+    handleEdit,
+    refetch,
+    form,
+    pagination,
+    total
+  }
+
   return (
-    <>
+    <React.Fragment>
+      <Breadcrumb paths={breadcrumbPaths} />
+
+      <PageHeader.Root>
+        <PageHeader.Wrapper>
+          <PageHeader.InfoTitle
+            title={intl.formatMessage({
+              id: 'common.assets',
+              defaultMessage: 'Assets'
+            })}
+            subtitle={intl.formatMessage({
+              id: 'assets.subtitle',
+              defaultMessage:
+                'View, edit, and manage the assets of the current ledger.'
+            })}
+          />
+
+          <PageHeader.ActionButtons>
+            <PageHeader.CollapsibleInfoTrigger
+              question={intl.formatMessage({
+                id: 'assets.helperTrigger.question',
+                defaultMessage: 'What is an Asset?'
+              })}
+            />
+
+            <Button onClick={handleCreate} data-testid="new-ledger">
+              {intl.formatMessage({
+                id: 'assets.listingTemplate.addButton',
+                defaultMessage: 'New Asset'
+              })}
+            </Button>
+          </PageHeader.ActionButtons>
+        </PageHeader.Wrapper>
+
+        <PageHeader.CollapsibleInfo
+          question={intl.formatMessage({
+            id: 'assets.helperTrigger.question',
+            defaultMessage: 'What is an Asset?'
+          })}
+          answer={intl.formatMessage({
+            id: 'assets.helperTrigger.answer',
+            defaultMessage:
+              'Book with the record of all transactions and operations of the Organization.'
+          })}
+          seeMore={intl.formatMessage({
+            id: 'common.read.docs',
+            defaultMessage: 'Read the docs'
+          })}
+        />
+      </PageHeader.Root>
+
       <ConfirmationDialog
         title={intl.formatMessage({
           id: 'common.confirmDeletion',
@@ -119,75 +187,15 @@ export const AssetsTabContent = ({ data }: AssetsTabContentProps) => {
         {...dialogProps}
       />
 
-      <EntityBox.Collapsible>
-        <EntityBox.Banner>
-          <EntityBox.Header
-            title={intl.formatMessage({
-              id: 'common.assets',
-              defaultMessage: 'Assets'
-            })}
-            subtitle={intl.formatMessage({
-              id: 'ledgers.assets.subtitle',
-              defaultMessage: 'Manage the assets of this ledger.'
-            })}
-            tooltip={intl.formatMessage({
-              id: 'ledgers.assets.tooltip',
-              defaultMessage:
-                'Currency or assets of any nature traded on this Ledger.'
-            })}
-          />
-          <EntityBox.Actions className="gap-4">
-            <Button onClick={handleCreate}>
-              {intl.formatMessage({
-                id: 'common.new.asset',
-                defaultMessage: 'New Asset'
-              })}
-            </Button>
-            <EntityBox.CollapsibleTrigger />
-          </EntityBox.Actions>
-        </EntityBox.Banner>
-        <EntityBox.CollapsibleContent>
-          <div className="col-start-3 flex justify-end">
-            <PaginationLimitField control={form.control} />
-          </div>
-        </EntityBox.CollapsibleContent>
-      </EntityBox.Collapsible>
-
       <AssetsSheet ledgerId={ledgerId} onSuccess={refetch} {...sheetProps} />
 
-      <EntityDataTable.Root>
+      <div className="mt-10">
         {isLoading && <AssetsSkeleton />}
 
-        {assets && (
-          <AssetsDataTable
-            assets={assets}
-            isLoading={isLoading}
-            table={table}
-            handleDialogOpen={handleDialogOpen}
-            handleEdit={handleEdit}
-            refetch={refetch}
-          />
-        )}
-
-        <EntityDataTable.Footer>
-          <EntityDataTable.FooterText>
-            {intl.formatMessage(
-              {
-                id: 'ledgers.assets.showing',
-                defaultMessage:
-                  '{number, plural, =0 {No asset found} one {Showing {count} asset} other {Showing {count} assets}}.'
-              },
-              {
-                number: assets?.items?.length,
-                count: (
-                  <span className="font-bold">{assets?.items?.length}</span>
-                )
-              }
-            )}
-          </EntityDataTable.FooterText>
-          <Pagination total={total} {...pagination} />
-        </EntityDataTable.Footer>
-      </EntityDataTable.Root>
-    </>
+        {assets && <AssetsDataTable {...assetsProps} />}
+      </div>
+    </React.Fragment>
   )
 }
+
+export default Page

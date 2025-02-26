@@ -127,7 +127,7 @@ export const AccountsDataTable: React.FC<AccountsTableProps> = ({
                 </TableHead>
                 <TableHead className="text-center">
                   {intl.formatMessage({
-                    id: 'entity.account.currency',
+                    id: 'common.assets',
                     defaultMessage: 'Assets'
                   })}
                 </TableHead>

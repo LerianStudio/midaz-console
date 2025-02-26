@@ -128,7 +128,7 @@ export const AccountsTabContent = () => {
       {
         accessorKey: 'assetCode',
         header: intl.formatMessage({
-          id: 'entity.account.currency',
+          id: 'common.assets',
           defaultMessage: 'Assets'
         }),
         cell: (info) => info.getValue() || '-'
