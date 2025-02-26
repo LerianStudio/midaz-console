@@ -1,3 +1,20 @@
+# [1.10.0](https://github.com/LerianStudio/midaz-console/compare/v1.9.1...v1.10.0) (2025-02-26)
+
+
+### Bug Fixes
+
+* Adjusted LedgerSelector ([960bd41](https://github.com/LerianStudio/midaz-console/commit/960bd41c3c312357e243386cb72daf19d5a977db))
+* update transactions data table to use currentLedger.id from new format ([349cd24](https://github.com/LerianStudio/midaz-console/commit/349cd245bfd6fd87342e38e74b7ca70c46417b3c))
+
+
+### Features
+
+* Added local storage lib functions ([ab01953](https://github.com/LerianStudio/midaz-console/commit/ab01953ad2182eadef7576c074b858b742fb8ed1))
+* Adjustment on onboarding ([5bcd9a5](https://github.com/LerianStudio/midaz-console/commit/5bcd9a570d83398f706d2dd8960dfcc7f0b7e5c7))
+* Created hooks for default storage behaviour ([ed6dda0](https://github.com/LerianStudio/midaz-console/commit/ed6dda021a3123e55a22251c659e45f1f805c2ec))
+* Updated OrganizationProvider ([78b4411](https://github.com/LerianStudio/midaz-console/commit/78b44110700f153ce4014ae2f7d8d611f439de55))
+* Updated transaction port on env file. ([6e05973](https://github.com/LerianStudio/midaz-console/commit/6e05973dc9c4432fb8ad8532f53cadc593889d5d))
+
 ## [1.9.1](https://github.com/LerianStudio/midaz-console/compare/v1.9.0...v1.9.1) (2025-02-24)
 
 
