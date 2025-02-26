@@ -88,7 +88,7 @@ export const Sidebar = () => {
 
           <SidebarItem
             title={intl.formatMessage({
-              id: 'sideBar.ledger.transactions',
+              id: 'common.transactions',
               defaultMessage: 'Transactions'
             })}
             icon={<ArrowLeftRight />}

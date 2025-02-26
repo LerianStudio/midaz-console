@@ -44,20 +44,19 @@ import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
 import { ITransactionType } from '@/types/transactions-type'
 import { IdTableCell } from '@/components/id-table-cell'
+import { ILedgerType } from '@/types/ledgers-type'
 
 type TransactionsDataTableProps = {
-  transactionsState: {
-    transactions: PaginationDto<ITransactionType> | undefined
-    form: UseFormReturn<any>
-    total: number
-    pagination: PaginationProps
-    currentLedgerId: string | null
-  }
+  transactions: PaginationDto<ITransactionType> | undefined
+  form: UseFormReturn<any>
+  total: number
+  pagination: PaginationProps
+  currentLedger: ILedgerType
 }
 
 type TransactionsRowProps = {
   transaction: Row<ITransactionType>
-  currentLedgerId: string | null
+  currentLedger: ILedgerType
 }
 
 const multipleItemsMessages = defineMessages({
@@ -92,7 +91,7 @@ const statusMessages = defineMessages({
 
 const TransactionRow: React.FC<TransactionsRowProps> = ({
   transaction,
-  currentLedgerId
+  currentLedger
 }) => {
   const intl = useIntl()
   const {
@@ -181,7 +180,7 @@ const TransactionRow: React.FC<TransactionsRowProps> = ({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <Link
-                href={`/ledgers/${currentLedgerId}/transactions/${transaction.original.id}`}
+                href={`/ledgers/${currentLedger.id}/transactions/${transaction.original.id}`}
               >
                 <DropdownMenuItem>
                   {intl.formatMessage({
@@ -199,14 +198,15 @@ const TransactionRow: React.FC<TransactionsRowProps> = ({
 }
 
 export const TransactionsDataTable = ({
-  transactionsState
+  transactions,
+  form,
+  total,
+  pagination,
+  currentLedger
 }: TransactionsDataTableProps) => {
   const intl = useIntl()
   const router = useRouter()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
-
-  const { transactions, form, total, pagination, currentLedgerId } =
-    transactionsState
 
   const table = useReactTable({
     data: transactions?.items || [],
@@ -226,8 +226,8 @@ export const TransactionsDataTable = ({
   })
 
   const handleCreateTransaction = React.useCallback(() => {
-    router.push(`/ledgers/${currentLedgerId}/transactions/create`)
-  }, [currentLedgerId, router])
+    router.push(`/ledgers/${currentLedger.id}/transactions/create`)
+  }, [currentLedger, router])
 
   return (
     <FormProvider {...form}>
@@ -320,7 +320,7 @@ export const TransactionsDataTable = ({
                   <TransactionRow
                     key={transaction.id}
                     transaction={transaction}
-                    currentLedgerId={currentLedgerId}
+                    currentLedger={currentLedger}
                   />
                 ))}
               </TableBody>

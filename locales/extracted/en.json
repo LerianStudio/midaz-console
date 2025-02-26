@@ -75,6 +75,7 @@
   "common.table.accounts": "{number, plural, =0 {No accounts} one {# account} other {# accounts}}",
   "common.table.metadata": "{number, plural, =0 {-} one {# record} other {# records}}",
   "common.tooltipCopyText": "Click to copy",
+  "common.transactions": "Transactions",
   "common.type": "Type",
   "common.typePlaceholder": "Type...",
   "common.user": "User",
@@ -363,7 +364,6 @@
   "sideBar.ledger.overview": "Overview",
   "sideBar.ledger.segments": "Segments",
   "sideBar.ledger.title": "Ledger",
-  "sideBar.ledger.transactions": "Transactions",
   "sideBar.ledgers": "Ledgers",
   "signIn.buttonSignIn": "Continue",
   "signIn.descriptionLogin": "Enter your email and password to continue.",
@@ -423,7 +423,6 @@
   "transactions.tab.data": "Transaction Data",
   "transactions.tab.operations": "Operations & Metadata",
   "transactions.tab.summary": "Summary",
-  "transactions.title": "Transactions",
   "transactions.toast.update.error": "An error occurred while updating the transaction",
   "transactions.toast.update.success": "Transaction updated successfully"
 }

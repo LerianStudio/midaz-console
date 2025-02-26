@@ -297,7 +297,6 @@
   "transactions.ledgers.subtitle": "Selecione um ledger para carregar as transações.",
   "transactions.section.description": "Este é o espaço das {transactions}. As movimentações que acontecem em todas as suas ledgers ficam organizadas aqui.",
   "transactions.subtitle": "Visualize, edite e gerencie as transações de um Ledgers específico.",
-  "transactions.title": "Transações",
   "language.english": "Inglês",
   "language.portuguese": "Português",
   "settings.system.language": "Idioma",
@@ -425,5 +424,11 @@
   "sideBar.ledger.overview": "Visão Geral",
   "sideBar.ledger.segments": "Segmentos",
   "sideBar.ledger.title": "Ledger",
-  "sideBar.ledger.transactions": "Transações"
+  "assets.helperTrigger.answer": "Livro com o registro de todas as transações e operações da Organização.",
+  "assets.helperTrigger.question": "O que é um ativo?",
+  "assets.listingTemplate.addButton": "Novo Ativo",
+  "assets.subtitle": "Visualize, edite e gerencie os ativos do livro razão atual.",
+  "common.assets": "Ativos",
+  "common.read.docs": "Leia a documentação.",
+  "common.transactions": "Transações"
 }
