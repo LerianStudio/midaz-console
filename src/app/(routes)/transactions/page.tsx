@@ -8,10 +8,12 @@ import { TransactionsSkeleton } from './transactions-skeleton'
 import { useQueryParams } from '@/hooks/use-query-params'
 import { PageHeader } from '@/components/page-header'
 import { useIntl } from 'react-intl'
+import { getBreadcrumbPaths } from '@/components/breadcrumb/get-breadcrumb-paths'
+import { Breadcrumb } from '@/components/breadcrumb'
 
 export default function TransactionsPage() {
   const intl = useIntl()
-  const { currentOrganization, currentLedgerId } = useOrganization()
+  const { currentOrganization, currentLedger } = useOrganization()
   const [total, setTotal] = React.useState(0)
 
   const { form, searchValues, pagination } = useQueryParams({ total })
@@ -19,7 +21,7 @@ export default function TransactionsPage() {
   const { data: transactions, isLoading: isLoadingTransactions } =
     useListTransactions({
       organizationId: currentOrganization?.id!,
-      ledgerId: currentLedgerId,
+      ledgerId: currentLedger.id,
       ...(searchValues as any)
     })
 
@@ -27,15 +29,40 @@ export default function TransactionsPage() {
     setTotal(transactions?.items?.length || 0)
   }, [transactions?.items])
 
-  const hasLedgerLoaded = Boolean(currentLedgerId)
+  const hasLedgerLoaded = Boolean(currentLedger.id)
+
+  const transactionsTableProps = {
+    transactions,
+    form,
+    total,
+    pagination,
+    currentLedger
+  }
+
+  const breadcrumbPaths = getBreadcrumbPaths([
+    {
+      name: currentOrganization.legalName
+    },
+    {
+      name: currentLedger.name
+    },
+    {
+      name: intl.formatMessage({
+        id: `common.transactions`,
+        defaultMessage: 'Transactions'
+      })
+    }
+  ])
 
   return (
     <React.Fragment>
+      <Breadcrumb paths={breadcrumbPaths} />
+
       <PageHeader.Root>
         <PageHeader.Wrapper>
           <PageHeader.InfoTitle
             title={intl.formatMessage({
-              id: 'transactions.title',
+              id: 'common.transactions',
               defaultMessage: 'Transactions'
             })}
             subtitle={intl.formatMessage({
@@ -75,20 +102,9 @@ export default function TransactionsPage() {
       </PageHeader.Root>
 
       <div className="mt-10">
-        {isLoadingTransactions ? (
-          <TransactionsSkeleton />
-        ) : (
-          hasLedgerLoaded && (
-            <TransactionsDataTable
-              transactionsState={{
-                transactions,
-                form,
-                total,
-                pagination,
-                currentLedgerId
-              }}
-            />
-          )
+        {isLoadingTransactions && <TransactionsSkeleton />}
+        {!isLoadingTransactions && hasLedgerLoaded && (
+          <TransactionsDataTable {...transactionsTableProps} />
         )}
       </div>
     </React.Fragment>
