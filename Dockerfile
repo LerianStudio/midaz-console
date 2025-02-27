@@ -1,6 +1,9 @@
 # Use an official Node.js runtime as the base image
 FROM node:22-alpine3.19
 
+# Instalar curl para permitir a execução do healthcheck
+RUN apk add --no-cache curl
+
 # Set the working directory in the container
 WORKDIR /usr/src/app
 
