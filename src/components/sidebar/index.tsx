@@ -115,7 +115,7 @@ export const Sidebar = () => {
 
           <SidebarItem
             title={intl.formatMessage({
-              id: 'sideBar.ledger.segments',
+              id: 'common.segments',
               defaultMessage: 'Segments'
             })}
             icon={<Group />}
