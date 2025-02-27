@@ -1,3 +1,11 @@
+# [1.12.0](https://github.com/LerianStudio/midaz-console/compare/v1.11.0...v1.12.0) (2025-02-27)
+
+
+### Features
+
+* integrate segments in the sidebar ([8475d09](https://github.com/LerianStudio/midaz-console/commit/8475d0948bc4ada4a54910669c0b3819ded6e8e5))
+* update the intl files ([b46c405](https://github.com/LerianStudio/midaz-console/commit/b46c405b17c29c8f6d07fe0d92fed70b54e66ea1))
+
 # [1.11.0](https://github.com/LerianStudio/midaz-console/compare/v1.10.0...v1.11.0) (2025-02-26)
 
 
