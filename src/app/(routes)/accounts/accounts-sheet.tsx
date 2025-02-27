@@ -23,7 +23,7 @@ import { useListPortfolios } from '@/client/portfolios'
 import { isNil, omitBy } from 'lodash'
 import { useListAssets } from '@/client/assets'
 import useCustomToast from '@/hooks/use-custom-toast'
-import { accountSchema } from '@/schema/account'
+import { accounts } from '@/schema/account'
 import { AccountType } from '@/types/accounts-type'
 import { SelectItem } from '@/components/ui/select'
 import { InputField, SelectField } from '@/components/form'
@@ -55,7 +55,20 @@ const initialValues = {
   metadata: {}
 }
 
-type FormData = z.infer<typeof accountSchema>
+const formSchema = z.object({
+  name: accounts.name,
+  alias: accounts.alias,
+  entityId: accounts.entityId.optional(),
+  assetCode: accounts.assetCode,
+  portfolioId: accounts.portfolioId.optional(),
+  segmentId: accounts.segmentId.optional(),
+  metadata: accounts.metadata,
+  type: accounts.type,
+  allowSending: accounts.allowSending,
+  allowReceiving: accounts.allowReceiving
+})
+
+type FormData = z.infer<typeof formSchema>
 
 export const AccountSheet = ({
   mode,
@@ -111,8 +124,8 @@ export const AccountSheet = ({
     )
   }, [rawAssetListData])
 
-  const form = useForm<z.infer<typeof accountSchema>>({
-    resolver: zodResolver(accountSchema),
+  const form = useForm<FormData>({
+    resolver: zodResolver(formSchema),
     defaultValues: initialValues
   })
 
@@ -383,7 +396,6 @@ export const AccountSheet = ({
                             defaultMessage:
                               'Identification number (EntityId) of the Account holder'
                           })}
-                          required
                         />
                         <SelectField
                           control={form.control}
@@ -420,7 +432,6 @@ export const AccountSheet = ({
                         defaultMessage:
                           'Category (cluster) of clients with specific characteristics'
                       })}
-                      required
                     >
                       {segmentListData?.map((segment) => (
                         <SelectItem key={segment.value} value={segment.value}>
