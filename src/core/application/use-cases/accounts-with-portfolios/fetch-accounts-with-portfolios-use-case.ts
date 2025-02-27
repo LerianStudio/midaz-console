@@ -7,6 +7,8 @@ import { AccountEntity } from '@/core/domain/entities/account-entity'
 import { PortfolioViewResponseDTO } from '../../dto/portfolio-view-dto'
 import { AccountMapper } from '../../mappers/account-mapper'
 import { inject, injectable } from 'inversify'
+import { BalanceRepository } from '@/core/domain/repositories/balance-repository'
+import { BalanceMapper } from '../../mappers/balance-mapper'
 
 export interface FetchAccountsWithPortfolios {
   execute: (
@@ -25,7 +27,9 @@ export class FetchAccountsWithPortfoliosUseCase
     @inject(FetchAllPortfoliosRepository)
     private readonly fetchAllPortfoliosRepository: FetchAllPortfoliosRepository,
     @inject(FetchAllAccountsRepository)
-    private readonly fetchAllAccountsRepository: FetchAllAccountsRepository
+    private readonly fetchAllAccountsRepository: FetchAllAccountsRepository,
+    @inject(BalanceRepository)
+    private readonly balanceRepository: BalanceRepository
   ) {}
 
   async execute(
@@ -57,21 +61,32 @@ export class FetchAccountsWithPortfoliosUseCase
       }
     })
 
-    const accountsWithPortfolio: any[] = accountsResult.items.map((account) => {
-      const portfolio = account.portfolioId
-        ? portfolioMap.get(account.portfolioId)
-        : null
-
-      return {
-        ...AccountMapper.toDto(account),
-        portfolio: portfolio
-          ? {
-              id: portfolio.id!,
-              name: portfolio.name!
-            }
+    const accountsWithPortfolio: any[] = await Promise.all(
+      accountsResult.items.map(async (account) => {
+        const portfolio = account.portfolioId
+          ? portfolioMap.get(account.portfolioId)
           : null
-      }
-    })
+
+        const balances = await this.balanceRepository.getByAccountId(
+          organizationId,
+          ledgerId,
+          account.id!
+        )
+
+        return {
+          ...AccountMapper.toDto({
+            ...account,
+            ...BalanceMapper.toDomain(balances?.items?.[0])
+          }),
+          portfolio: portfolio
+            ? {
+                id: portfolio.id!,
+                name: portfolio.name!
+              }
+            : null
+        }
+      })
+    )
 
     const responseDTO: PaginationDto<any> = {
       items: accountsWithPortfolio,

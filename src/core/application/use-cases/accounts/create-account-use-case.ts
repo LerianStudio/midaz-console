@@ -7,6 +7,8 @@ import type {
   CreateAccountDto,
   AccountResponseDto
 } from '../../dto/account-dto'
+import { BalanceRepository } from '@/core/domain/repositories/balance-repository'
+import { BalanceMapper } from '../../mappers/balance-mapper'
 export interface CreateAccount {
   execute: (
     organizationId: string,
@@ -19,7 +21,9 @@ export interface CreateAccount {
 export class CreateAccountUseCase implements CreateAccount {
   constructor(
     @inject(CreateAccountsRepository)
-    private readonly createAccountRepository: CreateAccountsRepository
+    private readonly createAccountRepository: CreateAccountsRepository,
+    @inject(BalanceRepository)
+    private readonly balanceRepository: BalanceRepository
   ) {}
 
   @LogOperation({ layer: 'application' })
@@ -39,6 +43,16 @@ export class CreateAccountUseCase implements CreateAccount {
       accountEntity
     )
 
-    return AccountMapper.toDto(accountCreated)
+    const balance = await this.balanceRepository.update(
+      organizationId,
+      ledgerId,
+      accountCreated.id!,
+      BalanceMapper.toDomain(account)
+    )
+
+    return AccountMapper.toDto({
+      ...accountCreated,
+      ...BalanceMapper.toDomain(balance)
+    })
   }
 }

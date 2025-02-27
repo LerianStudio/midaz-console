@@ -3,6 +3,10 @@ import { AccountResponseDto, UpdateAccountDto } from '../../dto/account-dto'
 import { AccountMapper } from '../../mappers/account-mapper'
 import { AccountEntity } from '@/core/domain/entities/account-entity'
 import { inject, injectable } from 'inversify'
+import { BalanceEntity } from '@/core/domain/entities/balance-entity'
+import { BalanceRepository } from '@/core/domain/repositories/balance-repository'
+import { BalanceMapper } from '../../mappers/balance-mapper'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface UpdateAccount {
   execute: (
@@ -17,9 +21,12 @@ export interface UpdateAccount {
 export class UpdateAccountUseCase implements UpdateAccount {
   constructor(
     @inject(UpdateAccountsRepository)
-    private readonly updateAccountRepository: UpdateAccountsRepository
+    private readonly updateAccountRepository: UpdateAccountsRepository,
+    @inject(BalanceRepository)
+    private readonly balanceRepository: BalanceRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string,
@@ -31,7 +38,7 @@ export class UpdateAccountUseCase implements UpdateAccount {
       code: 'ACTIVE',
       description: 'Active Account'
     }
-    const accountEntity: Partial<AccountEntity> =
+    const { alias, ...accountEntity }: Partial<AccountEntity> =
       AccountMapper.toDomain(account)
 
     const updatedAccount: AccountEntity =
@@ -42,6 +49,16 @@ export class UpdateAccountUseCase implements UpdateAccount {
         accountEntity
       )
 
-    return AccountMapper.toDto(updatedAccount)
+    const balance: BalanceEntity = await this.balanceRepository.update(
+      organizationId,
+      ledgerId,
+      accountId,
+      BalanceMapper.toDomain(account)
+    )
+
+    return AccountMapper.toDto({
+      ...updatedAccount,
+      ...BalanceMapper.toDomain(balance)
+    })
   }
 }
