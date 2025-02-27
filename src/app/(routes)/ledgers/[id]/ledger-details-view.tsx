@@ -61,7 +61,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
     },
     {
       name: intl.formatMessage({
-        id: `settings.tab.segments`,
+        id: `common.segments`,
         defaultMessage: 'Segments'
       }),
       active: () => activeTab === TAB_VALUES.SEGMENTS
@@ -123,7 +123,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
 
           <TabsTrigger value={TAB_VALUES.SEGMENTS}>
             {intl.formatMessage({
-              id: 'ledgers.tab.segments',
+              id: 'common.segments',
               defaultMessage: 'Segments'
             })}
           </TabsTrigger>

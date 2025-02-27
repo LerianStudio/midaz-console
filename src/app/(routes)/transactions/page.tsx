@@ -103,6 +103,7 @@ export default function TransactionsPage() {
 
       <div className="mt-10">
         {isLoadingTransactions && <TransactionsSkeleton />}
+
         {!isLoadingTransactions && hasLedgerLoaded && (
           <TransactionsDataTable {...transactionsTableProps} />
         )}

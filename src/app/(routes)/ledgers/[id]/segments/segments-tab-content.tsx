@@ -123,7 +123,7 @@ export const SegmentsTabContent = () => {
         <EntityBox.Banner>
           <EntityBox.Header
             title={intl.formatMessage({
-              id: 'ledgers.segments.title',
+              id: 'common.segments',
               defaultMessage: 'Segments'
             })}
             subtitle={intl.formatMessage({

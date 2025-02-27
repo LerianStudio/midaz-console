@@ -23,104 +23,61 @@ import {
 import { isNil } from 'lodash'
 import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
 import useCustomToast from '@/hooks/use-custom-toast'
-import { AssetsSheet } from './assets-sheet'
-import { useParams } from 'next/navigation'
 import { EntityBox } from '@/components/entity-box'
 import { PaginationLimitField } from '@/components/form/pagination-limit-field'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { EntityDataTable } from '@/components/entity-data-table'
 import { Pagination, PaginationProps } from '@/components/pagination'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
-import { AssetResponseDto } from '@/core/application/dto/asset-response-dto'
+import { IdTableCell } from '@/components/id-table-cell'
+import { MetadataTableCell } from '../ledgers/[id]/MetadataTableCell'
+import { SegmentResponseDto } from '@/core/application/dto/segment-dto'
+import { SegmentsSheet } from './segments-sheet'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 
-type AssetsTableProps = {
-  assets: PaginationDto<AssetResponseDto> | undefined
+type SegmentsTableProps = {
+  segments: PaginationDto<SegmentResponseDto> | undefined
   table: {
     getRowModel: () => {
-      rows: { id: string; original: AssetResponseDto }[]
+      rows: { id: string; original: SegmentResponseDto }[]
     }
   }
   handleDialogOpen: (id: string, name: string) => void
-  handleEdit: (asset: AssetResponseDto) => void
+  handleEdit: (asset: SegmentResponseDto) => void
   refetch: () => void
   form: UseFormReturn<any>
   total: number
   pagination: PaginationProps
 }
 
-type AssetRowProps = {
-  asset: { id: string; original: AssetResponseDto }
+type SegmentRowProps = {
+  segment: { id: string; original: SegmentResponseDto }
   handleCopyToClipboard: (value: string, message: string) => void
   handleDialogOpen: (id: string, name: string) => void
-  handleEdit: (asset: AssetResponseDto) => void
+  handleEdit: (segment: SegmentResponseDto) => void
 }
 
-const AssetRow: React.FC<AssetRowProps> = ({
-  asset,
+const SegmentRow: React.FC<SegmentRowProps> = ({
+  segment,
   handleDialogOpen,
   handleEdit
 }) => {
   const intl = useIntl()
-  const metadataCount = Object.entries(asset.original.metadata || []).length
-
-  const assetTypesMessages = defineMessages({
-    crypto: {
-      id: 'assets.sheet.select.crypto',
-      defaultMessage: 'Crypto'
-    },
-    commodity: {
-      id: 'assets.sheet.select.commodity',
-      defaultMessage: 'Commodity'
-    },
-    currency: {
-      id: 'assets.sheet.select.currency',
-      defaultMessage: 'Currency'
-    },
-    others: {
-      id: 'assets.sheet.select.others',
-      defaultMessage: 'Others'
-    }
-  })
 
   return (
-    <TableRow key={asset.id}>
-      <TableCell>{asset.original.name}</TableCell>
-      <TableCell>
-        {capitalizeFirstLetter(
-          intl.formatMessage(
-            assetTypesMessages[
-              asset.original.type as keyof typeof assetTypesMessages
-            ]
-          )
-        )}
-      </TableCell>
-      <TableCell>{asset.original.code}</TableCell>
-      <TableCell>
-        {metadataCount === 0 ? (
-          <Minus size={20} />
-        ) : (
-          intl.formatMessage(
-            {
-              id: 'common.table.metadata',
-              defaultMessage:
-                '{number, plural, =0 {-} one {# record} other {# records}}'
-            },
-            {
-              number: metadataCount
-            }
-          )
-        )}
-      </TableCell>
-      <TableCell align="center">
+    <TableRow key={segment.id}>
+      <IdTableCell id={segment.original.id} />
+      <TableCell>{segment.original.name}</TableCell>
+      <MetadataTableCell metadata={segment.original.metadata} />
+      <TableCell className="w-0" align="center">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="secondary" className="h-auto w-max p-2">
+            <Button className="h-[34px] w-[34px] p-2" variant="secondary">
               <MoreVertical size={16} />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => handleEdit(asset.original)}>
+          <DropdownMenuContent>
+            <DropdownMenuItem onClick={() => handleEdit(segment.original)}>
               {intl.formatMessage({
                 id: `common.edit`,
                 defaultMessage: 'Edit'
@@ -130,8 +87,8 @@ const AssetRow: React.FC<AssetRowProps> = ({
             <DropdownMenuItem
               onClick={() =>
                 handleDialogOpen(
-                  asset.original.id || '',
-                  asset.original.name || ''
+                  segment.original.id || '',
+                  segment.original.name || ''
                 )
               }
             >
@@ -147,14 +104,14 @@ const AssetRow: React.FC<AssetRowProps> = ({
   )
 }
 
-export const AssetsDataTable: React.FC<AssetsTableProps> = (props) => {
+export const SegmentsDataTable: React.FC<SegmentsTableProps> = (props) => {
   const intl = useIntl()
   const { handleCreate, sheetProps } = useCreateUpdateSheet<any>()
   const { showInfo } = useCustomToast()
   const { currentLedger } = useOrganization()
 
   const {
-    assets,
+    segments,
     table,
     handleDialogOpen,
     handleEdit,
@@ -180,17 +137,17 @@ export const AssetsDataTable: React.FC<AssetsTableProps> = (props) => {
       </EntityBox.Root>
 
       <EntityDataTable.Root>
-        {isNil(assets?.items) || assets.items.length === 0 ? (
+        {isNil(segments?.items) || segments.items.length === 0 ? (
           <EmptyResource
             message={intl.formatMessage({
-              id: 'ledgers.assets.emptyResource',
-              defaultMessage: 'You have not created any assets yet.'
+              id: 'ledgers.segments.emptyResource',
+              defaultMessage: "You haven't created any Segments yet"
             })}
           >
-            <Button variant="default" onClick={handleCreate}>
+            <Button onClick={handleCreate}>
               {intl.formatMessage({
-                id: 'ledgers.assets.emptyResource.createButton',
-                defaultMessage: 'New Asset'
+                id: 'common.new.segment',
+                defaultMessage: 'New Segment'
               })}
             </Button>
           </EmptyResource>
@@ -201,20 +158,14 @@ export const AssetsDataTable: React.FC<AssetsTableProps> = (props) => {
                 <TableRow>
                   <TableHead>
                     {intl.formatMessage({
+                      id: 'common.id',
+                      defaultMessage: 'ID'
+                    })}
+                  </TableHead>
+                  <TableHead>
+                    {intl.formatMessage({
                       id: 'common.name',
                       defaultMessage: 'Name'
-                    })}
-                  </TableHead>
-                  <TableHead>
-                    {intl.formatMessage({
-                      id: 'common.type',
-                      defaultMessage: 'Type'
-                    })}
-                  </TableHead>
-                  <TableHead>
-                    {intl.formatMessage({
-                      id: 'common.code',
-                      defaultMessage: 'Code'
                     })}
                   </TableHead>
                   <TableHead>
@@ -232,17 +183,15 @@ export const AssetsDataTable: React.FC<AssetsTableProps> = (props) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {table.getRowModel().rows.map((asset) => {
-                  return (
-                    <AssetRow
-                      key={asset.id}
-                      asset={asset}
-                      handleCopyToClipboard={handleCopyToClipboard}
-                      handleDialogOpen={handleDialogOpen}
-                      handleEdit={handleEdit}
-                    />
-                  )
-                })}
+                {table.getRowModel().rows.map((segment) => (
+                  <SegmentRow
+                    key={segment.id}
+                    segment={segment}
+                    handleCopyToClipboard={handleCopyToClipboard}
+                    handleDialogOpen={handleDialogOpen}
+                    handleEdit={handleEdit}
+                  />
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
@@ -252,14 +201,14 @@ export const AssetsDataTable: React.FC<AssetsTableProps> = (props) => {
           <EntityDataTable.FooterText>
             {intl.formatMessage(
               {
-                id: 'ledgers.assets.showing',
+                id: 'ledgers.segments.showing',
                 defaultMessage:
-                  '{number, plural, =0 {No asset found} one {Showing {count} asset} other {Showing {count} assets}}.'
+                  '{number, plural, =0 {No segments found} one {Showing {count} segment} other {Showing {count} segments}}.'
               },
               {
-                number: assets?.items?.length,
+                number: segments?.items?.length || 0,
                 count: (
-                  <span className="font-bold">{assets?.items?.length}</span>
+                  <span className="font-bold">{segments?.items?.length}</span>
                 )
               }
             )}
@@ -267,7 +216,7 @@ export const AssetsDataTable: React.FC<AssetsTableProps> = (props) => {
           <Pagination total={total} {...pagination} />
         </EntityDataTable.Footer>
 
-        <AssetsSheet
+        <SegmentsSheet
           ledgerId={currentLedger.id}
           onSuccess={refetch}
           {...sheetProps}
