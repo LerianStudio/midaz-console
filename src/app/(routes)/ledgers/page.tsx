@@ -1,88 +1,181 @@
 'use client'
 
-import LedgersView from '@/app/(routes)/ledgers/ledgers-view'
-import { useListLedgers } from '@/client/ledgers'
-import { useListOrganizations } from '@/client/organizations'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
-import { useOrganization } from '@/context/organization-provider/organization-provider-client'
-import { AlertCircle } from 'lucide-react'
-import { useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
+import { PageHeader } from '@/components/page-header'
 import { useIntl } from 'react-intl'
-
-const DEFAULT_LIMIT = 10
-const DEFAULT_PAGE = 1
+import { Button } from '@/components/ui/button'
+import ConfirmationDialog from '@/components/confirmation-dialog'
+import {
+  getCoreRowModel,
+  getFilteredRowModel,
+  useReactTable
+} from '@tanstack/react-table'
+import { LedgersDataTable } from './ledgers-data-table'
+import { LedgersSheet } from './ledgers-sheet'
+import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
+import { useDeleteLedger, useListLedgers } from '@/client/ledgers'
+import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
+import { useOrganization } from '@/context/organization-provider/organization-provider-client'
+import { LedgersSkeleton } from './ledgers-skeleton'
+import useCustomToast from '@/hooks/use-custom-toast'
+import { useQueryParams } from '@/hooks/use-query-params'
 
 const Page = () => {
   const intl = useIntl()
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const limit = Number(searchParams.get('limit')) || DEFAULT_LIMIT
-  const page = Number(searchParams.get('page')) || DEFAULT_PAGE
-  const { currentOrganization, setOrganization } = useOrganization()
-  const { data: organizations } = useListOrganizations({})
-
-  React.useEffect(() => {
-    if (!currentOrganization && organizations?.items?.length! > 0) {
-      setOrganization(organizations!.items[0])
-    }
-  }, [currentOrganization, organizations, setOrganization])
+  const [total, setTotal] = React.useState(0)
+  const { currentOrganization, currentLedger } = useOrganization()
+  const { showSuccess, showError } = useCustomToast()
+  const [columnFilters, setColumnFilters] = React.useState<any>([])
+  const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>()
+  const { form, searchValues, pagination } = useQueryParams({ total })
 
   const {
     data: ledgers,
     refetch,
     isLoading
   } = useListLedgers({
-    organizationId: currentOrganization?.id!,
-    enabled: !!currentOrganization,
-    limit,
-    page
+    organizationId: currentOrganization.id!,
+    ledgerId: currentLedger.id,
+    ...(searchValues as any)
   })
 
-  if (!currentOrganization) {
-    return (
-      <div className="mt-4">
-        <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <div>
-            <AlertTitle>
-              {intl.formatMessage({
-                id: 'ledgersPage.alert.title',
-                defaultMessage: 'Organization Required'
-              })}
-            </AlertTitle>
-            <AlertDescription>
-              {intl.formatMessage({
-                id: 'ledgersPage.alert.description',
-                defaultMessage:
-                  'To use ledger features, you need to create an organization.'
-              })}
-            </AlertDescription>
-            <Button
-              variant="outline"
-              onClick={() => router.push('/settings')}
-              className="mt-4"
-            >
-              {intl.formatMessage({
-                id: 'homePage.dialog.footer.createOrganizationButton',
-                defaultMessage: 'Create Organization'
-              })}
-            </Button>
-          </div>
-        </Alert>
-      </div>
-    )
+  React.useEffect(() => {
+    setTotal(ledgers?.items.length || 0)
+  }, [ledgers?.items.length])
+
+  const {
+    handleDialogOpen,
+    dialogProps,
+    handleDialogClose,
+    data: ledgerName
+  } = useConfirmDialog({
+    onConfirm: (id: string) => deleteMutate({ id })
+  })
+
+  const { mutate: deleteMutate, isPending: deletePending } = useDeleteLedger({
+    organizationId: currentOrganization.id!,
+    onSuccess: () => {
+      handleDialogClose()
+      refetch()
+      showSuccess(
+        intl.formatMessage({
+          id: 'ledgers.toast.delete.success',
+          defaultMessage: 'Ledger successfully deleted'
+        })
+      )
+    },
+    onError: () => {
+      handleDialogClose()
+      showError(
+        intl.formatMessage({
+          id: 'ledgers.toast.delete.error',
+          defaultMessage: 'Error deleting Ledger'
+        })
+      )
+    }
+  })
+
+  const table = useReactTable({
+    data: ledgers?.items!,
+    columns: [
+      { accessorKey: 'id' },
+      { accessorKey: 'name' },
+      { accessorKey: 'assets' },
+      { accessorKey: 'metadata' },
+      { accessorKey: 'status' },
+      { accessorKey: 'actions' }
+    ],
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    state: {
+      columnFilters
+    }
+  })
+
+  const ledgersProps = {
+    ledgers,
+    table,
+    handleDialogOpen,
+    handleEdit,
+    refetch,
+    form,
+    pagination,
+    total
   }
 
   return (
-    <LedgersView
-      ledgers={ledgers}
-      refetch={refetch}
-      isLoading={isLoading}
-      defaultPageSize={limit}
-      defaultPage={page}
-    />
+    <React.Fragment>
+      <PageHeader.Root>
+        <PageHeader.Wrapper>
+          <PageHeader.InfoTitle
+            title={intl.formatMessage({
+              id: 'ledgers.title',
+              defaultMessage: 'Ledgers'
+            })}
+            subtitle={intl.formatMessage({
+              id: 'ledgers.subtitle',
+              defaultMessage:
+                'Visualize and edit the Ledgers of your Organization.'
+            })}
+          />
+          <PageHeader.ActionButtons>
+            <PageHeader.CollapsibleInfoTrigger
+              question={intl.formatMessage({
+                id: 'ledgers.helperTrigger.question',
+                defaultMessage: 'What is a Ledger?'
+              })}
+            />
+            <Button onClick={handleCreate} data-testid="new-ledger">
+              {intl.formatMessage({
+                id: 'ledgers.listingTemplate.addButton',
+                defaultMessage: 'New Ledger'
+              })}
+            </Button>
+          </PageHeader.ActionButtons>
+        </PageHeader.Wrapper>
+        <PageHeader.CollapsibleInfo
+          question={intl.formatMessage({
+            id: 'ledgers.helperTrigger.question',
+            defaultMessage: 'What is a Ledger?'
+          })}
+          answer={intl.formatMessage({
+            id: 'ledgers.helperTrigger.answer',
+            defaultMessage:
+              'Book with the record of all transactions and operations of the Organization.'
+          })}
+          seeMore={intl.formatMessage({
+            id: 'ledgers.helperTrigger.seeMore',
+            defaultMessage: 'Read the docs'
+          })}
+        />
+      </PageHeader.Root>
+
+      <ConfirmationDialog
+        title={intl.formatMessage({
+          id: 'ledgers.deleteDialog.title',
+          defaultMessage: 'Are you sure?'
+        })}
+        description={intl.formatMessage(
+          {
+            id: 'ledgers.deleteDialog.subtitle',
+            defaultMessage:
+              'This action is irreversible. This will deactivate your Ledger {ledgerName} forever'
+          },
+          { ledgerName: ledgerName as string }
+        )}
+        loading={deletePending}
+        {...dialogProps}
+      />
+
+      <LedgersSheet onSuccess={refetch} {...sheetProps} />
+
+      <div className="mt-10">
+        {isLoading && <LedgersSkeleton />}
+
+        {!isLoading && ledgers && <LedgersDataTable {...ledgersProps} />}
+      </div>
+    </React.Fragment>
   )
 }
 
