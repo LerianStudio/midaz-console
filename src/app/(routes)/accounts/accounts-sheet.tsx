@@ -20,7 +20,7 @@ import { MetadataField } from '@/components/form/metadata-field'
 import { useListSegments } from '@/client/segments'
 import { useCreateAccount, useUpdateAccount } from '@/client/accounts'
 import { useListPortfolios } from '@/client/portfolios'
-import { isNil, omitBy } from 'lodash'
+import { isNil, omit, omitBy } from 'lodash'
 import { useListAssets } from '@/client/assets'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { accounts } from '@/schema/account'
@@ -193,9 +193,10 @@ export const AccountSheet = ({
     const cleanedData = omitBy(data, (value) => value === '' || isNil(value))
 
     if (mode === 'create') {
+      const payload = omit(cleanedData, ['allowSending', 'allowReceiving'])
       createAccount({
-        ...cleanedData,
-        portfolioId: cleanedData.portfolioId
+        ...payload,
+        portfolioId: payload.portfolioId
       })
     } else if (mode === 'edit') {
       const { type, assetCode, ...updateData } = cleanedData
@@ -448,8 +449,10 @@ export const AccountSheet = ({
                           id: 'ledgers.account.field.allowSending',
                           defaultMessage: 'Allow Sending'
                         })}
+                        disabled={mode === 'create'}
                         required
                       />
+
                       <SwitchField
                         control={form.control}
                         name="allowReceiving"
@@ -461,6 +464,7 @@ export const AccountSheet = ({
                           id: 'ledgers.account.field.allowReceiving.tooltip',
                           defaultMessage: 'Operations enabled on this account'
                         })}
+                        disabled={mode === 'create'}
                         required
                       />
                     </div>

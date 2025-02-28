@@ -26,7 +26,6 @@ import { MetadataTableCell } from '../ledgers/[id]/MetadataTableCell'
 import { EntityDataTable } from '@/components/entity-data-table'
 import { EmptyResource } from '@/components/empty-resource'
 import { Pagination } from '@/components/pagination'
-import { EntityBox } from '@/components/entity-box'
 import { PaginationLimitField } from '@/components/form/pagination-limit-field'
 import { FormProvider } from 'react-hook-form'
 
@@ -120,13 +119,9 @@ export const AccountsDataTable: React.FC<AccountsTableProps> = ({
 
   return (
     <FormProvider {...form}>
-      <EntityBox.Root>
-        <EntityBox.Actions className="flex w-full justify-end gap-4">
-          <div className="col-start-3 flex justify-end">
-            <PaginationLimitField control={form.control} />
-          </div>
-        </EntityBox.Actions>
-      </EntityBox.Root>
+      <div className="flex justify-end">
+        <PaginationLimitField control={form.control} />
+      </div>
 
       <EntityDataTable.Root>
         {isNil(
