@@ -17,4 +17,5 @@ export class OtelTracerProvider {
   public endCustomSpan(span: Span): void {
     span.end()
   }
+
 }

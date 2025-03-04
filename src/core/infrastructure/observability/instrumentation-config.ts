@@ -39,14 +39,8 @@ const sdk = new NodeSDK({
   instrumentations: [
     new HttpInstrumentation(),
     new RuntimeNodeInstrumentation(),
-    new PinoInstrumentation({
-      logKeys: {
-        spanId: 'spanId',
-        traceId: 'traceId',
-        traceFlags: 'traceFlags'
-      }
-    }),
-    new UndiciInstrumentation({})
+    new PinoInstrumentation(),
+    new UndiciInstrumentation()
   ]
 })
 

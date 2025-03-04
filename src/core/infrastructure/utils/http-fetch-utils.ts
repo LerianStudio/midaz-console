@@ -45,6 +45,7 @@ export class MidazHttpFetchUtils {
     }
 
     const customSpan = this.otelTracerProvider.startCustomSpan('midaz-request')
+
     const response = await fetch(httpFetchOptions.url, {
       method: httpFetchOptions.method,
       body: httpFetchOptions.body,
