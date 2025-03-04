@@ -1,4 +1,4 @@
-import pino, { Logger, LoggerOptions } from 'pino'
+import pino, { BaseLogger, LoggerOptions } from 'pino'
 import { injectable } from 'inversify'
 import {
   LogContext,
@@ -10,13 +10,13 @@ import pretty from 'pino-pretty'
 
 @injectable()
 export class PinoLoggerRepository implements LoggerRepository {
-  private logger: Logger
+  private logger: BaseLogger
 
   constructor() {
     this.logger = this.initializeLogger()
   }
 
-  private initializeLogger(): Logger {
+  private initializeLogger(): BaseLogger {
     const isDebugEnabled = process.env.ENABLE_DEBUG === 'true'
     const loggerOptions: LoggerOptions = {
       level: isDebugEnabled ? 'debug' : 'info',
@@ -60,26 +60,26 @@ export class PinoLoggerRepository implements LoggerRepository {
 
   info(message: string, context: LogContext, metadata?: LogMetadata): void {
     const logEntry = this.createLogEntry('INFO', message, metadata, context)
-    this.logger.info(logEntry)
+    this.logger.info(JSON.stringify(logEntry))
   }
 
   error(message: string, context: LogContext, metadata?: LogMetadata): void {
     const logEntry = this.createLogEntry('ERROR', message, metadata, context)
-    this.logger.error(logEntry)
+    this.logger.error(JSON.stringify(logEntry))
   }
 
   warn(message: string, context: LogContext, metadata?: LogMetadata): void {
     const logEntry = this.createLogEntry('WARN', message, metadata, context)
-    this.logger.warn(logEntry)
+    this.logger.warn(JSON.stringify(logEntry))
   }
 
   debug(message: string, context: LogContext, metadata?: LogMetadata): void {
     const logEntry = this.createLogEntry('DEBUG', message, metadata, context)
-    this.logger.debug(logEntry)
+    this.logger.debug(JSON.stringify(logEntry))
   }
 
   audit(message: string, context: LogContext, metadata?: LogMetadata): void {
     const logEntry = this.createLogEntry('AUDIT', message, metadata, context)
-    this.logger.info(logEntry)
+    this.logger.info(JSON.stringify(logEntry))
   }
 }
