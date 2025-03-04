@@ -1,5 +1,5 @@
-import { Span, trace, Tracer } from "@opentelemetry/api";
-import { injectable } from "inversify";
+import { Span, trace, Tracer } from '@opentelemetry/api'
+import { injectable } from 'inversify'
 
 @injectable()
 export class OtelTracerProvider {
@@ -17,5 +17,4 @@ export class OtelTracerProvider {
   public endCustomSpan(span: Span): void {
     span.end()
   }
-
 }
