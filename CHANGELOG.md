@@ -1,3 +1,27 @@
+# [1.12.0](https://github.com/LerianStudio/midaz-console/compare/v1.11.0...v1.12.0) (2025-02-27)
+
+
+### Features
+
+* integrate segments in the sidebar ([8475d09](https://github.com/LerianStudio/midaz-console/commit/8475d0948bc4ada4a54910669c0b3819ded6e8e5))
+* update the intl files ([b46c405](https://github.com/LerianStudio/midaz-console/commit/b46c405b17c29c8f6d07fe0d92fed70b54e66ea1))
+
+# [1.11.0](https://github.com/LerianStudio/midaz-console/compare/v1.10.0...v1.11.0) (2025-02-26)
+
+
+### Bug Fixes
+
+* put the correct types instead any ([aefe7aa](https://github.com/LerianStudio/midaz-console/commit/aefe7aa134098d49938826fb6f12c9991d717a28))
+* removing console.log from assets-data-table ([1bf672d](https://github.com/LerianStudio/midaz-console/commit/1bf672df0a959dccba0822a178dacf321ffa423c))
+* wrong article in asset message ([93e8fb6](https://github.com/LerianStudio/midaz-console/commit/93e8fb69395a58dfd354d66cdfbaeb834a33cd2c))
+
+
+### Features
+
+* add assets route in sidebar and sync with ledger selector ([ee13e4a](https://github.com/LerianStudio/midaz-console/commit/ee13e4a39505918a125514f14919dd71df22b1a9))
+* pick ledger id by ledger selector instead path params ([8259d74](https://github.com/LerianStudio/midaz-console/commit/8259d749775a399d11a76d931144584cc6ad325e))
+* update the pt intl file ([f5ffaaf](https://github.com/LerianStudio/midaz-console/commit/f5ffaaf21756c252c2b8790df7096dbd18907074))
+
 # [1.10.0](https://github.com/LerianStudio/midaz-console/compare/v1.9.1...v1.10.0) (2025-02-26)
 
 
