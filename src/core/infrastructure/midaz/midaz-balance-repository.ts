@@ -43,18 +43,14 @@ export class MidazBalanceRepository implements BalanceRepository {
       accountId
     )
 
-    console.log('GET RESPONSE', balanceResponse)
-
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/balances/${balanceResponse?.items[0]?.id}`
-    console.log('here', url, balance)
+
     const response =
       await this.midazHttpFetchUtils.httpMidazAuthFetch<BalanceEntity>({
         url,
         method: HTTP_METHODS.PATCH,
         body: JSON.stringify(balance)
       })
-
-    console.log('PATCH RESPONSE', response)
 
     return response
   }
