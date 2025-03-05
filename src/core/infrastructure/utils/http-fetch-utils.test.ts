@@ -1,8 +1,15 @@
-import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
-import { getServerSession } from 'next-auth'
+import {
+  MidazHttpFetchUtils,
+  HTTP_METHODS,
+  HttpFetchOptions
+} from './http-fetch-utils'
 import { MidazRequestContext } from '../logger/decorators/midaz-id'
-import { HTTP_METHODS, MidazHttpFetchUtils } from './http-fetch-utils'
+import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
+import { OtelTracerProvider } from '../observability/otel-tracer-provider'
+import { getServerSession } from 'next-auth'
+import { nextAuthCasdoorOptions } from '../next-auth/casdoor/next-auth-casdoor-provider'
 import { handleMidazError } from './midaz-error-handler'
+import { SpanStatusCode } from '@opentelemetry/api'
 
 jest.mock('next-auth', () => ({
   getServerSession: jest.fn()
@@ -14,28 +21,37 @@ jest.mock('./midaz-error-handler', () => ({
   })
 }))
 
-jest.mock('../next-auth/casdoor/next-auth-casdoor-provider', () => ({
-  nextAuthCasdoorOptions: {}
-}))
+jest.mock('../next-auth/casdoor/next-auth-casdoor-provider')
+jest.mock('../logger/decorators/midaz-id')
 
 describe('MidazHttpFetchUtils', () => {
   let midazHttpFetchUtils: MidazHttpFetchUtils
   let midazRequestContext: MidazRequestContext
   let midazLogger: LoggerAggregator
+  let otelTracerProvider: OtelTracerProvider
 
   beforeEach(() => {
-    midazRequestContext = {
-      getMidazId: jest.fn().mockReturnValue('test-request-id')
-    } as unknown as MidazRequestContext
+    midazRequestContext = new MidazRequestContext()
 
     midazLogger = {
       error: jest.fn(),
       info: jest.fn()
     } as unknown as LoggerAggregator
 
+    otelTracerProvider = {
+      startCustomSpan: jest.fn().mockImplementation(() => {
+        return {
+          setAttributes: jest.fn().mockReturnThis(),
+          setStatus: jest.fn().mockReturnThis()
+        }
+      }),
+      endCustomSpan: jest.fn()
+    } as unknown as OtelTracerProvider
+
     midazHttpFetchUtils = new MidazHttpFetchUtils(
       midazRequestContext,
-      midazLogger
+      midazLogger,
+      otelTracerProvider
     )
   })
 
@@ -43,7 +59,7 @@ describe('MidazHttpFetchUtils', () => {
     jest.clearAllMocks()
   })
 
-  it('should successfully fetch data', async () => {
+  it('should make a successful fetch request', async () => {
     const mockResponse = { data: 'test' }
     const mockFetch = jest.fn().mockResolvedValue({
       ok: true,
@@ -63,7 +79,10 @@ describe('MidazHttpFetchUtils', () => {
 
     const result = await midazHttpFetchUtils.httpMidazAuthFetch({
       url: 'https://api.example.com/test',
-      method: HTTP_METHODS.GET
+      method: HTTP_METHODS.GET,
+      headers: {
+        'Custom-Header': 'CustomValue'
+      }
     })
 
     expect(result).toEqual(mockResponse)
@@ -77,7 +96,7 @@ describe('MidazHttpFetchUtils', () => {
     )
   })
 
-  it('should handle fetch error', async () => {
+  it('should handle fetch request error', async () => {
     const mockErrorResponse = { error: 'test error' }
     const mockFetch = jest.fn().mockResolvedValue({
       ok: false,
@@ -128,7 +147,8 @@ describe('MidazHttpFetchUtils', () => {
       url: 'https://api.example.com/test',
       method: HTTP_METHODS.GET,
       headers: {
-        'Custom-Header': 'CustomValue'
+        'Custom-Header': 'CustomValue',
+        'X-Request-Id': 'test-request-id'
       }
     })
 
@@ -142,5 +162,28 @@ describe('MidazHttpFetchUtils', () => {
         'Custom-Header': 'CustomValue'
       }
     })
+  })
+
+  it('should start and end a custom span', async () => {
+    const mockResponse = { data: 'test' }
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: jest.fn().mockResolvedValue(mockResponse),
+      body: true,
+      status: 200
+    })
+    ;(getServerSession as jest.Mock).mockResolvedValue({
+      user: { access_token: 'test-token' }
+    })
+
+    await midazHttpFetchUtils.httpMidazAuthFetch({
+      url: 'https://api.example.com/test',
+      method: HTTP_METHODS.GET
+    })
+
+    expect(otelTracerProvider.startCustomSpan).toHaveBeenCalledWith(
+      'midaz-request'
+    )
+    expect(otelTracerProvider.endCustomSpan).toHaveBeenCalled()
   })
 })
