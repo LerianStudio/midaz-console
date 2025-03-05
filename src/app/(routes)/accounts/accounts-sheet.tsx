@@ -193,20 +193,16 @@ export const AccountSheet = ({
     const cleanedData = omitBy(data, (value) => value === '' || isNil(value))
 
     if (mode === 'create') {
-      const payload = omit(cleanedData, ['allowSending', 'allowReceiving'])
       createAccount({
-        ...payload,
-        portfolioId: payload.portfolioId
+        ...cleanedData
       })
+
+      form.reset(initialValues)
     } else if (mode === 'edit') {
       const { type, assetCode, ...updateData } = cleanedData
 
-      updateAccount({
-        ...updateData
-      })
+      updateAccount(updateData)
     }
-
-    form.reset(initialValues)
   }
 
   React.useEffect(() => {
@@ -446,10 +442,19 @@ export const AccountSheet = ({
                         control={form.control}
                         name="allowSending"
                         label={intl.formatMessage({
-                          id: 'ledgers.account.field.allowSending',
+                          id: 'accounts.field.allowSending',
                           defaultMessage: 'Allow Sending'
                         })}
                         disabled={mode === 'create'}
+                        disabledTooltip={
+                          mode === 'create'
+                            ? intl.formatMessage({
+                                id: 'accounts.field.allowOperation.disabledTooltip',
+                                defaultMessage:
+                                  'It is not possible to disable at creation time.'
+                              })
+                            : undefined
+                        }
                         required
                       />
 
@@ -461,9 +466,18 @@ export const AccountSheet = ({
                           defaultMessage: 'Allow Receiving'
                         })}
                         tooltip={intl.formatMessage({
-                          id: 'ledgers.account.field.allowReceiving.tooltip',
+                          id: 'accounts.field.allowReceiving.tooltip',
                           defaultMessage: 'Operations enabled on this account'
                         })}
+                        disabledTooltip={
+                          mode === 'create'
+                            ? intl.formatMessage({
+                                id: 'accounts.field.allowOperation.disabledTooltip',
+                                defaultMessage:
+                                  'It is not possible to disable at creation time.'
+                              })
+                            : undefined
+                        }
                         disabled={mode === 'create'}
                         required
                       />
