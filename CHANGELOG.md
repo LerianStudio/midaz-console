@@ -1,3 +1,19 @@
+# [1.13.0](https://github.com/LerianStudio/midaz-console/compare/v1.12.0...v1.13.0) (2025-03-05)
+
+
+### Bug Fixes
+
+* audit vulnerabilities ([79f48cf](https://github.com/LerianStudio/midaz-console/commit/79f48cff2e1fc9e697083a5f220cfedeaac9018e))
+* build error ([0524ccc](https://github.com/LerianStudio/midaz-console/commit/0524cccad6733fe50e45320a73c3773e7322fd10))
+* build erros ([dbff849](https://github.com/LerianStudio/midaz-console/commit/dbff849b22c1d885b1876afdee1cc46232fc0e19))
+* http-fetch-utils-test adjusting new instrumentation dependency ([07ac153](https://github.com/LerianStudio/midaz-console/commit/07ac153d32eeaa185488983e4aab4195f8066abd))
+
+
+### Features
+
+* otel tracer provider to send custom span ([66e10ac](https://github.com/LerianStudio/midaz-console/commit/66e10accfc61fbe40ee88ad442cda2a3275f314a))
+* send logs to otel ([7c2c171](https://github.com/LerianStudio/midaz-console/commit/7c2c1712100a720432dd3b1c89819aa6a69eff95))
+
 # [1.12.0](https://github.com/LerianStudio/midaz-console/compare/v1.11.0...v1.12.0) (2025-02-27)
 
 
