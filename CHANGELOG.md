@@ -1,3 +1,20 @@
+# [1.14.0](https://github.com/LerianStudio/midaz-console/compare/v1.13.0...v1.14.0) (2025-03-06)
+
+
+### Bug Fixes
+
+* remove console.log from balance repository ([d785cd1](https://github.com/LerianStudio/midaz-console/commit/d785cd1e640a9d2fed6c99cb2ff9dcbf32986952))
+
+
+### Features
+
+* Created balance repository ([a238783](https://github.com/LerianStudio/midaz-console/commit/a2387839043c4243a158bb52eaa5b81d88d7c0bb))
+* Implemented balances on use cases ([2f02085](https://github.com/LerianStudio/midaz-console/commit/2f020854a817a59bfeb29740b984778a8448ab60))
+* integrate accounts in the sidebar ([fb25780](https://github.com/LerianStudio/midaz-console/commit/fb25780027e22e18f40faed5479311f317490aea))
+* remove balance update on account creation ([4b925c4](https://github.com/LerianStudio/midaz-console/commit/4b925c4b66d777d481facf4f952b22862d9f45be))
+* update handleSubmit and add tooltip for disabled switch ([1250993](https://github.com/LerianStudio/midaz-console/commit/1250993f8dc14fa724e394aebeabe0ea040beb4d))
+* Updated required fields on accounts sheet ([103fd6b](https://github.com/LerianStudio/midaz-console/commit/103fd6b84fcaa5ebf299a886303a375a676c6c7b))
+
 # [1.13.0](https://github.com/LerianStudio/midaz-console/compare/v1.12.0...v1.13.0) (2025-03-05)
 
 
