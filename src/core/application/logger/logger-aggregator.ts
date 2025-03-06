@@ -114,6 +114,25 @@ export class LoggerAggregator {
       // const logLevel = this.determineLogLevel(context.events)
       // Log the final timeline using the logger repository
 
+      const logEventInfo = `${context.method} ${context.path}`
+      const LogEventDetails = {
+        events: context.events.map((event) => ({
+          timestamp: new Date(event.timestamp).toISOString(),
+          level: event.level?.toUpperCase() || 'INFO',
+          message: event.message,
+          layer: event.layer,
+          operation: event.operation,
+          ...(event.error && { error: event.error }),
+          ...(event.context && { context: event.context })
+        }))
+      }
+      const logEventExecution = {
+        duration: `${duration}s`,
+        path: context.path,
+        method: context.method,
+        ...context.metadata
+      }
+
       this.loggerRepository.info(
         `${context.method} ${context.path}`,
         {

@@ -1,3 +1,36 @@
+# [1.14.0](https://github.com/LerianStudio/midaz-console/compare/v1.13.0...v1.14.0) (2025-03-06)
+
+
+### Bug Fixes
+
+* remove console.log from balance repository ([d785cd1](https://github.com/LerianStudio/midaz-console/commit/d785cd1e640a9d2fed6c99cb2ff9dcbf32986952))
+
+
+### Features
+
+* Created balance repository ([a238783](https://github.com/LerianStudio/midaz-console/commit/a2387839043c4243a158bb52eaa5b81d88d7c0bb))
+* Implemented balances on use cases ([2f02085](https://github.com/LerianStudio/midaz-console/commit/2f020854a817a59bfeb29740b984778a8448ab60))
+* integrate accounts in the sidebar ([fb25780](https://github.com/LerianStudio/midaz-console/commit/fb25780027e22e18f40faed5479311f317490aea))
+* remove balance update on account creation ([4b925c4](https://github.com/LerianStudio/midaz-console/commit/4b925c4b66d777d481facf4f952b22862d9f45be))
+* update handleSubmit and add tooltip for disabled switch ([1250993](https://github.com/LerianStudio/midaz-console/commit/1250993f8dc14fa724e394aebeabe0ea040beb4d))
+* Updated required fields on accounts sheet ([103fd6b](https://github.com/LerianStudio/midaz-console/commit/103fd6b84fcaa5ebf299a886303a375a676c6c7b))
+
+# [1.13.0](https://github.com/LerianStudio/midaz-console/compare/v1.12.0...v1.13.0) (2025-03-05)
+
+
+### Bug Fixes
+
+* audit vulnerabilities ([79f48cf](https://github.com/LerianStudio/midaz-console/commit/79f48cff2e1fc9e697083a5f220cfedeaac9018e))
+* build error ([0524ccc](https://github.com/LerianStudio/midaz-console/commit/0524cccad6733fe50e45320a73c3773e7322fd10))
+* build erros ([dbff849](https://github.com/LerianStudio/midaz-console/commit/dbff849b22c1d885b1876afdee1cc46232fc0e19))
+* http-fetch-utils-test adjusting new instrumentation dependency ([07ac153](https://github.com/LerianStudio/midaz-console/commit/07ac153d32eeaa185488983e4aab4195f8066abd))
+
+
+### Features
+
+* otel tracer provider to send custom span ([66e10ac](https://github.com/LerianStudio/midaz-console/commit/66e10accfc61fbe40ee88ad442cda2a3275f314a))
+* send logs to otel ([7c2c171](https://github.com/LerianStudio/midaz-console/commit/7c2c1712100a720432dd3b1c89819aa6a69eff95))
+
 # [1.12.0](https://github.com/LerianStudio/midaz-console/compare/v1.11.0...v1.12.0) (2025-02-27)
 
 

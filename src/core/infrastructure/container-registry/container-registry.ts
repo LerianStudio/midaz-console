@@ -16,6 +16,7 @@ import { MidazRequestContext } from '../logger/decorators/midaz-id'
 import { TransactionUseCaseModule } from './use-cases/transactions-module'
 import { MidazHttpFetchModule } from './midaz-http-fetch-module'
 import { OnboardingUseCaseModule } from './use-cases/onboarding-module'
+import { OtelModule } from './observability/otel-module'
 
 export const container = new Container()
 
@@ -36,6 +37,7 @@ container.load(LoggerApplicationModule)
 container.load(TransactionUseCaseModule)
 
 container.load(MidazHttpFetchModule)
+container.load(OtelModule)
 
 container
   .bind<MidazRequestContext>(MidazRequestContext)

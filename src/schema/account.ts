@@ -19,7 +19,7 @@ const allowSending = z.boolean()
 
 const allowReceiving = z.boolean()
 
-export const accountSchema = z.object({
+export const accounts = {
   name,
   alias,
   entityId,
@@ -30,4 +30,4 @@ export const accountSchema = z.object({
   type,
   allowSending,
   allowReceiving
-})
+}

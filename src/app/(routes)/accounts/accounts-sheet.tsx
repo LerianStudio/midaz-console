@@ -11,7 +11,7 @@ import {
   SheetTitle
 } from '@/components/ui/sheet'
 import { Form } from '@/components/ui/form'
-import { useParams, usePathname, useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useIntl } from 'react-intl'
 import { DialogProps } from '@radix-ui/react-dialog'
 import { LoadingButton } from '@/components/ui/loading-button'
@@ -20,7 +20,7 @@ import { MetadataField } from '@/components/form/metadata-field'
 import { useListSegments } from '@/client/segments'
 import { useCreateAccount, useUpdateAccount } from '@/client/accounts'
 import { useListPortfolios } from '@/client/portfolios'
-import { isNil, omitBy } from 'lodash'
+import { isNil, omit, omitBy } from 'lodash'
 import { useListAssets } from '@/client/assets'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { accounts } from '@/schema/account'
@@ -80,17 +80,16 @@ export const AccountSheet = ({
   const intl = useIntl()
   const pathname = usePathname()
   const router = useRouter()
-  const { id: ledgerId } = useParams<{ id: string }>()
-  const { currentOrganization } = useOrganization()
+  const { currentOrganization, currentLedger } = useOrganization()
 
   const { data: rawSegmentListData } = useListSegments({
     organizationId: currentOrganization.id!,
-    ledgerId
+    ledgerId: currentLedger.id
   })
 
   const { data: rawPortfolioData } = useListPortfolios({
     organizationId: currentOrganization.id!,
-    ledgerId
+    ledgerId: currentLedger.id
   })
 
   const portfolioListData = useMemo(() => {
@@ -113,7 +112,7 @@ export const AccountSheet = ({
 
   const { data: rawAssetListData } = useListAssets({
     organizationId: currentOrganization.id!,
-    ledgerId
+    ledgerId: currentLedger.id
   })
 
   const assetListData = useMemo(() => {
@@ -134,7 +133,7 @@ export const AccountSheet = ({
 
   const { mutate: createAccount, isPending: createPending } = useCreateAccount({
     organizationId: currentOrganization.id!,
-    ledgerId,
+    ledgerId: currentLedger.id,
     onSuccess: (data) => {
       onSuccess?.()
       onOpenChange?.(false)
@@ -160,7 +159,7 @@ export const AccountSheet = ({
 
   const { mutate: updateAccount, isPending: updatePending } = useUpdateAccount({
     organizationId: currentOrganization.id!,
-    ledgerId,
+    ledgerId: currentLedger.id,
     accountId: data?.id!,
     onSuccess: (data) => {
       onSuccess?.()
@@ -195,21 +194,17 @@ export const AccountSheet = ({
 
     if (mode === 'create') {
       createAccount({
-        ...cleanedData,
-        portfolioId: cleanedData.portfolioId
+        ...cleanedData
       })
+
+      form.reset(initialValues)
     } else if (mode === 'edit') {
       const { type, assetCode, ...updateData } = cleanedData
 
-      updateAccount({
-        ...updateData
-      })
+      updateAccount(updateData)
     }
-
-    form.reset(initialValues)
   }
 
-  // Resets information if using creation mode
   React.useEffect(() => {
     if (mode === 'create') {
       form.reset(initialValues)
@@ -398,7 +393,6 @@ export const AccountSheet = ({
                             defaultMessage:
                               'Identification number (EntityId) of the Account holder'
                           })}
-                          required
                         />
                         <SelectField
                           control={form.control}
@@ -435,7 +429,6 @@ export const AccountSheet = ({
                         defaultMessage:
                           'Category (cluster) of clients with specific characteristics'
                       })}
-                      required
                     >
                       {segmentListData?.map((segment) => (
                         <SelectItem key={segment.value} value={segment.value}>
@@ -449,11 +442,22 @@ export const AccountSheet = ({
                         control={form.control}
                         name="allowSending"
                         label={intl.formatMessage({
-                          id: 'ledgers.account.field.allowSending',
+                          id: 'accounts.field.allowSending',
                           defaultMessage: 'Allow Sending'
                         })}
+                        disabled={mode === 'create'}
+                        disabledTooltip={
+                          mode === 'create'
+                            ? intl.formatMessage({
+                                id: 'accounts.field.allowOperation.disabledTooltip',
+                                defaultMessage:
+                                  'It is not possible to disable at creation time.'
+                              })
+                            : undefined
+                        }
                         required
                       />
+
                       <SwitchField
                         control={form.control}
                         name="allowReceiving"
@@ -462,9 +466,19 @@ export const AccountSheet = ({
                           defaultMessage: 'Allow Receiving'
                         })}
                         tooltip={intl.formatMessage({
-                          id: 'ledgers.account.field.allowReceiving.tooltip',
+                          id: 'accounts.field.allowReceiving.tooltip',
                           defaultMessage: 'Operations enabled on this account'
                         })}
+                        disabledTooltip={
+                          mode === 'create'
+                            ? intl.formatMessage({
+                                id: 'accounts.field.allowOperation.disabledTooltip',
+                                defaultMessage:
+                                  'It is not possible to disable at creation time.'
+                              })
+                            : undefined
+                        }
+                        disabled={mode === 'create'}
                         required
                       />
                     </div>

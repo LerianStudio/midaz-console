@@ -420,5 +420,13 @@
   "segments.helperTrigger.answer": "Livro com o registro de todas as transações e operações da Organização.",
   "segments.helperTrigger.question": "O que é um segmento?",
   "segments.listingTemplate.addButton": "Novo segmento",
-  "segments.subtitle": "Gerencie os segmentos deste ledger."
+  "segments.subtitle": "Gerencie os segmentos deste ledger.",
+  "accounts.delete.description": "Você excluirá uma conta",
+  "accounts.field.allowOperation.disabledTooltip": "Não é possível desabilitar no momento da criação.",
+  "accounts.field.allowReceiving.tooltip": "Operações habilitadas nesta conta",
+  "accounts.field.allowSending": "Permitir Envio",
+  "accounts.helperTrigger.answer": "Livro com o registro de todas as transações e operações da Organização.",
+  "accounts.helperTrigger.question": "O que é uma Conta?",
+  "accounts.listingTemplate.addButton": "Nova Conta",
+  "accounts.subtitle": "Gerencie as contas deste ledger."
 }

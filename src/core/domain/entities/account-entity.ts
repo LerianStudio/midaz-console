@@ -13,8 +13,6 @@ export type AccountEntity = {
   type: string
   assetCode: string
   status: StatusEntity
-  allowSending?: boolean
-  allowReceiving?: boolean
   metadata: Record<string, any>
   createdAt?: Date
   updatedAt?: Date
