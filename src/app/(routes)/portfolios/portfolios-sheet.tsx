@@ -26,7 +26,6 @@ import { TabsContent } from '@radix-ui/react-tabs'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 export type PortfolioSheetProps = DialogProps & {
-  ledgerId: string
   mode: 'create' | 'edit'
   data?: PortfolioResponseDto | null
   onSucess?: () => void
@@ -48,13 +47,12 @@ export const PortfolioSheet = ({
   ...others
 }: PortfolioSheetProps) => {
   const intl = useIntl()
-  const { id: ledgerId } = useParams<{ id: string }>()
-  const { currentOrganization } = useOrganization()
+  const { currentOrganization, currentLedger } = useOrganization()
 
   const { mutate: createPortfolio, isPending: createPending } =
     useCreatePortfolio({
       organizationId: currentOrganization.id!,
-      ledgerId: ledgerId,
+      ledgerId: currentLedger.id,
       onSuccess: () => {
         onSucess?.()
         onOpenChange?.(false)
@@ -64,7 +62,7 @@ export const PortfolioSheet = ({
   const { mutate: updatePortfolio, isPending: updatePending } =
     useUpdatePortfolio({
       organizationId: currentOrganization.id!,
-      ledgerId,
+      ledgerId: currentLedger.id,
       portfolioId: data?.id!,
       onSuccess: () => {
         onSucess?.()
@@ -91,7 +89,6 @@ export const PortfolioSheet = ({
     form.reset(defaultValues)
   }
 
-  // Resets information if using creation mode
   React.useEffect(() => {
     if (mode === 'create') {
       form.reset(defaultValues)
@@ -110,7 +107,7 @@ export const PortfolioSheet = ({
   }, [data])
 
   return (
-    <>
+    <React.Fragment>
       <Sheet onOpenChange={onOpenChange} {...others}>
         <SheetContent onOpenAutoFocus={(e) => e.preventDefault()}>
           {mode === 'create' && (
@@ -231,6 +228,6 @@ export const PortfolioSheet = ({
           </Form>
         </SheetContent>
       </Sheet>
-    </>
+    </React.Fragment>
   )
 }

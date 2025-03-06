@@ -152,11 +152,7 @@ const Page = () => {
         {...dialogProps}
       />
 
-      <PortfolioSheet
-        ledgerId={currentLedger.id}
-        onSucess={refetch}
-        {...sheetProps}
-      />
+      <PortfolioSheet onSucess={refetch} {...sheetProps} />
 
       <div className="mt-10">
         {isLoadingPortfolios && <PortfoliosSkeleton />}
