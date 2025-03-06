@@ -28,7 +28,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 export type PortfolioSheetProps = DialogProps & {
   mode: 'create' | 'edit'
   data?: PortfolioResponseDto | null
-  onSucess?: () => void
+  onSuccess?: () => void
 }
 
 const defaultValues = {
@@ -42,7 +42,7 @@ type FormData = z.infer<typeof portfolioSchema>
 export const PortfolioSheet = ({
   mode,
   data,
-  onSucess,
+  onSuccess,
   onOpenChange,
   ...others
 }: PortfolioSheetProps) => {
@@ -54,7 +54,7 @@ export const PortfolioSheet = ({
       organizationId: currentOrganization.id!,
       ledgerId: currentLedger.id,
       onSuccess: () => {
-        onSucess?.()
+        onSuccess?.()
         onOpenChange?.(false)
       }
     })
@@ -65,7 +65,7 @@ export const PortfolioSheet = ({
       ledgerId: currentLedger.id,
       portfolioId: data?.id!,
       onSuccess: () => {
-        onSucess?.()
+        onSuccess?.()
         onOpenChange?.(false)
       }
     })
