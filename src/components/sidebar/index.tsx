@@ -78,15 +78,6 @@ export const Sidebar = () => {
             })}
           </SidebarGroupTitle>
 
-          {/* <SidebarItem
-            title={intl.formatMessage({
-              id: 'sideBar.ledger.overview',
-              defaultMessage: 'Overview'
-            })}
-            icon={<Gauge />}
-            href="/overview"
-          /> */}
-
           <SidebarItem
             title={intl.formatMessage({
               id: 'common.transactions',

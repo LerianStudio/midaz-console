@@ -19,13 +19,13 @@ import { getBreadcrumbPaths } from '@/components/breadcrumb/get-breadcrumb-paths
 import { Breadcrumb } from '@/components/breadcrumb'
 import { PageHeader } from '@/components/page-header'
 import { Button } from '@/components/ui/button'
+import useCustomToast from '@/hooks/use-custom-toast'
 
 const Page = () => {
   const intl = useIntl()
   const { currentOrganization, currentLedger } = useOrganization()
-
+  const { showSuccess, showError } = useCustomToast()
   const [total, setTotal] = useState(0)
-
   const { form, searchValues, pagination } = useQueryParams({
     total
   })
@@ -51,6 +51,21 @@ const Page = () => {
       onSuccess: () => {
         handleDialogClose()
         refetch()
+        showSuccess(
+          intl.formatMessage({
+            id: 'portfolios.toast.delete.success',
+            defaultMessage: 'Portfolio successfully deleted'
+          })
+        )
+      },
+      onError: () => {
+        handleDialogClose()
+        showError(
+          intl.formatMessage({
+            id: 'portfolios.toast.delete.error',
+            defaultMessage: 'Error deleting Portfolio'
+          })
+        )
       }
     })
 
