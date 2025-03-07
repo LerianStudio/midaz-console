@@ -1,4 +1,5 @@
 import { UpdateUserPasswordRepository } from '@/core/domain/repositories/users/update-user-password-repository'
+import { inject } from 'inversify'
 
 export interface UpdateUserPassword {
   execute: (
@@ -10,6 +11,7 @@ export interface UpdateUserPassword {
 
 export class UpdateUserPasswordUseCase implements UpdateUserPassword {
   constructor(
+    @inject(UpdateUserPasswordRepository)
     private readonly updateUserPasswordRepository: UpdateUserPasswordRepository
   ) {}
 

@@ -1,6 +1,7 @@
 import { FetchUserByIdRepository } from '@/core/domain/repositories/users/fetch-user-by-id-repository'
 import { UserResponseDto } from '../../dto/user-dto'
 import { UserMapper } from '../../mappers/user-mapper'
+import { inject } from 'inversify'
 
 export interface FetchUserById {
   execute: (userId: string) => Promise<UserResponseDto>
@@ -8,6 +9,7 @@ export interface FetchUserById {
 
 export class FetchUserByIdUseCase implements FetchUserById {
   constructor(
+    @inject(FetchUserByIdRepository)
     private readonly fetchUserByIdRepository: FetchUserByIdRepository
   ) {}
 

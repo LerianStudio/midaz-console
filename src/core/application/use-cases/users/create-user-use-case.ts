@@ -1,4 +1,4 @@
-import { injectable } from 'inversify'
+import { inject, injectable } from 'inversify'
 import { CreateUserDto, UserResponseDto } from '../../dto/user-dto'
 import { CreateUserRepository } from '@/core/domain/repositories/users/create-user-repository'
 import { UserMapper } from '../../mappers/user-mapper'
@@ -9,7 +9,10 @@ export interface CreateUser {
 
 @injectable()
 export class CreateUserUseCase implements CreateUser {
-  constructor(private readonly createUserRepository: CreateUserRepository) {}
+  constructor(
+    @inject(CreateUserRepository)
+    private readonly createUserRepository: CreateUserRepository
+  ) {}
 
   async execute(user: CreateUserDto): Promise<UserResponseDto> {
     const userEntity = UserMapper.toDomain(user)

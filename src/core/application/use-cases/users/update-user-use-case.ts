@@ -3,6 +3,7 @@ import { UpdateUserDto, UserResponseDto } from '../../dto/user-dto'
 import { FetchUserByIdRepository } from '@/core/domain/repositories/users/fetch-user-by-id-repository'
 import { UserMapper } from '../../mappers/user-mapper'
 import { UserEntity } from '@/core/domain/entities/user-entity'
+import { inject } from 'inversify'
 
 export interface UpdateUser {
   execute: (
@@ -13,7 +14,9 @@ export interface UpdateUser {
 
 export class UpdateUserUseCase implements UpdateUser {
   constructor(
+    @inject(UpdateUserRepository)
     private readonly updateUserRepository: UpdateUserRepository,
+    @inject(FetchUserByIdRepository)
     private readonly fetchUserByIdRepository: FetchUserByIdRepository
   ) {}
 
@@ -23,7 +26,6 @@ export class UpdateUserUseCase implements UpdateUser {
   ): Promise<UserResponseDto> {
     const userExists = await this.fetchUserByIdRepository.fetchById(userId)
 
-    // TODO
     if (!userExists) {
       throw new Error('User not found')
     }
