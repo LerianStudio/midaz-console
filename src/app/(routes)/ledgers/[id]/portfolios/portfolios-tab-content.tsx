@@ -126,7 +126,7 @@ export const PortfoliosTabContent = () => {
         <EntityBox.Banner>
           <EntityBox.Header
             title={intl.formatMessage({
-              id: `ledgers.portfolio.title`,
+              id: `common.portfolios`,
               defaultMessage: 'Portfolios'
             })}
             subtitle={intl.formatMessage({

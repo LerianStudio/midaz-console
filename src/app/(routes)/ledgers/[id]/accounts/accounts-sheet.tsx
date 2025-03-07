@@ -540,7 +540,7 @@ export const AccountSheet = ({
                       onClick={handlePortfolioClick}
                     >
                       {intl.formatMessage({
-                        id: 'ledgers.account.sheet.createPortfolio',
+                        id: 'common.portfolios',
                         defaultMessage: 'Portfolios'
                       })}
                     </Button>

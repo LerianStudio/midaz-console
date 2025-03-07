@@ -23,7 +23,7 @@ import { SelectItem } from '@/components/ui/select'
 import { currencyObjects } from '@/utils/currency-codes'
 import { useCreateAsset, useUpdateAsset } from '@/client/assets'
 import useCustomToast from '@/hooks/use-custom-toast'
-import { IAssetType } from '@/types/assets-type'
+import { AssetType } from '@/types/assets-type'
 import { CommandItem } from '@/components/ui/command'
 import { ComboBoxField } from '@/components/form'
 import { TabsContent } from '@radix-ui/react-tabs'
@@ -77,7 +77,7 @@ export const AssetsSheet = ({
     organizationId: currentOrganization.id!,
     ledgerId,
     onSuccess: (data: unknown) => {
-      const formData = data as IAssetType
+      const formData = data as AssetType
       onSuccess?.()
       onOpenChange?.(false)
       showSuccess(

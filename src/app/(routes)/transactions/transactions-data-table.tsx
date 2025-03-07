@@ -42,21 +42,21 @@ import { PaginationLimitField } from '@/components/form/pagination-limit-field'
 import { Pagination, PaginationProps } from '@/components/pagination'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
-import { ITransactionType } from '@/types/transactions-type'
+import { TransactionType } from '@/types/transactions-type'
 import { IdTableCell } from '@/components/id-table-cell'
-import { ILedgerType } from '@/types/ledgers-type'
+import { LedgerType } from '@/types/ledgers-type'
 
 type TransactionsDataTableProps = {
-  transactions: PaginationDto<ITransactionType> | undefined
+  transactions: PaginationDto<TransactionType> | undefined
   form: UseFormReturn<any>
   total: number
   pagination: PaginationProps
-  currentLedger: ILedgerType
+  currentLedger: LedgerType
 }
 
 type TransactionsRowProps = {
-  transaction: Row<ITransactionType>
-  currentLedger: ILedgerType
+  transaction: Row<TransactionType>
+  currentLedger: LedgerType
 }
 
 const multipleItemsMessages = defineMessages({
