@@ -1,3 +1,11 @@
+# [1.16.0](https://github.com/LerianStudio/midaz-console/compare/v1.15.0...v1.16.0) (2025-03-07)
+
+
+### Features
+
+* move IdTabelCell and MetadataTableCell to components/table ([d96a83b](https://github.com/LerianStudio/midaz-console/commit/d96a83b9adf8ec79898840a8e7bfbe29e359a1be))
+* set input type to 'email' only ([7f48cfb](https://github.com/LerianStudio/midaz-console/commit/7f48cfb69eeb412acf904f9e524b5e9eeb27e297))
+
 # [1.15.0](https://github.com/LerianStudio/midaz-console/compare/v1.14.0...v1.15.0) (2025-03-07)
 
 
