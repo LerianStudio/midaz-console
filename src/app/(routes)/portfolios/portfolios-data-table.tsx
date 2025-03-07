@@ -32,7 +32,7 @@ import { Pagination, PaginationProps } from '@/components/pagination'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
 import { IdTableCell } from '@/components/id-table-cell'
-import { IPortfolioType } from '@/types/portfolio-type'
+import { PortfolioType } from '@/types/portfolio-type'
 import { PortfolioResponseDto } from '@/core/application/dto/portfolios-dto'
 import { PortfolioViewResponseDTO } from '@/core/application/dto/portfolio-view-dto'
 import { MetadataTableCell } from '@/components/metadata-table-cell'
@@ -44,13 +44,13 @@ type PortfoliosDataTableProps = {
   pagination: PaginationProps
   handleCreate: () => void
   handleDialogOpen: (id: string) => void
-  handleEdit: (portfolio: IPortfolioType) => void
+  handleEdit: (portfolio: PortfolioType) => void
 }
 
 type PortfoliosRowProps = {
   portfolio: Row<PortfolioViewResponseDTO>
   handleDialogOpen: (id: string) => void
-  handleEdit: (portfolio: IPortfolioType) => void
+  handleEdit: (portfolio: PortfolioType) => void
 }
 
 const PortfolioRow: React.FC<PortfoliosRowProps> = ({

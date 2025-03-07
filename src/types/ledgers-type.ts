@@ -1,5 +1,6 @@
 import { StatusDto } from '@/core/application/dto/status.dto'
-export interface ILedgerType {
+
+export interface LedgerType {
   id: string
   organizationId: string
   name: string

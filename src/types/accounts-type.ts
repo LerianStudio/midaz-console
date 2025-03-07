@@ -1,4 +1,4 @@
-import { IPortfolioType } from './portfolio-type'
+import { PortfolioType } from './portfolio-type'
 
 export type AccountType = {
   id: string
@@ -11,7 +11,7 @@ export type AccountType = {
   entityId?: string
   parentAccountId: string
   portfolioId?: string | null
-  portfolio: Pick<IPortfolioType, 'name'>
+  portfolio: Pick<PortfolioType, 'name'>
   portfolioName?: string
   segmentId: string
   status: {

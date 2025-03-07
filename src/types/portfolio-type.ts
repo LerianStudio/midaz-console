@@ -1,7 +1,7 @@
 import { AccountResponseDto } from '@/core/application/dto/account-dto'
 import { StatusDto } from '@/core/application/dto/status.dto'
 
-export type IPortfolioType = {
+export type PortfolioType = {
   id: string
   ledgerId: string
   organizationId: string
