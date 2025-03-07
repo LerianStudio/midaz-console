@@ -29,13 +29,13 @@ import {
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import { useListLedgers } from '@/client/ledgers'
 import { Button } from './ui/button'
-import { ILedgerType } from '@/types/ledgers-type'
+import { LedgerType } from '@/types/ledgers-type'
 
 const LedgerCommand = ({
   ledgers,
   onSelect
 }: {
-  ledgers: ILedgerType[]
+  ledgers: LedgerType[]
   onSelect: (id: string) => void
 }) => {
   const intl = useIntl()
@@ -94,7 +94,7 @@ export const LedgerSelector = () => {
       ledgers?.items?.length &&
       (!currentLedger?.id ||
         !ledgers.items.some(
-          (ledger: ILedgerType) => ledger.id === currentLedger.id
+          (ledger: LedgerType) => ledger.id === currentLedger.id
         ))
     ) {
       setLedger(ledgers.items[0])

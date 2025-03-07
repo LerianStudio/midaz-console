@@ -1,3 +1,19 @@
+# [1.15.0](https://github.com/LerianStudio/midaz-console/compare/v1.14.0...v1.15.0) (2025-03-07)
+
+
+### Bug Fixes
+
+* callback naming from onSucess to onSuccess ([d5c6ca1](https://github.com/LerianStudio/midaz-console/commit/d5c6ca15fe32f950036fe84fbb8b012fa16680df))
+* using currentLedger.id context instead params ([7566f83](https://github.com/LerianStudio/midaz-console/commit/7566f83fd53d441ee78e513e975fcee31ab6a692))
+
+
+### Features
+
+* add new translations and update existing copy ([1ec7c22](https://github.com/LerianStudio/midaz-console/commit/1ec7c227a57621e6a9facb87ec340724eccbddd9))
+* add onError and onSuccess toasts for hooks ([3d2d273](https://github.com/LerianStudio/midaz-console/commit/3d2d2736182433405e4b265992ae04eba60ca87e))
+* add portfolios route directly in the sidebar ([339c741](https://github.com/LerianStudio/midaz-console/commit/339c741a37e98b11405e1dfcff945575753579b2))
+* update types by removing 'I' prefix ([f3b0bb3](https://github.com/LerianStudio/midaz-console/commit/f3b0bb35455331f68b95205b405133a6556034c0))
+
 # [1.14.0](https://github.com/LerianStudio/midaz-console/compare/v1.13.0...v1.14.0) (2025-03-06)
 
 

@@ -2,14 +2,14 @@
 
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { getStorageObject } from '@/lib/storage'
-import { ILedgerType } from '@/types/ledgers-type'
+import { LedgerType } from '@/types/ledgers-type'
 import { useReducer, useEffect } from 'react'
 
 type UseDefaultLedgerProps = {
   current: OrganizationEntity
-  ledgers: ILedgerType[]
-  currentLedger: ILedgerType
-  setCurrentLedger: (ledger: ILedgerType) => void
+  ledgers: LedgerType[]
+  currentLedger: LedgerType
+  setCurrentLedger: (ledger: LedgerType) => void
 }
 
 const storageKey = 'defaultLedgers'
