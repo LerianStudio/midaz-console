@@ -1,5 +1,5 @@
 import {
-  MidazHttpFetchUtils,
+  HttpFetchUtils,
   HTTP_METHODS,
   HttpFetchOptions
 } from './http-fetch-utils'
@@ -25,7 +25,7 @@ jest.mock('../next-auth/casdoor/next-auth-casdoor-provider')
 jest.mock('../logger/decorators/midaz-id')
 
 describe('MidazHttpFetchUtils', () => {
-  let midazHttpFetchUtils: MidazHttpFetchUtils
+  let midazHttpFetchUtils: HttpFetchUtils
   let midazRequestContext: MidazRequestContext
   let midazLogger: LoggerAggregator
   let otelTracerProvider: OtelTracerProvider
@@ -48,7 +48,7 @@ describe('MidazHttpFetchUtils', () => {
       endCustomSpan: jest.fn()
     } as unknown as OtelTracerProvider
 
-    midazHttpFetchUtils = new MidazHttpFetchUtils(
+    midazHttpFetchUtils = new HttpFetchUtils(
       midazRequestContext,
       midazLogger,
       otelTracerProvider

@@ -24,7 +24,7 @@ export type HttpFetchOptions = {
 }
 
 @injectable()
-export class MidazHttpFetchUtils {
+export class HttpFetchUtils {
   constructor(
     @inject(MidazRequestContext)
     private readonly midazRequestContext: MidazRequestContext,

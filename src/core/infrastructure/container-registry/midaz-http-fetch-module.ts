@@ -1,14 +1,12 @@
 import { Container, ContainerModule } from '../utils/di/container'
-import { MidazHttpFetchUtils } from '../utils/http-fetch-utils'
+import { HttpFetchUtils } from '../utils/http-fetch-utils'
 export const ContainerTypeMidazHttpFetch = {
-  MidazHttpFetchUtils: 'MidazHttpFetchUtils'
+  HttpFetchUtils: 'HttpFetchUtils'
 }
 export const MidazHttpFetchModule = new ContainerModule(
   (container: Container) => {
     container
-      .bind<MidazHttpFetchUtils>(
-        ContainerTypeMidazHttpFetch.MidazHttpFetchUtils
-      )
-      .to(MidazHttpFetchUtils)
+      .bind<HttpFetchUtils>(ContainerTypeMidazHttpFetch.HttpFetchUtils)
+      .to(HttpFetchUtils)
   }
 )

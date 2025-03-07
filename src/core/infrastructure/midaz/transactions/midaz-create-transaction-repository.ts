@@ -6,15 +6,15 @@ import { CreateTransactionRepository } from '@/core/domain/repositories/transact
 import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 import { inject, injectable } from 'inversify'
 import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
-import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
+import { HttpFetchUtils } from '../../utils/http-fetch-utils'
 
 @injectable()
 export class MidazCreateTransactionRepository
   implements CreateTransactionRepository
 {
   constructor(
-    @inject(ContainerTypeMidazHttpFetch.MidazHttpFetchUtils)
-    private readonly midazHttpFetchUtils: MidazHttpFetchUtils
+    @inject(ContainerTypeMidazHttpFetch.HttpFetchUtils)
+    private readonly midazHttpFetchUtils: HttpFetchUtils
   ) {}
 
   private baseUrl: string = process.env.MIDAZ_TRANSACTION_BASE_PATH as string

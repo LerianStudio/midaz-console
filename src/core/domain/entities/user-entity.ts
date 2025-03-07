@@ -1,9 +1,9 @@
 export type UserEntity = {
   id?: string
-  firtName: string
+  firstName: string
   lastName: string
+  username: string
   email: string
   groups: string[]
-  password: string
-  username: string
+  password?: string
 }

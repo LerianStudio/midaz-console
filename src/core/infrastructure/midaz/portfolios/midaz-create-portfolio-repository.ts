@@ -2,7 +2,7 @@ import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { CreatePortfolioRepository } from '@/core/domain/repositories/portfolios/create-portfolio-repository'
 import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 import { injectable, inject } from 'inversify'
-import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
+import { HttpFetchUtils } from '../../utils/http-fetch-utils'
 import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
 import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
 
@@ -13,8 +13,8 @@ export class MidazCreatePortfolioRepository
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
 
   constructor(
-    @inject(ContainerTypeMidazHttpFetch.MidazHttpFetchUtils)
-    private readonly midazHttpFetchUtils: MidazHttpFetchUtils,
+    @inject(ContainerTypeMidazHttpFetch.HttpFetchUtils)
+    private readonly midazHttpFetchUtils: HttpFetchUtils,
     @inject(LoggerAggregator)
     private readonly loggerAggregator: LoggerAggregator
   ) {}
