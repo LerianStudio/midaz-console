@@ -43,7 +43,7 @@ import { Pagination, PaginationProps } from '@/components/pagination'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
 import { TransactionType } from '@/types/transactions-type'
-import { IdTableCell } from '@/components/id-table-cell'
+import { IdTableCell } from '@/components/table/id-table-cell'
 import { LedgerType } from '@/types/ledgers-type'
 
 type TransactionsDataTableProps = {

@@ -21,13 +21,13 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
 import { AccountType } from '@/types/accounts-type'
-import { IdTableCell } from '@/components/id-table-cell'
-import { MetadataTableCell } from '../ledgers/[id]/MetadataTableCell'
+import { MetadataTableCell } from '@/components/table/metadata-table-cell'
 import { EntityDataTable } from '@/components/entity-data-table'
 import { EmptyResource } from '@/components/empty-resource'
 import { Pagination } from '@/components/pagination'
 import { PaginationLimitField } from '@/components/form/pagination-limit-field'
 import { FormProvider } from 'react-hook-form'
+import { IdTableCell } from '@/components/table/id-table-cell'
 
 type AccountsTableProps = {
   accounts: { items: AccountType[] }
