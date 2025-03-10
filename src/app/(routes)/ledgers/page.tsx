@@ -19,15 +19,17 @@ import { useOrganization } from '@/context/organization-provider/organization-pr
 import { LedgersSkeleton } from './ledgers-skeleton'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { useQueryParams } from '@/hooks/use-query-params'
+import { useQueryClient } from '@tanstack/react-query'
 
 const Page = () => {
   const intl = useIntl()
   const [total, setTotal] = React.useState(0)
-  const { currentOrganization, currentLedger } = useOrganization()
+  const { currentOrganization, currentLedger, setLedger } = useOrganization()
   const { showSuccess, showError } = useCustomToast()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
   const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>()
   const { form, searchValues, pagination } = useQueryParams({ total })
+  const queryClient = useQueryClient()
 
   const {
     data: ledgers,
@@ -56,7 +58,21 @@ const Page = () => {
     organizationId: currentOrganization.id!,
     onSuccess: () => {
       handleDialogClose()
-      refetch()
+
+      queryClient.invalidateQueries({
+        queryKey: ['ledgers', currentOrganization.id]
+      })
+
+      const deletedLedgerId = ledgerName
+
+      if (deletedLedgerId === currentLedger?.id) {
+        setTimeout(() => {
+          if (ledgers?.items && ledgers.items.length > 0) {
+            setLedger(ledgers.items[0])
+          }
+        }, 500)
+      }
+
       showSuccess(
         intl.formatMessage({
           id: 'ledgers.toast.delete.success',

@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/table'
 import { EmptyResource } from '@/components/empty-resource'
 import { Button } from '@/components/ui/button'
-import { Plus, MoreVertical, Minus, HelpCircle } from 'lucide-react'
+import { MoreVertical, Minus, HelpCircle } from 'lucide-react'
 import {
   Tooltip,
   TooltipContent,
@@ -38,6 +38,7 @@ import { LedgerResponseDto } from '@/core/application/dto/ledger-response-dto'
 import { PaginationLimitField } from '@/components/form/pagination-limit-field'
 import { Pagination, PaginationProps } from '@/components/pagination'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
+import { AssetsSheet } from '../assets/assets-sheet'
 
 type LedgersTableProps = {
   ledgers: PaginationDto<LedgerResponseDto> | undefined
@@ -55,20 +56,22 @@ type LedgerRowProps = {
   handleCopyToClipboard: (value: string, message: string) => void
   handleDialogOpen: (id: string, name: string) => void
   handleEdit: (ledger: LedgerResponseDto) => void
+  refetch: () => void
 }
 
 const LedgerRow: React.FC<LedgerRowProps> = ({
   ledger,
   handleCopyToClipboard,
   handleDialogOpen,
-  handleEdit
+  handleEdit,
+  refetch
 }) => {
   const intl = useIntl()
   const id = ledger.original.id || ''
   const displayId = id && id.length > 8 ? `${truncateString(id, 8)}` : id
   const metadataCount = Object.entries(ledger.original.metadata || []).length
   const assetsItems = ledger.original.assets || []
-  const { handleCreate } = useCreateUpdateSheet<any>()
+  const { handleCreate, sheetProps } = useCreateUpdateSheet<any>()
 
   const renderAssets = () => {
     if (assetsItems.length === 1) {
@@ -126,98 +129,107 @@ const LedgerRow: React.FC<LedgerRowProps> = ({
   }
 
   return (
-    <TableRow key={ledger.id}>
-      <TableCell>
-        <TooltipProvider>
-          <Tooltip delayDuration={300}>
-            <TooltipTrigger
-              onClick={(e) => {
-                e.stopPropagation()
-                handleCopyToClipboard(
-                  id,
-                  intl.formatMessage({
-                    id: 'ledgers.toast.copyId',
-                    defaultMessage: 'The id has been copied to your clipboard.'
-                  })
-                )
-              }}
-            >
-              <p className="text-shadcn-600 underline">{displayId}</p>
-            </TooltipTrigger>
-            <TooltipContent
-              className="border-none bg-shadcn-600"
-              arrowPadding={0}
-            >
-              <p className="text-shadcn-400">{id}</p>
-              <p className="text-center text-white">
-                {intl.formatMessage({
-                  id: 'ledgers.columnsTable.tooltipCopyText',
-                  defaultMessage: 'Click to copy'
-                })}
-              </p>
-              <Arrow height={8} width={15} />
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </TableCell>
-      <TableCell>{ledger.original.name}</TableCell>
-      <TableCell>{renderAssets()}</TableCell>
-      <TableCell>
-        {metadataCount === 0 ? (
-          <Minus size={20} />
-        ) : (
-          intl.formatMessage(
-            {
-              id: 'common.table.metadata',
-              defaultMessage:
-                '{number, plural, =0 {-} one {# record} other {# records}}'
-            },
-            {
-              number: metadataCount
-            }
-          )
-        )}
-      </TableCell>
-      <TableCell className="w-0">
-        <div className="flex justify-end">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="secondary"
-                className="h-auto w-max p-2"
-                data-testid="actions"
-              >
-                <MoreVertical size={16} />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => handleEdit(ledger.original)}>
-                {intl.formatMessage({
-                  id: `common.edit`,
-                  defaultMessage: 'Edit'
-                })}
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                data-testid="delete"
+    <React.Fragment>
+      <TableRow key={ledger.id}>
+        <TableCell>
+          <TooltipProvider>
+            <Tooltip delayDuration={300}>
+              <TooltipTrigger
                 onClick={(e) => {
                   e.stopPropagation()
-                  handleDialogOpen(
-                    ledger.original.id || '',
-                    ledger.original.name || ''
+                  handleCopyToClipboard(
+                    id,
+                    intl.formatMessage({
+                      id: 'ledgers.toast.copyId',
+                      defaultMessage:
+                        'The id has been copied to your clipboard.'
+                    })
                   )
                 }}
               >
-                {intl.formatMessage({
-                  id: `common.delete`,
-                  defaultMessage: 'Delete'
-                })}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </TableCell>
-    </TableRow>
+                <p className="text-shadcn-600 underline">{displayId}</p>
+              </TooltipTrigger>
+              <TooltipContent
+                className="border-none bg-shadcn-600"
+                arrowPadding={0}
+              >
+                <p className="text-shadcn-400">{id}</p>
+                <p className="text-center text-white">
+                  {intl.formatMessage({
+                    id: 'ledgers.columnsTable.tooltipCopyText',
+                    defaultMessage: 'Click to copy'
+                  })}
+                </p>
+                <Arrow height={8} width={15} />
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </TableCell>
+        <TableCell>{ledger.original.name}</TableCell>
+        <TableCell>{renderAssets()}</TableCell>
+        <TableCell>
+          {metadataCount === 0 ? (
+            <Minus size={20} />
+          ) : (
+            intl.formatMessage(
+              {
+                id: 'common.table.metadata',
+                defaultMessage:
+                  '{number, plural, =0 {-} one {# record} other {# records}}'
+              },
+              {
+                number: metadataCount
+              }
+            )
+          )}
+        </TableCell>
+        <TableCell className="w-0">
+          <div className="flex justify-end">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="secondary"
+                  className="h-auto w-max p-2"
+                  data-testid="actions"
+                >
+                  <MoreVertical size={16} />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => handleEdit(ledger.original)}>
+                  {intl.formatMessage({
+                    id: `common.edit`,
+                    defaultMessage: 'Edit'
+                  })}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  data-testid="delete"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleDialogOpen(
+                      ledger.original.id || '',
+                      ledger.original.name || ''
+                    )
+                  }}
+                >
+                  {intl.formatMessage({
+                    id: `common.delete`,
+                    defaultMessage: 'Delete'
+                  })}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </TableCell>
+      </TableRow>
+
+      <AssetsSheet
+        onSuccess={refetch}
+        ledgerId={ledger.original.id!}
+        {...sheetProps}
+      />
+    </React.Fragment>
   )
 }
 
@@ -312,6 +324,7 @@ export const LedgersDataTable: React.FC<LedgersTableProps> = (props) => {
                     handleCopyToClipboard={handleCopyToClipboard}
                     handleDialogOpen={handleDialogOpen}
                     handleEdit={handleEdit}
+                    refetch={refetch}
                   />
                 ))}
               </TableBody>

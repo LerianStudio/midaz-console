@@ -8,7 +8,6 @@ import { Control } from 'react-hook-form'
 import { useIntl } from 'react-intl'
 import DolarSign from '/public/svg/dolar-sign.svg'
 import Image from 'next/image'
-import { useParams } from 'next/navigation'
 
 export type BasicInformationPaperProps = {
   control: Control<any>
@@ -18,12 +17,11 @@ export const BasicInformationPaper = ({
   control
 }: BasicInformationPaperProps) => {
   const intl = useIntl()
-  const { id } = useParams<{ id: string }>()
-  const { currentOrganization } = useOrganization()
+  const { currentOrganization, currentLedger } = useOrganization()
 
   const { data: assets } = useListAssets({
     organizationId: currentOrganization.id!,
-    ledgerId: id
+    ledgerId: currentLedger.id!
   })
 
   return (

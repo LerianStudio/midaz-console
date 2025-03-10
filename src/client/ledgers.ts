@@ -33,7 +33,15 @@ type UseUpdateLedgerProps = UseMutationOptions & {
   ledgerId: string
 }
 
-type UseDeleteLedgerProps = UseMutationOptions & {
+type DeleteLedgerVariables = { id: string }
+type DeleteLedgerMutationOptions = UseMutationOptions<
+  unknown,
+  unknown,
+  DeleteLedgerVariables,
+  unknown
+>
+
+type UseDeleteLedgerProps = Omit<DeleteLedgerMutationOptions, 'mutationFn'> & {
   organizationId: string
 }
 
@@ -103,9 +111,19 @@ const useDeleteLedger = ({
   organizationId,
   ...options
 }: UseDeleteLedgerProps) => {
-  return useMutation<any, any, any>({
+  const deleteLedgerFn = (data: DeleteLedgerVariables) => {
+    const fetcher = deleteFetcher(
+      `/api/organizations/${organizationId}/ledgers`
+    )
+    return fetcher(data)
+  }
+
+  type MutationFn = (variables: DeleteLedgerVariables) => Promise<unknown>
+  const typedMutationFn = deleteLedgerFn as MutationFn
+
+  return useMutation<unknown, unknown, DeleteLedgerVariables>({
     mutationKey: [organizationId],
-    mutationFn: deleteFetcher(`/api/organizations/${organizationId}/ledgers`),
+    mutationFn: typedMutationFn,
     ...options
   })
 }

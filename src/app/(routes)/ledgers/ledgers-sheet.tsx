@@ -24,6 +24,7 @@ import { useOrganization } from '@/context/organization-provider/organization-pr
 import useCustomToast from '@/hooks/use-custom-toast'
 import { LedgerType } from '@/types/ledgers-type'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useQueryClient } from '@tanstack/react-query'
 
 export type LedgersSheetProps = DialogProps & {
   mode: 'create' | 'edit'
@@ -51,22 +52,37 @@ export const LedgersSheet = ({
   ...others
 }: LedgersSheetProps) => {
   const intl = useIntl()
-  const { currentOrganization } = useOrganization()
+  const queryClient = useQueryClient()
+  const { currentOrganization, setLedger } = useOrganization()
   const { showSuccess, showError } = useCustomToast()
 
   const { mutate: createLedger, isPending: createPending } = useCreateLedger({
     organizationId: currentOrganization.id!,
-    onSuccess: (data: unknown) => {
-      const formData = data as LedgerType
-      onSuccess?.()
+    onSuccess: async (data: unknown) => {
+      const newLedger = data as LedgerType
+      await queryClient.invalidateQueries({
+        queryKey: ['ledgers']
+      })
+
+      if (onSuccess) {
+        await Promise.resolve(onSuccess())
+      }
+
+      await queryClient.refetchQueries({
+        queryKey: ['ledgers', currentOrganization.id]
+      })
+
+      setLedger(newLedger)
+
       onOpenChange?.(false)
+
       showSuccess(
         intl.formatMessage(
           {
             id: 'ledgers.toast.create.success',
             defaultMessage: 'Ledger {ledgerName} created successfully'
           },
-          { ledgerName: formData.name }
+          { ledgerName: newLedger.name }
         )
       )
     },
