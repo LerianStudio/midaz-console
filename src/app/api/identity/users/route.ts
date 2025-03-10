@@ -1,6 +1,6 @@
 import { applyMiddleware } from '@/lib/middleware'
 import { loggerMiddleware } from '@/utils/logger-middleware-config'
-import { apiErrorHandler } from '../utils/api-error-handler'
+import { apiErrorHandler } from '../../utils/api-error-handler'
 import {
   FetchAllUsers,
   FetchAllUsersUseCase

@@ -6,7 +6,7 @@ import { container } from '@/core/infrastructure/container-registry/container-re
 import { applyMiddleware } from '@/lib/middleware'
 import { loggerMiddleware } from '@/utils/logger-middleware-config'
 import { NextResponse } from 'next/server'
-import { apiErrorHandler } from '../../utils/api-error-handler'
+import { apiErrorHandler } from '../../../utils/api-error-handler'
 import {
   DeleteUser,
   DeleteUserUseCase

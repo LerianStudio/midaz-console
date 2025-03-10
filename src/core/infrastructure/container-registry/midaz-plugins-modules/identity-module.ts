@@ -11,6 +11,10 @@ import { UpdateUserPasswordRepository } from '@/core/domain/repositories/users/u
 import { IdentityUpdateUserPasswordRepository } from '../../midaz-plugins/identity/users/identity-update-user-password'
 import { UpdateUserRepository } from '@/core/domain/repositories/users/update-user-repository'
 import { IdentityUpdateUserRepository } from '../../midaz-plugins/identity/users/identity-update-user-repository'
+import { FetchAllGroupsRepository } from '@/core/domain/repositories/groups/fetch-all-groups-repository'
+import { IdentityFetchAllGroupsRepository } from '../../midaz-plugins/identity/groups/identity-fetch-all-groups-repository'
+import { FetchGroupByIdRepository } from '@/core/domain/repositories/groups/fetch-group-by-id-repository'
+import { IdentityFetchGroupByIdRepository } from '../../midaz-plugins/identity/groups/identity-fetch-group-by-id-repository'
 
 export const IdentityModule = new ContainerModule((container: Container) => {
   container
@@ -31,4 +35,10 @@ export const IdentityModule = new ContainerModule((container: Container) => {
   container
     .bind<UpdateUserRepository>(UpdateUserRepository)
     .to(IdentityUpdateUserRepository)
+  container
+    .bind<FetchAllGroupsRepository>(FetchAllGroupsRepository)
+    .to(IdentityFetchAllGroupsRepository)
+  container
+    .bind<FetchGroupByIdRepository>(FetchGroupByIdRepository)
+    .to(IdentityFetchGroupByIdRepository)
 })

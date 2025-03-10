@@ -19,6 +19,7 @@ import { OnboardingUseCaseModule } from './use-cases/onboarding-module'
 import { OtelModule } from './observability/otel-module'
 import { IdentityModule } from './midaz-plugins-modules/identity-module'
 import { UserUseCaseModule } from './use-cases/user-module'
+import { GroupUseCaseModule } from './use-cases/group-module'
 
 export const container = new Container()
 
@@ -38,6 +39,7 @@ container.load(SegmentUseCaseModule)
 container.load(LoggerApplicationModule)
 container.load(UserUseCaseModule)
 container.load(TransactionUseCaseModule)
+container.load(GroupUseCaseModule)
 
 container.load(MidazHttpFetchModule)
 container.load(OtelModule)
