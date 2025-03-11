@@ -60,22 +60,13 @@ export const LedgersSheet = ({
     organizationId: currentOrganization.id!,
     onSuccess: async (data: unknown) => {
       const newLedger = data as LedgerType
-      await queryClient.invalidateQueries({
-        queryKey: ['ledgers']
-      })
 
       if (onSuccess) {
         await Promise.resolve(onSuccess())
       }
 
-      await queryClient.refetchQueries({
-        queryKey: ['ledgers', currentOrganization.id]
-      })
-
       setLedger(newLedger)
-
       onOpenChange?.(false)
-
       showSuccess(
         intl.formatMessage(
           {

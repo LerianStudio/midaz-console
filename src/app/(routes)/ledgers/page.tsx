@@ -59,10 +59,6 @@ const Page = () => {
     onSuccess: () => {
       handleDialogClose()
 
-      queryClient.invalidateQueries({
-        queryKey: ['ledgers', currentOrganization.id]
-      })
-
       const deletedLedgerId = ledgerName
 
       if (deletedLedgerId === currentLedger?.id) {

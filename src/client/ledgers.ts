@@ -16,6 +16,7 @@ import {
 
 type UseCreateLedgerProps = UseMutationOptions & {
   organizationId: string
+  onSuccess?: (...args: any[]) => void
 }
 
 type UseListLedgersProps = {
@@ -43,14 +44,31 @@ type DeleteLedgerMutationOptions = UseMutationOptions<
 
 type UseDeleteLedgerProps = Omit<DeleteLedgerMutationOptions, 'mutationFn'> & {
   organizationId: string
+  onSuccess?: (...args: any[]) => void
 }
 
 const useCreateLedger = ({
   organizationId,
+  onSuccess,
   ...options
 }: UseCreateLedgerProps) => {
+  const queryClient = useQueryClient()
+
   return useMutation<any, any, any>({
     mutationFn: postFetcher(`/api/organizations/${organizationId}/ledgers`),
+    onSuccess: async (...args) => {
+      await queryClient.invalidateQueries({
+        queryKey: ['ledgers']
+      })
+
+      await queryClient.refetchQueries({
+        queryKey: ['ledgers', organizationId]
+      })
+
+      if (onSuccess) {
+        await onSuccess(...args)
+      }
+    },
     ...options
   })
 }
@@ -109,8 +127,10 @@ const useUpdateLedger = ({
 
 const useDeleteLedger = ({
   organizationId,
+  onSuccess,
   ...options
 }: UseDeleteLedgerProps) => {
+  const queryClient = useQueryClient()
   const deleteLedgerFn = (data: DeleteLedgerVariables) => {
     const fetcher = deleteFetcher(
       `/api/organizations/${organizationId}/ledgers`
@@ -124,6 +144,12 @@ const useDeleteLedger = ({
   return useMutation<unknown, unknown, DeleteLedgerVariables>({
     mutationKey: [organizationId],
     mutationFn: typedMutationFn,
+    onSuccess: (...args) => {
+      queryClient.invalidateQueries({
+        queryKey: ['ledgers', organizationId]
+      })
+      onSuccess?.(...args)
+    },
     ...options
   })
 }
