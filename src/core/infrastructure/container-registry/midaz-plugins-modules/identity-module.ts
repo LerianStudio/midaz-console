@@ -15,6 +15,8 @@ import { FetchAllGroupsRepository } from '@/core/domain/repositories/groups/fetc
 import { IdentityFetchAllGroupsRepository } from '../../midaz-plugins/identity/groups/identity-fetch-all-groups-repository'
 import { FetchGroupByIdRepository } from '@/core/domain/repositories/groups/fetch-group-by-id-repository'
 import { IdentityFetchGroupByIdRepository } from '../../midaz-plugins/identity/groups/identity-fetch-group-by-id-repository'
+import { ResetUserPasswordRepository } from '@/core/domain/repositories/users/reset-user-password-repository'
+import { IdentityResetUserPasswordRepository } from '../../midaz-plugins/identity/users/identity-reset-user-password-repository'
 
 export const IdentityModule = new ContainerModule((container: Container) => {
   container
@@ -30,15 +32,18 @@ export const IdentityModule = new ContainerModule((container: Container) => {
     .bind<FetchUserByIdRepository>(FetchUserByIdRepository)
     .to(IdentityFetchUserByIdRepository)
   container
-    .bind<UpdateUserPasswordRepository>(UpdateUserPasswordRepository)
-    .to(IdentityUpdateUserPasswordRepository)
-  container
-    .bind<UpdateUserRepository>(UpdateUserRepository)
-    .to(IdentityUpdateUserRepository)
-  container
     .bind<FetchAllGroupsRepository>(FetchAllGroupsRepository)
     .to(IdentityFetchAllGroupsRepository)
   container
     .bind<FetchGroupByIdRepository>(FetchGroupByIdRepository)
     .to(IdentityFetchGroupByIdRepository)
+  container
+    .bind<UpdateUserRepository>(UpdateUserRepository)
+    .to(IdentityUpdateUserRepository)
+  container
+    .bind<UpdateUserPasswordRepository>(UpdateUserPasswordRepository)
+    .to(IdentityUpdateUserPasswordRepository)
+  container
+    .bind<ResetUserPasswordRepository>(ResetUserPasswordRepository)
+    .to(IdentityResetUserPasswordRepository)
 })

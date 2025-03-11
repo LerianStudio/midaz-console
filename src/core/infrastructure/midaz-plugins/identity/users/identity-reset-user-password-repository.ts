@@ -1,4 +1,4 @@
-import { UpdateUserPasswordRepository } from '@/core/domain/repositories/users/update-user-password-repository'
+import { ResetUserPasswordRepository } from '@/core/domain/repositories/users/reset-user-password-repository'
 import { ContainerTypeMidazHttpFetch } from '@/core/infrastructure/container-registry/midaz-http-fetch-module'
 import {
   HTTP_METHODS,
@@ -7,8 +7,8 @@ import {
 import { inject, injectable } from 'inversify'
 
 @injectable()
-export class IdentityUpdateUserPasswordRepository
-  implements UpdateUserPasswordRepository
+export class IdentityResetUserPasswordRepository
+  implements ResetUserPasswordRepository
 {
   private baseUrl: string = process.env.PLUGIN_IDENTITY_BASE_PATH as string
 
@@ -17,17 +17,13 @@ export class IdentityUpdateUserPasswordRepository
     private readonly midazHttpFetchUtils: HttpFetchUtils
   ) {}
 
-  async updatePassword(
-    userId: string,
-    oldPassword: string,
-    newPassword: string
-  ): Promise<void> {
-    const url = `${this.baseUrl}/users/${userId}/update-password`
+  async resetPassword(userId: string, newPassword: string): Promise<void> {
+    const url = `${this.baseUrl}/users/${userId}/reset-password`
 
     await this.midazHttpFetchUtils.httpMidazAuthFetch<void>({
       url,
       method: HTTP_METHODS.PUT,
-      body: JSON.stringify({ oldPassword, newPassword })
+      body: JSON.stringify({ newPassword })
     })
 
     return

@@ -23,12 +23,17 @@ import {
   UpdateUser,
   UpdateUserUseCase
 } from '@/core/application/use-cases/users/update-user-use-case'
+import {
+  ResetUserPassword,
+  ResetUserPasswordUseCase
+} from '@/core/application/use-cases/users/reset-user-password-use-case'
 
 export const UserUseCaseModule = new ContainerModule((container: Container) => {
   container.bind<CreateUser>(CreateUserUseCase).toSelf()
   container.bind<DeleteUser>(DeleteUserUseCase).toSelf()
   container.bind<FetchAllUsers>(FetchAllUsersUseCase).toSelf()
   container.bind<FetchUserById>(FetchUserByIdUseCase).toSelf()
-  container.bind<UpdateUserPassword>(UpdateUserPasswordUseCase).toSelf()
   container.bind<UpdateUser>(UpdateUserUseCase).toSelf()
+  container.bind<UpdateUserPassword>(UpdateUserPasswordUseCase).toSelf()
+  container.bind<ResetUserPassword>(ResetUserPasswordUseCase).toSelf()
 })
