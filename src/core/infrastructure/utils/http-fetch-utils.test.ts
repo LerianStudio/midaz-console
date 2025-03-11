@@ -1,15 +1,9 @@
-import {
-  HttpFetchUtils,
-  HTTP_METHODS,
-  HttpFetchOptions
-} from './http-fetch-utils'
-import { MidazRequestContext } from '../logger/decorators/midaz-id'
 import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
-import { OtelTracerProvider } from '../observability/otel-tracer-provider'
 import { getServerSession } from 'next-auth'
-import { nextAuthCasdoorOptions } from '../next-auth/casdoor/next-auth-casdoor-provider'
+import { MidazRequestContext } from '../logger/decorators/midaz-id'
+import { OtelTracerProvider } from '../observability/otel-tracer-provider'
+import { HTTP_METHODS, HttpFetchUtils } from './http-fetch-utils'
 import { handleMidazError } from './midaz-error-handler'
-import { SpanStatusCode } from '@opentelemetry/api'
 
 jest.mock('next-auth', () => ({
   getServerSession: jest.fn()

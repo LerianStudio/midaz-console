@@ -7,12 +7,12 @@ import { AuthPermissionRepository } from '@/core/domain/repositories/auth/auth-p
 import { AuthPermissionEntity } from '@/core/domain/entities/auth-permission-entity'
 
 @injectable()
-export class CasdoorAuthPermissionRepository
+export class LerianAuthPermissionRepository
   implements AuthPermissionRepository
 {
   private readonly casdoorSdk: CasdoorSdk = new CasdoorSdk(casdoorSdkConfig)
 
-  private readonly casdoorModelName: string = `${process.env.NEXTAUTH_CASDOOR_ORGANIZATION_NAME}/${process.env.NEXTAUTH_CASDOOR_MODEL_NAME}`
+  private readonly casdoorModelName: string = `${process.env.NEXTAUTH_AUTH_SERVICE_ORGANIZATION_NAME}/${process.env.NEXTAUTH_CASDOOR_MODEL_NAME}`
 
   async getPermissions(username: string): Promise<AuthPermissionEntity> {
     // Fetchs all permissions from Casdoor
@@ -20,7 +20,7 @@ export class CasdoorAuthPermissionRepository
 
     // Parses the permissions to a format that Casdoor SDK can understand
     const batchEnforceDto = BatchEnforceMapper.toDto(
-      `${process.env.NEXTAUTH_CASDOOR_ORGANIZATION_NAME as string}/${username}`,
+      `${process.env.NEXTAUTH_AUTH_SERVICE_ORGANIZATION_NAME as string}/${username}`,
       permissionsData
     )
 

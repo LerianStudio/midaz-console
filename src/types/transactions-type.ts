@@ -1,6 +1,6 @@
-export type TransactionResponse = ITransactionType[]
+export type TransactionResponse = TransactionType[]
 
-export interface ITransactionType {
+export interface TransactionType {
   id: string
   description: string
   template: string

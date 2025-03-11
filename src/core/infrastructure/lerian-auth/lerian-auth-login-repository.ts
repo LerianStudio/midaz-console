@@ -10,12 +10,12 @@ import * as jwt from 'jsonwebtoken'
 import { JwtPayload } from 'jsonwebtoken'
 
 @injectable()
-export class CasdoorAuthLoginRepository implements AuthLoginRepository {
-  private readonly casdoorBaseUrl: string = process.env
-    .NEXTAUTH_CASDOOR_AUTH_URL as string
+export class LerianAuthLoginRepository implements AuthLoginRepository {
+  private readonly authBaseUrl: string = process.env
+    .NEXTAUTH_AUTH_SERVICE_URL as string
 
   async login(loginData: AuthEntity): Promise<AuthSessionEntity> {
-    const url = `${this.casdoorBaseUrl}/api/login/oauth/access_token`
+    const url = `${this.authBaseUrl}/v1/login/oauth/access_token`
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -27,8 +27,8 @@ export class CasdoorAuthLoginRepository implements AuthLoginRepository {
     const authLogin: AuthResponseEntity = await response.json()
 
     if (!response.ok) {
-      console.error('Casdoor login failed')
-      throw new UnauthorizedException('Casdoor login failed')
+      console.error('Auth login failed')
+      throw new UnauthorizedException('Auth login failed')
     }
 
     const jwtPauload: JwtPayload = jwt.decode(

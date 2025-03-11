@@ -21,8 +21,8 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
 import { AccountType } from '@/types/accounts-type'
-import { MetadataTableCell } from '../MetadataTableCell'
-import { IdTableCell } from '@/components/id-table-cell'
+import { MetadataTableCell } from '@/components/table/metadata-table-cell'
+import { IdTableCell } from '@/components/table/id-table-cell'
 
 type AccountsTableProps = {
   accounts: { items: AccountType[] }
