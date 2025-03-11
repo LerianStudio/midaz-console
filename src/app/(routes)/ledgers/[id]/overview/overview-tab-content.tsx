@@ -1,7 +1,7 @@
 import { InputField, MetadataField } from '@/components/form'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { ILedgerType } from '@/types/ledgers-type'
+import { LedgerType } from '@/types/ledgers-type'
 import { ExternalLink, Github, LifeBuoy } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useIntl } from 'react-intl'
@@ -27,7 +27,7 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>
 
 type OverviewTabContentProps = {
-  data: ILedgerType
+  data: LedgerType
 }
 
 export const OverviewTabContent = ({ data }: OverviewTabContentProps) => {

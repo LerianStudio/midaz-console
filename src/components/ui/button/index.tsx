@@ -12,7 +12,8 @@ const buttonVariants = cva(
         plain: '',
         white: 'bg-white text-black font-semibold',
         activeLink: 'bg-shadcn-100 text-black font-medium',
-        hoverLink: 'hover:bg-accent text-black hover:text-accent-foreground',
+        hoverLink:
+          'hover:bg-accent text-black hover:text-accent-foreground font-normal',
         default:
           'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm disabled:bg-shadcn-200 disabled:text-shadcn-600',
         destructive:
@@ -45,7 +46,7 @@ const iconVariants = cva('', {
     position: {
       start: 'mr-2',
       end: 'ml-2',
-      'far-end': 'absolute right-4'
+      'far-end': 'absolute right-2'
     },
     size: {
       default: 'h-10',

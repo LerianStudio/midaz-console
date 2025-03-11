@@ -1,3 +1,138 @@
+# [1.16.0](https://github.com/LerianStudio/midaz-console/compare/v1.15.0...v1.16.0) (2025-03-07)
+
+
+### Features
+
+* move IdTabelCell and MetadataTableCell to components/table ([d96a83b](https://github.com/LerianStudio/midaz-console/commit/d96a83b9adf8ec79898840a8e7bfbe29e359a1be))
+* set input type to 'email' only ([7f48cfb](https://github.com/LerianStudio/midaz-console/commit/7f48cfb69eeb412acf904f9e524b5e9eeb27e297))
+
+# [1.15.0](https://github.com/LerianStudio/midaz-console/compare/v1.14.0...v1.15.0) (2025-03-07)
+
+
+### Bug Fixes
+
+* callback naming from onSucess to onSuccess ([d5c6ca1](https://github.com/LerianStudio/midaz-console/commit/d5c6ca15fe32f950036fe84fbb8b012fa16680df))
+* using currentLedger.id context instead params ([7566f83](https://github.com/LerianStudio/midaz-console/commit/7566f83fd53d441ee78e513e975fcee31ab6a692))
+
+
+### Features
+
+* add new translations and update existing copy ([1ec7c22](https://github.com/LerianStudio/midaz-console/commit/1ec7c227a57621e6a9facb87ec340724eccbddd9))
+* add onError and onSuccess toasts for hooks ([3d2d273](https://github.com/LerianStudio/midaz-console/commit/3d2d2736182433405e4b265992ae04eba60ca87e))
+* add portfolios route directly in the sidebar ([339c741](https://github.com/LerianStudio/midaz-console/commit/339c741a37e98b11405e1dfcff945575753579b2))
+* update types by removing 'I' prefix ([f3b0bb3](https://github.com/LerianStudio/midaz-console/commit/f3b0bb35455331f68b95205b405133a6556034c0))
+
+# [1.14.0](https://github.com/LerianStudio/midaz-console/compare/v1.13.0...v1.14.0) (2025-03-06)
+
+
+### Bug Fixes
+
+* remove console.log from balance repository ([d785cd1](https://github.com/LerianStudio/midaz-console/commit/d785cd1e640a9d2fed6c99cb2ff9dcbf32986952))
+
+
+### Features
+
+* Created balance repository ([a238783](https://github.com/LerianStudio/midaz-console/commit/a2387839043c4243a158bb52eaa5b81d88d7c0bb))
+* Implemented balances on use cases ([2f02085](https://github.com/LerianStudio/midaz-console/commit/2f020854a817a59bfeb29740b984778a8448ab60))
+* integrate accounts in the sidebar ([fb25780](https://github.com/LerianStudio/midaz-console/commit/fb25780027e22e18f40faed5479311f317490aea))
+* remove balance update on account creation ([4b925c4](https://github.com/LerianStudio/midaz-console/commit/4b925c4b66d777d481facf4f952b22862d9f45be))
+* update handleSubmit and add tooltip for disabled switch ([1250993](https://github.com/LerianStudio/midaz-console/commit/1250993f8dc14fa724e394aebeabe0ea040beb4d))
+* Updated required fields on accounts sheet ([103fd6b](https://github.com/LerianStudio/midaz-console/commit/103fd6b84fcaa5ebf299a886303a375a676c6c7b))
+
+# [1.13.0](https://github.com/LerianStudio/midaz-console/compare/v1.12.0...v1.13.0) (2025-03-05)
+
+
+### Bug Fixes
+
+* audit vulnerabilities ([79f48cf](https://github.com/LerianStudio/midaz-console/commit/79f48cff2e1fc9e697083a5f220cfedeaac9018e))
+* build error ([0524ccc](https://github.com/LerianStudio/midaz-console/commit/0524cccad6733fe50e45320a73c3773e7322fd10))
+* build erros ([dbff849](https://github.com/LerianStudio/midaz-console/commit/dbff849b22c1d885b1876afdee1cc46232fc0e19))
+* http-fetch-utils-test adjusting new instrumentation dependency ([07ac153](https://github.com/LerianStudio/midaz-console/commit/07ac153d32eeaa185488983e4aab4195f8066abd))
+
+
+### Features
+
+* otel tracer provider to send custom span ([66e10ac](https://github.com/LerianStudio/midaz-console/commit/66e10accfc61fbe40ee88ad442cda2a3275f314a))
+* send logs to otel ([7c2c171](https://github.com/LerianStudio/midaz-console/commit/7c2c1712100a720432dd3b1c89819aa6a69eff95))
+
+# [1.12.0](https://github.com/LerianStudio/midaz-console/compare/v1.11.0...v1.12.0) (2025-02-27)
+
+
+### Features
+
+* integrate segments in the sidebar ([8475d09](https://github.com/LerianStudio/midaz-console/commit/8475d0948bc4ada4a54910669c0b3819ded6e8e5))
+* update the intl files ([b46c405](https://github.com/LerianStudio/midaz-console/commit/b46c405b17c29c8f6d07fe0d92fed70b54e66ea1))
+
+# [1.11.0](https://github.com/LerianStudio/midaz-console/compare/v1.10.0...v1.11.0) (2025-02-26)
+
+
+### Bug Fixes
+
+* put the correct types instead any ([aefe7aa](https://github.com/LerianStudio/midaz-console/commit/aefe7aa134098d49938826fb6f12c9991d717a28))
+* removing console.log from assets-data-table ([1bf672d](https://github.com/LerianStudio/midaz-console/commit/1bf672df0a959dccba0822a178dacf321ffa423c))
+* wrong article in asset message ([93e8fb6](https://github.com/LerianStudio/midaz-console/commit/93e8fb69395a58dfd354d66cdfbaeb834a33cd2c))
+
+
+### Features
+
+* add assets route in sidebar and sync with ledger selector ([ee13e4a](https://github.com/LerianStudio/midaz-console/commit/ee13e4a39505918a125514f14919dd71df22b1a9))
+* pick ledger id by ledger selector instead path params ([8259d74](https://github.com/LerianStudio/midaz-console/commit/8259d749775a399d11a76d931144584cc6ad325e))
+* update the pt intl file ([f5ffaaf](https://github.com/LerianStudio/midaz-console/commit/f5ffaaf21756c252c2b8790df7096dbd18907074))
+
+# [1.10.0](https://github.com/LerianStudio/midaz-console/compare/v1.9.1...v1.10.0) (2025-02-26)
+
+
+### Bug Fixes
+
+* Adjusted LedgerSelector ([960bd41](https://github.com/LerianStudio/midaz-console/commit/960bd41c3c312357e243386cb72daf19d5a977db))
+* update transactions data table to use currentLedger.id from new format ([349cd24](https://github.com/LerianStudio/midaz-console/commit/349cd245bfd6fd87342e38e74b7ca70c46417b3c))
+
+
+### Features
+
+* Added local storage lib functions ([ab01953](https://github.com/LerianStudio/midaz-console/commit/ab01953ad2182eadef7576c074b858b742fb8ed1))
+* Adjustment on onboarding ([5bcd9a5](https://github.com/LerianStudio/midaz-console/commit/5bcd9a570d83398f706d2dd8960dfcc7f0b7e5c7))
+* Created hooks for default storage behaviour ([ed6dda0](https://github.com/LerianStudio/midaz-console/commit/ed6dda021a3123e55a22251c659e45f1f805c2ec))
+* Updated OrganizationProvider ([78b4411](https://github.com/LerianStudio/midaz-console/commit/78b44110700f153ce4014ae2f7d8d611f439de55))
+* Updated transaction port on env file. ([6e05973](https://github.com/LerianStudio/midaz-console/commit/6e05973dc9c4432fb8ad8532f53cadc593889d5d))
+
+## [1.9.1](https://github.com/LerianStudio/midaz-console/compare/v1.9.0...v1.9.1) (2025-02-24)
+
+
+### Bug Fixes
+
+* http fetch utils unit test ([0da1a49](https://github.com/LerianStudio/midaz-console/commit/0da1a49a6e256319bd4a4eb2d78dbef1f2c7d4b0))
+* include status code into midaz reponse log ([9953314](https://github.com/LerianStudio/midaz-console/commit/99533145f3aed166e3b4d2f92974d234ae1e2185))
+* update midaz id to x-request-id into midaz requests ([23e56c8](https://github.com/LerianStudio/midaz-console/commit/23e56c8071a1fe3199f46004e9a82cf9f79fab40))
+
+# [1.9.0](https://github.com/LerianStudio/midaz-console/compare/v1.8.0...v1.9.0) (2025-02-21)
+
+
+### Bug Fixes
+
+* Added zod validation to address ([464f34d](https://github.com/LerianStudio/midaz-console/commit/464f34d8d349f45205189dcb2f88bce6c5281f54))
+* Audit ([a4da3d7](https://github.com/LerianStudio/midaz-console/commit/a4da3d7cf1f9516064fc921d51a3c4b1f00f57d0))
+* Data preservation between steps ([6e58f9d](https://github.com/LerianStudio/midaz-console/commit/6e58f9d087ba537e146d3d5f8f3327b57552b0a2))
+* modal not closing after deleting an organization ([8fcf3be](https://github.com/LerianStudio/midaz-console/commit/8fcf3bee0f8e1d25e7f4d543e7843eae18d9c291))
+
+
+### Features
+
+* Added translation keys ([b5e23e3](https://github.com/LerianStudio/midaz-console/commit/b5e23e3f6a5a8e4de66bf91bdbb0a2370ad6ab59))
+* Adjusted layout setup ([79033db](https://github.com/LerianStudio/midaz-console/commit/79033db3542da0a1b6d3ba015c33f4966561e487))
+* Changed applyMiddleware path ([1a075d7](https://github.com/LerianStudio/midaz-console/commit/1a075d7eaa4eb8400a7a3ebd18dcefc62e8b07c5))
+* create ledger selector and update navbar ([10d4a9e](https://github.com/LerianStudio/midaz-console/commit/10d4a9eee22c122e54258357108e4fd8fae20b6e))
+* Created onboarding endpoints ([5af1ba6](https://github.com/LerianStudio/midaz-console/commit/5af1ba682c10577a1ae92231d33375a3350f3452))
+* Created page layout component ([04b5083](https://github.com/LerianStudio/midaz-console/commit/04b5083e24edd871712c17dcfef86fdcc3b6d54a))
+* implement 'About Midaz' dialog ([ca2a211](https://github.com/LerianStudio/midaz-console/commit/ca2a2117c87039dbb44dfd2329165a08da177b5f))
+* Implemented Form ([5962d9a](https://github.com/LerianStudio/midaz-console/commit/5962d9aa5206837d982801a9dd91019a635aa9c7))
+* Implemented helper components ([47f4ae6](https://github.com/LerianStudio/midaz-console/commit/47f4ae6544ecd3bb9fbf14cf87c67cdcdb53ec07))
+* Implemented onboarding redirect ([2ff6c35](https://github.com/LerianStudio/midaz-console/commit/2ff6c35dcba5e691f5da6e50330aacf9dbc8320f))
+* Merge ([0c25847](https://github.com/LerianStudio/midaz-console/commit/0c25847a41d7e52e9eed61019424a286cd123df9))
+* separate AboutMidazDialog to its own file ([dc8ec96](https://github.com/LerianStudio/midaz-console/commit/dc8ec96d473d025b9d0227925adf89a0a1f6674b))
+* start the refactor of sidebar and navbar ([0f12195](https://github.com/LerianStudio/midaz-console/commit/0f12195cc7e28bf4145a8a11ac92ce6a2441e605))
+* update transactions page to use global ledger selector ([6d80801](https://github.com/LerianStudio/midaz-console/commit/6d80801981acb5ae0a73279e9fa589e76d811e3e))
+
 # [1.8.0](https://github.com/LerianStudio/midaz-console/compare/v1.7.0...v1.8.0) (2025-02-13)
 
 

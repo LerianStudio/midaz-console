@@ -22,7 +22,7 @@ import { useCreateLedger } from '@/client/ledgers'
 import { LedgerResponseDto } from '@/core/application/dto/ledger-response-dto'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import useCustomToast from '@/hooks/use-custom-toast'
-import { ILedgerType } from '@/types/ledgers-type'
+import { LedgerType } from '@/types/ledgers-type'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 export type LedgersSheetProps = DialogProps & {
@@ -57,7 +57,7 @@ export const LedgersSheet = ({
   const { mutate: createLedger, isPending: createPending } = useCreateLedger({
     organizationId: currentOrganization.id!,
     onSuccess: (data: unknown) => {
-      const formData = data as { ledger: ILedgerType }
+      const formData = data as { ledger: LedgerType }
       onSuccess?.()
       onOpenChange?.(false)
       showSuccess(

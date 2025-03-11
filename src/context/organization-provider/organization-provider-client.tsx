@@ -9,10 +9,16 @@ import {
 } from 'react'
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { usePathname, useRouter } from 'next/navigation'
+import { useListLedgers } from '@/client/ledgers'
+import { LedgerType } from '@/types/ledgers-type'
+import { useDefaultOrg } from './use-default-org'
+import { useDefaultLedger } from './use-default-ledger'
 
 type OrganizationContextProps = {
   currentOrganization: OrganizationEntity
   setOrganization: (organization: OrganizationEntity) => void
+  currentLedger: LedgerType
+  setLedger: (ledger: LedgerType) => void
 }
 
 const OrganizationContext = createContext<OrganizationContextProps>(
@@ -38,6 +44,11 @@ export const OrganizationProviderClient = ({
     organizationsProp ?? []
   )
 
+  const [currentLedger, setCurrentLedger] = useState<LedgerType>(
+    {} as LedgerType
+  )
+  const { data: ledgers } = useListLedgers({ organizationId: current?.id! })
+
   useEffect(() => {
     // Do nothing if the user is already at the onboarding
     if (pathname.includes('/onboarding')) {
@@ -55,16 +66,27 @@ export const OrganizationProviderClient = ({
     }
   }, [current?.id, organizations.length])
 
-  // Initialize a current organization
-  useEffect(() => {
-    if (organizations.length > 0) {
-      setCurrent(organizations[0])
-    }
-  }, [])
+  useDefaultOrg({
+    organizations,
+    current,
+    setCurrent
+  })
+
+  useDefaultLedger({
+    current,
+    ledgers: ledgers?.items ?? [],
+    currentLedger,
+    setCurrentLedger
+  })
 
   return (
     <OrganizationContext.Provider
-      value={{ currentOrganization: current, setOrganization: setCurrent }}
+      value={{
+        currentOrganization: current,
+        setOrganization: setCurrent,
+        currentLedger: currentLedger,
+        setLedger: setCurrentLedger
+      }}
     >
       {children}
     </OrganizationContext.Provider>

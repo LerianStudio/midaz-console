@@ -10,13 +10,6 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
-import {
   Table,
   TableBody,
   TableCell,
@@ -32,10 +25,10 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { capitalizeFirstLetter } from '@/helpers'
-import useCustomToast from '@/hooks/use-custom-toast'
 import {
   getCoreRowModel,
   getFilteredRowModel,
+  Row,
   useReactTable
 } from '@tanstack/react-table'
 import { isNil } from 'lodash'
@@ -49,22 +42,21 @@ import { PaginationLimitField } from '@/components/form/pagination-limit-field'
 import { Pagination, PaginationProps } from '@/components/pagination'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
-import { ILedgerType } from '@/types/ledgers-type'
-import { ITransactiontType } from '@/types/transactions-type'
-import { IdTableCell } from '@/components/id-table-cell'
-import { SelectField } from '@/components/form'
-import { useOrganization } from '@/context/organization-provider/organization-provider-client'
+import { TransactionType } from '@/types/transactions-type'
+import { IdTableCell } from '@/components/table/id-table-cell'
+import { LedgerType } from '@/types/ledgers-type'
 
 type TransactionsDataTableProps = {
-  transactionsState: {
-    ledgers: PaginationDto<ILedgerType> | undefined
-    transactions: PaginationDto<ITransactiontType> | undefined
-    form: UseFormReturn<any>
-    total: number
-    pagination: PaginationProps
-    selectedLedgerId: string
-    setSelectedLedgerId: (id: string) => void
-  }
+  transactions: PaginationDto<TransactionType> | undefined
+  form: UseFormReturn<any>
+  total: number
+  pagination: PaginationProps
+  currentLedger: LedgerType
+}
+
+type TransactionsRowProps = {
+  transaction: Row<TransactionType>
+  currentLedger: LedgerType
 }
 
 const multipleItemsMessages = defineMessages({
@@ -97,7 +89,10 @@ const statusMessages = defineMessages({
   }
 })
 
-const TransactionRow: React.FC<any> = ({ transaction, selectedLedgerId }) => {
+const TransactionRow: React.FC<TransactionsRowProps> = ({
+  transaction,
+  currentLedger
+}) => {
   const intl = useIntl()
   const {
     status: { code },
@@ -123,17 +118,13 @@ const TransactionRow: React.FC<any> = ({ transaction, selectedLedgerId }) => {
     if (items.length === 1) {
       return <p>{String(items[0])}</p>
     }
-
     if (items.length === 0) {
       return null
     }
-
     const messageDescriptor = multipleItemsMessages[type]
-
     const labelWithCount = intl.formatMessage(messageDescriptor, {
       count: items.length
     })
-
     return (
       <div className="flex items-center gap-1">
         <p>{labelWithCount}</p>
@@ -189,7 +180,7 @@ const TransactionRow: React.FC<any> = ({ transaction, selectedLedgerId }) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <Link
-                href={`/ledgers/${selectedLedgerId}/transactions/${transaction.original.id}`}
+                href={`/ledgers/${currentLedger.id}/transactions/${transaction.original.id}`}
               >
                 <DropdownMenuItem>
                   {intl.formatMessage({
@@ -207,22 +198,15 @@ const TransactionRow: React.FC<any> = ({ transaction, selectedLedgerId }) => {
 }
 
 export const TransactionsDataTable = ({
-  transactionsState
+  transactions,
+  form,
+  total,
+  pagination,
+  currentLedger
 }: TransactionsDataTableProps) => {
   const intl = useIntl()
-  const { showInfo } = useCustomToast()
   const router = useRouter()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
-
-  const {
-    ledgers,
-    transactions,
-    form,
-    total,
-    pagination,
-    selectedLedgerId,
-    setSelectedLedgerId
-  } = transactionsState
 
   const table = useReactTable({
     data: transactions?.items || [],
@@ -242,49 +226,13 @@ export const TransactionsDataTable = ({
   })
 
   const handleCreateTransaction = React.useCallback(() => {
-    router.push(`/ledgers/${selectedLedgerId}/transactions/create`)
-  }, [selectedLedgerId, router])
-
-  const handleCopyToClipboard = (value: string, message: string) => {
-    navigator.clipboard.writeText(value)
-    showInfo(message)
-  }
-
-  const watchLedger = form.watch('ledgerId')
-  React.useEffect(() => {
-    if (watchLedger) {
-      setSelectedLedgerId(watchLedger)
-      localStorage.setItem('defaultTransactionLedgerId', watchLedger)
-    }
-  }, [watchLedger])
-
-  React.useEffect(() => {
-    if (selectedLedgerId) {
-      form.setValue('ledgerId', selectedLedgerId)
-    }
-  }, [selectedLedgerId])
+    router.push(`/ledgers/${currentLedger.id}/transactions/create`)
+  }, [currentLedger, router])
 
   return (
     <FormProvider {...form}>
       <EntityBox.Collapsible>
         <EntityBox.Banner>
-          <div className="flex items-center gap-4">
-            <p className="text-sm font-medium text-gray-600">
-              {intl.formatMessage({
-                id: 'ledger.title',
-                defaultMessage: 'Ledger'
-              })}
-            </p>
-
-            <SelectField name="ledgerId" control={form.control}>
-              {ledgers?.items?.map((ledger: any) => (
-                <SelectItem key={ledger.id} value={ledger.id}>
-                  {ledger.name}
-                </SelectItem>
-              ))}
-            </SelectField>
-          </div>
-
           <EntityBox.Actions className="gap-4">
             <Button onClick={handleCreateTransaction}>
               {intl.formatMessage({
@@ -368,12 +316,11 @@ export const TransactionsDataTable = ({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {table.getRowModel().rows.map((transaction: any) => (
+                {table.getRowModel().rows.map((transaction) => (
                   <TransactionRow
                     key={transaction.id}
                     transaction={transaction}
-                    selectedLedgerId={selectedLedgerId}
-                    handleCopyToClipboard={handleCopyToClipboard}
+                    currentLedger={currentLedger}
                   />
                 ))}
               </TableBody>

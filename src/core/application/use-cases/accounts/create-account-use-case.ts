@@ -7,6 +7,7 @@ import type {
   CreateAccountDto,
   AccountResponseDto
 } from '../../dto/account-dto'
+
 export interface CreateAccount {
   execute: (
     organizationId: string,

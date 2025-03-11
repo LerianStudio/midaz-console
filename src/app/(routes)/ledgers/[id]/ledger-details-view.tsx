@@ -3,12 +3,11 @@
 import { Breadcrumb } from '@/components/breadcrumb'
 import { PageHeader } from '@/components/page-header'
 import React from 'react'
-import { cn } from '@/lib/utils'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { useIntl } from 'react-intl'
 import { useTabs } from '@/hooks/use-tabs'
 import { getBreadcrumbPaths } from '@/components/breadcrumb/get-breadcrumb-paths'
-import { ILedgerType } from '@/types/ledgers-type'
+import { LedgerType } from '@/types/ledgers-type'
 import { LedgerDetailsSkeleton } from './ledger-details-skeleton'
 import { OverviewTabContent } from './overview/overview-tab-content'
 import { AssetsTabContent } from './assets/assets-tab-content'
@@ -27,7 +26,7 @@ const TAB_VALUES = {
 const DEFAULT_TAB_VALUE = TAB_VALUES.OVERVIEW
 
 type LedgerDetailsViewProps = {
-  data: ILedgerType
+  data: LedgerType
 }
 
 const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
@@ -54,21 +53,21 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
     },
     {
       name: intl.formatMessage({
-        id: `ledgers.tab.assets`,
+        id: `common.assets`,
         defaultMessage: 'Assets'
       }),
       active: () => activeTab === TAB_VALUES.ASSETS
     },
     {
       name: intl.formatMessage({
-        id: `settings.tab.segments`,
+        id: `common.segments`,
         defaultMessage: 'Segments'
       }),
       active: () => activeTab === TAB_VALUES.SEGMENTS
     },
     {
       name: intl.formatMessage({
-        id: `settings.tab.portfolios`,
+        id: `common.portfolios`,
         defaultMessage: 'Portfolios'
       }),
       active: () => activeTab === TAB_VALUES.PORTFOLIOS
@@ -116,14 +115,14 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
 
           <TabsTrigger value={TAB_VALUES.ASSETS}>
             {intl.formatMessage({
-              id: 'ledgers.tab.assets',
+              id: 'common.assets',
               defaultMessage: 'Assets'
             })}
           </TabsTrigger>
 
           <TabsTrigger value={TAB_VALUES.SEGMENTS}>
             {intl.formatMessage({
-              id: 'ledgers.tab.segments',
+              id: 'common.segments',
               defaultMessage: 'Segments'
             })}
           </TabsTrigger>
@@ -137,7 +136,7 @@ const LedgerDetailsView = ({ data }: LedgerDetailsViewProps) => {
 
           <TabsTrigger value={TAB_VALUES.PORTFOLIOS}>
             {intl.formatMessage({
-              id: 'ledgers.tab.portfolios',
+              id: 'common.portfolios',
               defaultMessage: 'Portfolios'
             })}
           </TabsTrigger>

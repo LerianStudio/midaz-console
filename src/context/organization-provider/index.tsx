@@ -6,11 +6,19 @@ import {
   FetchAllOrganizations,
   FetchAllOrganizationsUseCase
 } from '@/core/application/use-cases/organizations/fetch-all-organizations-use-case'
-import { OrganizationProviderClient } from './organization-provider-client'
+import {
+  FetchAllLedgers,
+  FetchAllLedgersUseCase
+} from '@/core/application/use-cases/ledgers/fetch-all-ledgers-use-case'
 import { serverFetcher } from '@/lib/fetcher'
+import { OrganizationProviderClient } from './organization-provider-client'
 
 const fetchAllOrganizationsUseCase = container.get<FetchAllOrganizations>(
   FetchAllOrganizationsUseCase
+)
+
+const fetchAllLedgersUseCase = container.get<FetchAllLedgers>(
+  FetchAllLedgersUseCase
 )
 
 export const OrganizationProvider = async ({
@@ -20,12 +28,12 @@ export const OrganizationProvider = async ({
    * TODO: Call the proper get organizations for user
    * For now we setting the first organization as the current one
    */
-  const result = await serverFetcher(
+  const orgResult = await serverFetcher(
     async () => await fetchAllOrganizationsUseCase.execute(10, 1)
   )
 
   return (
-    <OrganizationProviderClient organizations={result?.items ?? []}>
+    <OrganizationProviderClient organizations={orgResult?.items ?? []}>
       {children}
     </OrganizationProviderClient>
   )

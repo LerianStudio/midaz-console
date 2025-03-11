@@ -14,7 +14,6 @@ import {
 } from './operation-accordion'
 import { OperationSourceField } from './operation-source-field'
 import { useTransactionForm } from './transaction-form-provider'
-import { StepperContent } from '@/components/transactions/primitives/stepper'
 import { MetadataAccordion } from './metadata-accordion'
 import ArrowRightCircle from '/public/svg/arrow-right-circle.svg'
 import { BasicInformationPaper } from './basic-information-paper'
@@ -22,6 +21,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { useRouter } from 'next/navigation'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import ConfirmationDialog from '@/components/confirmation-dialog'
+import { StepperContent } from '@/components/ui/stepper'
 
 export default function CreateTransactionPage() {
   const intl = useIntl()

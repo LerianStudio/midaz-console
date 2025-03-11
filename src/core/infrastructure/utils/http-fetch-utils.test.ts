@@ -1,18 +1,12 @@
+import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
 import { getServerSession } from 'next-auth'
-import { nextAuthOptions } from '../next-auth/casdoor/next-auth-provider'
+import { MidazRequestContext } from '../logger/decorators/midaz-id'
+import { OtelTracerProvider } from '../observability/otel-tracer-provider'
+import { HTTP_METHODS, MidazHttpFetchUtils } from './http-fetch-utils'
 import { handleMidazError } from './midaz-error-handler'
-import {
-  httpMidazAuthFetch,
-  HTTP_METHODS,
-  HttpFetchOptions
-} from './http-fetch-utils'
 
 jest.mock('next-auth', () => ({
   getServerSession: jest.fn()
-}))
-
-jest.mock('../next-auth/casdoor/next-auth-casdoor-provider', () => ({
-  nextAuthCasdoorOptions: {}
 }))
 
 jest.mock('./midaz-error-handler', () => ({
@@ -21,132 +15,169 @@ jest.mock('./midaz-error-handler', () => ({
   })
 }))
 
-global.fetch = jest.fn()
+jest.mock('../next-auth/casdoor/next-auth-casdoor-provider')
+jest.mock('../logger/decorators/midaz-id')
 
-describe('httpMidazAuthFetch', () => {
-  const mockSession = {
-    user: {
-      access_token: 'mock_access_token'
-    }
-  }
+describe('MidazHttpFetchUtils', () => {
+  let midazHttpFetchUtils: MidazHttpFetchUtils
+  let midazRequestContext: MidazRequestContext
+  let midazLogger: LoggerAggregator
+  let otelTracerProvider: OtelTracerProvider
 
   beforeEach(() => {
+    midazRequestContext = new MidazRequestContext()
+
+    midazLogger = {
+      error: jest.fn(),
+      info: jest.fn()
+    } as unknown as LoggerAggregator
+
+    otelTracerProvider = {
+      startCustomSpan: jest.fn().mockImplementation(() => {
+        return {
+          setAttributes: jest.fn().mockReturnThis(),
+          setStatus: jest.fn().mockReturnThis()
+        }
+      }),
+      endCustomSpan: jest.fn()
+    } as unknown as OtelTracerProvider
+
+    midazHttpFetchUtils = new MidazHttpFetchUtils(
+      midazRequestContext,
+      midazLogger,
+      otelTracerProvider
+    )
+  })
+
+  afterEach(() => {
     jest.clearAllMocks()
-    ;(getServerSession as jest.Mock).mockResolvedValue(mockSession)
   })
 
-  it('should fetch data successfully', async () => {
+  it('should make a successful fetch request', async () => {
     const mockResponse = { data: 'test' }
-    ;(fetch as jest.Mock).mockResolvedValue({
-      body: '',
+    const mockFetch = jest.fn().mockResolvedValue({
+      ok: true,
       json: jest.fn().mockResolvedValue(mockResponse),
-      ok: true
+      body: true,
+      status: 200
     })
-
-    const httpFetchOptions: HttpFetchOptions = {
-      url: 'https://api.example.com/data',
-      method: HTTP_METHODS.GET
-    }
-
-    const result = await httpMidazAuthFetch(httpFetchOptions)
-
-    expect(getServerSession).toHaveBeenCalledWith(nextAuthOptions)
-    expect(fetch).toHaveBeenCalledWith(httpFetchOptions.url, {
-      method: httpFetchOptions.method,
-      body: httpFetchOptions.body,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${mockSession.user.access_token}`
-      }
-    })
-    expect(result).toEqual(mockResponse)
-  })
-
-  it('should make a POST request with the correct headers and body', async () => {
-    const mockResponse = { ok: true, json: jest.fn().mockResolvedValue({}) }
-    ;(fetch as jest.Mock).mockResolvedValue({
-      body: '',
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
       json: jest.fn().mockResolvedValue(mockResponse),
-      ok: true
+      body: true,
+      status: 200
+    })
+    ;(getServerSession as jest.Mock).mockResolvedValue({
+      user: { access_token: 'test-token' }
     })
 
-    const options: HttpFetchOptions = {
-      url: 'https://api.example.com/data',
-      method: HTTP_METHODS.POST,
-      body: JSON.stringify({ key: 'value' })
-    }
-
-    const response = await httpMidazAuthFetch(options)
-
-    expect(getServerSession).toHaveBeenCalledWith(nextAuthOptions)
-    expect(fetch).toHaveBeenCalledWith(options.url, {
-      method: options.method,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${mockSession.user.access_token}`
-      },
-      body: options.body
-    })
-    expect(response).toBe(mockResponse)
-  })
-
-  it('should include additional headers if provided', async () => {
-    const mockResponse = { ok: true, json: jest.fn().mockResolvedValue({}) }
-    ;(fetch as jest.Mock).mockResolvedValue({
-      body: '',
-      json: jest.fn().mockResolvedValue(mockResponse),
-      ok: true
-    })
-
-    const options: HttpFetchOptions = {
-      url: 'https://api.example.com/data',
+    const result = await midazHttpFetchUtils.httpMidazAuthFetch({
+      url: 'https://api.example.com/test',
       method: HTTP_METHODS.GET,
       headers: {
         'Custom-Header': 'CustomValue'
       }
-    }
-
-    const response = await httpMidazAuthFetch(options)
-
-    expect(getServerSession).toHaveBeenCalledWith(nextAuthOptions)
-    expect(fetch).toHaveBeenCalledWith(options.url, {
-      method: options.method,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${mockSession.user.access_token}`,
-        'Custom-Header': 'CustomValue'
-      },
-      body: undefined
     })
-    expect(response).toBe(mockResponse)
+
+    expect(result).toEqual(mockResponse)
+    expect(midazLogger.info).toHaveBeenCalledWith(
+      '[INFO] - httpMidazAuthFetch ',
+      {
+        url: 'https://api.example.com/test',
+        method: 'GET',
+        status: 200
+      }
+    )
   })
 
-  it('should handle errors when fetching data', async () => {
-    const mockErrorResponse = { message: 'Error occurred' }
-    ;(fetch as jest.Mock).mockResolvedValue({
-      body: '',
+  it('should handle fetch request error', async () => {
+    const mockErrorResponse = { error: 'test error' }
+    const mockFetch = jest.fn().mockResolvedValue({
+      ok: false,
       json: jest.fn().mockResolvedValue(mockErrorResponse),
-      ok: false
+      body: true,
+      status: 400
+    })
+    global.fetch = mockFetch
+    ;(getServerSession as jest.Mock).mockResolvedValue({
+      user: { access_token: 'test-token' }
+    })
+    ;(handleMidazError as jest.Mock).mockImplementation(() => {
+      throw new Error('Handled error')
     })
 
-    const httpFetchOptions: HttpFetchOptions = {
-      url: 'https://api.example.com/data',
-      method: HTTP_METHODS.GET
-    }
+    await expect(
+      midazHttpFetchUtils.httpMidazAuthFetch({
+        url: 'https://api.example.com/test',
+        method: HTTP_METHODS.GET
+      })
+    ).rejects.toThrow('Handled error')
 
-    await expect(httpMidazAuthFetch(httpFetchOptions)).rejects.toThrow(
-      'Error occurred'
+    expect(midazLogger.error).toHaveBeenCalledWith(
+      '[ERROR] - httpMidazAuthFetch ',
+      {
+        url: 'https://api.example.com/test',
+        method: 'GET',
+        status: 400,
+        response: mockErrorResponse
+      }
     )
+  })
 
-    expect(getServerSession).toHaveBeenCalledWith(nextAuthOptions)
-    expect(fetch).toHaveBeenCalledWith(httpFetchOptions.url, {
-      method: httpFetchOptions.method,
-      body: httpFetchOptions.body,
+  it('should set the correct headers', async () => {
+    const mockResponse = { data: 'test' }
+    const mockFetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: jest.fn().mockResolvedValue(mockResponse),
+      body: true,
+      status: 200
+    })
+    global.fetch = mockFetch
+    ;(getServerSession as jest.Mock).mockResolvedValue({
+      user: { access_token: 'test-token' }
+    })
+
+    await midazHttpFetchUtils.httpMidazAuthFetch({
+      url: 'https://api.example.com/test',
+      method: HTTP_METHODS.GET,
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${mockSession.user.access_token}`
+        'Custom-Header': 'CustomValue',
+        'X-Request-Id': 'test-request-id'
       }
     })
-    expect(handleMidazError).toHaveBeenCalledWith(mockErrorResponse)
+
+    expect(mockFetch).toHaveBeenCalledWith('https://api.example.com/test', {
+      method: 'GET',
+      body: undefined,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer test-token',
+        'X-Request-Id': 'test-request-id',
+        'Custom-Header': 'CustomValue'
+      }
+    })
+  })
+
+  it('should start and end a custom span', async () => {
+    const mockResponse = { data: 'test' }
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: jest.fn().mockResolvedValue(mockResponse),
+      body: true,
+      status: 200
+    })
+    ;(getServerSession as jest.Mock).mockResolvedValue({
+      user: { access_token: 'test-token' }
+    })
+
+    await midazHttpFetchUtils.httpMidazAuthFetch({
+      url: 'https://api.example.com/test',
+      method: HTTP_METHODS.GET
+    })
+
+    expect(otelTracerProvider.startCustomSpan).toHaveBeenCalledWith(
+      'midaz-request'
+    )
+    expect(otelTracerProvider.endCustomSpan).toHaveBeenCalled()
   })
 })

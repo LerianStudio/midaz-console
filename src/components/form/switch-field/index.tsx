@@ -7,6 +7,12 @@ import {
   FormTooltip
 } from '@/components/ui/form'
 import { Switch } from '@/components/ui/switch'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from '@/components/ui/tooltip'
 import { ReactNode } from 'react'
 import { Control } from 'react-hook-form'
 
@@ -18,6 +24,7 @@ export type SwitchFieldProps = {
   tooltip?: string
   required?: boolean
   disabled?: boolean
+  disabledTooltip?: string
 }
 
 export const SwitchField = ({
@@ -27,7 +34,8 @@ export const SwitchField = ({
   labelExtra,
   tooltip,
   required,
-  disabled
+  disabled,
+  disabledTooltip
 }: SwitchFieldProps) => {
   return (
     <FormField
@@ -44,13 +52,33 @@ export const SwitchField = ({
               {label}
             </FormLabel>
           )}
-          <FormControl>
-            <Switch
-              checked={field.value}
-              onCheckedChange={field.onChange}
-              disabled={disabled}
-            />
-          </FormControl>
+
+          <div className="relative">
+            <FormControl>
+              {disabled && disabledTooltip ? (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="inline-flex w-auto">
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          disabled={disabled}
+                        />
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>{disabledTooltip}</TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              ) : (
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  disabled={disabled}
+                />
+              )}
+            </FormControl>
+          </div>
           <FormMessage />
         </FormItem>
       )}

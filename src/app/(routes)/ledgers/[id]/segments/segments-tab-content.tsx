@@ -38,8 +38,8 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { useQueryParams } from '@/hooks/use-query-params'
 import { Pagination } from '@/components/pagination'
 import { PaginationLimitField } from '@/components/form/pagination-limit-field'
-import { MetadataTableCell } from '../MetadataTableCell'
-import { IdTableCell } from '@/components/id-table-cell'
+import { MetadataTableCell } from '@/components/table/metadata-table-cell'
+import { IdTableCell } from '@/components/table/id-table-cell'
 import { SegmentsSheet } from './segments-sheet'
 
 export const SegmentsTabContent = () => {
@@ -123,7 +123,7 @@ export const SegmentsTabContent = () => {
         <EntityBox.Banner>
           <EntityBox.Header
             title={intl.formatMessage({
-              id: 'ledgers.segments.title',
+              id: 'common.segments',
               defaultMessage: 'Segments'
             })}
             subtitle={intl.formatMessage({

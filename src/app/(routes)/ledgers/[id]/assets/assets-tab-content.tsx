@@ -11,7 +11,7 @@ import {
   getFilteredRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import { ILedgerType } from '@/types/ledgers-type'
+import { LedgerType } from '@/types/ledgers-type'
 import { AssetsSkeleton } from './assets-skeleton'
 import { AssetsSheet } from './assets-sheet'
 import { useParams } from 'next/navigation'
@@ -24,7 +24,7 @@ import { Pagination } from '@/components/pagination'
 import { PaginationLimitField } from '@/components/form/pagination-limit-field'
 
 type AssetsTabContentProps = {
-  data: ILedgerType
+  data: LedgerType
 }
 
 export const AssetsTabContent = ({ data }: AssetsTabContentProps) => {
@@ -123,7 +123,7 @@ export const AssetsTabContent = ({ data }: AssetsTabContentProps) => {
         <EntityBox.Banner>
           <EntityBox.Header
             title={intl.formatMessage({
-              id: 'ledgers.assets.title',
+              id: 'common.assets',
               defaultMessage: 'Assets'
             })}
             subtitle={intl.formatMessage({

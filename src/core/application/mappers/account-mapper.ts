@@ -6,9 +6,12 @@ import {
 } from '../dto/account-dto'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { PaginationMapper } from './pagination-mapper'
+import { BalanceEntity } from '@/core/domain/entities/balance-entity'
 
 export class AccountMapper {
-  public static toDto(account: AccountEntity): AccountResponseDto {
+  public static toDto(
+    account: AccountEntity & Partial<BalanceEntity>
+  ): AccountResponseDto {
     return {
       id: account.id!,
       entityId: account.entityId!,
@@ -47,8 +50,6 @@ export class AccountMapper {
       parentAccountId: dto.parentAccountId,
       segmentId: dto.segmentId,
       portfolioId: dto.portfolioId,
-      allowSending: dto.allowSending,
-      allowReceiving: dto.allowReceiving,
       metadata: dto.metadata ?? {}
     }
   }

@@ -127,6 +127,7 @@ const SignInPage = () => {
               >
                 <InputField
                   control={form.control}
+                  type="email"
                   name="username"
                   label={intl.formatMessage({
                     id: 'entity.auth.username',
