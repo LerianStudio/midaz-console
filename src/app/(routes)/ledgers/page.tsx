@@ -19,7 +19,6 @@ import { useOrganization } from '@/context/organization-provider/organization-pr
 import { LedgersSkeleton } from './ledgers-skeleton'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { useQueryParams } from '@/hooks/use-query-params'
-import { useQueryClient } from '@tanstack/react-query'
 
 const Page = () => {
   const intl = useIntl()
@@ -29,7 +28,6 @@ const Page = () => {
   const [columnFilters, setColumnFilters] = React.useState<any>([])
   const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>()
   const { form, searchValues, pagination } = useQueryParams({ total })
-  const queryClient = useQueryClient()
 
   const {
     data: ledgers,
@@ -62,11 +60,13 @@ const Page = () => {
       const deletedLedgerId = ledgerName
 
       if (deletedLedgerId === currentLedger?.id) {
-        setTimeout(() => {
-          if (ledgers?.items && ledgers.items.length > 0) {
-            setLedger(ledgers.items[0])
-          }
-        }, 500)
+        const remainingLedgers =
+          ledgers?.items?.filter((ledger) => ledger.id !== deletedLedgerId) ||
+          []
+
+        setLedger(
+          remainingLedgers.length > 0 ? remainingLedgers[0] : ({} as any)
+        )
       }
 
       showSuccess(
