@@ -24,7 +24,6 @@ import { useOrganization } from '@/context/organization-provider/organization-pr
 import useCustomToast from '@/hooks/use-custom-toast'
 import { LedgerType } from '@/types/ledgers-type'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useQueryClient } from '@tanstack/react-query'
 
 export type LedgersSheetProps = DialogProps & {
   mode: 'create' | 'edit'
@@ -52,7 +51,6 @@ export const LedgersSheet = ({
   ...others
 }: LedgersSheetProps) => {
   const intl = useIntl()
-  const queryClient = useQueryClient()
   const { currentOrganization, setLedger } = useOrganization()
   const { showSuccess, showError } = useCustomToast()
 
@@ -61,9 +59,7 @@ export const LedgersSheet = ({
     onSuccess: async (data: unknown) => {
       const newLedger = data as LedgerType
 
-      if (onSuccess) {
-        await Promise.resolve(onSuccess())
-      }
+      await onSuccess?.()
 
       setLedger(newLedger)
       onOpenChange?.(false)
