@@ -1,3 +1,10 @@
+## [1.17.1](https://github.com/LerianStudio/midaz-console/compare/v1.17.0...v1.17.1) (2025-03-13)
+
+
+### Bug Fixes
+
+* update translation files to use the correct article ([a882e1d](https://github.com/LerianStudio/midaz-console/commit/a882e1dec9cac44aee2b66730ff9eb86835f3715))
+
 # [1.17.0](https://github.com/LerianStudio/midaz-console/compare/v1.16.0...v1.17.0) (2025-03-12)
 
 
