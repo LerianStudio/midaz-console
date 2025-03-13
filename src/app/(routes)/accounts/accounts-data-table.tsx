@@ -28,6 +28,9 @@ import { Pagination } from '@/components/pagination'
 import { PaginationLimitField } from '@/components/form/pagination-limit-field'
 import { FormProvider } from 'react-hook-form'
 import { IdTableCell } from '@/components/table/id-table-cell'
+import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
+import { useOrganization } from '@/context/organization-provider/organization-provider-client'
+import { AccountSheet } from './accounts-sheet'
 
 type AccountsTableProps = {
   accounts: { items: AccountType[] }
@@ -111,38 +114,37 @@ export const AccountsDataTable: React.FC<AccountsTableProps> = ({
   table,
   onDelete,
   handleEdit,
+  refetch,
   total,
   pagination,
   form
 }) => {
   const intl = useIntl()
+  const { handleCreate, sheetProps } = useCreateUpdateSheet<any>()
+  const { currentLedger } = useOrganization()
 
   return (
     <FormProvider {...form}>
-      <div className="flex justify-end">
+      <div className="mb-4 flex justify-end">
         <PaginationLimitField control={form.control} />
       </div>
 
       <EntityDataTable.Root>
-        {isNil(
-          accounts?.items.length === 0 && (
-            <EmptyResource
-              message={intl.formatMessage({
-                id: 'ledgers.accounts.emptyResource',
-                defaultMessage: "You haven't created any Accounts yet"
+        {isNil(accounts?.items) || accounts?.items.length === 0 ? (
+          <EmptyResource
+            message={intl.formatMessage({
+              id: 'ledgers.accounts.emptyResource',
+              defaultMessage: "You haven't created any Accounts yet"
+            })}
+          >
+            <Button onClick={handleCreate}>
+              {intl.formatMessage({
+                id: 'common.new.account',
+                defaultMessage: 'New Account'
               })}
-            >
-              <Button onClick={() => {}}>
-                {intl.formatMessage({
-                  id: 'common.new.account',
-                  defaultMessage: 'New Account'
-                })}
-              </Button>
-            </EmptyResource>
-          )
-        )}
-
-        {!isNil(accounts?.items) && accounts?.items.length > 0 && (
+            </Button>
+          </EmptyResource>
+        ) : (
           <TableContainer>
             <Table>
               <TableHeader>
@@ -217,6 +219,12 @@ export const AccountsDataTable: React.FC<AccountsTableProps> = ({
           </EntityDataTable.FooterText>
           <Pagination total={total} {...pagination} />
         </EntityDataTable.Footer>
+
+        <AccountSheet
+          ledgerId={currentLedger.id}
+          onSuccess={refetch}
+          {...sheetProps}
+        />
       </EntityDataTable.Root>
     </FormProvider>
   )
