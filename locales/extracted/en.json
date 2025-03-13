@@ -276,7 +276,7 @@
   "onboarding.cancel.description": "You will lose the information you entered and will need to restart the process.",
   "onboarding.cancel.title": "Do you want to cancel?",
   "onboarding.dialog.button": "Let's go",
-  "onboarding.dialog.created.description": "The Lerian organization is ready. Now just create your first Ledger to add Assets, Accounts and Portfolios.",
+  "onboarding.dialog.created.description": "The Lerian organization is ready. Now just create your first Ledger to add Segments, Assets, Accounts and Portfolios.",
   "onboarding.dialog.created.title": "Organization active and operational",
   "onboarding.dialog.description": "In less than 5 minutes, create your Organization and first Ledger to activate the powerful features of Midaz Console.",
   "onboarding.dialog.firstSteps": "First steps",
