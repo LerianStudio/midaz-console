@@ -22,7 +22,7 @@ export class MidazUpdateAccountsRepository implements UpdateAccountsRepository {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/accounts/${accountId}`
 
     const response =
-      await this.midazHttpFetchUtils.httpMidazAuthFetch<AccountEntity>({
+      await this.midazHttpFetchUtils.httpMidazFetch<AccountEntity>({
         url,
         method: HTTP_METHODS.PATCH,
         body: JSON.stringify(account)

@@ -17,7 +17,7 @@ export class MidazDeleteSegmentRepository implements DeleteSegmentRepository {
   ): Promise<void> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/segments/${segmentId}`
 
-    await this.midazHttpFetchUtils.httpMidazAuthFetch<void>({
+    await this.midazHttpFetchUtils.httpMidazFetch<void>({
       url,
       method: HTTP_METHODS.DELETE
     })

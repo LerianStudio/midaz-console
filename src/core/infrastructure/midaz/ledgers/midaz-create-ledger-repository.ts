@@ -21,7 +21,7 @@ export class MidazCreateLedgerRepository implements CreateLedgerRepository {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers`
 
     const response =
-      await this.midazHttpFetchUtils.httpMidazAuthFetch<LedgerEntity>({
+      await this.midazHttpFetchUtils.httpMidazFetch<LedgerEntity>({
         url,
         method: HTTP_METHODS.POST,
         body: JSON.stringify(ledger)

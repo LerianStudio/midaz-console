@@ -22,7 +22,7 @@ export class MidazUpdateSegmentRepository implements UpdateSegmentRepository {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/segments/${segmentId}`
 
     const response =
-      await this.midazHttpFetchUtils.httpMidazAuthFetch<SegmentEntity>({
+      await this.midazHttpFetchUtils.httpMidazFetch<SegmentEntity>({
         url,
         method: HTTP_METHODS.PATCH,
         body: JSON.stringify(segment)

@@ -27,7 +27,7 @@ export class MidazFetchAllOrganizationsRepository
     })
     const url = `${this.baseUrl}?${params.toString()}`
 
-    const response = await this.midazHttpFetchUtils.httpMidazAuthFetch<
+    const response = await this.midazHttpFetchUtils.httpMidazFetch<
       PaginationEntity<OrganizationEntity>
     >({
       url,

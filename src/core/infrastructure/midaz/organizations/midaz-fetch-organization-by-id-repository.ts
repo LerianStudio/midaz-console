@@ -19,7 +19,7 @@ export class MidazFetchOrganizationByIdRepository
     const url = `${this.baseUrl}/${id}`
 
     const response =
-      await this.midazHttpFetchUtils.httpMidazAuthFetch<OrganizationEntity>({
+      await this.midazHttpFetchUtils.httpMidazFetch<OrganizationEntity>({
         url,
         method: HTTP_METHODS.GET
       })

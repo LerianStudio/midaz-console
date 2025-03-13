@@ -17,7 +17,7 @@ export class IdentityDeleteUserRepository implements DeleteUserRepository {
 
   async delete(userId: string): Promise<void> {
     const url = `${this.baseUrl}/users/${userId}`
-    await this.midazHttpFetchUtils.httpMidazAuthFetch<void>({
+    await this.midazHttpFetchUtils.httpMidazFetch<void>({
       url,
       method: HTTP_METHODS.DELETE
     })

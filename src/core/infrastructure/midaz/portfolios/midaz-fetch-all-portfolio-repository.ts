@@ -24,7 +24,7 @@ export class MidazFetchAllPortfoliosRepository
   ): Promise<PaginationEntity<PortfolioEntity>> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios?limit=${limit}&page=${page}`
 
-    const response = await this.midazHttpFetchUtils.httpMidazAuthFetch<
+    const response = await this.midazHttpFetchUtils.httpMidazFetch<
       PaginationEntity<PortfolioEntity>
     >({
       url,

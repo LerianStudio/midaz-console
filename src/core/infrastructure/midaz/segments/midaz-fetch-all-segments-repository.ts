@@ -22,7 +22,7 @@ export class MidazFetchAllSegmentsRepository
   ): Promise<PaginationEntity<SegmentEntity>> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/segments?limit=${limit}&page=${page}`
 
-    const response = await this.midazHttpFetchUtils.httpMidazAuthFetch<
+    const response = await this.midazHttpFetchUtils.httpMidazFetch<
       PaginationEntity<SegmentEntity>
     >({
       url,

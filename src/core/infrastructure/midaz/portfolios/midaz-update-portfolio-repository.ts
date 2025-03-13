@@ -24,7 +24,7 @@ export class MidazUpdatePortfolioRepository
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}`
 
     const response =
-      await this.midazHttpFetchUtils.httpMidazAuthFetch<PortfolioEntity>({
+      await this.midazHttpFetchUtils.httpMidazFetch<PortfolioEntity>({
         url,
         method: HTTP_METHODS.PATCH,
         body: JSON.stringify(portfolio)

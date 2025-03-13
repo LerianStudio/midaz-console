@@ -20,12 +20,13 @@ export class MidazCreateAssetRepository implements CreateAssetRepository {
   ): Promise<AssetEntity> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets`
 
-    const response =
-      await this.midazHttpFetchUtils.httpMidazAuthFetch<AssetEntity>({
+    const response = await this.midazHttpFetchUtils.httpMidazFetch<AssetEntity>(
+      {
         url,
         method: HTTP_METHODS.POST,
         body: JSON.stringify(asset)
-      })
+      }
+    )
 
     return response
   }

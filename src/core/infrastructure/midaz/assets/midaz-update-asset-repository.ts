@@ -20,12 +20,13 @@ export class MidazUpdateAssetRepository implements UpdateAssetRepository {
   ): Promise<AssetEntity> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`
 
-    const response =
-      await this.midazHttpFetchUtils.httpMidazAuthFetch<AssetEntity>({
+    const response = await this.midazHttpFetchUtils.httpMidazFetch<AssetEntity>(
+      {
         url,
         method: HTTP_METHODS.PATCH,
         body: JSON.stringify(asset)
-      })
+      }
+    )
 
     return response
   }

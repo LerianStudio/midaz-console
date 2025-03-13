@@ -19,12 +19,11 @@ export class IdentityCreateUsersRepository implements CreateUserRepository {
   async create(user: UserEntity): Promise<UserEntity> {
     const url = `${this.baseUrl}/users`
 
-    const response =
-      await this.midazHttpFetchUtils.httpMidazAuthFetch<UserEntity>({
-        url,
-        method: HTTP_METHODS.POST,
-        body: JSON.stringify(user)
-      })
+    const response = await this.midazHttpFetchUtils.httpMidazFetch<UserEntity>({
+      url,
+      method: HTTP_METHODS.POST,
+      body: JSON.stringify(user)
+    })
 
     return response
   }

@@ -26,7 +26,7 @@ export class MidazCreateTransactionRepository
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/transactions/json`
 
     const response =
-      await this.midazHttpFetchUtils.httpMidazAuthFetch<TransactionEntity>({
+      await this.midazHttpFetchUtils.httpMidazFetch<TransactionEntity>({
         url,
         method: HTTP_METHODS.POST,
         body: JSON.stringify(transaction)

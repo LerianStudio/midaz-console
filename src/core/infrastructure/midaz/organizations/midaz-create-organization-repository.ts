@@ -19,7 +19,7 @@ export class MidazCreateOrganizationRepository
     organizationData: OrganizationEntity
   ): Promise<OrganizationEntity> {
     const response =
-      await this.midazHttpFetchUtils.httpMidazAuthFetch<OrganizationEntity>({
+      await this.midazHttpFetchUtils.httpMidazFetch<OrganizationEntity>({
         url: this.baseUrl,
         method: HTTP_METHODS.POST,
         body: JSON.stringify(organizationData)

@@ -23,7 +23,7 @@ export class MidazFetchLedgerByIdRepository
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}`
 
     const response =
-      await this.midazHttpFetchUtils.httpMidazAuthFetch<LedgerEntity>({
+      await this.midazHttpFetchUtils.httpMidazFetch<LedgerEntity>({
         url,
         method: HTTP_METHODS.GET
       })

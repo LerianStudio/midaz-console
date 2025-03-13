@@ -21,11 +21,10 @@ export class IdentityFetchUserByIdRepository
   async fetchById(userId: string): Promise<UserEntity> {
     const url = `${this.baseUrl}/users/${userId}`
 
-    const response =
-      await this.midazHttpFetchUtils.httpMidazAuthFetch<UserEntity>({
-        url,
-        method: HTTP_METHODS.GET
-      })
+    const response = await this.midazHttpFetchUtils.httpMidazFetch<UserEntity>({
+      url,
+      method: HTTP_METHODS.GET
+    })
 
     return response
   }

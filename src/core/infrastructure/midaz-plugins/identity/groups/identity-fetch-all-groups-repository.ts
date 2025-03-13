@@ -20,7 +20,7 @@ export class IdentityFetchAllGroupsRepository
   async fetchAllGroups(): Promise<any> {
     const url = `${this.baseUrl}/groups`
 
-    const response = await this.midazHttpFetchUtils.httpMidazAuthFetch<any>({
+    const response = await this.midazHttpFetchUtils.httpMidazFetch<any>({
       url,
       method: HTTP_METHODS.GET
     })

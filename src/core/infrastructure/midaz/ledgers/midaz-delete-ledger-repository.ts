@@ -16,7 +16,7 @@ export class MidazDeleteLedgerRepository implements DeleteLedgerRepository {
   async delete(organizationId: string, ledgerId: string): Promise<void> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}`
 
-    const response = await this.midazHttpFetchUtils.httpMidazAuthFetch<void>({
+    const response = await this.midazHttpFetchUtils.httpMidazFetch<void>({
       url,
       method: HTTP_METHODS.DELETE
     })

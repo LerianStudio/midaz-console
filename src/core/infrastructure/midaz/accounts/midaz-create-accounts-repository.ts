@@ -21,7 +21,7 @@ export class MidazCreateAccountRepository implements CreateAccountsRepository {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/accounts`
 
     const response =
-      await this.midazHttpFetchUtils.httpMidazAuthFetch<AccountEntity>({
+      await this.midazHttpFetchUtils.httpMidazFetch<AccountEntity>({
         url,
         method: HTTP_METHODS.POST,
         body: JSON.stringify(account)

@@ -27,7 +27,7 @@ export class MidazCreatePortfolioRepository
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios`
 
     const response =
-      await this.midazHttpFetchUtils.httpMidazAuthFetch<PortfolioEntity>({
+      await this.midazHttpFetchUtils.httpMidazFetch<PortfolioEntity>({
         url,
         method: HTTP_METHODS.POST,
         body: JSON.stringify(portfolio)

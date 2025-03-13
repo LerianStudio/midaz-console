@@ -3,18 +3,18 @@ import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 jest.mock('../../utils/http-fetch-utils', () => ({
-  httpMidazAuthFetch: jest.fn(),
+  httpMidazFetch: jest.fn(),
   HTTP_METHODS: {
-    PATCH: 'PATCH'
+    POST: 'PATCH'
   }
 }))
 
 describe('MidazUpdateAssetRepository', () => {
   let repository: MidazUpdateAssetRepository
-  let mockHttpFetchUtils: { httpMidazAuthFetch: jest.Mock }
+  let mockHttpFetchUtils: { httpMidazFetch: jest.Mock }
 
   beforeEach(() => {
-    mockHttpFetchUtils = { httpMidazAuthFetch: jest.fn() }
+    mockHttpFetchUtils = { httpMidazFetch: jest.fn() }
     repository = new MidazUpdateAssetRepository(mockHttpFetchUtils as any)
     jest.clearAllMocks()
   })
@@ -33,7 +33,7 @@ describe('MidazUpdateAssetRepository', () => {
       metadata: { key: 'value' }
     }
 
-    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(response)
+    mockHttpFetchUtils.httpMidazFetch.mockResolvedValueOnce(response)
 
     const result = await repository.update(
       organizationId,
@@ -42,7 +42,7 @@ describe('MidazUpdateAssetRepository', () => {
       assetData
     )
 
-    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`,
       method: HTTP_METHODS.PATCH,
       body: JSON.stringify(assetData)
@@ -57,13 +57,13 @@ describe('MidazUpdateAssetRepository', () => {
     const assetData: Partial<AssetEntity> = { name: 'Updated Asset' }
     const error = new Error('Error occurred')
 
-    mockHttpFetchUtils.httpMidazAuthFetch.mockRejectedValueOnce(error)
+    mockHttpFetchUtils.httpMidazFetch.mockRejectedValueOnce(error)
 
     await expect(
       repository.update(organizationId, ledgerId, assetId, assetData)
     ).rejects.toThrow('Error occurred')
 
-    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`,
       method: HTTP_METHODS.PATCH,
       body: JSON.stringify(assetData)

@@ -22,7 +22,7 @@ export class MidazDeletePortfolioRepository
   ): Promise<void> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/portfolios/${portfolioId}`
 
-    await this.midazHttpFetchUtils.httpMidazAuthFetch<void>({
+    await this.midazHttpFetchUtils.httpMidazFetch<void>({
       url,
       method: HTTP_METHODS.DELETE
     })

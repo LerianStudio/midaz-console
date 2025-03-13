@@ -20,7 +20,7 @@ export class MidazCreateSegmentRepository implements CreateSegmentRepository {
   ): Promise<SegmentEntity> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/segments`
     const response =
-      await this.midazHttpFetchUtils.httpMidazAuthFetch<SegmentEntity>({
+      await this.midazHttpFetchUtils.httpMidazFetch<SegmentEntity>({
         url,
         method: HTTP_METHODS.POST,
         body: JSON.stringify(segment)

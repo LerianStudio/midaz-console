@@ -24,7 +24,7 @@ export class IdentityUpdateUserPasswordRepository
   ): Promise<void> {
     const url = `${this.baseUrl}/users/${userId}/update-password`
 
-    await this.midazHttpFetchUtils.httpMidazAuthFetch<void>({
+    await this.midazHttpFetchUtils.httpMidazFetch<void>({
       url,
       method: HTTP_METHODS.PUT,
       body: JSON.stringify({ oldPassword, newPassword })

@@ -22,7 +22,7 @@ export class MidazUpdateOrganizationRepository
     const url = `${this.baseUrl}/${organizationId}`
 
     const response =
-      await this.midazHttpFetchUtils.httpMidazAuthFetch<OrganizationEntity>({
+      await this.midazHttpFetchUtils.httpMidazFetch<OrganizationEntity>({
         url,
         method: HTTP_METHODS.PATCH,
         body: JSON.stringify(organization)

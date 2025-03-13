@@ -24,7 +24,7 @@ export class MidazFetchAllTransactionsRepository
   ): Promise<PaginationEntity<TransactionEntity>> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/transactions?limit=${limit}&page=${page}`
 
-    const response = await this.midazHttpFetchUtils.httpMidazAuthFetch<
+    const response = await this.midazHttpFetchUtils.httpMidazFetch<
       PaginationEntity<TransactionEntity>
     >({
       url,

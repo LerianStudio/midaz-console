@@ -21,7 +21,7 @@ export class IdentityFetchAllUsersRepository
   async fetchAll(): Promise<UserEntity[]> {
     const url = `${this.baseUrl}/users`
 
-    const response = await this.midazHttpFetchUtils.httpMidazAuthFetch<
+    const response = await this.midazHttpFetchUtils.httpMidazFetch<
       UserEntity[]
     >({
       url,

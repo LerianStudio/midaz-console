@@ -21,7 +21,7 @@ export class MidazBalanceRepository implements BalanceRepository {
   ): Promise<PaginationEntity<BalanceEntity>> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/accounts/${accountId}/balances`
 
-    const response = await this.midazHttpFetchUtils.httpMidazAuthFetch<
+    const response = await this.midazHttpFetchUtils.httpMidazFetch<
       PaginationEntity<BalanceEntity>
     >({
       url,
@@ -46,7 +46,7 @@ export class MidazBalanceRepository implements BalanceRepository {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/balances/${balanceResponse?.items[0]?.id}`
 
     const response =
-      await this.midazHttpFetchUtils.httpMidazAuthFetch<BalanceEntity>({
+      await this.midazHttpFetchUtils.httpMidazFetch<BalanceEntity>({
         url,
         method: HTTP_METHODS.PATCH,
         body: JSON.stringify(balance)

@@ -22,7 +22,7 @@ export class IdentityFetchGroupByIdRepository
     const url = `${this.baseUrl}/groups/${groupId}`
 
     const response =
-      await this.midazHttpFetchUtils.httpMidazAuthFetch<GroupsEntity>({
+      await this.midazHttpFetchUtils.httpMidazFetch<GroupsEntity>({
         url,
         method: HTTP_METHODS.GET
       })

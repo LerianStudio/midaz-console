@@ -20,7 +20,7 @@ export class IdentityResetUserPasswordRepository
   async resetPassword(userId: string, newPassword: string): Promise<void> {
     const url = `${this.baseUrl}/users/${userId}/reset-password`
 
-    await this.midazHttpFetchUtils.httpMidazAuthFetch<void>({
+    await this.midazHttpFetchUtils.httpMidazFetch<void>({
       url,
       method: HTTP_METHODS.PUT,
       body: JSON.stringify({ newPassword })

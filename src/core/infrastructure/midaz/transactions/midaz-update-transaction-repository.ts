@@ -23,7 +23,7 @@ export class MidazUpdateTransactionRepository
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/transactions/${transactionId}`
 
     const response =
-      await this.midazHttpFetchUtils.httpMidazAuthFetch<TransactionEntity>({
+      await this.midazHttpFetchUtils.httpMidazFetch<TransactionEntity>({
         url,
         method: HTTP_METHODS.PATCH,
         body: JSON.stringify(transaction)

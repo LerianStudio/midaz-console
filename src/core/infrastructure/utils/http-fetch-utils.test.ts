@@ -15,7 +15,7 @@ jest.mock('./midaz-error-handler', () => ({
   })
 }))
 
-jest.mock('../next-auth/casdoor/next-auth-casdoor-provider')
+jest.mock('../next-auth/casdoor/next-auth-provider')
 jest.mock('../logger/decorators/midaz-id')
 
 describe('MidazHttpFetchUtils', () => {
@@ -71,7 +71,7 @@ describe('MidazHttpFetchUtils', () => {
       user: { access_token: 'test-token' }
     })
 
-    const result = await midazHttpFetchUtils.httpMidazAuthFetch({
+    const result = await midazHttpFetchUtils.httpMidazFetch({
       url: 'https://api.example.com/test',
       method: HTTP_METHODS.GET,
       headers: {
@@ -80,14 +80,11 @@ describe('MidazHttpFetchUtils', () => {
     })
 
     expect(result).toEqual(mockResponse)
-    expect(midazLogger.info).toHaveBeenCalledWith(
-      '[INFO] - httpMidazAuthFetch ',
-      {
-        url: 'https://api.example.com/test',
-        method: 'GET',
-        status: 200
-      }
-    )
+    expect(midazLogger.info).toHaveBeenCalledWith('[INFO] - httpFetch ', {
+      url: 'https://api.example.com/test',
+      method: 'GET',
+      status: 200
+    })
   })
 
   it('should handle fetch request error', async () => {
@@ -107,21 +104,18 @@ describe('MidazHttpFetchUtils', () => {
     })
 
     await expect(
-      midazHttpFetchUtils.httpMidazAuthFetch({
+      midazHttpFetchUtils.httpMidazFetch({
         url: 'https://api.example.com/test',
         method: HTTP_METHODS.GET
       })
     ).rejects.toThrow('Handled error')
 
-    expect(midazLogger.error).toHaveBeenCalledWith(
-      '[ERROR] - httpMidazAuthFetch ',
-      {
-        url: 'https://api.example.com/test',
-        method: 'GET',
-        status: 400,
-        response: mockErrorResponse
-      }
-    )
+    expect(midazLogger.error).toHaveBeenCalledWith('[ERROR] - httpFetch ', {
+      url: 'https://api.example.com/test',
+      method: 'GET',
+      status: 400,
+      response: mockErrorResponse
+    })
   })
 
   it('should set the correct headers', async () => {
@@ -137,7 +131,7 @@ describe('MidazHttpFetchUtils', () => {
       user: { access_token: 'test-token' }
     })
 
-    await midazHttpFetchUtils.httpMidazAuthFetch({
+    await midazHttpFetchUtils.httpMidazFetch({
       url: 'https://api.example.com/test',
       method: HTTP_METHODS.GET,
       headers: {
@@ -170,7 +164,7 @@ describe('MidazHttpFetchUtils', () => {
       user: { access_token: 'test-token' }
     })
 
-    await midazHttpFetchUtils.httpMidazAuthFetch({
+    await midazHttpFetchUtils.httpMidazFetch({
       url: 'https://api.example.com/test',
       method: HTTP_METHODS.GET
     })

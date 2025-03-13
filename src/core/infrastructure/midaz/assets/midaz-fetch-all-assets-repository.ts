@@ -32,7 +32,7 @@ export class MidazFetchAllAssetsRepository implements FetchAllAssetsRepository {
     })
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets?${params.toString()}`
 
-    const response = await this.midazHttpFetchUtils.httpMidazAuthFetch<
+    const response = await this.midazHttpFetchUtils.httpMidazFetch<
       PaginationEntity<AssetEntity>
     >({
       url,

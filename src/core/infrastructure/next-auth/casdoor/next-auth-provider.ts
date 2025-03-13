@@ -1,12 +1,16 @@
 import { container } from '../../container-registry/container-registry'
 import { AuthSessionDto } from '@/core/application/dto/auth-dto'
+import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
 import {
   AuthLogin,
   AuthLoginUseCase
 } from '@/core/application/use-cases/auth/auth-login-use-case'
 import { AuthEntity } from '@/core/domain/entities/auth-entity'
+import { LoggerRepository } from '@/core/domain/repositories/logger/logger-repository'
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import { MidazRequestContext } from '../../logger/decorators/midaz-id'
+import { log } from 'console'
 
 export const nextAuthOptions: NextAuthOptions = {
   session: {
@@ -40,34 +44,47 @@ export const nextAuthOptions: NextAuthOptions = {
       type: 'credentials',
 
       async authorize(credentials, req) {
+        const midazLogger = container.get(LoggerAggregator)
+        const midazRequestContext: MidazRequestContext =
+          container.get<MidazRequestContext>(MidazRequestContext)
         try {
-          const authLoginUseCase: AuthLogin =
-            container.get<AuthLogin>(AuthLoginUseCase)
-          const username = credentials?.username
-          const password = credentials?.password
+          const authResponse = await midazLogger.runWithContext(
+            'authLogin',
+            'POST',
+            {
+              operationName: 'next-auth-provider',
+              action: 'authorize',
+              midazId: midazRequestContext.getMidazId()
+            },
+            async () => {
+              const authLoginUseCase: AuthLogin =
+                container.get<AuthLogin>(AuthLoginUseCase)
 
-          if (!username || !password) {
-            console.error('username or password is missing')
-            return null
-          }
+              const username = credentials?.username
+              const password = credentials?.password
 
-          const loginEntity: AuthEntity = {
-            grant_type: 'password',
-            client_id: process.env.NEXTAUTH_AUTH_SERVICE_CLIENT_ID as string,
-            client_secret: process.env
-              .NEXTAUTH_AUTH_SERVICE_CLIENT_SECRET as string,
-            username,
-            password
-          }
+              if (!username || !password) {
+                midazLogger.error('Error on authorize', {
+                  message: 'Username or password not provided'
+                })
+                return null
+              }
 
-          const authLoginResponse: AuthSessionDto =
-            await authLoginUseCase.execute(loginEntity)
+              const loginEntity: AuthEntity = {
+                username,
+                password
+              }
 
-            console.log('authLoginResponse', authLoginResponse)
+              const authLoginResponse: AuthSessionDto =
+                await authLoginUseCase.execute(loginEntity)
 
-          return authLoginResponse
+              return authLoginResponse
+            }
+          )
+
+          return authResponse
         } catch (error: any) {
-          console.error('Error on authorize', error)
+          midazLogger.error('Error on authorize', error)
           return null
         }
       }
@@ -79,14 +96,12 @@ export const nextAuthOptions: NextAuthOptions = {
   },
   callbacks: {
     jwt: async ({ token, user }) => {
-      console.log('jwt', token, user)
       if (user) {
         token = { ...token, ...user }
       }
       return token
     },
     session: async ({ session, token }) => {
-      console.log('session', session, token)
       session.user = token
       return session
     }

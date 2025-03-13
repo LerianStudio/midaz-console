@@ -19,12 +19,11 @@ export class IdentityUpdateUserRepository implements UpdateUserRepository {
   async update(userId: string, user: UserEntity): Promise<UserEntity> {
     const url = `${this.baseUrl}/users/${userId}`
 
-    const response =
-      await this.midazHttpFetchUtils.httpMidazAuthFetch<UserEntity>({
-        url,
-        method: HTTP_METHODS.PUT,
-        body: JSON.stringify(user)
-      })
+    const response = await this.midazHttpFetchUtils.httpMidazFetch<UserEntity>({
+      url,
+      method: HTTP_METHODS.PUT,
+      body: JSON.stringify(user)
+    })
 
     return user
   }
