@@ -5,6 +5,6 @@ export class AuthPermissionMapper {
   public static toResponseDto(
     entity: AuthPermissionEntity
   ): AuthPermissionResponseDto {
-    return { ...entity }
+    return entity
   }
 }

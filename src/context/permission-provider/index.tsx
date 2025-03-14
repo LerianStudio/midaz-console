@@ -5,7 +5,7 @@ import {
   AuthPermissionUseCase
 } from '@/core/application/use-cases/auth/auth-permission-use-case'
 import { container } from '@/core/infrastructure/container-registry/container-registry'
-import { nextAuthOptions } from '@/core/infrastructure/next-auth/casdoor/next-auth-provider'
+import { nextAuthOptions } from '@/core/infrastructure/next-auth/next-auth-provider'
 import { getServerSession } from 'next-auth'
 import { PermissionProviderClient } from './permission-provider-client'
 import { serverFetcher } from '@/lib/fetcher'
@@ -20,7 +20,7 @@ export const PermissionProvider = async ({
   const session = await getServerSession(nextAuthOptions)
 
   const permissions = await serverFetcher(
-    async () => await authPermissionUseCase.execute(session?.user.username)
+    async () => await authPermissionUseCase.execute()
   )
 
   return (

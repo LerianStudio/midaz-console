@@ -9,11 +9,11 @@ import { UnauthorizedException } from '@/core/infrastructure/errors/http-excepti
 import { inject, injectable } from 'inversify'
 import * as jwt from 'jsonwebtoken'
 import { JwtPayload } from 'jsonwebtoken'
-import { ContainerTypeMidazHttpFetch } from '../container-registry/midaz-http-fetch-module'
-import { HTTP_METHODS, HttpFetchUtils } from '../utils/http-fetch-utils'
+import { ContainerTypeMidazHttpFetch } from '../../../container-registry/midaz-http-fetch-module'
+import { HTTP_METHODS, HttpFetchUtils } from '../../../utils/http-fetch-utils'
 
 @injectable()
-export class LerianAuthLoginRepository implements AuthLoginRepository {
+export class IdentityAuthLoginRepository implements AuthLoginRepository {
   constructor(
     @inject(ContainerTypeMidazHttpFetch.HttpFetchUtils)
     private readonly midazHttpFetchUtils: HttpFetchUtils,

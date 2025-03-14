@@ -1,5 +1,5 @@
 import { getServerSession } from 'next-auth'
-import { nextAuthOptions } from '../next-auth/casdoor/next-auth-provider'
+import { nextAuthOptions } from '../next-auth/next-auth-provider'
 import { handleMidazError } from './midaz-error-handler'
 import { isNil } from 'lodash'
 import { MidazRequestContext } from '../logger/decorators/midaz-id'

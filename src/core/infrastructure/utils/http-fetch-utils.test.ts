@@ -15,7 +15,7 @@ jest.mock('./midaz-error-handler', () => ({
   })
 }))
 
-jest.mock('../next-auth/casdoor/next-auth-provider')
+jest.mock('../next-auth/next-auth-provider')
 jest.mock('../logger/decorators/midaz-id')
 
 describe('MidazHttpFetchUtils', () => {

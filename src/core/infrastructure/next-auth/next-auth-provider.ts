@@ -1,4 +1,3 @@
-import { container } from '../../container-registry/container-registry'
 import { AuthSessionDto } from '@/core/application/dto/auth-dto'
 import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
 import {
@@ -9,8 +8,9 @@ import { AuthEntity } from '@/core/domain/entities/auth-entity'
 import { LoggerRepository } from '@/core/domain/repositories/logger/logger-repository'
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { MidazRequestContext } from '../../logger/decorators/midaz-id'
 import { log } from 'console'
+import { container } from '../container-registry/container-registry'
+import { MidazRequestContext } from '../logger/decorators/midaz-id'
 
 export const nextAuthOptions: NextAuthOptions = {
   session: {

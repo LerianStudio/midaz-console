@@ -24,10 +24,7 @@ export function authEntityToDto(
 export function dtoToAuthEntity(dto: AuthLoginDto): AuthEntity {
   return {
     username: dto.username,
-    password: dto.password,
-    grant_type: dto.grant_type,
-    client_id: dto.client_id,
-    client_secret: dto.client_secret
+    password: dto.password
   }
 }
 

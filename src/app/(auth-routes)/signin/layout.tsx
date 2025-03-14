@@ -2,7 +2,7 @@ import { redirect, RedirectType } from 'next/navigation'
 import '@/app/globals.css'
 import { getServerSession } from 'next-auth'
 import React from 'react'
-import { nextAuthOptions } from '@/core/infrastructure/next-auth/casdoor/next-auth-provider'
+import { nextAuthOptions } from '@/core/infrastructure/next-auth/next-auth-provider'
 
 type AuthRoutesProps = {
   children: React.ReactNode
