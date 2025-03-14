@@ -45,21 +45,70 @@ export class FetchAccountsWithPortfoliosUseCase
     limit: number,
     page: number
   ): Promise<PaginationDto<PortfolioViewResponseDTO>> {
-    const accountsResult: PaginationEntity<AccountEntity> =
-      await this.fetchAllAccountsRepository.fetchAll(
-        organizationId,
-        ledgerId,
-        limit,
-        page
-      )
+    const accountsResult = await this.fetchPaginatedAccounts(
+      organizationId,
+      ledgerId,
+      limit,
+      page
+    )
 
-    const portfoliosResult: PaginationEntity<PortfolioEntity> =
-      await this.fetchAllPortfoliosRepository.fetchAll(
-        organizationId,
-        ledgerId,
+    if (!accountsResult?.items?.length) {
+      return {
+        items: [],
         limit,
         page
-      )
+      }
+    }
+
+    const portfolioMap = await this.fetchAndCreatePortfolioMap(
+      organizationId,
+      ledgerId,
+      limit,
+      page
+    )
+
+    let accountsWithPortfolio: any[] = []
+
+    accountsWithPortfolio = await this.mergeAccountData(
+      accountsResult.items,
+      portfolioMap,
+      organizationId,
+      ledgerId
+    )
+
+    return {
+      items: accountsWithPortfolio,
+      limit: accountsResult?.limit || 0,
+      page: accountsResult?.page || 0
+    }
+  }
+
+  private async fetchPaginatedAccounts(
+    organizationId: string,
+    ledgerId: string,
+    limit: number,
+    page: number
+  ): Promise<PaginationEntity<AccountEntity>> {
+    return this.fetchAllAccountsRepository.fetchAll(
+      organizationId,
+      ledgerId,
+      limit,
+      page
+    )
+  }
+
+  private async fetchAndCreatePortfolioMap(
+    organizationId: string,
+    ledgerId: string,
+    limit: number,
+    page: number
+  ): Promise<Map<string, PortfolioEntity>> {
+    const portfoliosResult = await this.fetchAllPortfoliosRepository.fetchAll(
+      organizationId,
+      ledgerId,
+      limit,
+      page
+    )
 
     const portfolioMap = new Map<string, PortfolioEntity>()
     if (portfoliosResult?.items) {
@@ -70,72 +119,101 @@ export class FetchAccountsWithPortfoliosUseCase
       })
     }
 
-    let accountsWithPortfolio: any[] = []
+    return portfolioMap
+  }
 
-    if (!accountsResult?.items?.length) {
-      accountsWithPortfolio = []
-    } else {
-      accountsWithPortfolio = await Promise.all(
-        accountsResult.items.map(async (account) => {
-          const portfolio = account?.portfolioId
-            ? portfolioMap.get(account.portfolioId) || null
-            : null
+  private async mergeAccountData(
+    accounts: AccountEntity[],
+    portfolioMap: Map<string, PortfolioEntity>,
+    organizationId: string,
+    ledgerId: string
+  ): Promise<any[]> {
+    return Promise.all(
+      accounts.map(async (account) => {
+        const portfolio = this.findRelatedPortfolio(account, portfolioMap)
 
-          let balances = null
-          let balanceData = {}
+        const balanceData = await this.fetchBalanceForAccount(
+          account,
+          organizationId,
+          ledgerId
+        )
 
-          if (account?.id) {
-            try {
-              balances = await this.balanceRepository.getByAccountId(
-                organizationId,
-                ledgerId,
-                account.id
-              )
+        return this.createAccountWithPortfolioDto(
+          account,
+          portfolio,
+          balanceData
+        )
+      })
+    )
+  }
 
-              const balanceItem = balances?.items?.[0]
-              if (balanceItem) {
-                balanceData = BalanceMapper.toDomain(balanceItem)
-              }
-            } catch (error) {
-              this.midazLogger.error({
-                layer: 'application',
-                operation: 'fetch_account_balance_failed',
-                message: 'Error processing balance data for account',
-                error,
-                context: {
-                  accountId: account?.id,
-                  organizationId,
-                  ledgerId
-                }
-              })
-            }
-          }
+  private findRelatedPortfolio(
+    account: AccountEntity,
+    portfolioMap: Map<string, PortfolioEntity>
+  ): PortfolioEntity | null {
+    return account?.portfolioId
+      ? portfolioMap.get(account.portfolioId) || null
+      : null
+  }
 
-          const accountDto = AccountMapper.toDto({
-            ...account,
-            ...balanceData
-          })
+  private async fetchBalanceForAccount(
+    account: AccountEntity,
+    organizationId: string,
+    ledgerId: string
+  ): Promise<Record<string, any>> {
+    if (!account?.id) {
+      return {}
+    }
 
-          let portfolioInfo = null
-          if (portfolio) {
-            portfolioInfo = {
-              id: portfolio.id || '',
-              name: portfolio.name || ''
-            }
-          }
-
-          return {
-            ...accountDto,
-            portfolio: portfolioInfo
-          }
-        })
+    try {
+      const balances = await this.balanceRepository.getByAccountId(
+        organizationId,
+        ledgerId,
+        account.id
       )
+
+      const balanceItem = balances?.items?.[0]
+      if (balanceItem) {
+        return BalanceMapper.toDomain(balanceItem)
+      }
+      return {}
+    } catch (error) {
+      this.midazLogger.error({
+        layer: 'application',
+        operation: 'fetch_account_balance_failed',
+        message: 'Error processing balance data for account',
+        error,
+        context: {
+          accountId: account?.id,
+          organizationId,
+          ledgerId
+        }
+      })
+      return {}
+    }
+  }
+
+  private createAccountWithPortfolioDto(
+    account: AccountEntity,
+    portfolio: PortfolioEntity | null,
+    balanceData: Record<string, any>
+  ): any {
+    const accountDto = AccountMapper.toDto({
+      ...account,
+      ...balanceData
+    })
+
+    let portfolioInfo = null
+    if (portfolio) {
+      portfolioInfo = {
+        id: portfolio.id || '',
+        name: portfolio.name || ''
+      }
     }
 
     return {
-      items: accountsWithPortfolio,
-      limit: accountsResult?.limit || 0,
-      page: accountsResult?.page || 0
+      ...accountDto,
+      portfolio: portfolioInfo
     }
   }
 }
