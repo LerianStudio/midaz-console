@@ -1,3 +1,16 @@
+# [1.18.0](https://github.com/LerianStudio/midaz-console/compare/v1.17.1...v1.18.0) (2025-03-14)
+
+
+### Bug Fixes
+
+* error handling and empty resource render ([5941c5c](https://github.com/LerianStudio/midaz-console/commit/5941c5cac6b22efcdaa4243878ee655cfb8ffb1d))
+
+
+### Features
+
+* improve readability by extracting private methods ([a63b73e](https://github.com/LerianStudio/midaz-console/commit/a63b73eb31c72066d71e931c32038a69830c8341))
+* remove most of nested try-catch and add LogOperation decorator ([22b2d78](https://github.com/LerianStudio/midaz-console/commit/22b2d787982c666a64e91530d3483fa1fd6dc858))
+
 ## [1.17.1](https://github.com/LerianStudio/midaz-console/compare/v1.17.0...v1.17.1) (2025-03-13)
 
 
