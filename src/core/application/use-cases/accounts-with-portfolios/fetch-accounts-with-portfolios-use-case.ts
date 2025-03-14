@@ -9,6 +9,8 @@ import { AccountMapper } from '../../mappers/account-mapper'
 import { inject, injectable } from 'inversify'
 import { BalanceRepository } from '@/core/domain/repositories/balance-repository'
 import { BalanceMapper } from '../../mappers/balance-mapper'
+import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
+import { LogOperation } from '@/core/application/decorators/log-operation'
 
 export interface FetchAccountsWithPortfolios {
   execute: (
@@ -29,134 +31,111 @@ export class FetchAccountsWithPortfoliosUseCase
     @inject(FetchAllAccountsRepository)
     private readonly fetchAllAccountsRepository: FetchAllAccountsRepository,
     @inject(BalanceRepository)
-    private readonly balanceRepository: BalanceRepository
+    private readonly balanceRepository: BalanceRepository,
+    @inject(LoggerAggregator)
+    private readonly midazLogger: LoggerAggregator
   ) {}
 
+  @LogOperation({
+    layer: 'application'
+  })
   async execute(
     organizationId: string,
     ledgerId: string,
     limit: number,
     page: number
   ): Promise<PaginationDto<PortfolioViewResponseDTO>> {
-    try {
-      const accountsResult: PaginationEntity<AccountEntity> =
-        await this.fetchAllAccountsRepository.fetchAll(
-          organizationId,
-          ledgerId,
-          limit,
-          page
-        )
+    const accountsResult: PaginationEntity<AccountEntity> =
+      await this.fetchAllAccountsRepository.fetchAll(
+        organizationId,
+        ledgerId,
+        limit,
+        page
+      )
 
-      const portfoliosResult: PaginationEntity<PortfolioEntity> =
-        await this.fetchAllPortfoliosRepository.fetchAll(
-          organizationId,
-          ledgerId,
-          limit,
-          page
-        )
+    const portfoliosResult: PaginationEntity<PortfolioEntity> =
+      await this.fetchAllPortfoliosRepository.fetchAll(
+        organizationId,
+        ledgerId,
+        limit,
+        page
+      )
 
-      const portfolioMap = new Map<string, PortfolioEntity>()
-      if (portfoliosResult?.items) {
-        portfoliosResult.items.forEach((portfolio) => {
-          if (portfolio && portfolio.id) {
-            portfolioMap.set(portfolio.id, portfolio)
-          }
-        })
-      }
-
-      let accountsWithPortfolio: any[] = []
-      try {
-        if (!accountsResult?.items?.length) {
-          accountsWithPortfolio = []
-        } else {
-          accountsWithPortfolio = await Promise.all(
-            accountsResult.items.map(async (account) => {
-              try {
-                let portfolio = null
-                if (account && account.portfolioId) {
-                  portfolio = portfolioMap.get(account.portfolioId) || null
-                }
-
-                let balances = null
-                try {
-                  if (account && account.id) {
-                    balances = await this.balanceRepository.getByAccountId(
-                      organizationId,
-                      ledgerId,
-                      account.id
-                    )
-                  }
-                } catch (error) {
-                  console.error(`Error fetching balance for account:`, error)
-                }
-
-                let balanceData = {}
-                try {
-                  const balanceItem = balances?.items?.[0]
-                  if (balanceItem) {
-                    balanceData = BalanceMapper.toDomain(balanceItem)
-                  }
-                } catch (error) {
-                  console.error(`Error mapping balance:`, error)
-                }
-
-                const accountDto = AccountMapper.toDto({
-                  ...account,
-                  ...balanceData
-                })
-
-                let portfolioInfo = null
-                if (portfolio) {
-                  try {
-                    portfolioInfo = {
-                      id: portfolio.id || '',
-                      name: portfolio.name || ''
-                    }
-                  } catch (error) {
-                    console.error(`Error mapping portfolio:`, error)
-                  }
-                }
-
-                return {
-                  ...accountDto,
-                  portfolio: portfolioInfo
-                }
-              } catch (accountError) {
-                console.error(
-                  `Error processing individual account:`,
-                  accountError
-                )
-                return AccountMapper.toDto(account || {})
-              }
-            })
-          )
+    const portfolioMap = new Map<string, PortfolioEntity>()
+    if (portfoliosResult?.items) {
+      portfoliosResult.items.forEach((portfolio) => {
+        if (portfolio && portfolio.id) {
+          portfolioMap.set(portfolio.id, portfolio)
         }
-      } catch (error) {
-        console.error('Error processing accounts with portfolios:', error)
-        accountsWithPortfolio = (accountsResult?.items || []).map((account) => {
-          try {
-            return AccountMapper.toDto(account)
-          } catch (e) {
-            console.error('Error mapping account:', e)
-            return {}
+      })
+    }
+
+    let accountsWithPortfolio: any[] = []
+
+    if (!accountsResult?.items?.length) {
+      accountsWithPortfolio = []
+    } else {
+      accountsWithPortfolio = await Promise.all(
+        accountsResult.items.map(async (account) => {
+          const portfolio = account?.portfolioId
+            ? portfolioMap.get(account.portfolioId) || null
+            : null
+
+          let balances = null
+          let balanceData = {}
+
+          if (account?.id) {
+            try {
+              balances = await this.balanceRepository.getByAccountId(
+                organizationId,
+                ledgerId,
+                account.id
+              )
+
+              const balanceItem = balances?.items?.[0]
+              if (balanceItem) {
+                balanceData = BalanceMapper.toDomain(balanceItem)
+              }
+            } catch (error) {
+              this.midazLogger.error({
+                layer: 'application',
+                operation: 'fetch_account_balance_failed',
+                message: 'Error processing balance data for account',
+                error,
+                context: {
+                  accountId: account?.id,
+                  organizationId,
+                  ledgerId
+                }
+              })
+            }
+          }
+
+          const accountDto = AccountMapper.toDto({
+            ...account,
+            ...balanceData
+          })
+
+          let portfolioInfo = null
+          if (portfolio) {
+            portfolioInfo = {
+              id: portfolio.id || '',
+              name: portfolio.name || ''
+            }
+          }
+
+          return {
+            ...accountDto,
+            portfolio: portfolioInfo
           }
         })
-      }
+      )
+    }
 
-      const responseDTO: PaginationDto<any> = {
-        items: accountsWithPortfolio,
-        limit: accountsResult?.limit || 0,
-        page: accountsResult?.page || 0
-      }
-
-      return responseDTO
-    } catch (error: any) {
-      console.error('Error in fetchAccountsWithPortfolios:', error)
-      return {
-        items: [],
-        limit: 0,
-        page: 0
-      }
+    return {
+      items: accountsWithPortfolio,
+      limit: accountsResult?.limit || 0,
+      page: accountsResult?.page || 0
     }
   }
 }
