@@ -5,6 +5,7 @@ import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { PaginationDto } from '../../dto/pagination-dto'
 import { inject, injectable } from 'inversify'
 import { LedgerMapper } from '../../mappers/ledger-mapper'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface FetchAllLedgers {
   execute: (
@@ -21,6 +22,7 @@ export class FetchAllLedgersUseCase implements FetchAllLedgers {
     private readonly fetchAllLedgersRepository: FetchAllLedgersRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     limit: number,

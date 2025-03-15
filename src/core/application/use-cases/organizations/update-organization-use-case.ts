@@ -5,6 +5,7 @@ import { OrganizationMapper } from '../../mappers/organization-mapper'
 import { UpdateOrganizationRepository } from '@/core/domain/repositories/organizations/update-organization-repository'
 import { inject, injectable } from 'inversify'
 import { CreateOrganizationDto } from '../../dto/create-organization-dto'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface UpdateOrganization {
   execute: (
@@ -20,6 +21,7 @@ export class UpdateOrganizationUseCase implements UpdateOrganization {
     private readonly updateOrganizationRepository: UpdateOrganizationRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     organization: Partial<UpdateOrganizationDto>

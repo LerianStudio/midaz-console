@@ -1,7 +1,7 @@
 import { CreateTransactionRepository } from '@/core/domain/repositories/transactions/create-transaction-repository'
 import { inject, injectable } from 'inversify'
 import { TransactionMapper } from '../../mappers/transaction-mapper'
-import {
+import type {
   CreateTransactionDto,
   TransactionResponseDto
 } from '../../dto/transaction-dto'
@@ -9,6 +9,7 @@ import {
   TransactionCreateEntity,
   TransactionEntity
 } from '@/core/domain/entities/transaction-entity'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface CreateTransaction {
   execute: (
@@ -24,6 +25,8 @@ export class CreateTransactionUseCase implements CreateTransaction {
     @inject(CreateTransactionRepository)
     private readonly createTransactionRepository: CreateTransactionRepository
   ) {}
+
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string,

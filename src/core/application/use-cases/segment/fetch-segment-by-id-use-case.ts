@@ -2,6 +2,7 @@ import { FetchSegmentByIdRepository } from '@/core/domain/repositories/segments/
 import { SegmentResponseDto } from '../../dto/segment-dto'
 import { SegmentMapper } from '../../mappers/segment-mapper'
 import { inject, injectable } from 'inversify'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface FetchSegmentById {
   execute: (
@@ -18,6 +19,7 @@ export class FetchSegmentByIdUseCase implements FetchSegmentById {
     private readonly fetchSegmentByIdRepository: FetchSegmentByIdRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string,

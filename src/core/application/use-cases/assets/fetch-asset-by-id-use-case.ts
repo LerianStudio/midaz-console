@@ -2,6 +2,7 @@ import { FetchAssetByIdRepository } from '@/core/domain/repositories/assets/fetc
 import { AssetResponseDto } from '../../dto/asset-response-dto'
 import { AssetMapper } from '../../mappers/asset-mapper'
 import { inject, injectable } from 'inversify'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface FetchAssetById {
   execute: (
@@ -18,6 +19,7 @@ export class FetchAssetByIdUseCase implements FetchAssetById {
     private readonly fetchAssetByIdRepository: FetchAssetByIdRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string,

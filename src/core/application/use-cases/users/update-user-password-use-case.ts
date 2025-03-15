@@ -1,5 +1,6 @@
 import { UpdateUserPasswordRepository } from '@/core/domain/repositories/users/update-user-password-repository'
 import { inject } from 'inversify'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface UpdateUserPassword {
   execute: (
@@ -15,6 +16,7 @@ export class UpdateUserPasswordUseCase implements UpdateUserPassword {
     private readonly updateUserPasswordRepository: UpdateUserPasswordRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     userId: string,
     oldPassword: string,

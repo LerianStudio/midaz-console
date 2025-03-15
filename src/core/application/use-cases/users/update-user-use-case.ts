@@ -4,6 +4,7 @@ import { FetchUserByIdRepository } from '@/core/domain/repositories/users/fetch-
 import { UserMapper } from '../../mappers/user-mapper'
 import { UserEntity } from '@/core/domain/entities/user-entity'
 import { inject } from 'inversify'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface UpdateUser {
   execute: (
@@ -20,6 +21,7 @@ export class UpdateUserUseCase implements UpdateUser {
     private readonly fetchUserByIdRepository: FetchUserByIdRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     userId: string,
     user: Partial<UpdateUserDto>

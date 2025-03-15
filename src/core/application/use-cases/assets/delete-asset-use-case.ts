@@ -1,5 +1,6 @@
 import { DeleteAssetRepository } from '@/core/domain/repositories/assets/delete-asset-repository'
 import { inject, injectable } from 'inversify'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface DeleteAsset {
   execute: (
@@ -16,6 +17,7 @@ export class DeleteAssetUseCase implements DeleteAsset {
     private readonly deleteAssetRepository: DeleteAssetRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string,

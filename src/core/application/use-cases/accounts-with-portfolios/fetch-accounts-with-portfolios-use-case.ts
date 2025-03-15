@@ -9,6 +9,7 @@ import { AccountMapper } from '../../mappers/account-mapper'
 import { inject, injectable } from 'inversify'
 import { BalanceRepository } from '@/core/domain/repositories/balance-repository'
 import { BalanceMapper } from '../../mappers/balance-mapper'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface FetchAccountsWithPortfolios {
   execute: (
@@ -32,6 +33,7 @@ export class FetchAccountsWithPortfoliosUseCase
     private readonly balanceRepository: BalanceRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string,

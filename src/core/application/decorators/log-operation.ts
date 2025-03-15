@@ -6,6 +6,11 @@ export function LogOperation(options: {
   layer: 'application' | 'infrastructure' | 'domain'
   operation?: string
 }): MethodDecorator {
+  // If the environment is test, return the empty descriptor
+  if (process.env.NODE_ENV === 'test') {
+    return (_target, _propertyKey, descriptor) => descriptor
+  }
+
   // Gets a function for injecting the service
   const ServiceInjection = inject(LoggerAggregator)
 
@@ -53,6 +58,7 @@ export function LogOperation(options: {
 
         return result
       } catch (error) {
+        console.error(error)
         midazLogger.error(`${options.operation} failed`, {
           error: error as Error
         })

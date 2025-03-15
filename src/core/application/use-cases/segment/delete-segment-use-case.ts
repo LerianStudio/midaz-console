@@ -16,6 +16,7 @@ export class DeleteSegmentUseCase implements DeleteSegment {
     @inject(DeleteSegmentRepository)
     private readonly deleteSegmentRepository: DeleteSegmentRepository
   ) {}
+
   @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,

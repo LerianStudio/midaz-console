@@ -6,7 +6,7 @@ import type {
 } from '../../dto/portfolios-dto'
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { inject, injectable } from 'inversify'
-import { LoggerAggregator } from '../../logger/logger-aggregator'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface CreatePortfolio {
   execute: (
@@ -23,6 +23,7 @@ export class CreatePortfolioUseCase implements CreatePortfolio {
     private readonly createPortfolioRepository: CreatePortfolioRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string,

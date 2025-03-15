@@ -2,6 +2,7 @@ import { FetchOrganizationByIdRepository } from '@/core/domain/repositories/orga
 import { OrganizationResponseDto } from '../../dto/organization-response-dto'
 import { OrganizationMapper } from '../../mappers/organization-mapper'
 import { inject, injectable } from 'inversify'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface FetchOrganizationById {
   execute: (organizationId: string) => Promise<OrganizationResponseDto>
@@ -14,6 +15,7 @@ export class FetchOrganizationByIdUseCase implements FetchOrganizationById {
     private readonly fetchOrganizationByIdRepository: FetchOrganizationByIdRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(organizationId: string): Promise<OrganizationResponseDto> {
     const organizationEntity =
       await this.fetchOrganizationByIdRepository.fetchById(organizationId)
