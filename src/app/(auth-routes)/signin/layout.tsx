@@ -15,6 +15,9 @@ const AuthRoutes = async ({
   children,
   params: { locale }
 }: AuthRoutesProps) => {
+  if (process.env.PLUGIN_AUTH_ENABLED !== 'true') {
+    redirect(`/`, RedirectType.replace)
+  }
   const session = await getServerSession(nextAuthOptions)
 
   if (session?.user) {

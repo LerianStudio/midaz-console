@@ -40,13 +40,16 @@ export class HttpFetchUtils {
   // Midaz Authorization Fetch
 
   async httpMidazFetch<T>(httpFetchOptions: HttpFetchOptions): Promise<T> {
-    const session = await getServerSession(nextAuthOptions)
-    const { access_token } = session?.user
-    const headers = {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${access_token}`,
       'X-Request-Id': this.midazRequestContext.getMidazId(),
       ...httpFetchOptions.headers
+    }
+
+    if (process.env.PLUGIN_AUTH_ENABLED === 'true') {
+      const session = await getServerSession(nextAuthOptions)
+      const { access_token } = session?.user
+      headers.Authorization = `Bearer ${access_token}`
     }
 
     const midazResponse = await this.httpFetch<T>(
