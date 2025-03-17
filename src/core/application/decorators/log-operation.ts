@@ -58,7 +58,6 @@ export function LogOperation(options: {
 
         return result
       } catch (error) {
-        console.error(error)
         midazLogger.error(`${options.operation} failed`, {
           error: error as Error
         })

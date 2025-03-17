@@ -9,6 +9,22 @@ import {
   AuthSessionDto
 } from '../dto/auth-dto'
 
+export class AuthMapper {
+  public static toDomain(dto: AuthLoginDto): AuthEntity {
+    return { username: dto.username, password: dto.password }
+  }
+
+  public static toDto(entity: AuthSessionEntity): AuthSessionDto {
+    return {
+      id: entity.id,
+      username: entity.username,
+      name: entity.name,
+      access_token: entity.access_token,
+      refresh_token: entity.refresh_token
+    }
+  }
+}
+
 export function authEntityToDto(
   entity: AuthResponseEntity
 ): AuthLoginResponseDto {
@@ -18,24 +34,5 @@ export function authEntityToDto(
     expires_in: entity.expires_in,
     refresh_token: entity.refresh_token,
     scope: entity.scope
-  }
-}
-
-export function dtoToAuthEntity(dto: AuthLoginDto): AuthEntity {
-  return {
-    username: dto.username,
-    password: dto.password
-  }
-}
-
-export function authSessionEntityToDto(
-  entity: AuthSessionEntity
-): AuthSessionDto {
-  return {
-    id: entity.id,
-    username: entity.username,
-    name: entity.name,
-    access_token: entity.access_token,
-    refresh_token: entity.refresh_token
   }
 }
