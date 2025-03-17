@@ -11,12 +11,7 @@ import { loggerMiddleware } from '@/utils/logger-middleware-config'
 import { NextResponse } from 'next/server'
 
 export const PUT = applyMiddleware(
-  [
-    loggerMiddleware({
-      operationName: 'updateUserPassword',
-      method: 'UPDATE'
-    })
-  ],
+  [loggerMiddleware({ operationName: 'updateUserPassword', method: 'PUT' })],
   async (request: Request, { params }: { params: { userId: string } }) => {
     try {
       const updateUserPasswordUseCase: UpdateUserPassword =
