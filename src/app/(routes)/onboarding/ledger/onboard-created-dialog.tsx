@@ -58,7 +58,7 @@ export const OrganizationCreatedDialog = ({
             {process
               ? intl.formatMessage({
                   id: 'onboarding.dialog.created.description',
-                  defaultMessage: `The Lerian organization is ready. Now just create your first Ledger to add Assets, Accounts and Portfolios.`
+                  defaultMessage: `The Lerian organization is ready. Now just create your first Ledger to add Segments, Assets, Accounts and Portfolios.`
                 })
               : intl.formatMessage({
                   id: 'onboarding.ledger.dialog.description',

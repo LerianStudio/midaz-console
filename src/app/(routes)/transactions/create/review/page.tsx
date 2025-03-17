@@ -10,7 +10,7 @@ import { LoadingButton } from '@/components/ui/loading-button'
 import { useIntl } from 'react-intl'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import ConfirmationDialog from '@/components/confirmation-dialog'
-import { useParams, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import {
   TransactionReceipt,
   TransactionReceiptDescription,
@@ -31,30 +31,24 @@ import { TransactionFormSchema } from '../schemas'
 export default function CreateTransactionReviewPage() {
   const intl = useIntl()
   const router = useRouter()
-
-  const { id } = useParams<{ id: string }>()
   const { showSuccess, showError } = useCustomToast()
 
-  const { currentOrganization } = useOrganization()
+  const { currentOrganization, currentLedger } = useOrganization()
 
-  const {
-    mutate: createTransaction,
-    isPending: createLoading,
-    error,
-    data
-  } = useCreateTransaction({
-    organizationId: currentOrganization.id!,
-    ledgerId: id,
-    onSuccess: (data) => {
-      showSuccess('Transaction created successfully')
-      handleSubmitClose()
-      router.push(`/ledgers/${data.ledgerId}/transactions/${data.id}`)
-    },
-    onError(message) {
-      showError(message)
-      handleSubmitClose()
-    }
-  })
+  const { mutate: createTransaction, isPending: createLoading } =
+    useCreateTransaction({
+      organizationId: currentOrganization.id!,
+      ledgerId: currentLedger.id!,
+      onSuccess: (data) => {
+        showSuccess('Transaction created successfully')
+        handleSubmitClose()
+        router.push(`/transactions/${data.id}`)
+      },
+      onError(message) {
+        showError(message)
+        handleSubmitClose()
+      }
+    })
 
   const { values, currentStep } = useTransactionForm()
 

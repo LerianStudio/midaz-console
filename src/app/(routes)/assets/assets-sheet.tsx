@@ -66,7 +66,7 @@ export const AssetsSheet = ({
   ...others
 }: AssetsSheetProps) => {
   const intl = useIntl()
-  const { currentOrganization } = useOrganization()
+  const { currentOrganization, currentLedger } = useOrganization()
   const { showSuccess, showError } = useCustomToast()
 
   const FormSchema = mode === 'create' ? createFormSchema : editFormSchema
@@ -75,7 +75,7 @@ export const AssetsSheet = ({
 
   const { mutate: createAsset, isPending: createPending } = useCreateAsset({
     organizationId: currentOrganization.id!,
-    ledgerId,
+    ledgerId: currentLedger.id!,
     onSuccess: (data: unknown) => {
       const formData = data as AssetType
       onSuccess?.()
@@ -103,7 +103,7 @@ export const AssetsSheet = ({
 
   const { mutate: updateAsset, isPending: updatePending } = useUpdateAsset({
     organizationId: currentOrganization!.id!,
-    ledgerId,
+    ledgerId: currentLedger.id!,
     assetId: data?.id!,
     onSuccess: () => {
       onSuccess?.()

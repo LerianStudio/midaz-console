@@ -11,14 +11,7 @@ import {
 } from '@/components/ui/table'
 import { EmptyResource } from '@/components/empty-resource'
 import { Button } from '@/components/ui/button'
-import {
-  Plus,
-  MoreVertical,
-  Minus,
-  HelpCircle,
-  ChevronRight,
-  ChevronLeft
-} from 'lucide-react'
+import { MoreVertical, Minus, HelpCircle } from 'lucide-react'
 import {
   Tooltip,
   TooltipContent,
@@ -37,41 +30,32 @@ import {
 import { isNil } from 'lodash'
 import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
 import useCustomToast from '@/hooks/use-custom-toast'
-import Link from 'next/link'
-import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { LedgersSheet } from './ledgers-sheet'
-import { AssetsSheet } from './[id]/assets/assets-sheet'
 import { EntityDataTable } from '@/components/entity-data-table'
-import { EntityBox } from '@/components/entity-box'
-import { FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { Table as ReactTableType } from '@tanstack/react-table'
 import { LedgerResponseDto } from '@/core/application/dto/ledger-response-dto'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
-import { useRouter, useSearchParams } from 'next/navigation'
-
-type LedgersExtended = {
-  items: LedgerEntity[]
-} & { limit: number }
+import { PaginationLimitField } from '@/components/form/pagination-limit-field'
+import { Pagination, PaginationProps } from '@/components/pagination'
+import { PaginationDto } from '@/core/application/dto/pagination-dto'
+import { AssetsSheet } from '../assets/assets-sheet'
 
 type LedgersTableProps = {
-  ledgers: LedgersExtended
-  isLoading: boolean
+  ledgers: PaginationDto<LedgerResponseDto> | undefined
   table: ReactTableType<LedgerResponseDto>
   handleDialogOpen: (id: string, name: string) => void
+  handleEdit: (ledger: LedgerResponseDto) => void
   refetch: () => void
-  pageSizeOptions: number[]
+  form: UseFormReturn<any>
+  total: number
+  pagination: PaginationProps
 }
 
 type LedgerRowProps = {
-  ledger: { id: string | undefined; original: LedgerEntity }
+  ledger: { id: string; original: LedgerResponseDto }
   handleCopyToClipboard: (value: string, message: string) => void
   handleDialogOpen: (id: string, name: string) => void
+  handleEdit: (ledger: LedgerResponseDto) => void
   refetch: () => void
 }
 
@@ -79,17 +63,15 @@ const LedgerRow: React.FC<LedgerRowProps> = ({
   ledger,
   handleCopyToClipboard,
   handleDialogOpen,
+  handleEdit,
   refetch
 }) => {
   const intl = useIntl()
-  const router = useRouter()
   const id = ledger.original.id || ''
   const displayId = id && id.length > 8 ? `${truncateString(id, 8)}` : id
   const metadataCount = Object.entries(ledger.original.metadata || []).length
   const assetsItems = ledger.original.assets || []
   const { handleCreate, sheetProps } = useCreateUpdateSheet<any>()
-
-  const handleClick = () => router.push(`/ledgers/${ledger.original.id}`)
 
   const renderAssets = () => {
     if (assetsItems.length === 1) {
@@ -148,7 +130,7 @@ const LedgerRow: React.FC<LedgerRowProps> = ({
 
   return (
     <React.Fragment>
-      <TableRow key={ledger.id} button onClick={handleClick}>
+      <TableRow key={ledger.id}>
         <TableCell>
           <TooltipProvider>
             <Tooltip delayDuration={300}>
@@ -214,14 +196,12 @@ const LedgerRow: React.FC<LedgerRowProps> = ({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <Link href={`/ledgers/${ledger.original.id}`}>
-                  <DropdownMenuItem>
-                    {intl.formatMessage({
-                      id: `common.edit`,
-                      defaultMessage: 'Edit'
-                    })}
-                  </DropdownMenuItem>
-                </Link>
+                <DropdownMenuItem onClick={() => handleEdit(ledger.original)}>
+                  {intl.formatMessage({
+                    id: `common.edit`,
+                    defaultMessage: 'Edit'
+                  })}
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   data-testid="delete"
@@ -253,86 +233,32 @@ const LedgerRow: React.FC<LedgerRowProps> = ({
   )
 }
 
-export const LedgersDataTable: React.FC<
-  LedgersTableProps & {
-    currentPageSize: number
-    currentPage: number
-  }
-> = ({
-  ledgers,
-  table,
-  handleDialogOpen,
-  pageSizeOptions,
-  refetch,
-  currentPageSize,
-  currentPage
-}) => {
+export const LedgersDataTable: React.FC<LedgersTableProps> = (props) => {
   const intl = useIntl()
   const { handleCreate, sheetProps } = useCreateUpdateSheet<any>()
   const { showInfo } = useCustomToast()
-  const methods = useForm()
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const items = ledgers?.items ?? []
-  const limit = ledgers?.limit ?? 10
+
+  const {
+    ledgers,
+    table,
+    handleDialogOpen,
+    handleEdit,
+    refetch,
+    form,
+    pagination,
+    total
+  } = props
 
   const handleCopyToClipboard = (value: string, message: string) => {
     navigator.clipboard.writeText(value)
     showInfo(message)
   }
 
-  const setQueryParam = (limit: number, page: number) => {
-    const params = new URLSearchParams(searchParams.toString())
-    params.set('limit', String(limit))
-    params.set('page', String(page))
-    router.push(`?${params.toString()}`)
-  }
-
-  const handlePageSizeChange = (newPageSize: number) => {
-    setQueryParam(newPageSize, currentPage)
-  }
-
-  const handleNextPage = () => {
-    setQueryParam(currentPageSize, currentPage + 1)
-  }
-
-  const handlePreviousPage = () => {
-    setQueryParam(currentPageSize, Math.max(currentPage - 1, 1))
-  }
-
   return (
-    <FormProvider {...methods}>
-      <EntityBox.Root>
-        <EntityBox.Actions className="flex w-full justify-end gap-4">
-          <React.Fragment>
-            <div className="flex items-center gap-4">
-              <p className="whitespace-nowrap text-sm font-medium text-gray-600">
-                {intl.formatMessage({
-                  id: 'common.itemsPerPage',
-                  defaultMessage: 'Items per page'
-                })}
-              </p>
-              <Select
-                value={String(currentPageSize)}
-                onValueChange={(value) => {
-                  handlePageSizeChange(Number(value))
-                }}
-              >
-                <SelectTrigger className="w-fit border border-zinc-300 px-3 py-2 shadow-sm">
-                  <SelectValue placeholder={String(currentPageSize)} />
-                </SelectTrigger>
-                <SelectContent side="bottom">
-                  {pageSizeOptions.map((pageSize: number) => (
-                    <SelectItem key={pageSize} value={String(pageSize)}>
-                      {pageSize}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </React.Fragment>
-        </EntityBox.Actions>
-      </EntityBox.Root>
+    <FormProvider {...form}>
+      <div className="flex justify-end">
+        <PaginationLimitField control={form.control} />
+      </div>
 
       <EntityDataTable.Root>
         {isNil(ledgers?.items) || ledgers.items.length === 0 ? (
@@ -346,7 +272,7 @@ export const LedgersDataTable: React.FC<
               defaultMessage: 'No Ledger found.'
             })}
           >
-            <Button variant="outline" onClick={handleCreate} icon={<Plus />}>
+            <Button variant="default" onClick={handleCreate}>
               {intl.formatMessage({
                 id: 'ledgers.emptyResource.createButton',
                 defaultMessage: 'New Ledger'
@@ -354,108 +280,76 @@ export const LedgersDataTable: React.FC<
             </Button>
           </EmptyResource>
         ) : (
-          <React.Fragment>
-            <TableContainer>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>
-                      {intl.formatMessage({
-                        id: 'common.id',
-                        defaultMessage: 'ID'
-                      })}
-                    </TableHead>
-                    <TableHead>
-                      {intl.formatMessage({
-                        id: 'entity.ledger.name',
-                        defaultMessage: 'Ledger Name'
-                      })}
-                    </TableHead>
-                    <TableHead>
-                      {intl.formatMessage({
-                        id: 'common.assets',
-                        defaultMessage: 'Assets'
-                      })}
-                    </TableHead>
-                    <TableHead>
-                      {intl.formatMessage({
-                        id: 'common.metadata',
-                        defaultMessage: 'Metadata'
-                      })}
-                    </TableHead>
-                    <TableHead className="w-0">
-                      {intl.formatMessage({
-                        id: 'common.actions',
-                        defaultMessage: 'Actions'
-                      })}
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {table.getRowModel().rows.map((ledger) => (
-                    <LedgerRow
-                      key={ledger.id}
-                      ledger={ledger}
-                      handleCopyToClipboard={handleCopyToClipboard}
-                      handleDialogOpen={handleDialogOpen}
-                      refetch={refetch}
-                    />
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-
-            <EntityDataTable.Footer className="flex items-center justify-between py-0">
-              <EntityDataTable.FooterText>
-                {intl.formatMessage(
-                  {
-                    id: 'ledgers.showing',
-                    defaultMessage:
-                      'Showing {count} {number, plural, =0 {ledgers} one {ledger} other {ledgers}}.'
-                  },
-                  {
-                    number: ledgers?.items?.length,
-                    count: (
-                      <span className="font-bold">
-                        {ledgers?.items?.length}
-                      </span>
-                    )
-                  }
-                )}
-              </EntityDataTable.FooterText>
-
-              <div className="flex items-center justify-end space-x-2 py-4">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handlePreviousPage}
-                  disabled={currentPage <= 1}
-                  icon={<ChevronLeft size={16} />}
-                  iconPlacement="start"
-                >
-                  {intl.formatMessage({
-                    id: 'table.pagination.previous',
-                    defaultMessage: 'Previous'
-                  })}
-                </Button>
-
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleNextPage}
-                  disabled={items.length < limit}
-                  icon={<ChevronRight size={16} />}
-                  iconPlacement="end"
-                >
-                  {intl.formatMessage({
-                    id: 'table.pagination.next',
-                    defaultMessage: 'Next'
-                  })}
-                </Button>
-              </div>
-            </EntityDataTable.Footer>
-          </React.Fragment>
+          <TableContainer>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>
+                    {intl.formatMessage({
+                      id: 'common.id',
+                      defaultMessage: 'ID'
+                    })}
+                  </TableHead>
+                  <TableHead>
+                    {intl.formatMessage({
+                      id: 'entity.ledger.name',
+                      defaultMessage: 'Ledger Name'
+                    })}
+                  </TableHead>
+                  <TableHead>
+                    {intl.formatMessage({
+                      id: 'common.assets',
+                      defaultMessage: 'Assets'
+                    })}
+                  </TableHead>
+                  <TableHead>
+                    {intl.formatMessage({
+                      id: 'common.metadata',
+                      defaultMessage: 'Metadata'
+                    })}
+                  </TableHead>
+                  <TableHead className="w-0">
+                    {intl.formatMessage({
+                      id: 'common.actions',
+                      defaultMessage: 'Actions'
+                    })}
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows.map((ledger) => (
+                  <LedgerRow
+                    key={ledger.id}
+                    ledger={ledger}
+                    handleCopyToClipboard={handleCopyToClipboard}
+                    handleDialogOpen={handleDialogOpen}
+                    handleEdit={handleEdit}
+                    refetch={refetch}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         )}
+
+        <EntityDataTable.Footer>
+          <EntityDataTable.FooterText>
+            {intl.formatMessage(
+              {
+                id: 'ledgers.showing',
+                defaultMessage:
+                  'Showing {count} {number, plural, =0 {ledgers} one {ledger} other {ledgers}}.'
+              },
+              {
+                number: ledgers?.items?.length,
+                count: (
+                  <span className="font-bold">{ledgers?.items?.length}</span>
+                )
+              }
+            )}
+          </EntityDataTable.FooterText>
+          <Pagination total={total} {...pagination} />
+        </EntityDataTable.Footer>
 
         <LedgersSheet onSuccess={refetch} {...sheetProps} />
       </EntityDataTable.Root>

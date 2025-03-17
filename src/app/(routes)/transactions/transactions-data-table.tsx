@@ -179,9 +179,7 @@ const TransactionRow: React.FC<TransactionsRowProps> = ({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <Link
-                href={`/ledgers/${currentLedger.id}/transactions/${transaction.original.id}`}
-              >
+              <Link href={`/transactions/${transaction.original.id}`}>
                 <DropdownMenuItem>
                   {intl.formatMessage({
                     id: 'common.seeDetails',
@@ -226,7 +224,7 @@ export const TransactionsDataTable = ({
   })
 
   const handleCreateTransaction = React.useCallback(() => {
-    router.push(`/ledgers/${currentLedger.id}/transactions/create`)
+    router.push(`/transactions/create`)
   }, [currentLedger, router])
 
   return (

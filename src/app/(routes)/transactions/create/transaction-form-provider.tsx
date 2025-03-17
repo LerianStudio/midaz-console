@@ -92,7 +92,7 @@ export const TransactionProvider = ({
   }
 
   const handleReview = () => {
-    router.push(`/ledgers/${id}/transactions/create/review`)
+    router.push(`/transactions/create/review`)
     handleNext()
   }
 

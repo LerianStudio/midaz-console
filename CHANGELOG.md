@@ -1,3 +1,35 @@
+# [1.18.0](https://github.com/LerianStudio/midaz-console/compare/v1.17.1...v1.18.0) (2025-03-14)
+
+
+### Bug Fixes
+
+* error handling and empty resource render ([5941c5c](https://github.com/LerianStudio/midaz-console/commit/5941c5cac6b22efcdaa4243878ee655cfb8ffb1d))
+
+
+### Features
+
+* improve readability by extracting private methods ([a63b73e](https://github.com/LerianStudio/midaz-console/commit/a63b73eb31c72066d71e931c32038a69830c8341))
+* remove most of nested try-catch and add LogOperation decorator ([22b2d78](https://github.com/LerianStudio/midaz-console/commit/22b2d787982c666a64e91530d3483fa1fd6dc858))
+
+## [1.17.1](https://github.com/LerianStudio/midaz-console/compare/v1.17.0...v1.17.1) (2025-03-13)
+
+
+### Bug Fixes
+
+* update translation files to use the correct article ([a882e1d](https://github.com/LerianStudio/midaz-console/commit/a882e1dec9cac44aee2b66730ff9eb86835f3715))
+
+# [1.17.0](https://github.com/LerianStudio/midaz-console/compare/v1.16.0...v1.17.0) (2025-03-12)
+
+
+### Features
+
+* implement ledger edit sheet ([17c4222](https://github.com/LerianStudio/midaz-console/commit/17c42227d7bfa8e68aba7f04731ebb1d44afe82a))
+* improve ledger handling and callback pattern ([0af9bf3](https://github.com/LerianStudio/midaz-console/commit/0af9bf3b8ef21c6365b116f7b77e4b1d8dc2a4bc))
+* moving invalidation logic into the hook itself ([9faed5c](https://github.com/LerianStudio/midaz-console/commit/9faed5c29fc8ee3af05d806ad8979da44466919b))
+* remove ledger details and implement currentLedger refetch ([15d472b](https://github.com/LerianStudio/midaz-console/commit/15d472b1613e035e4608101265b731763843be69))
+* replace conditional callback with optional chaining ([1d3984d](https://github.com/LerianStudio/midaz-console/commit/1d3984d96591a38d7059388980a48ddcc8862268))
+* update the i18n files ([f41e3eb](https://github.com/LerianStudio/midaz-console/commit/f41e3eb2ebd109924f65024c4c998aa5d5b0c13c))
+
 # [1.16.0](https://github.com/LerianStudio/midaz-console/compare/v1.15.0...v1.16.0) (2025-03-07)
 
 
