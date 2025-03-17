@@ -11,16 +11,14 @@ import {
   DeleteUser,
   DeleteUserUseCase
 } from '@/core/application/use-cases/users/delete-user-use-case'
-import { UpdateUser } from '@/core/application/use-cases/users/update-user-use-case'
+import {
+  UpdateUser,
+  UpdateUserUseCase
+} from '@/core/application/use-cases/users/update-user-use-case'
 import { UpdateAccountUseCase } from '@/core/application/use-cases/accounts/update-account-use-case'
 
 export const GET = applyMiddleware(
-  [
-    loggerMiddleware({
-      operationName: 'fetchUserById',
-      method: 'GET'
-    })
-  ],
+  [loggerMiddleware({ operationName: 'fetchUserById', method: 'GET' })],
   async (request: Request, { params }: { params: { userId: string } }) => {
     try {
       const fetchUserByIdUseCase: FetchUserById =
@@ -39,12 +37,7 @@ export const GET = applyMiddleware(
 )
 
 export const DELETE = applyMiddleware(
-  [
-    loggerMiddleware({
-      operationName: 'deleteUser',
-      method: 'DELETE'
-    })
-  ],
+  [loggerMiddleware({ operationName: 'deleteUser', method: 'DELETE' })],
   async (request: Request, { params }: { params: { userId: string } }) => {
     try {
       const deleteUserUseCase: DeleteUser =
@@ -63,16 +56,11 @@ export const DELETE = applyMiddleware(
 )
 
 export const PUT = applyMiddleware(
-  [
-    loggerMiddleware({
-      operationName: 'updateUser',
-      method: 'UPDATE'
-    })
-  ],
+  [loggerMiddleware({ operationName: 'updateUser', method: 'UPDATE' })],
   async (request: Request, { params }: { params: { userId: string } }) => {
     try {
       const updateUserUseCase: UpdateUser =
-        container.get<UpdateUser>(UpdateAccountUseCase)
+        container.get<UpdateUser>(UpdateUserUseCase)
       const { userId } = params
       const body = await request.json()
 
