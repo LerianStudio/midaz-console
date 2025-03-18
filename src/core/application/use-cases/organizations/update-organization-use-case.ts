@@ -5,6 +5,7 @@ import { OrganizationMapper } from '../../mappers/organization-mapper'
 import { UpdateOrganizationRepository } from '@/core/domain/repositories/organizations/update-organization-repository'
 import { inject, injectable } from 'inversify'
 import { CreateOrganizationDto } from '../../dto/create-organization-dto'
+import { validateAvatar } from '@/core/infrastructure/utils/avatar/validate-avatar'
 
 export interface UpdateOrganization {
   execute: (
@@ -24,6 +25,8 @@ export class UpdateOrganizationUseCase implements UpdateOrganization {
     organizationId: string,
     organization: Partial<UpdateOrganizationDto>
   ): Promise<OrganizationResponseDto> {
+    await validateAvatar(organization.metadata?.avatar)
+
     const organizationEntity: Partial<OrganizationEntity> =
       OrganizationMapper.toDomain(organization as CreateOrganizationDto)
 

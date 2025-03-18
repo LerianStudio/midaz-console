@@ -132,6 +132,7 @@
   "entity.transactions.value": "Value",
   "entity.user.email": "E-mail",
   "entity.user.name": "Name",
+  "error.api.avatarSvgContainsUnsecureContent": "Avatar SVG contains unsecure content.",
   "error.midaz.accountIneligibilityError": "Error Midaz account ineligibility error",
   "error.midaz.actionNotPermitted": "Error Midaz action not permitted",
   "error.midaz.assetNameOrCodeDuplicate": "Error Midaz asset name or code duplicate",

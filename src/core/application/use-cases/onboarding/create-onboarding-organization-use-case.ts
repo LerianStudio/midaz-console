@@ -5,6 +5,7 @@ import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { OrganizationMapper } from '../../mappers/organization-mapper'
 import { MidazError } from '@/core/infrastructure/errors/midaz-error'
 import { inject, injectable } from 'inversify'
+import { validateAvatar } from '@/core/infrastructure/utils/avatar/validate-avatar'
 
 export interface CreateOnboardingOrganization {
   execute: (
@@ -25,6 +26,8 @@ export class CreateOnboardingOrganizationUseCase
     organizationData: CreateOrganizationDto
   ): Promise<OrganizationResponseDto> {
     try {
+      await validateAvatar(organizationData.metadata?.avatar)
+
       const organizationEntity: OrganizationEntity =
         OrganizationMapper.toDomain({
           ...organizationData,
