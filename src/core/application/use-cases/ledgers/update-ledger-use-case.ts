@@ -4,6 +4,7 @@ import { UpdateLedgerDto } from '../../dto/update-ledger-dto'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { inject, injectable } from 'inversify'
 import { LedgerMapper } from '../../mappers/ledger-mapper'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface UpdateLedger {
   execute: (
@@ -20,6 +21,7 @@ export class UpdateLedgerUseCase implements UpdateLedger {
     private readonly updateLedgerRepository: UpdateLedgerRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string,

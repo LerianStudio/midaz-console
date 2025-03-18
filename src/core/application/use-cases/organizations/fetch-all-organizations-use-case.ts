@@ -5,6 +5,7 @@ import { FetchAllOrganizationsRepository } from '@/core/domain/repositories/orga
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { PaginationDto } from '../../dto/pagination-dto'
 import { inject, injectable } from 'inversify'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface FetchAllOrganizations {
   execute: (
@@ -20,6 +21,7 @@ export class FetchAllOrganizationsUseCase implements FetchAllOrganizations {
     private fetchAllOrganizationsRepository: FetchAllOrganizationsRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     limit: number,
     page: number

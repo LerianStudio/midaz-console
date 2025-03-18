@@ -1,5 +1,6 @@
 import { DeletePortfolioRepository } from '@/core/domain/repositories/portfolios/delete-portfolio-repository'
 import { inject, injectable } from 'inversify'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface DeletePortfolio {
   execute: (
@@ -16,6 +17,7 @@ export class DeletePortfolioUseCase implements DeletePortfolio {
     private readonly deletePortfolioRepository: DeletePortfolioRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string,

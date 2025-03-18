@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth'
 
-import { nextAuthCasdoorOptions } from '@/core/infrastructure/next-auth/casdoor/next-auth-casdoor-provider'
+import { nextAuthOptions } from '@/core/infrastructure/next-auth/next-auth-provider'
 
-const handler = NextAuth(nextAuthCasdoorOptions)
+const handler = NextAuth(nextAuthOptions)
 
 export { handler as GET, handler as POST }

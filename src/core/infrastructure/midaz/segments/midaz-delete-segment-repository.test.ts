@@ -2,7 +2,7 @@ import { MidazDeleteSegmentRepository } from './midaz-delete-segment-repository'
 import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 jest.mock('../../utils/http-fetch-utils', () => ({
-  httpMidazAuthFetch: jest.fn(),
+  httpMidazFetch: jest.fn(),
   HTTP_METHODS: {
     DELETE: 'DELETE'
   }
@@ -10,10 +10,10 @@ jest.mock('../../utils/http-fetch-utils', () => ({
 
 describe('MidazDeleteSegmentRepository', () => {
   let repository: MidazDeleteSegmentRepository
-  let mockHttpFetchUtils: { httpMidazAuthFetch: jest.Mock }
+  let mockHttpFetchUtils: { httpMidazFetch: jest.Mock }
 
   beforeEach(() => {
-    mockHttpFetchUtils = { httpMidazAuthFetch: jest.fn() }
+    mockHttpFetchUtils = { httpMidazFetch: jest.fn() }
     repository = new MidazDeleteSegmentRepository(mockHttpFetchUtils as any)
     jest.clearAllMocks()
   })
@@ -23,11 +23,11 @@ describe('MidazDeleteSegmentRepository', () => {
     const ledgerId = '1'
     const segmentId = '1'
 
-    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(undefined)
+    mockHttpFetchUtils.httpMidazFetch.mockResolvedValueOnce(undefined)
 
     await repository.delete(organizationId, ledgerId, segmentId)
 
-    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/segments/${segmentId}`,
       method: HTTP_METHODS.DELETE
     })
@@ -39,13 +39,13 @@ describe('MidazDeleteSegmentRepository', () => {
     const segmentId = '1'
     const error = new Error('Error occurred')
 
-    mockHttpFetchUtils.httpMidazAuthFetch.mockRejectedValueOnce(error)
+    mockHttpFetchUtils.httpMidazFetch.mockRejectedValueOnce(error)
 
     await expect(
       repository.delete(organizationId, ledgerId, segmentId)
     ).rejects.toThrow('Error occurred')
 
-    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/segments/${segmentId}`,
       method: HTTP_METHODS.DELETE
     })

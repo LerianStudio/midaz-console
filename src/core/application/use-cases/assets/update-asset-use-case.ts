@@ -5,6 +5,7 @@ import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { AssetMapper } from '../../mappers/asset-mapper'
 import { inject, injectable } from 'inversify'
 import { CreateAssetDto } from '../../dto/create-asset-dto'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface UpdateAsset {
   execute: (
@@ -21,6 +22,8 @@ export class UpdateAssetUseCase implements UpdateAsset {
     @inject(UpdateAssetRepository)
     private readonly updateAssetRepository: UpdateAssetRepository
   ) {}
+
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string,

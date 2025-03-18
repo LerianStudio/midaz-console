@@ -1,28 +1,36 @@
-import React from 'react'
 import '@/app/globals.css'
-import { redirect, RedirectType } from 'next/navigation'
 import { SidebarProvider } from '@/components/sidebar/primitive'
 import { OrganizationProvider } from '@/context/organization-provider'
-import { getServerSession } from 'next-auth'
-import { nextAuthCasdoorOptions } from '@/core/infrastructure/next-auth/casdoor/next-auth-casdoor-provider'
 import { PermissionProvider } from '@/context/permission-provider'
+import { nextAuthOptions } from '@/core/infrastructure/next-auth/next-auth-provider'
+import { getServerSession } from 'next-auth'
+import { redirect, RedirectType } from 'next/navigation'
+import React from 'react'
 
 export default async function RootLayout({
   children
 }: {
   children: React.ReactNode
 }) {
-  const session = await getServerSession(nextAuthCasdoorOptions)
+  if (process.env.PLUGIN_AUTH_ENABLED === 'true') {
+    const session = await getServerSession(nextAuthOptions)
 
-  if (!session) {
-    redirect(`/signin`, RedirectType.replace)
+    if (!session) {
+      redirect('/signin', RedirectType.replace)
+    }
+
+    return (
+      <OrganizationProvider>
+        <PermissionProvider>
+          <SidebarProvider>{children}</SidebarProvider>
+        </PermissionProvider>
+      </OrganizationProvider>
+    )
   }
 
   return (
     <OrganizationProvider>
-      <PermissionProvider>
-        <SidebarProvider>{children}</SidebarProvider>
-      </PermissionProvider>
+      <SidebarProvider>{children}</SidebarProvider>
     </OrganizationProvider>
   )
 }

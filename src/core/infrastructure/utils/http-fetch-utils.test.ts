@@ -1,15 +1,9 @@
-import {
-  MidazHttpFetchUtils,
-  HTTP_METHODS,
-  HttpFetchOptions
-} from './http-fetch-utils'
-import { MidazRequestContext } from '../logger/decorators/midaz-id'
 import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
-import { OtelTracerProvider } from '../observability/otel-tracer-provider'
 import { getServerSession } from 'next-auth'
-import { nextAuthCasdoorOptions } from '../next-auth/casdoor/next-auth-casdoor-provider'
+import { MidazRequestContext } from '../logger/decorators/midaz-id'
+import { OtelTracerProvider } from '../observability/otel-tracer-provider'
+import { HTTP_METHODS, HttpFetchUtils } from './http-fetch-utils'
 import { handleMidazError } from './midaz-error-handler'
-import { SpanStatusCode } from '@opentelemetry/api'
 
 jest.mock('next-auth', () => ({
   getServerSession: jest.fn()
@@ -21,11 +15,11 @@ jest.mock('./midaz-error-handler', () => ({
   })
 }))
 
-jest.mock('../next-auth/casdoor/next-auth-casdoor-provider')
+jest.mock('../next-auth/next-auth-provider')
 jest.mock('../logger/decorators/midaz-id')
 
 describe('MidazHttpFetchUtils', () => {
-  let midazHttpFetchUtils: MidazHttpFetchUtils
+  let midazHttpFetchUtils: HttpFetchUtils
   let midazRequestContext: MidazRequestContext
   let midazLogger: LoggerAggregator
   let otelTracerProvider: OtelTracerProvider
@@ -48,7 +42,7 @@ describe('MidazHttpFetchUtils', () => {
       endCustomSpan: jest.fn()
     } as unknown as OtelTracerProvider
 
-    midazHttpFetchUtils = new MidazHttpFetchUtils(
+    midazHttpFetchUtils = new HttpFetchUtils(
       midazRequestContext,
       midazLogger,
       otelTracerProvider
@@ -77,7 +71,7 @@ describe('MidazHttpFetchUtils', () => {
       user: { access_token: 'test-token' }
     })
 
-    const result = await midazHttpFetchUtils.httpMidazAuthFetch({
+    const result = await midazHttpFetchUtils.httpMidazFetch({
       url: 'https://api.example.com/test',
       method: HTTP_METHODS.GET,
       headers: {
@@ -86,14 +80,11 @@ describe('MidazHttpFetchUtils', () => {
     })
 
     expect(result).toEqual(mockResponse)
-    expect(midazLogger.info).toHaveBeenCalledWith(
-      '[INFO] - httpMidazAuthFetch ',
-      {
-        url: 'https://api.example.com/test',
-        method: 'GET',
-        status: 200
-      }
-    )
+    expect(midazLogger.info).toHaveBeenCalledWith('[INFO] - httpFetch ', {
+      url: 'https://api.example.com/test',
+      method: 'GET',
+      status: 200
+    })
   })
 
   it('should handle fetch request error', async () => {
@@ -113,21 +104,18 @@ describe('MidazHttpFetchUtils', () => {
     })
 
     await expect(
-      midazHttpFetchUtils.httpMidazAuthFetch({
+      midazHttpFetchUtils.httpMidazFetch({
         url: 'https://api.example.com/test',
         method: HTTP_METHODS.GET
       })
     ).rejects.toThrow('Handled error')
 
-    expect(midazLogger.error).toHaveBeenCalledWith(
-      '[ERROR] - httpMidazAuthFetch ',
-      {
-        url: 'https://api.example.com/test',
-        method: 'GET',
-        status: 400,
-        response: mockErrorResponse
-      }
-    )
+    expect(midazLogger.error).toHaveBeenCalledWith('[ERROR] - httpFetch ', {
+      url: 'https://api.example.com/test',
+      method: 'GET',
+      status: 400,
+      response: mockErrorResponse
+    })
   })
 
   it('should set the correct headers', async () => {
@@ -143,7 +131,7 @@ describe('MidazHttpFetchUtils', () => {
       user: { access_token: 'test-token' }
     })
 
-    await midazHttpFetchUtils.httpMidazAuthFetch({
+    await midazHttpFetchUtils.httpMidazFetch({
       url: 'https://api.example.com/test',
       method: HTTP_METHODS.GET,
       headers: {
@@ -176,7 +164,7 @@ describe('MidazHttpFetchUtils', () => {
       user: { access_token: 'test-token' }
     })
 
-    await midazHttpFetchUtils.httpMidazAuthFetch({
+    await midazHttpFetchUtils.httpMidazFetch({
       url: 'https://api.example.com/test',
       method: HTTP_METHODS.GET
     })

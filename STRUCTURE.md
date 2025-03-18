@@ -56,7 +56,6 @@ The project is structured into several key directories, each serving specific ro
     |   |   ├── entities
     |   |   └── repositories
     |   └── infrastructure
-    |       ├── casdoor
     |       ├── container-registry
     |       ├── errors
     |       ├── midaz

@@ -5,6 +5,7 @@ import { AccountEntity } from '@/core/domain/entities/account-entity'
 import { AccountResponseDto } from '../../dto/account-dto'
 import { FetchAllAccountsRepository } from '@/core/domain/repositories/accounts/fetch-all-accounts-repository'
 import { inject, injectable } from 'inversify'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface FetchAllAccounts {
   execute: (
@@ -22,6 +23,7 @@ export class FetchAllAccountsUseCase implements FetchAllAccounts {
     private readonly fetchAllAccountsRepository: FetchAllAccountsRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string,

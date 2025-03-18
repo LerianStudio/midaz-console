@@ -3,18 +3,16 @@ import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 jest.mock('../../utils/http-fetch-utils', () => ({
-  httpMidazAuthFetch: jest.fn(),
-  HTTP_METHODS: {
-    GET: 'GET'
-  }
+  httpMidazFetch: jest.fn(),
+  HTTP_METHODS: { GET: 'GET' }
 }))
 
 describe('MidazFetchAssetByIdRepository', () => {
   let repository: MidazFetchAssetByIdRepository
-  let mockHttpFetchUtils: { httpMidazAuthFetch: jest.Mock }
+  let mockHttpFetchUtils: { httpMidazFetch: jest.Mock }
 
   beforeEach(() => {
-    mockHttpFetchUtils = { httpMidazAuthFetch: jest.fn() }
+    mockHttpFetchUtils = { httpMidazFetch: jest.fn() }
     repository = new MidazFetchAssetByIdRepository(mockHttpFetchUtils as any)
     jest.clearAllMocks()
   })
@@ -32,11 +30,11 @@ describe('MidazFetchAssetByIdRepository', () => {
       metadata: { key: 'value' }
     }
 
-    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(response)
+    mockHttpFetchUtils.httpMidazFetch.mockResolvedValueOnce(response)
 
     const result = await repository.fetchById(organizationId, ledgerId, assetId)
 
-    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`,
       method: HTTP_METHODS.GET
     })
@@ -49,13 +47,13 @@ describe('MidazFetchAssetByIdRepository', () => {
     const assetId = '1'
     const error = new Error('Error occurred')
 
-    mockHttpFetchUtils.httpMidazAuthFetch.mockRejectedValueOnce(error)
+    mockHttpFetchUtils.httpMidazFetch.mockRejectedValueOnce(error)
 
     await expect(
       repository.fetchById(organizationId, ledgerId, assetId)
     ).rejects.toThrow('Error occurred')
 
-    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`,
       method: HTTP_METHODS.GET
     })

@@ -2,18 +2,17 @@ import { MidazDeleteAssetRepository } from './midaz-delete-asset-repository'
 import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 jest.mock('../../utils/http-fetch-utils', () => ({
-  httpMidazAuthFetch: jest.fn(),
+  httpMidazFetch: jest.fn(),
   HTTP_METHODS: {
-    DELETE: 'DELETE'
+    POST: 'DELETE'
   }
 }))
-
 describe('MidazDeleteAssetRepository', () => {
   let repository: MidazDeleteAssetRepository
-  let mockHttpFetchUtils: { httpMidazAuthFetch: jest.Mock }
+  let mockHttpFetchUtils: { httpMidazFetch: jest.Mock }
 
   beforeEach(() => {
-    mockHttpFetchUtils = { httpMidazAuthFetch: jest.fn() }
+    mockHttpFetchUtils = { httpMidazFetch: jest.fn() }
     repository = new MidazDeleteAssetRepository(mockHttpFetchUtils as any)
     jest.clearAllMocks()
   })
@@ -23,11 +22,11 @@ describe('MidazDeleteAssetRepository', () => {
     const ledgerId = '1'
     const assetId = '1'
 
-    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(undefined)
+    mockHttpFetchUtils.httpMidazFetch.mockResolvedValueOnce(undefined)
 
     await repository.delete(organizationId, ledgerId, assetId)
 
-    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`,
       method: HTTP_METHODS.DELETE
     })
@@ -39,13 +38,13 @@ describe('MidazDeleteAssetRepository', () => {
     const assetId = '1'
     const error = new Error('Error occurred')
 
-    mockHttpFetchUtils.httpMidazAuthFetch.mockRejectedValueOnce(error)
+    mockHttpFetchUtils.httpMidazFetch.mockRejectedValueOnce(error)
 
     await expect(
       repository.delete(organizationId, ledgerId, assetId)
     ).rejects.toThrow('Error occurred')
 
-    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/assets/${assetId}`,
       method: HTTP_METHODS.DELETE
     })

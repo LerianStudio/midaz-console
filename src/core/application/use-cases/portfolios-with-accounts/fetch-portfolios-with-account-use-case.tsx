@@ -5,6 +5,7 @@ import { AccountMapper } from '../../mappers/account-mapper'
 import { inject, injectable } from 'inversify'
 import { groupBy } from 'lodash'
 import { PortfolioMapper } from '../../mappers/portfolio-mapper'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface FetchPortfoliosWithAccounts {
   execute: (
@@ -26,6 +27,7 @@ export class FetchPortfoliosWithAccountsUseCase
     private readonly fetchAllAccountsRepository: FetchAllAccountsRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string,

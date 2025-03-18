@@ -2,7 +2,7 @@ import { BalanceEntity } from '@/core/domain/entities/balance-entity'
 import { BalanceRepository } from '@/core/domain/repositories/balance-repository'
 import { inject, injectable } from 'inversify'
 import { ContainerTypeMidazHttpFetch } from '../container-registry/midaz-http-fetch-module'
-import { HTTP_METHODS, MidazHttpFetchUtils } from '../utils/http-fetch-utils'
+import { HTTP_METHODS, HttpFetchUtils } from '../utils/http-fetch-utils'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 
 @injectable()
@@ -10,8 +10,8 @@ export class MidazBalanceRepository implements BalanceRepository {
   private baseUrl: string = process.env.MIDAZ_TRANSACTION_BASE_PATH as string
 
   constructor(
-    @inject(ContainerTypeMidazHttpFetch.MidazHttpFetchUtils)
-    private readonly midazHttpFetchUtils: MidazHttpFetchUtils
+    @inject(ContainerTypeMidazHttpFetch.HttpFetchUtils)
+    private readonly midazHttpFetchUtils: HttpFetchUtils
   ) {}
 
   async getByAccountId(
@@ -21,7 +21,7 @@ export class MidazBalanceRepository implements BalanceRepository {
   ): Promise<PaginationEntity<BalanceEntity>> {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/accounts/${accountId}/balances`
 
-    const response = await this.midazHttpFetchUtils.httpMidazAuthFetch<
+    const response = await this.midazHttpFetchUtils.httpMidazFetch<
       PaginationEntity<BalanceEntity>
     >({
       url,
@@ -46,7 +46,7 @@ export class MidazBalanceRepository implements BalanceRepository {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/balances/${balanceResponse?.items[0]?.id}`
 
     const response =
-      await this.midazHttpFetchUtils.httpMidazAuthFetch<BalanceEntity>({
+      await this.midazHttpFetchUtils.httpMidazFetch<BalanceEntity>({
         url,
         method: HTTP_METHODS.PATCH,
         body: JSON.stringify(balance)

@@ -36,9 +36,7 @@ export class FetchAccountsWithPortfoliosUseCase
     private readonly midazLogger: LoggerAggregator
   ) {}
 
-  @LogOperation({
-    layer: 'application'
-  })
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string,
@@ -53,11 +51,7 @@ export class FetchAccountsWithPortfoliosUseCase
     )
 
     if (!accountsResult?.items?.length) {
-      return {
-        items: [],
-        limit,
-        page
-      }
+      return { items: [], limit, page }
     }
 
     const portfolioMap = await this.fetchAndCreatePortfolioMap(
@@ -183,11 +177,7 @@ export class FetchAccountsWithPortfoliosUseCase
         operation: 'fetch_account_balance_failed',
         message: 'Error processing balance data for account',
         error,
-        context: {
-          accountId: account?.id,
-          organizationId,
-          ledgerId
-        }
+        context: { accountId: account?.id, organizationId, ledgerId }
       })
       return {}
     }
@@ -198,22 +188,13 @@ export class FetchAccountsWithPortfoliosUseCase
     portfolio: PortfolioEntity | null,
     balanceData: Record<string, any>
   ): any {
-    const accountDto = AccountMapper.toDto({
-      ...account,
-      ...balanceData
-    })
+    const accountDto = AccountMapper.toDto({ ...account, ...balanceData })
 
     let portfolioInfo = null
     if (portfolio) {
-      portfolioInfo = {
-        id: portfolio.id || '',
-        name: portfolio.name || ''
-      }
+      portfolioInfo = { id: portfolio.id || '', name: portfolio.name || '' }
     }
 
-    return {
-      ...accountDto,
-      portfolio: portfolioInfo
-    }
+    return { ...accountDto, portfolio: portfolioInfo }
   }
 }

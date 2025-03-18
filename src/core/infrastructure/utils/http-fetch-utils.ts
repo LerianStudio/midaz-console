@@ -1,5 +1,5 @@
 import { getServerSession } from 'next-auth'
-import { nextAuthCasdoorOptions } from '../next-auth/casdoor/next-auth-casdoor-provider'
+import { nextAuthOptions } from '../next-auth/next-auth-provider'
 import { handleMidazError } from './midaz-error-handler'
 import { isNil } from 'lodash'
 import { MidazRequestContext } from '../logger/decorators/midaz-id'
@@ -24,7 +24,10 @@ export type HttpFetchOptions = {
 }
 
 @injectable()
-export class MidazHttpFetchUtils {
+export class HttpFetchUtils {
+  private midazCustomSpanName: string = 'midaz-request'
+  private midazAuthCustomSpanName: string = 'midaz-auth-request'
+
   constructor(
     @inject(MidazRequestContext)
     private readonly midazRequestContext: MidazRequestContext,
@@ -34,24 +37,58 @@ export class MidazHttpFetchUtils {
     private readonly otelTracerProvider: OtelTracerProvider
   ) {}
 
-  async httpMidazAuthFetch<T>(httpFetchOptions: HttpFetchOptions): Promise<T> {
-    const session = await getServerSession(nextAuthCasdoorOptions)
-    const { access_token } = session?.user
-    const headers = {
+  // Midaz Authorization Fetch
+
+  async httpMidazFetch<T>(httpFetchOptions: HttpFetchOptions): Promise<T> {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${access_token}`,
       'X-Request-Id': this.midazRequestContext.getMidazId(),
       ...httpFetchOptions.headers
     }
 
-    const customSpan = this.otelTracerProvider.startCustomSpan('midaz-request')
+    if (process.env.PLUGIN_AUTH_ENABLED === 'true') {
+      const session = await getServerSession(nextAuthOptions)
+      const { access_token } = session?.user
+      headers.Authorization = `Bearer ${access_token}`
+    }
+
+    const midazResponse = await this.httpFetch<T>(
+      { ...httpFetchOptions, headers },
+      this.midazCustomSpanName
+    )
+
+    return midazResponse
+  }
+
+  // Midaz Without Authorization Fetch
+
+  async httpMidazWithoutAuthFetch<T>(
+    httpFetchOptions: HttpFetchOptions
+  ): Promise<T> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'X-Request-Id': this.midazRequestContext.getMidazId(),
+      ...httpFetchOptions.headers
+    }
+
+    const midazResponse = await this.httpFetch<T>(
+      { ...httpFetchOptions, headers },
+      this.midazAuthCustomSpanName
+    )
+
+    return midazResponse
+  }
+
+  private async httpFetch<T>(
+    httpFetchOptions: HttpFetchOptions,
+    spanName: string
+  ): Promise<T> {
+    const customSpan = this.otelTracerProvider.startCustomSpan(spanName)
 
     const response = await fetch(httpFetchOptions.url, {
       method: httpFetchOptions.method,
       body: httpFetchOptions.body,
-      headers: {
-        ...headers
-      }
+      headers: httpFetchOptions.headers
     })
 
     this.otelTracerProvider.endCustomSpan(
@@ -69,7 +106,7 @@ export class MidazHttpFetchUtils {
     const midazResponse = !isNil(response.body) ? await response.json() : {}
 
     if (!response.ok) {
-      this.midazLogger.error('[ERROR] - httpMidazAuthFetch ', {
+      this.midazLogger.error('[ERROR] - httpFetch ', {
         url: httpFetchOptions.url,
         method: httpFetchOptions.method,
         status: response.status,
@@ -78,7 +115,7 @@ export class MidazHttpFetchUtils {
       throw await handleMidazError(midazResponse)
     }
 
-    this.midazLogger.info('[INFO] - httpMidazAuthFetch ', {
+    this.midazLogger.info('[INFO] - httpFetch ', {
       url: httpFetchOptions.url,
       method: httpFetchOptions.method,
       status: response.status
