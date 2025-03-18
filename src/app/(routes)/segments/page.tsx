@@ -44,8 +44,18 @@ const Page = () => {
   })
 
   useEffect(() => {
-    setTotal(segments?.items.length || 0)
-  }, [segments?.items.length])
+    if (!segments?.items) {
+      setTotal(0)
+      return
+    }
+
+    if (segments.items.length >= segments.limit) {
+      setTotal(segments.limit + 1)
+      return
+    }
+
+    setTotal(segments.items.length)
+  }, [segments?.items, segments?.limit])
 
   const { mutate: deleteMutate, isPending: deletePending } = useDeleteSegment({
     organizationId: currentOrganization.id!,

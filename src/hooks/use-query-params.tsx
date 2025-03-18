@@ -38,6 +38,14 @@ export function useQueryParams<SearchParams = {}>({
     ...initialValues
   } as any)
 
+  useEffect(() => {
+    setSearchValues((prevValues) => ({
+      ...prevValues,
+      page: pagination.page.toString(),
+      limit: pagination.limit.toString()
+    }))
+  }, [pagination.page, pagination.limit])
+
   const form = useForm({
     ...formProps,
     defaultValues: {

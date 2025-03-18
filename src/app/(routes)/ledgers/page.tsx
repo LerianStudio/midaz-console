@@ -40,8 +40,18 @@ const Page = () => {
   })
 
   React.useEffect(() => {
-    setTotal(ledgers?.items.length || 0)
-  }, [ledgers?.items.length])
+    if (!ledgers?.items) {
+      setTotal(0)
+      return
+    }
+
+    if (ledgers.items.length >= ledgers.limit) {
+      setTotal(ledgers.limit + 1)
+      return
+    }
+
+    setTotal(ledgers.items.length)
+  }, [ledgers?.items, ledgers?.limit])
 
   const {
     handleDialogOpen,
