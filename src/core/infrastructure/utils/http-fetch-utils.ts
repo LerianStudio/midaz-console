@@ -103,6 +103,18 @@ export class HttpFetchUtils {
         })
     )
 
+    if (response.headers.get('content-type')?.includes('text/plain')) {
+      const midazResponse = await response.text()
+
+      this.midazLogger.error('[ERROR] - httpFetch ', {
+        url: httpFetchOptions.url,
+        method: httpFetchOptions.method,
+        status: response.status,
+        response: { message: midazResponse }
+      })
+      throw await handleMidazError({ code: '0000', message: midazResponse })
+    }
+
     const midazResponse = !isNil(response.body) ? await response.json() : {}
 
     if (!response.ok) {
