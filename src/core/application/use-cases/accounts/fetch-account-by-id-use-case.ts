@@ -3,6 +3,8 @@ import { AccountResponseDto } from '../../dto/account-dto'
 import { AccountMapper } from '../../mappers/account-mapper'
 import { inject, injectable } from 'inversify'
 import { LogOperation } from '../../decorators/log-operation'
+import { BalanceRepository } from '@/core/domain/repositories/balance-repository'
+import { BalanceMapper } from '../../mappers/balance-mapper'
 
 export interface FetchAccountById {
   execute: (
@@ -16,8 +18,11 @@ export interface FetchAccountById {
 export class FetchAccountByIdUseCase implements FetchAccountById {
   constructor(
     @inject(FetchAccountByIdRepository)
-    private readonly fetchAccountByIdRepository: FetchAccountByIdRepository
+    private readonly fetchAccountByIdRepository: FetchAccountByIdRepository,
+    @inject(BalanceRepository)
+    private readonly balanceRepository: BalanceRepository
   ) {}
+
   @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
@@ -30,6 +35,15 @@ export class FetchAccountByIdUseCase implements FetchAccountById {
       accountId
     )
 
-    return AccountMapper.toDto(account)
+    const balance = await this.balanceRepository.getByAccountId(
+      organizationId,
+      ledgerId,
+      accountId
+    )
+
+    return AccountMapper.toDto({
+      ...account,
+      ...BalanceMapper.toDomain(balance)
+    })
   }
 }

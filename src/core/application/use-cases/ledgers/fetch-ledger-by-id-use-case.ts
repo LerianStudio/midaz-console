@@ -2,6 +2,7 @@ import { FetchLedgerByIdRepository } from '@/core/domain/repositories/ledgers/fe
 import { LedgerResponseDto } from '../../dto/ledger-response-dto'
 import { LedgerMapper } from '../../mappers/ledger-mapper'
 import { inject, injectable } from 'inversify'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface FetchLedgerById {
   execute: (
@@ -17,6 +18,7 @@ export class FetchLedgerByIdUseCase implements FetchLedgerById {
     private readonly fetchLedgerByIdRepository: FetchLedgerByIdRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string

@@ -9,7 +9,7 @@ import {
   FetchAllSegmentsUseCase
 } from '@/core/application/use-cases/segment/fetch-all-segments-use-case'
 import { NextRequest, NextResponse } from 'next/server'
-import { applyMiddleware } from '@/lib/applymiddleware/apply-middleware'
+import { applyMiddleware } from '@/lib/middleware'
 import { loggerMiddleware } from '@/utils/logger-middleware-config'
 
 interface SegmentParams {

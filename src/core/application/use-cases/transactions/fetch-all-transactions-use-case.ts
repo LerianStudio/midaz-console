@@ -3,6 +3,7 @@ import { FetchAllTransactionsRepository } from '@/core/domain/repositories/trans
 import { TransactionMapper } from '../../mappers/transaction-mapper'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { TransactionResponseDto } from '../../dto/transaction-dto'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface FetchAllTransactions {
   execute: (
@@ -20,6 +21,7 @@ export class FetchAllTransactionsUseCase implements FetchAllTransactions {
     private readonly fetchAllTransactionsRepository: FetchAllTransactionsRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string,

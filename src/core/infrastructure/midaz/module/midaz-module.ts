@@ -6,6 +6,8 @@ import { MidazOrganizationModule } from './organization-module'
 import { MidazPortfolioModule } from './portfolio-module'
 import { MidazSegmentModule } from './segment-module'
 import { MidazTransactionModule } from './transaction-module'
+import { BalanceRepository } from '@/core/domain/repositories/balance-repository'
+import { MidazBalanceRepository } from '../midaz-balance-repository'
 
 export const MidazModule = new ContainerModule((container: Container) => {
   container.load(MidazOrganizationModule)
@@ -15,4 +17,8 @@ export const MidazModule = new ContainerModule((container: Container) => {
   container.load(MidazAssetModule)
   container.load(MidazSegmentModule)
   container.load(MidazTransactionModule)
+
+  container
+    .bind<BalanceRepository>(BalanceRepository)
+    .to(MidazBalanceRepository)
 })

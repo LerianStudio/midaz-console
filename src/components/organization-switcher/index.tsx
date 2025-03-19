@@ -10,8 +10,6 @@ import { useListOrganizations } from '@/client/organizations'
 import { Skeleton } from '../ui/skeleton'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
-import { isNil } from 'lodash'
-import useCustomToast from '@/hooks/use-custom-toast'
 
 /**
  * TODO: Fix potential bug of user changing the organization and still having old stale data in the UI
@@ -24,7 +22,6 @@ export const OrganizationSwitcher = () => {
   const { isCollapsed } = useSidebar()
   const { data, isPending } = useListOrganizations({})
   const { currentOrganization, setOrganization } = useOrganization()
-  const { showError } = useCustomToast()
   const [open, setOpen] = React.useState(false)
 
   const handleChange = (organization: OrganizationEntity) => {
@@ -49,6 +46,7 @@ export const OrganizationSwitcher = () => {
         disabled={!data || data.items.length <= 1}
         collapsed={isCollapsed}
       />
+
       <OrganizationSwitcherContent
         orgName={currentOrganization.legalName}
         status="active"

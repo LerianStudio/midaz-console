@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import SettingsDialog from '../settings-dialog'
 import {
   DropdownMenu,
@@ -13,15 +12,7 @@ import {
   DropdownMenuTrigger
 } from '../ui/dropdown-menu'
 import { useIntl } from 'react-intl'
-import {
-  CircleUser,
-  CreditCard,
-  ExternalLink,
-  Github,
-  LifeBuoy,
-  LogOut,
-  User
-} from 'lucide-react'
+import { Book, CircleUser, LifeBuoy, LogOut, User } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 
 export const UserDropdown = () => {
@@ -48,45 +39,25 @@ export const UserDropdown = () => {
             </DropdownMenuItemIcon>
             {intl.formatMessage({
               id: 'header.userDropdown.profile',
-              defaultMessage: 'Profile'
+              defaultMessage: 'My Profile'
             })}
           </DropdownMenuItem>
           <DropdownMenuItem>
             <DropdownMenuItemIcon>
-              <CreditCard />
+              <Book />
             </DropdownMenuItemIcon>
             {intl.formatMessage({
-              id: 'header.userDropdown.subscription',
-              defaultMessage: 'Subscription'
+              id: 'header.userDropdown.documentation',
+              defaultMessage: 'Documentation Hub'
             })}
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <DropdownMenuItemIcon>
-              <Github />
-            </DropdownMenuItemIcon>
-            Github
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <DropdownMenuItemIcon>
-              <ExternalLink />
-            </DropdownMenuItemIcon>
-            Docs
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <DropdownMenuItemIcon>
-              <ExternalLink />
-            </DropdownMenuItemIcon>
-            CLI Docs
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <DropdownMenuItemIcon>
-              <LifeBuoy />
-            </DropdownMenuItemIcon>
+          <DropdownMenuItem className="pl-10">
             {intl.formatMessage({
               id: 'header.userDropdown.support',
               defaultMessage: 'Support'
             })}
           </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => signOut({ callbackUrl: '/signin' })}>
             <DropdownMenuItemIcon>
               <LogOut />

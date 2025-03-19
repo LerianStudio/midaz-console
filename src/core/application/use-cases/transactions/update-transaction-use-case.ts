@@ -4,6 +4,7 @@ import { TransactionEntity } from '@/core/domain/entities/transaction-entity'
 import { TransactionMapper } from '../../mappers/transaction-mapper'
 import { UpdateTransactionDto } from '../../dto/update-transaction-dto'
 import { TransactionResponseDto } from '../../dto/transaction-dto'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface UpdateTransaction {
   execute: (
@@ -21,6 +22,7 @@ export class UpdateTransactionUseCase implements UpdateTransaction {
     private readonly updateTransactionRepository: UpdateTransactionRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string,

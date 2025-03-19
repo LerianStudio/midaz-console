@@ -2,7 +2,7 @@ import { MidazDeleteOrganizationRepository } from './midaz-delete-organization-r
 import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 jest.mock('../../utils/http-fetch-utils', () => ({
-  httpMidazAuthFetch: jest.fn(),
+  httpMidazFetch: jest.fn(),
   HTTP_METHODS: {
     DELETE: 'DELETE'
   }
@@ -10,10 +10,10 @@ jest.mock('../../utils/http-fetch-utils', () => ({
 
 describe('MidazDeleteOrganizationRepository', () => {
   let repository: MidazDeleteOrganizationRepository
-  let mockHttpFetchUtils: { httpMidazAuthFetch: jest.Mock }
+  let mockHttpFetchUtils: { httpMidazFetch: jest.Mock }
 
   beforeEach(() => {
-    mockHttpFetchUtils = { httpMidazAuthFetch: jest.fn() }
+    mockHttpFetchUtils = { httpMidazFetch: jest.fn() }
     repository = new MidazDeleteOrganizationRepository(
       mockHttpFetchUtils as any
     )
@@ -23,11 +23,11 @@ describe('MidazDeleteOrganizationRepository', () => {
   it('should delete an organization successfully', async () => {
     const organizationId = '1'
 
-    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(undefined)
+    mockHttpFetchUtils.httpMidazFetch.mockResolvedValueOnce(undefined)
 
     await repository.deleteOrganization(organizationId)
 
-    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}`,
       method: HTTP_METHODS.DELETE
     })
@@ -37,13 +37,13 @@ describe('MidazDeleteOrganizationRepository', () => {
     const organizationId = '1'
     const error = new Error('Error occurred')
 
-    mockHttpFetchUtils.httpMidazAuthFetch.mockRejectedValueOnce(error)
+    mockHttpFetchUtils.httpMidazFetch.mockRejectedValueOnce(error)
 
     await expect(repository.deleteOrganization(organizationId)).rejects.toThrow(
       'Error occurred'
     )
 
-    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}`,
       method: HTTP_METHODS.DELETE
     })

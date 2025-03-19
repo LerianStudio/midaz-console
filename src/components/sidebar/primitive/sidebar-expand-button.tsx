@@ -10,13 +10,14 @@ import {
 } from '../../ui/tooltip'
 import { useIntl } from 'react-intl'
 import { SidebarFooter, useSidebar } from '.'
+import React from 'react'
 
 export const SidebarExpandButton = () => {
   const intl = useIntl()
   const { isCollapsed, toggleSidebar } = useSidebar()
 
   return (
-    <>
+    <React.Fragment>
       {!isCollapsed && (
         <div className="flex w-full border-shadcn-200">
           <div className="absolute bottom-4 right-[-20px]">
@@ -51,6 +52,6 @@ export const SidebarExpandButton = () => {
           </TooltipProvider>
         </SidebarFooter>
       )}
-    </>
+    </React.Fragment>
   )
 }

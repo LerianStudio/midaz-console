@@ -3,7 +3,7 @@ import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 jest.mock('../../utils/http-fetch-utils', () => ({
-  httpMidazAuthFetch: jest.fn(),
+  httpMidazFetch: jest.fn(),
   HTTP_METHODS: {
     PATCH: 'PATCH'
   }
@@ -11,10 +11,10 @@ jest.mock('../../utils/http-fetch-utils', () => ({
 
 describe('MidazUpdateLedgerRepository', () => {
   let repository: MidazUpdateLedgerRepository
-  let mockHttpFetchUtils: { httpMidazAuthFetch: jest.Mock }
+  let mockHttpFetchUtils: { httpMidazFetch: jest.Mock }
 
   beforeEach(() => {
-    mockHttpFetchUtils = { httpMidazAuthFetch: jest.fn() }
+    mockHttpFetchUtils = { httpMidazFetch: jest.fn() }
     repository = new MidazUpdateLedgerRepository(mockHttpFetchUtils as any)
     jest.clearAllMocks()
   })
@@ -35,11 +35,11 @@ describe('MidazUpdateLedgerRepository', () => {
       deletedAt: null
     }
 
-    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(response)
+    mockHttpFetchUtils.httpMidazFetch.mockResolvedValueOnce(response)
 
     const result = await repository.update(organizationId, ledgerId, ledgerData)
 
-    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}`,
       method: HTTP_METHODS.PATCH,
       body: JSON.stringify(ledgerData)
@@ -55,13 +55,13 @@ describe('MidazUpdateLedgerRepository', () => {
     }
     const error = new Error('Error occurred')
 
-    mockHttpFetchUtils.httpMidazAuthFetch.mockRejectedValueOnce(error)
+    mockHttpFetchUtils.httpMidazFetch.mockRejectedValueOnce(error)
 
     await expect(
       repository.update(organizationId, ledgerId, ledgerData)
     ).rejects.toThrow('Error occurred')
 
-    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}`,
       method: HTTP_METHODS.PATCH,
       body: JSON.stringify(ledgerData)

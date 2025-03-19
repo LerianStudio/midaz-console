@@ -71,7 +71,7 @@ const SidebarGroupTitle = ({ collapsed, children }: SidebarGroupTitleProps) => {
 
   return (
     <div className="my-2 px-2">
-      <p className="text-xs font-medium uppercase text-shadcn-400">
+      <p className="text-xs font-semibold uppercase tracking-[1.1px] text-zinc-500">
         {children}
       </p>
     </div>

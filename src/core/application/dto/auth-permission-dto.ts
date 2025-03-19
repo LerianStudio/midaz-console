@@ -1,3 +1,4 @@
-import { AuthPermissionEntity } from '@/core/domain/entities/auth-permission-entity'
+type AuthResourceDto = string
+type AuthActionDto = string
 
-export type AuthPermissionResponseDto = AuthPermissionEntity
+export type AuthPermissionResponseDto = Record<AuthResourceDto, AuthActionDto[]>

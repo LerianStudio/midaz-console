@@ -40,7 +40,7 @@ export const OrganizationsTabContent = () => {
 
   const { mutate: deleteOrganization, isPending: deletePending } =
     useDeleteOrganization({
-      onSucess: () => {
+      onSuccess: () => {
         handleDialogClose()
         refetch()
       }

@@ -2,18 +2,18 @@ import { MidazDeleteLedgerRepository } from './midaz-delete-ledger-repository'
 import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 jest.mock('../../utils/http-fetch-utils', () => ({
-  httpMidazAuthFetch: jest.fn(),
+  httpMidazFetch: jest.fn(),
   HTTP_METHODS: {
-    DELETE: 'DELETE'
+    POST: 'DELETE'
   }
 }))
 
 describe('MidazDeleteLedgerRepository', () => {
   let repository: MidazDeleteLedgerRepository
-  let mockHttpFetchUtils: { httpMidazAuthFetch: jest.Mock }
+  let mockHttpFetchUtils: { httpMidazFetch: jest.Mock }
 
   beforeEach(() => {
-    mockHttpFetchUtils = { httpMidazAuthFetch: jest.fn() }
+    mockHttpFetchUtils = { httpMidazFetch: jest.fn() }
     repository = new MidazDeleteLedgerRepository(mockHttpFetchUtils as any)
     jest.clearAllMocks()
   })
@@ -22,11 +22,11 @@ describe('MidazDeleteLedgerRepository', () => {
     const organizationId = '1'
     const ledgerId = '1'
 
-    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(undefined)
+    mockHttpFetchUtils.httpMidazFetch.mockResolvedValueOnce(undefined)
 
     await repository.delete(organizationId, ledgerId)
 
-    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}`,
       method: HTTP_METHODS.DELETE
     })
@@ -37,13 +37,13 @@ describe('MidazDeleteLedgerRepository', () => {
     const ledgerId = '1'
     const error = new Error('Error occurred')
 
-    mockHttpFetchUtils.httpMidazAuthFetch.mockRejectedValueOnce(error)
+    mockHttpFetchUtils.httpMidazFetch.mockRejectedValueOnce(error)
 
     await expect(repository.delete(organizationId, ledgerId)).rejects.toThrow(
       'Error occurred'
     )
 
-    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}`,
       method: HTTP_METHODS.DELETE
     })

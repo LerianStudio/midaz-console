@@ -18,11 +18,11 @@ import { useIntl } from 'react-intl'
 import { z } from 'zod'
 import { isNil } from 'lodash'
 import { LoadingButton } from '@/components/ui/loading-button'
-import { useCreateLedger } from '@/client/ledgers'
+import { useCreateLedger, useUpdateLedger } from '@/client/ledgers'
 import { LedgerResponseDto } from '@/core/application/dto/ledger-response-dto'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import useCustomToast from '@/hooks/use-custom-toast'
-import { ILedgerType } from '@/types/ledgers-type'
+import { LedgerType } from '@/types/ledgers-type'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 export type LedgersSheetProps = DialogProps & {
@@ -51,14 +51,17 @@ export const LedgersSheet = ({
   ...others
 }: LedgersSheetProps) => {
   const intl = useIntl()
-  const { currentOrganization } = useOrganization()
+  const { currentOrganization, setLedger } = useOrganization()
   const { showSuccess, showError } = useCustomToast()
 
   const { mutate: createLedger, isPending: createPending } = useCreateLedger({
     organizationId: currentOrganization.id!,
-    onSuccess: (data: unknown) => {
-      const formData = data as { ledger: ILedgerType }
-      onSuccess?.()
+    onSuccess: async (data: unknown) => {
+      const newLedger = data as LedgerType
+
+      await onSuccess?.()
+
+      setLedger(newLedger)
       onOpenChange?.(false)
       showSuccess(
         intl.formatMessage(
@@ -66,7 +69,7 @@ export const LedgersSheet = ({
             id: 'ledgers.toast.create.success',
             defaultMessage: 'Ledger {ledgerName} created successfully'
           },
-          { ledgerName: formData.ledger.name }
+          { ledgerName: newLedger.name }
         )
       )
     },
@@ -81,6 +84,29 @@ export const LedgersSheet = ({
     }
   })
 
+  const { mutate: updateLedger, isPending: updatePending } = useUpdateLedger({
+    organizationId: currentOrganization!.id!,
+    ledgerId: data?.id!,
+    onSuccess: () => {
+      onSuccess?.()
+      onOpenChange?.(false)
+      showSuccess(
+        intl.formatMessage({
+          id: 'ledgers.toast.update.success',
+          defaultMessage: 'Ledger changes saved successfully'
+        })
+      )
+    },
+    onError: () => {
+      showError(
+        intl.formatMessage({
+          id: 'ledgers.toast.update.error',
+          defaultMessage: 'Error updating Ledger'
+        })
+      )
+    }
+  })
+
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: Object.assign({}, defaultValues, ledger)
@@ -89,6 +115,8 @@ export const LedgersSheet = ({
   const handleSubmit = (data: FormData) => {
     if (mode === 'create') {
       createLedger(data)
+    } else if (mode === 'edit') {
+      updateLedger(data)
     }
 
     form.reset(defaultValues)
@@ -101,10 +129,10 @@ export const LedgersSheet = ({
   }, [mode])
 
   React.useEffect(() => {
-    if (!isNil(data)) {
+    if (mode === 'edit' && !isNil(data)) {
       form.reset(data, { keepDefaultValues: true })
     }
-  }, [data])
+  }, [data, mode])
 
   return (
     <Sheet onOpenChange={onOpenChange} {...others}>
@@ -127,6 +155,28 @@ export const LedgersSheet = ({
           </SheetHeader>
         )}
 
+        {mode === 'edit' && (
+          <SheetHeader>
+            <SheetTitle>
+              {intl.formatMessage(
+                {
+                  id: 'ledgers.sheet.edit.title',
+                  defaultMessage: 'Edit "{ledgerName}"'
+                },
+                {
+                  ledgerName: data?.name
+                }
+              )}
+            </SheetTitle>
+            <SheetDescription>
+              {intl.formatMessage({
+                id: 'ledgers.sheet.edit.description',
+                defaultMessage: 'View and edit ledger fields.'
+              })}
+            </SheetDescription>
+          </SheetHeader>
+        )}
+
         <Form {...form}>
           <form
             className="flex flex-grow flex-col"
@@ -134,7 +184,10 @@ export const LedgersSheet = ({
           >
             <Tabs defaultValue="details" className="mt-0">
               <TabsList className="mb-8 px-0">
-                <TabsTrigger value="details">
+                <TabsTrigger
+                  value="details"
+                  className="focus:outline-none focus:ring-0"
+                >
                   {intl.formatMessage({
                     id: 'ledgers.sheet.tabs.details',
                     defaultMessage: 'Ledger Details'
@@ -178,7 +231,7 @@ export const LedgersSheet = ({
                 type="submit"
                 disabled={!(form.formState.isDirty && form.formState.isValid)}
                 fullWidth
-                loading={createPending}
+                loading={createPending || updatePending}
               >
                 {intl.formatMessage({
                   id: 'common.save',

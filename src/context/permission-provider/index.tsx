@@ -5,7 +5,7 @@ import {
   AuthPermissionUseCase
 } from '@/core/application/use-cases/auth/auth-permission-use-case'
 import { container } from '@/core/infrastructure/container-registry/container-registry'
-import { nextAuthCasdoorOptions } from '@/core/infrastructure/next-auth/casdoor/next-auth-casdoor-provider'
+import { nextAuthOptions } from '@/core/infrastructure/next-auth/next-auth-provider'
 import { getServerSession } from 'next-auth'
 import { PermissionProviderClient } from './permission-provider-client'
 import { serverFetcher } from '@/lib/fetcher'
@@ -17,10 +17,10 @@ const authPermissionUseCase = container.get<AuthPermission>(
 export const PermissionProvider = async ({
   children
 }: React.PropsWithChildren) => {
-  const session = await getServerSession(nextAuthCasdoorOptions)
+  const session = await getServerSession(nextAuthOptions)
 
   const permissions = await serverFetcher(
-    async () => await authPermissionUseCase.execute(session?.user.username)
+    async () => await authPermissionUseCase.execute()
   )
 
   return (
