@@ -1,4 +1,4 @@
-import { ApiException } from '@/core/application/exceptions/api-exception'
+import { ApiException } from '@/lib/http'
 
 export class MidazError extends ApiException {
   constructor(message: string, code: string = '0000') {

@@ -414,5 +414,6 @@
   "portfolios.toast.delete.success": "Portfólio excluído com sucesso",
   "portfolios.toast.update.error": "Erro ao atualizar portfólio",
   "portfolios.toast.update.success": "Portfólio atualizado com sucesso",
-  "error.api.avatarSvgContainsUnsecureContent": "O arquivo SVG contém conteúdo inseguro."
+  "error.api.avatarSvgContainsUnsecureContent": "O arquivo SVG contém conteúdo inseguro.",
+  "errors.custom.avatar.invalid_format": "O avatar deve ter um formato PNG ou SVG"
 }

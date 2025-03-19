@@ -1,8 +1,7 @@
-import { ApiException } from '@/core/application/exceptions/api-exception'
 import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
 import { container } from '@/core/infrastructure/container-registry/container-registry'
 import { MidazError } from '@/core/infrastructure/errors/midaz-error'
-import { HttpStatus } from '@/lib/http'
+import { HttpStatus, ApiException } from '@/lib/http'
 import { getIntl } from '@/lib/intl'
 
 export interface ErrorResponse {
