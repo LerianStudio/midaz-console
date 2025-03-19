@@ -47,7 +47,6 @@ export class CreateOnboardingOrganizationUseCase
       if (error instanceof MidazError) {
         throw error
       }
-      console.log(error)
       throw new Error('Error creating onboarding organization Use Case')
     }
   }
