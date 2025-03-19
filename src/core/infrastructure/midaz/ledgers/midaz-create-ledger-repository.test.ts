@@ -3,7 +3,7 @@ import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 jest.mock('../../utils/http-fetch-utils', () => ({
-  httpMidazAuthFetch: jest.fn(),
+  httpMidazFetch: jest.fn(),
   HTTP_METHODS: {
     POST: 'POST'
   }
@@ -11,10 +11,10 @@ jest.mock('../../utils/http-fetch-utils', () => ({
 
 describe('MidazCreateLedgerRepository', () => {
   let repository: MidazCreateLedgerRepository
-  let mockHttpFetchUtils: { httpMidazAuthFetch: jest.Mock }
+  let mockHttpFetchUtils: { httpMidazFetch: jest.Mock }
 
   beforeEach(() => {
-    mockHttpFetchUtils = { httpMidazAuthFetch: jest.fn() }
+    mockHttpFetchUtils = { httpMidazFetch: jest.fn() }
     repository = new MidazCreateLedgerRepository(mockHttpFetchUtils as any)
     jest.clearAllMocks()
   })
@@ -29,11 +29,11 @@ describe('MidazCreateLedgerRepository', () => {
     }
     const response: LedgerEntity = { ...ledger }
 
-    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(response)
+    mockHttpFetchUtils.httpMidazFetch.mockResolvedValueOnce(response)
 
     const result = await repository.create(organizationId, ledger)
 
-    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers`,
       method: HTTP_METHODS.POST,
       body: JSON.stringify(ledger)
@@ -51,13 +51,13 @@ describe('MidazCreateLedgerRepository', () => {
     }
     const error = new Error('Error occurred')
 
-    mockHttpFetchUtils.httpMidazAuthFetch.mockRejectedValueOnce(error)
+    mockHttpFetchUtils.httpMidazFetch.mockRejectedValueOnce(error)
 
     await expect(repository.create(organizationId, ledger)).rejects.toThrow(
       'Error occurred'
     )
 
-    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers`,
       method: HTTP_METHODS.POST,
       body: JSON.stringify(ledger)

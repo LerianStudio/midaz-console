@@ -1,3 +1,42 @@
+# [1.19.0](https://github.com/LerianStudio/midaz-console/compare/v1.18.0...v1.19.0) (2025-03-18)
+
+
+### Bug Fixes
+
+* change method string to loggerMiddleware ([6954d62](https://github.com/LerianStudio/midaz-console/commit/6954d6239727e34570aa733419b1922a0465b7a7))
+* fix unit tests ([e9e47c2](https://github.com/LerianStudio/midaz-console/commit/e9e47c21eed7aaed60e3e4034dc6393333122589))
+* fix update user use case dependency name ([62def6b](https://github.com/LerianStudio/midaz-console/commit/62def6bad9fee8dca80f979f139b5f96a3eebe9d))
+* implement log aggregator into auth flow ([71b3d08](https://github.com/LerianStudio/midaz-console/commit/71b3d08593488cd33f12bbdbd9c6881f2f4bc621))
+* merge auth integration ([febefbf](https://github.com/LerianStudio/midaz-console/commit/febefbf844b178115e93e183d6f30226b55586f9))
+* merge comments appointments ([1c187d8](https://github.com/LerianStudio/midaz-console/commit/1c187d8a8c80535e534b6b8b40f541d9065bd535))
+* merge develop ([6193402](https://github.com/LerianStudio/midaz-console/commit/61934023666e8dfde190e0c56e1b931f59467682))
+* method logger middleware ([247a83c](https://github.com/LerianStudio/midaz-console/commit/247a83c463e57835088a7d3bc78bb631e38b91ac))
+* vulnerability alerts ([dc80f47](https://github.com/LerianStudio/midaz-console/commit/dc80f47018ce20a037d70ab6351855cb5930f7c8))
+
+
+### Features
+
+* creating next user api route ([f3cf2d1](https://github.com/LerianStudio/midaz-console/commit/f3cf2d14a9ab36fd499ef75ba23440d439f4f00f))
+* identity group integration ([e0d8308](https://github.com/LerianStudio/midaz-console/commit/e0d83081ff9b4e6030634ad7e102424ad40a07a0))
+* identity reset user password flow integration ([6ae4126](https://github.com/LerianStudio/midaz-console/commit/6ae4126aa7ede70e1cc5e62d510c8d4f38f3a752))
+* implementing integration with identity service from repository implementation layer (infrastructure) ([b2b510b](https://github.com/LerianStudio/midaz-console/commit/b2b510bf20fa56ead17e0fc38db52880adf6e826))
+* implementing plugin auth enabled variable, remove session verify when plugin auth is not enabled ([d41c8c3](https://github.com/LerianStudio/midaz-console/commit/d41c8c3f0e34d8cbe360a6b60584e2f3ec5ad049))
+* permission integration, removing casdoor implementation ([c4bbf40](https://github.com/LerianStudio/midaz-console/commit/c4bbf4071242a2280d578fef98a45d41aa9ad94a))
+* user repository created ([2a2d80c](https://github.com/LerianStudio/midaz-console/commit/2a2d80c26c8a6c17f047765607fdbdd468d28d80))
+
+# [1.18.0](https://github.com/LerianStudio/midaz-console/compare/v1.17.1...v1.18.0) (2025-03-14)
+
+
+### Bug Fixes
+
+* error handling and empty resource render ([5941c5c](https://github.com/LerianStudio/midaz-console/commit/5941c5cac6b22efcdaa4243878ee655cfb8ffb1d))
+
+
+### Features
+
+* improve readability by extracting private methods ([a63b73e](https://github.com/LerianStudio/midaz-console/commit/a63b73eb31c72066d71e931c32038a69830c8341))
+* remove most of nested try-catch and add LogOperation decorator ([22b2d78](https://github.com/LerianStudio/midaz-console/commit/22b2d787982c666a64e91530d3483fa1fd6dc858))
+
 ## [1.17.1](https://github.com/LerianStudio/midaz-console/compare/v1.17.0...v1.17.1) (2025-03-13)
 
 

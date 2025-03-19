@@ -3,6 +3,7 @@ import { SegmentResponseDto, UpdateSegmentDto } from '../../dto/segment-dto'
 import { SegmentEntity } from '@/core/domain/entities/segment-entity'
 import { SegmentMapper } from '../../mappers/segment-mapper'
 import { inject, injectable } from 'inversify'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface UpdateSegment {
   execute: (
@@ -20,6 +21,7 @@ export class UpdateSegmentUseCase implements UpdateSegment {
     private readonly updateSegmentRepository: UpdateSegmentRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string,

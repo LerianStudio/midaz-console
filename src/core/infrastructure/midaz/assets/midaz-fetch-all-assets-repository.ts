@@ -3,14 +3,14 @@ import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { FetchAllAssetsRepository } from '@/core/domain/repositories/assets/fetch-all-assets-repository'
 import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 import { injectable, inject } from 'inversify'
-import { MidazHttpFetchUtils } from '../../utils/http-fetch-utils'
+import { HttpFetchUtils } from '../../utils/http-fetch-utils'
 import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
 
 @injectable()
 export class MidazFetchAllAssetsRepository implements FetchAllAssetsRepository {
   constructor(
-    @inject(ContainerTypeMidazHttpFetch.MidazHttpFetchUtils)
-    private readonly midazHttpFetchUtils: MidazHttpFetchUtils
+    @inject(ContainerTypeMidazHttpFetch.HttpFetchUtils)
+    private readonly midazHttpFetchUtils: HttpFetchUtils
   ) {}
 
   private baseUrl: string = process.env.MIDAZ_BASE_PATH as string
@@ -32,7 +32,7 @@ export class MidazFetchAllAssetsRepository implements FetchAllAssetsRepository {
     })
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/assets?${params.toString()}`
 
-    const response = await this.midazHttpFetchUtils.httpMidazAuthFetch<
+    const response = await this.midazHttpFetchUtils.httpMidazFetch<
       PaginationEntity<AssetEntity>
     >({
       url,

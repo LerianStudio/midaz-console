@@ -3,6 +3,7 @@ import { FetchTransactionByIdRepository } from '@/core/domain/repositories/trans
 import { injectable, inject } from 'inversify'
 import { TransactionResponseDto } from '../../dto/transaction-dto'
 import { TransactionMapper } from '../../mappers/transaction-mapper'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface FetchTransactionById {
   execute: (
@@ -19,6 +20,7 @@ export class FetchTransactionByIdUseCase implements FetchTransactionById {
     private readonly fetchTransactionByIdRepository: FetchTransactionByIdRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string,

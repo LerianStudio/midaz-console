@@ -3,7 +3,7 @@ import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 jest.mock('../../utils/http-fetch-utils', () => ({
-  httpMidazAuthFetch: jest.fn(),
+  httpMidazFetch: jest.fn(),
   HTTP_METHODS: {
     POST: 'POST'
   }
@@ -11,10 +11,10 @@ jest.mock('../../utils/http-fetch-utils', () => ({
 
 describe('MidazCreateOrganizationRepository', () => {
   let repository: MidazCreateOrganizationRepository
-  let mockHttpFetchUtils: { httpMidazAuthFetch: jest.Mock }
+  let mockHttpFetchUtils: { httpMidazFetch: jest.Mock }
 
   beforeEach(() => {
-    mockHttpFetchUtils = { httpMidazAuthFetch: jest.fn() }
+    mockHttpFetchUtils = { httpMidazFetch: jest.fn() }
     repository = new MidazCreateOrganizationRepository(
       mockHttpFetchUtils as any
     )
@@ -50,11 +50,11 @@ describe('MidazCreateOrganizationRepository', () => {
     }
     const response: OrganizationEntity = { ...organizationData }
 
-    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(response)
+    mockHttpFetchUtils.httpMidazFetch.mockResolvedValueOnce(response)
 
     const result = await repository.create(organizationData)
 
-    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazFetch).toHaveBeenCalledWith({
       url: process.env.MIDAZ_BASE_PATH + '/organizations',
       method: HTTP_METHODS.POST,
       body: JSON.stringify(organizationData)
@@ -91,13 +91,13 @@ describe('MidazCreateOrganizationRepository', () => {
     }
     const error = new Error('Error occurred')
 
-    mockHttpFetchUtils.httpMidazAuthFetch.mockRejectedValueOnce(error)
+    mockHttpFetchUtils.httpMidazFetch.mockRejectedValueOnce(error)
 
     await expect(repository.create(organizationData)).rejects.toThrow(
       'Error occurred'
     )
 
-    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazFetch).toHaveBeenCalledWith({
       url: process.env.MIDAZ_BASE_PATH + '/organizations',
       method: HTTP_METHODS.POST,
       body: JSON.stringify(organizationData)

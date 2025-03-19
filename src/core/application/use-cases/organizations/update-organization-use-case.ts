@@ -6,6 +6,7 @@ import { UpdateOrganizationRepository } from '@/core/domain/repositories/organiz
 import { inject, injectable } from 'inversify'
 import { CreateOrganizationDto } from '../../dto/create-organization-dto'
 import { validateAvatar } from '@/core/infrastructure/utils/avatar/validate-avatar'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface UpdateOrganization {
   execute: (
@@ -21,6 +22,7 @@ export class UpdateOrganizationUseCase implements UpdateOrganization {
     private readonly updateOrganizationRepository: UpdateOrganizationRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     organization: Partial<UpdateOrganizationDto>

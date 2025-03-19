@@ -1,9 +1,10 @@
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { AssetResponseDto } from '../../dto/asset-response-dto'
 import { CreateAssetRepository } from '@/core/domain/repositories/assets/create-asset-repository'
-import { CreateAssetDto } from '../../dto/create-asset-dto'
+import type { CreateAssetDto } from '../../dto/create-asset-dto'
 import { inject, injectable } from 'inversify'
 import { AssetMapper } from '../../mappers/asset-mapper'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface CreateAsset {
   execute: (
@@ -20,6 +21,7 @@ export class CreateAssetUseCase implements CreateAsset {
     private readonly createAssetRepository: CreateAssetRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledgerId: string,

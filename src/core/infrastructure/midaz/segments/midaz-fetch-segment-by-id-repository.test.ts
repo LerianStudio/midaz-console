@@ -3,7 +3,7 @@ import { SegmentEntity } from '@/core/domain/entities/segment-entity'
 import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 jest.mock('../../utils/http-fetch-utils', () => ({
-  httpMidazAuthFetch: jest.fn(),
+  httpMidazFetch: jest.fn(),
   HTTP_METHODS: {
     GET: 'GET'
   }
@@ -11,10 +11,10 @@ jest.mock('../../utils/http-fetch-utils', () => ({
 
 describe('MidazFetchSegmentByIdRepository', () => {
   let repository: MidazFetchSegmentByIdRepository
-  let mockHttpFetchUtils: { httpMidazAuthFetch: jest.Mock }
+  let mockHttpFetchUtils: { httpMidazFetch: jest.Mock }
 
   beforeEach(() => {
-    mockHttpFetchUtils = { httpMidazAuthFetch: jest.fn() }
+    mockHttpFetchUtils = { httpMidazFetch: jest.fn() }
     repository = new MidazFetchSegmentByIdRepository(mockHttpFetchUtils as any)
     jest.clearAllMocks()
   })
@@ -30,7 +30,7 @@ describe('MidazFetchSegmentByIdRepository', () => {
       metadata: {}
     }
 
-    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(response)
+    mockHttpFetchUtils.httpMidazFetch.mockResolvedValueOnce(response)
 
     const result = await repository.fetchById(
       organizationId,
@@ -38,7 +38,7 @@ describe('MidazFetchSegmentByIdRepository', () => {
       segmentId
     )
 
-    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/segments/${segmentId}`,
       method: HTTP_METHODS.GET
     })
@@ -51,13 +51,13 @@ describe('MidazFetchSegmentByIdRepository', () => {
     const segmentId = '1'
     const error = new Error('Error occurred')
 
-    mockHttpFetchUtils.httpMidazAuthFetch.mockRejectedValueOnce(error)
+    mockHttpFetchUtils.httpMidazFetch.mockRejectedValueOnce(error)
 
     await expect(
       repository.fetchById(organizationId, ledgerId, segmentId)
     ).rejects.toThrow('Error occurred')
 
-    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}/segments/${segmentId}`,
       method: HTTP_METHODS.GET
     })

@@ -3,7 +3,7 @@ import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 
 jest.mock('../../utils/http-fetch-utils', () => ({
-  httpMidazAuthFetch: jest.fn(),
+  httpMidazFetch: jest.fn(),
   HTTP_METHODS: {
     GET: 'GET'
   }
@@ -11,10 +11,10 @@ jest.mock('../../utils/http-fetch-utils', () => ({
 
 describe('MidazFetchLedgerByIdRepository', () => {
   let repository: MidazFetchLedgerByIdRepository
-  let mockHttpFetchUtils: { httpMidazAuthFetch: jest.Mock }
+  let mockHttpFetchUtils: { httpMidazFetch: jest.Mock }
 
   beforeEach(() => {
-    mockHttpFetchUtils = { httpMidazAuthFetch: jest.fn() }
+    mockHttpFetchUtils = { httpMidazFetch: jest.fn() }
     repository = new MidazFetchLedgerByIdRepository(mockHttpFetchUtils as any)
     jest.clearAllMocks()
   })
@@ -30,11 +30,11 @@ describe('MidazFetchLedgerByIdRepository', () => {
       status: { code: 'active', description: 'Active' }
     }
 
-    mockHttpFetchUtils.httpMidazAuthFetch.mockResolvedValueOnce(response)
+    mockHttpFetchUtils.httpMidazFetch.mockResolvedValueOnce(response)
 
     const result = await repository.fetchById(organizationId, ledgerId)
 
-    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}`,
       method: HTTP_METHODS.GET
     })
@@ -46,13 +46,13 @@ describe('MidazFetchLedgerByIdRepository', () => {
     const ledgerId = '1'
     const error = new Error('Error occurred')
 
-    mockHttpFetchUtils.httpMidazAuthFetch.mockRejectedValueOnce(error)
+    mockHttpFetchUtils.httpMidazFetch.mockRejectedValueOnce(error)
 
     await expect(
       repository.fetchById(organizationId, ledgerId)
     ).rejects.toThrow('Error occurred')
 
-    expect(mockHttpFetchUtils.httpMidazAuthFetch).toHaveBeenCalledWith({
+    expect(mockHttpFetchUtils.httpMidazFetch).toHaveBeenCalledWith({
       url: `${process.env.MIDAZ_BASE_PATH}/organizations/${organizationId}/ledgers/${ledgerId}`,
       method: HTTP_METHODS.GET
     })

@@ -1,11 +1,12 @@
 import { CreateOrganizationRepository } from '@/core/domain/repositories/organizations/create-organization-repository'
-import { CreateOrganizationDto } from '../../dto/create-organization-dto'
+import type { CreateOrganizationDto } from '../../dto/create-organization-dto'
 import { OrganizationResponseDto } from '../../dto/organization-response-dto'
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { OrganizationMapper } from '../../mappers/organization-mapper'
 import { MidazError } from '@/core/infrastructure/errors/midaz-error'
 import { inject, injectable } from 'inversify'
 import { validateAvatar } from '@/core/infrastructure/utils/avatar/validate-avatar'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface CreateOnboardingOrganization {
   execute: (
@@ -22,6 +23,7 @@ export class CreateOnboardingOrganizationUseCase
     private readonly createOrganizationRepository: CreateOrganizationRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationData: CreateOrganizationDto
   ): Promise<OrganizationResponseDto> {
@@ -45,7 +47,7 @@ export class CreateOnboardingOrganizationUseCase
       if (error instanceof MidazError) {
         throw error
       }
-
+      console.log(error)
       throw new Error('Error creating onboarding organization Use Case')
     }
   }

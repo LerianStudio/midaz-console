@@ -1,6 +1,6 @@
-export type AuthActionEntity = string
+type AuthActionEntity = string
 
-export type AuthResourceEntity = string
+type AuthResourceEntity = string
 
 export type AuthPermissionEntity = Record<
   AuthResourceEntity,

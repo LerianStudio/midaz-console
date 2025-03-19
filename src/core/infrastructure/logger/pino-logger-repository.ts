@@ -17,7 +17,7 @@ export class PinoLoggerRepository implements LoggerRepository {
   }
 
   private initializeLogger(): BaseLogger {
-    const isDebugEnabled = process.env.ENABLE_DEBUG === 'true'
+    const isDebugEnabled = process.env.MIDAZ_CONSOLE_ENABLE_DEBUG === 'true'
     const loggerOptions: LoggerOptions = {
       level: isDebugEnabled ? 'debug' : 'info',
       formatters: {

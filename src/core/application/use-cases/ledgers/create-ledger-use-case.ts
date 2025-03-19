@@ -1,9 +1,10 @@
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
-import { CreateLedgerDto } from '../../dto/create-ledger-dto'
+import type { CreateLedgerDto } from '../../dto/create-ledger-dto'
 import { CreateLedgerRepository } from '@/core/domain/repositories/ledgers/create-ledger-repository'
 import { LedgerResponseDto } from '../../dto/ledger-response-dto'
 import { inject, injectable } from 'inversify'
 import { LedgerMapper } from '../../mappers/ledger-mapper'
+import { LogOperation } from '../../decorators/log-operation'
 
 export interface CreateLedger {
   execute: (
@@ -19,6 +20,7 @@ export class CreateLedgerUseCase implements CreateLedger {
     private readonly createLedgerRepository: CreateLedgerRepository
   ) {}
 
+  @LogOperation({ layer: 'application' })
   async execute(
     organizationId: string,
     ledger: CreateLedgerDto
