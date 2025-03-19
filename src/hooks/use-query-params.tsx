@@ -48,6 +48,25 @@ export function useQueryParams<SearchParams = {}>({
   })
 
   /**
+   * useEffect hook to track pagination changes and update the URL search params
+   */
+  useEffect(() => {
+    const newValues = {
+      ...searchValues,
+      page: pagination.page.toString(),
+      limit: pagination.limit.toString()
+    }
+
+    // Avoid updating the URL if the searchParams are empty and the pagination is at the first page
+    // Always update after that
+    if (!(isEmpty(searchParams) && pagination.page === 1)) {
+      updateSearchParams(newValues)
+    }
+
+    setSearchValues(newValues)
+  }, [pagination.page, pagination.limit])
+
+  /**
    * useEffect hook to track form changes, using the method where the watch function
    * from react-hook-form does not trigger a re-render
    *

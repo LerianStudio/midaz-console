@@ -21,7 +21,7 @@ export const Pagination = ({
       <Button
         variant="outline"
         size="sm"
-        onClick={nextPage}
+        onClick={previousPage}
         disabled={page <= 1}
         icon={<ChevronLeft size={16} />}
         iconPlacement="start"
@@ -35,7 +35,7 @@ export const Pagination = ({
       <Button
         variant="outline"
         size="sm"
-        onClick={previousPage}
+        onClick={nextPage}
         disabled={total < limit}
         icon={<ChevronRight size={16} />}
         iconPlacement="end"

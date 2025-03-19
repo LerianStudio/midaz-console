@@ -26,8 +26,18 @@ export default function TransactionsPage() {
     })
 
   React.useEffect(() => {
-    setTotal(transactions?.items?.length || 0)
-  }, [transactions?.items])
+    if (!transactions?.items) {
+      setTotal(0)
+      return
+    }
+
+    if (transactions.items.length >= transactions.limit) {
+      setTotal(transactions.limit + 1)
+      return
+    }
+
+    setTotal(transactions.items.length)
+  }, [transactions?.items, transactions?.limit])
 
   const hasLedgerLoaded = Boolean(currentLedger.id)
 

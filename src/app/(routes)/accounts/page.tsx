@@ -45,8 +45,18 @@ const Page = () => {
   })
 
   useEffect(() => {
-    setTotal(accountsData?.items?.length || 0)
-  }, [accountsData?.items?.length])
+    if (!accountsData?.items) {
+      setTotal(0)
+      return
+    }
+
+    if (accountsData.items.length >= accountsData.limit) {
+      setTotal(accountsData.limit + 1)
+      return
+    }
+
+    setTotal(accountsData.items.length)
+  }, [accountsData?.items, accountsData?.limit])
 
   const accountsList: AccountType[] = useMemo(() => {
     return (
