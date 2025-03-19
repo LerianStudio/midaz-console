@@ -34,6 +34,6 @@ export async function apiErrorHandler(error: any): Promise<ErrorResponse> {
       id: 'error.midaz.unknowError',
       defaultMessage: 'Error on Midaz.'
     }),
-    status: 500
+    status: HttpStatus.INTERNAL_SERVER_ERROR
   }
 }

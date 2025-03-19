@@ -54,7 +54,8 @@ export const AvatarField = React.forwardRef<unknown, AvatarFieldProps>(
     }
 
     const handleChange = async (event: React.MouseEvent<HTMLButtonElement>) => {
-      if (!(await validate(avatarURL))) {
+      const valid = await validate(avatarURL)
+      if (!valid) {
         setError(true)
         return
       }
