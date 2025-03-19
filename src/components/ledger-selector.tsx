@@ -171,7 +171,7 @@ export const LedgerSelector = () => {
                     </SelectLabel>
                     <SelectItem
                       disabled
-                      value={currentLedger?.id || 'no-selection'}
+                      value={currentLedger?.id}
                       className="font-medium text-zinc-800 data-[disabled]:opacity-100"
                     >
                       {ledgers?.items?.find(
