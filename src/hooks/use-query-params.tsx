@@ -38,14 +38,6 @@ export function useQueryParams<SearchParams = {}>({
     ...initialValues
   } as any)
 
-  useEffect(() => {
-    setSearchValues((prevValues) => ({
-      ...prevValues,
-      page: pagination.page.toString(),
-      limit: pagination.limit.toString()
-    }))
-  }, [pagination.page, pagination.limit])
-
   const form = useForm({
     ...formProps,
     defaultValues: {
@@ -54,6 +46,25 @@ export function useQueryParams<SearchParams = {}>({
       limit: pagination.limit.toString()
     }
   })
+
+  /**
+   * useEffect hook to track pagination changes and update the URL search params
+   */
+  useEffect(() => {
+    const newValues = {
+      ...searchValues,
+      page: pagination.page.toString(),
+      limit: pagination.limit.toString()
+    }
+
+    // Avoid updating the URL if the searchParams are empty and the pagination is at the first page
+    // Always update after that
+    if (!(isEmpty(searchParams) && pagination.page === 1)) {
+      updateSearchParams(newValues)
+    }
+
+    setSearchValues(newValues)
+  }, [pagination.page, pagination.limit])
 
   /**
    * useEffect hook to track form changes, using the method where the watch function
