@@ -59,9 +59,9 @@ export default function TransactionsPage() {
     }
   ])
 
-  const handleCreateTransaction = React.useCallback(() => {
+  const onCreateTransaction = () => {
     router.push(`/transactions/create`)
-  }, [currentLedger, router])
+  }
 
   const transactionsTableProps = {
     transactions,
@@ -69,7 +69,7 @@ export default function TransactionsPage() {
     total,
     pagination,
     currentLedger,
-    handleCreateTransaction
+    onCreateTransaction
   }
 
   return (
@@ -98,10 +98,7 @@ export default function TransactionsPage() {
               })}
             />
 
-            <Button
-              onClick={handleCreateTransaction}
-              data-testid="new-transaction"
-            >
+            <Button onClick={onCreateTransaction} data-testid="new-transaction">
               {intl.formatMessage({
                 id: 'transactions.create.title',
                 defaultMessage: 'New Transaction'

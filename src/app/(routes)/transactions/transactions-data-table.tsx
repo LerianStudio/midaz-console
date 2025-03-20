@@ -50,7 +50,7 @@ type TransactionsDataTableProps = {
   total: number
   pagination: PaginationProps
   currentLedger: LedgerType
-  handleCreateTransaction: () => void
+  onCreateTransaction: () => void
 }
 
 type TransactionsRowProps = {
@@ -200,7 +200,7 @@ export const TransactionsDataTable = ({
   total,
   pagination,
   currentLedger,
-  handleCreateTransaction
+  onCreateTransaction
 }: TransactionsDataTableProps) => {
   const intl = useIntl()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
@@ -236,7 +236,7 @@ export const TransactionsDataTable = ({
               defaultMessage: "You haven't created any transactions yet."
             })}
           >
-            <Button variant="default" onClick={handleCreateTransaction}>
+            <Button variant="default" onClick={onCreateTransaction}>
               {intl.formatMessage({
                 id: 'transactions.create.title',
                 defaultMessage: 'New Transaction'
