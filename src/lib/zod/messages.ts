@@ -104,6 +104,10 @@ const messages = defineMessages({
   custom_uppercase_required: {
     id: 'errors.custom.uppercase_required',
     defaultMessage: 'Field must be in uppercase and consist of letters only'
+  },
+  custom_avatar_invalid_format: {
+    id: 'errors.custom.avatar.invalid_format',
+    defaultMessage: 'Avatar should have a PNG or SVG format'
   }
 })
 

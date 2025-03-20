@@ -5,12 +5,13 @@ import {
   AuthSessionEntity
 } from '@/core/domain/entities/auth-entity'
 import { AuthLoginRepository } from '@/core/domain/repositories/auth/auth-login-repository'
-import { UnauthorizedException } from '@/core/infrastructure/errors/http-exceptions'
 import { inject, injectable } from 'inversify'
 import * as jwt from 'jsonwebtoken'
 import { JwtPayload } from 'jsonwebtoken'
 import { ContainerTypeMidazHttpFetch } from '../../../container-registry/midaz-http-fetch-module'
 import { HTTP_METHODS, HttpFetchUtils } from '../../../utils/http-fetch-utils'
+import { UnauthorizedApiException } from '@/lib/http'
+import { getIntl } from '@/lib/intl'
 
 @injectable()
 export class IdentityAuthLoginRepository implements AuthLoginRepository {
@@ -29,6 +30,8 @@ export class IdentityAuthLoginRepository implements AuthLoginRepository {
     .PLUGIN_AUTH_CLIENT_SECRET as string
 
   async login(loginData: AuthEntity): Promise<AuthSessionEntity> {
+    const intl = await getIntl()
+
     this.midazLogger.audit('[AUDIT] - Login ', {
       username: loginData.username,
       event: 'Login attempt'
@@ -81,7 +84,12 @@ export class IdentityAuthLoginRepository implements AuthLoginRepository {
         error: error.message
       })
 
-      throw new UnauthorizedException()
+      throw new UnauthorizedApiException(
+        intl.formatMessage({
+          id: 'error.login',
+          defaultMessage: 'Invalid credentials'
+        })
+      )
     }
   }
 }

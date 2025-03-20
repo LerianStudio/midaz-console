@@ -3,6 +3,16 @@ import { CreateOrganizationRepository } from '@/core/domain/repositories/organiz
 import { CreateOrganizationDto } from '../../dto/create-organization-dto'
 import { OrganizationResponseDto } from '../../dto/organization-response-dto'
 
+jest.mock('../../../../lib/intl/get-intl', () => {
+  return {
+    getIntl: jest.fn(() => {
+      return {
+        formatMessage: jest.fn()
+      }
+    })
+  }
+})
+
 describe('CreateOrganizationUseCase', () => {
   let createOrganizationRepository: CreateOrganizationRepository
   let createOrganizationUseCase: CreateOrganizationUseCase
