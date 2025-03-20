@@ -1,3 +1,11 @@
+## [1.21.1](https://github.com/LerianStudio/midaz-console/compare/v1.21.0...v1.21.1) (2025-03-20)
+
+
+### Bug Fixes
+
+* remove emptyResourceExtra translation ([72a5a96](https://github.com/LerianStudio/midaz-console/commit/72a5a96ee8dcd8ebac0884aedaada31e745ed76f))
+* remove extra prop from EmptyResource ([52a3f25](https://github.com/LerianStudio/midaz-console/commit/52a3f2584298be0347da0a36c13e93bbef86e674))
+
 # [1.21.0](https://github.com/LerianStudio/midaz-console/compare/v1.20.0...v1.21.0) (2025-03-20)
 
 
