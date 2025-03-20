@@ -1,3 +1,24 @@
+# [1.21.0](https://github.com/LerianStudio/midaz-console/compare/v1.20.0...v1.21.0) (2025-03-20)
+
+
+### Bug Fixes
+
+* Moved file formats to env var ([4525dc1](https://github.com/LerianStudio/midaz-console/commit/4525dc1f2c12f01876ce8f8f9f2bc0ebfc515f81))
+* Removed console.error ([7222403](https://github.com/LerianStudio/midaz-console/commit/7222403add186ac196bf3520f1aaa34d02ccf0b0))
+* Removed last old HttpException ([8084855](https://github.com/LerianStudio/midaz-console/commit/8084855adbd23280088904f07020ea29ce8e9508))
+* Solves PR comments ([09e238e](https://github.com/LerianStudio/midaz-console/commit/09e238e3ea997ff6622033e59a03c6fb0725944c))
+* When midaz return a text body ([c177264](https://github.com/LerianStudio/midaz-console/commit/c17726404793f785b45e3d60a4179c4ae2c96af1))
+
+
+### Features
+
+* Added field validation ([e0e1f96](https://github.com/LerianStudio/midaz-console/commit/e0e1f9619781946eb9a90cf81cea2a91973024c5))
+* Added Http Lib ([38d56b1](https://github.com/LerianStudio/midaz-console/commit/38d56b189f01788cec1336f4e9cb939faecf44ea))
+* Added more unit tests ([6cdea0e](https://github.com/LerianStudio/midaz-console/commit/6cdea0e1aaee79535c5e4705f0d42c850a0a2852))
+* Created helper methods to handle SVGs ([e50aca5](https://github.com/LerianStudio/midaz-console/commit/e50aca5d144bda538a23a1a846bb8448df188b07))
+* Exceptions clean up ([ebd0511](https://github.com/LerianStudio/midaz-console/commit/ebd05117fc067aa14981c3e4033d1c23f609d37e))
+* Implemented validation ([7e49006](https://github.com/LerianStudio/midaz-console/commit/7e49006fa1080c9e248101b73f355053634803b5))
+
 # [1.20.0](https://github.com/LerianStudio/midaz-console/compare/v1.19.1...v1.20.0) (2025-03-20)
 
 
