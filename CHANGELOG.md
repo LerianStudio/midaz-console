@@ -1,3 +1,16 @@
+# [1.22.0](https://github.com/LerianStudio/midaz-console/compare/v1.21.1...v1.22.0) (2025-03-20)
+
+
+### Bug Fixes
+
+* change the function name and remove callback ([cef93d0](https://github.com/LerianStudio/midaz-console/commit/cef93d06775287886d397df88fc000b0ed1c235c))
+* use 'handle' for internal events and 'on' for child component props ([fd12532](https://github.com/LerianStudio/midaz-console/commit/fd125325f0ded27da76bf3ab6282fa5105e3cfa3))
+
+
+### Features
+
+* remove EntityBox from assets, segments and transactions ([1b0b433](https://github.com/LerianStudio/midaz-console/commit/1b0b433e3075c8cb439650fb11af115af2b45dd4))
+
 ## [1.21.1](https://github.com/LerianStudio/midaz-console/compare/v1.21.0...v1.21.1) (2025-03-20)
 
 
