@@ -256,7 +256,7 @@ export const LedgersDataTable: React.FC<LedgersTableProps> = (props) => {
 
   return (
     <FormProvider {...form}>
-      <div className="flex justify-end">
+      <div className="mb-4 flex justify-end">
         <PaginationLimitField control={form.control} />
       </div>
 
@@ -266,10 +266,6 @@ export const LedgersDataTable: React.FC<LedgersTableProps> = (props) => {
             message={intl.formatMessage({
               id: 'ledgers.emptyResource',
               defaultMessage: "You haven't created any Ledger yet"
-            })}
-            extra={intl.formatMessage({
-              id: 'ledgers.emptyResourceExtra',
-              defaultMessage: 'No Ledger found.'
             })}
           >
             <Button variant="default" onClick={handleCreate}>

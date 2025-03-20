@@ -229,7 +229,6 @@
   "ledgers.deleteDialog.title": "Are you sure?",
   "ledgers.emptyResource": "You haven't created any Ledger yet",
   "ledgers.emptyResource.createButton": "New Ledger",
-  "ledgers.emptyResourceExtra": "No Ledger found.",
   "ledgers.helperTrigger.answer": "Book with the record of all transactions and operations of the Organization.",
   "ledgers.helperTrigger.question": "What is a Ledger?",
   "ledgers.helperTrigger.seeMore": "Read the docs",
