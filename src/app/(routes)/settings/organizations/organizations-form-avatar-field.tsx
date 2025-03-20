@@ -30,7 +30,8 @@ export const AvatarField = React.forwardRef<unknown, AvatarFieldProps>(
     {
       name,
       value,
-      format = ['jpg', 'jpeg', 'png', 'svg'],
+      format = process.env.MIDAZ_CONSOLE_AVATAR_ALLOWED_FORMAT?.split(',') ??
+        [],
       onChange
     }: AvatarFieldProps,
     ref
