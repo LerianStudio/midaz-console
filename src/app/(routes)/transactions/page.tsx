@@ -10,9 +10,12 @@ import { PageHeader } from '@/components/page-header'
 import { useIntl } from 'react-intl'
 import { getBreadcrumbPaths } from '@/components/breadcrumb/get-breadcrumb-paths'
 import { Breadcrumb } from '@/components/breadcrumb'
+import { Button } from '@/components/ui/button'
+import { useRouter } from 'next/navigation'
 
 export default function TransactionsPage() {
   const intl = useIntl()
+  const router = useRouter()
   const { currentOrganization, currentLedger } = useOrganization()
   const [total, setTotal] = React.useState(0)
 
@@ -41,14 +44,6 @@ export default function TransactionsPage() {
 
   const hasLedgerLoaded = Boolean(currentLedger.id)
 
-  const transactionsTableProps = {
-    transactions,
-    form,
-    total,
-    pagination,
-    currentLedger
-  }
-
   const breadcrumbPaths = getBreadcrumbPaths([
     {
       name: currentOrganization.legalName
@@ -63,6 +58,19 @@ export default function TransactionsPage() {
       })
     }
   ])
+
+  const handleCreateTransaction = React.useCallback(() => {
+    router.push(`/transactions/create`)
+  }, [currentLedger, router])
+
+  const transactionsTableProps = {
+    transactions,
+    form,
+    total,
+    pagination,
+    currentLedger,
+    handleCreateTransaction
+  }
 
   return (
     <React.Fragment>
@@ -82,16 +90,24 @@ export default function TransactionsPage() {
             })}
           />
 
-          {hasLedgerLoaded && (
-            <PageHeader.ActionButtons>
-              <PageHeader.CollapsibleInfoTrigger
-                question={intl.formatMessage({
-                  id: 'transactions.helperTrigger.question',
-                  defaultMessage: 'What is a Transaction?'
-                })}
-              />
-            </PageHeader.ActionButtons>
-          )}
+          <PageHeader.ActionButtons>
+            <PageHeader.CollapsibleInfoTrigger
+              question={intl.formatMessage({
+                id: 'transactions.helperTrigger.question',
+                defaultMessage: 'What is a Transaction?'
+              })}
+            />
+
+            <Button
+              onClick={handleCreateTransaction}
+              data-testid="new-transaction"
+            >
+              {intl.formatMessage({
+                id: 'transactions.create.title',
+                defaultMessage: 'New Transaction'
+              })}
+            </Button>
+          </PageHeader.ActionButtons>
         </PageHeader.Wrapper>
 
         <PageHeader.CollapsibleInfo

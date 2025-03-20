@@ -1,5 +1,4 @@
 import { EmptyResource } from '@/components/empty-resource'
-import { EntityBox } from '@/components/entity-box'
 import { EntityDataTable } from '@/components/entity-data-table'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -34,7 +33,6 @@ import {
 import { isNil } from 'lodash'
 import { HelpCircle, MoreVertical } from 'lucide-react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import React from 'react'
 import { defineMessages, IntlShape, useIntl } from 'react-intl'
 import dayjs from 'dayjs'
@@ -52,6 +50,7 @@ type TransactionsDataTableProps = {
   total: number
   pagination: PaginationProps
   currentLedger: LedgerType
+  handleCreateTransaction: () => void
 }
 
 type TransactionsRowProps = {
@@ -200,10 +199,10 @@ export const TransactionsDataTable = ({
   form,
   total,
   pagination,
-  currentLedger
+  currentLedger,
+  handleCreateTransaction
 }: TransactionsDataTableProps) => {
   const intl = useIntl()
-  const router = useRouter()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
 
   const table = useReactTable({
@@ -223,31 +222,11 @@ export const TransactionsDataTable = ({
     state: { columnFilters }
   })
 
-  const handleCreateTransaction = React.useCallback(() => {
-    router.push(`/transactions/create`)
-  }, [currentLedger, router])
-
   return (
     <FormProvider {...form}>
-      <EntityBox.Collapsible>
-        <EntityBox.Banner>
-          <EntityBox.Actions className="gap-4">
-            <Button onClick={handleCreateTransaction}>
-              {intl.formatMessage({
-                id: 'transactions.create.title',
-                defaultMessage: 'New Transaction'
-              })}
-            </Button>
-            <EntityBox.CollapsibleTrigger />
-          </EntityBox.Actions>
-        </EntityBox.Banner>
-
-        <EntityBox.CollapsibleContent>
-          <div className="col-start-3 flex justify-end">
-            <PaginationLimitField control={form.control} />
-          </div>
-        </EntityBox.CollapsibleContent>
-      </EntityBox.Collapsible>
+      <div className="mb-4 flex justify-end">
+        <PaginationLimitField control={form.control} />
+      </div>
 
       <EntityDataTable.Root>
         {isNil(transactions?.items) || transactions.items.length === 0 ? (
