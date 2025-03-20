@@ -4,6 +4,15 @@ import { UpdateOrganizationDto } from '../../dto/update-organization-dto'
 import { OrganizationMapper } from '../../mappers/organization-mapper'
 
 jest.mock('../../mappers/organization-mapper')
+jest.mock('../../../../lib/intl/get-intl', () => {
+  return {
+    getIntl: jest.fn(() => {
+      return {
+        formatMessage: jest.fn()
+      }
+    })
+  }
+})
 
 describe('UpdateOrganizationUseCase', () => {
   let updateOrganizationUseCase: UpdateOrganizationUseCase

@@ -7,33 +7,66 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
-import { FormDescription, FormField, FormItem } from '@/components/ui/form'
+import {
+  FormDescription,
+  FormField,
+  FormItem,
+  FormMessage
+} from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Camera } from 'lucide-react'
 import React from 'react'
 import { Control, ControllerRenderProps } from 'react-hook-form'
 import { useIntl } from 'react-intl'
 import { isNil } from 'lodash'
+import messages from '@/lib/zod/messages'
 
-type AvatarFieldProps = Omit<ControllerRenderProps, 'ref'>
+type AvatarFieldProps = Omit<ControllerRenderProps, 'ref'> & {
+  format?: string[]
+}
 
 export const AvatarField = React.forwardRef<unknown, AvatarFieldProps>(
-  ({ name, value, onChange }: AvatarFieldProps, ref) => {
+  (
+    {
+      name,
+      value,
+      format = process.env.MIDAZ_CONSOLE_AVATAR_ALLOWED_FORMAT?.split(',') ??
+        [],
+      onChange
+    }: AvatarFieldProps,
+    ref
+  ) => {
     const intl = useIntl()
     const [open, setOpen] = React.useState(false)
+    const [error, setError] = React.useState(false)
     const [avatarURL, setAvatarURL] = React.useState('')
+
+    const validate = async (url: string) => {
+      if (!format.some((ext) => url.endsWith(`.${ext}`))) {
+        return false
+      }
+
+      return true
+    }
 
     const handleReset = (event: React.MouseEvent<HTMLButtonElement>) => {
       setAvatarURL('')
       onChange({ ...event, target: { ...event.target, name, value: '' } })
     }
 
-    const handleChange = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleChange = async (event: React.MouseEvent<HTMLButtonElement>) => {
+      const valid = await validate(avatarURL)
+      if (!valid) {
+        setError(true)
+        return
+      }
+
       onChange({
         ...event,
         target: { ...event.target, name, value: avatarURL }
       })
       setOpen(false)
+      setError(false)
     }
 
     return (
@@ -65,10 +98,17 @@ export const AvatarField = React.forwardRef<unknown, AvatarFieldProps>(
               })}
             </DialogDescription>
 
-            <Input
-              placeholder="https://example.com/image.png"
-              onChange={(e) => setAvatarURL(e.target.value)}
-            />
+            <FormItem>
+              <Input
+                placeholder="https://example.com/image.png"
+                onChange={(e) => setAvatarURL(e.target.value)}
+              />
+              {error && (
+                <FormMessage>
+                  {intl.formatMessage(messages.custom_avatar_invalid_format)}
+                </FormMessage>
+              )}
+            </FormItem>
 
             <Button variant="secondary" onClick={handleChange}>
               {intl.formatMessage({

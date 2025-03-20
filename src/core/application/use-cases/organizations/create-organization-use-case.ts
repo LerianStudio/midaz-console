@@ -3,8 +3,8 @@ import type { CreateOrganizationDto } from '../../dto/create-organization-dto'
 import { OrganizationResponseDto } from '../../dto/organization-response-dto'
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { OrganizationMapper } from '../../mappers/organization-mapper'
-import { MidazError } from '@/core/infrastructure/errors/midaz-error'
 import { inject, injectable } from 'inversify'
+import { validateAvatar } from '@/core/infrastructure/utils/avatar/validate-avatar'
 import { LogOperation } from '../../decorators/log-operation'
 
 export interface CreateOrganization {
@@ -24,20 +24,14 @@ export class CreateOrganizationUseCase implements CreateOrganization {
   async execute(
     organizationData: CreateOrganizationDto
   ): Promise<OrganizationResponseDto> {
-    try {
-      const organizationEntity: OrganizationEntity =
-        OrganizationMapper.toDomain(organizationData)
+    await validateAvatar(organizationData.metadata?.avatar)
 
-      const organizationCreated =
-        await this.createOrganizationRepository.create(organizationEntity)
+    const organizationEntity: OrganizationEntity =
+      OrganizationMapper.toDomain(organizationData)
 
-      return OrganizationMapper.toResponseDto(organizationCreated)
-    } catch (error: unknown) {
-      if (error instanceof MidazError) {
-        throw error
-      }
+    const organizationCreated =
+      await this.createOrganizationRepository.create(organizationEntity)
 
-      throw new Error('Error creating organization Use Case')
-    }
+    return OrganizationMapper.toResponseDto(organizationCreated)
   }
 }
