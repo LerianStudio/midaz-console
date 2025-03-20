@@ -41,8 +41,18 @@ const Page = () => {
   })
 
   useEffect(() => {
-    setTotal(portfolios?.items?.length || 0)
-  }, [portfolios?.items?.length])
+    if (!portfolios?.items) {
+      setTotal(0)
+      return
+    }
+
+    if (portfolios.items.length >= portfolios.limit) {
+      setTotal(portfolios.limit + 1)
+      return
+    }
+
+    setTotal(portfolios.items.length)
+  }, [portfolios?.items, portfolios?.limit])
 
   const { mutate: deletePortfolio, isPending: deletePending } =
     useDeletePortfolio({

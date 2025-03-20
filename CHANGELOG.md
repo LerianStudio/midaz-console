@@ -1,3 +1,12 @@
+## [1.19.1](https://github.com/LerianStudio/midaz-console/compare/v1.19.0...v1.19.1) (2025-03-19)
+
+
+### Bug Fixes
+
+* add effect to update searchValues and improve setTotal function ([80d9100](https://github.com/LerianStudio/midaz-console/commit/80d91008796c47a8cd9ee7edd438ba8f37a8ebc7))
+* remove unnecessary fallback string from SelectItem ([ba28558](https://github.com/LerianStudio/midaz-console/commit/ba28558cfeae4f65893243d2594b6faada3542e9))
+* useQuery pagination issue ([43259e8](https://github.com/LerianStudio/midaz-console/commit/43259e8d6849c916dd29108505117fe7c8e72659))
+
 # [1.19.0](https://github.com/LerianStudio/midaz-console/compare/v1.18.0...v1.19.0) (2025-03-18)
 
 

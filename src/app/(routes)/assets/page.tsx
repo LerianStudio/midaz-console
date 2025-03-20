@@ -45,8 +45,18 @@ const Page = () => {
   })
 
   useEffect(() => {
-    setTotal(assets?.items.length || 0)
-  }, [assets?.items.length])
+    if (!assets?.items) {
+      setTotal(0)
+      return
+    }
+
+    if (assets.items.length >= assets.limit) {
+      setTotal(assets.limit + 1)
+      return
+    }
+
+    setTotal(assets.items.length)
+  }, [assets?.items, assets?.limit])
 
   const { mutate: deleteMutate, isPending: deletePending } = useDeleteAsset({
     organizationId: currentOrganization.id!,
