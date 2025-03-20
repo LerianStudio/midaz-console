@@ -18,7 +18,7 @@ services:
     networks:
       - console-network
       - transaction-network
-      - auth-network
+      - plugin-auth-network
       - infra-network
       - ledger-network
 
@@ -32,8 +32,8 @@ networks:
   ledger-network:
     name: ledger-network
     driver: bridge
-  auth-network:
-    name: auth-network
+  plugin-auth-network:
+    name: plugin-auth-network
     driver: bridge
   infra-network:
     name: infra-network
