@@ -59,7 +59,7 @@ export default function TransactionsPage() {
     }
   ])
 
-  const onCreateTransaction = () => {
+  const handleCreateTransaction = () => {
     router.push(`/transactions/create`)
   }
 
@@ -69,7 +69,7 @@ export default function TransactionsPage() {
     total,
     pagination,
     currentLedger,
-    onCreateTransaction
+    onCreateTransaction: handleCreateTransaction
   }
 
   return (
@@ -98,7 +98,10 @@ export default function TransactionsPage() {
               })}
             />
 
-            <Button onClick={onCreateTransaction} data-testid="new-transaction">
+            <Button
+              onClick={handleCreateTransaction}
+              data-testid="new-transaction"
+            >
               {intl.formatMessage({
                 id: 'transactions.create.title',
                 defaultMessage: 'New Transaction'
