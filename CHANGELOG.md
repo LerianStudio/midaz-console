@@ -1,3 +1,15 @@
+# [1.20.0](https://github.com/LerianStudio/midaz-console/compare/v1.19.1...v1.20.0) (2025-03-20)
+
+
+### Bug Fixes
+
+* set PLUGIN_AUTH_ENABLED to false default in environment variables ([fb62b90](https://github.com/LerianStudio/midaz-console/commit/fb62b90c1d3d80565f13fca8025282aa73541622))
+
+
+### Features
+
+* add breadcrumb in ledgers route ([e7e25c3](https://github.com/LerianStudio/midaz-console/commit/e7e25c388d320f5b90ab467a2654ed415792c470))
+
 ## [1.19.1](https://github.com/LerianStudio/midaz-console/compare/v1.19.0...v1.19.1) (2025-03-19)
 
 
