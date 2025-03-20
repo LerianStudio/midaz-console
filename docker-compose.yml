@@ -16,25 +16,25 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - console_network
-      - transaction_network
-      - auth_network
-      - infra_network
-      - ledger_network
+      - console-network
+      - transaction-network
+      - auth-network
+      - infra-network
+      - ledger-network
 
 networks:
-  console_network:
-    name: console_network
+  console-network:
+    name: console-network
     driver: bridge
-  transaction_network:
-    name: transaction_network
+  transaction-network:
+    name: transaction-network
     driver: bridge
-  ledger_network:
-    name: ledger_network
+  ledger-network:
+    name: ledger-network
     driver: bridge
-  auth_network:
-    name: auth_network
+  auth-network:
+    name: auth-network
     driver: bridge
-  infra_network:
-    name: infra_network
+  infra-network:
+    name: infra-network
     driver: bridge
