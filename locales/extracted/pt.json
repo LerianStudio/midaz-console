@@ -79,7 +79,6 @@
   "ledgers.assets.emptyResource": "Você ainda não criou nenhum ativo.",
   "ledgers.emptyResource": "Você ainda não criou nenhum Ledger",
   "ledgers.emptyResource.createButton": "Novo Ledger",
-  "ledgers.emptyResourceExtra": "Nenhum Ledger encontrado.",
   "organizations.emptyResource": "Você ainda não criou nenhuma Organização",
   "common.actions": "Ações",
   "common.id": "ID",
