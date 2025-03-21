@@ -6,9 +6,6 @@ export function getStorageObject(key: string, defaultValue: any) {
     const dataString = getStorage(key, defaultValue)
     const isNilOrEmpty = isNil(dataString) || isEmpty(dataString)
 
-    console.log('dataString', dataString)
-    console.log('isNilOrEmpty', isNilOrEmpty)
-
     return isNilOrEmpty ? {} : JSON.parse(dataString)
   } catch (error) {
     console.error(error)
