@@ -1,8 +1,7 @@
-export class MidazError extends Error {
-  code = '0000'
+import { ApiException } from '@/lib/http'
 
+export class MidazError extends ApiException {
   constructor(message: string, code: string = '0000') {
-    super(message)
-    this.code = code
+    super(code, 'Midaz Error', message)
   }
 }

@@ -170,13 +170,9 @@ export const AssetsDataTable: React.FC<AssetsTableProps> = (props) => {
 
   return (
     <FormProvider {...form}>
-      <EntityBox.Root>
-        <EntityBox.Actions className="flex w-full justify-end gap-4">
-          <div className="col-start-3 flex justify-end">
-            <PaginationLimitField control={form.control} />
-          </div>
-        </EntityBox.Actions>
-      </EntityBox.Root>
+      <div className="mb-4 flex justify-end">
+        <PaginationLimitField control={form.control} />
+      </div>
 
       <EntityDataTable.Root>
         {isNil(assets?.items) || assets.items.length === 0 ? (

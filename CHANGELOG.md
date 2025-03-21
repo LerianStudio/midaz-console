@@ -1,3 +1,57 @@
+# [1.22.0](https://github.com/LerianStudio/midaz-console/compare/v1.21.1...v1.22.0) (2025-03-20)
+
+
+### Bug Fixes
+
+* change the function name and remove callback ([cef93d0](https://github.com/LerianStudio/midaz-console/commit/cef93d06775287886d397df88fc000b0ed1c235c))
+* use 'handle' for internal events and 'on' for child component props ([fd12532](https://github.com/LerianStudio/midaz-console/commit/fd125325f0ded27da76bf3ab6282fa5105e3cfa3))
+
+
+### Features
+
+* remove EntityBox from assets, segments and transactions ([1b0b433](https://github.com/LerianStudio/midaz-console/commit/1b0b433e3075c8cb439650fb11af115af2b45dd4))
+
+## [1.21.1](https://github.com/LerianStudio/midaz-console/compare/v1.21.0...v1.21.1) (2025-03-20)
+
+
+### Bug Fixes
+
+* remove emptyResourceExtra translation ([72a5a96](https://github.com/LerianStudio/midaz-console/commit/72a5a96ee8dcd8ebac0884aedaada31e745ed76f))
+* remove extra prop from EmptyResource ([52a3f25](https://github.com/LerianStudio/midaz-console/commit/52a3f2584298be0347da0a36c13e93bbef86e674))
+
+# [1.21.0](https://github.com/LerianStudio/midaz-console/compare/v1.20.0...v1.21.0) (2025-03-20)
+
+
+### Bug Fixes
+
+* Moved file formats to env var ([4525dc1](https://github.com/LerianStudio/midaz-console/commit/4525dc1f2c12f01876ce8f8f9f2bc0ebfc515f81))
+* Removed console.error ([7222403](https://github.com/LerianStudio/midaz-console/commit/7222403add186ac196bf3520f1aaa34d02ccf0b0))
+* Removed last old HttpException ([8084855](https://github.com/LerianStudio/midaz-console/commit/8084855adbd23280088904f07020ea29ce8e9508))
+* Solves PR comments ([09e238e](https://github.com/LerianStudio/midaz-console/commit/09e238e3ea997ff6622033e59a03c6fb0725944c))
+* When midaz return a text body ([c177264](https://github.com/LerianStudio/midaz-console/commit/c17726404793f785b45e3d60a4179c4ae2c96af1))
+
+
+### Features
+
+* Added field validation ([e0e1f96](https://github.com/LerianStudio/midaz-console/commit/e0e1f9619781946eb9a90cf81cea2a91973024c5))
+* Added Http Lib ([38d56b1](https://github.com/LerianStudio/midaz-console/commit/38d56b189f01788cec1336f4e9cb939faecf44ea))
+* Added more unit tests ([6cdea0e](https://github.com/LerianStudio/midaz-console/commit/6cdea0e1aaee79535c5e4705f0d42c850a0a2852))
+* Created helper methods to handle SVGs ([e50aca5](https://github.com/LerianStudio/midaz-console/commit/e50aca5d144bda538a23a1a846bb8448df188b07))
+* Exceptions clean up ([ebd0511](https://github.com/LerianStudio/midaz-console/commit/ebd05117fc067aa14981c3e4033d1c23f609d37e))
+* Implemented validation ([7e49006](https://github.com/LerianStudio/midaz-console/commit/7e49006fa1080c9e248101b73f355053634803b5))
+
+# [1.20.0](https://github.com/LerianStudio/midaz-console/compare/v1.19.1...v1.20.0) (2025-03-20)
+
+
+### Bug Fixes
+
+* set PLUGIN_AUTH_ENABLED to false default in environment variables ([fb62b90](https://github.com/LerianStudio/midaz-console/commit/fb62b90c1d3d80565f13fca8025282aa73541622))
+
+
+### Features
+
+* add breadcrumb in ledgers route ([e7e25c3](https://github.com/LerianStudio/midaz-console/commit/e7e25c388d320f5b90ab467a2654ed415792c470))
+
 ## [1.19.1](https://github.com/LerianStudio/midaz-console/compare/v1.19.0...v1.19.1) (2025-03-19)
 
 
