@@ -80,15 +80,6 @@ export const Sidebar = () => {
 
           <SidebarItem
             title={intl.formatMessage({
-              id: 'common.transactions',
-              defaultMessage: 'Transactions'
-            })}
-            icon={<ArrowLeftRight />}
-            href="/transactions"
-          />
-
-          <SidebarItem
-            title={intl.formatMessage({
               id: 'common.assets',
               defaultMessage: 'Assets'
             })}
@@ -121,6 +112,15 @@ export const Sidebar = () => {
             })}
             icon={<Briefcase />}
             href="/portfolios"
+          />
+
+          <SidebarItem
+            title={intl.formatMessage({
+              id: 'common.transactions',
+              defaultMessage: 'Transactions'
+            })}
+            icon={<ArrowLeftRight />}
+            href="/transactions"
           />
         </SidebarGroup>
       </SidebarContent>
