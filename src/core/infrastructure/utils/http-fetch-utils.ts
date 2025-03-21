@@ -103,7 +103,7 @@ export class HttpFetchUtils {
         })
     )
 
-    if (response.headers.get('content-type')?.includes('text/plain')) {
+    if (response?.headers?.get('content-type')?.includes('text/plain')) {
       const midazResponse = await response.text()
 
       this.midazLogger.error('[ERROR] - httpFetch ', {

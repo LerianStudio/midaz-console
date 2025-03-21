@@ -60,6 +60,7 @@ const AccountRow: React.FC<AccountRowProps> = ({
   onDelete
 }) => {
   const intl = useIntl()
+  const isExternal = account.original.alias?.includes('@external/')
 
   return (
     <TableRow key={account.id}>
@@ -68,42 +69,46 @@ const AccountRow: React.FC<AccountRowProps> = ({
       <TableCell align="center">{account.original.assetCode}</TableCell>
       <MetadataTableCell align="center" metadata={account.original.metadata} />
       <TableCell align="center">
-        {account.original.portfolio?.name ?? (
-          <Button variant="link" onClick={() => handleEdit(account.original)}>
-            {intl.formatMessage({
-              id: 'common.link',
-              defaultMessage: 'Link'
-            })}
-          </Button>
-        )}
+        {isExternal && '-'}
+        {!isExternal &&
+          (account.original.portfolio?.name ?? (
+            <Button variant="link" onClick={() => handleEdit(account.original)}>
+              {intl.formatMessage({
+                id: 'common.link',
+                defaultMessage: 'Link'
+              })}
+            </Button>
+          ))}
       </TableCell>
       <TableCell className="w-0">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="secondary" className="h-auto w-max p-2">
-              <MoreVertical size={16} onClick={() => {}} />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => handleEdit(account.original)}>
-              {intl.formatMessage({
-                id: `common.edit`,
-                defaultMessage: 'Edit'
-              })}
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => {
-                onDelete(account.original.id!, account.original)
-              }}
-            >
-              {intl.formatMessage({
-                id: `common.delete`,
-                defaultMessage: 'Delete'
-              })}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {!isExternal && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="secondary" className="h-auto w-max p-2">
+                <MoreVertical size={16} onClick={() => {}} />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => handleEdit(account.original)}>
+                {intl.formatMessage({
+                  id: `common.edit`,
+                  defaultMessage: 'Edit'
+                })}
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => {
+                  onDelete(account.original.id!, account.original)
+                }}
+              >
+                {intl.formatMessage({
+                  id: `common.delete`,
+                  defaultMessage: 'Delete'
+                })}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </TableCell>
     </TableRow>
   )

@@ -6,5 +6,5 @@
  * @returns
  */
 export function validateSVG(file: string) {
-  return ['script', 'onload'].some((tag) => file.includes(tag))
+  return !['script', 'onload'].some((tag) => file.includes(tag))
 }

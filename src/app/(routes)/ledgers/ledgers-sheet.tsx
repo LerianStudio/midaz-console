@@ -16,7 +16,6 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useIntl } from 'react-intl'
 import { z } from 'zod'
-import { isNil } from 'lodash'
 import { LoadingButton } from '@/components/ui/loading-button'
 import { useCreateLedger, useUpdateLedger } from '@/client/ledgers'
 import { LedgerResponseDto } from '@/core/application/dto/ledger-response-dto'
@@ -24,6 +23,7 @@ import { useOrganization } from '@/context/organization-provider/organization-pr
 import useCustomToast from '@/hooks/use-custom-toast'
 import { LedgerType } from '@/types/ledgers-type'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { usePopulateCreateUpdateForm } from '@/components/sheet/use-populate-create-update-form'
 
 export type LedgersSheetProps = DialogProps & {
   mode: 'create' | 'edit'
@@ -31,7 +31,7 @@ export type LedgersSheetProps = DialogProps & {
   onSuccess?: () => void
 }
 
-const defaultValues = {
+const initialValues = {
   name: '',
   metadata: {}
 }
@@ -109,8 +109,9 @@ export const LedgersSheet = ({
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
-    defaultValues: Object.assign({}, defaultValues, ledger)
+    defaultValues: initialValues
   })
+  const { isDirty } = form.formState
 
   const handleSubmit = (data: FormData) => {
     if (mode === 'create') {
@@ -118,21 +119,9 @@ export const LedgersSheet = ({
     } else if (mode === 'edit') {
       updateLedger(data)
     }
-
-    form.reset(defaultValues)
   }
 
-  React.useEffect(() => {
-    if (mode === 'create') {
-      form.reset(defaultValues)
-    }
-  }, [mode])
-
-  React.useEffect(() => {
-    if (mode === 'edit' && !isNil(data)) {
-      form.reset(data, { keepDefaultValues: true })
-    }
-  }, [data, mode])
+  usePopulateCreateUpdateForm(form, mode, initialValues, data)
 
   return (
     <Sheet onOpenChange={onOpenChange} {...others}>
@@ -229,7 +218,7 @@ export const LedgersSheet = ({
               <LoadingButton
                 size="lg"
                 type="submit"
-                disabled={!(form.formState.isDirty && form.formState.isValid)}
+                disabled={!isDirty}
                 fullWidth
                 loading={createPending || updatePending}
               >

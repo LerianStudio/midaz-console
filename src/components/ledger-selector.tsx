@@ -85,6 +85,7 @@ export const LedgerSelector = () => {
   const intl = useIntl()
   const [openCommand, setOpenCommand] = React.useState(false)
   const { currentOrganization, currentLedger, setLedger } = useOrganization()
+
   const { data: ledgers } = useListLedgers({
     organizationId: currentOrganization?.id!
   })
