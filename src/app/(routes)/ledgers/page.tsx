@@ -123,7 +123,7 @@ const Page = () => {
     },
     {
       name: intl.formatMessage({
-        id: `common.ledgers`,
+        id: `ledgers.title`,
         defaultMessage: 'Ledgers'
       })
     }

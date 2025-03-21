@@ -415,5 +415,6 @@
   "portfolios.toast.update.success": "Portfólio atualizado com sucesso",
   "error.api.avatarSvgContainsUnsecureContent": "O arquivo SVG contém conteúdo inseguro.",
   "errors.custom.avatar.invalid_format": "O avatar deve ter um formato PNG ou SVG",
-  "error.login": "Credenciais inválidas"
+  "error.login": "Credenciais inválidas",
+  "common.loadMore": "Carregar mais..."
 }
