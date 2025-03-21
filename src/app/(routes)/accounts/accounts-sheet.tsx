@@ -34,6 +34,7 @@ import { ChevronRight, InfoIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { SwitchField } from '@/components/form/switch-field'
 import { createQueryString } from '@/lib/search'
+import { usePopulateCreateUpdateForm } from '@/components/sheet/use-populate-create-update-form'
 
 export type AccountSheetProps = DialogProps & {
   ledgerId: string
@@ -55,7 +56,7 @@ const initialValues = {
   metadata: {}
 }
 
-const formSchema = z.object({
+const FormSchema = z.object({
   name: accounts.name,
   alias: accounts.alias,
   entityId: accounts.entityId.optional(),
@@ -68,7 +69,7 @@ const formSchema = z.object({
   allowReceiving: accounts.allowReceiving
 })
 
-type FormData = z.infer<typeof formSchema>
+type FormData = z.infer<typeof FormSchema>
 
 export const AccountSheet = ({
   mode,
@@ -125,9 +126,10 @@ export const AccountSheet = ({
   }, [rawAssetListData])
 
   const form = useForm<FormData>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(FormSchema),
     defaultValues: initialValues
   })
+  const { isDirty } = form.formState
 
   const portfolioId = form.watch('portfolioId')
 
@@ -193,34 +195,17 @@ export const AccountSheet = ({
     const cleanedData = omitBy(data, (value) => value === '' || isNil(value))
 
     if (mode === 'create') {
-      createAccount({
-        ...cleanedData
-      })
+      createAccount(cleanedData)
 
       form.reset(initialValues)
     } else if (mode === 'edit') {
-      const { type, assetCode, ...updateData } = cleanedData
+      const { type, assetCode, entityId, ...updateData } = cleanedData
 
       updateAccount(updateData)
     }
   }
 
-  React.useEffect(() => {
-    if (mode === 'create') {
-      form.reset(initialValues)
-    }
-  }, [mode])
-
-  React.useEffect(() => {
-    if (!isNil(data)) {
-      if (mode === 'edit') {
-        const { entityId, ...dataWithoutEntityId } = data
-        form.reset(dataWithoutEntityId, { keepDefaultValues: true })
-      } else {
-        form.reset(data, { keepDefaultValues: true })
-      }
-    }
-  }, [data])
+  usePopulateCreateUpdateForm(form, mode, initialValues, data)
 
   return (
     <React.Fragment>
@@ -570,6 +555,7 @@ export const AccountSheet = ({
                 <LoadingButton
                   size="lg"
                   type="submit"
+                  disabled={!isDirty}
                   fullWidth
                   loading={createPending || updatePending}
                 >
