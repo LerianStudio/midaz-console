@@ -30,25 +30,72 @@ import { useOrganization } from '@/context/organization-provider/organization-pr
 import { useListLedgers } from '@/client/ledgers'
 import { Button } from './ui/button'
 import { LedgerType } from '@/types/ledgers-type'
+import { LoadingButton } from './ui/loading-button'
 
 const LedgerCommand = ({
   ledgers,
-  onSelect
+  onSelect,
+  organizationId
 }: {
   ledgers: LedgerType[]
   onSelect: (id: string) => void
+  organizationId: string
 }) => {
   const intl = useIntl()
   const [query, setQuery] = React.useState('')
+  const [page, setPage] = React.useState(1)
+  const [allLedgers, setAllLedgers] = React.useState<LedgerType[]>(ledgers)
+  const [isLoadingMore, setIsLoadingMore] = React.useState(false)
+  const [hasMore, setHasMore] = React.useState(ledgers.length === 10)
+
+  React.useEffect(() => {
+    setAllLedgers(ledgers)
+    setHasMore(ledgers.length === 10)
+  }, [ledgers])
 
   const filteredLedgers = React.useMemo(() => {
-    return ledgers.filter((ledger) =>
+    if (!query) return allLedgers
+    return allLedgers.filter((ledger) =>
       ledger.name.toLowerCase().includes(query.toLowerCase())
     )
-  }, [ledgers, query])
+  }, [allLedgers, query])
+
+  const loadMore = async () => {
+    if (!isLoadingMore && organizationId) {
+      setIsLoadingMore(true)
+      try {
+        const nextPage = page + 1
+        const response = await fetch(
+          `/api/organizations/${organizationId}/ledgers/ledgers-assets?limit=10&page=${nextPage}`
+        )
+        const data = await response.json()
+
+        if (data.items && data.items.length > 0) {
+          setAllLedgers((prev) => {
+            const newLedgers = [...prev]
+            data.items.forEach((newLedger: LedgerType) => {
+              if (!newLedgers.some((l) => l.id === newLedger.id)) {
+                newLedgers.push(newLedger)
+              }
+            })
+            return newLedgers
+          })
+
+          setPage(nextPage)
+          setHasMore(data.items.length === 10)
+        } else {
+          setHasMore(false)
+        }
+      } catch (error) {
+        console.error('Error loading more ledgers:', error)
+      } finally {
+        setIsLoadingMore(false)
+      }
+    }
+  }
 
   return (
-    <Command>
+    <Command className="w-full">
       <CommandInput
         placeholder={intl.formatMessage({
           id: 'common.search',
@@ -59,7 +106,7 @@ const LedgerCommand = ({
         className="border-b px-2 py-1 pr-10"
       />
 
-      <CommandList className="max-h-[50vh] overflow-y-auto">
+      <CommandList className="max-h-max overflow-y-auto">
         {filteredLedgers.length === 0 ? (
           <CommandEmpty>
             {intl.formatMessage({
@@ -70,10 +117,30 @@ const LedgerCommand = ({
         ) : (
           <CommandGroup>
             {filteredLedgers.map((ledger) => (
-              <CommandItem key={ledger.id} onSelect={() => onSelect(ledger.id)}>
+              <CommandItem
+                key={ledger.id}
+                onSelect={() => onSelect(ledger.id)}
+                className="truncate"
+              >
                 {ledger.name}
               </CommandItem>
             ))}
+
+            {!query && hasMore && (
+              <div className="border-t border-gray-100 p-1">
+                <LoadingButton
+                  onClick={loadMore}
+                  loading={isLoadingMore}
+                  variant="outline"
+                  className="w-full"
+                >
+                  {intl.formatMessage({
+                    id: 'common.loadMore',
+                    defaultMessage: 'Load more...'
+                  })}
+                </LoadingButton>
+              </div>
+            )}
           </CommandGroup>
         )}
       </CommandList>
@@ -85,6 +152,7 @@ export const LedgerSelector = () => {
   const intl = useIntl()
   const [openCommand, setOpenCommand] = React.useState(false)
   const { currentOrganization, currentLedger, setLedger } = useOrganization()
+
   const { data: ledgers } = useListLedgers({
     organizationId: currentOrganization?.id!
   })
@@ -160,7 +228,7 @@ export const LedgerSelector = () => {
                 </div>
               </SelectTrigger>
 
-              <SelectContent>
+              <SelectContent className="w-[var(--radix-select-trigger-width)]">
                 {isLargeList ? (
                   <SelectGroup className="px-3 pb-3">
                     <SelectLabel className="text-xs font-medium uppercase text-zinc-400">
@@ -200,13 +268,14 @@ export const LedgerSelector = () => {
 
                       {openCommand && (
                         <div
-                          className="my-3 rounded-lg border"
+                          className="my-3 w-fit rounded-lg border"
                           onClick={(e) => e.stopPropagation()}
                           onKeyDown={(e) => e.stopPropagation()}
                         >
                           <LedgerCommand
                             ledgers={ledgers!.items}
                             onSelect={handleCommandChange}
+                            organizationId={currentOrganization?.id!}
                           />
                         </div>
                       )}
