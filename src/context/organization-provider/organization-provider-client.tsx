@@ -5,7 +5,8 @@ import {
   PropsWithChildren,
   useContext,
   useEffect,
-  useState
+  useState,
+  useRef
 } from 'react'
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { usePathname, useRouter } from 'next/navigation'
@@ -37,6 +38,8 @@ export const OrganizationProviderClient = ({
 }: OrganizationProviderClientProps) => {
   const router = useRouter()
   const pathname = usePathname()
+  const isInitialLoadRef = useRef(true)
+
   const [current, setCurrent] = useState<OrganizationEntity>(
     {} as OrganizationEntity
   )
@@ -47,7 +50,30 @@ export const OrganizationProviderClient = ({
   const [currentLedger, setCurrentLedger] = useState<LedgerType>(
     {} as LedgerType
   )
-  const { data: ledgers } = useListLedgers({ organizationId: current?.id! })
+
+  const { data: ledgers } = useListLedgers({
+    organizationId: current?.id!
+  })
+
+  useDefaultOrg({
+    organizations,
+    current,
+    setCurrent
+  })
+
+  const { setLedger } = useDefaultLedger({
+    current,
+    ledgers,
+    currentLedger,
+    setCurrentLedger,
+    isInitialLoadRef
+  })
+
+  useEffect(() => {
+    setTimeout(() => {
+      isInitialLoadRef.current = false
+    }, 500)
+  }, [])
 
   useEffect(() => {
     // Do nothing if the user is already at the onboarding
@@ -64,20 +90,7 @@ export const OrganizationProviderClient = ({
     if (organizations.length === 1 && current?.metadata?.onboarding === true) {
       router.replace('/onboarding/ledger')
     }
-  }, [current?.id, organizations.length])
-
-  useDefaultOrg({
-    organizations,
-    current,
-    setCurrent
-  })
-
-  useDefaultLedger({
-    current,
-    ledgers: ledgers?.items ?? [],
-    currentLedger,
-    setCurrentLedger
-  })
+  }, [current?.id, organizations.length, pathname, router])
 
   return (
     <OrganizationContext.Provider
@@ -85,7 +98,7 @@ export const OrganizationProviderClient = ({
         currentOrganization: current,
         setOrganization: setCurrent,
         currentLedger: currentLedger,
-        setLedger: setCurrentLedger
+        setLedger: setLedger
       }}
     >
       {children}

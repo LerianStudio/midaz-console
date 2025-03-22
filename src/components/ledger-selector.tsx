@@ -6,7 +6,6 @@ import { Book, ChevronsUpDown } from 'lucide-react'
 import {
   Select,
   SelectTrigger,
-  SelectValue,
   SelectContent,
   SelectGroup,
   SelectLabel,
@@ -38,7 +37,7 @@ const LedgerCommand = ({
   organizationId
 }: {
   ledgers: LedgerType[]
-  onSelect: (id: string) => void
+  onSelect: (ledger: LedgerType) => void
   organizationId: string
 }) => {
   const intl = useIntl()
@@ -50,6 +49,7 @@ const LedgerCommand = ({
 
   React.useEffect(() => {
     setAllLedgers(ledgers)
+    setPage(1)
     setHasMore(ledgers.length === 10)
   }, [ledgers])
 
@@ -71,9 +71,16 @@ const LedgerCommand = ({
         const data = await response.json()
 
         if (data.items && data.items.length > 0) {
+          const parsedItems = data.items.map((item: any) => ({
+            ...item,
+            createdAt: item.createdAt ? new Date(item.createdAt) : null,
+            updatedAt: item.updatedAt ? new Date(item.updatedAt) : null,
+            deletedAt: item.deletedAt ? new Date(item.deletedAt) : null
+          }))
+
           setAllLedgers((prev) => {
             const newLedgers = [...prev]
-            data.items.forEach((newLedger: LedgerType) => {
+            parsedItems.forEach((newLedger: LedgerType) => {
               if (!newLedgers.some((l) => l.id === newLedger.id)) {
                 newLedgers.push(newLedger)
               }
@@ -116,15 +123,36 @@ const LedgerCommand = ({
           </CommandEmpty>
         ) : (
           <CommandGroup>
-            {filteredLedgers.map((ledger) => (
-              <CommandItem
-                key={ledger.id}
-                onSelect={() => onSelect(ledger.id)}
-                className="truncate"
-              >
-                {ledger.name}
-              </CommandItem>
-            ))}
+            {filteredLedgers.map((ledger) => {
+              const processedLedger: LedgerType = {
+                ...ledger,
+                createdAt:
+                  ledger.createdAt instanceof Date
+                    ? ledger.createdAt
+                    : new Date(ledger.createdAt),
+                updatedAt:
+                  ledger.updatedAt instanceof Date
+                    ? ledger.updatedAt
+                    : new Date(ledger.updatedAt),
+                deletedAt: ledger.deletedAt
+                  ? ledger.deletedAt instanceof Date
+                    ? ledger.deletedAt
+                    : new Date(ledger.deletedAt)
+                  : null
+              }
+
+              return (
+                <CommandItem
+                  key={ledger.id}
+                  onSelect={() => {
+                    onSelect(processedLedger)
+                  }}
+                  className="truncate"
+                >
+                  {ledger.name}
+                </CommandItem>
+              )
+            })}
 
             {!query && hasMore && (
               <div className="border-t border-gray-100 p-1">
@@ -157,17 +185,42 @@ export const LedgerSelector = () => {
     organizationId: currentOrganization?.id!
   })
 
+  const [manuallySelectedLedger, setManuallySelectedLedger] = React.useState<
+    string | null
+  >(null)
+
+  const handleCommandChange = (ledger: LedgerType) => {
+    const processedLedger = {
+      ...ledger,
+      createdAt:
+        ledger.createdAt instanceof Date
+          ? ledger.createdAt
+          : new Date(ledger.createdAt),
+      updatedAt:
+        ledger.updatedAt instanceof Date
+          ? ledger.updatedAt
+          : new Date(ledger.updatedAt),
+      deletedAt: ledger.deletedAt
+        ? ledger.deletedAt instanceof Date
+          ? ledger.deletedAt
+          : new Date(ledger.deletedAt)
+        : null
+    }
+
+    setLedger(processedLedger)
+    setManuallySelectedLedger(processedLedger.id)
+    setOpenCommand(false)
+  }
+
   React.useEffect(() => {
     if (
       ledgers?.items?.length &&
-      (!currentLedger?.id ||
-        !ledgers.items.some(
-          (ledger: LedgerType) => ledger.id === currentLedger.id
-        ))
+      !currentLedger?.id &&
+      !manuallySelectedLedger
     ) {
       setLedger(ledgers.items[0])
     }
-  }, [currentOrganization, ledgers, currentLedger?.id, setLedger])
+  }, [ledgers, currentLedger?.id, setLedger, manuallySelectedLedger])
 
   const hasLedgers = !!ledgers?.items?.length
   const totalLedgers = ledgers?.items?.length ?? 0
@@ -196,12 +249,11 @@ export const LedgerSelector = () => {
   }
 
   const handleSelectChange = (id: string) => {
-    setLedger(ledgers?.items.find((ledger) => ledger.id === id)!)
-  }
-
-  const handleCommandChange = (id: string) => {
-    setLedger(ledgers?.items.find((ledger) => ledger.id === id)!)
-    setOpenCommand(false)
+    const selectedLedger = ledgers?.items.find((ledger) => ledger.id === id)
+    if (selectedLedger) {
+      setLedger(selectedLedger)
+      setManuallySelectedLedger(id)
+    }
   }
 
   return (
@@ -224,7 +276,13 @@ export const LedgerSelector = () => {
                       defaultMessage: 'Current Ledger'
                     })}
                   </span>
-                  <SelectValue placeholder="Select a ledger" />
+                  <span className="text-sm font-semibold text-zinc-800">
+                    {currentLedger?.name ||
+                      intl.formatMessage({
+                        id: 'ledger.selector.placeholder',
+                        defaultMessage: 'Select Ledger'
+                      })}
+                  </span>
                 </div>
               </SelectTrigger>
 
@@ -242,9 +300,7 @@ export const LedgerSelector = () => {
                       value={currentLedger?.id}
                       className="font-medium text-zinc-800 data-[disabled]:opacity-100"
                     >
-                      {ledgers?.items?.find(
-                        (ledger: any) => ledger.id === currentLedger?.id
-                      )?.name ||
+                      {currentLedger?.name ||
                         intl.formatMessage({
                           id: 'ledger.selector.placeholder',
                           defaultMessage: 'Select Ledger'

@@ -1,63 +1,124 @@
 'use client'
 
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
-import { getStorageObject } from '@/lib/storage'
 import { LedgerType } from '@/types/ledgers-type'
-import { useReducer, useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 type UseDefaultLedgerProps = {
   current: OrganizationEntity
-  ledgers: LedgerType[]
+  ledgers: { items: LedgerType[] } | undefined
   currentLedger: LedgerType
   setCurrentLedger: (ledger: LedgerType) => void
+  isInitialLoadRef: React.MutableRefObject<boolean>
 }
 
-const storageKey = 'defaultLedgers'
+const fetchLedgerById = async (
+  orgId: string,
+  ledgerId: string
+): Promise<LedgerType | null> => {
+  try {
+    const response = await fetch(
+      `/api/organizations/${orgId}/ledgers/${ledgerId}`
+    )
+
+    if (!response.ok) return null
+    const data = await response.json()
+    if (!data || !data.id) return null
+
+    return {
+      ...data,
+      createdAt: data.createdAt ? new Date(data.createdAt) : null,
+      updatedAt: data.updatedAt ? new Date(data.updatedAt) : null,
+      deletedAt: data.deletedAt ? new Date(data.deletedAt) : null
+    }
+  } catch (error) {
+    return null
+  }
+}
 
 export function useDefaultLedger({
   current,
   ledgers,
   currentLedger,
-  setCurrentLedger
+  setCurrentLedger,
+  isInitialLoadRef
 }: UseDefaultLedgerProps) {
-  const [defaultLedgers, setDefaultLedgers] = useReducer(
-    (state: Record<string, string>, newState: Record<string, string>) => ({
-      ...state,
-      ...newState
-    }),
-    getStorageObject(storageKey, {})
-  )
-
-  const save = (key: string, value: string) => {
-    localStorage.setItem(
-      storageKey,
-      JSON.stringify({ ...defaultLedgers, [key]: value })
-    )
-    setDefaultLedgers({ [key]: value })
-  }
+  const hasLoadedLedgerForOrgRef = useRef<Record<string, boolean>>({})
 
   useEffect(() => {
-    // Check if is there a organization selected
-    if (current?.id) {
-      // Check if there is a default ledger saved onto local storage
-      const ledger = ledgers?.find(
-        ({ id }) => defaultLedgers[current.id!] === id
-      )
+    if (!current?.id) return
 
-      if (ledger) {
-        // If the ledger is found, set it as the current ledger
-        setCurrentLedger(ledger)
-      } else if (ledgers?.length > 0) {
-        // If the ledger is not found, set the first ledger as the current ledger
-        setCurrentLedger(ledgers?.[0]!)
+    if (
+      currentLedger?.id &&
+      current.id &&
+      hasLoadedLedgerForOrgRef.current[current.id]
+    ) {
+      return
+    }
+
+    const loadLedger = async () => {
+      try {
+        const savedPreferences = JSON.parse(
+          localStorage.getItem('defaultLedgers') || '{}'
+        )
+        const savedLedgerId = current.id ? savedPreferences[current.id] : null
+
+        if (savedLedgerId && current.id) {
+          if (ledgers?.items && ledgers.items.length > 0) {
+            const ledgerInList = ledgers.items.find(
+              (led) => led.id === savedLedgerId
+            )
+            if (ledgerInList) {
+              setCurrentLedger(ledgerInList)
+              if (current.id)
+                hasLoadedLedgerForOrgRef.current[current.id] = true
+              return
+            }
+          }
+
+          const orgId = current.id
+          const specificLedger = await fetchLedgerById(orgId, savedLedgerId)
+
+          if (specificLedger) {
+            setCurrentLedger(specificLedger)
+            if (current.id) hasLoadedLedgerForOrgRef.current[current.id] = true
+            return
+          }
+        }
+
+        if (ledgers?.items && ledgers.items.length > 0 && current.id) {
+          setCurrentLedger(ledgers.items[0])
+          hasLoadedLedgerForOrgRef.current[current.id] = true
+        }
+      } catch (error) {
+        if (ledgers?.items && ledgers.items.length > 0 && current.id) {
+          setCurrentLedger(ledgers.items[0])
+          hasLoadedLedgerForOrgRef.current[current.id] = true
+        }
       }
     }
-  }, [current?.id, ledgers?.length])
 
-  useEffect(() => {
-    // Update storage according to the current ledger
-    if (currentLedger?.id) {
-      save(current.id!, currentLedger.id!)
+    loadLedger()
+  }, [current?.id, ledgers?.items, currentLedger?.id])
+
+  const setLedger = (ledger: LedgerType) => {
+    if (!ledger?.id) return
+    if (isInitialLoadRef.current) return
+
+    setCurrentLedger(ledger)
+
+    if (current?.id) {
+      hasLoadedLedgerForOrgRef.current[current.id] = true
+
+      localStorage.setItem(
+        'defaultLedgers',
+        JSON.stringify({
+          ...JSON.parse(localStorage.getItem('defaultLedgers') || '{}'),
+          [current.id]: ledger.id
+        })
+      )
     }
-  }, [currentLedger?.id])
+  }
+
+  return { setLedger }
 }
