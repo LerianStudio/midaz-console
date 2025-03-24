@@ -40,15 +40,27 @@ const LedgerCommand = ({
 }) => {
   const intl = useIntl()
   const [query, setQuery] = React.useState('')
+  const [visibleCount, setVisibleCount] = React.useState(10)
 
   const filteredLedgers = React.useMemo(() => {
+    if (!query) return ledgers
     return ledgers.filter((ledger) =>
       ledger.name.toLowerCase().includes(query.toLowerCase())
     )
   }, [ledgers, query])
 
+  const displayedLedgers = query
+    ? filteredLedgers
+    : filteredLedgers.slice(0, visibleCount)
+
+  const hasMore = !query && displayedLedgers.length < filteredLedgers.length
+
+  const loadMore = () => {
+    setVisibleCount((prev) => prev + 10)
+  }
+
   return (
-    <Command>
+    <Command className="w-full">
       <CommandInput
         placeholder={intl.formatMessage({
           id: 'common.search',
@@ -59,7 +71,7 @@ const LedgerCommand = ({
         className="border-b px-2 py-1 pr-10"
       />
 
-      <CommandList className="max-h-[50vh] overflow-y-auto">
+      <CommandList className="max-h-max overflow-y-auto">
         {filteredLedgers.length === 0 ? (
           <CommandEmpty>
             {intl.formatMessage({
@@ -69,11 +81,26 @@ const LedgerCommand = ({
           </CommandEmpty>
         ) : (
           <CommandGroup>
-            {filteredLedgers.map((ledger) => (
-              <CommandItem key={ledger.id} onSelect={() => onSelect(ledger.id)}>
+            {displayedLedgers.map((ledger) => (
+              <CommandItem
+                key={ledger.id}
+                onSelect={() => onSelect(ledger.id)}
+                className="truncate"
+              >
                 {ledger.name}
               </CommandItem>
             ))}
+
+            {!query && hasMore && (
+              <div className="border-t border-gray-100 p-1">
+                <Button onClick={loadMore} variant="outline" className="w-full">
+                  {intl.formatMessage({
+                    id: 'common.loadMore',
+                    defaultMessage: 'Load more...'
+                  })}
+                </Button>
+              </div>
+            )}
           </CommandGroup>
         )}
       </CommandList>
@@ -87,7 +114,8 @@ export const LedgerSelector = () => {
   const { currentOrganization, currentLedger, setLedger } = useOrganization()
 
   const { data: ledgers } = useListLedgers({
-    organizationId: currentOrganization?.id!
+    organizationId: currentOrganization?.id!,
+    limit: 100
   })
 
   React.useEffect(() => {
@@ -161,7 +189,7 @@ export const LedgerSelector = () => {
                 </div>
               </SelectTrigger>
 
-              <SelectContent>
+              <SelectContent className="w-[var(--radix-select-trigger-width)]">
                 {isLargeList ? (
                   <SelectGroup className="px-3 pb-3">
                     <SelectLabel className="text-xs font-medium uppercase text-zinc-400">
@@ -201,7 +229,7 @@ export const LedgerSelector = () => {
 
                       {openCommand && (
                         <div
-                          className="my-3 rounded-lg border"
+                          className="my-3 w-fit rounded-lg border"
                           onClick={(e) => e.stopPropagation()}
                           onKeyDown={(e) => e.stopPropagation()}
                         >

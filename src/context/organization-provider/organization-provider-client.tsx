@@ -49,7 +49,7 @@ export const OrganizationProviderClient = ({
   )
   const { data: ledgers } = useListLedgers({
     organizationId: current?.id!,
-    enabled: !!current?.id
+    limit: 100
   })
 
   useEffect(() => {
