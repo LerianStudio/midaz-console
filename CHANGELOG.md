@@ -1,3 +1,42 @@
+## [1.24.1](https://github.com/LerianStudio/midaz-console/compare/v1.24.0...v1.24.1) (2025-03-24)
+
+
+### Bug Fixes
+
+* load more items in the ledger selector by client pagination ([c6df525](https://github.com/LerianStudio/midaz-console/commit/c6df52592b1fd678e7046f8f36a4ca1f04d78001))
+
+# [1.24.0](https://github.com/LerianStudio/midaz-console/compare/v1.23.0...v1.24.0) (2025-03-24)
+
+
+### Bug Fixes
+
+* Changed placeholder name ([bf79a89](https://github.com/LerianStudio/midaz-console/commit/bf79a89405dd3398d182b4e29ca0b4776091b2ec))
+* First load on OrganizationProvider ([661c841](https://github.com/LerianStudio/midaz-console/commit/661c8418331f44d22530e139b2afe376e5b80c4d))
+* Fixed testing ([a75e405](https://github.com/LerianStudio/midaz-console/commit/a75e4055335dc220047aef3e3930d832a04c3510))
+* Removed secrets from env files ([ec55ab5](https://github.com/LerianStudio/midaz-console/commit/ec55ab5d6797e3b6aaacf372dabdb61f7d3939e7))
+* Removed unused import ([8c83669](https://github.com/LerianStudio/midaz-console/commit/8c83669b067a3e1fd7d297ff2abbc38d98f66ee0))
+* Sheet forms behaviour ([9765f39](https://github.com/LerianStudio/midaz-console/commit/9765f39e7a4fa170a538d3b77357834d481083dd))
+
+
+### Features
+
+* Blocked external accounts for editing ([e9275d9](https://github.com/LerianStudio/midaz-console/commit/e9275d96e08b199a1c73215a6eafa21f98c79c06))
+
+# [1.23.0](https://github.com/LerianStudio/midaz-console/compare/v1.22.0...v1.23.0) (2025-03-24)
+
+
+### Bug Fixes
+
+* getStorageObject empty object excpetion ([25ae6d2](https://github.com/LerianStudio/midaz-console/commit/25ae6d2ceef1751ee361f0c583751dfd0f9a6c49))
+* include validation with lodash ([c8f664a](https://github.com/LerianStudio/midaz-console/commit/c8f664a8ff4f05d68646ad2e82b4d7c675d62bdc))
+* include validation with lodash ([0c65c5d](https://github.com/LerianStudio/midaz-console/commit/0c65c5d1eba101e33ca052abc2de2175ce1f29ed))
+* update transaction service name env variable ([d31bd96](https://github.com/LerianStudio/midaz-console/commit/d31bd9683afcc694199a1694d8cf8051a1d7b27c))
+
+
+### Features
+
+* update lerian-midaz banner image ([edb2a1a](https://github.com/LerianStudio/midaz-console/commit/edb2a1a41d7c17b54e071e4c0cd6f6b41600c548))
+
 # [1.22.0](https://github.com/LerianStudio/midaz-console/compare/v1.21.1...v1.22.0) (2025-03-20)
 
 
