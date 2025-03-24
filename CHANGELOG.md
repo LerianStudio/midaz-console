@@ -1,3 +1,18 @@
+# [1.23.0](https://github.com/LerianStudio/midaz-console/compare/v1.22.0...v1.23.0) (2025-03-24)
+
+
+### Bug Fixes
+
+* getStorageObject empty object excpetion ([25ae6d2](https://github.com/LerianStudio/midaz-console/commit/25ae6d2ceef1751ee361f0c583751dfd0f9a6c49))
+* include validation with lodash ([c8f664a](https://github.com/LerianStudio/midaz-console/commit/c8f664a8ff4f05d68646ad2e82b4d7c675d62bdc))
+* include validation with lodash ([0c65c5d](https://github.com/LerianStudio/midaz-console/commit/0c65c5d1eba101e33ca052abc2de2175ce1f29ed))
+* update transaction service name env variable ([d31bd96](https://github.com/LerianStudio/midaz-console/commit/d31bd9683afcc694199a1694d8cf8051a1d7b27c))
+
+
+### Features
+
+* update lerian-midaz banner image ([edb2a1a](https://github.com/LerianStudio/midaz-console/commit/edb2a1a41d7c17b54e071e4c0cd6f6b41600c548))
+
 # [1.22.0](https://github.com/LerianStudio/midaz-console/compare/v1.21.1...v1.22.0) (2025-03-20)
 
 
