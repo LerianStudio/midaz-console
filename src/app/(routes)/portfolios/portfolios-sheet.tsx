@@ -11,8 +11,6 @@ import {
   SheetTitle
 } from '@/components/ui/sheet'
 import { Form } from '@/components/ui/form'
-import { useParams } from 'next/navigation'
-import { isNil } from 'lodash'
 import { useIntl } from 'react-intl'
 import { useCreatePortfolio, useUpdatePortfolio } from '@/client/portfolios'
 import { DialogProps } from '@radix-ui/react-dialog'
@@ -21,10 +19,11 @@ import { LoadingButton } from '@/components/ui/loading-button'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 import { MetadataField } from '@/components/form/metadata-field'
 import { InputField } from '@/components/form'
-import { portfolioSchema } from '@/schema/portfolio'
+import { portfolio } from '@/schema/portfolio'
 import { TabsContent } from '@radix-ui/react-tabs'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import useCustomToast from '@/hooks/use-custom-toast'
+import { usePopulateCreateUpdateForm } from '@/components/sheet/use-populate-create-update-form'
 
 export type PortfolioSheetProps = DialogProps & {
   mode: 'create' | 'edit'
@@ -32,13 +31,19 @@ export type PortfolioSheetProps = DialogProps & {
   onSuccess?: () => void
 }
 
-const defaultValues = {
+const initialValues = {
   name: '',
   entityId: '',
   metadata: {}
 }
 
-type FormData = z.infer<typeof portfolioSchema>
+const FormSchema = z.object({
+  name: portfolio.name,
+  entityId: portfolio.entityId.optional(),
+  metadata: portfolio.metadata
+})
+
+type FormData = z.infer<typeof FormSchema>
 
 export const PortfolioSheet = ({
   mode,
@@ -102,41 +107,22 @@ export const PortfolioSheet = ({
       }
     })
 
-  const form = useForm<z.infer<typeof portfolioSchema>>({
-    resolver: zodResolver(portfolioSchema),
-    defaultValues: Object.assign(
-      {},
-      defaultValues,
-      mode === 'create' ? { entityId: '' } : {}
-    )
+  const form = useForm<FormData>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: initialValues
   })
+  const { isDirty } = form.formState
 
-  const handleSubmit = (data: FormData) => {
+  const handleSubmit = (values: FormData) => {
     if (mode === 'create') {
-      createPortfolio(data)
+      createPortfolio(values)
     } else if (mode === 'edit') {
+      const { entityId, ...data } = values
       updatePortfolio(data)
     }
-
-    form.reset(defaultValues)
   }
 
-  React.useEffect(() => {
-    if (mode === 'create') {
-      form.reset(defaultValues)
-    }
-  }, [mode])
-
-  React.useEffect(() => {
-    if (!isNil(data)) {
-      if (mode === 'edit') {
-        const { entityId, ...dataWithoutEntityId } = data
-        form.reset(dataWithoutEntityId, { keepDefaultValues: true })
-      } else {
-        form.reset(data, { keepDefaultValues: true })
-      }
-    }
-  }, [data])
+  usePopulateCreateUpdateForm(form, mode, initialValues, data)
 
   return (
     <React.Fragment>
@@ -246,7 +232,7 @@ export const PortfolioSheet = ({
                 <LoadingButton
                   size="lg"
                   type="submit"
-                  disabled={!(form.formState.isDirty && form.formState.isValid)}
+                  disabled={!isDirty}
                   fullWidth
                   loading={createPending || updatePending}
                 >

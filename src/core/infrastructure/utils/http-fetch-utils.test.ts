@@ -145,9 +145,13 @@ describe('MidazHttpFetchUtils', () => {
       body: undefined,
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer test-token',
         'X-Request-Id': 'test-request-id',
-        'Custom-Header': 'CustomValue'
+        'Custom-Header': 'CustomValue',
+        ...(process.env.PLUGIN_AUTH_ENABLED === 'true'
+          ? {
+              Authorization: 'Bearer test-token'
+            }
+          : {})
       }
     })
   })

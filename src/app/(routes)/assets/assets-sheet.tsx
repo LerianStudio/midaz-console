@@ -16,7 +16,6 @@ import React from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { useIntl } from 'react-intl'
 import { z } from 'zod'
-import { isNil } from 'lodash'
 import { LoadingButton } from '@/components/ui/loading-button'
 import { assets } from '@/schema/assets'
 import { SelectItem } from '@/components/ui/select'
@@ -28,6 +27,7 @@ import { CommandItem } from '@/components/ui/command'
 import { ComboBoxField } from '@/components/form'
 import { TabsContent } from '@radix-ui/react-tabs'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { usePopulateCreateUpdateForm } from '@/components/sheet/use-populate-create-update-form'
 
 export type AssetsSheetProps = DialogProps & {
   ledgerId: string
@@ -43,19 +43,14 @@ const initialValues = {
   metadata: {}
 }
 
-const createFormSchema = z.object({
+const FormSchema = z.object({
   type: assets.type,
   name: assets.name,
   code: assets.code,
   metadata: assets.metadata
 })
 
-const editFormSchema = z.object({
-  type: assets.type.optional(),
-  name: assets.name,
-  code: assets.code.optional(),
-  metadata: assets.metadata
-})
+type FormData = z.infer<typeof FormSchema>
 
 export const AssetsSheet = ({
   ledgerId,
@@ -68,10 +63,6 @@ export const AssetsSheet = ({
   const intl = useIntl()
   const { currentOrganization, currentLedger } = useOrganization()
   const { showSuccess, showError } = useCustomToast()
-
-  const FormSchema = mode === 'create' ? createFormSchema : editFormSchema
-
-  type FormValues = z.infer<typeof FormSchema>
 
   const { mutate: createAsset, isPending: createPending } = useCreateAsset({
     organizationId: currentOrganization.id!,
@@ -126,44 +117,28 @@ export const AssetsSheet = ({
     }
   })
 
-  const form = useForm({
+  const form = useForm<FormData>({
     resolver: zodResolver(FormSchema),
     defaultValues: initialValues
   })
+  const { isDirty } = form.formState
 
   const type = useWatch({
     control: form.control,
     name: 'type'
   })
 
-  const handleSubmit = (data: FormValues) => {
-    const payload = { ...data }
-
-    if (mode === 'edit') {
-      delete payload.type
-      delete payload.code
-    }
-
+  const handleSubmit = (data: FormData) => {
     if (mode === 'create') {
+      const payload = { ...data }
       createAsset(payload)
     } else if (mode === 'edit') {
+      const { type, code, ...payload } = data
       updateAsset(payload)
     }
-
-    form.reset(initialValues)
   }
 
-  React.useEffect(() => {
-    if (mode === 'create') {
-      form.reset(initialValues)
-    }
-  }, [mode])
-
-  React.useEffect(() => {
-    if (mode === 'edit' && !isNil(data)) {
-      form.reset(data, { keepDefaultValues: true })
-    }
-  }, [data, mode])
+  usePopulateCreateUpdateForm(form, mode, initialValues, data)
 
   return (
     <Sheet onOpenChange={onOpenChange} {...others}>
@@ -327,6 +302,7 @@ export const AssetsSheet = ({
                 size="lg"
                 type="submit"
                 fullWidth
+                disabled={!isDirty}
                 loading={createPending || updatePending}
               >
                 {intl.formatMessage({
