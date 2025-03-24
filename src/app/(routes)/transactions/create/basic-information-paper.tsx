@@ -45,7 +45,7 @@ export const BasicInformationPaper = ({
             id: 'common.optional',
             defaultMessage: 'Optional'
           })}
-          type="number"
+          type="text"
           control={control}
           maxHeight={100}
           textArea

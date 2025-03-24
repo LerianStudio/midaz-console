@@ -99,6 +99,7 @@ export const TransactionProvider = ({
   // In case the user adds more than 1 source or destination,
   // And then removes to stay with only 1, we need to restore the original
   // transaction value to the source or destination
+
   useEffect(() => {
     if (formValues.source.length === 1) {
       form.setValue('source.0.value', formValues.value)
@@ -110,6 +111,22 @@ export const TransactionProvider = ({
       form.setValue('destination.0.value', formValues.value)
     }
   }, [formValues.value, formValues.destination.length])
+
+  // If the user changes the asset, we need to update the source and destination
+
+  useEffect(() => {
+    formValues.source.forEach((source: any, index: number) => {
+      if (index >= 0) {
+        form.setValue(`source.${index}.asset`, formValues.asset)
+      }
+    })
+
+    formValues.destination.forEach((destination: any, index: number) => {
+      if (index >= 0) {
+        form.setValue(`destination.${index}.asset`, formValues.asset)
+      }
+    })
+  }, [formValues.asset])
 
   return (
     <TransactionFormProvider.Provider
