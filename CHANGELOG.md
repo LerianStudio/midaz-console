@@ -1,3 +1,20 @@
+# [1.24.0](https://github.com/LerianStudio/midaz-console/compare/v1.23.0...v1.24.0) (2025-03-24)
+
+
+### Bug Fixes
+
+* Changed placeholder name ([bf79a89](https://github.com/LerianStudio/midaz-console/commit/bf79a89405dd3398d182b4e29ca0b4776091b2ec))
+* First load on OrganizationProvider ([661c841](https://github.com/LerianStudio/midaz-console/commit/661c8418331f44d22530e139b2afe376e5b80c4d))
+* Fixed testing ([a75e405](https://github.com/LerianStudio/midaz-console/commit/a75e4055335dc220047aef3e3930d832a04c3510))
+* Removed secrets from env files ([ec55ab5](https://github.com/LerianStudio/midaz-console/commit/ec55ab5d6797e3b6aaacf372dabdb61f7d3939e7))
+* Removed unused import ([8c83669](https://github.com/LerianStudio/midaz-console/commit/8c83669b067a3e1fd7d297ff2abbc38d98f66ee0))
+* Sheet forms behaviour ([9765f39](https://github.com/LerianStudio/midaz-console/commit/9765f39e7a4fa170a538d3b77357834d481083dd))
+
+
+### Features
+
+* Blocked external accounts for editing ([e9275d9](https://github.com/LerianStudio/midaz-console/commit/e9275d96e08b199a1c73215a6eafa21f98c79c06))
+
 # [1.23.0](https://github.com/LerianStudio/midaz-console/compare/v1.22.0...v1.23.0) (2025-03-24)
 
 
