@@ -17,11 +17,11 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useIntl } from 'react-intl'
 import { z } from 'zod'
-import { isNil } from 'lodash'
 import { LoadingButton } from '@/components/ui/loading-button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useCreateSegment, useUpdateSegment } from '@/client/segments'
 import { SegmentResponseDto } from '@/core/application/dto/segment-dto'
+import { usePopulateCreateUpdateForm } from '@/components/sheet/use-populate-create-update-form'
 
 export type SegmentsSheetProps = DialogProps & {
   ledgerId: string
@@ -30,7 +30,7 @@ export type SegmentsSheetProps = DialogProps & {
   onSuccess?: () => void
 }
 
-const defaultValues = {
+const initialValues = {
   name: '',
   metadata: {}
 }
@@ -39,6 +39,7 @@ const FormSchema = z.object({
   name: segment.name,
   metadata: segment.metadata
 })
+
 type FormData = z.infer<typeof FormSchema>
 
 export const SegmentsSheet = ({
@@ -73,8 +74,9 @@ export const SegmentsSheet = ({
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
-    defaultValues: Object.assign({}, defaultValues, segment)
+    defaultValues: initialValues
   })
+  const { isDirty } = form.formState
 
   const handleSubmit = (data: FormData) => {
     if (mode === 'create') {
@@ -82,21 +84,9 @@ export const SegmentsSheet = ({
     } else if (mode === 'edit') {
       updateSegment(data)
     }
-
-    form.reset(defaultValues)
   }
 
-  React.useEffect(() => {
-    if (mode === 'create') {
-      form.reset(defaultValues)
-    }
-  }, [mode])
-
-  React.useEffect(() => {
-    if (!isNil(data)) {
-      form.reset(data, { keepDefaultValues: true })
-    }
-  }, [data])
+  usePopulateCreateUpdateForm(form, mode, initialValues, data)
 
   return (
     <Sheet onOpenChange={onOpenChange} {...others}>
@@ -190,7 +180,7 @@ export const SegmentsSheet = ({
               <LoadingButton
                 size="lg"
                 type="submit"
-                disabled={!(form.formState.isDirty && form.formState.isValid)}
+                disabled={!isDirty}
                 fullWidth
                 loading={createPending || updatePending}
               >
