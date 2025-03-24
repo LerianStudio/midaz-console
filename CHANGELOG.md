@@ -1,3 +1,10 @@
+## [1.24.1](https://github.com/LerianStudio/midaz-console/compare/v1.24.0...v1.24.1) (2025-03-24)
+
+
+### Bug Fixes
+
+* load more items in the ledger selector by client pagination ([c6df525](https://github.com/LerianStudio/midaz-console/commit/c6df52592b1fd678e7046f8f36a4ca1f04d78001))
+
 # [1.24.0](https://github.com/LerianStudio/midaz-console/compare/v1.23.0...v1.24.0) (2025-03-24)
 
 
