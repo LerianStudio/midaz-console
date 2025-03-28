@@ -36,7 +36,7 @@ import { MetaAccordionTransactionDetails } from './meta-accordion-transaction-de
 import { formSchema } from './schemas'
 import { SkeletonTransactionDialog } from './skeleton-transaction-dialog'
 import CancelledCircle from '/public/svg/cancelled-circle.svg'
-import { capitalizeFirstLetter, truncateString } from '@/helpers'
+import { truncateString } from '@/helpers'
 import dayjs from 'dayjs'
 import {
   OperationDto,

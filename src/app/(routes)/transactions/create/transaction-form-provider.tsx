@@ -43,7 +43,6 @@ export const TransactionProvider = ({
   values,
   children
 }: TransactionProviderProps) => {
-  const { id } = useParams<{ id: string }>()
   const router = useRouter()
   const form = useForm<TransactionFormSchema>({
     resolver: zodResolver(transactionFormSchema),
