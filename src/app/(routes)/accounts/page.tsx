@@ -22,6 +22,7 @@ import { PageHeader } from '@/components/page-header'
 import { AccountsSkeleton } from './accounts-skeleton'
 import { getBreadcrumbPaths } from '@/components/breadcrumb/get-breadcrumb-paths'
 import { Breadcrumb } from '@/components/breadcrumb'
+import { useListAssets } from '@/client/assets'
 
 const Page = () => {
   const intl = useIntl()
@@ -110,6 +111,15 @@ const Page = () => {
         )
       }
     })
+
+  const { data: assetsData, isLoading: isAssetsLoading } = useListAssets({
+    organizationId: currentOrganization.id!,
+    ledgerId: currentLedger.id,
+    limit: 1,
+    page: 1
+  })
+
+  const hasAssets = assetsData?.items && assetsData.items.length > 0
 
   const {
     handleCreate,
@@ -218,7 +228,11 @@ const Page = () => {
               })}
             />
 
-            <Button onClick={handleCreate} data-testid="new-account">
+            <Button
+              onClick={handleCreate}
+              data-testid="new-account"
+              disabled={!hasAssets}
+            >
               {intl.formatMessage({
                 id: 'accounts.listingTemplate.addButton',
                 defaultMessage: 'New Account'
@@ -266,7 +280,7 @@ const Page = () => {
       <div className="mt-10">
         {isAccountsLoading && <AccountsSkeleton />}
 
-        {!isAccountsLoading && accountsList && (
+        {!isAccountsLoading && accountsList && !isAssetsLoading && (
           <AccountsDataTable
             accounts={{ items: accountsList }}
             isLoading={isAccountsLoading}
@@ -277,6 +291,7 @@ const Page = () => {
             total={total}
             pagination={pagination}
             form={form}
+            hasAssets={hasAssets || false}
           />
         )}
       </div>
