@@ -1,3 +1,10 @@
+## [1.24.2](https://github.com/LerianStudio/midaz-console/compare/v1.24.1...v1.24.2) (2025-03-31)
+
+
+### Bug Fixes
+
+* update source destination asset when transaction asset change value ([ec3cb3a](https://github.com/LerianStudio/midaz-console/commit/ec3cb3a4be8b078a05468a219147a4e5f559f892))
+
 ## [1.24.1](https://github.com/LerianStudio/midaz-console/compare/v1.24.0...v1.24.1) (2025-03-24)
 
 
