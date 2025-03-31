@@ -38,13 +38,16 @@ import { SkeletonTransactionDialog } from './skeleton-transaction-dialog'
 import CancelledCircle from '/public/svg/cancelled-circle.svg'
 import { truncateString } from '@/helpers'
 import dayjs from 'dayjs'
-import {
-  OperationDto,
-  TransactionResponseDto
-} from '@/core/application/dto/transaction-dto'
-import { TRANSACTION_DETAILS_TAB_VALUES } from './Transaction-details-tab-values'
+import { OperationDto } from '@/core/application/dto/transaction-dto'
+import { TRANSACTION_DETAILS_TAB_VALUES } from './transaction-details-tab-values'
+import { usePopulateForm } from '@/lib/form'
 
 const DEFAULT_TAB_VALUE = TRANSACTION_DETAILS_TAB_VALUES.SUMMARY
+
+const initialValues = {
+  description: '',
+  metadata: {}
+}
 
 type FormSchema = z.infer<typeof formSchema>
 
@@ -64,33 +67,9 @@ export default function TransactionDetailsPage() {
     transactionId
   })
 
-  const initialValues: TransactionResponseDto = {
-    id: transaction?.id || '',
-    description: transaction?.description || '',
-    template: transaction?.template || '',
-    status: transaction?.status || {
-      code: '',
-      description: ''
-    },
-    amount: transaction?.amount || 0,
-    amountScale: transaction?.amountScale || 0,
-    assetCode: transaction?.assetCode || '',
-    chartOfAccountsGroupName: transaction?.chartOfAccountsGroupName || '',
-    source: transaction?.source!,
-    destination: transaction?.destination || [],
-    ledgerId: transaction?.ledgerId || '',
-    organizationId: transaction?.organizationId || '',
-    operations: transaction?.operations!,
-    createdAt: transaction?.createdAt || '',
-    updatedAt: transaction?.updatedAt || '',
-    deletedAt: transaction?.deletedAt || '',
-    metadata: transaction?.metadata!
-  }
-
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialValues,
-    values: initialValues
+    defaultValues: initialValues
   })
 
   const displayValue = (amount: number, scale: number) => {
@@ -106,6 +85,8 @@ export default function TransactionDetailsPage() {
 
     return parsed.toString()
   }
+
+  usePopulateForm(form, transaction)
 
   if (isLoading) {
     return <SkeletonTransactionDialog />
@@ -337,9 +318,9 @@ export default function TransactionDetailsPage() {
                   )}
                   values={{
                     chartOfAccountsGroupName:
-                      initialValues.chartOfAccountsGroupName,
-                    asset: initialValues.assetCode,
-                    description: initialValues.description
+                      transaction?.chartOfAccountsGroupName,
+                    asset: transaction?.assetCode,
+                    description: transaction?.description
                   }}
                   control={form.control}
                   handleTabChange={handleTabChange}

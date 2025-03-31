@@ -17,7 +17,8 @@ import ConfirmationDialog from '@/components/confirmation-dialog'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { TRANSACTION_DETAILS_TAB_VALUES } from './Transaction-details-tab-values'
+import { TRANSACTION_DETAILS_TAB_VALUES } from './transaction-details-tab-values'
+import { transaction } from '@/schema/transactions'
 
 interface TransactionValues {
   chartOfAccountsGroupName?: string
@@ -31,39 +32,38 @@ export interface BasicInformationPaperProps {
   values: TransactionValues
   amount: string
   onCancel?: () => void
-  onSave?: (description: string) => void
   handleTabChange?: (tab: string) => void
 }
 
-const formSchema = z.object({
-  description: z.string().min(1, 'Description is required')
+const FormSchema = z.object({
+  description: transaction.description
 })
 
-type FormSchema = z.infer<typeof formSchema>
+type FormData = z.infer<typeof FormSchema>
 
-const useTransactionForm = (
-  initialValues: TransactionValues,
-  onSave?: (description: string) => void,
-  handleTabChange?: (tab: string) => void
-) => {
+export const BasicInformationPaperReadOnly = ({
+  values,
+  amount,
+  onCancel,
+  handleTabChange
+}: BasicInformationPaperProps) => {
   const intl = useIntl()
-  const { id, transactionId } = useParams<{
-    id: string
+  const { transactionId } = useParams<{
     transactionId: string
   }>()
   const { showSuccess, showError } = useCustomToast()
-  const { currentOrganization } = useOrganization()
+  const { currentOrganization, currentLedger } = useOrganization()
 
-  const form = useForm<FormSchema>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<FormData>({
+    resolver: zodResolver(FormSchema),
     defaultValues: {
-      description: initialValues.description || ''
+      description: values.description || ''
     }
   })
 
   const { mutate: updateTransaction, isPending } = useUpdateTransaction({
     organizationId: currentOrganization.id!,
-    ledgerId: id!,
+    ledgerId: currentLedger.id!,
     transactionId: transactionId!,
     onSuccess: () => {
       showSuccess(
@@ -72,7 +72,6 @@ const useTransactionForm = (
           defaultMessage: 'Transaction updated successfully'
         })
       )
-      onSave?.(form.getValues().description)
       handleTabChange?.(TRANSACTION_DETAILS_TAB_VALUES.SUMMARY)
     },
     onError: (error) => {
@@ -91,27 +90,6 @@ const useTransactionForm = (
       updateTransaction({ description: data.description })
     })()
   }
-
-  return {
-    form,
-    handleSave,
-    isPending
-  }
-}
-
-export const BasicInformationPaperReadOnly = ({
-  values,
-  amount,
-  onCancel,
-  onSave,
-  handleTabChange
-}: BasicInformationPaperProps) => {
-  const intl = useIntl()
-  const { form, handleSave, isPending } = useTransactionForm(
-    values,
-    onSave,
-    handleTabChange
-  )
 
   const { handleDialogOpen, dialogProps } = useConfirmDialog({
     onConfirm: handleSave
