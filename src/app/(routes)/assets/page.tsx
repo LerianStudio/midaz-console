@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useIntl } from 'react-intl'
 import { Button } from '@/components/ui/button'
 import { useOrganization } from '@/context/organization-provider/organization-provider-client'
@@ -11,12 +11,7 @@ import {
   getFilteredRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import {
-  useParams,
-  useSearchParams,
-  useRouter,
-  usePathname
-} from 'next/navigation'
+import { useParams } from 'next/navigation'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import ConfirmationDialog from '@/components/confirmation-dialog'
 import useCustomToast from '@/hooks/use-custom-toast'
@@ -30,50 +25,16 @@ import { Breadcrumb } from '@/components/breadcrumb'
 
 const Page = () => {
   const intl = useIntl()
-  const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const sheetOpenedRef = useRef(false)
   const { id: ledgerId } = useParams<{ id: string }>()
   const [columnFilters, setColumnFilters] = useState<any>([])
   const { currentOrganization, currentLedger } = useOrganization()
   const { showSuccess, showError } = useCustomToast()
 
-  const {
-    handleCreate,
-    handleEdit,
-    sheetProps: originalSheetProps
-  } = useCreateUpdateSheet<any>()
+  const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>({
+    enableRouting: true
+  })
 
   const [total, setTotal] = useState(0)
-
-  const onOpenChange = (open: boolean) => {
-    if (!open && searchParams.get('create') === 'true') {
-      router.replace(pathname)
-    }
-
-    originalSheetProps.onOpenChange(open)
-  }
-
-  const sheetProps = {
-    ...originalSheetProps,
-    onOpenChange
-  }
-
-  useEffect(() => {
-    const shouldCreateAsset = searchParams.get('create') === 'true'
-
-    if (shouldCreateAsset && !sheetOpenedRef.current) {
-      sheetOpenedRef.current = true
-      handleCreate()
-    }
-  }, [searchParams, handleCreate])
-
-  useEffect(() => {
-    return () => {
-      sheetOpenedRef.current = false
-    }
-  }, [])
 
   const { form, searchValues, pagination } = useQueryParams({ total })
 
@@ -167,8 +128,8 @@ const Page = () => {
     assets,
     table,
     handleDialogOpen,
+    handleCreate,
     handleEdit,
-    refetch,
     form,
     pagination,
     total

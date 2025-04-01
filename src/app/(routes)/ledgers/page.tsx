@@ -28,7 +28,9 @@ const Page = () => {
   const { currentOrganization, currentLedger, setLedger } = useOrganization()
   const { showSuccess, showError } = useCustomToast()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
-  const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>()
+  const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>({
+    enableRouting: true
+  })
   const { form, searchValues, pagination } = useQueryParams({ total })
 
   const {
@@ -133,6 +135,7 @@ const Page = () => {
     ledgers,
     table,
     handleDialogOpen,
+    handleCreate,
     handleEdit,
     refetch,
     form,

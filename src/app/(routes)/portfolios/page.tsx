@@ -86,7 +86,9 @@ const Page = () => {
   )
 
   const { handleCreate, handleEdit, sheetProps } =
-    useCreateUpdateSheet<PortfolioResponseDto>()
+    useCreateUpdateSheet<PortfolioResponseDto>({
+      enableRouting: true
+    })
 
   const breadcrumbPaths = getBreadcrumbPaths([
     {

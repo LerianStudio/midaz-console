@@ -28,9 +28,6 @@ import { Pagination, PaginationProps } from '@/components/pagination'
 import { PaginationLimitField } from '@/components/form/pagination-limit-field'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { IdTableCell } from '@/components/table/id-table-cell'
-import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
-import { useOrganization } from '@/context/organization-provider/organization-provider-client'
-import { AccountSheet } from './accounts-sheet'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -51,6 +48,7 @@ type AccountsTableProps = {
   }
   onDelete: (id: string, account: AccountType) => void
   refetch: () => void
+  handleCreate: () => void
   handleEdit: (account: AccountType) => void
   total: number
   pagination: PaginationProps
@@ -128,6 +126,7 @@ export const AccountsDataTable: React.FC<AccountsTableProps> = ({
   accounts,
   table,
   onDelete,
+  handleCreate,
   handleEdit,
   refetch,
   total,
@@ -137,8 +136,6 @@ export const AccountsDataTable: React.FC<AccountsTableProps> = ({
 }) => {
   const intl = useIntl()
   const router = useRouter()
-  const { handleCreate, sheetProps } = useCreateUpdateSheet<any>()
-  const { currentLedger } = useOrganization()
 
   return (
     <FormProvider {...form}>
@@ -299,12 +296,6 @@ export const AccountsDataTable: React.FC<AccountsTableProps> = ({
           </EntityDataTable.FooterText>
           <Pagination total={total} {...pagination} />
         </EntityDataTable.Footer>
-
-        <AccountSheet
-          ledgerId={currentLedger.id}
-          onSuccess={refetch}
-          {...sheetProps}
-        />
       </EntityDataTable.Root>
     </FormProvider>
   )

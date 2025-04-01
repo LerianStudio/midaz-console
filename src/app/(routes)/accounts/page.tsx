@@ -125,7 +125,9 @@ const Page = () => {
     handleCreate,
     handleEdit: handleEditOriginal,
     sheetProps
-  } = useCreateUpdateSheet<AccountType>()
+  } = useCreateUpdateSheet<AccountType>({
+    enableRouting: true
+  })
 
   const handleEdit = (account: AccountType) => {
     handleEditOriginal(account)
@@ -285,6 +287,7 @@ const Page = () => {
             accounts={{ items: accountsList }}
             isLoading={isAccountsLoading}
             table={table}
+            handleCreate={handleCreate}
             handleEdit={handleEdit}
             onDelete={handleDialogOpen}
             refetch={refetchAccounts}
