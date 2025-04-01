@@ -17,7 +17,7 @@ import ConfirmationDialog from '@/components/confirmation-dialog'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { TRANSACTION_DETAILS_TAB_VALUES } from './transaction-details-tab-values-test'
+import { TRANSACTION_DETAILS_TAB_VALUES } from './transaction-details-tab-values'
 import { transaction } from '@/schema/transactions'
 
 interface TransactionValues {

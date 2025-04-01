@@ -39,7 +39,7 @@ import CancelledCircle from '/public/svg/cancelled-circle.svg'
 import { truncateString } from '@/helpers'
 import dayjs from 'dayjs'
 import { OperationDto } from '@/core/application/dto/transaction-dto'
-import { TRANSACTION_DETAILS_TAB_VALUES } from './transaction-details-tab-values-test'
+import { TRANSACTION_DETAILS_TAB_VALUES } from './transaction-details-tab-values'
 import { usePopulateForm } from '@/lib/form'
 
 const DEFAULT_TAB_VALUE = TRANSACTION_DETAILS_TAB_VALUES.SUMMARY
