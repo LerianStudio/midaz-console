@@ -1,3 +1,18 @@
+# [1.25.0](https://github.com/LerianStudio/midaz-console/compare/v1.24.2...v1.25.0) (2025-04-01)
+
+
+### Bug Fixes
+
+* Implemented new routing logic to open sheets ([ca45214](https://github.com/LerianStudio/midaz-console/commit/ca452142b94cca07d6ec25720f2a6c1511933d12))
+* Unit Test ([bbbc33d](https://github.com/LerianStudio/midaz-console/commit/bbbc33d80c499bc5eabef3fe70fc071f8b0fc3a8))
+
+
+### Features
+
+* show alert when no asset exists before account creation ([4ebd96f](https://github.com/LerianStudio/midaz-console/commit/4ebd96f48f201614f2cadf2594b7ccb43ef1a5cd))
+* update locales with new translations ([d03de89](https://github.com/LerianStudio/midaz-console/commit/d03de89febe1f8e1299a25db2b01d789d39b53ee))
+* Upgrade useCreateUpdateSheet for open on routing ([327267b](https://github.com/LerianStudio/midaz-console/commit/327267bdb12d73a3ba04840ce477149fb8dbea3c))
+
 ## [1.24.2](https://github.com/LerianStudio/midaz-console/compare/v1.24.1...v1.24.2) (2025-03-31)
 
 
