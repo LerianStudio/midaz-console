@@ -73,7 +73,9 @@ const Page = () => {
   )
 
   const { handleCreate, handleEdit, sheetProps } =
-    useCreateUpdateSheet<SegmentResponseDto>()
+    useCreateUpdateSheet<SegmentResponseDto>({
+      enableRouting: true
+    })
 
   const table = useReactTable({
     data: segments?.items!,
@@ -109,6 +111,7 @@ const Page = () => {
     segments,
     table,
     handleDialogOpen,
+    handleCreate,
     handleEdit,
     refetch,
     form,

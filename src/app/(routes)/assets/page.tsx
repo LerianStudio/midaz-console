@@ -29,7 +29,11 @@ const Page = () => {
   const [columnFilters, setColumnFilters] = useState<any>([])
   const { currentOrganization, currentLedger } = useOrganization()
   const { showSuccess, showError } = useCustomToast()
-  const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>()
+
+  const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>({
+    enableRouting: true
+  })
+
   const [total, setTotal] = useState(0)
 
   const { form, searchValues, pagination } = useQueryParams({ total })
@@ -124,8 +128,8 @@ const Page = () => {
     assets,
     table,
     handleDialogOpen,
+    handleCreate,
     handleEdit,
-    refetch,
     form,
     pagination,
     total
