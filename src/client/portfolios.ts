@@ -45,6 +45,7 @@ export const usePortfoliosWithAccounts = ({
       `/api/organizations/${organizationId}/ledgers/${ledgerId}/portfolios-accounts`,
       { page, limit }
     ),
+    enabled: !!organizationId && !!ledgerId,
     ...options
   })
 }
