@@ -6,11 +6,11 @@ import { FetchAllLedgersRepository } from '@/core/domain/repositories/ledgers/fe
 import { FetchLedgerByIdRepository } from '@/core/domain/repositories/ledgers/fetch-ledger-by-id-repository'
 import { UpdateLedgerRepository } from '@/core/domain/repositories/ledgers/update-ledger-repository'
 
-import { MidazCreateLedgerRepository } from '../ledgers/midaz-create-ledger-repository'
-import { MidazDeleteLedgerRepository } from '../ledgers/midaz-delete-ledger-repository'
-import { MidazFetchAllLedgersRepository } from '../ledgers/midaz-fetch-all-ledgers-repository'
-import { MidazFetchLedgerByIdRepository } from '../ledgers/midaz-fetch-ledger-by-id-repository'
-import { MidazUpdateLedgerRepository } from '../ledgers/midaz-update-ledger-repository'
+import { MidazCreateLedgerRepository } from '../../midaz/ledgers/midaz-create-ledger-repository'
+import { MidazDeleteLedgerRepository } from '../../midaz/ledgers/midaz-delete-ledger-repository'
+import { MidazFetchAllLedgersRepository } from '../../midaz/ledgers/midaz-fetch-all-ledgers-repository'
+import { MidazFetchLedgerByIdRepository } from '../../midaz/ledgers/midaz-fetch-ledger-by-id-repository'
+import { MidazUpdateLedgerRepository } from '../../midaz/ledgers/midaz-update-ledger-repository'
 
 export const MidazLedgerModule = new ContainerModule((container: Container) => {
   container
