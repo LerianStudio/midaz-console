@@ -22,7 +22,6 @@ export class OtelTracerProvider {
 
   constructor() {
     if (this.isTelemetryEnabled) {
-      this.isTelemetryEnabled = true
       this.otelTracer = trace.getTracer('midaz-console')
     }
   }

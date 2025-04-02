@@ -83,7 +83,7 @@ export class HttpFetchUtils {
     httpFetchOptions: HttpFetchOptions,
     spanName: string
   ): Promise<T> {
-    const customSpan = this.otelTracerProvider.startCustomSpan(spanName)
+    this.otelTracerProvider.startCustomSpan(spanName)
 
     const response = await fetch(httpFetchOptions.url, {
       method: httpFetchOptions.method,
