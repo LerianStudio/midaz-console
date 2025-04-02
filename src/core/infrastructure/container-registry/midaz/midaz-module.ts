@@ -1,6 +1,5 @@
 import { AccountRepository } from '@/core/domain/repositories/account-repository'
 import { Container, ContainerModule } from '../../utils/di/container'
-import { MidazPortfolioModule } from './portfolio-module'
 import { MidazTransactionModule } from './transaction-module'
 import { BalanceRepository } from '@/core/domain/repositories/balance-repository'
 import { MidazBalanceRepository } from '@/core/infrastructure/midaz/repositories/midaz-balance-repository'
@@ -13,13 +12,17 @@ import { SegmentRepository } from '@/core/domain/repositories/segment-repository
 import { MidazSegmentRepository } from '@/core/infrastructure/midaz/repositories/midaz-segment-repository'
 import { AssetRepository } from '@/core/domain/repositories/asset-repository'
 import { MidazAssetRepository } from '@/core/infrastructure/midaz/repositories/midaz-asset-repository'
+import { PortfolioRepository } from '@/core/domain/repositories/portfolio-repository'
+import { MidazPortfolioRepository } from '@/core/infrastructure/midaz/repositories/midaz-portfolio-repository'
 
 export const MidazModule = new ContainerModule((container: Container) => {
   container
     .bind<OrganizationRepository>(OrganizationRepository)
     .to(MidazOrganizationRepository)
   container.bind<LedgerRepository>(LedgerRepository).to(MidazLedgerRepository)
-  container.load(MidazPortfolioModule)
+  container
+    .bind<PortfolioRepository>(PortfolioRepository)
+    .to(MidazPortfolioRepository)
   container
     .bind<AccountRepository>(AccountRepository)
     .to(MidazAccountRepository)
