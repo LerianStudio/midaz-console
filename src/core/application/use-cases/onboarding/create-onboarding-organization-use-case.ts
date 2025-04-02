@@ -1,4 +1,4 @@
-import { CreateOrganizationRepository } from '@/core/domain/repositories/organizations/create-organization-repository'
+import { OrganizationRepository } from '@/core/domain/repositories/organization-repository'
 import type { CreateOrganizationDto } from '../../dto/create-organization-dto'
 import { OrganizationResponseDto } from '../../dto/organization-response-dto'
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
@@ -18,8 +18,8 @@ export class CreateOnboardingOrganizationUseCase
   implements CreateOnboardingOrganization
 {
   constructor(
-    @inject(CreateOrganizationRepository)
-    private readonly createOrganizationRepository: CreateOrganizationRepository
+    @inject(OrganizationRepository)
+    private readonly organizationRepository: OrganizationRepository
   ) {}
 
   @LogOperation({ layer: 'application' })
@@ -37,7 +37,7 @@ export class CreateOnboardingOrganizationUseCase
     })
 
     const organizationCreated =
-      await this.createOrganizationRepository.create(organizationEntity)
+      await this.organizationRepository.create(organizationEntity)
 
     return OrganizationMapper.toResponseDto(organizationCreated)
   }

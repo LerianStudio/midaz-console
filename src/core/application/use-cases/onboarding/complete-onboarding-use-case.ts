@@ -4,9 +4,7 @@ import { CreateLedgerRepository } from '@/core/domain/repositories/ledgers/creat
 import { LedgerResponseDto } from '../../dto/ledger-response-dto'
 import { inject, injectable } from 'inversify'
 import { LedgerMapper } from '../../mappers/ledger-mapper'
-import { UpdateOrganizationRepository } from '@/core/domain/repositories/organizations/update-organization-repository'
-import { FetchOrganizationByIdRepository } from '@/core/domain/repositories/organizations/fetch-organization-by-id-repository'
-import { omit } from 'lodash'
+import { OrganizationRepository } from '@/core/domain/repositories/organization-repository'
 import { LogOperation } from '../../decorators/log-operation'
 
 export interface CompleteOnboarding {
@@ -19,10 +17,8 @@ export interface CompleteOnboarding {
 @injectable()
 export class CompleteOnboardingUseCase implements CompleteOnboarding {
   constructor(
-    @inject(FetchOrganizationByIdRepository)
-    private readonly fetchOrganizationByIdRepository: FetchOrganizationByIdRepository,
-    @inject(UpdateOrganizationRepository)
-    private readonly updateOrganizationRepository: UpdateOrganizationRepository,
+    @inject(OrganizationRepository)
+    private readonly organizationRepository: OrganizationRepository,
     @inject(CreateLedgerRepository)
     private readonly createLedgerRepository: CreateLedgerRepository
   ) {}
@@ -33,9 +29,9 @@ export class CompleteOnboardingUseCase implements CompleteOnboarding {
     ledger: CreateLedgerDto
   ): Promise<LedgerResponseDto> {
     const organization =
-      await this.fetchOrganizationByIdRepository.fetchById(organizationId)
+      await this.organizationRepository.fetchById(organizationId)
 
-    await this.updateOrganizationRepository.updateOrganization(organizationId, {
+    await this.organizationRepository.update(organizationId, {
       metadata: {
         ...organization.metadata,
         onboarding: null
