@@ -2,7 +2,6 @@ import { AccountRepository } from '@/core/domain/repositories/account-repository
 import { Container, ContainerModule } from '../../utils/di/container'
 import { MidazAssetModule } from './asset-module'
 import { MidazPortfolioModule } from './portfolio-module'
-import { MidazSegmentModule } from './segment-module'
 import { MidazTransactionModule } from './transaction-module'
 import { BalanceRepository } from '@/core/domain/repositories/balance-repository'
 import { MidazBalanceRepository } from '@/core/infrastructure/midaz/repositories/midaz-balance-repository'
@@ -11,6 +10,8 @@ import { OrganizationRepository } from '@/core/domain/repositories/organization-
 import { MidazOrganizationRepository } from '@/core/infrastructure/midaz/repositories/midaz-organization-repository'
 import { LedgerRepository } from '@/core/domain/repositories/ledger-repository'
 import { MidazLedgerRepository } from '@/core/infrastructure/midaz/repositories/midaz-ledger-repository'
+import { SegmentRepository } from '@/core/domain/repositories/segment-repository'
+import { MidazSegmentRepository } from '@/core/infrastructure/midaz/repositories/midaz-segment-repository'
 
 export const MidazModule = new ContainerModule((container: Container) => {
   container
@@ -22,7 +23,9 @@ export const MidazModule = new ContainerModule((container: Container) => {
     .bind<AccountRepository>(AccountRepository)
     .to(MidazAccountRepository)
   container.load(MidazAssetModule)
-  container.load(MidazSegmentModule)
+  container
+    .bind<SegmentRepository>(SegmentRepository)
+    .to(MidazSegmentRepository)
   container.load(MidazTransactionModule)
 
   container
