@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify'
-import { FetchAllTransactionsRepository } from '@/core/domain/repositories/transactions/fetch-all-transactions-repository'
+import { TransactionRepository } from '@/core/domain/repositories/transaction-repository'
 import { TransactionMapper } from '../../mappers/transaction-mapper'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { TransactionResponseDto } from '../../dto/transaction-dto'
@@ -17,8 +17,8 @@ export interface FetchAllTransactions {
 @injectable()
 export class FetchAllTransactionsUseCase implements FetchAllTransactions {
   constructor(
-    @inject(FetchAllTransactionsRepository)
-    private readonly fetchAllTransactionsRepository: FetchAllTransactionsRepository
+    @inject(TransactionRepository)
+    private readonly transactionRepository: TransactionRepository
   ) {}
 
   @LogOperation({ layer: 'application' })
@@ -28,13 +28,12 @@ export class FetchAllTransactionsUseCase implements FetchAllTransactions {
     limit: number,
     page: number
   ): Promise<PaginationEntity<TransactionResponseDto>> {
-    const transactionsResult =
-      await this.fetchAllTransactionsRepository.fetchAll(
-        organizationId,
-        ledgerId,
-        limit,
-        page
-      )
+    const transactionsResult = await this.transactionRepository.fetchAll(
+      organizationId,
+      ledgerId,
+      limit,
+      page
+    )
 
     return TransactionMapper.toPaginatedResponseDto(transactionsResult)
   }
