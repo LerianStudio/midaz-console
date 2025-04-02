@@ -1,4 +1,4 @@
-import { FetchAllAssetsRepository } from '@/core/domain/repositories/assets/fetch-all-assets-repository'
+import { AssetRepository } from '@/core/domain/repositories/asset-repository'
 import { LedgerRepository } from '@/core/domain/repositories/ledger-repository'
 import { LedgersViewResponseDTO } from '../../dto/ledgers-view-dto'
 import { PaginationDto } from '../../dto/pagination-dto'
@@ -22,8 +22,8 @@ export class FetchAllLedgersAssetsUseCase implements FetchAllLedgersAssets {
   constructor(
     @inject(LedgerRepository)
     private readonly LedgerRepository: LedgerRepository,
-    @inject(FetchAllAssetsRepository)
-    private readonly fetchAllAssetsRepository: FetchAllAssetsRepository
+    @inject(AssetRepository)
+    private readonly assetRepository: AssetRepository
   ) {}
 
   @LogOperation({ layer: 'application' })
@@ -46,7 +46,7 @@ export class FetchAllLedgersAssetsUseCase implements FetchAllLedgersAssets {
     ledgersAssetResponseDTO.items = await Promise.all(
       ledgerItems.map(async (ledger) => {
         const assetsResult: PaginationEntity<AssetEntity> =
-          await this.fetchAllAssetsRepository.fetchAll(
+          await this.assetRepository.fetchAll(
             organizationId,
             ledger.id!,
             limit,
