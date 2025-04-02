@@ -7,7 +7,7 @@ import {
 } from '@opentelemetry/api'
 import { injectable } from 'inversify'
 
-export type spanData = {
+export type SpanData = {
   attributes: { [key: string]: any }
   status: SpanStatus
 }
@@ -21,6 +21,9 @@ export class OtelTracerProvider {
   private span: Span | undefined
 
   constructor() {
+    console.log('Initializing OtelTracerProvider')
+    console.log('Telemetry enabled:', this.isTelemetryEnabled)
+
     if (this.isTelemetryEnabled) {
       this.otelTracer = trace.getTracer('midaz-console')
     }
@@ -32,13 +35,13 @@ export class OtelTracerProvider {
     }
   }
 
-  public endCustomSpan(spanData?: spanData): void {
-    if (this.isTelemetryEnabled && this.otelTracer) {
+  public endCustomSpan(spanData?: SpanData): void {
+    if (this.isTelemetryEnabled && this.otelTracer && this.span) {
       this.setCustomSpanAttributes(spanData?.attributes ?? {})
       this.setCustomSpanStatus(
         spanData?.status ?? { code: SpanStatusCode.UNSET }
       )
-      this.span!.end()
+      this.endSpan()
     }
   }
 
@@ -51,6 +54,12 @@ export class OtelTracerProvider {
   private setCustomSpanStatus(spanStatus: SpanStatus) {
     if (this.isTelemetryEnabled && this.otelTracer) {
       this.span?.setStatus(spanStatus)
+    }
+  }
+
+  private endSpan() {
+    if (this.span) {
+      this.span.end()
     }
   }
 }

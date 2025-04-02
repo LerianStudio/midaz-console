@@ -1,89 +1,92 @@
-// import { OtelTracerProvider, spanData } from './otel-tracer-provider'
-// import { Span, trace, Tracer, SpanStatusCode } from '@opentelemetry/api'
+import { OtelTracerProvider, SpanData } from './otel-tracer-provider'
+import { trace, Span, SpanStatusCode } from '@opentelemetry/api'
 
-// jest.mock('@opentelemetry/api', () => ({
-//   trace: {
-//     getTracer: jest.fn()
-//   }
-// }))
+jest.mock('@opentelemetry/api', () => ({
+  trace: {
+    getTracer: jest.fn()
+  },
+  SpanStatusCode: {
+    OK: 'OK',
+    UNSET: 'UNSET'
+  }
+}))
 
-// describe('OtelTracerProvider', () => {
-//   let tracerProvider: OtelTracerProvider
-//   let mockTracer: Tracer
-//   let mockSpan: Span
+describe('OtelTracerProvider', () => {
+  let originalEnv: NodeJS.ProcessEnv
+  let mockSpan: jest.Mocked<Span>
 
-//   beforeEach(() => {
-//     mockSpan = {
-//       setAttributes: jest.fn(),
-//       setStatus: jest.fn(),
-//       end: jest.fn()
-//     } as unknown as Span
+  beforeAll(() => {
+    originalEnv = { ...process.env }
+  })
 
-//     mockTracer = {
-//       startSpan: jest.fn().mockReturnValue(mockSpan)
-//     } as unknown as Tracer
-//     ;(trace.getTracer as jest.Mock).mockReturnValue(mockTracer)
+  afterAll(() => {
+    process.env = originalEnv
+  })
 
-//     process.env.ENABLE_TELEMETRY = 'true'
-//     tracerProvider = new OtelTracerProvider()
-//   })
+  beforeEach(() => {
+    jest.resetModules()
 
-//   afterEach(() => {
-//     jest.clearAllMocks()
-//     delete process.env.ENABLE_TELEMETRY
-//   })
+    mockSpan = {
+      setAttributes: jest.fn(),
+      setStatus: jest.fn(),
+      end: jest.fn()
+    } as unknown as jest.Mocked<Span>
+    ;(trace.getTracer as jest.Mock).mockReturnValue({
+      startSpan: jest.fn().mockReturnValue(mockSpan)
+    })
+  })
 
-//   it('should initialize telemetry when ENABLE_TELEMETRY is true', () => {
-//     expect(trace.getTracer).toHaveBeenCalledWith('midaz-console')
-//   })
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
 
-//   it('should start a custom span when telemetry is enabled', () => {
-//     const spanName = 'test-span'
-//     tracerProvider.startCustomSpan(spanName)
+  it('should initialize tracer when telemetry is enabled', () => {
+    process.env.ENABLE_TELEMETRY = 'true'
 
-//     expect(mockTracer.startSpan).toHaveBeenCalledWith(spanName)
-//   })
+    const provider = new OtelTracerProvider()
 
-//   it('should not start a custom span when telemetry is disabled', () => {
-//     process.env.ENABLE_TELEMETRY = 'false'
-//     tracerProvider = new OtelTracerProvider()
+    expect(provider).toBeDefined()
+    expect(trace.getTracer).toHaveBeenCalledWith('midaz-console')
+  })
 
-//     tracerProvider.startCustomSpan('test-span')
+  it('should not initialize tracer when telemetry is disabled', () => {
+    process.env.ENABLE_TELEMETRY = 'false'
 
-//     expect(mockTracer.startSpan).not.toHaveBeenCalled()
-//   })
+    const provider = new OtelTracerProvider()
 
-//   it('should end a custom span and set attributes and status', () => {
-//     const spanData: spanData = {
-//       attributes: { key: 'value' },
-//       status: { code: SpanStatusCode.OK }
-//     }
+    expect(trace.getTracer).not.toHaveBeenCalled()
+    expect(provider).toBeDefined()
+  })
 
-//     tracerProvider.startCustomSpan('test-span')
-//     tracerProvider.endCustomSpan(spanData)
+  it('should start a custom span when telemetry is enabled', () => {
+    process.env.ENABLE_TELEMETRY = 'true'
 
-//     expect(mockSpan.setAttributes).toHaveBeenCalledWith(spanData.attributes)
-//     expect(mockSpan.setStatus).toHaveBeenCalledWith(spanData.status)
-//     expect(mockSpan.end).toHaveBeenCalled()
-//   })
+    const provider = new OtelTracerProvider()
+    provider.startCustomSpan('test-span')
 
-//   it('should end a custom span with default status when no spanData is provided', () => {
-//     tracerProvider.startCustomSpan('test-span')
-//     tracerProvider.endCustomSpan()
+    expect(trace.getTracer('midaz-console').startSpan).toHaveBeenCalledWith(
+      'test-span'
+    )
 
-//     expect(mockSpan.setAttributes).toHaveBeenCalledWith({})
-//     expect(mockSpan.setStatus).toHaveBeenCalledWith({
-//       code: SpanStatusCode.UNSET
-//     })
-//     expect(mockSpan.end).toHaveBeenCalled()
-//   })
+    const testSpanData: SpanData = {
+      attributes: { foo: 'bar' },
+      status: { code: SpanStatusCode.OK }
+    }
 
-//   it('should not end a span if telemetry is disabled', () => {
-//     process.env.ENABLE_TELEMETRY = 'false'
-//     tracerProvider = new OtelTracerProvider()
+    provider.endCustomSpan(testSpanData)
 
-//     tracerProvider.endCustomSpan()
+    expect(mockSpan.setAttributes).toHaveBeenCalledWith(testSpanData.attributes)
+    expect(mockSpan.setStatus).toHaveBeenCalledWith(testSpanData.status)
+    expect(mockSpan.end).toHaveBeenCalled()
+  })
 
-//     expect(mockSpan.end).not.toHaveBeenCalled()
-//   })
-// })
+  it('should not start a custom span when telemetry is disabled', () => {
+    process.env.ENABLE_TELEMETRY = 'false'
+
+    const provider = new OtelTracerProvider()
+
+    provider.startCustomSpan('span-disables')
+
+    expect(trace.getTracer('midaz-console').startSpan).not.toHaveBeenCalled()
+  })
+})
