@@ -1,8 +1,8 @@
 import { BalanceEntity } from '@/core/domain/entities/balance-entity'
 import { BalanceRepository } from '@/core/domain/repositories/balance-repository'
 import { inject, injectable } from 'inversify'
-import { ContainerTypeMidazHttpFetch } from '../container-registry/midaz-http-fetch-module'
-import { HTTP_METHODS, HttpFetchUtils } from '../utils/http-fetch-utils'
+import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
+import { HTTP_METHODS, HttpFetchUtils } from '../../utils/http-fetch-utils'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 
 @injectable()
