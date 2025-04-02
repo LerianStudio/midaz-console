@@ -1,6 +1,6 @@
 import { AsyncLocalStorage } from 'async_hooks'
 import { inject, injectable } from 'inversify'
-import { LoggerRepository } from '@/core/domain/repositories/logger/logger-repository'
+import { LoggerRepository } from '@/core/domain/repositories/logger-repository'
 
 /**
  * LoggerAggregator
