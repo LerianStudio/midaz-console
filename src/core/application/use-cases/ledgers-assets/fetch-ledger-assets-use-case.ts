@@ -1,5 +1,5 @@
 import { FetchAllAssetsRepository } from '@/core/domain/repositories/assets/fetch-all-assets-repository'
-import { FetchAllLedgersRepository } from '@/core/domain/repositories/ledgers/fetch-all-ledgers-repository'
+import { LedgerRepository } from '@/core/domain/repositories/ledger-repository'
 import { LedgersViewResponseDTO } from '../../dto/ledgers-view-dto'
 import { PaginationDto } from '../../dto/pagination-dto'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
@@ -20,8 +20,8 @@ export interface FetchAllLedgersAssets {
 @injectable()
 export class FetchAllLedgersAssetsUseCase implements FetchAllLedgersAssets {
   constructor(
-    @inject(FetchAllLedgersRepository)
-    private readonly fetchAllLedgersRepository: FetchAllLedgersRepository,
+    @inject(LedgerRepository)
+    private readonly LedgerRepository: LedgerRepository,
     @inject(FetchAllAssetsRepository)
     private readonly fetchAllAssetsRepository: FetchAllAssetsRepository
   ) {}
@@ -33,7 +33,7 @@ export class FetchAllLedgersAssetsUseCase implements FetchAllLedgersAssets {
     page: number
   ): Promise<PaginationDto<LedgersViewResponseDTO>> {
     const ledgersResult: PaginationEntity<LedgerEntity> =
-      await this.fetchAllLedgersRepository.fetchAll(organizationId, limit, page)
+      await this.LedgerRepository.fetchAll(organizationId, limit, page)
 
     let ledgersAssetResponseDTO: PaginationDto<LedgersViewResponseDTO> = {
       items: [],
