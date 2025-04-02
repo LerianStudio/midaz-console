@@ -6,11 +6,11 @@ import { FetchAllOrganizationsRepository } from '@/core/domain/repositories/orga
 import { FetchOrganizationByIdRepository } from '@/core/domain/repositories/organizations/fetch-organization-by-id-repository'
 import { UpdateOrganizationRepository } from '@/core/domain/repositories/organizations/update-organization-repository'
 
-import { MidazCreateOrganizationRepository } from '../organizations/midaz-create-organization-repository'
-import { MidazDeleteOrganizationRepository } from '../organizations/midaz-delete-organization-repository'
-import { MidazFetchAllOrganizationsRepository } from '../organizations/midaz-fetch-all-organizations-repository'
-import { MidazFetchOrganizationByIdRepository } from '../organizations/midaz-fetch-organization-by-id-repository'
-import { MidazUpdateOrganizationRepository } from '../organizations/midaz-update-organization-repository'
+import { MidazCreateOrganizationRepository } from '@/core/infrastructure/midaz/organizations/midaz-create-organization-repository'
+import { MidazDeleteOrganizationRepository } from '@/core/infrastructure/midaz/organizations/midaz-delete-organization-repository'
+import { MidazFetchAllOrganizationsRepository } from '@/core/infrastructure/midaz/organizations/midaz-fetch-all-organizations-repository'
+import { MidazFetchOrganizationByIdRepository } from '@/core/infrastructure/midaz/organizations/midaz-fetch-organization-by-id-repository'
+import { MidazUpdateOrganizationRepository } from '@/core/infrastructure/midaz/organizations/midaz-update-organization-repository'
 
 export const MidazOrganizationModule = new ContainerModule(
   (container: Container) => {
