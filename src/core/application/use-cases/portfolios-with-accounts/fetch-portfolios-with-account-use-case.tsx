@@ -1,4 +1,4 @@
-import { FetchAllAccountsRepository } from '@/core/domain/repositories/accounts/fetch-all-accounts-repository'
+import { AccountRepository } from '@/core/domain/repositories/account-repository'
 import { FetchAllPortfoliosRepository } from '@/core/domain/repositories/portfolios/fetch-all-portfolio-repository'
 import { PaginationDto } from '../../dto/pagination-dto'
 import { AccountMapper } from '../../mappers/account-mapper'
@@ -23,8 +23,8 @@ export class FetchPortfoliosWithAccountsUseCase
   constructor(
     @inject(FetchAllPortfoliosRepository)
     private readonly fetchAllPortfoliosRepository: FetchAllPortfoliosRepository,
-    @inject(FetchAllAccountsRepository)
-    private readonly fetchAllAccountsRepository: FetchAllAccountsRepository
+    @inject(AccountRepository)
+    private readonly accountRepository: AccountRepository
   ) {}
 
   @LogOperation({ layer: 'application' })
@@ -41,7 +41,7 @@ export class FetchPortfoliosWithAccountsUseCase
       page
     )
 
-    const allAccountsResult = await this.fetchAllAccountsRepository.fetchAll(
+    const allAccountsResult = await this.accountRepository.fetchAll(
       organizationId,
       ledgerId,
       limit,
