@@ -83,7 +83,7 @@ export class HttpFetchUtils {
     httpFetchOptions: HttpFetchOptions,
     spanName: string
   ): Promise<T> {
-    const customSpan = this.otelTracerProvider.startCustomSpan(spanName)
+    this.otelTracerProvider.startCustomSpan(spanName)
 
     const response = await fetch(httpFetchOptions.url, {
       method: httpFetchOptions.method,
@@ -91,17 +91,16 @@ export class HttpFetchUtils {
       headers: httpFetchOptions.headers
     })
 
-    this.otelTracerProvider.endCustomSpan(
-      customSpan
-        .setAttributes({
-          'http.url': httpFetchOptions.url,
-          'http.method': httpFetchOptions.method,
-          'http.status_code': response.status
-        })
-        .setStatus({
-          code: response.ok ? SpanStatusCode.OK : SpanStatusCode.ERROR
-        })
-    )
+    this.otelTracerProvider.endCustomSpan({
+      attributes: {
+        'http.url': httpFetchOptions.url,
+        'http.method': httpFetchOptions.method,
+        'http.status_code': response.status
+      },
+      status: {
+        code: response.ok ? SpanStatusCode.OK : SpanStatusCode.ERROR
+      }
+    })
 
     if (response?.headers?.get('content-type')?.includes('text/plain')) {
       const midazResponse = await response.text()
