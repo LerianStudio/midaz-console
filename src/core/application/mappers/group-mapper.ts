@@ -6,7 +6,6 @@ export class GroupMapper {
     return {
       id: group.id!,
       name: group.name,
-      users: group.users,
       createdAt: group.createdAt!
     }
   }

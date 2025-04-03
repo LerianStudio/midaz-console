@@ -32,10 +32,11 @@ import ConfirmationDialog from '@/components/confirmation-dialog'
 import { Badge } from '@/components/ui/badge'
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { EntityDataTable } from '@/components/entity-data-table'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export const OrganizationsTabContent = () => {
   const intl = useIntl()
-  const { data, refetch } = useListOrganizations({})
+  const { data, refetch, isLoading } = useListOrganizations({})
   const router = useRouter()
 
   const { mutate: deleteOrganization, isPending: deletePending } =
@@ -87,8 +88,9 @@ export const OrganizationsTabContent = () => {
             defaultMessage: 'View and manage Organizations.'
           })}
         />
+
         <EntityBox.Actions>
-          <Button onClick={() => handleCreateOrganization()} icon={<Plus />}>
+          <Button onClick={() => handleCreateOrganization()}>
             {intl.formatMessage({
               id: 'organizations.listingTemplate.addButton',
               defaultMessage: 'New Organization'
@@ -104,11 +106,7 @@ export const OrganizationsTabContent = () => {
             defaultMessage: "You haven't created any Organization yet"
           })}
         >
-          <Button
-            variant="outline"
-            onClick={handleCreateOrganization}
-            icon={<Plus />}
-          >
+          <Button variant="outline" onClick={handleCreateOrganization}>
             {intl.formatMessage({
               id: 'common.create',
               defaultMessage: 'Create'
@@ -116,8 +114,11 @@ export const OrganizationsTabContent = () => {
           </Button>
         </EmptyResource>
       )}
-      <EntityDataTable.Root>
-        {data?.items && data.items.length > 0 && (
+
+      {isLoading && <Skeleton className="mt-4 h-[390px] w-full bg-zinc-200" />}
+
+      {!isLoading && data?.items && data.items.length > 0 && (
+        <EntityDataTable.Root>
           <TableContainer>
             <Table>
               <TableHeader>
@@ -186,10 +187,13 @@ export const OrganizationsTabContent = () => {
                             })}
                       </Badge>
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="secondary">
+                          <Button
+                            variant="secondary"
+                            className="h-auto w-max p-2"
+                          >
                             <MoreVertical size={16} onClick={() => {}} />
                           </Button>
                         </DropdownMenuTrigger>
@@ -219,24 +223,26 @@ export const OrganizationsTabContent = () => {
               </TableBody>
             </Table>
           </TableContainer>
-        )}
 
-        <EntityDataTable.Footer>
-          <EntityDataTable.FooterText>
-            {intl.formatMessage(
-              {
-                id: 'organizations.showing',
-                defaultMessage:
-                  'Showing {count} {number, plural, =0 {organizations} one {organization} other {organizations}}.'
-              },
-              {
-                number: data?.items?.length,
-                count: <span className="font-bold">{data?.items?.length}</span>
-              }
-            )}
-          </EntityDataTable.FooterText>
-        </EntityDataTable.Footer>
-      </EntityDataTable.Root>
+          <EntityDataTable.Footer>
+            <EntityDataTable.FooterText>
+              {intl.formatMessage(
+                {
+                  id: 'organizations.showing',
+                  defaultMessage:
+                    'Showing {count} {number, plural, =0 {organizations} one {organization} other {organizations}}.'
+                },
+                {
+                  number: data?.items?.length,
+                  count: (
+                    <span className="font-bold">{data?.items?.length}</span>
+                  )
+                }
+              )}
+            </EntityDataTable.FooterText>
+          </EntityDataTable.Footer>
+        </EntityDataTable.Root>
+      )}
     </div>
   )
 }
