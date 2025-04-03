@@ -52,6 +52,7 @@ export const useListSegments = ({
       `/api/organizations/${organizationId}/ledgers/${ledgerId}/segments`,
       { limit, page }
     ),
+    enabled: !!organizationId && !!ledgerId,
     placeholderData: keepPreviousData,
     ...options
   })
