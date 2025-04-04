@@ -20,6 +20,8 @@ import { UserResponseDto } from '@/core/application/dto/user-dto'
 import { SelectItem } from '@/components/ui/select'
 import { user } from '@/schema/user'
 import { useListGroups } from '@/client/groups'
+import useCustomToast from '@/hooks/use-custom-toast'
+import { useCreateUser } from '@/client/users'
 
 export type UsersSheetProps = DialogProps & {
   mode: 'create' | 'edit'
@@ -28,21 +30,25 @@ export type UsersSheetProps = DialogProps & {
 }
 
 const initialValues = {
-  name: '',
+  firstName: '',
   lastName: '',
   username: '',
-  email: '',
   password: '',
-  role: ''
+  email: '',
+  groups: []
 }
 
 const FormSchema = z.object({
-  name: user.name,
+  firstName: user.firstName,
   lastName: user.lastName,
   username: user.username,
-  email: user.email,
   password: user.password,
-  role: user.role
+  email: user.email,
+  groups: z
+    .union([z.string(), z.array(z.string())])
+    .transform((value) =>
+      Array.isArray(value) ? value : [value].filter(Boolean)
+    )
 })
 
 type FormData = z.infer<typeof FormSchema>
@@ -55,7 +61,37 @@ export const UsersSheet = ({
   ...others
 }: UsersSheetProps) => {
   const intl = useIntl()
+  const { showSuccess, showError } = useCustomToast()
   const { data: groups } = useListGroups({})
+
+  const { mutate: createUser, isPending: createPending } = useCreateUser({
+    onSuccess: async (response: unknown) => {
+      const responseData = response as any
+      const newUser = responseData.userCreated as UserResponseDto
+
+      await onSuccess?.()
+      onOpenChange?.(false)
+
+      showSuccess(
+        intl.formatMessage(
+          {
+            id: 'users.toast.create.success',
+            defaultMessage: 'User {userName} created successfully'
+          },
+          { userName: `${newUser.firstName} ${newUser.lastName}` }
+        )
+      )
+    },
+    onError: () => {
+      onOpenChange?.(false)
+      showError(
+        intl.formatMessage({
+          id: 'users.toast.create.error',
+          defaultMessage: 'Error creating User'
+        })
+      )
+    }
+  })
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -66,7 +102,7 @@ export const UsersSheet = ({
 
   const handleSubmit = (data: FormData) => {
     if (mode === 'create') {
-      console.log(data)
+      createUser(data)
     } else if (mode === 'edit') {
       console.log(data)
     }
@@ -97,8 +133,18 @@ export const UsersSheet = ({
 
         {mode === 'edit' && (
           <SheetHeader>
-            <SheetTitle>x</SheetTitle>
-            <SheetDescription>x</SheetDescription>
+            <SheetTitle>
+              {intl.formatMessage({
+                id: 'users.sheetEdit.title',
+                defaultMessage: 'Edit User'
+              })}
+            </SheetTitle>
+            <SheetDescription>
+              {intl.formatMessage({
+                id: 'users.sheetEdit.description',
+                defaultMessage: "View and edit the user's fields."
+              })}
+            </SheetDescription>
           </SheetHeader>
         )}
 
@@ -110,7 +156,7 @@ export const UsersSheet = ({
             <div className="flex flex-grow flex-col gap-4">
               <div className="grid grid-cols-2 gap-4">
                 <InputField
-                  name="name"
+                  name="firstName"
                   label={intl.formatMessage({
                     id: 'entity.user.name',
                     defaultMessage: 'Name'
@@ -159,7 +205,7 @@ export const UsersSheet = ({
               />
 
               <SelectField
-                name="role"
+                name="groups"
                 label={intl.formatMessage({
                   id: 'common.role',
                   defaultMessage: 'Role'
@@ -169,11 +215,10 @@ export const UsersSheet = ({
                   defaultMessage: 'Select'
                 })}
                 control={form.control}
-                disabled={mode === 'edit'}
                 required
               >
                 {groups?.map((group: any) => (
-                  <SelectItem key={group.id} value={group.id || group.name}>
+                  <SelectItem key={group.id} value={group.id}>
                     {group.name}
                   </SelectItem>
                 ))}
@@ -213,7 +258,7 @@ export const UsersSheet = ({
                 type="submit"
                 disabled={!isDirty}
                 fullWidth
-                loading={false}
+                loading={createPending}
               >
                 {intl.formatMessage({
                   id: 'common.save',

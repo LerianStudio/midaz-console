@@ -26,18 +26,43 @@ import ConfirmationDialog from '@/components/confirmation-dialog'
 import { EntityDataTable } from '@/components/entity-data-table'
 import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
 import { UsersSheet } from './users-sheet'
-import { useListUsers } from '@/client/users'
+import { useDeleteUser, useListUsers } from '@/client/users'
 import { Skeleton } from '@/components/ui/skeleton'
+import useCustomToast from '@/hooks/use-custom-toast'
 
 export const UsersTabContent = () => {
   const intl = useIntl()
   const { data: users, refetch, isLoading } = useListUsers({})
+  const { showSuccess, showError } = useCustomToast()
   const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>({
     enableRouting: true
   })
 
+  const { mutate: deleteUser, isPending: deletePending } = useDeleteUser({
+    onSuccess: () => {
+      handleDialogClose()
+      showSuccess(
+        intl.formatMessage({
+          id: 'users.toast.delete.success',
+          defaultMessage: 'User successfully deleted'
+        })
+      )
+    },
+    onError: () => {
+      handleDialogClose()
+      showError(
+        intl.formatMessage({
+          id: 'users.toast.delete.error',
+          defaultMessage: 'Error deleting User'
+        })
+      )
+    }
+  })
+
   const { handleDialogOpen, dialogProps, handleDialogClose } = useConfirmDialog(
-    {}
+    {
+      onConfirm: (id: string) => deleteUser({ id })
+    }
   )
 
   return (
@@ -48,11 +73,11 @@ export const UsersTabContent = () => {
           defaultMessage: 'Confirm Deletion'
         })}
         description={intl.formatMessage({
-          id: 'organizations.delete.description',
+          id: 'users.delete.description',
           defaultMessage:
-            'You are about to permanently delete this organization. This action cannot be undone. Do you wish to continue?'
+            'You are about to permanently delete this user. This action cannot be undone. Do you wish to continue?'
         })}
-        loading={false}
+        loading={deletePending}
         {...dialogProps}
       />
 
@@ -120,7 +145,9 @@ export const UsersTabContent = () => {
               <TableBody>
                 {users?.map((user: any) => (
                   <TableRow key={user.id}>
-                    <TableCell>{user.firstName}</TableCell>
+                    <TableCell>
+                      {user.firstName} {user.lastName}
+                    </TableCell>
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.groups[0]}</TableCell>
                     <TableCell align="center">
@@ -176,7 +203,7 @@ export const UsersTabContent = () => {
         </EntityDataTable.Root>
       )}
 
-      <UsersSheet {...sheetProps} />
+      <UsersSheet {...sheetProps} onSuccess={refetch} />
     </div>
   )
 }

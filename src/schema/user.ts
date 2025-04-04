@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-const name = z.string().nullable().optional()
+const firstName = z.string().nullable().optional()
 
 const lastName = z.string().nullable().optional()
 
@@ -10,13 +10,13 @@ const email = z.string().email()
 
 const password = z.string().min(8)
 
-const role = z.string().min(1).max(255)
+const groups = z.array(z.string().min(1).max(255))
 
 export const user = {
-  name,
+  firstName,
   lastName,
   username,
   email,
   password,
-  role
+  groups
 }
