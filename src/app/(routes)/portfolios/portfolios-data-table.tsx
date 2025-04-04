@@ -33,12 +33,12 @@ import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
 import { IdTableCell } from '@/components/table/id-table-cell'
 import { PortfolioType } from '@/types/portfolio-type'
-import { PortfolioResponseDto } from '@/core/application/dto/portfolios-dto'
-import { PortfolioViewResponseDTO } from '@/core/application/dto/portfolio-view-dto'
+import { PortfolioResponseDto } from '@/core/application/dto/portfolio-dto'
+import { PortfolioResponseDto } from '@/core/application/dto/portfolio-dto'
 import { MetadataTableCell } from '@/components/table/metadata-table-cell'
 
 type PortfoliosDataTableProps = {
-  portfolios: PaginationDto<PortfolioViewResponseDTO> | undefined
+  portfolios: PaginationDto<PortfolioResponseDto> | undefined
   form: UseFormReturn<any>
   total: number
   pagination: PaginationProps
@@ -48,7 +48,7 @@ type PortfoliosDataTableProps = {
 }
 
 type PortfoliosRowProps = {
-  portfolio: Row<PortfolioViewResponseDTO>
+  portfolio: Row<PortfolioResponseDto>
   handleDialogOpen: (id: string) => void
   handleEdit: (portfolio: PortfolioType) => void
 }

@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify'
 import { AuthPermissionRepository } from '@/core/domain/repositories/auth/auth-permission-repository'
-import { AuthPermissionResponseDto } from '../../dto/auth-permission-dto'
+import { AuthPermissionResponseDto } from '../../dto/auth-dto'
 import { AuthPermissionMapper } from '../../mappers/auth-permission-mapper'
 import { LogOperation } from '../../decorators/log-operation'
 

@@ -4,7 +4,7 @@ import {
   CreatePortfolioDto,
   PortfolioResponseDto,
   UpdatePortfolioDto
-} from '../../dto/portfolios-dto'
+} from '../../dto/portfolio-dto'
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { inject, injectable } from 'inversify'
 import { LogOperation } from '../../decorators/log-operation'

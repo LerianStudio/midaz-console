@@ -1,5 +1,5 @@
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
-import { CreatePortfolioDto, PortfolioResponseDto } from '../dto/portfolios-dto'
+import { CreatePortfolioDto, PortfolioResponseDto } from '../dto/portfolio-dto'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { PaginationMapper } from './pagination-mapper'
 import { AccountMapper } from './account-mapper'

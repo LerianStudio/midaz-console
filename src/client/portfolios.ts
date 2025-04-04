@@ -1,6 +1,6 @@
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
-import { PortfolioViewResponseDTO } from '@/core/application/dto/portfolio-view-dto'
-import { PortfolioResponseDto } from '@/core/application/dto/portfolios-dto'
+import { PortfolioResponseDto } from '@/core/application/dto/portfolio-dto'
+import { PortfolioResponseDto } from '@/core/application/dto/portfolio-dto'
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import {
   getFetcher,
@@ -33,7 +33,7 @@ export const usePortfoliosWithAccounts = ({
   limit,
   ...options
 }: UsePortfoliosWithAccountsProps) => {
-  return useQuery<PaginationDto<PortfolioViewResponseDTO>>({
+  return useQuery<PaginationDto<PortfolioResponseDto>>({
     queryKey: [
       organizationId,
       ledgerId,

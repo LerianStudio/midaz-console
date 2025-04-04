@@ -1,17 +1,17 @@
-import { MetadataDto } from './metadata-dto'
+import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { StatusDto } from './status-dto'
+import { MetadataDto } from './metadata-dto'
 
-export type CreateSegmentDto = {
+export type CreateLedgerDto = {
   name: string
   status: StatusDto
   metadata?: MetadataDto
 }
 
-export type UpdateSegmentDto = Partial<CreateSegmentDto>
+export type UpdateLedgerDto = Partial<CreateLedgerDto>
 
-export type SegmentResponseDto = {
+export type LedgerResponseDto = {
   id: string
-  ledgerId: string
   organizationId: string
   name: string
   status: StatusDto
@@ -19,4 +19,5 @@ export type SegmentResponseDto = {
   createdAt: Date
   updatedAt: Date
   deletedAt: Date | null
+  assets?: AssetEntity[]
 }

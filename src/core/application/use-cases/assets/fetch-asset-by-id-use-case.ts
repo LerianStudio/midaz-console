@@ -1,5 +1,5 @@
 import { AssetRepository } from '@/core/domain/repositories/asset-repository'
-import { AssetResponseDto } from '../../dto/asset-response-dto'
+import { AssetResponseDto } from '../../dto/asset-dto'
 import { AssetMapper } from '../../mappers/asset-mapper'
 import { inject, injectable } from 'inversify'
 import { LogOperation } from '../../decorators/log-operation'

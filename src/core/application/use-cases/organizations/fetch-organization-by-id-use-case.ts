@@ -1,5 +1,5 @@
 import { OrganizationRepository } from '@/core/domain/repositories/organization-repository'
-import { OrganizationResponseDto } from '../../dto/organization-response-dto'
+import { OrganizationResponseDto } from '../../dto/organization-dto'
 import { OrganizationMapper } from '../../mappers/organization-mapper'
 import { inject, injectable } from 'inversify'
 import { LogOperation } from '../../decorators/log-operation'

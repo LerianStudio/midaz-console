@@ -1,5 +1,5 @@
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
-import { AssetResponseDto } from '../dto/asset-response-dto'
+import { AssetResponseDto } from '../dto/asset-dto'
 import { CreateAssetDto } from '../dto/create-asset-dto'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { PaginationMapper } from './pagination-mapper'

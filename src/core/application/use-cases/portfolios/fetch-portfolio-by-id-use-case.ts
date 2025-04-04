@@ -1,6 +1,6 @@
 import { PortfolioRepository } from '@/core/domain/repositories/portfolio-repository'
 import { PortfolioMapper } from '../../mappers/portfolio-mapper'
-import { PortfolioResponseDto } from '../../dto/portfolios-dto'
+import { PortfolioResponseDto } from '../../dto/portfolio-dto'
 import { inject, injectable } from 'inversify'
 import { LogOperation } from '../../decorators/log-operation'
 
