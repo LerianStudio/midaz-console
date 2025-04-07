@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - feature/*
+      - develop
   pull_request:
     branches:
       - main
@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout código
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -22,10 +22,10 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Instalar dependências
+      - name: Install dependencies
         run: npm install
 
-      - name: Build do projeto
+      - name: Build of the project
         run: npm run build
 
       - name: Start app
