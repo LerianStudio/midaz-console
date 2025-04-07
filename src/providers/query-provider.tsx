@@ -3,7 +3,6 @@
 import { ReactNode } from 'react'
 import {
   MutationCache,
-  QueryCache,
   QueryClient,
   QueryClientProvider
 } from '@tanstack/react-query'
@@ -15,18 +14,6 @@ export const QueryProvider = ({ children }: { children: ReactNode }) => {
   const { toast } = useToast()
 
   const queryClient = new QueryClient({
-    queryCache: new QueryCache({
-      onError: (error) => {
-        toast({
-          title: intl.formatMessage({
-            id: 'error.query.title',
-            defaultMessage: 'Server Error'
-          }),
-          description: error.message,
-          variant: 'destructive'
-        })
-      }
-    }),
     mutationCache: new MutationCache({
       onError: (error) => {
         toast({

@@ -18,7 +18,7 @@ export default async function App({ children }: { children: React.ReactNode }) {
             <ZodSchemaProvider>
               {children}
               <RHTToaster
-                position="top-left"
+                position="top-right"
                 containerStyle={{ top: 60, right: 60 }}
               />
               <Toaster />
