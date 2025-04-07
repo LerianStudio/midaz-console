@@ -9,6 +9,7 @@ on:
       - feat/*
       - fix/*
       - hotfix/*
+      - rc/*
     paths-ignore:
       - '.gitignore'
       - '**/*.env'
@@ -82,7 +83,7 @@ jobs:
         id: semantic_release
         uses: cycjimmy/semantic-release-action@v4
         with:
-          ci: true  # Definido como `true` para produção
+          semantic_version: 24.2.3
           extra_plugins: |
             conventional-changelog-conventionalcommits@v7.0.2
             @saithodev/semantic-release-backmerge
