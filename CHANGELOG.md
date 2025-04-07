@@ -1,3 +1,21 @@
+## [1.25.1](https://github.com/LerianStudio/midaz-console/compare/v1.25.0...v1.25.1) (2025-04-07)
+
+
+### Bug Fixes
+
+* Build ([c25ff75](https://github.com/LerianStudio/midaz-console/commit/c25ff75b67257bd076822dd7c7257627ceea8a78))
+* Build and audit ([b218235](https://github.com/LerianStudio/midaz-console/commit/b218235ce7ed27d755fa0765a14b0e5b41980b6c))
+* Edit Transaction metadata problem with ledger ID ([c3c3c11](https://github.com/LerianStudio/midaz-console/commit/c3c3c1154911932d83fc16dcca41ed608a309128))
+* Fixed file name ([e1cab9c](https://github.com/LerianStudio/midaz-console/commit/e1cab9cc3f97a968ecf039ea2d371dc843948dd1))
+* Metadata delete key issue ([b3682c2](https://github.com/LerianStudio/midaz-console/commit/b3682c2593f57194268267b93cccd62fe4d29c50))
+* Moved Sidebar transactions button ([8a43559](https://github.com/LerianStudio/midaz-console/commit/8a4355922f88b8c5031666ea59e2d0f64010a852))
+* otel trace provider test file ([0a663c4](https://github.com/LerianStudio/midaz-console/commit/0a663c4827577e036834019dbc39f5a4794ab987))
+* remove unused variable startCustomSpan at httpFetch ([4ec4af8](https://github.com/LerianStudio/midaz-console/commit/4ec4af84e9d527b8b33cf632f48e15456892ed36))
+* Small issue on sheet pre populate ([641661b](https://github.com/LerianStudio/midaz-console/commit/641661b182ab8f127759a1fa53d4c5147faded28))
+* Small View Transactions refactor ([5f84dd7](https://github.com/LerianStudio/midaz-console/commit/5f84dd70978c840c02fc49984a689624c0695517))
+* Test ([b1eed76](https://github.com/LerianStudio/midaz-console/commit/b1eed764aaabc8fb1f1eeb3813286e278f656866))
+* update object values to snake_case from camelCase ([433607e](https://github.com/LerianStudio/midaz-console/commit/433607ecd445c8e82377a246a56516f9f68f62ed))
+
 # [1.25.0](https://github.com/LerianStudio/midaz-console/compare/v1.24.2...v1.25.0) (2025-04-01)
 
 
