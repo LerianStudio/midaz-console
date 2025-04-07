@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation'
 import { Breadcrumb } from '@/components/breadcrumb'
-import { FormDetailsProvider } from '@/context/form-details-context'
 import { useIntl } from 'react-intl'
 import { OrganizationsForm } from '../organizations-form'
 import { PageHeader } from '@/components/page-header'
@@ -60,9 +59,7 @@ const Page = () => {
         </PageHeader.Wrapper>
       </PageHeader.Root>
 
-      <FormDetailsProvider>
-        <OrganizationsForm onSuccess={handleSuccess} />
-      </FormDetailsProvider>
+      <OrganizationsForm onSuccess={handleSuccess} />
     </>
   )
 }

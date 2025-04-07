@@ -66,7 +66,7 @@ export class IdentityAuthLoginRepository implements AuthLoginRepository {
         name: jwtPauload.displayName,
         idToken: authResponse.idToken,
         accessToken: authResponse.accessToken,
-        refreshToken: authResponse.refreshToken,
+        refreshToken: authResponse.refreshToken
       }
 
       this.midazLogger.audit('[AUDIT] - Login ', {
