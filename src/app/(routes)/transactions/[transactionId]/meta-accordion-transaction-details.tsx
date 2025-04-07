@@ -9,7 +9,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { LoadingButton } from '@/components/ui/loading-button'
 import { Separator } from '@/components/ui/separator'
-import { useOrganization } from '@/context/organization-provider/organization-provider-client'
+import { useOrganization } from '@/providers/organization-provider/organization-provider-client'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { metadata } from '@/schema/metadata'
 import { Metadata } from '@/types/metadata-type'
