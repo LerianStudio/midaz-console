@@ -54,6 +54,7 @@ const useListAssets = ({
       `/api/organizations/${organizationId}/ledgers/${ledgerId}/assets`,
       { page, limit }
     ),
+    enabled: !!organizationId && !!ledgerId,
     ...options
   })
 }

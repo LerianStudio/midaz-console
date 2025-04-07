@@ -416,6 +416,7 @@
   "error.api.avatarSvgContainsUnsecureContent": "O arquivo SVG contém conteúdo inseguro.",
   "errors.custom.avatar.invalid_format": "O avatar deve ter um formato PNG ou SVG",
   "error.login": "Credenciais inválidas",
+  "error.query.title": "Erro no Servidor",
   "common.loadMore": "Carregar mais...",
   "accounts.alert.noAssets.createLink": "Gerenciar Ativos",
   "accounts.alert.noAssets.description": "Você precisa criar pelo menos um ativo antes de criar contas.",

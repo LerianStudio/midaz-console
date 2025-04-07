@@ -4,11 +4,11 @@ export interface AuthEntity {
 }
 
 export interface AuthResponseEntity {
-  access_token: string
-  refresh_token: string
-  id_token: string
-  token_type: string
-  expires_in: number
+  accessToken: string
+  refreshToken: string
+  idToken: string
+  tokenType: string
+  expiresIn: number
   scope: string
 }
 
@@ -16,7 +16,7 @@ export interface AuthSessionEntity {
   id: string
   username: string
   name: string
-  access_token: string
-  refresh_token: string
-  id_token: string
+  accessToken: string
+  refreshToken: string
+  idToken: string
 }

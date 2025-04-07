@@ -160,6 +160,7 @@
   "error.midaz.unauthorized": "Error Midaz unauthorized",
   "error.midaz.unexpectedFieldsInTheRequest": "Error Midaz unexpected fields in the request",
   "error.midaz.unknowError": "Error on Midaz.",
+  "error.query.title": "Server Error",
   "errors.custom.avatar.invalid_format": "Avatar should have a PNG or SVG format",
   "errors.custom.date.invalid": "Invalid date",
   "errors.custom.one_lowercase_letter": "Field must contain at least 1 lowercase letter",
