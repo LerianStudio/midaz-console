@@ -1,0 +1,40 @@
+name: Lighthouse CI
+
+on:
+  push:
+    branches:
+      - main
+      - feature/*
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lhci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Build do projeto
+        run: npm run build
+
+      - name: Start app
+        run: npm run start &
+        env:
+          PORT: 8081
+
+      - name: Wait for app to be ready
+        run: npx wait-on http://localhost:8081
+
+      - name: Run Lighthouse CI
+        run: npm run lhci

@@ -61,6 +61,10 @@ npm run docker-up
 - To share ideas or discuss topics with the community, start a Discussion on our [GitHub](https://github.com/LerianStudio/midaz-console/discussions).
 - Follow us on [Twitter](https://twitter.com/LerianStudio) for news and announcements.
 
+## Repo Activity
+
+![Alt](https://repobeats.axiom.co/api/embed/4265aeb24943863794890cf3c1d200a636075b4f.svg "Repobeats analytics image")
+
 ## Contributing & License
 
 We welcome contributions from the community! Please read our [Contributing Guidelines](CONTRIBUTING.md) to get started.
