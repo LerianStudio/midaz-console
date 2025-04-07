@@ -29,7 +29,7 @@ export function useCreateUpdateSheet<TData = {}>({
   const onOpenChange = (open: boolean) => {
     // If the sheet is closed and the URL contains the 'create' parameter set to 'true',
     // remove the 'create' parameter from the URL.
-    if (!open && searchParams['create'] === 'true') {
+    if (!open && searchParams?.['create'] === 'true') {
       setSearchParams({})
     }
 
@@ -53,7 +53,7 @@ export function useCreateUpdateSheet<TData = {}>({
       return
     }
 
-    if (searchParams['create'] === 'true' && !open) {
+    if (searchParams?.['create'] === 'true' && !open) {
       handleCreate()
     }
   }, [])
