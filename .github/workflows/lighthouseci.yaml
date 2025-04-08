@@ -1,13 +1,10 @@
 name: Lighthouse CI
 
 on:
-  push:
-    branches:
-      - main
-      - develop
   pull_request:
     branches:
       - main
+      - develop
 
 jobs:
   lhci:
@@ -22,6 +19,14 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install dependencies
         run: npm install
 
@@ -34,7 +39,16 @@ jobs:
           PORT: 8081
 
       - name: Wait for app to be ready
-        run: npx wait-on http://localhost:8081
+        run: npx wait-on http://localhost:8081 --timeout 60000
 
       - name: Run Lighthouse CI
-        run: npm run lhci
+        run: npm run lhci -- --ci
+
+      - name: Upload Lighthouse Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: lighthouse-report
+          path: .lighthouseci/
+
+      - name: Cleanup
+        run: kill $(lsof -t -i:8081) || true
