@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify'
 import { GroupResponseDto } from '../../dto/group-dto'
 import { GroupRepository } from '@/core/domain/repositories/group-repository'
 import { GroupMapper } from '../../mappers/group-mapper'
-import { LogOperation } from '../../decorators/log-operation'
+import { LogOperation } from '../../../infrastructure/logger/decorators/log-operation'
 
 export interface FetchAllGroups {
   execute: () => Promise<GroupResponseDto[]>

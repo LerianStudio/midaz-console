@@ -1,5 +1,5 @@
 import { AuthSessionDto } from '@/core/application/dto/auth-dto'
-import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
+import { LoggerAggregator } from '@/core/infrastructure/logger/logger-aggregator'
 import {
   AuthLogin,
   AuthLoginUseCase

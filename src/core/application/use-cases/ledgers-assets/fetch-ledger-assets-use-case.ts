@@ -7,7 +7,7 @@ import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { inject, injectable } from 'inversify'
 import { AssetMapper } from '../../mappers/asset-mapper'
-import { LogOperation } from '../../decorators/log-operation'
+import { LogOperation } from '../../../infrastructure/logger/decorators/log-operation'
 
 export interface FetchAllLedgersAssets {
   execute: (

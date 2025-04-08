@@ -2,7 +2,7 @@ import { PortfolioRepository } from '@/core/domain/repositories/portfolio-reposi
 import { PortfolioMapper } from '../../mappers/portfolio-mapper'
 import { PortfolioResponseDto } from '../../dto/portfolio-dto'
 import { inject, injectable } from 'inversify'
-import { LogOperation } from '../../decorators/log-operation'
+import { LogOperation } from '../../../infrastructure/logger/decorators/log-operation'
 
 export interface FetchPortfolioById {
   execute: (

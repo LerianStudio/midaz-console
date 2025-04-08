@@ -1,6 +1,6 @@
 import { LedgerRepository } from '@/core/domain/repositories/ledger-repository'
 import { inject, injectable } from 'inversify'
-import { LogOperation } from '../../decorators/log-operation'
+import { LogOperation } from '../../../infrastructure/logger/decorators/log-operation'
 
 export interface DeleteLedger {
   execute: (organizationId: string, ledgerId: string) => Promise<void>

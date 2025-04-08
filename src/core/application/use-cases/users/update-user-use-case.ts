@@ -3,7 +3,7 @@ import { UpdateUserDto, UserResponseDto } from '../../dto/user-dto'
 import { UserMapper } from '../../mappers/user-mapper'
 import { UserEntity } from '@/core/domain/entities/user-entity'
 import { inject } from 'inversify'
-import { LogOperation } from '../../decorators/log-operation'
+import { LogOperation } from '../../../infrastructure/logger/decorators/log-operation'
 
 export interface UpdateUser {
   execute: (

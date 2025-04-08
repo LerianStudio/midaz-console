@@ -2,7 +2,7 @@ import { AccountRepository } from '@/core/domain/repositories/account-repository
 import { AccountResponseDto } from '../../dto/account-dto'
 import { AccountMapper } from '../../mappers/account-mapper'
 import { inject, injectable } from 'inversify'
-import { LogOperation } from '../../decorators/log-operation'
+import { LogOperation } from '../../../infrastructure/logger/decorators/log-operation'
 import { BalanceRepository } from '@/core/domain/repositories/balance-repository'
 import { BalanceMapper } from '../../mappers/balance-mapper'
 

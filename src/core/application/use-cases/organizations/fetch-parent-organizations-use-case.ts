@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify'
 import { OrganizationRepository } from '@/core/domain/repositories/organization-repository'
 import { OrganizationResponseDto } from '../../dto/organization-dto'
 import { OrganizationMapper } from '../../mappers/organization-mapper'
-import { LogOperation } from '../../decorators/log-operation'
+import { LogOperation } from '../../../infrastructure/logger/decorators/log-operation'
 
 export interface FetchParentOrganizations {
   execute(organizationId?: string): Promise<OrganizationResponseDto[]>

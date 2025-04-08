@@ -3,7 +3,7 @@ import { AssetRepository } from '@/core/domain/repositories/asset-repository'
 import type { CreateAssetDto, AssetResponseDto } from '../../dto/asset-dto'
 import { inject, injectable } from 'inversify'
 import { AssetMapper } from '../../mappers/asset-mapper'
-import { LogOperation } from '../../decorators/log-operation'
+import { LogOperation } from '../../../infrastructure/logger/decorators/log-operation'
 
 export interface CreateAsset {
   execute: (

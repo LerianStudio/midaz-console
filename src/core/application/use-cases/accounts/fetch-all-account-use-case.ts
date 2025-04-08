@@ -5,7 +5,7 @@ import { AccountEntity } from '@/core/domain/entities/account-entity'
 import { AccountResponseDto } from '../../dto/account-dto'
 import { AccountRepository } from '@/core/domain/repositories/account-repository'
 import { inject, injectable } from 'inversify'
-import { LogOperation } from '../../decorators/log-operation'
+import { LogOperation } from '../../../infrastructure/logger/decorators/log-operation'
 
 export interface FetchAllAccounts {
   execute: (

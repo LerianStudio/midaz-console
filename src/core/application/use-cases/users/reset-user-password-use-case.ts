@@ -1,6 +1,6 @@
 import { UserRepository } from '@/core/domain/repositories/user-repository'
 import { inject } from 'inversify'
-import { LogOperation } from '../../decorators/log-operation'
+import { LogOperation } from '../../../infrastructure/logger/decorators/log-operation'
 
 export interface ResetUserPassword {
   execute: (userId: string, newPassword: string) => Promise<void>

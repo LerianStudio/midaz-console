@@ -1,4 +1,4 @@
-import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
+import { LoggerAggregator } from '@/core/infrastructure/logger/logger-aggregator'
 import { getServerSession } from 'next-auth'
 import { MidazRequestContext } from '../logger/decorators/midaz-id'
 import { OtelTracerProvider } from '../observability/otel-tracer-provider'

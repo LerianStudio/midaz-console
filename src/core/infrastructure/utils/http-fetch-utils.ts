@@ -4,7 +4,7 @@ import { handleMidazError } from './midaz-error-handler'
 import { isNil } from 'lodash'
 import { MidazRequestContext } from '../logger/decorators/midaz-id'
 import { inject, injectable } from 'inversify'
-import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
+import { LoggerAggregator } from '@/core/infrastructure/logger/logger-aggregator'
 import { OtelTracerProvider } from '../observability/otel-tracer-provider'
 import { SpanStatusCode } from '@opentelemetry/api'
 

@@ -1,4 +1,4 @@
-import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
+import { LoggerAggregator } from '@/core/infrastructure/logger/logger-aggregator'
 import { AuthPermissionEntity } from '@/core/domain/entities/auth-permission-entity'
 import { AuthPermissionRepository } from '@/core/domain/repositories/auth/auth-permission-repository'
 import { ContainerTypeMidazHttpFetch } from '@/core/infrastructure/container-registry/midaz-http-fetch-module'
