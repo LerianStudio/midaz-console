@@ -21,7 +21,7 @@ export interface FetchAllLedgersAssets {
 export class FetchAllLedgersAssetsUseCase implements FetchAllLedgersAssets {
   constructor(
     @inject(LedgerRepository)
-    private readonly LedgerRepository: LedgerRepository,
+    private readonly ledgerRepository: LedgerRepository,
     @inject(AssetRepository)
     private readonly assetRepository: AssetRepository
   ) {}
@@ -33,7 +33,7 @@ export class FetchAllLedgersAssetsUseCase implements FetchAllLedgersAssets {
     page: number
   ): Promise<PaginationDto<LedgersViewResponseDTO>> {
     const ledgersResult: PaginationEntity<LedgerEntity> =
-      await this.LedgerRepository.fetchAll(organizationId, limit, page)
+      await this.ledgerRepository.fetchAll(organizationId, limit, page)
 
     let ledgersAssetResponseDTO: PaginationDto<LedgersViewResponseDTO> = {
       items: [],
