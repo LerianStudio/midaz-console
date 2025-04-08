@@ -20,13 +20,13 @@ import { z } from 'zod'
 import { LoadingButton } from '@/components/ui/loading-button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useCreateSegment, useUpdateSegment } from '@/client/segments'
-import { SegmentResponseDto } from '@/core/application/dto/segment-dto'
 import { usePopulateCreateUpdateForm } from '@/components/sheet/use-populate-create-update-form'
+import { SegmentType } from '@/types/segment-type'
 
 export type SegmentsSheetProps = DialogProps & {
   ledgerId: string
   mode: 'create' | 'edit'
-  data?: SegmentResponseDto | null
+  data?: SegmentType | null
   onSuccess?: () => void
 }
 

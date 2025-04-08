@@ -1,7 +1,6 @@
 import { AccountRepository } from '@/core/domain/repositories/account-repository'
 import { PortfolioRepository } from '@/core/domain/repositories/portfolio-repository'
 import { PaginationDto } from '../../dto/pagination-dto'
-import { AccountMapper } from '../../mappers/account-mapper'
 import { inject, injectable } from 'inversify'
 import { groupBy } from 'lodash'
 import { PortfolioMapper } from '../../mappers/portfolio-mapper'
@@ -57,7 +56,7 @@ export class FetchPortfoliosWithAccountsUseCase
       portfoliosResult?.items?.map((portfolio) =>
         PortfolioMapper.toDtoWithAccounts(
           portfolio,
-          (accountsGrouped[portfolio.id!] || []).map(AccountMapper.toDto)
+          accountsGrouped[portfolio.id!] ?? []
         )
       ) || []
 
