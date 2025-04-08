@@ -98,7 +98,7 @@
     "@commitlint/config-conventional": "^19.6.0",
     "@formatjs/cli": "^6.3.5",
     "@formatjs/cli-lib": "^6.6.1",
-    "@lhci/cli": "^0.14.0",
+    "@lhci/cli": "^0.10.0",
     "@playwright/test": "^1.48.2",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.0",
