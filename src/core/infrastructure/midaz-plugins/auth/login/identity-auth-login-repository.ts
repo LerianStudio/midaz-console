@@ -41,9 +41,9 @@ export class IdentityAuthLoginRepository implements AuthLoginRepository {
 
     const loginDataWithClient = {
       ...loginData,
-      client_id: this.authClientId,
-      client_secret: this.authClientSecret,
-      grant_type: 'password'
+      clientId: this.authClientId,
+      clientSecret: this.authClientSecret,
+      grantType: 'password'
     }
 
     try {
@@ -57,16 +57,16 @@ export class IdentityAuthLoginRepository implements AuthLoginRepository {
         )
 
       const jwtPauload: JwtPayload = jwt.decode(
-        authResponse.access_token
+        authResponse.accessToken
       ) as JwtPayload
 
       const authSession: AuthSessionEntity = {
         id: jwtPauload.sub as string,
         username: jwtPauload.name,
         name: jwtPauload.displayName,
-        id_token: authResponse.id_token,
-        access_token: authResponse.access_token,
-        refresh_token: authResponse.refresh_token
+        idToken: authResponse.idToken,
+        accessToken: authResponse.accessToken,
+        refreshToken: authResponse.refreshToken
       }
 
       this.midazLogger.audit('[AUDIT] - Login ', {

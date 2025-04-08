@@ -48,7 +48,13 @@ export function useSearchParams() {
   /**
    * Search params provided from browser window object.
    */
-  const searchParams = useMemo(getSearchParams, [window?.location?.search])
+
+  const searchParams = useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return getSearchParams()
+    }
+    return null
+  }, [typeof window !== 'undefined' ? window.location.search : null])
 
   return {
     searchParams,

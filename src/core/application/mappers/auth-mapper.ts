@@ -19,8 +19,8 @@ export class AuthMapper {
       id: entity.id,
       username: entity.username,
       name: entity.name,
-      access_token: entity.access_token,
-      refresh_token: entity.refresh_token
+      access_token: entity.accessToken,
+      refresh_token: entity.refreshToken
     }
   }
 }
@@ -29,10 +29,10 @@ export function authEntityToDto(
   entity: AuthResponseEntity
 ): AuthLoginResponseDto {
   return {
-    access_token: entity.access_token,
-    token_type: entity.token_type,
-    expires_in: entity.expires_in,
-    refresh_token: entity.refresh_token,
+    access_token: entity.accessToken,
+    token_type: entity.tokenType,
+    expires_in: entity.expiresIn,
+    refresh_token: entity.refreshToken,
     scope: entity.scope
   }
 }

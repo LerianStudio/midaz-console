@@ -38,30 +38,30 @@ export const MetaAccordionTransactionDetails = ({
   values
 }: MetadataAccordionProps) => {
   const intl = useIntl()
-  const { id, transactionId } = useParams<{
-    id: string
+  const { transactionId } = useParams<{
     transactionId: string
   }>()
-  const { currentOrganization } = useOrganization()
+  const { currentOrganization, currentLedger } = useOrganization()
   const { showSuccess } = useCustomToast()
   const [isFooterOpen, setIsFooterOpen] = useState(false)
 
-  const { mutate: updateTransaction } = useUpdateTransaction({
-    organizationId: currentOrganization.id!,
-    ledgerId: id!,
-    transactionId: transactionId!,
-    onSuccess: (response) => {
-      form.reset({ metadata: response.metadata })
+  const { mutate: updateTransaction, isPending: loading } =
+    useUpdateTransaction({
+      organizationId: currentOrganization.id!,
+      ledgerId: currentLedger.id!,
+      transactionId: transactionId!,
+      onSuccess: (response) => {
+        form.reset({ metadata: response.metadata })
 
-      showSuccess(
-        intl.formatMessage({
-          id: 'transactions.toast.update.success',
-          defaultMessage: 'Transaction updated successfully'
-        })
-      )
-      setIsFooterOpen(false)
-    }
-  })
+        showSuccess(
+          intl.formatMessage({
+            id: 'transactions.toast.update.success',
+            defaultMessage: 'Transaction updated successfully'
+          })
+        )
+        setIsFooterOpen(false)
+      }
+    })
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -131,6 +131,7 @@ export const MetaAccordionTransactionDetails = ({
         </PageFooterSection>
         <PageFooterSection>
           <LoadingButton
+            loading={loading}
             icon={<ArrowRight />}
             iconPlacement="end"
             onClick={handleSubmit}

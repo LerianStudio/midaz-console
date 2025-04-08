@@ -1,7 +1,7 @@
-import { omit } from 'lodash'
+import { omit, set } from 'lodash'
 import { MetadataInput } from './metadata-input'
 import { MetadataPreview } from './metadata-preview'
-import { Control, ControllerRenderProps, useFormContext } from 'react-hook-form'
+import { Control, ControllerRenderProps } from 'react-hook-form'
 import { FormField } from '@/components/ui/form'
 import React from 'react'
 import { Metadata } from '@/types/metadata-type'
@@ -17,7 +17,7 @@ const MetadataWrapper = React.forwardRef<unknown, MetadataWrapperProps>(
     }
 
     const handleRemoveMetadata = (key: string) => {
-      onChange?.({ target: { name, value: omit({ ...value }, [key]) } })
+      onChange?.({ target: { name, value: set({ ...value }, [key], null) } })
     }
 
     return (
