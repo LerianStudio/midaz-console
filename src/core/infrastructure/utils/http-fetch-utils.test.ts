@@ -4,7 +4,6 @@ import { MidazRequestContext } from '../logger/decorators/midaz-id'
 import { OtelTracerProvider } from '../observability/otel-tracer-provider'
 import { HTTP_METHODS, HttpFetchUtils } from './http-fetch-utils'
 import { handleMidazError } from './midaz-error-handler'
-import { url } from 'inspector'
 
 jest.mock('next-auth', () => ({
   getServerSession: jest.fn()
