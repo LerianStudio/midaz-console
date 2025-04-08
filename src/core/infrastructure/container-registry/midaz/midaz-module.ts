@@ -7,7 +7,7 @@ import { MidazPortfolioModule } from './portfolio-module'
 import { MidazSegmentModule } from './segment-module'
 import { MidazTransactionModule } from './transaction-module'
 import { BalanceRepository } from '@/core/domain/repositories/balance-repository'
-import { MidazBalanceRepository } from '../midaz-balance-repository'
+import { MidazBalanceRepository } from '@/core/infrastructure/midaz/midaz-balance-repository'
 
 export const MidazModule = new ContainerModule((container: Container) => {
   container.load(MidazOrganizationModule)

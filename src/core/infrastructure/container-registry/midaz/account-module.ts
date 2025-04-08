@@ -6,11 +6,11 @@ import { FetchAccountByIdRepository } from '@/core/domain/repositories/accounts/
 import { UpdateAccountsRepository } from '@/core/domain/repositories/accounts/update-accounts-repository'
 import { DeleteAccountsRepository } from '@/core/domain/repositories/accounts/delete-accounts-repository'
 
-import { MidazFetchAllAccountsRepository } from '../accounts/midaz-fetch-all-accounts-repository'
-import { MidazCreateAccountRepository } from '../accounts/midaz-create-accounts-repository'
-import { MidazFetchAccountByIdRepository } from '../accounts/midaz-fetch-account-by-id-repository'
-import { MidazUpdateAccountsRepository } from '../accounts/midaz-update-accounts-repository'
-import { MidazDeleteAccountsRepository } from '../accounts/midaz-delete-accounts-repository'
+import { MidazFetchAllAccountsRepository } from '../../midaz/accounts/midaz-fetch-all-accounts-repository'
+import { MidazCreateAccountRepository } from '../../midaz/accounts/midaz-create-accounts-repository'
+import { MidazFetchAccountByIdRepository } from '../../midaz/accounts/midaz-fetch-account-by-id-repository'
+import { MidazUpdateAccountsRepository } from '../../midaz/accounts/midaz-update-accounts-repository'
+import { MidazDeleteAccountsRepository } from '../../midaz/accounts/midaz-delete-accounts-repository'
 
 export const MidazAccountModule = new ContainerModule(
   (container: Container) => {

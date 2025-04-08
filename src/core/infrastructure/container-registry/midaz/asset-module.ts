@@ -6,11 +6,11 @@ import { FetchAllAssetsRepository } from '@/core/domain/repositories/assets/fetc
 import { FetchAssetByIdRepository } from '@/core/domain/repositories/assets/fetch-asset-by-id-repository'
 import { UpdateAssetRepository } from '@/core/domain/repositories/assets/update-asset-repository'
 
-import { MidazCreateAssetRepository } from '../assets/midaz-create-asset-repository'
-import { MidazDeleteAssetRepository } from '../assets/midaz-delete-asset-repository'
-import { MidazFetchAllAssetsRepository } from '../assets/midaz-fetch-all-assets-repository'
-import { MidazFetchAssetByIdRepository } from '../assets/midaz-fetch-asset-by-id-repository'
-import { MidazUpdateAssetRepository } from '../assets/midaz-update-asset-repository'
+import { MidazCreateAssetRepository } from '@/core/infrastructure/midaz/assets/midaz-create-asset-repository'
+import { MidazDeleteAssetRepository } from '@/core/infrastructure/midaz/assets/midaz-delete-asset-repository'
+import { MidazFetchAllAssetsRepository } from '@/core/infrastructure/midaz/assets/midaz-fetch-all-assets-repository'
+import { MidazFetchAssetByIdRepository } from '@/core/infrastructure/midaz/assets/midaz-fetch-asset-by-id-repository'
+import { MidazUpdateAssetRepository } from '@/core/infrastructure/midaz/assets/midaz-update-asset-repository'
 
 export const MidazAssetModule = new ContainerModule((container: Container) => {
   container
