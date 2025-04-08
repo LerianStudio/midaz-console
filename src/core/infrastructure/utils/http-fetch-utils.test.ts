@@ -4,6 +4,7 @@ import { MidazRequestContext } from '../logger/decorators/midaz-id'
 import { OtelTracerProvider } from '../observability/otel-tracer-provider'
 import { HTTP_METHODS, HttpFetchUtils } from './http-fetch-utils'
 import { handleMidazError } from './midaz-error-handler'
+import { url } from 'inspector'
 
 jest.mock('next-auth', () => ({
   getServerSession: jest.fn()
@@ -141,17 +142,13 @@ describe('MidazHttpFetchUtils', () => {
     })
 
     expect(mockFetch).toHaveBeenCalledWith('https://api.example.com/test', {
-      method: 'GET',
+      method: HTTP_METHODS.GET,
       body: undefined,
       headers: {
-        'Content-Type': 'application/json',
-        'X-Request-Id': 'test-request-id',
         'Custom-Header': 'CustomValue',
-        ...(process.env.PLUGIN_AUTH_ENABLED === 'true'
-          ? {
-              Authorization: 'Bearer test-token'
-            }
-          : {})
+        'X-Request-Id': 'test-request-id',
+        Authorization: 'test-token',
+        'Content-Type': 'application/json'
       }
     })
   })
