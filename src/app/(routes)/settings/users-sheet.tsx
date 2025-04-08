@@ -46,9 +46,7 @@ const FormSchema = z.object({
   email: user.email,
   groups: z
     .union([z.string(), z.array(z.string())])
-    .transform((value) =>
-      Array.isArray(value) ? value : [value].filter(Boolean)
-    )
+    .transform((value) => (Array.isArray(value) ? value : [value]))
 })
 
 type FormData = z.infer<typeof FormSchema>
@@ -93,18 +91,17 @@ export const UsersSheet = ({
     }
   })
 
-  const form = useForm({
+  const form = useForm<FormData>({
     resolver: zodResolver(FormSchema),
     defaultValues: initialValues
   })
 
-  const { isDirty } = form.formState
-
-  const handleSubmit = (data: FormData) => {
+  const handleSubmit = (formData: FormData) => {
     if (mode === 'create') {
-      createUser(data)
+      console.log(formData)
+      createUser(formData)
     } else if (mode === 'edit') {
-      console.log(data)
+      console.log(formData)
     }
   }
 
@@ -207,7 +204,7 @@ export const UsersSheet = ({
               <SelectField
                 name="groups"
                 label={intl.formatMessage({
-                  id: 'common.role',
+                  id: 'entity.user.role',
                   defaultMessage: 'Role'
                 })}
                 placeholder={intl.formatMessage({
@@ -256,7 +253,6 @@ export const UsersSheet = ({
               <LoadingButton
                 size="lg"
                 type="submit"
-                disabled={!isDirty}
                 fullWidth
                 loading={createPending}
               >

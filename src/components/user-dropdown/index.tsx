@@ -12,12 +12,28 @@ import {
   DropdownMenuTrigger
 } from '../ui/dropdown-menu'
 import { useIntl } from 'react-intl'
-import { Book, CircleUser, LifeBuoy, LogOut, User } from 'lucide-react'
-import { signOut } from 'next-auth/react'
-
+import { Book, CircleUser, LogOut, User } from 'lucide-react'
+import { signOut, useSession } from 'next-auth/react'
+import { UserSheet } from './user-sheet'
+import { useCreateUpdateSheet } from '../sheet/use-create-update-sheet'
+import { useUserById } from '@/client/users'
 export const UserDropdown = () => {
   const intl = useIntl()
+  const { data: session } = useSession()
+  const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>({
+    enableRouting: true
+  })
   const [openSettings, setOpenSettings] = useState(false)
+
+  const { data: user } = useUserById({
+    userId: session?.user?.id
+  })
+
+  console.log('user', user)
+
+  const handleOpenUserSheet = () => {
+    handleEdit(user)
+  }
 
   return (
     <div>
@@ -27,13 +43,14 @@ export const UserDropdown = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent className="min-w-[241px]">
           <DropdownMenuLabel>
-            {intl.formatMessage({
-              id: 'common.user',
-              defaultMessage: 'User'
-            })}
+            {session?.user?.name ||
+              intl.formatMessage({
+                id: 'common.user',
+                defaultMessage: 'User'
+              })}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={handleOpenUserSheet}>
             <DropdownMenuItemIcon>
               <User />
             </DropdownMenuItemIcon>
@@ -70,6 +87,7 @@ export const UserDropdown = () => {
         </DropdownMenuContent>
       </DropdownMenu>
 
+      <UserSheet {...sheetProps} />
       <SettingsDialog open={openSettings} setOpen={setOpenSettings} />
     </div>
   )

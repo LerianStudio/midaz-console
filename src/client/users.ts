@@ -1,4 +1,9 @@
-import { deleteFetcher, getFetcher, postFetcher } from '@/lib/fetcher'
+import {
+  deleteFetcher,
+  getFetcher,
+  postFetcher,
+  patchFetcher
+} from '@/lib/fetcher'
 import { UsersType } from '@/types/users-type'
 import {
   keepPreviousData,
@@ -24,6 +29,15 @@ export const useListUsers = ({ ...options }: any) => {
   })
 }
 
+export const useUserById = ({ userId, ...options }: any) => {
+  return useQuery<any>({
+    queryKey: ['users', userId],
+    queryFn: getFetcher(`/api/identity/users/${userId}`),
+    placeholderData: keepPreviousData,
+    ...options
+  })
+}
+
 export const useDeleteUser = ({ onSuccess, ...options }: any) => {
   const queryClient = useQueryClient()
 
@@ -35,6 +49,22 @@ export const useDeleteUser = ({ onSuccess, ...options }: any) => {
         queryKey: ['users']
       })
       onSuccess?.(...args)
+    },
+    ...options
+  })
+}
+
+export const useUpdateUser = ({ userId, ...options }: any) => {
+  const queryClient = useQueryClient()
+
+  return useMutation<any, any, any>({
+    mutationKey: ['users', userId],
+    mutationFn: patchFetcher(`/api/identity/users/${userId}`),
+    onSuccess: (...args) => {
+      queryClient.invalidateQueries({
+        queryKey: ['users', userId]
+      })
+      options.onSuccess?.(...args)
     },
     ...options
   })

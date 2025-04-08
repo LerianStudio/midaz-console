@@ -10,7 +10,13 @@ const email = z.string().email()
 
 const password = z.string().min(8)
 
-const groups = z.array(z.string().min(1).max(255))
+const oldPassword = z.string().min(8)
+
+const newPassword = z.string().min(8)
+
+const confirmPassword = z.string().min(8)
+
+const groups = z.array(z.string())
 
 export const user = {
   firstName,
@@ -19,4 +25,10 @@ export const user = {
   email,
   password,
   groups
+}
+
+export const passwordChange = {
+  oldPassword,
+  newPassword,
+  confirmPassword
 }
