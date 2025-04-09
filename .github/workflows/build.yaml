@@ -44,6 +44,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
+          
 #Execute scan of image
       - name: Extract tag name
         shell: bash
