@@ -1,3 +1,10 @@
+## [1.26.2](https://github.com/LerianStudio/midaz-console/compare/v1.26.1...v1.26.2) (2025-04-09)
+
+
+### Bug Fixes
+
+* set file extention default and set public next  environment variable ([fa50c54](https://github.com/LerianStudio/midaz-console/commit/fa50c54780f41633391b2125f4720da68ad181bf))
+
 ## [1.26.1](https://github.com/LerianStudio/midaz-console/compare/v1.26.0...v1.26.1) (2025-04-09)
 
 
