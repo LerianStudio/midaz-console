@@ -41,8 +41,17 @@ jobs:
       - name: Wait for app to be ready
         run: npx wait-on http://localhost:8081 --timeout 60000
 
-      - name: Run Lighthouse CI
+      # Etapa 1: Executar Lighthouse CI para upload público
+      - name: Run Lighthouse CI for Public Upload
         run: npm run lhci -- --ci
+        env:
+          LHCI_TARGET: 'temporary-public-storage'
+
+      # Etapa 2: Executar Lighthouse CI para salvar como artefato
+      - name: Run Lighthouse CI for Artifact
+        run: npm run lhci -- --ci
+        env:
+          LHCI_TARGET: 'filesystem'
 
       # Verificar o diretório atual e os arquivos gerados pelo Lighthouse
       - name: Check current directory

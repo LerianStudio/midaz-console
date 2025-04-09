@@ -28,9 +28,5 @@ module.exports = {
         target: 'temporary-public-storage', // Upload para o Google Cloud Storage
       },
     ],
-  },
-  // Adicionando etapa separada no GitHub Actions para salvar como artefato
-  artifact: {
-    outputDir: '.lighthouseci', // Diretório onde os relatórios são salvos localmente
-  },
-};
+  }
+ };
