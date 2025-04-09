@@ -1,3 +1,12 @@
+## [1.26.3](https://github.com/LerianStudio/midaz-console/compare/v1.26.2...v1.26.3) (2025-04-09)
+
+
+### Bug Fixes
+
+* remove unused import ([4a4f3da](https://github.com/LerianStudio/midaz-console/commit/4a4f3da8931dbbcace85d52156413ca34a2bc7ec))
+* setting image avatar in organization switcher ([3344b87](https://github.com/LerianStudio/midaz-console/commit/3344b87d2dce92483a16148d450646b1a3340fd7))
+* update type from fetcher ([8ecdc8a](https://github.com/LerianStudio/midaz-console/commit/8ecdc8aecd125754d510922e317069af030058b7))
+
 ## [1.26.2](https://github.com/LerianStudio/midaz-console/compare/v1.26.1...v1.26.2) (2025-04-09)
 
 

@@ -14,6 +14,7 @@ import {
   PopoverPanelTitle
 } from './popover-panel'
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
+import React from 'react'
 
 export type OrganizationSwitcherProps = {
   data: OrganizationEntity[]
@@ -40,6 +41,7 @@ export const OrganizationSwitcherContent = ({
   onClose
 }: OrganizationSwitcherContentProps) => {
   const intl = useIntl()
+  const [avatar, setAvatar] = React.useState<string>(MidazLogo)
 
   return (
     <PopoverContent className="flex w-auto gap-4" side="right">
@@ -78,10 +80,15 @@ export const OrganizationSwitcherContent = ({
               onClick={() => onChange?.(organization)}
             >
               <Image
-                src={MidazLogo}
+                src={
+                  organization.metadata?.avatar
+                    ? organization.metadata?.avatar
+                    : MidazLogo
+                }
                 alt=""
+                width={28}
                 className="rounded-full"
-                height={24}
+                height={28}
               />
 
               {organization.legalName}
