@@ -2,16 +2,8 @@ branches:
   - main
   - name: develop
     prerelease: "beta"
-    channel: "beta"
-  - name: feature/*
-    prerelease: "alpha"
-    channel: "alpha"
-  - name: release/*
-    prerelease: "rc"
-    channel: "rc"
   - name: hotfix/*
     prerelease: "hf"
-    channel: "hf"
 
 plugins:
   - "@semantic-release/commit-analyzer":
