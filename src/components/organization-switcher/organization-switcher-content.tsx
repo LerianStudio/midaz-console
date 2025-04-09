@@ -41,7 +41,6 @@ export const OrganizationSwitcherContent = ({
   onClose
 }: OrganizationSwitcherContentProps) => {
   const intl = useIntl()
-  const [avatar, setAvatar] = React.useState<string>(MidazLogo)
 
   return (
     <PopoverContent className="flex w-auto gap-4" side="right">
