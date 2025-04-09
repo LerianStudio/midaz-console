@@ -29,36 +29,39 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: midaz-console
 
-      - name: Build project
+      - name: Build of the project
         run: npm run build
+        working-directory: midaz-console
 
       - name: Start app
         run: npm run start &
+        working-directory: midaz-console
         env:
           PORT: 8081
 
       - name: Wait for app to be ready
         run: npx wait-on http://localhost:8081 --timeout 60000
+        working-directory: midaz-console
 
       - name: Run Lighthouse CI
         run: npm run lhci -- --ci
+        working-directory: midaz-console
 
-      - name: Debug output paths
+      - name: Debug file paths
         run: |
           echo "Current directory: $(pwd)"
           echo "Listing .lighthouseci directory:"
-          ls -la .lighthouseci || echo ".lighthouseci not found"
-          echo "Listing all HTML and JSON files:"
-          find . -name "*.html" -o -name "*.json"
+          ls -lh midaz-console/.lighthouseci
 
       - name: Upload Lighthouse Report
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse-report
           path: |
-            ${{ github.workspace }}/.lighthouseci/*.html
-            ${{ github.workspace }}/.lighthouseci/*.json
+            midaz-console/.lighthouseci/*.html
+            midaz-console/.lighthouseci/*.json
           if-no-files-found: error
 
       - name: Cleanup
