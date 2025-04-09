@@ -67,18 +67,27 @@ jobs:
           ls -al .lighthouseci/*.html || echo "No .html files found"
           ls -al .lighthouseci/*.json || echo "No .json files found"
 
-      - name: Upload Lighthouse Report
+      # Mover os relatórios para o diretório 'reports'
+      - name: Move Lighthouse reports to 'reports' directory
+        run: |
+          mkdir -p reports
+          mv .lighthouseci/*.html reports/
+          mv .lighthouseci/*.json reports/
+
+      # Fazer upload dos relatórios HTML como artefato
+      - name: Upload Lighthouse HTML Report
         uses: actions/upload-artifact@v4
         with:
-          name: lighthouse-report
-          path: .lighthouseci/*.html
+          name: lighthouse-html-report
+          path: reports/*.html
           if-no-files-found: error
 
+      # Fazer upload dos relatórios JSON como artefato
       - name: Upload Lighthouse JSON Report
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse-json-report
-          path: .lighthouseci/*.json
+          path: reports/*.json
           if-no-files-found: error
 
       - name: Cleanup
