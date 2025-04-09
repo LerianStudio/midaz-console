@@ -32,8 +32,7 @@ jobs:
 
       - name: Build of the project
         run: npm run build
-        
-# Execute Lighthouse CI
+
       - name: Start app
         run: npm run start &
         env:
@@ -45,14 +44,19 @@ jobs:
       - name: Run Lighthouse CI
         run: npm run lhci -- --ci
 
-      - name: List LighthouseCI output
-        run: ls -la .lighthouseci || echo "Directory not found"
+      - name: Debug file paths
+        run: |
+          echo "PWD: $(pwd)"
+          find . -type f \( -name "*.html" -o -name "*.json" \)
 
       - name: Upload Lighthouse Report
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse-report
-          path: .lighthouseci
+          path: |
+            .lighthouseci/*.html
+            .lighthouseci/*.json
+          if-no-files-found: error
 
       - name: Cleanup
         run: kill $(lsof -t -i:8081) || true
