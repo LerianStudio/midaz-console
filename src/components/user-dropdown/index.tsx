@@ -20,7 +20,7 @@ import { useUserById } from '@/client/users'
 export const UserDropdown = () => {
   const intl = useIntl()
   const { data: session } = useSession()
-  const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>({
+  const { handleEdit, sheetProps } = useCreateUpdateSheet<any>({
     enableRouting: true
   })
   const [openSettings, setOpenSettings] = useState(false)
@@ -28,8 +28,6 @@ export const UserDropdown = () => {
   const { data: user } = useUserById({
     userId: session?.user?.id
   })
-
-  console.log('user', user)
 
   const handleOpenUserSheet = () => {
     handleEdit(user)

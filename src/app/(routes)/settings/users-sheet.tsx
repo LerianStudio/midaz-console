@@ -98,7 +98,6 @@ export const UsersSheet = ({
 
   const handleSubmit = (formData: FormData) => {
     if (mode === 'create') {
-      console.log(formData)
       createUser(formData)
     } else if (mode === 'edit') {
       console.log(formData)

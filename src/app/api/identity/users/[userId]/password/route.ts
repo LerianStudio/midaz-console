@@ -10,8 +10,8 @@ import { applyMiddleware } from '@/lib/middleware'
 import { loggerMiddleware } from '@/utils/logger-middleware-config'
 import { NextResponse } from 'next/server'
 
-export const PUT = applyMiddleware(
-  [loggerMiddleware({ operationName: 'updateUserPassword', method: 'PUT' })],
+export const PATCH = applyMiddleware(
+  [loggerMiddleware({ operationName: 'updateUserPassword', method: 'PATCH' })],
   async (request: Request, { params }: { params: { userId: string } }) => {
     try {
       const updateUserPasswordUseCase: UpdateUserPassword =

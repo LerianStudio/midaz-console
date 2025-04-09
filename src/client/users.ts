@@ -69,3 +69,11 @@ export const useUpdateUser = ({ userId, ...options }: any) => {
     ...options
   })
 }
+
+export const useUpdateUserPassword = ({ userId, ...options }: any) => {
+  return useMutation<any, any, any>({
+    mutationKey: ['users', 'update-password', userId],
+    mutationFn: patchFetcher(`/api/identity/users/${userId}/password`),
+    ...options
+  })
+}

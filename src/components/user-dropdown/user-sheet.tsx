@@ -18,7 +18,7 @@ import { LoadingButton } from '@/components/ui/loading-button'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { usePopulateCreateUpdateForm } from '@/components/sheet/use-populate-create-update-form'
-import { useUpdateUser } from '@/client/users'
+import { useUpdateUser, useUpdateUserPassword } from '@/client/users'
 import { SelectItem } from '../ui/select'
 import { useListGroups } from '@/client/groups'
 import { user, passwordChange } from '@/schema/user'
@@ -78,6 +78,7 @@ export const UserSheet = ({
     userId: data?.id,
     onSuccess: () => {
       onSuccess?.()
+      onOpenChange?.(false)
       showSuccess(
         intl.formatMessage({
           id: 'user.toast.update.success',
@@ -86,6 +87,7 @@ export const UserSheet = ({
       )
     },
     onError: () => {
+      onOpenChange?.(false)
       showError(
         intl.formatMessage({
           id: 'user.toast.update.error',
@@ -95,7 +97,29 @@ export const UserSheet = ({
     }
   })
 
-  // TO-DO: Implement password change hook
+  const { mutate: updatePassword, isPending: updatePasswordPending } =
+    useUpdateUserPassword({
+      userId: data?.id,
+      onSuccess: () => {
+        onSuccess?.()
+        onOpenChange?.(false)
+        showSuccess(
+          intl.formatMessage({
+            id: 'user.toast.password.update.success',
+            defaultMessage: 'Password updated successfully'
+          })
+        )
+      },
+      onError: () => {
+        onOpenChange?.(false)
+        showError(
+          intl.formatMessage({
+            id: 'user.toast.password.update.error',
+            defaultMessage: 'Error updating password'
+          })
+        )
+      }
+    })
 
   const profileForm = useForm<z.infer<typeof ProfileSchema>>({
     resolver: zodResolver(ProfileSchema),
@@ -109,18 +133,18 @@ export const UserSheet = ({
 
   const handleProfileSubmit = (formData: z.infer<typeof ProfileSchema>) => {
     if (mode === 'edit') {
-      console.log(formData)
-      // updateUser(formData)
+      updateUser(formData)
     }
   }
 
   const handlePasswordSubmit = (formData: z.infer<typeof PasswordSchema>) => {
+    const { oldPassword, newPassword } = formData
+
     if (mode === 'edit') {
-      console.log(formData)
-      // updatePassword({
-      //   oldPassword: formData.oldPassword,
-      //   newPassword: formData.newPassword
-      // })
+      updatePassword({
+        oldPassword,
+        newPassword
+      })
     }
   }
 
@@ -305,7 +329,9 @@ export const UserSheet = ({
             type="submit"
             fullWidth
             loading={
-              activeTab === 'personal-information' ? updatePending : false
+              activeTab === 'personal-information'
+                ? updatePending
+                : updatePasswordPending
             }
             form={
               activeTab === 'personal-information'
