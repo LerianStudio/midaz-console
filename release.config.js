@@ -2,9 +2,9 @@ module.exports = {
   branches: [
     { name: 'main' }, // Versão final X.Y.Z
     { name: 'develop', prerelease: 'beta', channel: 'beta' }, // beta.N
-    { name: /^feature\/.+$/, prerelease: 'alpha', channel: 'alpha' }, // alpha.N
-    { name: /^release\/.+$/, prerelease: 'rc', channel: 'rc' }, // rc.N
-    { name: /^hotfix\/.+$/, prerelease: 'hf', channel: 'hf' } // hf.N
+    { name: new RegExp('^feature/.+'), prerelease: 'alpha', channel: 'alpha' }, // alpha.N
+    { name: new RegExp('^release/.+'), prerelease: 'rc', channel: 'rc' }, // rc.N
+    { name: new RegExp('^hotfix/.+'), prerelease: 'hf', channel: 'hf' } // hf.N
   ],
   plugins: [
     [
@@ -24,7 +24,7 @@ module.exports = {
           { type: 'fix', release: 'minor' },
           { type: 'refactor', release: 'minor' },
           { type: 'docs', release: 'patch' },
-          { type: 'breaking', release: 'major' } // <- Aqui mantido como solicitado
+          { breaking: true, release: 'major' }
         ]
       }
     ],
@@ -47,18 +47,18 @@ module.exports = {
       }
     ],
     [
+      '@semantic-release/git',
+      {
+        message: 'chore(release): ${nextRelease.version}\n\n${nextRelease.notes}',
+        assets: ['CHANGELOG.md']
+      }
+    ],
+    [
       '@semantic-release/github',
       {
         assets: [
           { path: '.next/**', label: 'Next.js build files' }
         ]
-      }
-    ],
-    [
-      '@semantic-release/git',
-      {
-        message: 'chore(release): ${nextRelease.version}\n\n${nextRelease.notes}',
-        assets: ['CHANGELOG.md']
       }
     ],
     [
