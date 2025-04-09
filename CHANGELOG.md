@@ -1,3 +1,12 @@
+## [1.25.2](https://github.com/LerianStudio/midaz-console/compare/v1.25.1...v1.25.2) (2025-04-09)
+
+
+### Bug Fixes
+
+* build warning on dynamic api route build generate ([f109b7e](https://github.com/LerianStudio/midaz-console/commit/f109b7e0f53169f5b8764fceccae94d2267976bf))
+* include conditional to validate when plugin auth enable on http-fetch-utils-test ([4ff2a05](https://github.com/LerianStudio/midaz-console/commit/4ff2a059d891c71e563a852221d834ba63fdac7f))
+* remove unused import ([3f1cc97](https://github.com/LerianStudio/midaz-console/commit/3f1cc97d65190013445f0c86f0fc8a677d48ba78))
+
 ## [1.25.1](https://github.com/LerianStudio/midaz-console/compare/v1.25.0...v1.25.1) (2025-04-07)
 
 
