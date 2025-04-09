@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build of the project
+      - name: Build the project
         run: npm run build
 
       - name: Start app
@@ -47,9 +47,9 @@ jobs:
       - name: Verify .lighthouseci directory
         run: |
           echo "Checking for .lighthouseci directory..."
-          if [ -d ".lighthouseci" ]; then
+          if [ -d "midaz-console/.lighthouseci" ]; then
             echo ".lighthouseci directory exists."
-            ls -alR .lighthouseci
+            ls -alR midaz-console/.lighthouseci
           else
             echo ".lighthouseci directory does not exist."
           fi
@@ -59,8 +59,8 @@ jobs:
         with:
           name: lighthouse-report
           path: |
-            ./midaz-console/.lighthouseci/*.html
-            ./midaz-console/.lighthouseci/*.json
+            midaz-console/.lighthouseci/*.html
+            midaz-console/.lighthouseci/*.json
           if-no-files-found: error
 
       - name: Cleanup
