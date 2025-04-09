@@ -1,73 +1,58 @@
 name: Lighthouse CI
 
 on:
-  pull_request:
+  push:
     branches:
       - main
-      - develop
 
 jobs:
-  lhci:
+  lighthouse:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    # Checkout do código
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '22'
+    # Instala dependências
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
 
-      - name: Cache Node.js modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+    - name: Install dependencies
+      run: npm install
 
-      - name: Install dependencies
-        run: npm install
+    # Rodar o Lighthouse CI
+    - name: Run Lighthouse CI
+      run: npm run lhci -- --ci
 
-      - name: Build the project
-        run: npm run build
+    # Verificar se o diretório .lighthouseci existe agora (após a execução do Lighthouse)
+    - name: Check if .lighthouseci directory exists
+      run: |
+        echo "Checking for .lighthouseci directory..."
+        if [ -d "midaz-console/.lighthouseci" ]; then
+          echo ".lighthouseci directory exists."
+          ls -alR midaz-console/.lighthouseci
+        else
+          echo ".lighthouseci directory does not exist."
+        fi
 
-      - name: Start app
-        run: npm run start &
-        env:
-          PORT: 8081
+    # Verificar arquivos gerados após LHCI
+    - name: Check generated files after LHCI run
+      run: |
+        echo "Listing contents of the .lighthouseci directory"
+        ls -alR midaz-console/.lighthouseci || echo "No .lighthouseci directory found"
 
-      - name: Wait for app to be ready
-        run: npx wait-on http://localhost:8081 --timeout 60000
-
-      - name: Run Lighthouse CI
-        run: npm run lhci -- --ci
-
-      - name: Check if .lighthouseci directory exists
-        run: |
-          echo "Checking for .lighthouseci directory..."
-          if [ -d "midaz-console/.lighthouseci" ]; then
-            echo ".lighthouseci directory exists."
-            ls -alR midaz-console/.lighthouseci
-          else
-            echo ".lighthouseci directory does not exist."
-          fi
-
-      - name: Check if reports exist in the directory
-        run: |
-          echo "Checking for report files in .lighthouseci..."
-          ls -al midaz-console/.lighthouseci/*.html || echo "No .html files found"
-          ls -al midaz-console/.lighthouseci/*.json || echo "No .json files found"
-
-      - name: Upload Lighthouse Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: lighthouse-report
-          path: |
-            midaz-console/.lighthouseci/*.html
-            midaz-console/.lighthouseci/*.json
-          if-no-files-found: error
-
-      - name: Cleanup
-        run: kill $(lsof -t -i:8081) || true
+    # Upload de arquivos gerados pelo Lighthouse CI
+    - name: Upload Lighthouse Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: lighthouse-report
+        path: |
+          midaz-console/.lighthouseci/*.html
+          midaz-console/.lighthouseci/*.json
+        if-no-files-found: error
+        compression-level: 6
+        overwrite: false
+        include-hidden-files: false
