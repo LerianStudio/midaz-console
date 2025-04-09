@@ -1,3 +1,11 @@
+## [1.26.1](https://github.com/LerianStudio/midaz-console/compare/v1.26.0...v1.26.1) (2025-04-09)
+
+
+### Bug Fixes
+
+* Added usePopulateForm hook ([f30262e](https://github.com/LerianStudio/midaz-console/commit/f30262e46a4b6af429668bd51a18157749ccd366))
+* Package lock ([1720f60](https://github.com/LerianStudio/midaz-console/commit/1720f6009d625c62f3c1478a125bd79cf4017447))
+
 # [1.26.0](https://github.com/LerianStudio/midaz-console/compare/v1.25.2...v1.26.0) (2025-04-09)
 
 
