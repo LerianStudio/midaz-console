@@ -44,16 +44,23 @@ jobs:
       - name: Run Lighthouse CI
         run: npm run lhci -- --ci
 
-      - name: List contents of .lighthouseci directory
-        run: ls -alR midaz-console/.lighthouseci
+      - name: Verify .lighthouseci directory
+        run: |
+          echo "Checking for .lighthouseci directory..."
+          if [ -d ".lighthouseci" ]; then
+            echo ".lighthouseci directory exists."
+            ls -alR .lighthouseci
+          else
+            echo ".lighthouseci directory does not exist."
+          fi
 
       - name: Upload Lighthouse Report
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse-report
           path: |
-            midaz-console/.lighthouseci/*.html
-            midaz-console/.lighthouseci/*.json
+            .lighthouseci/*.html
+            .lighthouseci/*.json
           if-no-files-found: error
 
       - name: Cleanup
