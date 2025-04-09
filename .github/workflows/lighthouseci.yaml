@@ -44,7 +44,6 @@ jobs:
         echo "Listing contents of the .lighthouseci directory"
         ls -alR midaz-console/.lighthouseci || echo "No .lighthouseci directory found"
 
-    # Upload de arquivos gerados pelo Lighthouse CI
     - name: Upload Lighthouse Report
       uses: actions/upload-artifact@v4
       with:
