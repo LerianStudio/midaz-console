@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build of the project
+      - name: Build project
         run: npm run build
 
       - name: Start app
@@ -44,18 +44,21 @@ jobs:
       - name: Run Lighthouse CI
         run: npm run lhci -- --ci
 
-      - name: Debug file paths
+      - name: Debug output paths
         run: |
-          echo "PWD: $(pwd)"
-          find . -type f \( -name "*.html" -o -name "*.json" \)
+          echo "Current directory: $(pwd)"
+          echo "Listing .lighthouseci directory:"
+          ls -la .lighthouseci || echo ".lighthouseci not found"
+          echo "Listing all HTML and JSON files:"
+          find . -name "*.html" -o -name "*.json"
 
       - name: Upload Lighthouse Report
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse-report
           path: |
-            midaz-console/.lighthouseci/*.html
-            midaz-console/.lighthouseci/*.json
+            ${{ github.workspace }}/.lighthouseci/*.html
+            ${{ github.workspace }}/.lighthouseci/*.json
           if-no-files-found: error
 
       - name: Cleanup
