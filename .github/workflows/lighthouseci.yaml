@@ -62,14 +62,19 @@ jobs:
           ls -al midaz-console/.lighthouseci/*.html || echo "No .html files found"
           ls -al midaz-console/.lighthouseci/*.json || echo "No .json files found"
 
-      # Upload de relatórios do Lighthouse CI
+      # Ajustar o caminho para o diretório correto e garantir que o upload funcione
       - name: Upload Lighthouse Report
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse-report
-          path: |
-            midaz-console/.lighthouseci/*.html
-            midaz-console/.lighthouseci/*.json
+          path: midaz-console/.lighthouseci/*.html
+          if-no-files-found: error
+
+      - name: Upload Lighthouse JSON Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-json-report
+          path: midaz-console/.lighthouseci/*.json
           if-no-files-found: error
 
       # Limpeza do processo após o teste
