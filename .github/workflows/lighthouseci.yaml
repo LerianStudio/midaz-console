@@ -51,7 +51,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse-report
-          path: .lighthouseci/
+          path: ./.lighthouseci/**
 
       - name: Cleanup
         run: kill $(lsof -t -i:8081) || true
