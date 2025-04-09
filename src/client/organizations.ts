@@ -1,5 +1,6 @@
-import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
+import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
+import useCustomToast from '@/hooks/use-custom-toast'
 import {
   deleteFetcher,
   getFetcher,
@@ -11,8 +12,6 @@ import {
   UseMutationOptions,
   useQuery
 } from '@tanstack/react-query'
-import useCustomToast from '@/hooks/use-custom-toast'
-import { OrganizationResponseDto } from '@/core/application/dto/organization-response-dto'
 
 export const useListOrganizations = ({ ...options }) => {
   return useQuery<PaginationDto<OrganizationEntity>>({
