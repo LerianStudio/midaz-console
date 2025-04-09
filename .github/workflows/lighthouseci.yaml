@@ -44,39 +44,42 @@ jobs:
       - name: Run Lighthouse CI
         run: npm run lhci -- --ci
 
-      # Verificar se o diretório .lighthouseci foi criado após a execução do LHCI
+      # Verificar o diretório atual e os arquivos gerados pelo Lighthouse
+      - name: Check current directory
+        run: |
+          echo "Current directory is: $(pwd)"
+          echo "Listing files in the current directory:"
+          ls -al
+
       - name: Check if .lighthouseci directory exists
         run: |
           echo "Checking for .lighthouseci directory..."
-          if [ -d "midaz-console/.lighthouseci" ]; then
+          if [ -d ".lighthouseci" ]; then
             echo ".lighthouseci directory exists."
-            ls -alR midaz-console/.lighthouseci
+            ls -alR .lighthouseci
           else
             echo ".lighthouseci directory does not exist."
           fi
 
-      # Verificar a existência dos arquivos de relatório .html e .json após o LHCI
       - name: Check if reports exist in the directory
         run: |
           echo "Checking for report files in .lighthouseci..."
-          ls -al midaz-console/.lighthouseci/*.html || echo "No .html files found"
-          ls -al midaz-console/.lighthouseci/*.json || echo "No .json files found"
+          ls -al .lighthouseci/*.html || echo "No .html files found"
+          ls -al .lighthouseci/*.json || echo "No .json files found"
 
-      # Ajustar o caminho para o diretório correto e garantir que o upload funcione
       - name: Upload Lighthouse Report
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse-report
-          path: midaz-console/.lighthouseci/*.html
+          path: .lighthouseci/*.html
           if-no-files-found: error
 
       - name: Upload Lighthouse JSON Report
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse-json-report
-          path: midaz-console/.lighthouseci/*.json
+          path: .lighthouseci/*.json
           if-no-files-found: error
 
-      # Limpeza do processo após o teste
       - name: Cleanup
         run: kill $(lsof -t -i:8081) || true
