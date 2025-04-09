@@ -15,7 +15,7 @@ import useCustomToast from '@/hooks/use-custom-toast'
 import { OrganizationResponseDto } from '@/core/application/dto/organization-response-dto'
 
 export const useListOrganizations = ({ ...options }) => {
-  return useQuery<PaginationDto<OrganizationResponseDto>>({
+  return useQuery<PaginationDto<OrganizationEntity>>({
     queryKey: ['organizations'],
     queryFn: getFetcher(`/api/organizations`),
     ...options
