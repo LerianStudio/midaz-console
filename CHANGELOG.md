@@ -1,3 +1,18 @@
+# [1.26.0](https://github.com/LerianStudio/midaz-console/compare/v1.25.2...v1.26.0) (2025-04-09)
+
+
+### Features
+
+* configure repo activity ([11566c6](https://github.com/LerianStudio/midaz-console/commit/11566c64119166c072f4b2f66fbf761a62e9b3d8))
+* fix security vulnerabilities ([ff60af6](https://github.com/LerianStudio/midaz-console/commit/ff60af64397503da466a7e69f6a6f7a06155dd80))
+* fix upload-artifact ([611956c](https://github.com/LerianStudio/midaz-console/commit/611956c47614b230e5dd646759aa2c5c999b33ff))
+* fix vulnerabilities ([2265a87](https://github.com/LerianStudio/midaz-console/commit/2265a879b87f8e53f4959abf8adce5d04b6fa3b7))
+* fix vulnerabilities ([cc52a8d](https://github.com/LerianStudio/midaz-console/commit/cc52a8db7c2376ceb8804df72bbbd09f4a087761))
+* increase the lighthouse CI step ([aaf1909](https://github.com/LerianStudio/midaz-console/commit/aaf190997435118d400e52abb3cf63c38d040fdb))
+* insert lighthouse on CI flow ([faa3cd8](https://github.com/LerianStudio/midaz-console/commit/faa3cd86ea87037f687c2873934f63d8ce6f269d))
+* organize lighthouse-ci ([a9b69f6](https://github.com/LerianStudio/midaz-console/commit/a9b69f62ead89331dc9b72959070bbd19276331e))
+* set values to generate only report without broke pipeline ([69fccbf](https://github.com/LerianStudio/midaz-console/commit/69fccbf404176bef5b59b756aaa61a8ff57c857b))
+
 ## [1.25.2](https://github.com/LerianStudio/midaz-console/compare/v1.25.1...v1.25.2) (2025-04-09)
 
 
