@@ -32,7 +32,8 @@ jobs:
 
       - name: Build of the project
         run: npm run build
-
+        
+# Execute Lighthouse CI
       - name: Start app
         run: npm run start &
         env:
