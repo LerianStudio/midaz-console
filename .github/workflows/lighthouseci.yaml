@@ -54,8 +54,8 @@ jobs:
         with:
           name: lighthouse-report
           path: |
-            .lighthouseci/*.html
-            .lighthouseci/*.json
+            midaz-console/.lighthouseci/*.html
+            midaz-console/.lighthouseci/*.json
           if-no-files-found: error
 
       - name: Cleanup
