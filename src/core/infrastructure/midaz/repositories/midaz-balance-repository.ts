@@ -2,8 +2,9 @@ import { BalanceEntity } from '@/core/domain/entities/balance-entity'
 import { BalanceRepository } from '@/core/domain/repositories/balance-repository'
 import { inject, injectable } from 'inversify'
 import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
-import { HTTP_METHODS, HttpFetchUtils } from '../../utils/http-fetch-utils'
+import { HttpFetchUtils } from '../../utils/http-fetch-utils'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
+import { HttpMethods } from '@/lib/http'
 
 @injectable()
 export class MidazBalanceRepository implements BalanceRepository {
@@ -25,7 +26,7 @@ export class MidazBalanceRepository implements BalanceRepository {
       PaginationEntity<BalanceEntity>
     >({
       url,
-      method: HTTP_METHODS.GET
+      method: HttpMethods.GET
     })
 
     return response
@@ -48,7 +49,7 @@ export class MidazBalanceRepository implements BalanceRepository {
     const response =
       await this.midazHttpFetchUtils.httpMidazFetch<BalanceEntity>({
         url,
-        method: HTTP_METHODS.PATCH,
+        method: HttpMethods.PATCH,
         body: JSON.stringify(balance)
       })
 

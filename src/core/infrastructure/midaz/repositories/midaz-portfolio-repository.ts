@@ -1,10 +1,10 @@
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
 import { PortfolioRepository } from '@/core/domain/repositories/portfolio-repository'
-import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 import { injectable, inject } from 'inversify'
 import { HttpFetchUtils } from '../../utils/http-fetch-utils'
 import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
+import { HttpMethods } from '@/lib/http'
 
 @injectable()
 export class MidazPortfolioRepository implements PortfolioRepository {
@@ -25,7 +25,7 @@ export class MidazPortfolioRepository implements PortfolioRepository {
     const response =
       await this.midazHttpFetchUtils.httpMidazFetch<PortfolioEntity>({
         url,
-        method: HTTP_METHODS.POST,
+        method: HttpMethods.POST,
         body: JSON.stringify(portfolio)
       })
 
@@ -44,7 +44,7 @@ export class MidazPortfolioRepository implements PortfolioRepository {
       PaginationEntity<PortfolioEntity>
     >({
       url,
-      method: HTTP_METHODS.GET
+      method: HttpMethods.GET
     })
 
     return response
@@ -60,7 +60,7 @@ export class MidazPortfolioRepository implements PortfolioRepository {
     const response =
       await this.midazHttpFetchUtils.httpMidazFetch<PortfolioEntity>({
         url,
-        method: HTTP_METHODS.GET
+        method: HttpMethods.GET
       })
 
     return response
@@ -77,7 +77,7 @@ export class MidazPortfolioRepository implements PortfolioRepository {
     const response =
       await this.midazHttpFetchUtils.httpMidazFetch<PortfolioEntity>({
         url,
-        method: HTTP_METHODS.PATCH,
+        method: HttpMethods.PATCH,
         body: JSON.stringify(portfolio)
       })
 
@@ -93,7 +93,7 @@ export class MidazPortfolioRepository implements PortfolioRepository {
 
     await this.midazHttpFetchUtils.httpMidazFetch<void>({
       url,
-      method: HTTP_METHODS.DELETE
+      method: HttpMethods.DELETE
     })
 
     return
