@@ -12,9 +12,10 @@ import {
   useQuery
 } from '@tanstack/react-query'
 import useCustomToast from '@/hooks/use-custom-toast'
+import { OrganizationResponseDto } from '@/core/application/dto/organization-response-dto'
 
 export const useListOrganizations = ({ ...options }) => {
-  return useQuery<PaginationDto<OrganizationEntity>>({
+  return useQuery<PaginationDto<OrganizationResponseDto>>({
     queryKey: ['organizations'],
     queryFn: getFetcher(`/api/organizations`),
     ...options
