@@ -1,5 +1,4 @@
 branches:
-  branches:
   - main
   - name: develop
     prerelease: "beta"
