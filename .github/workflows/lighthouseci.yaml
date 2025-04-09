@@ -44,6 +44,9 @@ jobs:
       - name: Run Lighthouse CI
         run: npm run lhci -- --ci
 
+      - name: List contents of .lighthouseci directory
+        run: ls -alR midaz-console/.lighthouseci
+
       - name: Upload Lighthouse Report
         uses: actions/upload-artifact@v4
         with:
