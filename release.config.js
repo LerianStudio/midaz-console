@@ -2,9 +2,9 @@ module.exports = {
   branches: [
     { name: 'main' }, // Versão final X.Y.Z
     { name: 'develop', prerelease: 'beta', channel: 'beta' }, // beta.N
-    { name: 'regex:^feature/.+', prerelease: 'alpha', channel: 'alpha' }, // alpha.N
-    { name: 'regex:^release/.+', prerelease: 'rc', channel: 'rc' }, // rc.N
-    { name: 'regex:^hotfix/.+', prerelease: 'hf', channel: 'hf' } // hf.N
+    { name: /^feature\/.+/, prerelease: 'alpha', channel: 'alpha' }, // alpha.N
+    { name: /^release\/.+/, prerelease: 'rc', channel: 'rc' }, // rc.N
+    { name: /^hotfix\/.+/, prerelease: 'hf', channel: 'hf' } // hf.N
   ],
   plugins: [
     [
