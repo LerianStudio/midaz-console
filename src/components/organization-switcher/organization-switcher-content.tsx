@@ -18,6 +18,7 @@ import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 export type OrganizationSwitcherProps = {
   data: OrganizationEntity[]
   orgName: string
+  orgId: string
   status: 'active' | 'inactive'
   image: string
   alt: string
@@ -30,6 +31,7 @@ export type OrganizationSwitcherContentProps = OrganizationSwitcherProps & {
 
 export const OrganizationSwitcherContent = ({
   orgName,
+  orgId,
   status,
   alt,
   image,
@@ -56,7 +58,7 @@ export const OrganizationSwitcherContent = ({
           />
         </PopoverPanelContent>
         <PopoverPanelFooter>
-          <Link href="/settings?tab=organizations" onClick={onClose}>
+          <Link href={`/settings/organizations/${orgId}`} onClick={onClose}>
             {intl.formatMessage({
               id: 'common.edit',
               defaultMessage: 'Edit'

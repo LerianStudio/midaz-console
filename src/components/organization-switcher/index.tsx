@@ -50,6 +50,7 @@ export const OrganizationSwitcher = () => {
       <OrganizationSwitcherContent
         orgName={currentOrganization.legalName}
         status="active"
+        orgId={currentOrganization.id!}
         alt={intl.formatMessage({
           id: 'common.logoAlt',
           defaultMessage: 'Your organization logo'
