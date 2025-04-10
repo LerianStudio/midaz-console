@@ -128,7 +128,7 @@ export const UsersTabContent = () => {
                   <TableHead>
                     {intl.formatMessage({
                       id: `common.email`,
-                      defaultMessage: 'Email'
+                      defaultMessage: 'E-mail'
                     })}
                   </TableHead>
                   <TableHead>

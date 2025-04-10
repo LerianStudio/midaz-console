@@ -245,7 +245,7 @@ export const UserSheet = ({
                       name="email"
                       label={intl.formatMessage({
                         id: 'common.email',
-                        defaultMessage: 'Email'
+                        defaultMessage: 'E-mail'
                       })}
                       control={profileForm.control}
                       disabled

@@ -16,6 +16,8 @@ import { useState } from 'react'
 import ConfirmationDialog from '@/components/confirmation-dialog'
 import React from 'react'
 import { GroupResponseDto } from '@/core/application/dto/group-dto'
+import { AlertTriangle } from 'lucide-react'
+import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 
 const editInitialValues = {
   firstName: '',
@@ -61,7 +63,17 @@ export const EditUserForm = ({
   const [activeTab, setActiveTab] = useState('personal-information')
   const [pendingPasswordData, setPendingPasswordData] =
     useState<PasswordFormData | null>(null)
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false)
+
+  const { handleDialogOpen, dialogProps, handleDialogClose } = useConfirmDialog(
+    {
+      onConfirm: () => {
+        if (pendingPasswordData) {
+          const { newPassword } = pendingPasswordData
+          resetPassword({ newPassword })
+        }
+      }
+    }
+  )
 
   const form = useForm<UpdateFormData>({
     resolver: zodResolver(UpdateFormSchema),
@@ -145,7 +157,7 @@ export const EditUserForm = ({
 
   const handlePasswordSubmit = (formData: PasswordFormData) => {
     setPendingPasswordData(formData)
-    setIsConfirmOpen(true)
+    handleDialogOpen('')
   }
 
   const handleConfirmPassword = () => {
@@ -153,7 +165,7 @@ export const EditUserForm = ({
       const { newPassword } = pendingPasswordData
       resetPassword({ newPassword })
     }
-    setIsConfirmOpen(false)
+    handleDialogClose()
   }
 
   return (
@@ -161,17 +173,16 @@ export const EditUserForm = ({
       <ConfirmationDialog
         title={intl.formatMessage({
           id: 'users.password.confirmTitle',
-          defaultMessage: 'Confirm Password Change'
+          defaultMessage: 'Password Change'
         })}
         description={intl.formatMessage({
           id: 'users.password.confirmDescription',
           defaultMessage:
             'Are you sure you want to change the password for this user? This action cannot be undone.'
         })}
+        icon={<AlertTriangle size={24} className="text-yellow-500" />}
         loading={resetPasswordPending}
-        open={isConfirmOpen}
-        onOpenChange={setIsConfirmOpen}
-        onConfirm={handleConfirmPassword}
+        {...dialogProps}
       />
 
       <Tabs
@@ -227,8 +238,8 @@ export const EditUserForm = ({
                   <InputField
                     name="email"
                     label={intl.formatMessage({
-                      id: 'entity.user.email',
-                      defaultMessage: 'Email'
+                      id: 'common.email',
+                      defaultMessage: 'E-mail'
                     })}
                     control={form.control}
                     required

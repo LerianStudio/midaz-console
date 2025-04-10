@@ -126,8 +126,8 @@ export const CreateUserForm = ({
           <InputField
             name="email"
             label={intl.formatMessage({
-              id: 'entity.user.email',
-              defaultMessage: 'Email'
+              id: 'common.email',
+              defaultMessage: 'E-mail'
             })}
             control={form.control}
             required
@@ -137,7 +137,7 @@ export const CreateUserForm = ({
             name="password"
             type="password"
             label={intl.formatMessage({
-              id: 'entity.user.password',
+              id: 'common.password',
               defaultMessage: 'Password'
             })}
             control={form.control}
