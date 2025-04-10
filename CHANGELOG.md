@@ -1,3 +1,32 @@
+# [1.27.0](https://github.com/LerianStudio/midaz-console/compare/v1.26.3...v1.27.0) (2025-04-10)
+
+
+### Features
+
+* check file path after to upload files ([94deb61](https://github.com/LerianStudio/midaz-console/commit/94deb6136f5826162109c484af23d310b20d497c))
+* check file path after to upload files ([a1e75ec](https://github.com/LerianStudio/midaz-console/commit/a1e75ec3527991dc4c75feeb0ee53eec2078332d))
+* check if the folder exists after do upload ([ee9df6b](https://github.com/LerianStudio/midaz-console/commit/ee9df6b1220e4df874c360b96c71d95b72120295))
+* check if the folder exists after do upload ([8463f18](https://github.com/LerianStudio/midaz-console/commit/8463f18c4f6e9f30ac3270b51f8c1c626734fdcc))
+* check path of save reports ([a195160](https://github.com/LerianStudio/midaz-console/commit/a195160f8458bb161f6943292036bb994b8ff94f))
+* check the entire flow ([d6ecc33](https://github.com/LerianStudio/midaz-console/commit/d6ecc33c9dfd9104b4b7c88e564231e352376c80))
+* check the entire flow and insert debug steps ([f4be1b0](https://github.com/LerianStudio/midaz-console/commit/f4be1b0c3f7954c4e48c45363d5edee12ba7f462))
+* configuration of two types of storage report ([d63a6c6](https://github.com/LerianStudio/midaz-console/commit/d63a6c6f04e823ecbf05fdafe98923f1bccb92cf))
+* configure two types of upload ([4d00538](https://github.com/LerianStudio/midaz-console/commit/4d00538033f16250566c981d4162f5a63605ff65))
+* create cheking folder path ([8010aa2](https://github.com/LerianStudio/midaz-console/commit/8010aa25887da69a13f51614101ad7771acbd972))
+* debug output path ([3e5d567](https://github.com/LerianStudio/midaz-console/commit/3e5d56792bacfa8183dab7a1c3b5140e62944e13))
+* debug output path and fix path ([d0cd36d](https://github.com/LerianStudio/midaz-console/commit/d0cd36d366fb9bd53cd0d3cbd31b9daf117b94d8))
+* debug output path and fix path again ([82c2f51](https://github.com/LerianStudio/midaz-console/commit/82c2f5163c26929ff6eff1a83047327b829fb758))
+* debug output path and fix path using list command ([f56f276](https://github.com/LerianStudio/midaz-console/commit/f56f276056e17de5d3d59842ee74c6f87a67f1c7))
+* debug upload of lighthouse reports ([878e5ac](https://github.com/LerianStudio/midaz-console/commit/878e5acbc7a69cc39a27c1d05ac3953b9dddbda3))
+* fix file path ([0fa7da7](https://github.com/LerianStudio/midaz-console/commit/0fa7da7481c614c630d7c6189763474564930f11))
+* fix file path of lighthouse ci ([f1dfdc0](https://github.com/LerianStudio/midaz-console/commit/f1dfdc0b3373ae85857621bbd6c9cba05dba9a42))
+* fix the path of folder ([dd1988c](https://github.com/LerianStudio/midaz-console/commit/dd1988c937bc649af270bd70f7762a9ec276277b))
+* fix the path of folder using absolute path ([4e258c3](https://github.com/LerianStudio/midaz-console/commit/4e258c364c82b4d1f66c5562a85fd8d691463d7b))
+* generate lighthouse reports ([b828660](https://github.com/LerianStudio/midaz-console/commit/b828660a3ad71d6ccbec4ed3a1bb7c8a5bdf2f84))
+* generate report on both types ([5a2f1a4](https://github.com/LerianStudio/midaz-console/commit/5a2f1a441770541742bebd57235bad81fc8558db))
+* rebuild lighthouse ci flow ([f84bde4](https://github.com/LerianStudio/midaz-console/commit/f84bde42a952997e9510ad9eb807086597201104))
+* upload of lighthouse reports ([030e504](https://github.com/LerianStudio/midaz-console/commit/030e504c757106ebf5021df66f1bd16cf5e812e0))
+
 ## [1.26.3](https://github.com/LerianStudio/midaz-console/compare/v1.26.2...v1.26.3) (2025-04-09)
 
 
