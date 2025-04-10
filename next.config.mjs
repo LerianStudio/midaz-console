@@ -33,10 +33,19 @@ const nextConfig = {
     ]
   },
   images: {
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    contentDispositionType: 'attachment',
+
     remotePatterns: [
       {
         protocol: 'http',
-        hostname: process.env.MIDAZ_CONSOLE_SERVICE_HOST || 'localhost',
+        hostname: '**',
+        pathname: '**'
+      },
+      {
+        protocol: 'https',
+        hostname: '**',
         pathname: '**'
       }
     ]
