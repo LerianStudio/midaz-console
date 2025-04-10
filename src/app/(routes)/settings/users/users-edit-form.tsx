@@ -160,14 +160,6 @@ export const EditUserForm = ({
     handleDialogOpen('')
   }
 
-  const handleConfirmPassword = () => {
-    if (pendingPasswordData) {
-      const { newPassword } = pendingPasswordData
-      resetPassword({ newPassword })
-    }
-    handleDialogClose()
-  }
-
   return (
     <React.Fragment>
       <ConfirmationDialog
