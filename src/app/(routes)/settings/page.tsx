@@ -10,7 +10,8 @@ import { OrganizationsTabContent } from './organizations-tab-content'
 import { PageHeader } from '@/components/page-header'
 import { SystemTabContent } from './system-tab-content'
 import React from 'react'
-import { UsersTabContent } from './users-tab-content'
+import { UsersTabContent } from './users/users-tab-content'
+import { Enforce } from '@/context/permission-provider/enforce'
 
 const Page = () => {
   const intl = useIntl()
@@ -74,12 +75,14 @@ const Page = () => {
             })}
           </TabsTrigger>
 
-          <TabsTrigger value="users">
-            {intl.formatMessage({
-              id: 'settings.tabs.users',
-              defaultMessage: 'Users'
-            })}
-          </TabsTrigger>
+          <Enforce resource="users" action="get">
+            <TabsTrigger value="users">
+              {intl.formatMessage({
+                id: 'settings.tabs.users',
+                defaultMessage: 'Users'
+              })}
+            </TabsTrigger>
+          </Enforce>
 
           <TabsTrigger value="system">
             {intl.formatMessage({
@@ -93,9 +96,11 @@ const Page = () => {
           <OrganizationsTabContent />
         </TabsContent>
 
-        <TabsContent value="users">
-          <UsersTabContent />
-        </TabsContent>
+        <Enforce resource="users" action="get">
+          <TabsContent value="users">
+            <UsersTabContent />
+          </TabsContent>
+        </Enforce>
 
         <TabsContent value="system">
           <SystemTabContent />

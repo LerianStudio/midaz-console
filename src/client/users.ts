@@ -8,11 +8,22 @@ import { UsersType } from '@/types/users-type'
 import {
   keepPreviousData,
   useMutation,
+  UseMutationOptions,
   useQuery,
   useQueryClient
 } from '@tanstack/react-query'
 
-export const useCreateUser = ({ ...options }: any) => {
+type UseUserByIdProps = {
+  userId: string
+}
+
+type UseUpdateUserProps = {
+  userId: string
+} & UseMutationOptions<any, any, any>
+
+type UsePasswordProps = UseUpdateUserProps
+
+export const useCreateUser = ({ ...options }) => {
   return useMutation<unknown, Error, UsersType>({
     mutationKey: ['users'],
     mutationFn: postFetcher(`/api/identity/users`),
@@ -20,7 +31,7 @@ export const useCreateUser = ({ ...options }: any) => {
   })
 }
 
-export const useListUsers = ({ ...options }: any) => {
+export const useListUsers = ({ ...options }) => {
   return useQuery<any>({
     queryKey: ['users'],
     queryFn: getFetcher(`/api/identity/users`),
@@ -29,7 +40,7 @@ export const useListUsers = ({ ...options }: any) => {
   })
 }
 
-export const useUserById = ({ userId, ...options }: any) => {
+export const useUserById = ({ userId, ...options }: UseUserByIdProps) => {
   return useQuery<any>({
     queryKey: ['users', userId],
     queryFn: getFetcher(`/api/identity/users/${userId}`),
@@ -38,26 +49,26 @@ export const useUserById = ({ userId, ...options }: any) => {
   })
 }
 
-export const useDeleteUser = ({ onSuccess, ...options }: any) => {
+export const useDeleteUser = ({ ...options }) => {
   const queryClient = useQueryClient()
 
-  return useMutation<any, any, any>({
+  return useMutation({
     mutationKey: ['users'],
     mutationFn: deleteFetcher(`/api/identity/users`),
     onSuccess: (...args) => {
       queryClient.invalidateQueries({
         queryKey: ['users']
       })
-      onSuccess?.(...args)
+      options.onSuccess?.(...args)
     },
     ...options
   })
 }
 
-export const useUpdateUser = ({ userId, ...options }: any) => {
+export const useUpdateUser = ({ userId, ...options }: UseUpdateUserProps) => {
   const queryClient = useQueryClient()
 
-  return useMutation<any, any, any>({
+  return useMutation({
     mutationKey: ['users', userId],
     mutationFn: patchFetcher(`/api/identity/users/${userId}`),
     onSuccess: (...args) => {
@@ -70,10 +81,24 @@ export const useUpdateUser = ({ userId, ...options }: any) => {
   })
 }
 
-export const useUpdateUserPassword = ({ userId, ...options }: any) => {
-  return useMutation<any, any, any>({
+export const useUpdateUserPassword = ({
+  userId,
+  ...options
+}: UsePasswordProps) => {
+  return useMutation({
     mutationKey: ['users', 'update-password', userId],
     mutationFn: patchFetcher(`/api/identity/users/${userId}/password`),
+    ...options
+  })
+}
+
+export const useResetUserPassword = ({
+  userId,
+  ...options
+}: UsePasswordProps) => {
+  return useMutation({
+    mutationKey: ['users', 'reset-password', userId],
+    mutationFn: patchFetcher(`/api/identity/users/${userId}/password/admin`),
     ...options
   })
 }

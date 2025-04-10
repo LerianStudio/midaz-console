@@ -22,10 +22,12 @@ import { useUpdateUser, useUpdateUserPassword } from '@/client/users'
 import { SelectItem } from '../ui/select'
 import { useListGroups } from '@/client/groups'
 import { user, passwordChange } from '@/schema/user'
+import { GroupResponseDto } from '@/core/application/dto/group-dto'
+import { UserResponseDto } from '@/core/application/dto/user-dto'
 
 export type UserSheetProps = DialogProps & {
   mode: 'create' | 'edit'
-  data?: any | null
+  data: UserResponseDto
   onSuccess?: () => void
 }
 
@@ -53,7 +55,7 @@ const profileInitialValues = {
   lastName: '',
   username: '',
   email: '',
-  groups: []
+  groups: ''
 }
 
 const passwordInitialValues = {
@@ -133,7 +135,10 @@ export const UserSheet = ({
 
   const handleProfileSubmit = (formData: z.infer<typeof ProfileSchema>) => {
     if (mode === 'edit') {
-      updateUser(formData)
+      updateUser({
+        ...formData,
+        groups: [formData.groups]
+      })
     }
   }
 
@@ -162,13 +167,14 @@ export const UserSheet = ({
               <SheetTitle>
                 {intl.formatMessage({
                   id: 'user.sheet.edit.title',
-                  defaultMessage: 'My Account'
+                  defaultMessage: 'Edit "My Account"'
                 })}
               </SheetTitle>
               <SheetDescription>
                 {intl.formatMessage({
                   id: 'user.sheet.edit.description',
-                  defaultMessage: 'View and edit your profile information.'
+                  defaultMessage:
+                    'View and edit your personal data and password.'
                 })}
               </SheetDescription>
             </SheetHeader>
@@ -258,7 +264,7 @@ export const UserSheet = ({
                       control={profileForm.control}
                       disabled
                     >
-                      {groups?.map((group: any) => (
+                      {groups?.map((group: GroupResponseDto) => (
                         <SelectItem key={group.id} value={group.id}>
                           {group.name}
                         </SelectItem>

@@ -16,7 +16,7 @@ const newPassword = z.string().min(8)
 
 const confirmPassword = z.string().min(8)
 
-const groups = z.array(z.string())
+const groups = z.string()
 
 export const user = {
   firstName,

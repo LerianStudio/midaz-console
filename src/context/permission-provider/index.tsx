@@ -19,9 +19,13 @@ export const PermissionProvider = async ({
 }: React.PropsWithChildren) => {
   const session = await getServerSession(nextAuthOptions)
 
+  console.log('Server-side session:', session?.user)
+
   const permissions = await serverFetcher(
     async () => await authPermissionUseCase.execute()
   )
+
+  console.log('Server-side permissions:', permissions)
 
   return (
     <PermissionProviderClient permissions={permissions!}>

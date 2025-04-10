@@ -29,18 +29,21 @@ import { UsersSheet } from './users-sheet'
 import { useDeleteUser, useListUsers } from '@/client/users'
 import { Skeleton } from '@/components/ui/skeleton'
 import useCustomToast from '@/hooks/use-custom-toast'
+import { UserResponseDto } from '@/core/application/dto/user-dto'
 
 export const UsersTabContent = () => {
   const intl = useIntl()
   const { data: users, refetch, isLoading } = useListUsers({})
   const { showSuccess, showError } = useCustomToast()
-  const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>({
-    enableRouting: true
-  })
+  const { handleCreate, handleEdit, sheetProps } =
+    useCreateUpdateSheet<UserResponseDto>({
+      enableRouting: true
+    })
 
   const { mutate: deleteUser, isPending: deletePending } = useDeleteUser({
     onSuccess: () => {
       handleDialogClose()
+      refetch()
       showSuccess(
         intl.formatMessage({
           id: 'users.toast.delete.success',
@@ -143,7 +146,7 @@ export const UsersTabContent = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {users?.map((user: any) => (
+                {users?.map((user: UserResponseDto) => (
                   <TableRow key={user.id}>
                     <TableCell>
                       {user.firstName} {user.lastName}
