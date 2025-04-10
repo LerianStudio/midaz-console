@@ -1,5 +1,5 @@
 import { Container, ContainerModule } from '../../utils/di/container'
-import { LoggerRepository } from '@/core/domain/repositories/logger/logger-repository'
+import { LoggerRepository } from '@/core/domain/repositories/logger-repository'
 import { PinoLoggerRepository } from '@/core/infrastructure/logger/pino-logger-repository'
 import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
 

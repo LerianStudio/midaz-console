@@ -5,7 +5,7 @@ import {
   AuthLoginUseCase
 } from '@/core/application/use-cases/auth/auth-login-use-case'
 import { AuthEntity } from '@/core/domain/entities/auth-entity'
-import { LoggerRepository } from '@/core/domain/repositories/logger/logger-repository'
+import { LoggerRepository } from '@/core/domain/repositories/logger-repository'
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { log } from 'console'

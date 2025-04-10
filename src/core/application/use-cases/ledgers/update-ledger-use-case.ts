@@ -1,4 +1,4 @@
-import { UpdateLedgerRepository } from '@/core/domain/repositories/ledgers/update-ledger-repository'
+import { LedgerRepository } from '@/core/domain/repositories/ledger-repository'
 import { LedgerResponseDto } from '../../dto/ledger-response-dto'
 import { UpdateLedgerDto } from '../../dto/update-ledger-dto'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
@@ -17,8 +17,8 @@ export interface UpdateLedger {
 @injectable()
 export class UpdateLedgerUseCase implements UpdateLedger {
   constructor(
-    @inject(UpdateLedgerRepository)
-    private readonly updateLedgerRepository: UpdateLedgerRepository
+    @inject(LedgerRepository)
+    private readonly ledgerRepository: LedgerRepository
   ) {}
 
   @LogOperation({ layer: 'application' })
@@ -29,7 +29,7 @@ export class UpdateLedgerUseCase implements UpdateLedger {
   ): Promise<LedgerResponseDto> {
     const ledgerEntity: Partial<LedgerEntity> = LedgerMapper.toDomain(ledger)
 
-    const updatedLedgerEntity = await this.updateLedgerRepository.update(
+    const updatedLedgerEntity = await this.ledgerRepository.update(
       organizationId,
       ledgerId,
       ledgerEntity

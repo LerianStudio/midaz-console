@@ -1,4 +1,4 @@
-import { UpdateTransactionRepository } from '@/core/domain/repositories/transactions/update-transaction-repository'
+import { TransactionRepository } from '@/core/domain/repositories/transaction-repository'
 import { inject, injectable } from 'inversify'
 import { TransactionEntity } from '@/core/domain/entities/transaction-entity'
 import { TransactionMapper } from '../../mappers/transaction-mapper'
@@ -18,8 +18,8 @@ export interface UpdateTransaction {
 @injectable()
 export class UpdateTransactionUseCase implements UpdateTransaction {
   constructor(
-    @inject(UpdateTransactionRepository)
-    private readonly updateTransactionRepository: UpdateTransactionRepository
+    @inject(TransactionRepository)
+    private readonly transactionRepository: TransactionRepository
   ) {}
 
   @LogOperation({ layer: 'application' })
@@ -36,7 +36,7 @@ export class UpdateTransactionUseCase implements UpdateTransaction {
       )
 
     const updatedTransaction: TransactionEntity =
-      await this.updateTransactionRepository.update(
+      await this.transactionRepository.update(
         organizationId,
         ledgerId,
         transactionId,

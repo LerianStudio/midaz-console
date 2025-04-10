@@ -1,5 +1,5 @@
-import { FetchAllAccountsRepository } from '@/core/domain/repositories/accounts/fetch-all-accounts-repository'
-import { FetchAllPortfoliosRepository } from '@/core/domain/repositories/portfolios/fetch-all-portfolio-repository'
+import { AccountRepository } from '@/core/domain/repositories/account-repository'
+import { PortfolioRepository } from '@/core/domain/repositories/portfolio-repository'
 import { PaginationDto } from '../../dto/pagination-dto'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { PortfolioEntity } from '@/core/domain/entities/portfolios-entity'
@@ -26,10 +26,10 @@ export class FetchAccountsWithPortfoliosUseCase
   implements FetchAccountsWithPortfolios
 {
   constructor(
-    @inject(FetchAllPortfoliosRepository)
-    private readonly fetchAllPortfoliosRepository: FetchAllPortfoliosRepository,
-    @inject(FetchAllAccountsRepository)
-    private readonly fetchAllAccountsRepository: FetchAllAccountsRepository,
+    @inject(PortfolioRepository)
+    private readonly portfolioRepository: PortfolioRepository,
+    @inject(AccountRepository)
+    private readonly accountRepository: AccountRepository,
     @inject(BalanceRepository)
     private readonly balanceRepository: BalanceRepository,
     @inject(LoggerAggregator)
@@ -83,7 +83,7 @@ export class FetchAccountsWithPortfoliosUseCase
     limit: number,
     page: number
   ): Promise<PaginationEntity<AccountEntity>> {
-    return this.fetchAllAccountsRepository.fetchAll(
+    return this.accountRepository.fetchAll(
       organizationId,
       ledgerId,
       limit,
@@ -97,7 +97,7 @@ export class FetchAccountsWithPortfoliosUseCase
     limit: number,
     page: number
   ): Promise<Map<string, PortfolioEntity>> {
-    const portfoliosResult = await this.fetchAllPortfoliosRepository.fetchAll(
+    const portfoliosResult = await this.portfolioRepository.fetchAll(
       organizationId,
       ledgerId,
       limit,

@@ -1,4 +1,4 @@
-import { DeleteOrganizationRepository } from '@/core/domain/repositories/organizations/delete-organization-repository'
+import { OrganizationRepository } from '@/core/domain/repositories/organization-repository'
 import { inject, injectable } from 'inversify'
 import { LogOperation } from '../../decorators/log-operation'
 
@@ -9,12 +9,12 @@ export interface DeleteOrganization {
 @injectable()
 export class DeleteOrganizationUseCase implements DeleteOrganization {
   constructor(
-    @inject(DeleteOrganizationRepository)
-    private readonly deleteOrganizationRepository: DeleteOrganizationRepository
+    @inject(OrganizationRepository)
+    private readonly organizationRepository: OrganizationRepository
   ) {}
 
   @LogOperation({ layer: 'application' })
   async execute(organizationId: string): Promise<void> {
-    await this.deleteOrganizationRepository.deleteOrganization(organizationId)
+    await this.organizationRepository.delete(organizationId)
   }
 }

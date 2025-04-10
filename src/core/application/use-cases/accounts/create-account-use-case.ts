@@ -1,4 +1,4 @@
-import { CreateAccountsRepository } from '@/core/domain/repositories/accounts/create-accounts-repository'
+import { AccountRepository } from '@/core/domain/repositories/account-repository'
 import { AccountEntity } from '@/core/domain/entities/account-entity'
 import { AccountMapper } from '../../mappers/account-mapper'
 import { inject, injectable } from 'inversify'
@@ -19,8 +19,8 @@ export interface CreateAccount {
 @injectable()
 export class CreateAccountUseCase implements CreateAccount {
   constructor(
-    @inject(CreateAccountsRepository)
-    private readonly createAccountRepository: CreateAccountsRepository
+    @inject(AccountRepository)
+    private readonly accountRepository: AccountRepository
   ) {}
 
   @LogOperation({ layer: 'application' })
@@ -34,7 +34,7 @@ export class CreateAccountUseCase implements CreateAccount {
       description: 'Active Account'
     }
     const accountEntity: AccountEntity = AccountMapper.toDomain(account)
-    const accountCreated = await this.createAccountRepository.create(
+    const accountCreated = await this.accountRepository.create(
       organizationId,
       ledgerId,
       accountEntity
