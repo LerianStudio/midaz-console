@@ -21,9 +21,6 @@ export class OtelTracerProvider {
   private span: Span | undefined
 
   constructor() {
-    console.log('Initializing OtelTracerProvider')
-    console.log('Telemetry enabled:', this.isTelemetryEnabled)
-
     if (this.isTelemetryEnabled) {
       this.otelTracer = trace.getTracer('midaz-console')
     }

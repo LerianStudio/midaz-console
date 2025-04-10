@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { container } from '@/core/infrastructure/container-registry/container-registry'
 import {
   FetchParentOrganizations,

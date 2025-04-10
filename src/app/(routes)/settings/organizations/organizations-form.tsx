@@ -29,6 +29,7 @@ import {
   PaperCollapsibleBanner,
   PaperCollapsibleContent
 } from '@/components/transactions/primitives/paper-collapsible'
+import { usePopulateForm } from '@/lib/form'
 
 type OrganizationsViewProps = {
   data?: OrganizationsType
@@ -98,7 +99,6 @@ export const OrganizationsForm = ({
 }: OrganizationsViewProps) => {
   const intl = useIntl()
   const router = useRouter()
-  const [showMetadataCollapse, setShowMetadataCollapse] = React.useState(false)
   const isNewOrganization = !data
 
   const { mutate: createOrganization, isPending: createPending } =
@@ -125,6 +125,8 @@ export const OrganizationsForm = ({
       updateOrganization(parseUpdateData(values))
     }
   }
+
+  usePopulateForm(form, data)
 
   return (
     <Form {...form}>
