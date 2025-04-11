@@ -9,9 +9,9 @@ import { useListGroups } from '@/client/groups'
 import { SelectItem } from '@/components/ui/select'
 import { LoadingButton } from '@/components/ui/loading-button'
 import { useCreateUser } from '@/client/users'
-import { UserResponseDto } from '@/core/application/dto/user-dto'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { GroupResponseDto } from '@/core/application/dto/group-dto'
+import { UsersType } from '@/types/users-type'
 
 const FormSchema = z.object({
   firstName: user.firstName,
@@ -54,7 +54,7 @@ export const CreateUserForm = ({
   const { mutate: createUser, isPending: createPending } = useCreateUser({
     onSuccess: async (response: unknown) => {
       const responseData = response as any
-      const newUser = responseData.userCreated as UserResponseDto
+      const newUser = responseData.userCreated as UsersType
 
       await onSuccess?.()
       onOpenChange?.(false)

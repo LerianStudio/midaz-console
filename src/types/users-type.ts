@@ -6,3 +6,5 @@ export type UsersType = {
   email: string
   groups: string[]
 }
+
+export type CreateUserType = Omit<UsersType, 'id'>
