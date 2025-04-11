@@ -19,6 +19,7 @@ import { GroupResponseDto } from '@/core/application/dto/group-dto'
 import { AlertTriangle } from 'lucide-react'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import { usePopulateForm } from '@/lib/form'
+import { UsersType } from '@/types/users-type'
 
 const UpdateFormSchema = z.object({
   firstName: user.firstName,
@@ -41,7 +42,7 @@ type UpdateFormData = z.infer<typeof UpdateFormSchema>
 type PasswordFormData = z.infer<typeof PasswordSchema>
 
 interface EditUserFormProps {
-  user: UserResponseDto
+  user: UsersType
   onSuccess?: () => void
   onOpenChange?: (open: boolean) => void
 }
@@ -94,7 +95,7 @@ export const EditUserForm = ({
     userId: user.id,
     onSuccess: async (response: unknown) => {
       const responseData = response as any
-      const updatedUser = responseData.userUpdated as UserResponseDto
+      const updatedUser = responseData.userUpdated as UsersType
 
       await onSuccess?.()
       onOpenChange?.(false)

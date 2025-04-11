@@ -7,13 +7,13 @@ import {
 } from '@/components/ui/sheet'
 import { DialogProps } from '@radix-ui/react-dialog'
 import { useIntl } from 'react-intl'
-import { UserResponseDto } from '@/core/application/dto/user-dto'
 import { CreateUserForm } from './users-create-form'
 import { EditUserForm } from './users-edit-form'
+import { UsersType } from '@/types/users-type'
 
 export type UsersSheetProps = DialogProps & {
   mode: 'create' | 'edit'
-  data?: UserResponseDto | null
+  data?: UsersType | null
   onSuccess?: () => void
 }
 

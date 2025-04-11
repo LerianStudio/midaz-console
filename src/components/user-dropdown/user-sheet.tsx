@@ -23,11 +23,11 @@ import { SelectItem } from '../ui/select'
 import { useListGroups } from '@/client/groups'
 import { user, passwordChange } from '@/schema/user'
 import { GroupResponseDto } from '@/core/application/dto/group-dto'
-import { UserResponseDto } from '@/core/application/dto/user-dto'
+import { UsersType } from '@/types/users-type'
 
 export type UserSheetProps = DialogProps & {
   mode: 'create' | 'edit'
-  data: UserResponseDto
+  data: UsersType
   onSuccess?: () => void
 }
 
