@@ -59,7 +59,7 @@ const SettingsDialog = ({ open, setOpen }: Props) => {
           <div className="grid grid-cols-5 items-center gap-4">
             <Label htmlFor="username" className="text-right font-semibold">
               {intl.formatMessage({
-                id: 'entity.user.email',
+                id: 'common.email',
                 defaultMessage: 'E-mail'
               })}
             </Label>

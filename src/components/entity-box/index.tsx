@@ -101,7 +101,7 @@ const EntityBoxHeaderTitle = React.forwardRef<
               <TooltipTrigger asChild>
                 <CircleHelp className="pointer h-5 w-5 text-shadcn-400" />
               </TooltipTrigger>
-              <TooltipContent>{tooltip}</TooltipContent>
+              <TooltipContent side="right">{tooltip}</TooltipContent>
             </Tooltip>
           </TooltipProvider>
         )}

@@ -1,7 +1,6 @@
 import { inject, injectable } from 'inversify'
 import { GroupResponseDto } from '../../dto/group-dto'
 import { FetchAllGroupsRepository } from '@/core/domain/repositories/groups/fetch-all-groups-repository'
-import { Group } from 'lucide-react'
 import { GroupMapper } from '../../mappers/group-mapper'
 import { LogOperation } from '../../decorators/log-operation'
 

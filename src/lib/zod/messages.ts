@@ -108,6 +108,10 @@ const messages = defineMessages({
   custom_avatar_invalid_format: {
     id: 'errors.custom.avatar.invalid_format',
     defaultMessage: 'Avatar should have a PNG or SVG format'
+  },
+  custom_confirm_password: {
+    id: 'errors.custom.confirm_password',
+    defaultMessage: 'Passwords do not match'
   }
 })
 

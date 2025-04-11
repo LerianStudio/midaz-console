@@ -10,6 +10,8 @@ import { OrganizationsTabContent } from './organizations-tab-content'
 import { PageHeader } from '@/components/page-header'
 import { SystemTabContent } from './system-tab-content'
 import React from 'react'
+import { UsersTabContent } from './users/users-tab-content'
+import { Enforce } from '@/context/permission-provider/enforce'
 
 const Page = () => {
   const intl = useIntl()
@@ -19,33 +21,39 @@ const Page = () => {
     initialValue: searchParams.get('tab') || 'organizations'
   })
 
+  const breadcrumbPaths = [
+    {
+      name: intl.formatMessage({
+        id: `settings.title`,
+        defaultMessage: 'Settings'
+      })
+    },
+    {
+      name: intl.formatMessage({
+        id: `settings.tabs.organizations`,
+        defaultMessage: 'Organizations'
+      }),
+      active: () => activeTab === 'organizations'
+    },
+    {
+      name: intl.formatMessage({
+        id: `settings.tabs.users`,
+        defaultMessage: 'Users'
+      }),
+      active: () => activeTab === 'users'
+    },
+    {
+      name: intl.formatMessage({
+        id: `settings.tabs.system`,
+        defaultMessage: 'System'
+      }),
+      active: () => activeTab === 'system'
+    }
+  ]
+
   return (
     <React.Fragment>
-      <Breadcrumb
-        paths={getBreadcrumbPaths([
-          {
-            name: intl.formatMessage({
-              id: `settings.title`,
-              defaultMessage: 'Settings'
-            }),
-            href: '#'
-          },
-          {
-            name: intl.formatMessage({
-              id: `settings.tabs.organizations`,
-              defaultMessage: 'Organizations'
-            }),
-            active: () => activeTab === 'organizations'
-          },
-          {
-            name: intl.formatMessage({
-              id: `settings.tabs.system`,
-              defaultMessage: 'System'
-            }),
-            active: () => activeTab === 'system'
-          }
-        ])}
-      />
+      <Breadcrumb paths={getBreadcrumbPaths(breadcrumbPaths)} />
 
       <PageHeader.Root>
         <PageHeader.Wrapper className="border-none">
@@ -66,6 +74,16 @@ const Page = () => {
               defaultMessage: 'Organizations'
             })}
           </TabsTrigger>
+
+          <Enforce resource="users" action="get">
+            <TabsTrigger value="users">
+              {intl.formatMessage({
+                id: 'settings.tabs.users',
+                defaultMessage: 'Users'
+              })}
+            </TabsTrigger>
+          </Enforce>
+
           <TabsTrigger value="system">
             {intl.formatMessage({
               id: 'settings.tabs.system',
@@ -77,6 +95,13 @@ const Page = () => {
         <TabsContent value="organizations">
           <OrganizationsTabContent />
         </TabsContent>
+
+        <Enforce resource="users" action="get">
+          <TabsContent value="users">
+            <UsersTabContent />
+          </TabsContent>
+        </Enforce>
+
         <TabsContent value="system">
           <SystemTabContent />
         </TabsContent>
