@@ -215,6 +215,7 @@ export const EditUserForm = ({
                         defaultMessage: 'Name'
                       })}
                       control={form.control}
+                      required
                     />
 
                     <InputField
@@ -224,6 +225,7 @@ export const EditUserForm = ({
                         defaultMessage: 'Last Name'
                       })}
                       control={form.control}
+                      required
                     />
                   </div>
 

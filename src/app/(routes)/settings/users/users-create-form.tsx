@@ -102,6 +102,7 @@ export const CreateUserForm = ({
                 defaultMessage: 'Name'
               })}
               control={form.control}
+              required
             />
 
             <InputField
@@ -111,6 +112,7 @@ export const CreateUserForm = ({
                 defaultMessage: 'Last Name'
               })}
               control={form.control}
+              required
             />
           </div>
 
@@ -121,6 +123,7 @@ export const CreateUserForm = ({
               defaultMessage: 'Username'
             })}
             control={form.control}
+            required
           />
 
           <InputField
