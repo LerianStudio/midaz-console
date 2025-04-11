@@ -145,7 +145,7 @@ export const CreateUserForm = ({
           />
 
           <SelectField
-            name="groups[0]"
+            name="groups"
             label={intl.formatMessage({
               id: 'common.role',
               defaultMessage: 'Role'
