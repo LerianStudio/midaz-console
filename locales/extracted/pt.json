@@ -338,7 +338,6 @@
   "onboarding.ledger.dialog.description": "Sua organização já está pronta, mas você ainda precisa criar um Ledger para ativar os recursos potentes do Midaz Console.",
   "onboarding.ledger.dialog.title": "Crie o primeiro Ledger",
   "onboarding.ledger.name.description": "Será como identificaremos o ledger internamente",
-  "onboarding.skip.cancelLabel": "Mudei de ideia",
   "onboarding.skip.confirmLabel": "Sim, vou configurar depois",
   "onboarding.skip.description": "Tem certeza que deseja finalizar sem terminar a configuração do tema?",
   "onboarding.skip.title": "Tema incompleto",
@@ -456,5 +455,7 @@
   "users.toast.update.error": "Erro ao atualizar o usuário",
   "users.toast.update.success": "Usuário {userName} atualizado com sucesso",
   "users.tooltip": "Usuários que poderão interagir com as Organizações e Ledgers que você criar.",
-  "errors.custom.confirm_password": "As senhas não coincidem"
+  "errors.custom.confirm_password": "As senhas não coincidem",
+  "common.cancelLabel": "Mudei de ideia",
+  "users.password.confirmLabel": "Sim, alterar senha"
 }

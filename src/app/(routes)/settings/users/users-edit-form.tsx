@@ -12,19 +12,13 @@ import { useUpdateUser, useResetUserPassword } from '@/client/users'
 import { UserResponseDto } from '@/core/application/dto/user-dto'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import ConfirmationDialog from '@/components/confirmation-dialog'
 import React from 'react'
 import { GroupResponseDto } from '@/core/application/dto/group-dto'
 import { AlertTriangle } from 'lucide-react'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
-
-const editInitialValues = {
-  firstName: '',
-  lastName: '',
-  email: '',
-  groups: ''
-}
+import { usePopulateForm } from '@/lib/form'
 
 const UpdateFormSchema = z.object({
   firstName: user.firstName,
@@ -62,6 +56,14 @@ export const EditUserForm = ({
   const { data: groups } = useListGroups({})
   const [activeTab, setActiveTab] = useState('personal-information')
 
+  const defaultValues = useMemo(
+    () => ({
+      ...user,
+      groups: user.groups && user.groups.length > 0 ? user.groups[0] : ''
+    }),
+    [user]
+  )
+
   const {
     handleDialogOpen,
     dialogProps,
@@ -77,11 +79,7 @@ export const EditUserForm = ({
 
   const form = useForm<UpdateFormData>({
     resolver: zodResolver(UpdateFormSchema),
-    defaultValues: {
-      ...editInitialValues,
-      ...user,
-      groups: user.groups[0] || ''
-    }
+    defaultValues
   })
 
   const passwordForm = useForm<PasswordFormData>({
@@ -159,6 +157,8 @@ export const EditUserForm = ({
     handleDialogOpen('', formData)
   }
 
+  usePopulateForm(form, defaultValues)
+
   return (
     <React.Fragment>
       <ConfirmationDialog
@@ -173,6 +173,14 @@ export const EditUserForm = ({
         })}
         icon={<AlertTriangle size={24} className="text-yellow-500" />}
         loading={resetPasswordPending}
+        cancelLabel={intl.formatMessage({
+          id: 'common.cancelLabel',
+          defaultMessage: 'I changed my mind'
+        })}
+        confirmLabel={intl.formatMessage({
+          id: 'users.password.confirmLabel',
+          defaultMessage: 'Yes, change password'
+        })}
         {...dialogProps}
       />
 
