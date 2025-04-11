@@ -61,19 +61,19 @@ export const EditUserForm = ({
   const { showSuccess, showError } = useCustomToast()
   const { data: groups } = useListGroups({})
   const [activeTab, setActiveTab] = useState('personal-information')
-  const [pendingPasswordData, setPendingPasswordData] =
-    useState<PasswordFormData | null>(null)
 
-  const { handleDialogOpen, dialogProps, handleDialogClose } = useConfirmDialog(
-    {
-      onConfirm: () => {
-        if (pendingPasswordData) {
-          const { newPassword } = pendingPasswordData
-          resetPassword({ newPassword })
-        }
+  const {
+    handleDialogOpen,
+    dialogProps,
+    data: passwordData
+  } = useConfirmDialog<PasswordFormData>({
+    onConfirm: () => {
+      if (passwordData) {
+        const { newPassword } = passwordData
+        resetPassword({ newPassword })
       }
     }
-  )
+  })
 
   const form = useForm<UpdateFormData>({
     resolver: zodResolver(UpdateFormSchema),
@@ -156,8 +156,7 @@ export const EditUserForm = ({
   }
 
   const handlePasswordSubmit = (formData: PasswordFormData) => {
-    setPendingPasswordData(formData)
-    handleDialogOpen('')
+    handleDialogOpen('', formData)
   }
 
   return (
@@ -179,11 +178,11 @@ export const EditUserForm = ({
 
       <Tabs
         defaultValue="personal-information"
-        className="mt-0 flex flex-grow flex-col justify-between"
+        className="mt-0 flex flex-grow flex-col"
         onValueChange={setActiveTab}
         value={activeTab}
       >
-        <div>
+        <React.Fragment>
           <TabsList className="mb-8 px-0">
             <TabsTrigger value="personal-information">
               {intl.formatMessage({
@@ -199,7 +198,7 @@ export const EditUserForm = ({
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="personal-information">
+          <TabsContent value="personal-information" className="flex-grow">
             <Form {...form}>
               <form
                 id="profile-form"
@@ -270,7 +269,7 @@ export const EditUserForm = ({
             </Form>
           </TabsContent>
 
-          <TabsContent value="password">
+          <TabsContent value="password" className="flex-grow">
             <Form {...passwordForm}>
               <form
                 id="password-form"
@@ -303,9 +302,9 @@ export const EditUserForm = ({
               </form>
             </Form>
           </TabsContent>
-        </div>
+        </React.Fragment>
 
-        <div className="mt-4">
+        <div className="mt-auto pt-4">
           <LoadingButton
             size="lg"
             type="submit"
