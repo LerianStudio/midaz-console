@@ -34,6 +34,18 @@ export abstract class HttpService {
         const message = await response.text()
 
         await this.catch(request, response, { message })
+
+        if (response.status === HttpStatus.UNAUTHORIZED) {
+          throw new UnauthorizedApiException(message)
+        } else if (response.status === HttpStatus.NOT_FOUND) {
+          throw new NotFoundApiException(message)
+        } else if (response.status === HttpStatus.UNPROCESSABLE_ENTITY) {
+          throw new UnprocessableEntityApiException(message)
+        } else if (response.status === HttpStatus.INTERNAL_SERVER_ERROR) {
+          throw new InternalServerErrorApiException(message)
+        }
+
+        throw new ServiceUnavailableApiException(message)
       }
 
       // Parse application/json error responses
