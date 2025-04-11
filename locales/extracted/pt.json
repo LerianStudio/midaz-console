@@ -455,5 +455,6 @@
   "users.toast.resetPassword.success": "Senha de {userName} redefinida com sucesso",
   "users.toast.update.error": "Erro ao atualizar o usuário",
   "users.toast.update.success": "Usuário {userName} atualizado com sucesso",
-  "users.tooltip": "Usuários que poderão interagir com as Organizações e Ledgers que você criar."
+  "users.tooltip": "Usuários que poderão interagir com as Organizações e Ledgers que você criar.",
+  "errors.custom.confirm_password": "As senhas não coincidem"
 }

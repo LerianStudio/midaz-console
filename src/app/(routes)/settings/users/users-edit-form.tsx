@@ -39,7 +39,7 @@ const PasswordSchema = z
     confirmPassword: passwordChange.confirmPassword
   })
   .refine((data) => data.confirmPassword === data.newPassword, {
-    message: 'Passwords do not match',
+    params: { id: 'custom_confirm_password' },
     path: ['confirmPassword']
   })
 
