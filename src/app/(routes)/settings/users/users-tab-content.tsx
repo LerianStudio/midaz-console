@@ -30,9 +30,11 @@ import { useDeleteUser, useListUsers } from '@/client/users'
 import { Skeleton } from '@/components/ui/skeleton'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { UserResponseDto } from '@/core/application/dto/user-dto'
+import { useSession } from 'next-auth/react'
 
 export const UsersTabContent = () => {
   const intl = useIntl()
+  const { data: session } = useSession()
   const { data: users, refetch, isLoading } = useListUsers({})
   const { showSuccess, showError } = useCustomToast()
   const { handleCreate, handleEdit, sheetProps } =
@@ -170,15 +172,19 @@ export const UsersTabContent = () => {
                               defaultMessage: 'Edit'
                             })}
                           </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem
-                            onClick={() => handleDialogOpen(user.id!)}
-                          >
-                            {intl.formatMessage({
-                              id: `common.delete`,
-                              defaultMessage: 'Delete'
-                            })}
-                          </DropdownMenuItem>
+                          {user.id !== session?.user?.id && (
+                            <React.Fragment>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem
+                                onClick={() => handleDialogOpen(user.id!)}
+                              >
+                                {intl.formatMessage({
+                                  id: `common.delete`,
+                                  defaultMessage: 'Delete'
+                                })}
+                              </DropdownMenuItem>
+                            </React.Fragment>
+                          )}
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
