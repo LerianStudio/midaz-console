@@ -15,8 +15,11 @@ import { PortfolioRepository } from '@/core/domain/repositories/portfolio-reposi
 import { MidazPortfolioRepository } from '@/core/infrastructure/midaz/repositories/midaz-portfolio-repository'
 import { TransactionRepository } from '@/core/domain/repositories/transaction-repository'
 import { MidazTransactionRepository } from '@/core/infrastructure/midaz/repositories/midaz-transaction-repository'
+import { MidazHttpService } from '../../midaz/services/midaz-http-service'
 
 export const MidazModule = new ContainerModule((container: Container) => {
+  container.bind<MidazHttpService>(MidazHttpService).toSelf()
+
   container
     .bind<OrganizationRepository>(OrganizationRepository)
     .to(MidazOrganizationRepository)
