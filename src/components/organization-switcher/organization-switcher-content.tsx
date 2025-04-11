@@ -19,6 +19,7 @@ import React from 'react'
 export type OrganizationSwitcherProps = {
   data: OrganizationEntity[]
   orgName: string
+  orgId: string
   status: 'active' | 'inactive'
   image: string
   alt: string
@@ -31,6 +32,7 @@ export type OrganizationSwitcherContentProps = OrganizationSwitcherProps & {
 
 export const OrganizationSwitcherContent = ({
   orgName,
+  orgId,
   status,
   alt,
   image,
@@ -39,7 +41,6 @@ export const OrganizationSwitcherContent = ({
   onClose
 }: OrganizationSwitcherContentProps) => {
   const intl = useIntl()
-  const [avatar, setAvatar] = React.useState<string>(MidazLogo)
 
   return (
     <PopoverContent className="flex w-auto gap-4" side="right">
@@ -58,7 +59,7 @@ export const OrganizationSwitcherContent = ({
           />
         </PopoverPanelContent>
         <PopoverPanelFooter>
-          <Link href="/settings?tab=organizations" onClick={onClose}>
+          <Link href={`/settings/organizations/${orgId}`} onClick={onClose}>
             {intl.formatMessage({
               id: 'common.edit',
               defaultMessage: 'Edit'
