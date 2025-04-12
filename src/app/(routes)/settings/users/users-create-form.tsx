@@ -12,7 +12,7 @@ import { useCreateUser } from '@/client/users'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { GroupResponseDto } from '@/core/application/dto/group-dto'
 import { UsersType } from '@/types/users-type'
-import { PasswordField } from './password-field'
+import { PasswordField } from '@/components/form/password-field'
 
 const FormSchema = z
   .object({

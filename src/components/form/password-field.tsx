@@ -1,59 +1,70 @@
-import * as React from 'react'
+import { useState } from 'react'
 import { Control, FieldPath, FieldValues } from 'react-hook-form'
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage
 } from '@/components/ui/form'
-import { PasswordInput } from '@/components/ui/password-input.tsx/index'
+import { Input } from '@/components/ui/input'
+import { EyeIcon, EyeOffIcon } from 'lucide-react'
 
 interface PasswordFieldProps<
-  TFieldValues extends FieldValues,
-  TName extends FieldPath<TFieldValues>
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > {
   name: TName
-  label?: string
-  description?: string
-  placeholder?: string
+  label: string
   control: Control<TFieldValues>
   required?: boolean
   disabled?: boolean
 }
 
-export const PasswordField = <
-  TFieldValues extends FieldValues,
-  TName extends FieldPath<TFieldValues>
+export function PasswordField<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >({
   name,
   label,
-  description,
-  placeholder,
   control,
   required = false,
   disabled = false
-}: PasswordFieldProps<TFieldValues, TName>) => {
+}: PasswordFieldProps<TFieldValues, TName>) {
+  const [showPassword, setShowPassword] = useState(false)
+
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem>
-          {label && (
-            <FormLabel>
-              {label} {required && <span className="text-red-500">*</span>}
-            </FormLabel>
-          )}
-          <FormControl>
-            <PasswordInput
-              placeholder={placeholder}
-              disabled={disabled}
-              {...field}
-            />
-          </FormControl>
-          {description && <FormDescription>{description}</FormDescription>}
+        <FormItem required={required}>
+          <FormLabel>{label}</FormLabel>
+          <div className="relative">
+            <FormControl>
+              <Input
+                {...field}
+                type={showPassword ? 'text' : 'password'}
+                disabled={disabled}
+                className="pr-10"
+              />
+            </FormControl>
+            <button
+              type="button"
+              className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-400 hover:text-gray-500 focus:outline-none"
+              tabIndex={-1}
+              onMouseDown={(e) => {
+                e.preventDefault()
+                setShowPassword(!showPassword)
+              }}
+            >
+              {showPassword ? (
+                <EyeOffIcon className="h-4 w-4" />
+              ) : (
+                <EyeIcon className="h-4 w-4" />
+              )}
+            </button>
+          </div>
           <FormMessage />
         </FormItem>
       )}

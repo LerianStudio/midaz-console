@@ -19,7 +19,7 @@ import { AlertTriangle } from 'lucide-react'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import { usePopulateForm } from '@/lib/form'
 import { UsersType } from '@/types/users-type'
-import { PasswordField } from './password-field'
+import { PasswordField } from '@/components/form/password-field'
 
 const UpdateFormSchema = z.object({
   firstName: user.firstName,
