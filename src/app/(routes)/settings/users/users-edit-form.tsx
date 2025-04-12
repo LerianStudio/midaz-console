@@ -9,7 +9,6 @@ import { useListGroups } from '@/client/groups'
 import { SelectItem } from '@/components/ui/select'
 import { LoadingButton } from '@/components/ui/loading-button'
 import { useUpdateUser, useResetUserPassword } from '@/client/users'
-import { UserResponseDto } from '@/core/application/dto/user-dto'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useState, useMemo } from 'react'
@@ -20,6 +19,7 @@ import { AlertTriangle } from 'lucide-react'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import { usePopulateForm } from '@/lib/form'
 import { UsersType } from '@/types/users-type'
+import { PasswordField } from './password-field'
 
 const UpdateFormSchema = z.object({
   firstName: user.firstName,
@@ -286,9 +286,8 @@ export const EditUserForm = ({
                 onSubmit={passwordForm.handleSubmit(handlePasswordSubmit)}
               >
                 <div className="flex flex-col gap-4">
-                  <InputField
+                  <PasswordField
                     name="newPassword"
-                    type="password"
                     label={intl.formatMessage({
                       id: 'entity.user.newPassword',
                       defaultMessage: 'New Password'
@@ -297,9 +296,8 @@ export const EditUserForm = ({
                     required
                   />
 
-                  <InputField
+                  <PasswordField
                     name="confirmPassword"
-                    type="password"
                     label={intl.formatMessage({
                       id: 'entity.user.confirmPassword',
                       defaultMessage: 'Confirm Password'

@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { user } from '@/schema/user'
+import { user, passwordChange } from '@/schema/user'
 import { useListGroups } from '@/client/groups'
 import { SelectItem } from '@/components/ui/select'
 import { LoadingButton } from '@/components/ui/loading-button'
@@ -12,15 +12,22 @@ import { useCreateUser } from '@/client/users'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { GroupResponseDto } from '@/core/application/dto/group-dto'
 import { UsersType } from '@/types/users-type'
+import { PasswordField } from './password-field'
 
-const FormSchema = z.object({
-  firstName: user.firstName,
-  lastName: user.lastName,
-  username: user.username,
-  password: user.password,
-  email: user.email,
-  groups: user.groups
-})
+const FormSchema = z
+  .object({
+    firstName: user.firstName,
+    lastName: user.lastName,
+    username: user.username,
+    password: user.password,
+    confirmPassword: passwordChange.confirmPassword,
+    email: user.email,
+    groups: user.groups
+  })
+  .refine((data) => data.confirmPassword === data.password, {
+    params: { id: 'custom_confirm_password' },
+    path: ['confirmPassword']
+  })
 
 type FormData = z.infer<typeof FormSchema>
 
@@ -29,6 +36,7 @@ const initialValues = {
   lastName: '',
   username: '',
   password: '',
+  confirmPassword: '',
   email: '',
   groups: ''
 }
@@ -81,9 +89,11 @@ export const CreateUserForm = ({
   })
 
   const handleSubmit = (formData: FormData) => {
+    const { confirmPassword, ...userData } = formData
+
     createUser({
-      ...formData,
-      groups: [formData.groups]
+      ...userData,
+      groups: [userData.groups]
     })
   }
 
@@ -136,12 +146,21 @@ export const CreateUserForm = ({
             required
           />
 
-          <InputField
+          <PasswordField
             name="password"
-            type="password"
             label={intl.formatMessage({
               id: 'common.password',
               defaultMessage: 'Password'
+            })}
+            control={form.control}
+            required
+          />
+
+          <PasswordField
+            name="confirmPassword"
+            label={intl.formatMessage({
+              id: 'common.confirmPassword',
+              defaultMessage: 'Confirm Password'
             })}
             control={form.control}
             required
