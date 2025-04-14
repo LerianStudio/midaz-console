@@ -25,12 +25,14 @@ export const UserDropdown = () => {
   })
   const [openSettings, setOpenSettings] = useState(false)
 
-  const { data: user } = useUserById({
-    userId: session?.user?.id
-  })
+  const isAuthPluginEnabled = process.env.PLUGIN_AUTH_ENABLED === 'true'
+
+  const userData = isAuthPluginEnabled
+    ? useUserById({ userId: session?.user?.id })
+    : null
 
   const handleOpenUserSheet = () => {
-    handleEdit(user)
+    handleEdit(userData?.data)
   }
 
   return (
