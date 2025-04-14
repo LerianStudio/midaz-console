@@ -29,8 +29,6 @@ plugins:
           release: minor
         - type: docs
           release: patch
-        - breaking: true
-          release: major
         - type: breaking
           release: major
 

@@ -5,11 +5,7 @@ on:
     branches:
       - develop
       - main
-      - feature/*
-      - feat/*
-      - fix/*
-      - hotfix/*
-      - rc/*
+      - hotfix/v*
     paths-ignore:
       - '.gitignore'
       - '**/*.env'
