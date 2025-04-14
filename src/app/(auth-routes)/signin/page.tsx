@@ -130,7 +130,7 @@ const SignInPage = () => {
                   type="email"
                   name="username"
                   label={intl.formatMessage({
-                    id: 'entity.auth.username',
+                    id: 'common.email',
                     defaultMessage: 'E-mail'
                   })}
                   placeholder={intl.formatMessage({
@@ -143,7 +143,7 @@ const SignInPage = () => {
                   control={form.control}
                   name="password"
                   label={intl.formatMessage({
-                    id: 'entity.auth.password',
+                    id: 'common.password',
                     defaultMessage: 'Password'
                   })}
                   type="password"
