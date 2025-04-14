@@ -41,8 +41,8 @@ const ProfileSchema = z.object({
 
 const PasswordSchema = z
   .object({
-    oldPassword: passwordChange.oldPassword,
-    newPassword: passwordChange.newPassword,
+    oldPassword: user.password,
+    newPassword: user.password,
     confirmPassword: passwordChange.confirmPassword
   })
   .refine((data) => data.confirmPassword === data.newPassword, {
