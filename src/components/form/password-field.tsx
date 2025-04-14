@@ -5,7 +5,8 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
+  FormTooltip
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { EyeIcon, EyeOffIcon } from 'lucide-react'
@@ -16,6 +17,7 @@ interface PasswordFieldProps<
 > {
   name: TName
   label: string
+  tooltip?: string
   control: Control<TFieldValues>
   required?: boolean
   disabled?: boolean
@@ -27,6 +29,7 @@ export function PasswordField<
 >({
   name,
   label,
+  tooltip,
   control,
   required = false,
   disabled = false
@@ -39,7 +42,11 @@ export function PasswordField<
       name={name}
       render={({ field }) => (
         <FormItem required={required}>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel
+            extra={tooltip ? <FormTooltip>{tooltip}</FormTooltip> : undefined}
+          >
+            {label}
+          </FormLabel>
           <div className="relative">
             <FormControl>
               <Input
@@ -58,11 +65,7 @@ export function PasswordField<
                 setShowPassword(!showPassword)
               }}
             >
-              {showPassword ? (
-                <EyeOffIcon className="h-4 w-4" />
-              ) : (
-                <EyeIcon className="h-4 w-4" />
-              )}
+              {showPassword ? <EyeOffIcon size={20} /> : <EyeIcon size={20} />}
             </button>
           </div>
           <FormMessage />

@@ -93,6 +93,10 @@ const messages = defineMessages({
     id: 'errors.custom.one_number',
     defaultMessage: 'Field must contain at least 1 number'
   },
+  custom_one_special_character: {
+    id: 'errors.custom.one_special_character',
+    defaultMessage: 'Field must contain at least 1 special character'
+  },
   custom_only_numbers: {
     id: 'errors.custom.only_numbers',
     defaultMessage: 'Field must contain only numbers'

@@ -153,6 +153,11 @@ export const CreateUserForm = ({
               defaultMessage: 'Password'
             })}
             control={form.control}
+            tooltip={intl.formatMessage({
+              id: 'entity.user.password.tooltip',
+              defaultMessage:
+                'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
+            })}
             required
           />
 
@@ -161,6 +166,11 @@ export const CreateUserForm = ({
             label={intl.formatMessage({
               id: 'common.confirmPassword',
               defaultMessage: 'Confirm Password'
+            })}
+            tooltip={intl.formatMessage({
+              id: 'entity.user.password.tooltip',
+              defaultMessage:
+                'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
             })}
             control={form.control}
             required

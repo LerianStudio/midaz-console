@@ -458,5 +458,6 @@
   "errors.custom.confirm_password": "As senhas não coincidem",
   "users.password.confirmLabel": "Sim, alterar senha",
   "common.changeMyMind": "Mudei de ideia",
-  "common.confirmPassword": "Confirmar Senha"
+  "common.confirmPassword": "Confirmar Senha",
+  "errors.custom.one_special_character": "O campo deve conter pelo menos 1 caractere especial"
 }

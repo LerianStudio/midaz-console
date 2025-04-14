@@ -30,7 +30,7 @@ const UpdateFormSchema = z.object({
 
 const PasswordSchema = z
   .object({
-    newPassword: passwordChange.newPassword,
+    newPassword: user.password,
     confirmPassword: passwordChange.confirmPassword
   })
   .refine((data) => data.confirmPassword === data.newPassword, {
@@ -293,6 +293,11 @@ export const EditUserForm = ({
                       defaultMessage: 'New Password'
                     })}
                     control={passwordForm.control}
+                    tooltip={intl.formatMessage({
+                      id: 'entity.user.password.tooltip',
+                      defaultMessage:
+                        'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
+                    })}
                     required
                   />
 
@@ -301,6 +306,11 @@ export const EditUserForm = ({
                     label={intl.formatMessage({
                       id: 'common.confirmPassword',
                       defaultMessage: 'Confirm Password'
+                    })}
+                    tooltip={intl.formatMessage({
+                      id: 'entity.user.password.tooltip',
+                      defaultMessage:
+                        'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
                     })}
                     control={passwordForm.control}
                     required
