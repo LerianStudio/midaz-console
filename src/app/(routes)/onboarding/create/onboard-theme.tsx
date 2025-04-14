@@ -67,7 +67,7 @@ export function OnboardTheme({ onCancel }: OnboardThemeProps) {
             'Are you sure you want to finish without finishing the theme setup?'
         })}
         cancelLabel={intl.formatMessage({
-          id: 'common.cancelLabel',
+          id: 'common.changeMyMind',
           defaultMessage: 'I changed my mind'
         })}
         confirmLabel={intl.formatMessage({

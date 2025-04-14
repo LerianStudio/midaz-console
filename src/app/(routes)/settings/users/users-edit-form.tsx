@@ -175,7 +175,7 @@ export const EditUserForm = ({
         icon={<AlertTriangle size={24} className="text-yellow-500" />}
         loading={resetPasswordPending}
         cancelLabel={intl.formatMessage({
-          id: 'common.cancelLabel',
+          id: 'common.changeMyMind',
           defaultMessage: 'I changed my mind'
         })}
         confirmLabel={intl.formatMessage({
@@ -299,7 +299,7 @@ export const EditUserForm = ({
                   <PasswordField
                     name="confirmPassword"
                     label={intl.formatMessage({
-                      id: 'entity.user.confirmPassword',
+                      id: 'common.confirmPassword',
                       defaultMessage: 'Confirm Password'
                     })}
                     control={passwordForm.control}
