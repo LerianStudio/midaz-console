@@ -46,7 +46,7 @@ export const OrganizationSwitcher = () => {
     <Popover open={open} onOpenChange={setOpen}>
       <SwitcherTrigger
         open={open}
-        orgName={currentOrganization.legalName}
+        name={currentOrganization.legalName}
         image={avatar}
         alt={intl.formatMessage({
           id: 'common.logoAlt',
@@ -57,7 +57,7 @@ export const OrganizationSwitcher = () => {
       />
 
       <OrganizationSwitcherContent
-        orgName={currentOrganization.legalName}
+        currentOrganization={currentOrganization}
         status="active"
         alt={intl.formatMessage({
           id: 'common.logoAlt',
