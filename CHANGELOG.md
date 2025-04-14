@@ -1,3 +1,10 @@
+## [1.28.2](https://github.com/LerianStudio/midaz-console/compare/v1.28.1...v1.28.2) (2025-04-14)
+
+
+### Bug Fixes
+
+* trigger users client only if auth plugin is enabled ([987c268](https://github.com/LerianStudio/midaz-console/commit/987c268d181c55d1309d040e9b3f168e896b9f0a))
+
 ## [1.28.1](https://github.com/LerianStudio/midaz-console/compare/v1.28.0...v1.28.1) (2025-04-14)
 
 
