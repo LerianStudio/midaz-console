@@ -1,3 +1,11 @@
+## [1.28.1](https://github.com/LerianStudio/midaz-console/compare/v1.28.0...v1.28.1) (2025-04-14)
+
+
+### Bug Fixes
+
+* redirect to organization edit page ([c305285](https://github.com/LerianStudio/midaz-console/commit/c3052854bbe7aad16dbf13763baf4399fef61817))
+* remove unused const ([c8e77f0](https://github.com/LerianStudio/midaz-console/commit/c8e77f0e403ef1a09dae17ce03e82c594912f423))
+
 # [1.28.0](https://github.com/LerianStudio/midaz-console/compare/v1.27.0...v1.28.0) (2025-04-14)
 
 
