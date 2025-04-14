@@ -1,3 +1,36 @@
+# [1.28.0](https://github.com/LerianStudio/midaz-console/compare/v1.27.0...v1.28.0) (2025-04-14)
+
+
+### Bug Fixes
+
+* build error ([9d091a3](https://github.com/LerianStudio/midaz-console/commit/9d091a30d8fd33308b1f2c5976ae303d409d4177))
+* change the import of PasswordField ([d463a9f](https://github.com/LerianStudio/midaz-console/commit/d463a9f61494a1adbe858f8ab8ce5418ebdeba16))
+* define some fields as required and set max in zod schema ([48e570e](https://github.com/LerianStudio/midaz-console/commit/48e570ed02c95d167fd4c8bbd083f8922154e56f))
+* delete unused component and change translation key ([fefb893](https://github.com/LerianStudio/midaz-console/commit/fefb893cd62cc9846c54242b27e09c6289a00364))
+* fixed groups field name ([802f585](https://github.com/LerianStudio/midaz-console/commit/802f585a814dd110ef5838681623a6eea1df90cf))
+* omit id when creating to fix type error ([65b525c](https://github.com/LerianStudio/midaz-console/commit/65b525c305b8cecc7a9417dc27b69fe2fec4ab7c))
+* pass the password data directly into handleDialogOpen ([451d146](https://github.com/LerianStudio/midaz-console/commit/451d1468cb9b63daa48e0f93870d603e8efa4542))
+* prevent enforce error when Auth is disabled by checking validate ([0b20b5b](https://github.com/LerianStudio/midaz-console/commit/0b20b5b6817197925aa059e5113a53116a7d7a4b))
+* remove unused function ([a4e3164](https://github.com/LerianStudio/midaz-console/commit/a4e31647091f2c47139df417ff8128a23d00e669))
+* removing My Profile item from dropdown for now ([212f2a5](https://github.com/LerianStudio/midaz-console/commit/212f2a55abc84e5b8e5d74d8b25be4b9e46c05c3))
+* use the hook usePopulateForm ([5cd6d39](https://github.com/LerianStudio/midaz-console/commit/5cd6d39b74c136d4733644793adb38eb3c95d7a3))
+* use UsersType instead UserResponseDTO ([a2fbf4f](https://github.com/LerianStudio/midaz-console/commit/a2fbf4fb9d4142ac55a67c4120f67739f49dcf41))
+* using confirm password error by custom message ([680657e](https://github.com/LerianStudio/midaz-console/commit/680657e58523398e1e8db156e32be6cea36e5826))
+
+
+### Features
+
+* add password visibility toggle and confirm password in create form ([9d65b11](https://github.com/LerianStudio/midaz-console/commit/9d65b1181a882c683e21a9604b134e7c3dde29e8))
+* add the new translations ([952954f](https://github.com/LerianStudio/midaz-console/commit/952954f4fdcdee93f1dc0a5adb53a8db3d34b888))
+* add the usage of enforce to display users item ([c62a151](https://github.com/LerianStudio/midaz-console/commit/c62a1513c80142e116e62a2b287dfee4b6d4811e))
+* add tooltip and regex to password fields ([bd7a0ce](https://github.com/LerianStudio/midaz-console/commit/bd7a0ce09fd4eb9ec92bc406bcb13a6eb639ef12))
+* implement create and delete user ([f154bf5](https://github.com/LerianStudio/midaz-console/commit/f154bf5aa1150a60a55cad78e183fc1dfe02ff93))
+* implement edit and reset password by admin ([540db57](https://github.com/LerianStudio/midaz-console/commit/540db577f143bc9e0927772135b973b2ddc770c3))
+* implement password update in edit my account ([5af6f34](https://github.com/LerianStudio/midaz-console/commit/5af6f34181d85a9e3fc22f20a5c6ea80cf48fb43))
+* prevent users from deleting their own account ([4d18fda](https://github.com/LerianStudio/midaz-console/commit/4d18fdade42d0f768980f1547b699771dc419c6f))
+* start to implement user management list and create ([2ae1716](https://github.com/LerianStudio/midaz-console/commit/2ae1716dd95c1377f6d2f72fb00f148c9b6d919d))
+* update user management with edit functionality ([3e1df1d](https://github.com/LerianStudio/midaz-console/commit/3e1df1ddafa0a7be7db263497d2c4319d3a87922))
+
 # [1.27.0](https://github.com/LerianStudio/midaz-console/compare/v1.26.3...v1.27.0) (2025-04-10)
 
 
