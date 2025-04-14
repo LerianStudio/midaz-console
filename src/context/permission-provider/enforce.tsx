@@ -10,7 +10,7 @@ type EnforceProps = React.PropsWithChildren & {
 export const Enforce = ({ resource, action, children }: EnforceProps) => {
   const { validate } = usePermissions()
 
-  if (!validate(resource, action)) {
+  if (!validate || !validate(resource, action)) {
     return null
   }
 

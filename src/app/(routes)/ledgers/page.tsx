@@ -19,6 +19,8 @@ import { useOrganization } from '@/context/organization-provider/organization-pr
 import { LedgersSkeleton } from './ledgers-skeleton'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { useQueryParams } from '@/hooks/use-query-params'
+import { getBreadcrumbPaths } from '@/components/breadcrumb/get-breadcrumb-paths'
+import { Breadcrumb } from '@/components/breadcrumb'
 
 const Page = () => {
   const intl = useIntl()
@@ -26,7 +28,9 @@ const Page = () => {
   const { currentOrganization, currentLedger, setLedger } = useOrganization()
   const { showSuccess, showError } = useCustomToast()
   const [columnFilters, setColumnFilters] = React.useState<any>([])
-  const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>()
+  const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>({
+    enableRouting: true
+  })
   const { form, searchValues, pagination } = useQueryParams({ total })
 
   const {
@@ -115,10 +119,23 @@ const Page = () => {
     }
   })
 
+  const breadcrumbPaths = getBreadcrumbPaths([
+    {
+      name: currentOrganization.legalName
+    },
+    {
+      name: intl.formatMessage({
+        id: `ledgers.title`,
+        defaultMessage: 'Ledgers'
+      })
+    }
+  ])
+
   const ledgersProps = {
     ledgers,
     table,
     handleDialogOpen,
+    handleCreate,
     handleEdit,
     refetch,
     form,
@@ -128,6 +145,8 @@ const Page = () => {
 
   return (
     <React.Fragment>
+      <Breadcrumb paths={breadcrumbPaths} />
+
       <PageHeader.Root>
         <PageHeader.Wrapper>
           <PageHeader.InfoTitle

@@ -21,17 +21,13 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { isNil } from 'lodash'
-import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
 import useCustomToast from '@/hooks/use-custom-toast'
-import { AssetsSheet } from './assets-sheet'
-import { EntityBox } from '@/components/entity-box'
 import { PaginationLimitField } from '@/components/form/pagination-limit-field'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { EntityDataTable } from '@/components/entity-data-table'
 import { Pagination, PaginationProps } from '@/components/pagination'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
 import { AssetResponseDto } from '@/core/application/dto/asset-response-dto'
-import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 
 type AssetsTableProps = {
   assets: PaginationDto<AssetResponseDto> | undefined
@@ -41,8 +37,8 @@ type AssetsTableProps = {
     }
   }
   handleDialogOpen: (id: string, name: string) => void
+  handleCreate: () => void
   handleEdit: (asset: AssetResponseDto) => void
-  refetch: () => void
   form: UseFormReturn<any>
   total: number
   pagination: PaginationProps
@@ -148,16 +144,14 @@ const AssetRow: React.FC<AssetRowProps> = ({
 
 export const AssetsDataTable: React.FC<AssetsTableProps> = (props) => {
   const intl = useIntl()
-  const { handleCreate, sheetProps } = useCreateUpdateSheet<any>()
   const { showInfo } = useCustomToast()
-  const { currentLedger } = useOrganization()
 
   const {
     assets,
     table,
     handleDialogOpen,
+    handleCreate,
     handleEdit,
-    refetch,
     form,
     pagination,
     total
@@ -170,13 +164,9 @@ export const AssetsDataTable: React.FC<AssetsTableProps> = (props) => {
 
   return (
     <FormProvider {...form}>
-      <EntityBox.Root>
-        <EntityBox.Actions className="flex w-full justify-end gap-4">
-          <div className="col-start-3 flex justify-end">
-            <PaginationLimitField control={form.control} />
-          </div>
-        </EntityBox.Actions>
-      </EntityBox.Root>
+      <div className="mb-4 flex justify-end">
+        <PaginationLimitField control={form.control} />
+      </div>
 
       <EntityDataTable.Root>
         {isNil(assets?.items) || assets.items.length === 0 ? (
@@ -265,12 +255,6 @@ export const AssetsDataTable: React.FC<AssetsTableProps> = (props) => {
           </EntityDataTable.FooterText>
           <Pagination total={total} {...pagination} />
         </EntityDataTable.Footer>
-
-        <AssetsSheet
-          ledgerId={currentLedger.id}
-          onSuccess={refetch}
-          {...sheetProps}
-        />
       </EntityDataTable.Root>
     </FormProvider>
   )

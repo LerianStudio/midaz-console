@@ -1,3 +1,254 @@
+## [1.28.1](https://github.com/LerianStudio/midaz-console/compare/v1.28.0...v1.28.1) (2025-04-14)
+
+
+### Bug Fixes
+
+* redirect to organization edit page ([c305285](https://github.com/LerianStudio/midaz-console/commit/c3052854bbe7aad16dbf13763baf4399fef61817))
+* remove unused const ([c8e77f0](https://github.com/LerianStudio/midaz-console/commit/c8e77f0e403ef1a09dae17ce03e82c594912f423))
+
+# [1.28.0](https://github.com/LerianStudio/midaz-console/compare/v1.27.0...v1.28.0) (2025-04-14)
+
+
+### Bug Fixes
+
+* build error ([9d091a3](https://github.com/LerianStudio/midaz-console/commit/9d091a30d8fd33308b1f2c5976ae303d409d4177))
+* change the import of PasswordField ([d463a9f](https://github.com/LerianStudio/midaz-console/commit/d463a9f61494a1adbe858f8ab8ce5418ebdeba16))
+* define some fields as required and set max in zod schema ([48e570e](https://github.com/LerianStudio/midaz-console/commit/48e570ed02c95d167fd4c8bbd083f8922154e56f))
+* delete unused component and change translation key ([fefb893](https://github.com/LerianStudio/midaz-console/commit/fefb893cd62cc9846c54242b27e09c6289a00364))
+* fixed groups field name ([802f585](https://github.com/LerianStudio/midaz-console/commit/802f585a814dd110ef5838681623a6eea1df90cf))
+* omit id when creating to fix type error ([65b525c](https://github.com/LerianStudio/midaz-console/commit/65b525c305b8cecc7a9417dc27b69fe2fec4ab7c))
+* pass the password data directly into handleDialogOpen ([451d146](https://github.com/LerianStudio/midaz-console/commit/451d1468cb9b63daa48e0f93870d603e8efa4542))
+* prevent enforce error when Auth is disabled by checking validate ([0b20b5b](https://github.com/LerianStudio/midaz-console/commit/0b20b5b6817197925aa059e5113a53116a7d7a4b))
+* remove unused function ([a4e3164](https://github.com/LerianStudio/midaz-console/commit/a4e31647091f2c47139df417ff8128a23d00e669))
+* removing My Profile item from dropdown for now ([212f2a5](https://github.com/LerianStudio/midaz-console/commit/212f2a55abc84e5b8e5d74d8b25be4b9e46c05c3))
+* use the hook usePopulateForm ([5cd6d39](https://github.com/LerianStudio/midaz-console/commit/5cd6d39b74c136d4733644793adb38eb3c95d7a3))
+* use UsersType instead UserResponseDTO ([a2fbf4f](https://github.com/LerianStudio/midaz-console/commit/a2fbf4fb9d4142ac55a67c4120f67739f49dcf41))
+* using confirm password error by custom message ([680657e](https://github.com/LerianStudio/midaz-console/commit/680657e58523398e1e8db156e32be6cea36e5826))
+
+
+### Features
+
+* add password visibility toggle and confirm password in create form ([9d65b11](https://github.com/LerianStudio/midaz-console/commit/9d65b1181a882c683e21a9604b134e7c3dde29e8))
+* add the new translations ([952954f](https://github.com/LerianStudio/midaz-console/commit/952954f4fdcdee93f1dc0a5adb53a8db3d34b888))
+* add the usage of enforce to display users item ([c62a151](https://github.com/LerianStudio/midaz-console/commit/c62a1513c80142e116e62a2b287dfee4b6d4811e))
+* add tooltip and regex to password fields ([bd7a0ce](https://github.com/LerianStudio/midaz-console/commit/bd7a0ce09fd4eb9ec92bc406bcb13a6eb639ef12))
+* implement create and delete user ([f154bf5](https://github.com/LerianStudio/midaz-console/commit/f154bf5aa1150a60a55cad78e183fc1dfe02ff93))
+* implement edit and reset password by admin ([540db57](https://github.com/LerianStudio/midaz-console/commit/540db577f143bc9e0927772135b973b2ddc770c3))
+* implement password update in edit my account ([5af6f34](https://github.com/LerianStudio/midaz-console/commit/5af6f34181d85a9e3fc22f20a5c6ea80cf48fb43))
+* prevent users from deleting their own account ([4d18fda](https://github.com/LerianStudio/midaz-console/commit/4d18fdade42d0f768980f1547b699771dc419c6f))
+* start to implement user management list and create ([2ae1716](https://github.com/LerianStudio/midaz-console/commit/2ae1716dd95c1377f6d2f72fb00f148c9b6d919d))
+* update user management with edit functionality ([3e1df1d](https://github.com/LerianStudio/midaz-console/commit/3e1df1ddafa0a7be7db263497d2c4319d3a87922))
+
+# [1.27.0](https://github.com/LerianStudio/midaz-console/compare/v1.26.3...v1.27.0) (2025-04-10)
+
+
+### Features
+
+* check file path after to upload files ([94deb61](https://github.com/LerianStudio/midaz-console/commit/94deb6136f5826162109c484af23d310b20d497c))
+* check file path after to upload files ([a1e75ec](https://github.com/LerianStudio/midaz-console/commit/a1e75ec3527991dc4c75feeb0ee53eec2078332d))
+* check if the folder exists after do upload ([ee9df6b](https://github.com/LerianStudio/midaz-console/commit/ee9df6b1220e4df874c360b96c71d95b72120295))
+* check if the folder exists after do upload ([8463f18](https://github.com/LerianStudio/midaz-console/commit/8463f18c4f6e9f30ac3270b51f8c1c626734fdcc))
+* check path of save reports ([a195160](https://github.com/LerianStudio/midaz-console/commit/a195160f8458bb161f6943292036bb994b8ff94f))
+* check the entire flow ([d6ecc33](https://github.com/LerianStudio/midaz-console/commit/d6ecc33c9dfd9104b4b7c88e564231e352376c80))
+* check the entire flow and insert debug steps ([f4be1b0](https://github.com/LerianStudio/midaz-console/commit/f4be1b0c3f7954c4e48c45363d5edee12ba7f462))
+* configuration of two types of storage report ([d63a6c6](https://github.com/LerianStudio/midaz-console/commit/d63a6c6f04e823ecbf05fdafe98923f1bccb92cf))
+* configure two types of upload ([4d00538](https://github.com/LerianStudio/midaz-console/commit/4d00538033f16250566c981d4162f5a63605ff65))
+* create cheking folder path ([8010aa2](https://github.com/LerianStudio/midaz-console/commit/8010aa25887da69a13f51614101ad7771acbd972))
+* debug output path ([3e5d567](https://github.com/LerianStudio/midaz-console/commit/3e5d56792bacfa8183dab7a1c3b5140e62944e13))
+* debug output path and fix path ([d0cd36d](https://github.com/LerianStudio/midaz-console/commit/d0cd36d366fb9bd53cd0d3cbd31b9daf117b94d8))
+* debug output path and fix path again ([82c2f51](https://github.com/LerianStudio/midaz-console/commit/82c2f5163c26929ff6eff1a83047327b829fb758))
+* debug output path and fix path using list command ([f56f276](https://github.com/LerianStudio/midaz-console/commit/f56f276056e17de5d3d59842ee74c6f87a67f1c7))
+* debug upload of lighthouse reports ([878e5ac](https://github.com/LerianStudio/midaz-console/commit/878e5acbc7a69cc39a27c1d05ac3953b9dddbda3))
+* fix file path ([0fa7da7](https://github.com/LerianStudio/midaz-console/commit/0fa7da7481c614c630d7c6189763474564930f11))
+* fix file path of lighthouse ci ([f1dfdc0](https://github.com/LerianStudio/midaz-console/commit/f1dfdc0b3373ae85857621bbd6c9cba05dba9a42))
+* fix the path of folder ([dd1988c](https://github.com/LerianStudio/midaz-console/commit/dd1988c937bc649af270bd70f7762a9ec276277b))
+* fix the path of folder using absolute path ([4e258c3](https://github.com/LerianStudio/midaz-console/commit/4e258c364c82b4d1f66c5562a85fd8d691463d7b))
+* generate lighthouse reports ([b828660](https://github.com/LerianStudio/midaz-console/commit/b828660a3ad71d6ccbec4ed3a1bb7c8a5bdf2f84))
+* generate report on both types ([5a2f1a4](https://github.com/LerianStudio/midaz-console/commit/5a2f1a441770541742bebd57235bad81fc8558db))
+* rebuild lighthouse ci flow ([f84bde4](https://github.com/LerianStudio/midaz-console/commit/f84bde42a952997e9510ad9eb807086597201104))
+* upload of lighthouse reports ([030e504](https://github.com/LerianStudio/midaz-console/commit/030e504c757106ebf5021df66f1bd16cf5e812e0))
+
+## [1.26.3](https://github.com/LerianStudio/midaz-console/compare/v1.26.2...v1.26.3) (2025-04-09)
+
+
+### Bug Fixes
+
+* remove unused import ([4a4f3da](https://github.com/LerianStudio/midaz-console/commit/4a4f3da8931dbbcace85d52156413ca34a2bc7ec))
+* setting image avatar in organization switcher ([3344b87](https://github.com/LerianStudio/midaz-console/commit/3344b87d2dce92483a16148d450646b1a3340fd7))
+* update type from fetcher ([8ecdc8a](https://github.com/LerianStudio/midaz-console/commit/8ecdc8aecd125754d510922e317069af030058b7))
+
+## [1.26.2](https://github.com/LerianStudio/midaz-console/compare/v1.26.1...v1.26.2) (2025-04-09)
+
+
+### Bug Fixes
+
+* set file extention default and set public next  environment variable ([fa50c54](https://github.com/LerianStudio/midaz-console/commit/fa50c54780f41633391b2125f4720da68ad181bf))
+
+## [1.26.1](https://github.com/LerianStudio/midaz-console/compare/v1.26.0...v1.26.1) (2025-04-09)
+
+
+### Bug Fixes
+
+* Added usePopulateForm hook ([f30262e](https://github.com/LerianStudio/midaz-console/commit/f30262e46a4b6af429668bd51a18157749ccd366))
+* Package lock ([1720f60](https://github.com/LerianStudio/midaz-console/commit/1720f6009d625c62f3c1478a125bd79cf4017447))
+
+# [1.26.0](https://github.com/LerianStudio/midaz-console/compare/v1.25.2...v1.26.0) (2025-04-09)
+
+
+### Features
+
+* configure repo activity ([11566c6](https://github.com/LerianStudio/midaz-console/commit/11566c64119166c072f4b2f66fbf761a62e9b3d8))
+* fix security vulnerabilities ([ff60af6](https://github.com/LerianStudio/midaz-console/commit/ff60af64397503da466a7e69f6a6f7a06155dd80))
+* fix upload-artifact ([611956c](https://github.com/LerianStudio/midaz-console/commit/611956c47614b230e5dd646759aa2c5c999b33ff))
+* fix vulnerabilities ([2265a87](https://github.com/LerianStudio/midaz-console/commit/2265a879b87f8e53f4959abf8adce5d04b6fa3b7))
+* fix vulnerabilities ([cc52a8d](https://github.com/LerianStudio/midaz-console/commit/cc52a8db7c2376ceb8804df72bbbd09f4a087761))
+* increase the lighthouse CI step ([aaf1909](https://github.com/LerianStudio/midaz-console/commit/aaf190997435118d400e52abb3cf63c38d040fdb))
+* insert lighthouse on CI flow ([faa3cd8](https://github.com/LerianStudio/midaz-console/commit/faa3cd86ea87037f687c2873934f63d8ce6f269d))
+* organize lighthouse-ci ([a9b69f6](https://github.com/LerianStudio/midaz-console/commit/a9b69f62ead89331dc9b72959070bbd19276331e))
+* set values to generate only report without broke pipeline ([69fccbf](https://github.com/LerianStudio/midaz-console/commit/69fccbf404176bef5b59b756aaa61a8ff57c857b))
+
+## [1.25.2](https://github.com/LerianStudio/midaz-console/compare/v1.25.1...v1.25.2) (2025-04-09)
+
+
+### Bug Fixes
+
+* build warning on dynamic api route build generate ([f109b7e](https://github.com/LerianStudio/midaz-console/commit/f109b7e0f53169f5b8764fceccae94d2267976bf))
+* include conditional to validate when plugin auth enable on http-fetch-utils-test ([4ff2a05](https://github.com/LerianStudio/midaz-console/commit/4ff2a059d891c71e563a852221d834ba63fdac7f))
+* remove unused import ([3f1cc97](https://github.com/LerianStudio/midaz-console/commit/3f1cc97d65190013445f0c86f0fc8a677d48ba78))
+
+## [1.25.1](https://github.com/LerianStudio/midaz-console/compare/v1.25.0...v1.25.1) (2025-04-07)
+
+
+### Bug Fixes
+
+* Build ([c25ff75](https://github.com/LerianStudio/midaz-console/commit/c25ff75b67257bd076822dd7c7257627ceea8a78))
+* Build and audit ([b218235](https://github.com/LerianStudio/midaz-console/commit/b218235ce7ed27d755fa0765a14b0e5b41980b6c))
+* Edit Transaction metadata problem with ledger ID ([c3c3c11](https://github.com/LerianStudio/midaz-console/commit/c3c3c1154911932d83fc16dcca41ed608a309128))
+* Fixed file name ([e1cab9c](https://github.com/LerianStudio/midaz-console/commit/e1cab9cc3f97a968ecf039ea2d371dc843948dd1))
+* Metadata delete key issue ([b3682c2](https://github.com/LerianStudio/midaz-console/commit/b3682c2593f57194268267b93cccd62fe4d29c50))
+* Moved Sidebar transactions button ([8a43559](https://github.com/LerianStudio/midaz-console/commit/8a4355922f88b8c5031666ea59e2d0f64010a852))
+* otel trace provider test file ([0a663c4](https://github.com/LerianStudio/midaz-console/commit/0a663c4827577e036834019dbc39f5a4794ab987))
+* remove unused variable startCustomSpan at httpFetch ([4ec4af8](https://github.com/LerianStudio/midaz-console/commit/4ec4af84e9d527b8b33cf632f48e15456892ed36))
+* Small issue on sheet pre populate ([641661b](https://github.com/LerianStudio/midaz-console/commit/641661b182ab8f127759a1fa53d4c5147faded28))
+* Small View Transactions refactor ([5f84dd7](https://github.com/LerianStudio/midaz-console/commit/5f84dd70978c840c02fc49984a689624c0695517))
+* Test ([b1eed76](https://github.com/LerianStudio/midaz-console/commit/b1eed764aaabc8fb1f1eeb3813286e278f656866))
+* update object values to snake_case from camelCase ([433607e](https://github.com/LerianStudio/midaz-console/commit/433607ecd445c8e82377a246a56516f9f68f62ed))
+
+# [1.25.0](https://github.com/LerianStudio/midaz-console/compare/v1.24.2...v1.25.0) (2025-04-01)
+
+
+### Bug Fixes
+
+* Implemented new routing logic to open sheets ([ca45214](https://github.com/LerianStudio/midaz-console/commit/ca452142b94cca07d6ec25720f2a6c1511933d12))
+* Unit Test ([bbbc33d](https://github.com/LerianStudio/midaz-console/commit/bbbc33d80c499bc5eabef3fe70fc071f8b0fc3a8))
+
+
+### Features
+
+* show alert when no asset exists before account creation ([4ebd96f](https://github.com/LerianStudio/midaz-console/commit/4ebd96f48f201614f2cadf2594b7ccb43ef1a5cd))
+* update locales with new translations ([d03de89](https://github.com/LerianStudio/midaz-console/commit/d03de89febe1f8e1299a25db2b01d789d39b53ee))
+* Upgrade useCreateUpdateSheet for open on routing ([327267b](https://github.com/LerianStudio/midaz-console/commit/327267bdb12d73a3ba04840ce477149fb8dbea3c))
+
+## [1.24.2](https://github.com/LerianStudio/midaz-console/compare/v1.24.1...v1.24.2) (2025-03-31)
+
+
+### Bug Fixes
+
+* update source destination asset when transaction asset change value ([ec3cb3a](https://github.com/LerianStudio/midaz-console/commit/ec3cb3a4be8b078a05468a219147a4e5f559f892))
+
+## [1.24.1](https://github.com/LerianStudio/midaz-console/compare/v1.24.0...v1.24.1) (2025-03-24)
+
+
+### Bug Fixes
+
+* load more items in the ledger selector by client pagination ([c6df525](https://github.com/LerianStudio/midaz-console/commit/c6df52592b1fd678e7046f8f36a4ca1f04d78001))
+
+# [1.24.0](https://github.com/LerianStudio/midaz-console/compare/v1.23.0...v1.24.0) (2025-03-24)
+
+
+### Bug Fixes
+
+* Changed placeholder name ([bf79a89](https://github.com/LerianStudio/midaz-console/commit/bf79a89405dd3398d182b4e29ca0b4776091b2ec))
+* First load on OrganizationProvider ([661c841](https://github.com/LerianStudio/midaz-console/commit/661c8418331f44d22530e139b2afe376e5b80c4d))
+* Fixed testing ([a75e405](https://github.com/LerianStudio/midaz-console/commit/a75e4055335dc220047aef3e3930d832a04c3510))
+* Removed secrets from env files ([ec55ab5](https://github.com/LerianStudio/midaz-console/commit/ec55ab5d6797e3b6aaacf372dabdb61f7d3939e7))
+* Removed unused import ([8c83669](https://github.com/LerianStudio/midaz-console/commit/8c83669b067a3e1fd7d297ff2abbc38d98f66ee0))
+* Sheet forms behaviour ([9765f39](https://github.com/LerianStudio/midaz-console/commit/9765f39e7a4fa170a538d3b77357834d481083dd))
+
+
+### Features
+
+* Blocked external accounts for editing ([e9275d9](https://github.com/LerianStudio/midaz-console/commit/e9275d96e08b199a1c73215a6eafa21f98c79c06))
+
+# [1.23.0](https://github.com/LerianStudio/midaz-console/compare/v1.22.0...v1.23.0) (2025-03-24)
+
+
+### Bug Fixes
+
+* getStorageObject empty object excpetion ([25ae6d2](https://github.com/LerianStudio/midaz-console/commit/25ae6d2ceef1751ee361f0c583751dfd0f9a6c49))
+* include validation with lodash ([c8f664a](https://github.com/LerianStudio/midaz-console/commit/c8f664a8ff4f05d68646ad2e82b4d7c675d62bdc))
+* include validation with lodash ([0c65c5d](https://github.com/LerianStudio/midaz-console/commit/0c65c5d1eba101e33ca052abc2de2175ce1f29ed))
+* update transaction service name env variable ([d31bd96](https://github.com/LerianStudio/midaz-console/commit/d31bd9683afcc694199a1694d8cf8051a1d7b27c))
+
+
+### Features
+
+* update lerian-midaz banner image ([edb2a1a](https://github.com/LerianStudio/midaz-console/commit/edb2a1a41d7c17b54e071e4c0cd6f6b41600c548))
+
+# [1.22.0](https://github.com/LerianStudio/midaz-console/compare/v1.21.1...v1.22.0) (2025-03-20)
+
+
+### Bug Fixes
+
+* change the function name and remove callback ([cef93d0](https://github.com/LerianStudio/midaz-console/commit/cef93d06775287886d397df88fc000b0ed1c235c))
+* use 'handle' for internal events and 'on' for child component props ([fd12532](https://github.com/LerianStudio/midaz-console/commit/fd125325f0ded27da76bf3ab6282fa5105e3cfa3))
+
+
+### Features
+
+* remove EntityBox from assets, segments and transactions ([1b0b433](https://github.com/LerianStudio/midaz-console/commit/1b0b433e3075c8cb439650fb11af115af2b45dd4))
+
+## [1.21.1](https://github.com/LerianStudio/midaz-console/compare/v1.21.0...v1.21.1) (2025-03-20)
+
+
+### Bug Fixes
+
+* remove emptyResourceExtra translation ([72a5a96](https://github.com/LerianStudio/midaz-console/commit/72a5a96ee8dcd8ebac0884aedaada31e745ed76f))
+* remove extra prop from EmptyResource ([52a3f25](https://github.com/LerianStudio/midaz-console/commit/52a3f2584298be0347da0a36c13e93bbef86e674))
+
+# [1.21.0](https://github.com/LerianStudio/midaz-console/compare/v1.20.0...v1.21.0) (2025-03-20)
+
+
+### Bug Fixes
+
+* Moved file formats to env var ([4525dc1](https://github.com/LerianStudio/midaz-console/commit/4525dc1f2c12f01876ce8f8f9f2bc0ebfc515f81))
+* Removed console.error ([7222403](https://github.com/LerianStudio/midaz-console/commit/7222403add186ac196bf3520f1aaa34d02ccf0b0))
+* Removed last old HttpException ([8084855](https://github.com/LerianStudio/midaz-console/commit/8084855adbd23280088904f07020ea29ce8e9508))
+* Solves PR comments ([09e238e](https://github.com/LerianStudio/midaz-console/commit/09e238e3ea997ff6622033e59a03c6fb0725944c))
+* When midaz return a text body ([c177264](https://github.com/LerianStudio/midaz-console/commit/c17726404793f785b45e3d60a4179c4ae2c96af1))
+
+
+### Features
+
+* Added field validation ([e0e1f96](https://github.com/LerianStudio/midaz-console/commit/e0e1f9619781946eb9a90cf81cea2a91973024c5))
+* Added Http Lib ([38d56b1](https://github.com/LerianStudio/midaz-console/commit/38d56b189f01788cec1336f4e9cb939faecf44ea))
+* Added more unit tests ([6cdea0e](https://github.com/LerianStudio/midaz-console/commit/6cdea0e1aaee79535c5e4705f0d42c850a0a2852))
+* Created helper methods to handle SVGs ([e50aca5](https://github.com/LerianStudio/midaz-console/commit/e50aca5d144bda538a23a1a846bb8448df188b07))
+* Exceptions clean up ([ebd0511](https://github.com/LerianStudio/midaz-console/commit/ebd05117fc067aa14981c3e4033d1c23f609d37e))
+* Implemented validation ([7e49006](https://github.com/LerianStudio/midaz-console/commit/7e49006fa1080c9e248101b73f355053634803b5))
+
+# [1.20.0](https://github.com/LerianStudio/midaz-console/compare/v1.19.1...v1.20.0) (2025-03-20)
+
+
+### Bug Fixes
+
+* set PLUGIN_AUTH_ENABLED to false default in environment variables ([fb62b90](https://github.com/LerianStudio/midaz-console/commit/fb62b90c1d3d80565f13fca8025282aa73541622))
+
+
+### Features
+
+* add breadcrumb in ledgers route ([e7e25c3](https://github.com/LerianStudio/midaz-console/commit/e7e25c388d320f5b90ab467a2654ed415792c470))
+
 ## [1.19.1](https://github.com/LerianStudio/midaz-console/compare/v1.19.0...v1.19.1) (2025-03-19)
 
 

@@ -140,16 +140,28 @@ describe('MidazHttpFetchUtils', () => {
       }
     })
 
-    expect(mockFetch).toHaveBeenCalledWith('https://api.example.com/test', {
-      method: 'GET',
-      body: undefined,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer test-token',
-        'X-Request-Id': 'test-request-id',
-        'Custom-Header': 'CustomValue'
-      }
-    })
+    if (process.env.PLUGIN_AUTH_ENABLED === 'true') {
+      expect(mockFetch).toHaveBeenCalledWith('https://api.example.com/test', {
+        method: HTTP_METHODS.GET,
+        body: undefined,
+        headers: {
+          'Custom-Header': 'CustomValue',
+          'X-Request-Id': 'test-request-id',
+          'Content-Type': 'application/json',
+          Authorization: `test-token`
+        }
+      })
+    } else {
+      expect(mockFetch).toHaveBeenCalledWith('https://api.example.com/test', {
+        method: HTTP_METHODS.GET,
+        body: undefined,
+        headers: {
+          'Custom-Header': 'CustomValue',
+          'X-Request-Id': 'test-request-id',
+          'Content-Type': 'application/json'
+        }
+      })
+    }
   })
 
   it('should start and end a custom span', async () => {

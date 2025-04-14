@@ -1,5 +1,6 @@
-import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
+import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
+import useCustomToast from '@/hooks/use-custom-toast'
 import {
   deleteFetcher,
   getFetcher,
@@ -22,6 +23,7 @@ export const useListOrganizations = ({ ...options }) => {
 
 export type UseGetOrganizationProps = {
   organizationId: string
+  onError?: (error: any) => void
 }
 
 export const useGetOrganization = ({
@@ -36,10 +38,16 @@ export const useGetOrganization = ({
 }
 
 export const useCreateOrganization = ({ ...options }) => {
+  const { showError } = useCustomToast()
+
   return useMutation({
     mutationKey: ['organizations'],
     mutationFn: postFetcher(`/api/organizations`),
-    ...options
+    ...options,
+    onError: (error) => {
+      showError(error.message)
+      options.onError?.(error)
+    }
   })
 }
 
@@ -47,10 +55,16 @@ export const useUpdateOrganization = ({
   organizationId,
   ...options
 }: UseGetOrganizationProps & UseMutationOptions<any, any, any>) => {
+  const { showError } = useCustomToast()
+
   return useMutation({
     mutationKey: ['organizations'],
     mutationFn: patchFetcher(`/api/organizations/${organizationId}`),
-    ...options
+    ...options,
+    onError: (error) => {
+      showError(error.message)
+      options.onError?.(error)
+    }
   })
 }
 

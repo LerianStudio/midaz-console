@@ -24,13 +24,19 @@ import { AccountType } from '@/types/accounts-type'
 import { MetadataTableCell } from '@/components/table/metadata-table-cell'
 import { EntityDataTable } from '@/components/entity-data-table'
 import { EmptyResource } from '@/components/empty-resource'
-import { Pagination } from '@/components/pagination'
+import { Pagination, PaginationProps } from '@/components/pagination'
 import { PaginationLimitField } from '@/components/form/pagination-limit-field'
-import { FormProvider } from 'react-hook-form'
+import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { IdTableCell } from '@/components/table/id-table-cell'
-import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
-import { useOrganization } from '@/context/organization-provider/organization-provider-client'
-import { AccountSheet } from './accounts-sheet'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { AlertCircle } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from '@/components/ui/tooltip'
 
 type AccountsTableProps = {
   accounts: { items: AccountType[] }
@@ -42,10 +48,12 @@ type AccountsTableProps = {
   }
   onDelete: (id: string, account: AccountType) => void
   refetch: () => void
+  handleCreate: () => void
   handleEdit: (account: AccountType) => void
-  total: any
-  pagination: any
-  form: any
+  total: number
+  pagination: PaginationProps
+  form: UseFormReturn<any>
+  hasAssets: boolean
 }
 
 type AccountRowProps = {
@@ -60,6 +68,7 @@ const AccountRow: React.FC<AccountRowProps> = ({
   onDelete
 }) => {
   const intl = useIntl()
+  const isExternal = account.original.alias?.includes('@external/')
 
   return (
     <TableRow key={account.id}>
@@ -68,42 +77,46 @@ const AccountRow: React.FC<AccountRowProps> = ({
       <TableCell align="center">{account.original.assetCode}</TableCell>
       <MetadataTableCell align="center" metadata={account.original.metadata} />
       <TableCell align="center">
-        {account.original.portfolio?.name ?? (
-          <Button variant="link" onClick={() => handleEdit(account.original)}>
-            {intl.formatMessage({
-              id: 'common.link',
-              defaultMessage: 'Link'
-            })}
-          </Button>
-        )}
+        {isExternal && '-'}
+        {!isExternal &&
+          (account.original.portfolio?.name ?? (
+            <Button variant="link" onClick={() => handleEdit(account.original)}>
+              {intl.formatMessage({
+                id: 'common.link',
+                defaultMessage: 'Link'
+              })}
+            </Button>
+          ))}
       </TableCell>
       <TableCell className="w-0">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="secondary" className="h-auto w-max p-2">
-              <MoreVertical size={16} onClick={() => {}} />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => handleEdit(account.original)}>
-              {intl.formatMessage({
-                id: `common.edit`,
-                defaultMessage: 'Edit'
-              })}
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => {
-                onDelete(account.original.id!, account.original)
-              }}
-            >
-              {intl.formatMessage({
-                id: `common.delete`,
-                defaultMessage: 'Delete'
-              })}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {!isExternal && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="secondary" className="h-auto w-max p-2">
+                <MoreVertical size={16} />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => handleEdit(account.original)}>
+                {intl.formatMessage({
+                  id: `common.edit`,
+                  defaultMessage: 'Edit'
+                })}
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => {
+                  onDelete(account.original.id!, account.original)
+                }}
+              >
+                {intl.formatMessage({
+                  id: `common.delete`,
+                  defaultMessage: 'Delete'
+                })}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </TableCell>
     </TableRow>
   )
@@ -113,15 +126,16 @@ export const AccountsDataTable: React.FC<AccountsTableProps> = ({
   accounts,
   table,
   onDelete,
+  handleCreate,
   handleEdit,
   refetch,
   total,
   pagination,
-  form
+  form,
+  hasAssets
 }) => {
   const intl = useIntl()
-  const { handleCreate, sheetProps } = useCreateUpdateSheet<any>()
-  const { currentLedger } = useOrganization()
+  const router = useRouter()
 
   return (
     <FormProvider {...form}>
@@ -131,19 +145,82 @@ export const AccountsDataTable: React.FC<AccountsTableProps> = ({
 
       <EntityDataTable.Root>
         {isNil(accounts?.items) || accounts?.items.length === 0 ? (
-          <EmptyResource
-            message={intl.formatMessage({
-              id: 'ledgers.accounts.emptyResource',
-              defaultMessage: "You haven't created any Accounts yet"
-            })}
-          >
-            <Button onClick={handleCreate}>
-              {intl.formatMessage({
-                id: 'common.new.account',
-                defaultMessage: 'New Account'
+          <React.Fragment>
+            {!hasAssets && (
+              <div className="p-6">
+                <Alert variant="warning" className="mb-6">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>
+                    {intl.formatMessage({
+                      id: 'accounts.alert.noAssets.title',
+                      defaultMessage: 'No Asset Found'
+                    })}
+                  </AlertTitle>
+                  <AlertDescription className="flex flex-col gap-2">
+                    <span className="opacity-70">
+                      {intl.formatMessage({
+                        id: 'accounts.alert.noAssets.description',
+                        defaultMessage:
+                          'You need to create at least one asset before creating accounts.'
+                      })}
+                    </span>
+
+                    <Button
+                      variant="link"
+                      className="w-fit p-0 text-yellow-800"
+                      size="sm"
+                      onClick={() => {
+                        router.push('/assets?create=true')
+                      }}
+                    >
+                      {intl.formatMessage({
+                        id: 'accounts.alert.noAssets.createLink',
+                        defaultMessage: 'Manage Assets'
+                      })}
+                    </Button>
+                  </AlertDescription>
+                </Alert>
+              </div>
+            )}
+
+            <EmptyResource
+              message={intl.formatMessage({
+                id: 'ledgers.accounts.emptyResource',
+                defaultMessage: "You haven't created any Accounts yet"
               })}
-            </Button>
-          </EmptyResource>
+            >
+              {!hasAssets ? (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="inline-block">
+                        <Button onClick={handleCreate} disabled>
+                          {intl.formatMessage({
+                            id: 'common.new.account',
+                            defaultMessage: 'New Account'
+                          })}
+                        </Button>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs text-center">
+                      {intl.formatMessage({
+                        id: 'accounts.tooltip.noAssets',
+                        defaultMessage:
+                          'You need to create at least one asset before creating accounts.'
+                      })}
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              ) : (
+                <Button onClick={handleCreate}>
+                  {intl.formatMessage({
+                    id: 'common.new.account',
+                    defaultMessage: 'New Account'
+                  })}
+                </Button>
+              )}
+            </EmptyResource>
+          </React.Fragment>
         ) : (
           <TableContainer>
             <Table>
@@ -219,12 +296,6 @@ export const AccountsDataTable: React.FC<AccountsTableProps> = ({
           </EntityDataTable.FooterText>
           <Pagination total={total} {...pagination} />
         </EntityDataTable.Footer>
-
-        <AccountSheet
-          ledgerId={currentLedger.id}
-          onSuccess={refetch}
-          {...sheetProps}
-        />
       </EntityDataTable.Root>
     </FormProvider>
   )

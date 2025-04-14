@@ -47,7 +47,10 @@ export const OrganizationProviderClient = ({
   const [currentLedger, setCurrentLedger] = useState<LedgerType>(
     {} as LedgerType
   )
-  const { data: ledgers } = useListLedgers({ organizationId: current?.id! })
+  const { data: ledgers } = useListLedgers({
+    organizationId: current?.id!,
+    limit: 100
+  })
 
   useEffect(() => {
     // Do nothing if the user is already at the onboarding

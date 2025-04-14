@@ -36,8 +36,15 @@ export const PermissionProviderClient = ({
 }: PermissionProviderClientProps) => {
   const [permissions] = React.useState(permissionsProps)
 
-  const validate = (resource: string, action: string) =>
-    validatePermissions(permissions, resource, action, wildcard)
+  const validate = (resource: string, action: string) => {
+    const hasPermission = validatePermissions(
+      permissions,
+      resource,
+      action,
+      wildcard
+    )
+    return hasPermission
+  }
 
   return (
     <PermissionContext.Provider value={{ permissions, validate }}>

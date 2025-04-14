@@ -1,5 +1,5 @@
 import React from 'react'
-import { defineMessages, useIntl } from 'react-intl'
+import { useIntl } from 'react-intl'
 import {
   Table,
   TableBody,
@@ -11,8 +11,7 @@ import {
 } from '@/components/ui/table'
 import { EmptyResource } from '@/components/empty-resource'
 import { Button } from '@/components/ui/button'
-import { MoreVertical, Minus } from 'lucide-react'
-import { capitalizeFirstLetter } from '@/helpers'
+import { MoreVertical } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,9 +20,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { isNil } from 'lodash'
-import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
 import useCustomToast from '@/hooks/use-custom-toast'
-import { EntityBox } from '@/components/entity-box'
 import { PaginationLimitField } from '@/components/form/pagination-limit-field'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { EntityDataTable } from '@/components/entity-data-table'
@@ -32,8 +29,6 @@ import { PaginationDto } from '@/core/application/dto/pagination-dto'
 import { IdTableCell } from '@/components/table/id-table-cell'
 import { MetadataTableCell } from '@/components/table/metadata-table-cell'
 import { SegmentResponseDto } from '@/core/application/dto/segment-dto'
-import { SegmentsSheet } from './segments-sheet'
-import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 
 type SegmentsTableProps = {
   segments: PaginationDto<SegmentResponseDto> | undefined
@@ -43,6 +38,7 @@ type SegmentsTableProps = {
     }
   }
   handleDialogOpen: (id: string, name: string) => void
+  handleCreate: () => void
   handleEdit: (asset: SegmentResponseDto) => void
   refetch: () => void
   form: UseFormReturn<any>
@@ -106,16 +102,14 @@ const SegmentRow: React.FC<SegmentRowProps> = ({
 
 export const SegmentsDataTable: React.FC<SegmentsTableProps> = (props) => {
   const intl = useIntl()
-  const { handleCreate, sheetProps } = useCreateUpdateSheet<any>()
   const { showInfo } = useCustomToast()
-  const { currentLedger } = useOrganization()
 
   const {
     segments,
     table,
     handleDialogOpen,
+    handleCreate,
     handleEdit,
-    refetch,
     form,
     pagination,
     total
@@ -128,13 +122,9 @@ export const SegmentsDataTable: React.FC<SegmentsTableProps> = (props) => {
 
   return (
     <FormProvider {...form}>
-      <EntityBox.Root>
-        <EntityBox.Actions className="flex w-full justify-end gap-4">
-          <div className="col-start-3 flex justify-end">
-            <PaginationLimitField control={form.control} />
-          </div>
-        </EntityBox.Actions>
-      </EntityBox.Root>
+      <div className="mb-4 flex justify-end">
+        <PaginationLimitField control={form.control} />
+      </div>
 
       <EntityDataTable.Root>
         {isNil(segments?.items) || segments.items.length === 0 ? (
@@ -215,12 +205,6 @@ export const SegmentsDataTable: React.FC<SegmentsTableProps> = (props) => {
           </EntityDataTable.FooterText>
           <Pagination total={total} {...pagination} />
         </EntityDataTable.Footer>
-
-        <SegmentsSheet
-          ledgerId={currentLedger.id}
-          onSuccess={refetch}
-          {...sheetProps}
-        />
       </EntityDataTable.Root>
     </FormProvider>
   )

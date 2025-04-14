@@ -19,7 +19,6 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { Arrow } from '@radix-ui/react-tooltip'
-import { truncateString } from '@/helpers'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,8 +28,6 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { isNil } from 'lodash'
 import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
-import useCustomToast from '@/hooks/use-custom-toast'
-import { LedgersSheet } from './ledgers-sheet'
 import { EntityDataTable } from '@/components/entity-data-table'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { Table as ReactTableType } from '@tanstack/react-table'
@@ -39,11 +36,13 @@ import { PaginationLimitField } from '@/components/form/pagination-limit-field'
 import { Pagination, PaginationProps } from '@/components/pagination'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
 import { AssetsSheet } from '../assets/assets-sheet'
+import { IdTableCell } from '@/components/table/id-table-cell'
 
 type LedgersTableProps = {
   ledgers: PaginationDto<LedgerResponseDto> | undefined
   table: ReactTableType<LedgerResponseDto>
   handleDialogOpen: (id: string, name: string) => void
+  handleCreate: () => void
   handleEdit: (ledger: LedgerResponseDto) => void
   refetch: () => void
   form: UseFormReturn<any>
@@ -53,7 +52,6 @@ type LedgersTableProps = {
 
 type LedgerRowProps = {
   ledger: { id: string; original: LedgerResponseDto }
-  handleCopyToClipboard: (value: string, message: string) => void
   handleDialogOpen: (id: string, name: string) => void
   handleEdit: (ledger: LedgerResponseDto) => void
   refetch: () => void
@@ -61,14 +59,11 @@ type LedgerRowProps = {
 
 const LedgerRow: React.FC<LedgerRowProps> = ({
   ledger,
-  handleCopyToClipboard,
   handleDialogOpen,
   handleEdit,
   refetch
 }) => {
   const intl = useIntl()
-  const id = ledger.original.id || ''
-  const displayId = id && id.length > 8 ? `${truncateString(id, 8)}` : id
   const metadataCount = Object.entries(ledger.original.metadata || []).length
   const assetsItems = ledger.original.assets || []
   const { handleCreate, sheetProps } = useCreateUpdateSheet<any>()
@@ -131,40 +126,7 @@ const LedgerRow: React.FC<LedgerRowProps> = ({
   return (
     <React.Fragment>
       <TableRow key={ledger.id}>
-        <TableCell>
-          <TooltipProvider>
-            <Tooltip delayDuration={300}>
-              <TooltipTrigger
-                onClick={(e) => {
-                  e.stopPropagation()
-                  handleCopyToClipboard(
-                    id,
-                    intl.formatMessage({
-                      id: 'ledgers.toast.copyId',
-                      defaultMessage:
-                        'The id has been copied to your clipboard.'
-                    })
-                  )
-                }}
-              >
-                <p className="text-shadcn-600 underline">{displayId}</p>
-              </TooltipTrigger>
-              <TooltipContent
-                className="border-none bg-shadcn-600"
-                arrowPadding={0}
-              >
-                <p className="text-shadcn-400">{id}</p>
-                <p className="text-center text-white">
-                  {intl.formatMessage({
-                    id: 'ledgers.columnsTable.tooltipCopyText',
-                    defaultMessage: 'Click to copy'
-                  })}
-                </p>
-                <Arrow height={8} width={15} />
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </TableCell>
+        <IdTableCell id={ledger.original.id} />
         <TableCell>{ledger.original.name}</TableCell>
         <TableCell>{renderAssets()}</TableCell>
         <TableCell>
@@ -235,13 +197,12 @@ const LedgerRow: React.FC<LedgerRowProps> = ({
 
 export const LedgersDataTable: React.FC<LedgersTableProps> = (props) => {
   const intl = useIntl()
-  const { handleCreate, sheetProps } = useCreateUpdateSheet<any>()
-  const { showInfo } = useCustomToast()
 
   const {
     ledgers,
     table,
     handleDialogOpen,
+    handleCreate,
     handleEdit,
     refetch,
     form,
@@ -249,14 +210,9 @@ export const LedgersDataTable: React.FC<LedgersTableProps> = (props) => {
     total
   } = props
 
-  const handleCopyToClipboard = (value: string, message: string) => {
-    navigator.clipboard.writeText(value)
-    showInfo(message)
-  }
-
   return (
     <FormProvider {...form}>
-      <div className="flex justify-end">
+      <div className="mb-4 flex justify-end">
         <PaginationLimitField control={form.control} />
       </div>
 
@@ -266,10 +222,6 @@ export const LedgersDataTable: React.FC<LedgersTableProps> = (props) => {
             message={intl.formatMessage({
               id: 'ledgers.emptyResource',
               defaultMessage: "You haven't created any Ledger yet"
-            })}
-            extra={intl.formatMessage({
-              id: 'ledgers.emptyResourceExtra',
-              defaultMessage: 'No Ledger found.'
             })}
           >
             <Button variant="default" onClick={handleCreate}>
@@ -321,7 +273,6 @@ export const LedgersDataTable: React.FC<LedgersTableProps> = (props) => {
                   <LedgerRow
                     key={ledger.id}
                     ledger={ledger}
-                    handleCopyToClipboard={handleCopyToClipboard}
                     handleDialogOpen={handleDialogOpen}
                     handleEdit={handleEdit}
                     refetch={refetch}
@@ -350,8 +301,6 @@ export const LedgersDataTable: React.FC<LedgersTableProps> = (props) => {
           </EntityDataTable.FooterText>
           <Pagination total={total} {...pagination} />
         </EntityDataTable.Footer>
-
-        <LedgersSheet onSuccess={refetch} {...sheetProps} />
       </EntityDataTable.Root>
     </FormProvider>
   )
