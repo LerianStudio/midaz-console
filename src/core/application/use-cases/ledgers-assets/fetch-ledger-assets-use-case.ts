@@ -21,7 +21,7 @@ export interface FetchAllLedgersAssets {
 export class FetchAllLedgersAssetsUseCase implements FetchAllLedgersAssets {
   constructor(
     @inject(LedgerRepository)
-    private readonly LedgerRepository: LedgerRepository,
+    private readonly ledgerRepository: LedgerRepository,
     @inject(AssetRepository)
     private readonly assetRepository: AssetRepository
   ) {}

@@ -1,0 +1,103 @@
+name: Lighthouse CI
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  lhci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the project
+        run: npm run build
+
+      - name: Start app
+        run: npm run start &
+        env:
+          PORT: 8081
+
+      - name: Wait for app to be ready
+        run: npx wait-on http://localhost:8081 --timeout 60000
+
+      # Etapa 1: Executar Lighthouse CI para upload público
+      - name: Run Lighthouse CI for Public Upload
+        run: npm run lhci -- --ci
+        env:
+          LHCI_TARGET: 'temporary-public-storage'
+
+      # Etapa 2: Executar Lighthouse CI para salvar como artefato
+      - name: Run Lighthouse CI for Artifact
+        run: npm run lhci -- --ci
+        env:
+          LHCI_TARGET: 'filesystem'
+
+      # Verificar o diretório atual e os arquivos gerados pelo Lighthouse
+      - name: Check current directory
+        run: |
+          echo "Current directory is: $(pwd)"
+          echo "Listing files in the current directory:"
+          ls -al
+
+      - name: Check if .lighthouseci directory exists
+        run: |
+          echo "Checking for .lighthouseci directory..."
+          if [ -d ".lighthouseci" ]; then
+            echo ".lighthouseci directory exists."
+            ls -alR .lighthouseci
+          else
+            echo ".lighthouseci directory does not exist."
+          fi
+
+      - name: Check if reports exist in the directory
+        run: |
+          echo "Checking for report files in .lighthouseci..."
+          ls -al .lighthouseci/*.html || echo "No .html files found"
+          ls -al .lighthouseci/*.json || echo "No .json files found"
+
+      # Mover os relatórios para o diretório 'reports'
+      - name: Move Lighthouse reports to 'reports' directory
+        run: |
+          mkdir -p reports
+          mv .lighthouseci/*.html reports/
+          mv .lighthouseci/*.json reports/
+
+      # Fazer upload dos relatórios HTML como artefato
+      - name: Upload Lighthouse HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-html-report
+          path: reports/*.html
+          if-no-files-found: error
+
+      # Fazer upload dos relatórios JSON como artefato
+      - name: Upload Lighthouse JSON Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-json-report
+          path: reports/*.json
+          if-no-files-found: error
+
+      - name: Cleanup
+        run: kill $(lsof -t -i:8081) || true
