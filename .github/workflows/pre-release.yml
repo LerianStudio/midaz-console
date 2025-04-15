@@ -100,7 +100,7 @@ jobs:
         run: npm install
 
       - name: Patch Next.js SWC binaries (warm-up)
-        run: npx next
+        run: npx next build
 
       - name: Run Unit Tests
         run: npm test
