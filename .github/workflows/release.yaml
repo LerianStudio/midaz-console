@@ -37,13 +37,15 @@ jobs:
         with:
           app-id: ${{ secrets.LERIAN_STUDIO_MIDAZ_PUSH_BOT_APP_ID }}
           private-key: ${{ secrets.LERIAN_STUDIO_MIDAZ_PUSH_BOT_PRIVATE_KEY }}
-
+          
+ # Step to checkout the repository code
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ steps.app-token.outputs.token }}
 
+ # Step to import a GPG key for signing commits and tags
       - name: Import GPG Key
         uses: crazy-max/ghaction-import-gpg@v6
         id: import_gpg
