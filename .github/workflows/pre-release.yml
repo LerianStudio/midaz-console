@@ -93,6 +93,8 @@ jobs:
           node-version: '22'
       - name: Install dependencies
         run: npm install
+      - name: Patch Next.js SWC binaries
+        run: npx next
       - name: Run Unit Tests
         run: npm test
   
