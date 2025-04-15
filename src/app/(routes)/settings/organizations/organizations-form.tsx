@@ -367,7 +367,7 @@ export const OrganizationsForm = ({
               </CardContent>
             </Card.Root>
 
-            <Card.Root className="p-6 shadow">
+            <Card.Root className="hidden p-6 shadow">
               <Card.Header
                 className="text-sm font-medium text-zinc-600"
                 title={intl.formatMessage({

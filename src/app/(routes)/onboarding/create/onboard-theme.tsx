@@ -88,48 +88,30 @@ export function OnboardTheme({ onCancel }: OnboardThemeProps) {
           defaultMessage: 'Organization'
         })}
       />
+
       <div className="grid grid-cols-4 gap-10">
         <Stepper />
         <Form {...form}>
-          <Paper className="col-span-3 flex flex-row gap-5">
-            <div className="flex w-1/2 flex-col p-6">
+          <Paper className="col-span-3 mx-auto flex w-full max-w-xl flex-col items-center justify-center rounded-md bg-white px-8 py-6 shadow-md">
+            <div className="w-full">
               <h6 className="mb-4 text-sm font-medium text-zinc-600">
                 {intl.formatMessage({
                   id: 'common.icon',
                   defaultMessage: 'Icon'
                 })}
               </h6>
+
               <div className="mb-6 flex flex-col items-center">
                 <OrganizationsFormAvatarField
                   name="avatar"
                   control={form.control}
                 />
               </div>
-              <FormDescription>
+
+              <FormDescription className="text-sm text-zinc-500">
                 {intl.formatMessage({
                   id: 'onboarding.form.avatarDescription',
                   defaultMessage: 'Format: SVG or PNG, 256x256 px'
-                })}
-              </FormDescription>
-            </div>
-            <Separator orientation="vertical" />
-            <div className="flex w-1/2 flex-col p-6">
-              <h6 className="mb-4 text-sm font-medium text-zinc-600">
-                {intl.formatMessage({
-                  id: 'common.accentColor',
-                  defaultMessage: 'Accent Color'
-                })}
-              </h6>
-              <div className="mb-6 flex flex-grow flex-col items-center justify-center">
-                <OrganizationsFormColorField
-                  name="accentColor"
-                  control={form.control}
-                />
-              </div>
-              <FormDescription>
-                {intl.formatMessage({
-                  id: 'onboarding.form.accentColorDescription',
-                  defaultMessage: 'Format: HEX (Ex. #FF0000)'
                 })}
               </FormDescription>
             </div>
