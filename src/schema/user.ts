@@ -21,16 +21,16 @@ const password = z
   .min(8)
   .max(255)
   .refine(regex(oneUpperCaseLetter), {
-    message: messages.custom_one_uppercase_letter.defaultMessage
+    params: { id: 'custom_one_uppercase_letter' }
   })
   .refine(regex(oneLowerCaseLetter), {
-    message: messages.custom_one_lowercase_letter.defaultMessage
+    params: { id: 'custom_one_lowercase_letter' }
   })
   .refine(regex(oneNumber), {
-    message: messages.custom_one_number.defaultMessage
+    params: { id: 'custom_one_number' }
   })
   .refine(regex(oneSpecialCharacter), {
-    message: messages.custom_one_special_character.defaultMessage
+    params: { id: 'custom_one_special_character' }
   })
 
 const confirmPassword = z.string().min(8).max(255)
