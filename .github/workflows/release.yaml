@@ -69,14 +69,14 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-
-# Step to install project dependencies using clean install
+              
+# Step to cache Node.js dependencies for faster builds
       - name: Install dependencies
         run: npm ci
-# Step to build the project
+
       - name: Build the project
         run: npm run build
-# Step to run semantic-release for versioning and changelog generation
+
       - name: Run Semantic Release
         id: semantic_release
         uses: cycjimmy/semantic-release-action@v4
