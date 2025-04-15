@@ -1,6 +1,7 @@
 'use client'
 import { useListOrganizations } from '@/client/organizations'
 import { Popover } from '@/components/ui/popover'
+import { useOrganization } from '@/providers/organization-provider/organization-provider-client'
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import React, { useEffect } from 'react'
 import { useIntl } from 'react-intl'
