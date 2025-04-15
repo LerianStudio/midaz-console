@@ -22,8 +22,8 @@ import { InputField } from '@/components/form'
 import { portfolio } from '@/schema/portfolio'
 import { TabsContent } from '@radix-ui/react-tabs'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import useCustomToast from '@/hooks/use-custom-toast'
 import { usePopulateCreateUpdateForm } from '@/components/sheet/use-populate-create-update-form'
+import { useToast } from '@/hooks/use-toast'
 
 export type PortfolioSheetProps = DialogProps & {
   mode: 'create' | 'edit'
@@ -54,7 +54,7 @@ export const PortfolioSheet = ({
 }: PortfolioSheetProps) => {
   const intl = useIntl()
   const { currentOrganization, currentLedger } = useOrganization()
-  const { showSuccess, showError } = useCustomToast()
+  const { toast } = useToast()
 
   const { mutate: createPortfolio, isPending: createPending } =
     useCreatePortfolio({
@@ -63,21 +63,13 @@ export const PortfolioSheet = ({
       onSuccess: () => {
         onSuccess?.()
         onOpenChange?.(false)
-        showSuccess(
-          intl.formatMessage({
-            id: 'portfolios.toast.create.success',
+        toast({
+          description: intl.formatMessage({
+            id: 'success.portfolios.create',
             defaultMessage: 'Portfolio successfully created'
-          })
-        )
-      },
-      onError: () => {
-        onOpenChange?.(false)
-        showError(
-          intl.formatMessage({
-            id: 'portfolios.toast.create.error',
-            defaultMessage: 'Error creating Portfolio'
-          })
-        )
+          }),
+          variant: 'success'
+        })
       }
     })
 
@@ -89,21 +81,13 @@ export const PortfolioSheet = ({
       onSuccess: () => {
         onSuccess?.()
         onOpenChange?.(false)
-        showSuccess(
-          intl.formatMessage({
-            id: 'portfolios.toast.update.success',
+        toast({
+          description: intl.formatMessage({
+            id: 'success.portfolios.update',
             defaultMessage: 'Portfolio changes saved successfully'
-          })
-        )
-      },
-      onError: () => {
-        onOpenChange?.(false)
-        showError(
-          intl.formatMessage({
-            id: 'portfolios.toast.update.error',
-            defaultMessage: 'Error updating Portfolio'
-          })
-        )
+          }),
+          variant: 'success'
+        })
       }
     })
 

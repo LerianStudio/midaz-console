@@ -20,7 +20,6 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { isNil } from 'lodash'
-import useCustomToast from '@/hooks/use-custom-toast'
 import { PaginationLimitField } from '@/components/form/pagination-limit-field'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { EntityDataTable } from '@/components/entity-data-table'
@@ -48,7 +47,6 @@ type SegmentsTableProps = {
 
 type SegmentRowProps = {
   segment: { id: string; original: SegmentType }
-  handleCopyToClipboard: (value: string, message: string) => void
   handleDialogOpen: (id: string, name: string) => void
   handleEdit: (segment: SegmentType) => void
 }
@@ -102,7 +100,6 @@ const SegmentRow: React.FC<SegmentRowProps> = ({
 
 export const SegmentsDataTable: React.FC<SegmentsTableProps> = (props) => {
   const intl = useIntl()
-  const { showInfo } = useCustomToast()
 
   const {
     segments,
@@ -114,11 +111,6 @@ export const SegmentsDataTable: React.FC<SegmentsTableProps> = (props) => {
     pagination,
     total
   } = props
-
-  const handleCopyToClipboard = (value: string, message: string) => {
-    navigator.clipboard.writeText(value)
-    showInfo(message)
-  }
 
   return (
     <FormProvider {...form}>
@@ -177,7 +169,6 @@ export const SegmentsDataTable: React.FC<SegmentsTableProps> = (props) => {
                   <SegmentRow
                     key={segment.id}
                     segment={segment}
-                    handleCopyToClipboard={handleCopyToClipboard}
                     handleDialogOpen={handleDialogOpen}
                     handleEdit={handleEdit}
                   />
