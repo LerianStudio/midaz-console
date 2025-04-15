@@ -23,7 +23,7 @@ import { portfolio } from '@/schema/portfolio'
 import { TabsContent } from '@radix-ui/react-tabs'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import useCustomToast from '@/hooks/use-custom-toast'
-import { usePopulateCreateUpdateForm } from '@/components/sheet/use-populate-create-update-form'
+import { getInitialValues } from '@/lib/form'
 
 export type PortfolioSheetProps = DialogProps & {
   mode: 'create' | 'edit'
@@ -63,6 +63,7 @@ export const PortfolioSheet = ({
       onSuccess: () => {
         onSuccess?.()
         onOpenChange?.(false)
+        form.reset()
         showSuccess(
           intl.formatMessage({
             id: 'portfolios.toast.create.success',
@@ -109,9 +110,9 @@ export const PortfolioSheet = ({
 
   const form = useForm<FormData>({
     resolver: zodResolver(FormSchema),
+    values: getInitialValues(initialValues, data!),
     defaultValues: initialValues
   })
-  const { isDirty } = form.formState
 
   const handleSubmit = (values: FormData) => {
     if (mode === 'create') {
@@ -121,8 +122,6 @@ export const PortfolioSheet = ({
       updatePortfolio(data)
     }
   }
-
-  usePopulateCreateUpdateForm(form, mode, initialValues, data)
 
   return (
     <React.Fragment>
@@ -232,7 +231,6 @@ export const PortfolioSheet = ({
                 <LoadingButton
                   size="lg"
                   type="submit"
-                  disabled={!isDirty}
                   fullWidth
                   loading={createPending || updatePending}
                 >

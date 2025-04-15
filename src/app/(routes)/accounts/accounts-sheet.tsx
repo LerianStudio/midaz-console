@@ -34,7 +34,7 @@ import { ChevronRight, InfoIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { SwitchField } from '@/components/form/switch-field'
 import { createQueryString } from '@/lib/search'
-import { usePopulateCreateUpdateForm } from '@/components/sheet/use-populate-create-update-form'
+import { getInitialValues } from '@/lib/form'
 
 export type AccountSheetProps = DialogProps & {
   ledgerId: string
@@ -127,9 +127,9 @@ export const AccountSheet = ({
 
   const form = useForm<FormData>({
     resolver: zodResolver(FormSchema),
+    values: getInitialValues(initialValues, data!),
     defaultValues: initialValues
   })
-  const { isDirty } = form.formState
 
   const portfolioId = form.watch('portfolioId')
 
@@ -139,6 +139,7 @@ export const AccountSheet = ({
     onSuccess: (data) => {
       onSuccess?.()
       onOpenChange?.(false)
+      form.reset()
       showSuccess(
         intl.formatMessage(
           {
@@ -196,16 +197,11 @@ export const AccountSheet = ({
 
     if (mode === 'create') {
       createAccount(cleanedData)
-
-      form.reset(initialValues)
     } else if (mode === 'edit') {
       const { type, assetCode, entityId, ...updateData } = cleanedData
-
       updateAccount(updateData)
     }
   }
-
-  usePopulateCreateUpdateForm(form, mode, initialValues, data)
 
   return (
     <React.Fragment>
@@ -555,7 +551,6 @@ export const AccountSheet = ({
                 <LoadingButton
                   size="lg"
                   type="submit"
-                  disabled={!isDirty}
                   fullWidth
                   loading={createPending || updatePending}
                 >

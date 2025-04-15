@@ -23,7 +23,7 @@ import { useOrganization } from '@/context/organization-provider/organization-pr
 import useCustomToast from '@/hooks/use-custom-toast'
 import { LedgerType } from '@/types/ledgers-type'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { usePopulateCreateUpdateForm } from '@/components/sheet/use-populate-create-update-form'
+import { getInitialValues } from '@/lib/form'
 
 export type LedgersSheetProps = DialogProps & {
   mode: 'create' | 'edit'
@@ -64,7 +64,7 @@ export const LedgersSheet = ({
 
       await onSuccess?.()
       onOpenChange?.(false)
-
+      form.reset()
       showSuccess(
         intl.formatMessage(
           {
@@ -111,9 +111,9 @@ export const LedgersSheet = ({
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
+    values: getInitialValues(initialValues, data!),
     defaultValues: initialValues
   })
-  const { isDirty } = form.formState
 
   const handleSubmit = (data: FormData) => {
     if (mode === 'create') {
@@ -122,8 +122,6 @@ export const LedgersSheet = ({
       updateLedger(data)
     }
   }
-
-  usePopulateCreateUpdateForm(form, mode, initialValues, data)
 
   return (
     <Sheet onOpenChange={onOpenChange} {...others}>
@@ -220,7 +218,6 @@ export const LedgersSheet = ({
               <LoadingButton
                 size="lg"
                 type="submit"
-                disabled={!isDirty}
                 fullWidth
                 loading={createPending || updatePending}
               >
