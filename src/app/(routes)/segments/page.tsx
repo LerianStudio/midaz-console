@@ -21,9 +21,11 @@ import { Breadcrumb } from '@/components/breadcrumb'
 import { PageHeader } from '@/components/page-header'
 import { SegmentsDataTable } from './segments-data-table'
 import { SegmentsSkeleton } from './segments-skeleton'
+import { useRouter } from 'next/navigation'
 
 const Page = () => {
   const intl = useIntl()
+  const router = useRouter()
   const { currentOrganization, currentLedger } = useOrganization()
   const [columnFilters, setColumnFilters] = useState<any>([])
 
@@ -73,7 +75,9 @@ const Page = () => {
   )
 
   const { handleCreate, handleEdit, sheetProps } =
-    useCreateUpdateSheet<SegmentResponseDto>()
+    useCreateUpdateSheet<SegmentResponseDto>({
+      enableRouting: true
+    })
 
   const table = useReactTable({
     data: segments?.items!,
@@ -89,6 +93,12 @@ const Page = () => {
       columnFilters
     }
   })
+
+  useEffect(() => {
+    if (!currentLedger?.id) {
+      router.replace('/ledgers')
+    }
+  }, [currentLedger, router])
 
   const breadcrumbPaths = getBreadcrumbPaths([
     {
@@ -109,6 +119,7 @@ const Page = () => {
     segments,
     table,
     handleDialogOpen,
+    handleCreate,
     handleEdit,
     refetch,
     form,

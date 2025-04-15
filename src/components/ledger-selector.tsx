@@ -119,16 +119,21 @@ export const LedgerSelector = () => {
   })
 
   React.useEffect(() => {
-    if (
-      ledgers?.items?.length &&
-      (!currentLedger?.id ||
-        !ledgers.items.some(
-          (ledger: LedgerType) => ledger.id === currentLedger.id
-        ))
-    ) {
-      setLedger(ledgers.items[0])
+    if (ledgers?.items?.length) {
+      if (!currentLedger?.id) {
+        setLedger(ledgers.items[0])
+        return
+      }
+
+      const ledgerExists = ledgers.items.some(
+        (ledger: LedgerType) => ledger.id === currentLedger.id
+      )
+
+      if (!ledgerExists) {
+        setLedger(ledgers.items[0])
+      }
     }
-  }, [currentOrganization, ledgers, currentLedger?.id, setLedger])
+  }, [ledgers, currentLedger?.id, setLedger])
 
   const hasLedgers = !!ledgers?.items?.length
   const totalLedgers = ledgers?.items?.length ?? 0

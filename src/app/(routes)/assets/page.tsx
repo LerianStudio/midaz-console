@@ -11,7 +11,7 @@ import {
   getFilteredRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import ConfirmationDialog from '@/components/confirmation-dialog'
 import useCustomToast from '@/hooks/use-custom-toast'
@@ -25,11 +25,16 @@ import { Breadcrumb } from '@/components/breadcrumb'
 
 const Page = () => {
   const intl = useIntl()
+  const router = useRouter()
   const { id: ledgerId } = useParams<{ id: string }>()
   const [columnFilters, setColumnFilters] = useState<any>([])
   const { currentOrganization, currentLedger } = useOrganization()
   const { showSuccess, showError } = useCustomToast()
-  const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>()
+
+  const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>({
+    enableRouting: true
+  })
+
   const [total, setTotal] = useState(0)
 
   const { form, searchValues, pagination } = useQueryParams({ total })
@@ -57,6 +62,12 @@ const Page = () => {
 
     setTotal(assets.items.length)
   }, [assets?.items, assets?.limit])
+
+  useEffect(() => {
+    if (!currentLedger?.id) {
+      router.replace('/ledgers')
+    }
+  }, [currentLedger, router])
 
   const { mutate: deleteMutate, isPending: deletePending } = useDeleteAsset({
     organizationId: currentOrganization.id!,
@@ -124,8 +135,8 @@ const Page = () => {
     assets,
     table,
     handleDialogOpen,
+    handleCreate,
     handleEdit,
-    refetch,
     form,
     pagination,
     total

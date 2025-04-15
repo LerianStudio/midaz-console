@@ -9,7 +9,12 @@ export const useTransactionFormControl = (values: TransactionFormSchema) => {
   useEffect(() => {
     if (step < 2) {
       // If the user has filled the required fields, move to the next step
-      if (value && asset && source?.length > 0 && destination?.length > 0) {
+      if (
+        value !== 0 &&
+        asset !== '' &&
+        source?.length > 0 &&
+        destination?.length > 0
+      ) {
         setStep(1)
         // Reset back to initial step if the user has removed the required fields
       } else {

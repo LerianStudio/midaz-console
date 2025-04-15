@@ -10,7 +10,8 @@ const nextConfig = {
   },
   env: {
     MIDAZ_CONSOLE_BASE_PATH: process.env.MIDAZ_CONSOLE_BASE_PATH,
-    MIDAZ_SERVER_BASE_PATH: process.env.MIDAZ_SERVER_BASE_PATH
+    MIDAZ_SERVER_BASE_PATH: process.env.MIDAZ_SERVER_BASE_PATH,
+    PLUGIN_AUTH_ENABLED: process.env.PLUGIN_AUTH_ENABLED
   },
   headers: async () => {
     return [
@@ -33,10 +34,19 @@ const nextConfig = {
     ]
   },
   images: {
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    contentDispositionType: 'attachment',
+
     remotePatterns: [
       {
         protocol: 'http',
-        hostname: process.env.MIDAZ_CONSOLE_SERVICE_HOST || 'localhost',
+        hostname: '**',
+        pathname: '**'
+      },
+      {
+        protocol: 'https',
+        hostname: '**',
         pathname: '**'
       }
     ]

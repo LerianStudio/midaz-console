@@ -14,10 +14,11 @@ import {
   PopoverPanelTitle
 } from './popover-panel'
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
+import React from 'react'
 
 export type OrganizationSwitcherProps = {
+  currentOrganization: OrganizationEntity
   data: OrganizationEntity[]
-  orgName: string
   status: 'active' | 'inactive'
   image: string
   alt: string
@@ -29,7 +30,7 @@ export type OrganizationSwitcherContentProps = OrganizationSwitcherProps & {
 }
 
 export const OrganizationSwitcherContent = ({
-  orgName,
+  currentOrganization,
   status,
   alt,
   image,
@@ -43,7 +44,7 @@ export const OrganizationSwitcherContent = ({
     <PopoverContent className="flex w-auto gap-4" side="right">
       <PopoverPanel>
         <PopoverPanelTitle>
-          {orgName}
+          {currentOrganization.legalName}
           <StatusDisplay status={status} />
         </PopoverPanelTitle>
         <PopoverPanelContent>
@@ -56,7 +57,10 @@ export const OrganizationSwitcherContent = ({
           />
         </PopoverPanelContent>
         <PopoverPanelFooter>
-          <Link href="/settings?tab=organizations" onClick={onClose}>
+          <Link
+            href={`/settings/organizations/${currentOrganization.id}`}
+            onClick={onClose}
+          >
             {intl.formatMessage({
               id: 'common.edit',
               defaultMessage: 'Edit'
@@ -76,10 +80,15 @@ export const OrganizationSwitcherContent = ({
               onClick={() => onChange?.(organization)}
             >
               <Image
-                src={MidazLogo}
+                src={
+                  organization.metadata?.avatar
+                    ? organization.metadata?.avatar
+                    : MidazLogo
+                }
                 alt=""
+                width={28}
                 className="rounded-full"
-                height={24}
+                height={28}
               />
 
               {organization.legalName}

@@ -6,7 +6,7 @@ import { ChevronDown } from 'lucide-react'
 type LogoProps = {
   image: string
   alt: string
-  orgName: string
+  name: string
   active?: boolean
   collapsed?: boolean
   button?: boolean
@@ -16,7 +16,7 @@ type LogoProps = {
 const Logo = ({
   image,
   alt,
-  orgName,
+  name,
   active,
   collapsed,
   button,
@@ -48,7 +48,7 @@ const Logo = ({
             active && 'text-shadcn-400'
           )}
         >
-          {orgName}
+          {name}
         </h1>
       )}
 

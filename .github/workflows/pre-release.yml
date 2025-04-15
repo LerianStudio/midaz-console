@@ -87,12 +87,21 @@ jobs:
     name: Run Unit Tests for Midaz
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '22'
+
+      - name: Install SWC binary (Linux only)
+        run: npm install --save-dev @next/swc-linux-x64-gnu --platform=linux --cpu=x64
+
       - name: Install dependencies
         run: npm install
+
+      - name: Patch Next.js SWC binaries (warm-up)
+        run: npx next build
+
       - name: Run Unit Tests
         run: npm test
   

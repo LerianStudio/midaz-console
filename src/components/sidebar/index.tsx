@@ -6,7 +6,6 @@ import {
   Briefcase,
   Coins,
   DollarSign,
-  Gauge,
   Group,
   Home,
   LibraryBig
@@ -24,11 +23,13 @@ import {
   SidebarRoot
 } from './primitive'
 import { Separator } from '../ui/separator'
+import { useOrganization } from '@/context/organization-provider/organization-provider-client'
 
 export const Sidebar = () => {
   const intl = useIntl()
   const { isCollapsed } = useSidebar()
   const [isMobileWidth, setIsMobileWidth] = React.useState(false)
+  const { currentLedger } = useOrganization()
 
   React.useEffect(() => {
     const handleResize = () => {
@@ -80,20 +81,12 @@ export const Sidebar = () => {
 
           <SidebarItem
             title={intl.formatMessage({
-              id: 'common.transactions',
-              defaultMessage: 'Transactions'
-            })}
-            icon={<ArrowLeftRight />}
-            href="/transactions"
-          />
-
-          <SidebarItem
-            title={intl.formatMessage({
               id: 'common.assets',
               defaultMessage: 'Assets'
             })}
             icon={<DollarSign />}
             href="/assets"
+            disabled={Object.keys(currentLedger).length === 0}
           />
 
           <SidebarItem
@@ -103,6 +96,7 @@ export const Sidebar = () => {
             })}
             icon={<Coins />}
             href="/accounts"
+            disabled={Object.keys(currentLedger).length === 0}
           />
 
           <SidebarItem
@@ -112,6 +106,7 @@ export const Sidebar = () => {
             })}
             icon={<Group />}
             href="/segments"
+            disabled={Object.keys(currentLedger).length === 0}
           />
 
           <SidebarItem
@@ -121,6 +116,17 @@ export const Sidebar = () => {
             })}
             icon={<Briefcase />}
             href="/portfolios"
+            disabled={Object.keys(currentLedger).length === 0}
+          />
+
+          <SidebarItem
+            title={intl.formatMessage({
+              id: 'common.transactions',
+              defaultMessage: 'Transactions'
+            })}
+            icon={<ArrowLeftRight />}
+            href="/transactions"
+            disabled={Object.keys(currentLedger).length === 0}
           />
         </SidebarGroup>
       </SidebarContent>

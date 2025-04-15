@@ -1,3 +1,4 @@
+import { getInitialValues } from '@/lib/form'
 import { isNil } from 'lodash'
 import { useEffect } from 'react'
 import { UseFormReturn } from 'react-hook-form'
@@ -25,7 +26,7 @@ export function usePopulateCreateUpdateForm(
 
   useEffect(() => {
     if (mode === 'edit' && !isNil(data)) {
-      form.reset(data)
+      form.reset(getInitialValues(initialValues, data))
     }
   }, [data, mode])
 }

@@ -26,7 +26,7 @@ export class IdentityUpdateUserPasswordRepository
 
     await this.midazHttpFetchUtils.httpMidazFetch<void>({
       url,
-      method: HTTP_METHODS.PUT,
+      method: HTTP_METHODS.PATCH,
       body: JSON.stringify({ oldPassword, newPassword })
     })
 

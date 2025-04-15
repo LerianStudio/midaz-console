@@ -12,7 +12,9 @@ const alertVariants = cva(
         informative:
           'bg-[#EFF6FF] border-opacity-50 border-[#2563eb] text-[#1E40AF] dark:bg-blue-900 dark:text-blue-50 [&>svg]:text-blue-600',
         destructive:
-          'border-red-500/50 text-red-500 dark:border-red-500 [&>svg]:text-red-500 dark:border-red-900/50 dark:text-red-900 dark:dark:border-red-900 dark:[&>svg]:text-red-900'
+          'border-red-500/50 text-red-500 dark:border-red-500 [&>svg]:text-red-500 dark:border-red-900/50 dark:text-red-900 dark:dark:border-red-900 dark:[&>svg]:text-red-900',
+        warning:
+          'bg-yellow-50 border-yellow-200 text-yellow-800 [&>svg]:text-yellow-500 dark:bg-yellow-900 dark:border-yellow-700 dark:text-yellow-200 dark:[&>svg]:text-yellow-400'
       }
     },
     defaultVariants: {

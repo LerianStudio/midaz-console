@@ -12,3 +12,5 @@ export const oneNumber = /[0-9]/
 export const onlyNumbers = /^[0-9]*$/
 
 export const uppercaseLettersOnly = /^[A-Z]+$/
+
+export const oneSpecialCharacter = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/

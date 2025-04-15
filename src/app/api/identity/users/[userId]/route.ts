@@ -55,8 +55,8 @@ export const DELETE = applyMiddleware(
   }
 )
 
-export const PUT = applyMiddleware(
-  [loggerMiddleware({ operationName: 'updateUser', method: 'PUT' })],
+export const PATCH = applyMiddleware(
+  [loggerMiddleware({ operationName: 'updateUser', method: 'PATCH' })],
   async (request: Request, { params }: { params: { userId: string } }) => {
     try {
       const updateUserUseCase: UpdateUser =

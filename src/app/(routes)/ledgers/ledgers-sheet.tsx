@@ -57,12 +57,14 @@ export const LedgersSheet = ({
   const { mutate: createLedger, isPending: createPending } = useCreateLedger({
     organizationId: currentOrganization.id!,
     onSuccess: async (data: unknown) => {
-      const newLedger = data as LedgerType
-
-      await onSuccess?.()
+      const response = data as { ledger: LedgerType }
+      const newLedger = response.ledger
 
       setLedger(newLedger)
+
+      await onSuccess?.()
       onOpenChange?.(false)
+
       showSuccess(
         intl.formatMessage(
           {

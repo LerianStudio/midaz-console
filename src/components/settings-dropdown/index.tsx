@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger
 } from '../ui/dropdown-menu'
 import { AboutMidazDialog } from './about-midaz-dialog'
+import { Enforce } from '@/context/permission-provider/enforce'
 
 export const SettingsDropdown = () => {
   const intl = useIntl()
@@ -43,15 +44,19 @@ export const SettingsDropdown = () => {
               defaultMessage: 'Organizations'
             })}
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <DropdownMenuItemIcon>
-              <Users />
-            </DropdownMenuItemIcon>
-            {intl.formatMessage({
-              id: 'settingsDropdown.users',
-              defaultMessage: 'Users'
-            })}
-          </DropdownMenuItem>
+          <Enforce resource="users" action="get">
+            <DropdownMenuItem
+              onClick={() => router.push('/settings?tab=users')}
+            >
+              <DropdownMenuItemIcon>
+                <Users />
+              </DropdownMenuItemIcon>
+              {intl.formatMessage({
+                id: 'settingsDropdown.users',
+                defaultMessage: 'Users'
+              })}
+            </DropdownMenuItem>
+          </Enforce>
           <DropdownMenuItem className="pl-10">
             {intl.formatMessage({
               id: 'settingsDropdown.system',

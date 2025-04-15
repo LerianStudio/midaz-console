@@ -20,9 +20,11 @@ import { Breadcrumb } from '@/components/breadcrumb'
 import { PageHeader } from '@/components/page-header'
 import { Button } from '@/components/ui/button'
 import useCustomToast from '@/hooks/use-custom-toast'
+import { useRouter } from 'next/navigation'
 
 const Page = () => {
   const intl = useIntl()
+  const router = useRouter()
   const { currentOrganization, currentLedger } = useOrganization()
   const { showSuccess, showError } = useCustomToast()
   const [total, setTotal] = useState(0)
@@ -53,6 +55,12 @@ const Page = () => {
 
     setTotal(portfolios.items.length)
   }, [portfolios?.items, portfolios?.limit])
+
+  useEffect(() => {
+    if (!currentLedger?.id) {
+      router.replace('/ledgers')
+    }
+  }, [currentLedger, router])
 
   const { mutate: deletePortfolio, isPending: deletePending } =
     useDeletePortfolio({
@@ -86,7 +94,9 @@ const Page = () => {
   )
 
   const { handleCreate, handleEdit, sheetProps } =
-    useCreateUpdateSheet<PortfolioResponseDto>()
+    useCreateUpdateSheet<PortfolioResponseDto>({
+      enableRouting: true
+    })
 
   const breadcrumbPaths = getBreadcrumbPaths([
     {

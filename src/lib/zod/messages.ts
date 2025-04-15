@@ -93,6 +93,10 @@ const messages = defineMessages({
     id: 'errors.custom.one_number',
     defaultMessage: 'Field must contain at least 1 number'
   },
+  custom_one_special_character: {
+    id: 'errors.custom.one_special_character',
+    defaultMessage: 'Field must contain at least 1 special character'
+  },
   custom_only_numbers: {
     id: 'errors.custom.only_numbers',
     defaultMessage: 'Field must contain only numbers'
@@ -108,6 +112,10 @@ const messages = defineMessages({
   custom_avatar_invalid_format: {
     id: 'errors.custom.avatar.invalid_format',
     defaultMessage: 'Avatar should have a PNG or SVG format'
+  },
+  custom_confirm_password: {
+    id: 'errors.custom.confirm_password',
+    defaultMessage: 'Passwords do not match'
   }
 })
 
