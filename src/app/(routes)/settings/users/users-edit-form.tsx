@@ -159,8 +159,6 @@ export const EditUserForm = ({
     handleDialogOpen('', formData)
   }
 
-  usePopulateForm(form, defaultValues)
-
   return (
     <React.Fragment>
       <ConfirmationDialog
