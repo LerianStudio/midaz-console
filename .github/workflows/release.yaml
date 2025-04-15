@@ -38,14 +38,12 @@ jobs:
           app-id: ${{ secrets.LERIAN_STUDIO_MIDAZ_PUSH_BOT_APP_ID }}
           private-key: ${{ secrets.LERIAN_STUDIO_MIDAZ_PUSH_BOT_PRIVATE_KEY }}
           
- # Step to checkout the repository code
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ steps.app-token.outputs.token }}
 
- # Step to import a GPG key for signing commits and tags
       - name: Import GPG Key
         uses: crazy-max/ghaction-import-gpg@v6
         id: import_gpg
@@ -58,7 +56,6 @@ jobs:
           git_user_signingkey: true
           git_commit_gpgsign: true
 
-# Step to set up Node.js environment
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -72,13 +69,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-# Step to install project dependencies using clean install
       - name: Install dependencies
         run: npm ci
-# Step to build the project
+
       - name: Build the project
         run: npm run build
-# Step to run semantic-release for versioning and changelog generation
+
       - name: Run Semantic Release
         id: semantic_release
         uses: cycjimmy/semantic-release-action@v4
