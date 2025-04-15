@@ -79,7 +79,8 @@ jobs:
         id: semantic_release
         uses: cycjimmy/semantic-release-action@v4
         with:
-          semantic_version: 24.2.3
+          ci: false
+          semantic_version: 23.0.8
           extra_plugins: |
             conventional-changelog-conventionalcommits@v7.0.2
             @saithodev/semantic-release-backmerge
