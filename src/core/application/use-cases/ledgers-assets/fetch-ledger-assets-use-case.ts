@@ -33,7 +33,7 @@ export class FetchAllLedgersAssetsUseCase implements FetchAllLedgersAssets {
     page: number
   ): Promise<PaginationDto<LedgerResponseDto>> {
     const ledgersResult: PaginationEntity<LedgerEntity> =
-      await this.LedgerRepository.fetchAll(organizationId, limit, page)
+      await this.ledgerRepository.fetchAll(organizationId, limit, page)
 
     let ledgersAssetResponseDTO: PaginationDto<LedgerResponseDto> = {
       items: [],
