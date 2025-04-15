@@ -23,9 +23,11 @@ import { AccountsSkeleton } from './accounts-skeleton'
 import { getBreadcrumbPaths } from '@/components/breadcrumb/get-breadcrumb-paths'
 import { Breadcrumb } from '@/components/breadcrumb'
 import { useListAssets } from '@/client/assets'
+import { useRouter } from 'next/navigation'
 
 const Page = () => {
   const intl = useIntl()
+  const router = useRouter()
   const { currentOrganization, currentLedger } = useOrganization()
   const [columnFilters, setColumnFilters] = useState<any>([])
 
@@ -58,6 +60,12 @@ const Page = () => {
 
     setTotal(accountsData.items.length)
   }, [accountsData?.items, accountsData?.limit])
+
+  useEffect(() => {
+    if (!currentLedger?.id) {
+      router.replace('/ledgers')
+    }
+  }, [currentLedger, router])
 
   const accountsList: AccountType[] = useMemo(() => {
     return (

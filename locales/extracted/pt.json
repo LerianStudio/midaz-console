@@ -459,5 +459,7 @@
   "users.password.confirmLabel": "Sim, alterar senha",
   "common.changeMyMind": "Mudei de ideia",
   "common.confirmPassword": "Confirmar Senha",
-  "errors.custom.one_special_character": "O campo deve conter pelo menos 1 caractere especial"
+  "errors.custom.one_special_character": "O campo deve conter pelo menos 1 caractere especial",
+  "entity.user.password.tooltip": "A senha deve conter pelo menos 8 caracteres, uma letra maiúscula, uma letra minúscula e um número.",
+  "sidebar.disabled.reason": "Nenhum ledger selecionado. Para acessar, crie um ledger."
 }
