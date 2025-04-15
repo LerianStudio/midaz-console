@@ -40,7 +40,7 @@ import { truncateString } from '@/helpers'
 import dayjs from 'dayjs'
 import { OperationDto } from '@/core/application/dto/transaction-dto'
 import { TRANSACTION_DETAILS_TAB_VALUES } from './transaction-details-tab-values'
-import { usePopulateForm } from '@/lib/form'
+import { getInitialValues } from '@/lib/form'
 
 const DEFAULT_TAB_VALUE = TRANSACTION_DETAILS_TAB_VALUES.SUMMARY
 
@@ -69,6 +69,7 @@ export default function TransactionDetailsPage() {
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
+    values: getInitialValues(initialValues, transaction),
     defaultValues: initialValues
   })
 
@@ -85,8 +86,6 @@ export default function TransactionDetailsPage() {
 
     return parsed.toString()
   }
-
-  usePopulateForm(form, transaction)
 
   if (isLoading) {
     return <SkeletonTransactionDialog />
