@@ -1,5 +1,5 @@
-import { FetchAllAssetsRepository } from '@/core/domain/repositories/assets/fetch-all-assets-repository'
-import { FetchAllLedgersRepository } from '@/core/domain/repositories/ledgers/fetch-all-ledgers-repository'
+import { AssetRepository } from '@/core/domain/repositories/asset-repository'
+import { LedgerRepository } from '@/core/domain/repositories/ledger-repository'
 import { LedgersViewResponseDTO } from '../../dto/ledgers-view-dto'
 import { PaginationDto } from '../../dto/pagination-dto'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
@@ -20,10 +20,10 @@ export interface FetchAllLedgersAssets {
 @injectable()
 export class FetchAllLedgersAssetsUseCase implements FetchAllLedgersAssets {
   constructor(
-    @inject(FetchAllLedgersRepository)
-    private readonly fetchAllLedgersRepository: FetchAllLedgersRepository,
-    @inject(FetchAllAssetsRepository)
-    private readonly fetchAllAssetsRepository: FetchAllAssetsRepository
+    @inject(LedgerRepository)
+    private readonly ledgerRepository: LedgerRepository,
+    @inject(AssetRepository)
+    private readonly assetRepository: AssetRepository
   ) {}
 
   @LogOperation({ layer: 'application' })
@@ -33,7 +33,7 @@ export class FetchAllLedgersAssetsUseCase implements FetchAllLedgersAssets {
     page: number
   ): Promise<PaginationDto<LedgersViewResponseDTO>> {
     const ledgersResult: PaginationEntity<LedgerEntity> =
-      await this.fetchAllLedgersRepository.fetchAll(organizationId, limit, page)
+      await this.ledgerRepository.fetchAll(organizationId, limit, page)
 
     let ledgersAssetResponseDTO: PaginationDto<LedgersViewResponseDTO> = {
       items: [],
@@ -46,7 +46,7 @@ export class FetchAllLedgersAssetsUseCase implements FetchAllLedgersAssets {
     ledgersAssetResponseDTO.items = await Promise.all(
       ledgerItems.map(async (ledger) => {
         const assetsResult: PaginationEntity<AssetEntity> =
-          await this.fetchAllAssetsRepository.fetchAll(
+          await this.assetRepository.fetchAll(
             organizationId,
             ledger.id!,
             limit,

@@ -1,5 +1,5 @@
-import { FetchAllAccountsRepository } from '@/core/domain/repositories/accounts/fetch-all-accounts-repository'
-import { FetchAllPortfoliosRepository } from '@/core/domain/repositories/portfolios/fetch-all-portfolio-repository'
+import { AccountRepository } from '@/core/domain/repositories/account-repository'
+import { PortfolioRepository } from '@/core/domain/repositories/portfolio-repository'
 import { PaginationDto } from '../../dto/pagination-dto'
 import { AccountMapper } from '../../mappers/account-mapper'
 import { inject, injectable } from 'inversify'
@@ -21,10 +21,10 @@ export class FetchPortfoliosWithAccountsUseCase
   implements FetchPortfoliosWithAccounts
 {
   constructor(
-    @inject(FetchAllPortfoliosRepository)
-    private readonly fetchAllPortfoliosRepository: FetchAllPortfoliosRepository,
-    @inject(FetchAllAccountsRepository)
-    private readonly fetchAllAccountsRepository: FetchAllAccountsRepository
+    @inject(PortfolioRepository)
+    private readonly portfolioRepository: PortfolioRepository,
+    @inject(AccountRepository)
+    private readonly accountRepository: AccountRepository
   ) {}
 
   @LogOperation({ layer: 'application' })
@@ -34,14 +34,14 @@ export class FetchPortfoliosWithAccountsUseCase
     limit: number,
     page: number
   ): Promise<PaginationDto<any>> {
-    const portfoliosResult = await this.fetchAllPortfoliosRepository.fetchAll(
+    const portfoliosResult = await this.portfolioRepository.fetchAll(
       organizationId,
       ledgerId,
       limit,
       page
     )
 
-    const allAccountsResult = await this.fetchAllAccountsRepository.fetchAll(
+    const allAccountsResult = await this.accountRepository.fetchAll(
       organizationId,
       ledgerId,
       limit,

@@ -1,4 +1,4 @@
-import { FetchAccountByIdRepository } from '@/core/domain/repositories/accounts/fetch-account-by-id-repository'
+import { AccountRepository } from '@/core/domain/repositories/account-repository'
 import { AccountResponseDto } from '../../dto/account-dto'
 import { AccountMapper } from '../../mappers/account-mapper'
 import { inject, injectable } from 'inversify'
@@ -17,8 +17,8 @@ export interface FetchAccountById {
 @injectable()
 export class FetchAccountByIdUseCase implements FetchAccountById {
   constructor(
-    @inject(FetchAccountByIdRepository)
-    private readonly fetchAccountByIdRepository: FetchAccountByIdRepository,
+    @inject(AccountRepository)
+    private readonly accountRepository: AccountRepository,
     @inject(BalanceRepository)
     private readonly balanceRepository: BalanceRepository
   ) {}
@@ -29,7 +29,7 @@ export class FetchAccountByIdUseCase implements FetchAccountById {
     ledgerId: string,
     accountId: string
   ): Promise<AccountResponseDto> {
-    const account = await this.fetchAccountByIdRepository.fetchById(
+    const account = await this.accountRepository.fetchById(
       organizationId,
       ledgerId,
       accountId

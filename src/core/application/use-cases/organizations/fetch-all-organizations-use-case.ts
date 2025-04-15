@@ -1,7 +1,7 @@
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { OrganizationResponseDto } from '../../dto/organization-response-dto'
 import { OrganizationMapper } from '../../mappers/organization-mapper'
-import { FetchAllOrganizationsRepository } from '@/core/domain/repositories/organizations/fetch-all-organizations-repository'
+import { OrganizationRepository } from '@/core/domain/repositories/organization-repository'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { PaginationDto } from '../../dto/pagination-dto'
 import { inject, injectable } from 'inversify'
@@ -17,8 +17,8 @@ export interface FetchAllOrganizations {
 @injectable()
 export class FetchAllOrganizationsUseCase implements FetchAllOrganizations {
   constructor(
-    @inject(FetchAllOrganizationsRepository)
-    private fetchAllOrganizationsRepository: FetchAllOrganizationsRepository
+    @inject(OrganizationRepository)
+    private organizationRepository: OrganizationRepository
   ) {}
 
   @LogOperation({ layer: 'application' })
@@ -27,7 +27,7 @@ export class FetchAllOrganizationsUseCase implements FetchAllOrganizations {
     page: number
   ): Promise<PaginationDto<OrganizationResponseDto>> {
     const organizationsResult: PaginationEntity<OrganizationEntity> =
-      await this.fetchAllOrganizationsRepository.fetchAll(limit, page)
+      await this.organizationRepository.fetchAll(limit, page)
 
     return OrganizationMapper.toPaginationResponseDto(organizationsResult)
   }

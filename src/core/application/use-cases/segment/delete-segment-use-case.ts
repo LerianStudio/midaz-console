@@ -1,4 +1,4 @@
-import { DeleteSegmentRepository } from '@/core/domain/repositories/segments/delete-segment-repository'
+import { SegmentRepository } from '@/core/domain/repositories/segment-repository'
 import { inject, injectable } from 'inversify'
 import { LogOperation } from '../../decorators/log-operation'
 
@@ -13,8 +13,8 @@ export interface DeleteSegment {
 @injectable()
 export class DeleteSegmentUseCase implements DeleteSegment {
   constructor(
-    @inject(DeleteSegmentRepository)
-    private readonly deleteSegmentRepository: DeleteSegmentRepository
+    @inject(SegmentRepository)
+    private readonly segmentRepository: SegmentRepository
   ) {}
 
   @LogOperation({ layer: 'application' })
@@ -23,10 +23,6 @@ export class DeleteSegmentUseCase implements DeleteSegment {
     ledgerId: string,
     segmentId: string
   ): Promise<void> {
-    await this.deleteSegmentRepository.delete(
-      organizationId,
-      ledgerId,
-      segmentId
-    )
+    await this.segmentRepository.delete(organizationId, ledgerId, segmentId)
   }
 }

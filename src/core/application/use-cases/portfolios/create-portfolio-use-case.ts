@@ -1,4 +1,4 @@
-import { CreatePortfolioRepository } from '@/core/domain/repositories/portfolios/create-portfolio-repository'
+import { PortfolioRepository } from '@/core/domain/repositories/portfolio-repository'
 import { PortfolioMapper } from '../../mappers/portfolio-mapper'
 import type {
   CreatePortfolioDto,
@@ -19,8 +19,8 @@ export interface CreatePortfolio {
 @injectable()
 export class CreatePortfolioUseCase implements CreatePortfolio {
   constructor(
-    @inject(CreatePortfolioRepository)
-    private readonly createPortfolioRepository: CreatePortfolioRepository
+    @inject(PortfolioRepository)
+    private readonly portfolioRepository: PortfolioRepository
   ) {}
 
   @LogOperation({ layer: 'application' })
@@ -34,7 +34,7 @@ export class CreatePortfolioUseCase implements CreatePortfolio {
       description: 'Teste Portfolio'
     }
     const portfolioEntity: PortfolioEntity = PortfolioMapper.toDomain(portfolio)
-    const portfolioCreated = await this.createPortfolioRepository.create(
+    const portfolioCreated = await this.portfolioRepository.create(
       organizationId,
       ledgerId,
       portfolioEntity
