@@ -11,7 +11,6 @@ const nextConfig = {
   env: {
     MIDAZ_CONSOLE_BASE_PATH: process.env.MIDAZ_CONSOLE_BASE_PATH,
     MIDAZ_SERVER_BASE_PATH: process.env.MIDAZ_SERVER_BASE_PATH,
-    PLUGIN_AUTH_ENABLED: process.env.PLUGIN_AUTH_ENABLED
   },
   headers: async () => {
     return [
