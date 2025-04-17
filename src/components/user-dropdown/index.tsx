@@ -25,7 +25,7 @@ export const UserDropdown = () => {
   })
   const [openSettings, setOpenSettings] = useState(false)
 
-  const isAuthPluginEnabled = process.env.PLUGIN_AUTH_ENABLED === 'true'
+  const isAuthPluginEnabled = process.env.NEXT_PLUBIC_AUTH_ENABLED === 'true'
 
   const userData = isAuthPluginEnabled
     ? useUserById({ userId: session?.user?.id })
