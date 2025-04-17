@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/LerianStudio/midaz-console/compare/v2.0.0...v2.1.0) (2025-04-17)
+
+
+### Features
+
+* rollback of improvement configurations on pipeline ([9c13289](https://github.com/LerianStudio/midaz-console/commit/9c13289d84569d6ced1dc99fdfc5ef5e29012cf9))
+
 ## [1.28.2](https://github.com/LerianStudio/midaz-console/compare/v1.28.1...v1.28.2) (2025-04-14)
 
 
