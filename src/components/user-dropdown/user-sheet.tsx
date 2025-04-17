@@ -17,13 +17,13 @@ import { z } from 'zod'
 import { LoadingButton } from '@/components/ui/loading-button'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { usePopulateCreateUpdateForm } from '@/components/sheet/use-populate-create-update-form'
 import { useUpdateUser, useUpdateUserPassword } from '@/client/users'
 import { SelectItem } from '../ui/select'
 import { useListGroups } from '@/client/groups'
 import { user, passwordChange } from '@/schema/user'
 import { GroupResponseDto } from '@/core/application/dto/group-dto'
 import { UsersType } from '@/types/users-type'
+import { getInitialValues } from '@/lib/form'
 
 export type UserSheetProps = DialogProps & {
   mode: 'create' | 'edit'
@@ -125,6 +125,7 @@ export const UserSheet = ({
 
   const profileForm = useForm<z.infer<typeof ProfileSchema>>({
     resolver: zodResolver(ProfileSchema),
+    values: getInitialValues(profileInitialValues, data),
     defaultValues: profileInitialValues
   })
 
@@ -152,8 +153,6 @@ export const UserSheet = ({
       })
     }
   }
-
-  usePopulateCreateUpdateForm(profileForm, mode, profileInitialValues, data)
 
   return (
     <Sheet onOpenChange={onOpenChange} {...others}>

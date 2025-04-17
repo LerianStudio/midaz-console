@@ -17,9 +17,9 @@ import React from 'react'
 import { GroupResponseDto } from '@/core/application/dto/group-dto'
 import { AlertTriangle } from 'lucide-react'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
-import { usePopulateForm } from '@/lib/form'
 import { UsersType } from '@/types/users-type'
 import { PasswordField } from '@/components/form/password-field'
+import { getInitialValues } from '@/lib/form'
 
 const UpdateFormSchema = z.object({
   firstName: user.firstName,
@@ -80,6 +80,7 @@ export const EditUserForm = ({
 
   const form = useForm<UpdateFormData>({
     resolver: zodResolver(UpdateFormSchema),
+    values: getInitialValues(defaultValues, user),
     defaultValues
   })
 
@@ -157,8 +158,6 @@ export const EditUserForm = ({
   const handlePasswordSubmit = (formData: PasswordFormData) => {
     handleDialogOpen('', formData)
   }
-
-  usePopulateForm(form, defaultValues)
 
   return (
     <React.Fragment>

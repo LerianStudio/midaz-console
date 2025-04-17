@@ -21,7 +21,7 @@ import { LoadingButton } from '@/components/ui/loading-button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useCreateSegment, useUpdateSegment } from '@/client/segments'
 import { SegmentResponseDto } from '@/core/application/dto/segment-dto'
-import { usePopulateCreateUpdateForm } from '@/components/sheet/use-populate-create-update-form'
+import { getInitialValues } from '@/lib/form'
 
 export type SegmentsSheetProps = DialogProps & {
   ledgerId: string
@@ -58,6 +58,7 @@ export const SegmentsSheet = ({
     ledgerId,
     onSuccess: () => {
       onSuccess?.()
+      form.reset()
       onOpenChange?.(false)
     }
   })
@@ -74,9 +75,9 @@ export const SegmentsSheet = ({
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
+    values: getInitialValues(initialValues, data!),
     defaultValues: initialValues
   })
-  const { isDirty } = form.formState
 
   const handleSubmit = (data: FormData) => {
     if (mode === 'create') {
@@ -85,8 +86,6 @@ export const SegmentsSheet = ({
       updateSegment(data)
     }
   }
-
-  usePopulateCreateUpdateForm(form, mode, initialValues, data)
 
   return (
     <Sheet onOpenChange={onOpenChange} {...others}>
@@ -180,7 +179,6 @@ export const SegmentsSheet = ({
               <LoadingButton
                 size="lg"
                 type="submit"
-                disabled={!isDirty}
                 fullWidth
                 loading={createPending || updatePending}
               >
