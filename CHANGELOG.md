@@ -1,3 +1,19 @@
+# [2.2.0](https://github.com/LerianStudio/midaz-console/compare/v2.1.0...v2.2.0) (2025-04-17)
+
+
+### Bug Fixes
+
+* Removed entityID from required on Portfolios ([934d90d](https://github.com/LerianStudio/midaz-console/commit/934d90d7fd61a650e9c5d9d13cb1660442617884))
+* Removed unused code ([e923b78](https://github.com/LerianStudio/midaz-console/commit/e923b7840695ed0e5c3dc05dd2bbfb03ae1661ab))
+
+
+### Features
+
+* Removed unused hook ([386f96b](https://github.com/LerianStudio/midaz-console/commit/386f96b4ee1db20df932a9f2195623aa5217597a))
+* Removed unused hook ([451c551](https://github.com/LerianStudio/midaz-console/commit/451c551c857964cebd47f231a1bee87bac8969c5))
+* Removed usePopulateCreateUpdateForm usage ([e481b72](https://github.com/LerianStudio/midaz-console/commit/e481b720ff8762735f2aba82183ee8d48608eeda))
+* Removed usePopulateForm usage ([7179f3c](https://github.com/LerianStudio/midaz-console/commit/7179f3ccc622377533d11c56369e762042ea2e92))
+
 # [2.1.0](https://github.com/LerianStudio/midaz-console/compare/v2.0.0...v2.1.0) (2025-04-17)
 
 
