@@ -1,5 +1,5 @@
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
-import { OrganizationResponseDto } from '../../dto/organization-response-dto'
+import { OrganizationResponseDto } from '../../dto/organization-dto'
 import { OrganizationMapper } from '../../mappers/organization-mapper'
 import { OrganizationRepository } from '@/core/domain/repositories/organization-repository'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'

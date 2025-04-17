@@ -1,4 +1,4 @@
-import { AssetResponseDto } from '@/core/application/dto/asset-response-dto'
+import { AssetResponseDto } from '@/core/application/dto/asset-dto'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
 import {
   deleteFetcher,

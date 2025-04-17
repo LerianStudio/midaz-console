@@ -22,7 +22,7 @@ export class TransactionMapper {
         : {}),
 
       metadata:
-        Object.keys(transaction.metadata).length !== 0
+        Object.keys(transaction.metadata ?? {}).length !== 0
           ? transaction.metadata
           : null,
 
@@ -53,7 +53,9 @@ export class TransactionMapper {
               : {}),
 
             metadata:
-              Object.keys(source.metadata).length !== 0 ? source.metadata : null
+              Object.keys(source.metadata ?? {}).length !== 0
+                ? source.metadata
+                : null
           }))
         },
         distribute: {
@@ -80,7 +82,7 @@ export class TransactionMapper {
               ? { description: destination.description }
               : {}),
             metadata:
-              Object.keys(destination.metadata).length !== 0
+              Object.keys(destination.metadata ?? {}).length !== 0
                 ? destination.metadata
                 : null
           }))

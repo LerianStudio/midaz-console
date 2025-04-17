@@ -1,10 +1,12 @@
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
-import { OrganizationResponseDto } from '../../dto/organization-response-dto'
-import { UpdateOrganizationDto } from '../../dto/update-organization-dto'
 import { OrganizationMapper } from '../../mappers/organization-mapper'
 import { OrganizationRepository } from '@/core/domain/repositories/organization-repository'
 import { inject, injectable } from 'inversify'
-import { CreateOrganizationDto } from '../../dto/create-organization-dto'
+import type {
+  CreateOrganizationDto,
+  UpdateOrganizationDto,
+  OrganizationResponseDto
+} from '../../dto/organization-dto'
 import { validateAvatar } from '@/core/infrastructure/utils/avatar/validate-avatar'
 import { LogOperation } from '../../decorators/log-operation'
 

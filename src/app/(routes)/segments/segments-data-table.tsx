@@ -28,18 +28,18 @@ import { Pagination, PaginationProps } from '@/components/pagination'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
 import { IdTableCell } from '@/components/table/id-table-cell'
 import { MetadataTableCell } from '@/components/table/metadata-table-cell'
-import { SegmentResponseDto } from '@/core/application/dto/segment-dto'
+import { SegmentType } from '@/types/segment-type'
 
 type SegmentsTableProps = {
-  segments: PaginationDto<SegmentResponseDto> | undefined
+  segments: PaginationDto<SegmentType> | undefined
   table: {
     getRowModel: () => {
-      rows: { id: string; original: SegmentResponseDto }[]
+      rows: { id: string; original: SegmentType }[]
     }
   }
   handleDialogOpen: (id: string, name: string) => void
   handleCreate: () => void
-  handleEdit: (asset: SegmentResponseDto) => void
+  handleEdit: (asset: SegmentType) => void
   refetch: () => void
   form: UseFormReturn<any>
   total: number
@@ -47,10 +47,10 @@ type SegmentsTableProps = {
 }
 
 type SegmentRowProps = {
-  segment: { id: string; original: SegmentResponseDto }
+  segment: { id: string; original: SegmentType }
   handleCopyToClipboard: (value: string, message: string) => void
   handleDialogOpen: (id: string, name: string) => void
-  handleEdit: (segment: SegmentResponseDto) => void
+  handleEdit: (segment: SegmentType) => void
 }
 
 const SegmentRow: React.FC<SegmentRowProps> = ({

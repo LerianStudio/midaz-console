@@ -1,31 +1,32 @@
 import { AccountResponseDto } from './account-dto'
-import { StatusDto } from './status.dto'
+import { MetadataDto } from './metadata-dto'
+import { StatusDto } from './status-dto'
 
-export interface CreatePortfolioDto {
+export type CreatePortfolioDto = {
   entityId: string
   ledgerId: string
   organizationId: string
   name: string
-  status: StatusDto
-  metadata: Record<string, any>
+  status?: StatusDto
+  metadata?: MetadataDto
 }
 
-export interface PortfolioResponseDto {
+export type UpdatePortfolioDto = {
+  name?: string
+  status?: StatusDto
+  metadata?: MetadataDto
+}
+
+export type PortfolioResponseDto = {
   id: string
   ledgerId: string
   organizationId: string
   entityId: string
   name: string
   status: StatusDto
-  metadata: Record<string, any>
+  metadata: MetadataDto
   createdAt: Date
   updatedAt: Date
   deletedAt: Date | null
   accounts?: AccountResponseDto[]
-}
-
-export interface UpdatePortfolioDto {
-  name?: string
-  status?: StatusDto
-  metadata?: Record<string, any>
 }

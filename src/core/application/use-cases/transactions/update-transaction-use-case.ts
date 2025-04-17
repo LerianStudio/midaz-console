@@ -2,7 +2,7 @@ import { TransactionRepository } from '@/core/domain/repositories/transaction-re
 import { inject, injectable } from 'inversify'
 import { TransactionEntity } from '@/core/domain/entities/transaction-entity'
 import { TransactionMapper } from '../../mappers/transaction-mapper'
-import { UpdateTransactionDto } from '../../dto/update-transaction-dto'
+import { UpdateTransactionDto } from '../../dto/transaction-dto'
 import { TransactionResponseDto } from '../../dto/transaction-dto'
 import { LogOperation } from '../../decorators/log-operation'
 

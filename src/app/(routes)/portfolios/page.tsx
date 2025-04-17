@@ -1,7 +1,7 @@
 'use client'
 
 import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet'
-import { PortfolioResponseDto } from '@/core/application/dto/portfolios-dto'
+import { PortfolioResponseDto } from '@/core/application/dto/portfolio-dto'
 import {
   useDeletePortfolio,
   usePortfoliosWithAccounts

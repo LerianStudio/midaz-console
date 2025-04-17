@@ -1,7 +1,6 @@
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
-import { AssetResponseDto } from '../../dto/asset-response-dto'
 import { AssetRepository } from '@/core/domain/repositories/asset-repository'
-import type { CreateAssetDto } from '../../dto/create-asset-dto'
+import type { CreateAssetDto, AssetResponseDto } from '../../dto/asset-dto'
 import { inject, injectable } from 'inversify'
 import { AssetMapper } from '../../mappers/asset-mapper'
 import { LogOperation } from '../../decorators/log-operation'

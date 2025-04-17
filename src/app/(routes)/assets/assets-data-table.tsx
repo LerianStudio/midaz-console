@@ -27,7 +27,7 @@ import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { EntityDataTable } from '@/components/entity-data-table'
 import { Pagination, PaginationProps } from '@/components/pagination'
 import { PaginationDto } from '@/core/application/dto/pagination-dto'
-import { AssetResponseDto } from '@/core/application/dto/asset-response-dto'
+import { AssetResponseDto } from '@/core/application/dto/asset-dto'
 
 type AssetsTableProps = {
   assets: PaginationDto<AssetResponseDto> | undefined

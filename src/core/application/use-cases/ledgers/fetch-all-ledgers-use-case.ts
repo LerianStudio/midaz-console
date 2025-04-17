@@ -1,5 +1,5 @@
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
-import { LedgerResponseDto } from '../../dto/ledger-response-dto'
+import { LedgerResponseDto } from '../../dto/ledger-dto'
 import { LedgerRepository } from '@/core/domain/repositories/ledger-repository'
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { PaginationDto } from '../../dto/pagination-dto'
