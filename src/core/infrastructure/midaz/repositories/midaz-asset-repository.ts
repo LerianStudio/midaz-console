@@ -1,9 +1,10 @@
 import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { AssetRepository } from '@/core/domain/repositories/asset-repository'
 import { injectable, inject } from 'inversify'
-import { HttpFetchUtils, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { HttpFetchUtils } from '../../utils/http-fetch-utils'
 import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
+import { HttpMethods } from '@/lib/http'
 
 @injectable()
 export class MidazAssetRepository implements AssetRepository {
@@ -24,7 +25,7 @@ export class MidazAssetRepository implements AssetRepository {
     const response = await this.midazHttpFetchUtils.httpMidazFetch<AssetEntity>(
       {
         url,
-        method: HTTP_METHODS.POST,
+        method: HttpMethods.POST,
         body: JSON.stringify(asset)
       }
     )
@@ -53,7 +54,7 @@ export class MidazAssetRepository implements AssetRepository {
       PaginationEntity<AssetEntity>
     >({
       url,
-      method: HTTP_METHODS.GET
+      method: HttpMethods.GET
     })
 
     return response
@@ -69,7 +70,7 @@ export class MidazAssetRepository implements AssetRepository {
     const response = await this.midazHttpFetchUtils.httpMidazFetch<AssetEntity>(
       {
         url,
-        method: HTTP_METHODS.GET
+        method: HttpMethods.GET
       }
     )
 
@@ -87,7 +88,7 @@ export class MidazAssetRepository implements AssetRepository {
     const response = await this.midazHttpFetchUtils.httpMidazFetch<AssetEntity>(
       {
         url,
-        method: HTTP_METHODS.PATCH,
+        method: HttpMethods.PATCH,
         body: JSON.stringify(asset)
       }
     )
@@ -104,7 +105,7 @@ export class MidazAssetRepository implements AssetRepository {
 
     await this.midazHttpFetchUtils.httpMidazFetch<void>({
       url,
-      method: HTTP_METHODS.DELETE
+      method: HttpMethods.DELETE
     })
 
     return

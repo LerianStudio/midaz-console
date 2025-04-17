@@ -7,7 +7,7 @@ import type {
 import { LedgerEntity } from '@/core/domain/entities/ledger-entity'
 import { inject, injectable } from 'inversify'
 import { LedgerMapper } from '../../mappers/ledger-mapper'
-import { LogOperation } from '../../decorators/log-operation'
+import { LogOperation } from '../../../infrastructure/logger/decorators/log-operation'
 
 export interface UpdateLedger {
   execute: (

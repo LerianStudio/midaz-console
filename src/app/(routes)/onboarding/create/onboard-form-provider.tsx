@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { omit } from 'lodash'
 import { createQueryString } from '@/lib/search'
 import { OrganizationsType } from '@/types/organizations-type'
-import { useOrganization } from '@/context/organization-provider/organization-provider-client'
+import { useOrganization } from '@/providers/organization-provider/organization-provider-client'
 import { useCreateOnboardingOrganization } from '@/client/onboarding'
 import useCustomToast from '@/hooks/use-custom-toast'
 

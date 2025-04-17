@@ -8,7 +8,7 @@ import type {
   OrganizationResponseDto
 } from '../../dto/organization-dto'
 import { validateAvatar } from '@/core/infrastructure/utils/avatar/validate-avatar'
-import { LogOperation } from '../../decorators/log-operation'
+import { LogOperation } from '../../../infrastructure/logger/decorators/log-operation'
 
 export interface UpdateOrganization {
   execute: (

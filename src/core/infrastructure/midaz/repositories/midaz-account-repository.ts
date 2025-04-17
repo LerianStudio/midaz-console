@@ -1,9 +1,10 @@
 import { AccountEntity } from '@/core/domain/entities/account-entity'
 import { AccountRepository } from '@/core/domain/repositories/account-repository'
 import { injectable, inject } from 'inversify'
-import { HttpFetchUtils, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { HttpFetchUtils } from '../../utils/http-fetch-utils'
 import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
+import { HttpMethods } from '@/lib/http'
 
 @injectable()
 export class MidazAccountRepository implements AccountRepository {
@@ -24,7 +25,7 @@ export class MidazAccountRepository implements AccountRepository {
     const response =
       await this.midazHttpFetchUtils.httpMidazFetch<AccountEntity>({
         url,
-        method: HTTP_METHODS.POST,
+        method: HttpMethods.POST,
         body: JSON.stringify(account)
       })
 
@@ -43,7 +44,7 @@ export class MidazAccountRepository implements AccountRepository {
       PaginationEntity<AccountEntity>
     >({
       url,
-      method: HTTP_METHODS.GET
+      method: HttpMethods.GET
     })
 
     return response
@@ -59,7 +60,7 @@ export class MidazAccountRepository implements AccountRepository {
     const response =
       await this.midazHttpFetchUtils.httpMidazFetch<AccountEntity>({
         url,
-        method: HTTP_METHODS.GET
+        method: HttpMethods.GET
       })
 
     return response
@@ -76,7 +77,7 @@ export class MidazAccountRepository implements AccountRepository {
     const response =
       await this.midazHttpFetchUtils.httpMidazFetch<AccountEntity>({
         url,
-        method: HTTP_METHODS.PATCH,
+        method: HttpMethods.PATCH,
         body: JSON.stringify(account)
       })
 
@@ -91,7 +92,7 @@ export class MidazAccountRepository implements AccountRepository {
     const url = `${this.baseUrl}/organizations/${organizationId}/ledgers/${ledgerId}/accounts/${accountId}`
     await this.midazHttpFetchUtils.httpMidazFetch<void>({
       url,
-      method: HTTP_METHODS.DELETE
+      method: HttpMethods.DELETE
     })
 
     return

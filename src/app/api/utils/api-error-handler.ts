@@ -1,4 +1,4 @@
-import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
+import { LoggerAggregator } from '@/core/infrastructure/logger/logger-aggregator'
 import { container } from '@/core/infrastructure/container-registry/container-registry'
 import { MidazError } from '@/core/infrastructure/errors/midaz-error'
 import { HttpStatus, ApiException } from '@/lib/http'

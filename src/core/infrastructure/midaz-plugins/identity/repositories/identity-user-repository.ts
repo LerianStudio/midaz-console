@@ -1,10 +1,8 @@
 import { UserEntity } from '@/core/domain/entities/user-entity'
 import { UserRepository } from '@/core/domain/repositories/user-repository'
 import { ContainerTypeMidazHttpFetch } from '@/core/infrastructure/container-registry/midaz-http-fetch-module'
-import {
-  HTTP_METHODS,
-  HttpFetchUtils
-} from '@/core/infrastructure/utils/http-fetch-utils'
+import { HttpFetchUtils } from '@/core/infrastructure/utils/http-fetch-utils'
+import { HttpMethods } from '@/lib/http'
 import { inject, injectable } from 'inversify'
 
 @injectable()
@@ -21,7 +19,7 @@ export class IdentityUserRepository implements UserRepository {
 
     const response = await this.midazHttpFetchUtils.httpMidazFetch<UserEntity>({
       url,
-      method: HTTP_METHODS.POST,
+      method: HttpMethods.POST,
       body: JSON.stringify(user)
     })
 
@@ -35,7 +33,7 @@ export class IdentityUserRepository implements UserRepository {
       UserEntity[]
     >({
       url,
-      method: HTTP_METHODS.GET
+      method: HttpMethods.GET
     })
 
     return response
@@ -46,7 +44,7 @@ export class IdentityUserRepository implements UserRepository {
 
     const response = await this.midazHttpFetchUtils.httpMidazFetch<UserEntity>({
       url,
-      method: HTTP_METHODS.GET
+      method: HttpMethods.GET
     })
 
     return response
@@ -57,7 +55,7 @@ export class IdentityUserRepository implements UserRepository {
 
     const response = await this.midazHttpFetchUtils.httpMidazFetch<UserEntity>({
       url,
-      method: HTTP_METHODS.PUT,
+      method: HttpMethods.PUT,
       body: JSON.stringify(user)
     })
 
@@ -68,7 +66,7 @@ export class IdentityUserRepository implements UserRepository {
     const url = `${this.baseUrl}/users/${userId}`
     await this.midazHttpFetchUtils.httpMidazFetch<void>({
       url,
-      method: HTTP_METHODS.DELETE
+      method: HttpMethods.DELETE
     })
 
     return
@@ -79,7 +77,7 @@ export class IdentityUserRepository implements UserRepository {
 
     await this.midazHttpFetchUtils.httpMidazFetch<void>({
       url,
-      method: HTTP_METHODS.PUT,
+      method: HttpMethods.PUT,
       body: JSON.stringify({ newPassword })
     })
 
@@ -95,7 +93,7 @@ export class IdentityUserRepository implements UserRepository {
 
     await this.midazHttpFetchUtils.httpMidazFetch<void>({
       url,
-      method: HTTP_METHODS.PUT,
+      method: HttpMethods.PUT,
       body: JSON.stringify({ oldPassword, newPassword })
     })
 

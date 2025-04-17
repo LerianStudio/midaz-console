@@ -4,7 +4,7 @@ import { TransactionEntity } from '@/core/domain/entities/transaction-entity'
 import { TransactionMapper } from '../../mappers/transaction-mapper'
 import { UpdateTransactionDto } from '../../dto/transaction-dto'
 import { TransactionResponseDto } from '../../dto/transaction-dto'
-import { LogOperation } from '../../decorators/log-operation'
+import { LogOperation } from '../../../infrastructure/logger/decorators/log-operation'
 
 export interface UpdateTransaction {
   execute: (

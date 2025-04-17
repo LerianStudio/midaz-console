@@ -2,7 +2,7 @@ import { LedgerRepository } from '@/core/domain/repositories/ledger-repository'
 import { LedgerResponseDto } from '../../dto/ledger-dto'
 import { LedgerMapper } from '../../mappers/ledger-mapper'
 import { inject, injectable } from 'inversify'
-import { LogOperation } from '../../decorators/log-operation'
+import { LogOperation } from '../../../infrastructure/logger/decorators/log-operation'
 
 export interface FetchLedgerById {
   execute: (

@@ -1,9 +1,10 @@
 import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { OrganizationRepository } from '@/core/domain/repositories/organization-repository'
 import { injectable, inject } from 'inversify'
-import { HttpFetchUtils, HTTP_METHODS } from '../../utils/http-fetch-utils'
+import { HttpFetchUtils } from '../../utils/http-fetch-utils'
 import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
+import { HttpMethods } from '@/lib/http'
 
 @injectable()
 export class MidazOrganizationRepository implements OrganizationRepository {
@@ -20,7 +21,7 @@ export class MidazOrganizationRepository implements OrganizationRepository {
     const response =
       await this.midazHttpFetchUtils.httpMidazFetch<OrganizationEntity>({
         url: this.baseUrl,
-        method: HTTP_METHODS.POST,
+        method: HttpMethods.POST,
         body: JSON.stringify(organizationData)
       })
 
@@ -41,7 +42,7 @@ export class MidazOrganizationRepository implements OrganizationRepository {
       PaginationEntity<OrganizationEntity>
     >({
       url,
-      method: HTTP_METHODS.GET
+      method: HttpMethods.GET
     })
 
     return response
@@ -53,7 +54,7 @@ export class MidazOrganizationRepository implements OrganizationRepository {
     const response =
       await this.midazHttpFetchUtils.httpMidazFetch<OrganizationEntity>({
         url,
-        method: HTTP_METHODS.GET
+        method: HttpMethods.GET
       })
 
     return response
@@ -68,7 +69,7 @@ export class MidazOrganizationRepository implements OrganizationRepository {
     const response =
       await this.midazHttpFetchUtils.httpMidazFetch<OrganizationEntity>({
         url,
-        method: HTTP_METHODS.PATCH,
+        method: HttpMethods.PATCH,
         body: JSON.stringify(organization)
       })
 
@@ -80,7 +81,7 @@ export class MidazOrganizationRepository implements OrganizationRepository {
 
     await this.midazHttpFetchUtils.httpMidazFetch<void>({
       url,
-      method: HTTP_METHODS.DELETE
+      method: HttpMethods.DELETE
     })
   }
 }

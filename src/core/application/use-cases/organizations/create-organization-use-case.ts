@@ -7,7 +7,7 @@ import { OrganizationEntity } from '@/core/domain/entities/organization-entity'
 import { OrganizationMapper } from '../../mappers/organization-mapper'
 import { inject, injectable } from 'inversify'
 import { validateAvatar } from '@/core/infrastructure/utils/avatar/validate-avatar'
-import { LogOperation } from '../../decorators/log-operation'
+import { LogOperation } from '../../../infrastructure/logger/decorators/log-operation'
 
 export interface CreateOrganization {
   execute: (

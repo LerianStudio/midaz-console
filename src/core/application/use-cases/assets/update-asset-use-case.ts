@@ -4,7 +4,7 @@ import { AssetEntity } from '@/core/domain/entities/asset-entity'
 import { AssetMapper } from '../../mappers/asset-mapper'
 import { inject, injectable } from 'inversify'
 import { CreateAssetDto, UpdateAssetDto } from '../../dto/asset-dto'
-import { LogOperation } from '../../decorators/log-operation'
+import { LogOperation } from '../../../infrastructure/logger/decorators/log-operation'
 
 export interface UpdateAsset {
   execute: (

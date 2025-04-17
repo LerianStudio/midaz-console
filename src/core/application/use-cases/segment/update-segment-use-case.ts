@@ -3,7 +3,7 @@ import { SegmentResponseDto, UpdateSegmentDto } from '../../dto/segment-dto'
 import { SegmentEntity } from '@/core/domain/entities/segment-entity'
 import { SegmentMapper } from '../../mappers/segment-mapper'
 import { inject, injectable } from 'inversify'
-import { LogOperation } from '../../decorators/log-operation'
+import { LogOperation } from '../../../infrastructure/logger/decorators/log-operation'
 
 export interface UpdateSegment {
   execute: (

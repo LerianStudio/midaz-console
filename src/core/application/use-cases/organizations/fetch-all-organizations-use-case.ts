@@ -5,7 +5,7 @@ import { OrganizationRepository } from '@/core/domain/repositories/organization-
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
 import { PaginationDto } from '../../dto/pagination-dto'
 import { inject, injectable } from 'inversify'
-import { LogOperation } from '../../decorators/log-operation'
+import { LogOperation } from '../../../infrastructure/logger/decorators/log-operation'
 
 export interface FetchAllOrganizations {
   execute: (

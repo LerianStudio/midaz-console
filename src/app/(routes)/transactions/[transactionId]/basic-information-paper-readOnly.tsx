@@ -1,7 +1,7 @@
 import { InputField } from '@/components/form'
 import { Paper } from '@/components/ui/paper'
 import { Separator } from '@/components/ui/separator'
-import { useOrganization } from '@/context/organization-provider/organization-provider-client'
+import { useOrganization } from '@/providers/organization-provider/organization-provider-client'
 import { Control, useForm } from 'react-hook-form'
 import { useIntl } from 'react-intl'
 import DolarSign from '/public/svg/dolar-sign.svg'
