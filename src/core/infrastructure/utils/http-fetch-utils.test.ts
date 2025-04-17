@@ -143,7 +143,7 @@ describe('MidazHttpFetchUtils', () => {
 
     if (process.env.PLUGIN_AUTH_ENABLED === 'true') {
       expect(mockFetch).toHaveBeenCalledWith('https://api.example.com/test', {
-        method: HTTP_METHODS.GET,
+        method: HttpMethods.GET,
         body: undefined,
         headers: {
           'Custom-Header': 'CustomValue',
