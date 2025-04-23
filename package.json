@@ -21,7 +21,7 @@
     "set-local-env": "shx cp .env.local.example .env",
     "set-env": "shx cp .env.example .env",
     "docker-up": "npm run set-env && docker compose up -d",
-    "prepare": "husky install",
+    "prepare": "husky",
     "format": "prettier --write .",
     "lhci": "lhci autorun"
   },
