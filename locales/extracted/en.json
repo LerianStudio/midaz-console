@@ -139,7 +139,7 @@
   "entity.user.name": "Name",
   "error.api.avatarSvgContainsUnsecureContent": "Avatar SVG contains unsecure content.",
   "error.login": "Invalid credentials",
-  "error.midaz.unknowError": "Unknow error on Midaz.",
+  "error.midaz.unknowError": "Unknown error on Midaz.",
   "error.query.title": "Server Error",
   "errors.auth.enforcementSubNotFound": "No subject was found for the provided 'sub'. Please refer to the enforcement documentation for guidance on the correct 'sub' value.",
   "errors.auth.grantTypeMissingFields": "The provided 'grant_type' is missing required fields. Please refer to the documentation for guidance.",

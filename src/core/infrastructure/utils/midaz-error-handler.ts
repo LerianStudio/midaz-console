@@ -14,7 +14,7 @@ export async function handleMidazError(
   throw new MidazApiException(
     intl.formatMessage({
       id: 'error.midaz.unknowError',
-      defaultMessage: 'Unknow error on Midaz.'
+      defaultMessage: 'Unknown error on Midaz.'
     })
   )
 }

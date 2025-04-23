@@ -81,7 +81,7 @@ export class MidazHttpService extends HttpService {
         throw new MidazApiException(
           intl.formatMessage({
             id: 'error.midaz.unknowError',
-            defaultMessage: 'Unknow error on Midaz.'
+            defaultMessage: 'Unknown error on Midaz.'
           })
         )
       }
@@ -92,7 +92,7 @@ export class MidazHttpService extends HttpService {
     throw new MidazApiException(
       intl.formatMessage({
         id: 'error.midaz.unknowError',
-        defaultMessage: 'Unknow error on Midaz.'
+        defaultMessage: 'Unknown error on Midaz.'
       })
     )
   }

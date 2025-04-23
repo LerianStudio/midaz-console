@@ -32,7 +32,7 @@ export async function apiErrorHandler(error: any): Promise<ErrorResponse> {
   return {
     message: intl.formatMessage({
       id: 'error.midaz.unknowError',
-      defaultMessage: 'Unknow error on Midaz.'
+      defaultMessage: 'Unknown error on Midaz.'
     }),
     status: HttpStatus.INTERNAL_SERVER_ERROR
   }
