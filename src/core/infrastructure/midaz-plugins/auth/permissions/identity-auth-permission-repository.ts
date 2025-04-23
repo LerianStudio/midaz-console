@@ -1,12 +1,10 @@
-import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
+import { LoggerAggregator } from '@/core/infrastructure/logger/logger-aggregator'
 import { AuthPermissionEntity } from '@/core/domain/entities/auth-permission-entity'
 import { AuthPermissionRepository } from '@/core/domain/repositories/auth/auth-permission-repository'
 import { ContainerTypeMidazHttpFetch } from '@/core/infrastructure/container-registry/midaz-http-fetch-module'
-import {
-  HTTP_METHODS,
-  HttpFetchUtils
-} from '@/core/infrastructure/utils/http-fetch-utils'
+import { HttpFetchUtils } from '@/core/infrastructure/utils/http-fetch-utils'
 import { inject, injectable } from 'inversify'
+import { HttpMethods } from '@/lib/http'
 
 @injectable()
 export class IdentityAuthPermissionRepository
@@ -28,7 +26,7 @@ export class IdentityAuthPermissionRepository
     const userPermissions: AuthPermissionEntity =
       await this.midazHttpFetchUtils.httpMidazFetch<AuthPermissionEntity>({
         url,
-        method: HTTP_METHODS.GET
+        method: HttpMethods.GET
       })
 
     return userPermissions

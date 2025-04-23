@@ -1,6 +1,6 @@
 import { OrganizationRepository } from '@/core/domain/repositories/organization-repository'
 import { inject, injectable } from 'inversify'
-import { LogOperation } from '../../decorators/log-operation'
+import { LogOperation } from '../../../infrastructure/logger/decorators/log-operation'
 
 export interface DeleteOrganization {
   execute(organizationId: string): Promise<void>

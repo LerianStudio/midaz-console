@@ -24,7 +24,7 @@ import ArrowRightLeftCircle from '/public/svg/arrow-right-left-circle.svg'
 import Image from 'next/image'
 import { isNil } from 'lodash'
 import { useCreateTransaction } from '@/client/transactions'
-import { useOrganization } from '@/context/organization-provider/organization-provider-client'
+import { useOrganization } from '@/providers/organization-provider/organization-provider-client'
 import useCustomToast from '@/hooks/use-custom-toast'
 import { TransactionFormSchema } from '../schemas'
 

@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify'
 import { AuthPermissionRepository } from '@/core/domain/repositories/auth/auth-permission-repository'
 import { AuthPermissionResponseDto } from '../../dto/auth-dto'
 import { AuthPermissionMapper } from '../../mappers/auth-permission-mapper'
-import { LogOperation } from '../../decorators/log-operation'
+import { LogOperation } from '../../../infrastructure/logger/decorators/log-operation'
 
 export interface AuthPermission {
   execute: () => Promise<AuthPermissionResponseDto>

@@ -6,7 +6,7 @@ import type {
 import { SegmentMapper } from '../../mappers/segment-mapper'
 import { SegmentRepository } from '@/core/domain/repositories/segment-repository'
 import { inject, injectable } from 'inversify'
-import { LogOperation } from '../../decorators/log-operation'
+import { LogOperation } from '../../../infrastructure/logger/decorators/log-operation'
 
 export interface CreateSegment {
   execute: (

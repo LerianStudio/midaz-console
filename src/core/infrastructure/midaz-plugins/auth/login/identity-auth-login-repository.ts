@@ -1,4 +1,4 @@
-import { LoggerAggregator } from '@/core/application/logger/logger-aggregator'
+import { LoggerAggregator } from '@/core/infrastructure/logger/logger-aggregator'
 import {
   AuthEntity,
   AuthResponseEntity,
@@ -9,8 +9,8 @@ import { inject, injectable } from 'inversify'
 import * as jwt from 'jsonwebtoken'
 import { JwtPayload } from 'jsonwebtoken'
 import { ContainerTypeMidazHttpFetch } from '../../../container-registry/midaz-http-fetch-module'
-import { HTTP_METHODS, HttpFetchUtils } from '../../../utils/http-fetch-utils'
-import { UnauthorizedApiException } from '@/lib/http'
+import { HttpFetchUtils } from '../../../utils/http-fetch-utils'
+import { HttpMethods, UnauthorizedApiException } from '@/lib/http'
 import { getIntl } from '@/lib/intl'
 
 @injectable()
@@ -51,7 +51,7 @@ export class IdentityAuthLoginRepository implements AuthLoginRepository {
         await this.midazHttpFetchUtils.httpMidazWithoutAuthFetch<AuthResponseEntity>(
           {
             url,
-            method: HTTP_METHODS.POST,
+            method: HttpMethods.POST,
             body: JSON.stringify(loginDataWithClient)
           }
         )

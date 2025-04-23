@@ -1,9 +1,10 @@
 import { injectable, inject } from 'inversify'
 import { SegmentEntity } from '@/core/domain/entities/segment-entity'
 import { SegmentRepository } from '@/core/domain/repositories/segment-repository'
-import { HTTP_METHODS, HttpFetchUtils } from '../../utils/http-fetch-utils'
+import { HttpFetchUtils } from '../../utils/http-fetch-utils'
 import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
+import { HttpMethods } from '@/lib/http'
 
 @injectable()
 export class MidazSegmentRepository implements SegmentRepository {
@@ -23,7 +24,7 @@ export class MidazSegmentRepository implements SegmentRepository {
     const response =
       await this.midazHttpFetchUtils.httpMidazFetch<SegmentEntity>({
         url,
-        method: HTTP_METHODS.POST,
+        method: HttpMethods.POST,
         body: JSON.stringify(segment)
       })
 
@@ -42,7 +43,7 @@ export class MidazSegmentRepository implements SegmentRepository {
       PaginationEntity<SegmentEntity>
     >({
       url,
-      method: HTTP_METHODS.GET
+      method: HttpMethods.GET
     })
 
     return response
@@ -58,7 +59,7 @@ export class MidazSegmentRepository implements SegmentRepository {
     const response =
       await this.midazHttpFetchUtils.httpMidazFetch<SegmentEntity>({
         url,
-        method: HTTP_METHODS.GET
+        method: HttpMethods.GET
       })
 
     return response
@@ -75,7 +76,7 @@ export class MidazSegmentRepository implements SegmentRepository {
     const response =
       await this.midazHttpFetchUtils.httpMidazFetch<SegmentEntity>({
         url,
-        method: HTTP_METHODS.PATCH,
+        method: HttpMethods.PATCH,
         body: JSON.stringify(segment)
       })
 
@@ -91,7 +92,7 @@ export class MidazSegmentRepository implements SegmentRepository {
 
     await this.midazHttpFetchUtils.httpMidazFetch<void>({
       url,
-      method: HTTP_METHODS.DELETE
+      method: HttpMethods.DELETE
     })
 
     return

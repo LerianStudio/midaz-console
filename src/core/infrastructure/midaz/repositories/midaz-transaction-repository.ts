@@ -3,11 +3,11 @@ import {
   TransactionEntity
 } from '@/core/domain/entities/transaction-entity'
 import { TransactionRepository } from '@/core/domain/repositories/transaction-repository'
-import { HTTP_METHODS } from '../../utils/http-fetch-utils'
 import { inject, injectable } from 'inversify'
 import { ContainerTypeMidazHttpFetch } from '../../container-registry/midaz-http-fetch-module'
 import { HttpFetchUtils } from '../../utils/http-fetch-utils'
 import { PaginationEntity } from '@/core/domain/entities/pagination-entity'
+import { HttpMethods } from '@/lib/http'
 
 @injectable()
 export class MidazTransactionRepository implements TransactionRepository {
@@ -27,7 +27,7 @@ export class MidazTransactionRepository implements TransactionRepository {
     const response =
       await this.midazHttpFetchUtils.httpMidazFetch<TransactionEntity>({
         url,
-        method: HTTP_METHODS.POST,
+        method: HttpMethods.POST,
         body: JSON.stringify(transaction)
       })
 
@@ -46,7 +46,7 @@ export class MidazTransactionRepository implements TransactionRepository {
       PaginationEntity<TransactionEntity>
     >({
       url,
-      method: HTTP_METHODS.GET
+      method: HttpMethods.GET
     })
 
     return response
@@ -62,7 +62,7 @@ export class MidazTransactionRepository implements TransactionRepository {
     const response =
       await this.midazHttpFetchUtils.httpMidazFetch<TransactionEntity>({
         url,
-        method: HTTP_METHODS.GET
+        method: HttpMethods.GET
       })
 
     return response
@@ -79,7 +79,7 @@ export class MidazTransactionRepository implements TransactionRepository {
     const response =
       await this.midazHttpFetchUtils.httpMidazFetch<TransactionEntity>({
         url,
-        method: HTTP_METHODS.PATCH,
+        method: HttpMethods.PATCH,
         body: JSON.stringify(transaction)
       })
 

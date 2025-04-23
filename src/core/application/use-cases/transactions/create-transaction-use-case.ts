@@ -9,7 +9,7 @@ import {
   TransactionCreateEntity,
   TransactionEntity
 } from '@/core/domain/entities/transaction-entity'
-import { LogOperation } from '../../decorators/log-operation'
+import { LogOperation } from '../../../infrastructure/logger/decorators/log-operation'
 
 export interface CreateTransaction {
   execute: (
