@@ -28,15 +28,15 @@ import { useCreateUpdateSheet } from '@/components/sheet/use-create-update-sheet
 import { UsersSheet } from './users-sheet'
 import { useDeleteUser, useListUsers } from '@/client/users'
 import { Skeleton } from '@/components/ui/skeleton'
-import useCustomToast from '@/hooks/use-custom-toast'
 import { UserResponseDto } from '@/core/application/dto/user-dto'
 import { useSession } from 'next-auth/react'
+import { useToast } from '@/hooks/use-toast'
 
 export const UsersTabContent = () => {
   const intl = useIntl()
   const { data: session } = useSession()
   const { data: users, refetch, isLoading } = useListUsers({})
-  const { showSuccess, showError } = useCustomToast()
+  const { toast } = useToast()
   const { handleCreate, handleEdit, sheetProps } =
     useCreateUpdateSheet<UserResponseDto>({
       enableRouting: true
@@ -46,21 +46,13 @@ export const UsersTabContent = () => {
     onSuccess: () => {
       handleDialogClose()
       refetch()
-      showSuccess(
-        intl.formatMessage({
-          id: 'users.toast.delete.success',
+      toast({
+        description: intl.formatMessage({
+          id: 'success.users.delete',
           defaultMessage: 'User successfully deleted'
-        })
-      )
-    },
-    onError: () => {
-      handleDialogClose()
-      showError(
-        intl.formatMessage({
-          id: 'users.toast.delete.error',
-          defaultMessage: 'Error deleting User'
-        })
-      )
+        }),
+        variant: 'success'
+      })
     }
   })
 

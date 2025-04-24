@@ -52,11 +52,12 @@ export class IdentityUserRepository implements UserRepository {
 
   async update(userId: string, user: UserEntity): Promise<UserEntity> {
     const url = `${this.baseUrl}/users/${userId}`
+    const { firstName, lastName, email, groups } = user
 
-    const response = await this.midazHttpFetchUtils.httpMidazFetch<UserEntity>({
+    await this.midazHttpFetchUtils.httpMidazFetch<UserEntity>({
       url,
-      method: HttpMethods.PUT,
-      body: JSON.stringify(user)
+      method: HttpMethods.PATCH,
+      body: JSON.stringify({ firstName, lastName, email, groups })
     })
 
     return user
@@ -77,7 +78,7 @@ export class IdentityUserRepository implements UserRepository {
 
     await this.midazHttpFetchUtils.httpMidazFetch<void>({
       url,
-      method: HttpMethods.PUT,
+      method: HttpMethods.PATCH,
       body: JSON.stringify({ newPassword })
     })
 
@@ -93,7 +94,7 @@ export class IdentityUserRepository implements UserRepository {
 
     await this.midazHttpFetchUtils.httpMidazFetch<void>({
       url,
-      method: HttpMethods.PUT,
+      method: HttpMethods.PATCH,
       body: JSON.stringify({ oldPassword, newPassword })
     })
 

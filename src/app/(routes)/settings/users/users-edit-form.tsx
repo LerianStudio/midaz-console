@@ -9,7 +9,6 @@ import { useListGroups } from '@/client/groups'
 import { SelectItem } from '@/components/ui/select'
 import { LoadingButton } from '@/components/ui/loading-button'
 import { useUpdateUser, useResetUserPassword } from '@/client/users'
-import useCustomToast from '@/hooks/use-custom-toast'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useState, useMemo } from 'react'
 import ConfirmationDialog from '@/components/confirmation-dialog'
@@ -20,6 +19,7 @@ import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-d
 import { UsersType } from '@/types/users-type'
 import { PasswordField } from '@/components/form/password-field'
 import { getInitialValues } from '@/lib/form'
+import { useToast } from '@/hooks/use-toast'
 
 const UpdateFormSchema = z.object({
   firstName: user.firstName,
@@ -53,7 +53,7 @@ export const EditUserForm = ({
   onOpenChange
 }: EditUserFormProps) => {
   const intl = useIntl()
-  const { showSuccess, showError } = useCustomToast()
+  const { toast } = useToast()
   const { data: groups } = useListGroups({})
   const [activeTab, setActiveTab] = useState('personal-information')
 
@@ -101,24 +101,16 @@ export const EditUserForm = ({
       await onSuccess?.()
       onOpenChange?.(false)
 
-      showSuccess(
-        intl.formatMessage(
+      toast({
+        description: intl.formatMessage(
           {
-            id: 'users.toast.update.success',
+            id: 'success.users.update',
             defaultMessage: 'User {userName} updated successfully'
           },
           { userName: `${updatedUser.firstName} ${updatedUser.lastName}` }
-        )
-      )
-    },
-    onError: () => {
-      onOpenChange?.(false)
-      showError(
-        intl.formatMessage({
-          id: 'users.toast.update.error',
-          defaultMessage: 'Error updating User'
-        })
-      )
+        ),
+        variant: 'success'
+      })
     }
   })
 
@@ -128,23 +120,16 @@ export const EditUserForm = ({
       onSuccess: async () => {
         await onSuccess?.()
         onOpenChange?.(false)
-        showSuccess(
-          intl.formatMessage(
+        toast({
+          description: intl.formatMessage(
             {
-              id: 'users.toast.resetPassword.success',
+              id: 'success.users.password.reset',
               defaultMessage: 'Password for {userName} reset successfully'
             },
             { userName: `${user.firstName} ${user.lastName}` }
-          )
-        )
-      },
-      onError: () => {
-        showError(
-          intl.formatMessage({
-            id: 'users.toast.resetPassword.error',
-            defaultMessage: 'Error resetting password'
-          })
-        )
+          ),
+          variant: 'success'
+        })
       }
     })
 

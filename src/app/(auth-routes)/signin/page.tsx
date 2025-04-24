@@ -2,7 +2,6 @@
 
 import React from 'react'
 import Image from 'next/image'
-import useCustomToast from '@/hooks/use-custom-toast'
 import LoadingScreen from '@/components/loading-screen'
 import LerianLogo from '@/images/lerian-logo-outline.webp'
 import BackgroundImage from '@/images/bg-wallpaper.webp'
