@@ -154,7 +154,7 @@ describe('MidazHttpFetchUtils', () => {
       })
     } else {
       expect(mockFetch).toHaveBeenCalledWith('https://api.example.com/test', {
-        method: HTTP_METHODS.GET,
+        method: HttpMethods.GET,
         body: undefined,
         headers: {
           'Custom-Header': 'CustomValue',
