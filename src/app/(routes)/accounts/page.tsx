@@ -13,7 +13,6 @@ import {
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import ConfirmationDialog from '@/components/confirmation-dialog'
 import { useAccountsWithPortfolios, useDeleteAccount } from '@/client/accounts'
-import useCustomToast from '@/hooks/use-custom-toast'
 import { AccountType } from '@/types/accounts-type'
 import { AccountSheet } from './accounts-sheet'
 import { AccountsDataTable } from './accounts-data-table'
@@ -23,11 +22,13 @@ import { AccountsSkeleton } from './accounts-skeleton'
 import { getBreadcrumbPaths } from '@/components/breadcrumb/get-breadcrumb-paths'
 import { Breadcrumb } from '@/components/breadcrumb'
 import { useListAssets } from '@/client/assets'
+import { useToast } from '@/hooks/use-toast'
 
 const Page = () => {
   const intl = useIntl()
   const { currentOrganization, currentLedger } = useOrganization()
   const [columnFilters, setColumnFilters] = useState<any>([])
+  const { toast } = useToast()
 
   const [total, setTotal] = useState(0)
 
@@ -73,8 +74,6 @@ const Page = () => {
     )
   }, [accountsData])
 
-  const { showSuccess, showError } = useCustomToast()
-
   const {
     handleDialogOpen,
     dialogProps,
@@ -92,23 +91,16 @@ const Page = () => {
       onSuccess: () => {
         handleDialogClose()
         refetchAccounts()
-        showSuccess(
-          intl.formatMessage(
+        toast({
+          description: intl.formatMessage(
             {
-              id: 'ledgers.toast.accountDeleted',
+              id: 'success.accounts.delete',
               defaultMessage: '{accountName} account successfully deleted'
             },
             { accountName: selectedAccount?.name! }
-          )
-        )
-      },
-      onError: () => {
-        showError(
-          intl.formatMessage({
-            id: 'accounts.toast.delete.error',
-            defaultMessage: 'Error deleting account'
-          })
-        )
+          ),
+          variant: 'success'
+        })
       }
     })
 

@@ -85,7 +85,6 @@
     "react-color": "^2.19.3",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.1",
-    "react-hot-toast": "^2.4.1",
     "react-intl": "^6.8.4",
     "read-yaml-file": "^2.1.0",
     "reflect-metadata": "^0.2.2",

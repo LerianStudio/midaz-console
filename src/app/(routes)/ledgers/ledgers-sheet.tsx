@@ -20,10 +20,10 @@ import { LoadingButton } from '@/components/ui/loading-button'
 import { useCreateLedger, useUpdateLedger } from '@/client/ledgers'
 import { LedgerResponseDto } from '@/core/application/dto/ledger-dto'
 import { useOrganization } from '@/providers/organization-provider/organization-provider-client'
-import useCustomToast from '@/hooks/use-custom-toast'
 import { LedgerType } from '@/types/ledgers-type'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { usePopulateCreateUpdateForm } from '@/components/sheet/use-populate-create-update-form'
+import { useToast } from '@/hooks/use-toast'
 
 export type LedgersSheetProps = DialogProps & {
   mode: 'create' | 'edit'
@@ -52,7 +52,7 @@ export const LedgersSheet = ({
 }: LedgersSheetProps) => {
   const intl = useIntl()
   const { currentOrganization, setLedger } = useOrganization()
-  const { showSuccess, showError } = useCustomToast()
+  const { toast } = useToast()
 
   const { mutate: createLedger, isPending: createPending } = useCreateLedger({
     organizationId: currentOrganization.id!,
@@ -63,24 +63,16 @@ export const LedgersSheet = ({
 
       setLedger(newLedger)
       onOpenChange?.(false)
-      showSuccess(
-        intl.formatMessage(
+      toast({
+        description: intl.formatMessage(
           {
-            id: 'ledgers.toast.create.success',
+            id: 'success.ledgers.create',
             defaultMessage: 'Ledger {ledgerName} created successfully'
           },
           { ledgerName: newLedger.name }
-        )
-      )
-    },
-    onError: () => {
-      onOpenChange?.(false)
-      showError(
-        intl.formatMessage({
-          id: 'ledgers.toast.create.error',
-          defaultMessage: 'Error creating Ledger'
-        })
-      )
+        ),
+        variant: 'success'
+      })
     }
   })
 
@@ -90,20 +82,13 @@ export const LedgersSheet = ({
     onSuccess: () => {
       onSuccess?.()
       onOpenChange?.(false)
-      showSuccess(
-        intl.formatMessage({
-          id: 'ledgers.toast.update.success',
+      toast({
+        description: intl.formatMessage({
+          id: 'success.ledgers.update',
           defaultMessage: 'Ledger changes saved successfully'
-        })
-      )
-    },
-    onError: () => {
-      showError(
-        intl.formatMessage({
-          id: 'ledgers.toast.update.error',
-          defaultMessage: 'Error updating Ledger'
-        })
-      )
+        }),
+        variant: 'success'
+      })
     }
   })
 

@@ -14,7 +14,6 @@ import {
 import { useParams } from 'next/navigation'
 import { useConfirmDialog } from '@/components/confirmation-dialog/use-confirm-dialog'
 import ConfirmationDialog from '@/components/confirmation-dialog'
-import useCustomToast from '@/hooks/use-custom-toast'
 import { useQueryParams } from '@/hooks/use-query-params'
 import { AssetsSheet } from './assets-sheet'
 import { AssetsSkeleton } from './assets-skeleton'
@@ -22,13 +21,14 @@ import { AssetsDataTable } from './assets-data-table'
 import { PageHeader } from '@/components/page-header'
 import { getBreadcrumbPaths } from '@/components/breadcrumb/get-breadcrumb-paths'
 import { Breadcrumb } from '@/components/breadcrumb'
+import { useToast } from '@/hooks/use-toast'
 
 const Page = () => {
   const intl = useIntl()
   const { id: ledgerId } = useParams<{ id: string }>()
   const [columnFilters, setColumnFilters] = useState<any>([])
   const { currentOrganization, currentLedger } = useOrganization()
-  const { showSuccess, showError } = useCustomToast()
+  const { toast } = useToast()
 
   const { handleCreate, handleEdit, sheetProps } = useCreateUpdateSheet<any>({
     enableRouting: true
@@ -68,21 +68,13 @@ const Page = () => {
     onSuccess: () => {
       handleDialogClose()
       refetch()
-      showSuccess(
-        intl.formatMessage({
-          id: 'assets.toast.delete.success',
+      toast({
+        description: intl.formatMessage({
+          id: 'success.assets.delete',
           defaultMessage: 'Asset successfully deleted'
-        })
-      )
-    },
-    onError: () => {
-      handleDialogClose()
-      showError(
-        intl.formatMessage({
-          id: 'assets.toast.delete.error',
-          defaultMessage: 'Error deleting Asset'
-        })
-      )
+        }),
+        variant: 'success'
+      })
     }
   })
 

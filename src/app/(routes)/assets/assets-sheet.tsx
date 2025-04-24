@@ -21,13 +21,13 @@ import { assets } from '@/schema/assets'
 import { SelectItem } from '@/components/ui/select'
 import { currencyObjects } from '@/utils/currency-codes'
 import { useCreateAsset, useUpdateAsset } from '@/client/assets'
-import useCustomToast from '@/hooks/use-custom-toast'
 import { AssetType } from '@/types/assets-type'
 import { CommandItem } from '@/components/ui/command'
 import { ComboBoxField } from '@/components/form'
 import { TabsContent } from '@radix-ui/react-tabs'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { usePopulateCreateUpdateForm } from '@/components/sheet/use-populate-create-update-form'
+import { useToast } from '@/hooks/use-toast'
 
 export type AssetsSheetProps = DialogProps & {
   ledgerId: string
@@ -62,7 +62,7 @@ export const AssetsSheet = ({
 }: AssetsSheetProps) => {
   const intl = useIntl()
   const { currentOrganization, currentLedger } = useOrganization()
-  const { showSuccess, showError } = useCustomToast()
+  const { toast } = useToast()
 
   const { mutate: createAsset, isPending: createPending } = useCreateAsset({
     organizationId: currentOrganization.id!,
@@ -71,24 +71,16 @@ export const AssetsSheet = ({
       const formData = data as AssetType
       onSuccess?.()
       onOpenChange?.(false)
-      showSuccess(
-        intl.formatMessage(
+      toast({
+        description: intl.formatMessage(
           {
-            id: 'assets.toast.create.success',
+            id: 'success.assets.create',
             defaultMessage: '{assetName} asset successfully created'
           },
           { assetName: formData.name }
-        )
-      )
-    },
-    onError: () => {
-      onOpenChange?.(false)
-      showError(
-        intl.formatMessage({
-          id: 'assets.toast.create.error',
-          defaultMessage: 'Error creating Asset'
-        })
-      )
+        ),
+        variant: 'success'
+      })
     }
   })
 
@@ -99,21 +91,13 @@ export const AssetsSheet = ({
     onSuccess: () => {
       onSuccess?.()
       onOpenChange?.(false)
-      showSuccess(
-        intl.formatMessage({
-          id: 'assets.toast.update.success',
+      toast({
+        title: intl.formatMessage({
+          id: 'success.assets.update',
           defaultMessage: 'Asset changes saved successfully'
-        })
-      )
-    },
-    onError: () => {
-      onOpenChange?.(false)
-      showError(
-        intl.formatMessage({
-          id: 'assets.toast.update.error',
-          defaultMessage: 'Error updating Asset'
-        })
-      )
+        }),
+        variant: 'success'
+      })
     }
   })
 

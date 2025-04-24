@@ -6,7 +6,6 @@ import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
-import useCustomToast from '@/hooks/use-custom-toast'
 import { signIn } from 'next-auth/react'
 import { auth } from '@/schema/auth'
 import { useIntl } from 'react-intl'
@@ -24,6 +23,7 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip'
 import { useListOrganizations } from '@/client/organizations'
+import { useToast } from '@/hooks/use-toast'
 
 const FormSchema = z.object({
   username: auth.username,
@@ -40,14 +40,13 @@ const defaultValues = {
 const SignInPage = () => {
   const intl = useIntl()
   const route = useRouter()
+  const { toast } = useToast()
   const form = useForm<FormData>({
     resolver: zodResolver(FormSchema),
     defaultValues
   })
 
-  const { showError } = useCustomToast()
   const [isLoading, setIsLoading] = React.useState(false)
-  const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [redirectUrl, setRedirectUrl] = React.useState<string | null>(null)
 
   const { data: organizationsData, isLoading: orgLoading } =
@@ -66,8 +65,6 @@ const SignInPage = () => {
   }, [isLoading, orgLoading, organizationsData])
 
   const onSubmit = async (values: FormData) => {
-    setIsSubmitting(true)
-
     const result = await signIn('credentials', {
       ...values,
       redirect: false
@@ -75,17 +72,16 @@ const SignInPage = () => {
 
     if (result?.error) {
       console.error('Login error ->', result)
-      showError(
-        intl.formatMessage({
+      toast({
+        description: intl.formatMessage({
           id: 'signIn.toast.error',
           defaultMessage: 'Invalid credentials.'
-        })
-      )
-      setIsSubmitting(false)
+        }),
+        variant: 'destructive'
+      })
       return
     }
 
-    setIsSubmitting(false)
     setIsLoading(true)
   }
 
