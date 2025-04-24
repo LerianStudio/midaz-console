@@ -18,6 +18,7 @@ import { InputField } from '@/components/form'
 import { LoadingButton } from '@/components/ui/loading-button'
 import { ArrowRight } from 'lucide-react'
 import { useListOrganizations } from '@/client/organizations'
+import { useToast } from '@/hooks/use-toast'
 
 const FormSchema = z.object({
   username: auth.username,
@@ -34,12 +35,12 @@ const defaultValues = {
 const SignInPage = () => {
   const intl = useIntl()
   const route = useRouter()
+  const { toast } = useToast()
   const form = useForm<FormData>({
     resolver: zodResolver(FormSchema),
     defaultValues
   })
 
-  const { showError } = useCustomToast()
   const [isLoading, setIsLoading] = React.useState(false)
   const [redirectUrl, setRedirectUrl] = React.useState<string | null>(null)
 
@@ -66,12 +67,13 @@ const SignInPage = () => {
 
     if (result?.error) {
       console.error('Login error ->', result)
-      showError(
-        intl.formatMessage({
+      toast({
+        description: intl.formatMessage({
           id: 'signIn.toast.error',
           defaultMessage: 'Invalid credentials.'
-        })
-      )
+        }),
+        variant: 'destructive'
+      })
       return
     }
 

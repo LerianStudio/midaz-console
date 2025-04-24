@@ -15,14 +15,13 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useIntl } from 'react-intl'
 import { DialogProps } from '@radix-ui/react-dialog'
 import { LoadingButton } from '@/components/ui/loading-button'
-import { useOrganization } from '@/context/organization-provider/organization-provider-client'
+import { useOrganization } from '@/providers/organization-provider/organization-provider-client'
 import { MetadataField } from '@/components/form/metadata-field'
 import { useListSegments } from '@/client/segments'
 import { useCreateAccount, useUpdateAccount } from '@/client/accounts'
 import { useListPortfolios } from '@/client/portfolios'
 import { isNil, omitBy } from 'lodash'
 import { useListAssets } from '@/client/assets'
-import useCustomToast from '@/hooks/use-custom-toast'
 import { accounts } from '@/schema/account'
 import { AccountType } from '@/types/accounts-type'
 import { SelectItem } from '@/components/ui/select'
@@ -34,6 +33,7 @@ import { ChevronRight, InfoIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { SwitchField } from '@/components/form/switch-field'
 import { createQueryString } from '@/lib/search'
+import { useToast } from '@/hooks/use-toast'
 import { getInitialValues } from '@/lib/form'
 
 export type AccountSheetProps = DialogProps & {
@@ -82,6 +82,7 @@ export const AccountSheet = ({
   const pathname = usePathname()
   const router = useRouter()
   const { currentOrganization, currentLedger } = useOrganization()
+  const { toast } = useToast()
 
   const { data: rawSegmentListData } = useListSegments({
     organizationId: currentOrganization.id!,
@@ -139,24 +140,16 @@ export const AccountSheet = ({
     onSuccess: (data) => {
       onSuccess?.()
       onOpenChange?.(false)
-      form.reset()
-      showSuccess(
-        intl.formatMessage(
+      toast({
+        description: intl.formatMessage(
           {
-            id: 'ledgers.toast.accountCreated',
+            id: 'success.accounts.created',
             defaultMessage: '{accountName} account successfully created'
           },
           { accountName: (data as AccountType)?.name! }
-        )
-      )
-    },
-    onError: () => {
-      showError(
-        intl.formatMessage({
-          id: 'accounts.toast.create.error',
-          defaultMessage: 'Error creating account'
-        })
-      )
+        ),
+        variant: 'success'
+      })
     }
   })
 
@@ -167,27 +160,18 @@ export const AccountSheet = ({
     onSuccess: (data) => {
       onSuccess?.()
       onOpenChange?.(false)
-      showSuccess(
-        intl.formatMessage(
+      toast({
+        description: intl.formatMessage(
           {
-            id: 'ledgers.toast.accountUpdated',
+            id: 'success.accounts.update',
             defaultMessage: '{accountName} account successfully updated'
           },
           { accountName: (data as AccountType)?.name! }
-        )
-      )
-    },
-    onError: () => {
-      showError(
-        intl.formatMessage({
-          id: 'accounts.toast.update.error',
-          defaultMessage: 'Error updating account'
-        })
-      )
+        ),
+        variant: 'success'
+      })
     }
   })
-
-  const { showSuccess, showError } = useCustomToast()
 
   const handlePortfolioClick = () =>
     router.push(pathname + createQueryString({ tab: 'portfolios' }))
