@@ -102,7 +102,7 @@ export class TransactionMapper {
       },
       amount: transactions.undoScale(
         transaction.amount,
-        transaction.amountScale
+        -transaction.amountScale
       ),
       amountScale: transaction.amountScale,
       assetCode: transaction.assetCode,
@@ -123,29 +123,29 @@ export class TransactionMapper {
             amount: {
               amount: transactions.undoScale(
                 operation.amount.amount,
-                operation.amount.scale
+                -operation.amount.scale
               ),
               scale: operation.amount.scale
             },
             balance: {
               available: transactions.undoScale(
                 operation.balance.available,
-                operation.balance.scale
+                -operation.balance.scale
               ),
               onHold: transactions.undoScale(
                 operation.balance.onHold,
-                operation.balance.scale
+                -operation.balance.scale
               ),
               scale: operation.balance.scale
             },
             balanceAfter: {
               available: transactions.undoScale(
                 operation.balanceAfter.available,
-                operation.balanceAfter.scale
+                -operation.balanceAfter.scale
               ),
               onHold: transactions.undoScale(
                 operation.balanceAfter.onHold,
-                operation.balanceAfter.scale
+                -operation.balanceAfter.scale
               ),
               scale: operation.balanceAfter.scale
             },
