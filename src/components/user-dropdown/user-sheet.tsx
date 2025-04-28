@@ -15,7 +15,6 @@ import { useForm } from 'react-hook-form'
 import { useIntl } from 'react-intl'
 import { z } from 'zod'
 import { LoadingButton } from '@/components/ui/loading-button'
-import useCustomToast from '@/hooks/use-custom-toast'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useUpdateUser, useUpdateUserPassword } from '@/client/users'
 import { SelectItem } from '../ui/select'
@@ -24,6 +23,7 @@ import { user, passwordChange } from '@/schema/user'
 import { GroupResponseDto } from '@/core/application/dto/group-dto'
 import { UsersType } from '@/types/users-type'
 import { getInitialValues } from '@/lib/form'
+import { useToast } from '@/hooks/use-toast'
 
 export type UserSheetProps = DialogProps & {
   mode: 'create' | 'edit'
@@ -72,7 +72,7 @@ export const UserSheet = ({
   ...others
 }: UserSheetProps) => {
   const intl = useIntl()
-  const { showSuccess, showError } = useCustomToast()
+  const { toast } = useToast()
   const { data: groups } = useListGroups({})
   const [activeTab, setActiveTab] = useState('personal-information')
 
@@ -81,21 +81,13 @@ export const UserSheet = ({
     onSuccess: () => {
       onSuccess?.()
       onOpenChange?.(false)
-      showSuccess(
-        intl.formatMessage({
-          id: 'user.toast.update.success',
+      toast({
+        description: intl.formatMessage({
+          id: 'success.users.profile.update',
           defaultMessage: 'User profile updated successfully'
-        })
-      )
-    },
-    onError: () => {
-      onOpenChange?.(false)
-      showError(
-        intl.formatMessage({
-          id: 'user.toast.update.error',
-          defaultMessage: 'Error updating user profile'
-        })
-      )
+        }),
+        variant: 'success'
+      })
     }
   })
 
@@ -105,21 +97,13 @@ export const UserSheet = ({
       onSuccess: () => {
         onSuccess?.()
         onOpenChange?.(false)
-        showSuccess(
-          intl.formatMessage({
-            id: 'user.toast.password.update.success',
+        toast({
+          description: intl.formatMessage({
+            id: 'success.users.password.update',
             defaultMessage: 'Password updated successfully'
-          })
-        )
-      },
-      onError: () => {
-        onOpenChange?.(false)
-        showError(
-          intl.formatMessage({
-            id: 'user.toast.password.update.error',
-            defaultMessage: 'Error updating password'
-          })
-        )
+          }),
+          variant: 'success'
+        })
       }
     })
 
