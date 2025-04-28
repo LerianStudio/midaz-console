@@ -21,6 +21,13 @@ import { PasswordField } from '@/components/form/password-field'
 import { getInitialValues } from '@/lib/form'
 import { useToast } from '@/hooks/use-toast'
 
+const initialValues = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  groups: ''
+}
+
 const UpdateFormSchema = z.object({
   firstName: user.firstName,
   lastName: user.lastName,
@@ -57,7 +64,7 @@ export const EditUserForm = ({
   const { data: groups } = useListGroups({})
   const [activeTab, setActiveTab] = useState('personal-information')
 
-  const defaultValues = useMemo(
+  const userData = useMemo(
     () => ({
       ...user,
       groups: user.groups && user.groups.length > 0 ? user.groups[0] : ''
@@ -80,8 +87,7 @@ export const EditUserForm = ({
 
   const form = useForm<UpdateFormData>({
     resolver: zodResolver(UpdateFormSchema),
-    values: getInitialValues(defaultValues, user),
-    defaultValues
+    defaultValues: getInitialValues(initialValues, userData)
   })
 
   const passwordForm = useForm<PasswordFormData>({
@@ -238,8 +244,8 @@ export const EditUserForm = ({
                       defaultMessage: 'Role'
                     })}
                     placeholder={intl.formatMessage({
-                      id: 'common.select',
-                      defaultMessage: 'Select'
+                      id: 'common.selectPlaceholder',
+                      defaultMessage: 'Select...'
                     })}
                     control={form.control}
                     required

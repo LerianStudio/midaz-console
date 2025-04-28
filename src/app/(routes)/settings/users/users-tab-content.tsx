@@ -31,6 +31,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { UserResponseDto } from '@/core/application/dto/user-dto'
 import { useSession } from 'next-auth/react'
 import { useToast } from '@/hooks/use-toast'
+import { UsersType } from '@/types/users-type'
 
 export const UsersTabContent = () => {
   const intl = useIntl()
@@ -38,7 +39,7 @@ export const UsersTabContent = () => {
   const { data: users, refetch, isLoading } = useListUsers({})
   const { toast } = useToast()
   const { handleCreate, handleEdit, sheetProps } =
-    useCreateUpdateSheet<UserResponseDto>({
+    useCreateUpdateSheet<UsersType>({
       enableRouting: true
     })
 
