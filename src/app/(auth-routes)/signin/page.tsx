@@ -122,6 +122,7 @@ const SignInPage = () => {
           <div className="pt-8">
             <Form {...form}>
               <form
+                method="post"
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-8"
               >
